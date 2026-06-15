@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>ICU 약물 계산기 — 화성유일병원</title>
+<style>
+:root{
+  --bg:#f0f2f5;--surface:#fff;--surface2:#f8f9fb;
+  --border:#e4e8ee;--border2:#d0d7e3;
+  --accent:#2563eb;--accent-lt:#eff4ff;
+  --green:#16a34a;--green-lt:#f0fdf4;--green-bg:#dcfce7;
+  --orange:#ea580c;--orange-lt:#fff7ed;--orange-bg:#fed7aa;
+  --red:#dc2626;--red-lt:#fef2f2;--red-bg:#fecaca;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;--purple-bg:#ddd6fe;
+  --teal:#0d9488;--teal-lt:#f0fdfa;--teal-bg:#ccfbf1;
+  --yellow:#ca8a04;--yellow-lt:#fefce8;
+  --cyan:#0891b2;--cyan-lt:#ecfeff;--cyan-bg:#a5f3fc;
+  --emerald:#059669;--emerald-lt:#ecfdf5;--emerald-bg:#a7f3d0;
+  --indigo:#4338ca;--indigo-lt:#eef2ff;--indigo-bg:#c7d2fe;
+  --text:#0f172a;--text2:#374151;--muted:#6b7280;--muted2:#9ca3af;
+  --mono:'SF Mono','Fira Code','Consolas',monospace;
+  --sans:-apple-system,'Segoe UI','Noto Sans KR',sans-serif;
+  --r:10px;--rl:14px;
+  --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+}
+
+/* ── Reset ── */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;font-size:14px;line-height:1.5;-webkit-text-size-adjust:100%;}
+
+/* ── iOS button reset — 핵심 ── */
+button{
+  font-family:var(--sans);
+  -webkit-appearance:none;
+  appearance:none;
+  border:none;
+  background:none;
+  cursor:pointer;
+  touch-action:manipulation; /* 300ms delay 제거 */
+  -webkit-user-select:none;
+  user-select:none;
+}
+input{-webkit-appearance:none;appearance:none;font-size:16px;} /* 16px 미만이면 iOS zoom */
+
+.app{max-width:960px;margin:0 auto;padding:8px 16px 60px;}
+
+/* ── Header ── */
+.app-header{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sh);}
+.hdr-l{display:flex;align-items:center;gap:12px;}
+.logo{width:40px;height:40px;background:linear-gradient(135deg,#2563eb,#0d9488);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.hdr-title{font-size:17px;font-weight:700;letter-spacing:-.3px;}
+.hdr-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.hdr-badge{font-size:11px;font-weight:600;padding:4px 10px;background:var(--accent-lt);color:var(--accent);border:1px solid #bfdbfe;border-radius:20px;}
+
+/* ── Patient panel ── */
+.pt-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px 20px;margin-bottom:14px;box-shadow:var(--sh);display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.pt-field{display:flex;flex-direction:column;gap:5px;}
+.f-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+.inp-wrap{display:flex;align-items:center;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .15s;}
+.inp-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.inp-wrap input{background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:20px;font-weight:700;width:80px;padding:8px 10px;text-align:right;}
+.inp-wrap input.txt{font-family:var(--sans);font-size:16px;font-weight:500;width:130px;text-align:left;}
+.u-label{font-size:12px;color:var(--muted);padding:0 10px;font-weight:600;white-space:nowrap;}
+.qbtns{display:flex;gap:4px;flex-wrap:wrap;align-items:center;}
+
+/* ── All interactive buttons share these ── */
+.qbtn,.tab,.dc-hdr-btn,.ftab{
+  touch-action:manipulation;
+  -webkit-appearance:none;
+  cursor:pointer;
+}
+
+/* Quick buttons */
+.qbtn{padding:6px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);font-size:11px;font-weight:600;color:var(--muted);font-family:var(--mono);transition:background .12s,color .12s;}
+.qbtn:active{background:var(--accent-lt);color:var(--accent);}
+
+/* ── Tabs ── */
+.sticky-bar{
+  position:-webkit-sticky;
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:var(--bg);
+  padding:10px 0 6px;
+  border-bottom:1px solid transparent;
+  transition:border-color .2s, box-shadow .2s;
+}
+.sticky-bar.stuck{
+  border-bottom-color:var(--border);
+  box-shadow:0 2px 12px rgba(0,0,0,.10);
+}
+.tabs{display:flex;gap:6px;margin-bottom:0;flex-wrap:wrap;}
+.tab{padding:8px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;transition:all .15s;}
+.tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;}
+
+/* ── Drug card ── */
+.dc{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);margin-bottom:10px;box-shadow:var(--sh);overflow:hidden;}
+
+/* dc-hdr is now a <button> that spans full width */
+.dc-hdr-btn{
+  width:100%;
+  padding:13px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:var(--surface);
+  border:none;
+  border-bottom:1px solid transparent;
+  border-radius:0;
+  text-align:left;
+  font-family:var(--sans);
+  transition:background .12s;
+}
+.dc-hdr-btn:active{background:var(--surface2);}
+.dc.open .dc-hdr-btn{border-bottom:1px solid var(--border);background:var(--surface2);}
+
+.dc-l{display:flex;align-items:center;gap:10px;}
+.dc-bar{width:4px;height:38px;border-radius:2px;flex-shrink:0;}
+.dc-name{font-size:14px;font-weight:700;color:var(--text);}
+.dc-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.dc-r{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
+.chev{font-size:13px;color:var(--muted2);transition:transform .2s;margin-left:4px;flex-shrink:0;}
+.dc.open .chev{transform:rotate(180deg);}
+.dc-body{display:none;padding:16px;}
+.dc.open .dc-body{display:block;}
+
+/* ── Badges ── */
+.bd{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;}
+.bd-blue{background:var(--accent-lt);color:var(--accent);border:1px solid #bfdbfe;}
+.bd-green{background:var(--green-lt);color:var(--green);border:1px solid #bbf7d0;}
+.bd-orange{background:var(--orange-lt);color:var(--orange);border:1px solid var(--orange-bg);}
+.bd-red{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bg);}
+.bd-purple{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bg);}
+.bd-teal{background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-bg);}
+.bd-yellow{background:var(--yellow-lt);color:var(--yellow);border:1px solid #fde68a;}
+.bd-gray{background:#f3f4f6;color:#4b5563;border:1px solid #e5e7eb;}
+.bd-cyan{background:var(--cyan-lt);color:var(--cyan);border:1px solid var(--cyan-bg);}
+.bd-emerald{background:var(--emerald-lt);color:var(--emerald);border:1px solid var(--emerald-bg);}
+.bd-indigo{background:var(--indigo-lt);color:var(--indigo);border:1px solid var(--indigo-bg);}
+
+/* ── Formulation tabs — now <button> ── */
+.ftabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.ftab{padding:6px 13px;border-radius:7px;border:1.5px solid var(--border);background:var(--surface2);font-size:12px;font-weight:500;color:var(--muted);font-family:var(--sans);transition:all .12s;}
+.ftab.active{font-weight:700;}
+.ftab:active{opacity:.7;}
+
+/* ── Info row ── */
+.info-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 13px;margin-bottom:12px;}
+.ic{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;}
+.ic b{font-family:var(--mono);font-weight:700;color:var(--text);}
+.sep{color:var(--border2);font-size:14px;}
+
+/* ── Dose row ── */
+.dose-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.d-label{font-size:12px;color:var(--muted);font-weight:600;min-width:80px;}
+.d-wrap{display:flex;align-items:center;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .15s;}
+.d-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.d-wrap input{background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:16px;font-weight:700;width:90px;padding:8px 10px;text-align:right;}
+.d-unit{font-size:11px;color:var(--muted);padding:0 10px;font-weight:600;white-space:nowrap;}
+
+/* ── Result box ── */
+.res{border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.res.empty{background:var(--surface2);border:1.5px dashed var(--border);}
+.res.ok{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1.5px solid #bfdbfe;}
+.res.warn{background:linear-gradient(135deg,#fff7ed,#fefce8);border:1.5px solid var(--orange-bg);}
+.res.danger{background:linear-gradient(135deg,#fef2f2,#fff7ed);border:1.5px solid var(--red-bg);}
+.res-l{display:flex;flex-direction:column;gap:2px;}
+.res-rate{font-family:var(--mono);font-size:30px;font-weight:700;line-height:1;}
+.res-rate.ok{color:var(--accent);}
+.res-rate.warn{color:var(--orange);}
+.res-rate.danger{color:var(--red);}
+.res-rate.empty{font-size:14px;font-weight:400;color:var(--muted2);}
+.res-unit{font-size:12px;color:var(--muted);margin-top:4px;font-weight:600;}
+.res-r{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.res-tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;}
+.tag-ok{background:#dbeafe;color:#1d4ed8;}
+.tag-warn{background:var(--orange-bg);color:var(--orange);}
+.tag-danger{background:var(--red-bg);color:var(--red);}
+.res-note{font-size:11px;color:var(--muted);}
+
+/* ── Banners ── */
+.ban{display:flex;align-items:flex-start;gap:8px;padding:9px 13px;border-radius:8px;margin-top:8px;font-size:12px;font-weight:500;line-height:1.5;}
+.ban-salvage{background:#fef3c7;color:#92400e;border:1px solid #fde68a;}
+.ban-caution{background:var(--orange-lt);color:#9a3412;border:1px solid var(--orange-bg);}
+.ban-info{background:var(--accent-lt);color:#1e40af;border:1px solid #bfdbfe;}
+.ban-limit{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bg);}
+.ban-icon{flex-shrink:0;}
+
+/* ── Sub boxes ── */
+.sub-box{border-radius:8px;padding:10px 14px;margin-bottom:12px;}
+.sub-box.purple{background:var(--purple-lt);border:1px solid var(--purple-bg);}
+.sub-box.green{background:var(--green-lt);border:1px solid #bbf7d0;}
+.sub-box.cyan{background:var(--cyan-lt);border:1px solid var(--cyan-bg);}
+.sub-box.indigo{background:var(--indigo-lt);border:1px solid var(--indigo-bg);}
+.sub-box.yellow{background:var(--yellow-lt);border:1px solid #fde68a;}
+.sub-box.surface{background:var(--surface2);border:1px solid var(--border);}
+.sub-box-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;}
+.sub-box.purple .sub-box-title{color:var(--purple);}
+.sub-box.green .sub-box-title{color:var(--green);}
+.sub-box.cyan .sub-box-title{color:var(--cyan);}
+.sub-box.indigo .sub-box-title{color:var(--indigo);}
+.sub-box.yellow .sub-box-title{color:var(--yellow);}
+.sub-box.surface .sub-box-title{color:var(--muted);}
+
+/* ── Bolus grid ── */
+.bolus-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:6px;}
+.bolus-cell{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;text-align:center;}
+.bc-label{font-size:11px;color:var(--muted);margin-bottom:3px;}
+.bc-val{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--accent);}
+.bc-unit{font-size:11px;color:var(--muted);margin-top:1px;}
+
+/* ── Vasopressin table ── */
+.vaso-tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.vaso-tbl th{padding:8px 10px;text-align:left;font-weight:700;border-bottom:1.5px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;background:var(--surface2);}
+.vaso-tbl td{padding:9px 10px;border-bottom:1px solid var(--border);}
+
+/* ── Section headers (other tab) ── */
+.sec-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;margin-top:4px;}
+.sec-bar{width:3px;height:18px;border-radius:2px;flex-shrink:0;}
+.sec-lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+.o-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:16px;}
+.oc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--sh);}
+.oc-hdr{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+.oc-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.oc-name{font-size:13px;font-weight:700;}
+.oc-conc{font-size:11px;color:var(--muted);}
+.oc-body{font-size:12px;color:var(--text2);line-height:1.75;}
+.oc-body .mono{font-family:var(--mono);font-weight:700;color:var(--text);}
+.oc-body .rp{display:inline-block;border-radius:6px;padding:1px 7px;font-family:var(--mono);font-weight:700;font-size:12px;}
+.rp-bl{background:var(--accent-lt);color:var(--accent);border:1px solid #bfdbfe;}
+.rp-or{background:var(--orange-lt);color:var(--orange);border:1px solid var(--orange-bg);}
+.rp-gr{background:var(--green-lt);color:var(--green);border:1px solid #bbf7d0;}
+.rp-pu{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bg);}
+.rp-ye{background:var(--yellow-lt);color:var(--yellow);border:1px solid #fde68a;}
+
+footer{text-align:center;margin-top:32px;font-size:11px;color:var(--muted2);line-height:1.9;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<div class="app-header">
+  <div class="hdr-l">
+    <div class="logo">💊</div>
+    <div>
+      <div class="hdr-title">ICU 약물 용량 계산기</div>
+      <div class="hdr-sub">화성유일병원 내과중환자실</div>
+    </div>
+  </div>
+  <span class="hdr-badge">2025 Rev.</span>
+</div>
+
+<!-- STICKY HEADER -->
+<div class="sticky-bar" id="sticky-bar">
+
+<!-- PATIENT -->
+<div class="pt-panel" style="margin-bottom:10px;">
+  <div class="pt-field">
+    <div class="f-label">👤 환자명</div>
+    <div class="inp-wrap"><input class="txt" type="text" id="ptName" placeholder="홍길동" inputmode="text"></div>
+  </div>
+  <div class="pt-field">
+    <div class="f-label">⚖️ 체중 (BWT)</div>
+    <div class="inp-wrap">
+      <input type="number" id="bwt" value="60" min="20" max="200" step="1" inputmode="decimal" oninput="updateAll()">
+      <span class="u-label">kg</span>
+    </div>
+  </div>
+  <div class="qbtns" style="margin-top:auto;">
+    <span style="font-size:11px;color:var(--muted);font-weight:600;">빠른 설정</span>
+    <button class="qbtn" type="button" onclick="setBwt(45)">45</button>
+    <button class="qbtn" type="button" onclick="setBwt(50)">50</button>
+    <button class="qbtn" type="button" onclick="setBwt(55)">55</button>
+    <button class="qbtn" type="button" onclick="setBwt(60)">60</button>
+    <button class="qbtn" type="button" onclick="setBwt(65)">65</button>
+    <button class="qbtn" type="button" onclick="setBwt(70)">70</button>
+    <button class="qbtn" type="button" onclick="setBwt(75)">75</button>
+    <button class="qbtn" type="button" onclick="setBwt(80)">80</button>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" type="button" onclick="switchTab('vp',this)">🔴 승압제/강심제</button>
+  <button class="tab" type="button" onclick="switchTab('sd',this)">😴 진정·진통·이뇨</button>
+  <button class="tab" type="button" onclick="switchTab('ot',this)">💙 이외 약물</button>
+</div>
+
+</div><!-- /sticky-bar -->
+
+<!-- ══════════ TAB 1 ══════════ -->
+<div id="tab-vp">
+
+  <!-- DOPAMINE -->
+  <div class="dc" id="c-dopa">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-dopa')">
+      <div class="dc-l"><div class="dc-bar" style="background:#2563eb;"></div>
+        <div><div class="dc-name">Dopamine &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">도파민 · 이노판</span></div>
+        <div class="dc-sub">2–20 mcg/kg/min · 3가지 세팅</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-blue">🫀 Vasopressor</span><span class="bd bd-green">강심제</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="ftabs">
+        <button class="ftab active" type="button" id="dopa-f0" onclick="selF('dopa',0)" style="color:var(--accent);border-color:var(--accent);">프리믹스 400mg/200mL</button>
+        <button class="ftab" type="button" id="dopa-f1" onclick="selF('dopa',1)">일반 800mg/500mL</button>
+        <button class="ftab" type="button" id="dopa-f2" onclick="selF('dopa',2)">농축 1600mg/500mL</button>
+      </div>
+      <div id="dopa-info" class="info-row"></div>
+      <div class="dose-row">
+        <span class="d-label">목표 용량</span>
+        <div class="d-wrap"><input type="number" id="dopa-d" value="5" min="2" max="20" step="1" inputmode="decimal" oninput="cDopa()"><span class="d-unit">mcg/kg/min</span></div>
+        <div class="qbtns">
+          <button class="qbtn" type="button" onclick="setD('dopa-d',2,cDopa)">2</button>
+          <button class="qbtn" type="button" onclick="setD('dopa-d',5,cDopa)">5</button>
+          <button class="qbtn" type="button" onclick="setD('dopa-d',8,cDopa)">8</button>
+          <button class="qbtn" type="button" onclick="setD('dopa-d',10,cDopa)">10</button>
+          <button class="qbtn" type="button" onclick="setD('dopa-d',15,cDopa)">15</button>
+          <button class="qbtn" type="button" onclick="setD('dopa-d',20,cDopa)">20</button>
+        </div>
+      </div>
+      <div id="dopa-res" class="res empty"><span class="res-rate empty">체중 입력 후 계산</span></div>
+      <div class="ban ban-info"><span class="ban-icon">💡</span><span><b>수용체:</b> 2–4 신장확장 / 5–10 강심(β₁) / &gt;10 승압(α₁)</span></div>
+    </div>
+  </div>
+
+  <!-- DOBUTAMINE -->
+  <div class="dc" id="c-dobu">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-dobu')">
+      <div class="dc-l"><div class="dc-bar" style="background:#16a34a;"></div>
+        <div><div class="dc-name">Dobutamine &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">도부타민</span></div>
+        <div class="dc-sub">1000mg/500mL · 2–20 mcg/kg/min</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-green">💚 강심제 β₁</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="info-row"><span class="ic">💉 <b>1000mg</b>(4A)</span><span class="sep">+</span><span class="ic">💧 D/W <b>480mL</b>→500mL</span><span class="sep">=</span><span class="ic">농도 <b>2 mg/mL</b></span></div>
+      <div class="dose-row">
+        <span class="d-label">목표 용량</span>
+        <div class="d-wrap"><input type="number" id="dobu-d" value="5" min="1" max="20" step="1" inputmode="decimal" oninput="cDobu()"><span class="d-unit">mcg/kg/min</span></div>
+        <div class="qbtns">
+          <button class="qbtn" type="button" onclick="setD('dobu-d',2,cDobu)">2</button>
+          <button class="qbtn" type="button" onclick="setD('dobu-d',5,cDobu)">5</button>
+          <button class="qbtn" type="button" onclick="setD('dobu-d',7.5,cDobu)">7.5</button>
+          <button class="qbtn" type="button" onclick="setD('dobu-d',10,cDobu)">10</button>
+          <button class="qbtn" type="button" onclick="setD('dobu-d',15,cDobu)">15</button>
+          <button class="qbtn" type="button" onclick="setD('dobu-d',20,cDobu)">20</button>
+        </div>
+      </div>
+      <div id="dobu-res" class="res empty"><span class="res-rate empty">체중 입력 후 계산</span></div>
+      <div class="ban ban-caution"><span class="ban-icon">⚠️</span><span>MAP ≥ 65 확인 후 시작. 빈맥 유발 주의.</span></div>
+    </div>
+  </div>
+
+  <!-- NOREPINEPHRINE -->
+  <div class="dc" id="c-norepi">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-norepi')">
+      <div class="dc-l"><div class="dc-bar" style="background:#dc2626;"></div>
+        <div><div class="dc-name">Norepinephrine &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">Norpin · 큐프린</span></div>
+        <div class="dc-sub">0.025–3 mcg/kg/min · 2가지 세팅</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-red">🔴 1st Line</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="ftabs">
+        <button class="ftab active" type="button" id="norepi-f0" onclick="selF('norepi',0)" style="color:var(--red);border-color:var(--red);">일반 16mg/500mL</button>
+        <button class="ftab" type="button" id="norepi-f1" onclick="selF('norepi',1)">농축 48mg/200mL</button>
+      </div>
+      <div id="norepi-info" class="info-row"></div>
+      <div class="dose-row">
+        <span class="d-label">목표 용량</span>
+        <div class="d-wrap"><input type="number" id="norepi-d" value="0.1" min="0.025" max="3" step="0.025" inputmode="decimal" oninput="cNorepi()"><span class="d-unit">mcg/kg/min</span></div>
+        <div class="qbtns">
+          <button class="qbtn" type="button" onclick="setD('norepi-d',0.05,cNorepi)">0.05</button>
+          <button class="qbtn" type="button" onclick="setD('norepi-d',0.1,cNorepi)">0.1</button>
+          <button class="qbtn" type="button" onclick="setD('norepi-d',0.2,cNorepi)">0.2</button>
+          <button class="qbtn" type="button" onclick="setD('norepi-d',0.3,cNorepi)">0.3</button>
+          <button class="qbtn" type="button" onclick="setD('norepi-d',0.5,cNorepi)">0.5</button>
+          <button class="qbtn" type="button" onclick="setD('norepi-d',1.0,cNorepi)">1.0</button>
+        </div>
+      </div>
+      <div id="norepi-res" class="res empty"><span class="res-rate empty">체중 입력 후 계산</span></div>
+      <div id="norepi-warn"></div>
+    </div>
+  </div>
+
+  <!-- VASOPRESSIN -->
+  <div class="dc" id="c-vaso">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-vaso')">
+      <div class="dc-l"><div class="dc-bar" style="background:#7c3aed;"></div>
+        <div><div class="dc-name">Vasopressin &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">바소프레신</span></div>
+        <div class="dc-sub">20u/100mL · 고정용량 · 체중무관</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-purple">🟣 2nd Line</span><span class="bd bd-orange">⚠️ Salvage ≥0.04</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="info-row"><span class="ic">💉 <b>20u</b>(1A)</span><span class="sep">+</span><span class="ic">💧 D/W <b>99mL</b>→100mL</span><span class="sep">=</span><span class="ic">농도 <b>0.2 u/mL</b></span></div>
+      <div style="overflow-x:auto;border-radius:8px;border:1px solid var(--border);">
+        <table class="vaso-tbl"><thead><tr><th>용량(u/min)</th><th style="text-align:center;">속도(mL/hr)</th><th style="text-align:center;">상태</th><th style="text-align:right;">비고</th></tr></thead>
+        <tbody id="vaso-tb"></tbody></table>
+      </div>
+      <div class="ban ban-salvage" style="margin-top:10px;"><span class="ban-icon">🚨</span><span><b>SALVAGE ONLY (0.04 u/min):</b> SSC 2021 권장 상한 0.03 u/min. 난치성 쇼크 한시적 사용만.</span></div>
+      <div class="ban ban-info"><span class="ban-icon">💡</span><span>NE add-on. Wean last.</span></div>
+    </div>
+  </div>
+
+  <!-- EPINEPHRINE -->
+  <div class="dc" id="c-epi">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-epi')">
+      <div class="dc-l"><div class="dc-bar" style="background:#ea580c;"></div>
+        <div><div class="dc-name">Epinephrine &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">에피네프린</span></div>
+        <div class="dc-sub">4mg/250mL (16 mcg/mL) · 0.01–0.5 mcg/kg/min</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-orange">🟠 Refractory</span><span class="bd bd-green" style="font-size:10px;">✓검증</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="info-row"><span class="ic">💉 Epi <b>4mg</b>(4A)</span><span class="sep">+</span><span class="ic">💧 D/W <b>246mL</b>→250mL</span><span class="sep">=</span><span class="ic">농도 <b>16 mcg/mL</b></span></div>
+      <div class="dose-row">
+        <span class="d-label">목표 용량</span>
+        <div class="d-wrap"><input type="number" id="epi-d" value="0.1" min="0.01" max="0.5" step="0.01" inputmode="decimal" oninput="cEpi()"><span class="d-unit">mcg/kg/min</span></div>
+        <div class="qbtns">
+          <button class="qbtn" type="button" onclick="setD('epi-d',0.05,cEpi)">0.05</button>
+          <button class="qbtn" type="button" onclick="setD('epi-d',0.1,cEpi)">0.1</button>
+          <button class="qbtn" type="button" onclick="setD('epi-d',0.2,cEpi)">0.2</button>
+          <button class="qbtn" type="button" onclick="setD('epi-d',0.3,cEpi)">0.3</button>
+          <button class="qbtn" type="button" onclick="setD('epi-d',0.5,cEpi)">0.5</button>
+        </div>
+      </div>
+      <div id="epi-res" class="res empty"><span class="res-rate empty">체중 입력 후 계산</span></div>
+      <div class="ban ban-caution"><span class="ban-icon">⚠️</span><span>≥0.3 mcg/kg/min 장간막허혈·부정맥. 젖산·심박수 모니터링.</span></div>
+    </div>
+  </div>
+
+  <!-- PHENYLEPHRINE -->
+  <div class="dc" id="c-phe">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-phe')">
+      <div class="dc-l"><div class="dc-bar" style="background:#b45309;"></div>
+        <div><div class="dc-name">Phenylephrine &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">페닐에프린 · 순수 α₁</span></div>
+        <div class="dc-sub">100 mcg/mL · 50–200 mcg IV push</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-orange">🟡 α₁ Vasopressor</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="info-row"><span class="ic">💉 페닐에프린 <b>1mg</b>+NS <b>9mL</b></span><span class="sep">=</span><span class="ic">농도 <b>100 mcg/mL</b></span><span style="font-size:11px;background:#fefce8;color:#854d0e;border:1px solid #fde68a;padding:2px 8px;border-radius:20px;">체중 무관 고정 mcg 단위</span></div>
+      <div class="sub-box yellow">
+        <div class="sub-box-title">IV Bolus — 고정 용량 (FDA 40–200 mcg)</div>
+        <div id="phe-grid" class="bolus-grid"></div>
+        <div style="margin-top:8px;font-size:12px;color:var(--muted);">필요 시 1–2분마다 반복 · 총 누적 Max 200 mcg</div>
+      </div>
+      <div class="ban ban-caution"><span class="ban-icon">⚠️</span><span>반사성 서맥 주의. 심박출량 감소. 마취 유도 저혈압·빈맥 없는 저혈압에 적합.</span></div>
+      <div class="ban ban-info"><span class="ban-icon">💡</span><span>Septic shock에서 NE 대체 불가 (CO 감소). 마취/수술 중 일시적 저혈압에 주로 사용.</span></div>
+    </div>
+  </div>
+
+  <!-- ESMOLOL -->
+  <div class="dc" id="c-esmo">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-esmo')">
+      <div class="dc-l"><div class="dc-bar" style="background:#0d9488;"></div>
+        <div><div class="dc-name">Esmolol &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">브레비블록</span></div>
+        <div class="dc-sub">5000mg/500mL · 50–200 mcg/kg/min</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-teal">🫀 β₁-Blocker</span><span class="bd bd-red" style="font-size:10px;">Max 200</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="info-row"><span class="ic">💉 브레비블록 <b>5000mg</b> premix</span><span class="sep">=</span><span class="ic">농도 <b>10 mg/mL</b></span></div>
+      <div class="dose-row">
+        <span class="d-label">유지 용량</span>
+        <div class="d-wrap"><input type="number" id="esmo-d" value="100" min="50" max="200" step="25" inputmode="decimal" oninput="cEsmo()"><span class="d-unit">mcg/kg/min</span></div>
+        <div class="qbtns">
+          <button class="qbtn" type="button" onclick="setD('esmo-d',50,cEsmo)">50</button>
+          <button class="qbtn" type="button" onclick="setD('esmo-d',100,cEsmo)">100</button>
+          <button class="qbtn" type="button" onclick="setD('esmo-d',150,cEsmo)">150</button>
+          <button class="qbtn" type="button" onclick="setD('esmo-d',200,cEsmo)">200 Max</button>
+        </div>
+      </div>
+      <div id="esmo-res" class="res empty"><span class="res-rate empty">체중 입력 후 계산</span></div>
+      <div class="ban ban-limit"><span class="ban-icon">🚫</span><span><b>FDA Max 200 mcg/kg/min.</b> 로딩: 500 mcg/kg×1분 → 50 mcg/kg/min 시작.</span></div>
+    </div>
+  </div>
+
+</div><!-- /tab-vp -->
+
+<!-- ══════════ TAB 2 ══════════ -->
+<div id="tab-sd" style="display:none;">
+
+  <!-- DEXMEDETOMIDINE -->
+  <div class="dc" id="c-dex">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-dex')">
+      <div class="dc-l"><div class="dc-bar" style="background:#4338ca;"></div>
+        <div><div class="dc-name">Dexmedetomidine (Precedex)</div>
+        <div class="dc-sub">200mcg/50mL (4 mcg/mL) · 0.2–0.7 mcg/kg/hr</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-indigo">🧠 α₂-Agonist</span><span class="bd bd-gray">발관유지가능</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="info-row"><span class="ic">💉 Precedex <b>200mcg</b>(1vial)</span><span class="sep">+</span><span class="ic">💧 NS <b>48mL</b>→50mL</span><span class="sep">=</span><span class="ic">농도 <b>4 mcg/mL</b></span></div>
+      <div class="sub-box indigo">
+        <div class="sub-box-title">① Loading (선택적 — ICU 생략 권장)</div>
+        <div id="dex-load" style="font-size:13px;color:var(--text2);line-height:1.8;"></div>
+        <div style="font-size:12px;color:var(--indigo);margin-top:5px;font-weight:600;">⚠️ 서맥·저혈압 → 0.4 mcg/kg/hr 바로 시작 권장</div>
+      </div>
+      <div class="dose-row">
+        <span class="d-label">유지 용량</span>
+        <div class="d-wrap"><input type="number" id="dex-d" value="0.4" min="0.2" max="0.7" step="0.1" inputmode="decimal" oninput="cDex()"><span class="d-unit">mcg/kg/hr</span></div>
+        <div class="qbtns">
+          <button class="qbtn" type="button" onclick="setD('dex-d',0.2,cDex)">0.2</button>
+          <button class="qbtn" type="button" onclick="setD('dex-d',0.4,cDex)">0.4</button>
+          <button class="qbtn" type="button" onclick="setD('dex-d',0.5,cDex)">0.5</button>
+          <button class="qbtn" type="button" onclick="setD('dex-d',0.6,cDex)">0.6</button>
+          <button class="qbtn" type="button" onclick="setD('dex-d',0.7,cDex)">0.7 Max</button>
+        </div>
+      </div>
+      <div id="dex-res" class="res empty"><span class="res-rate empty">체중 입력 후 계산</span></div>
+      <div class="ban ban-caution"><span class="ban-icon">⚠️</span><span>서맥·저혈압 모니터링. 고령·저혈량 주의. 간기능 저하 시 감량.</span></div>
+      <div class="ban ban-info"><span class="ban-icon">💡</span><span>발관 전후 중단 불필요. Midazolam 대비 발관 단축·섬망 감소.</span></div>
+    </div>
+  </div>
+
+  <!-- MIDAZOLAM -->
+  <div class="dc" id="c-midaz">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-midaz')">
+      <div class="dc-l"><div class="dc-bar" style="background:#7c3aed;"></div>
+        <div><div class="dc-name">Midazolam &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">미다졸람</span></div>
+        <div class="dc-sub">50mg/50mL (1 mg/mL) · 0.04–0.2 mg/kg/hr</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-purple">😴 ICU Sedation</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="info-row"><span class="ic">💉 미다졸람 <b>50mg</b>(10A)</span><span class="sep">+</span><span class="ic">💧 NS <b>50mL</b></span><span class="sep">=</span><span class="ic">농도 <b>1 mg/mL</b></span></div>
+      <div class="sub-box purple">
+        <div class="sub-box-title">① Loading (체중 기반)</div>
+        <div id="midaz-load" style="font-size:13px;color:var(--text2);line-height:1.8;"></div>
+      </div>
+      <div class="dose-row">
+        <span class="d-label">유지 용량</span>
+        <div class="d-wrap"><input type="number" id="midaz-d" value="0.05" min="0.02" max="0.2" step="0.01" inputmode="decimal" oninput="cMidaz()"><span class="d-unit">mg/kg/hr</span></div>
+        <div class="qbtns">
+          <button class="qbtn" type="button" onclick="setD('midaz-d',0.03,cMidaz)">0.03</button>
+          <button class="qbtn" type="button" onclick="setD('midaz-d',0.05,cMidaz)">0.05</button>
+          <button class="qbtn" type="button" onclick="setD('midaz-d',0.07,cMidaz)">0.07</button>
+          <button class="qbtn" type="button" onclick="setD('midaz-d',0.1,cMidaz)">0.1</button>
+          <button class="qbtn" type="button" onclick="setD('midaz-d',0.15,cMidaz)">0.15</button>
+          <button class="qbtn" type="button" onclick="setD('midaz-d',0.2,cMidaz)">0.2 Max</button>
+        </div>
+      </div>
+      <div id="midaz-res" class="res empty"><span class="res-rate empty">체중 입력 후 계산</span></div>
+      <div class="ban ban-caution"><span class="ban-icon">⚠️</span><span>&gt;48시간 축적·발관 지연. Sedation holiday 매일 시행.</span></div>
+    </div>
+  </div>
+
+  <!-- REMIFENTANIL -->
+  <div class="dc" id="c-ultiva">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-ultiva')">
+      <div class="dc-l"><div class="dc-bar" style="background:#059669;"></div>
+        <div><div class="dc-name">Remifentanil (Ultiva) &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">레미펜타닐</span></div>
+        <div class="dc-sub">2mg/50mL (40 mcg/mL) · IBW 기준</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-emerald">💉 Analgosedation</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="info-row"><span class="ic">💉 Ultiva <b>2mg</b>(1vial)</span><span class="sep">+</span><span class="ic">💧 D/W <b>50mL</b></span><span class="sep">=</span><span class="ic">농도 <b>40 mcg/mL</b></span><span style="font-size:11px;background:var(--emerald-lt);color:#065f46;border:1px solid var(--emerald-bg);padding:2px 8px;border-radius:20px;">IBW기준</span></div>
+      <div class="sub-box green">
+        <div class="sub-box-title">이상체중(IBW) 참조</div>
+        <div style="font-size:12px;color:var(--text2);">남성: <b style="font-family:var(--mono);color:var(--green);">50+0.91×(cm−152.4)</b><br>여성: <b style="font-family:var(--mono);color:var(--green);">45.5+0.91×(cm−152.4)</b></div>
+      </div>
+      <div class="dose-row">
+        <span class="d-label">시작 용량</span>
+        <div class="d-wrap"><input type="number" id="ultiva-d" value="0.1" min="0.025" max="0.4" step="0.025" inputmode="decimal" oninput="cUltiva()"><span class="d-unit">mcg/kg/min</span></div>
+        <div class="qbtns">
+          <button class="qbtn" type="button" onclick="setD('ultiva-d',0.025,cUltiva)">0.025</button>
+          <button class="qbtn" type="button" onclick="setD('ultiva-d',0.05,cUltiva)">0.05</button>
+          <button class="qbtn" type="button" onclick="setD('ultiva-d',0.1,cUltiva)">0.1</button>
+          <button class="qbtn" type="button" onclick="setD('ultiva-d',0.15,cUltiva)">0.15</button>
+          <button class="qbtn" type="button" onclick="setD('ultiva-d',0.2,cUltiva)">0.2</button>
+          <button class="qbtn" type="button" onclick="setD('ultiva-d',0.4,cUltiva)">0.4 Max</button>
+        </div>
+      </div>
+      <div id="ultiva-res" class="res empty"><span class="res-rate empty">체중 입력 후 계산</span></div>
+      <div class="ban ban-caution"><span class="ban-icon">⚠️</span><span>중단 시 즉시 진통 소실 — 발관 전 경구진통제 선제 투여 필수.</span></div>
+    </div>
+  </div>
+
+  <!-- ETOMIDATE -->
+  <div class="dc" id="c-etom">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-etom')">
+      <div class="dc-l"><div class="dc-bar" style="background:#7c3aed;"></div>
+        <div><div class="dc-name">Etomidate &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">에토미데이트 · RSI</span></div>
+        <div class="dc-sub">20mg/10mL (2 mg/mL) · 0.2–0.3 mg/kg</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-purple">💜 RSI</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="info-row"><span class="ic">💉 에토미데이트 <b>20mg/10mL</b> · 농도 <b>2 mg/mL</b></span></div>
+      <div class="sub-box purple">
+        <div class="sub-box-title">⚖️ 체중 기반 자동계산</div>
+        <div id="etom-grid" class="bolus-grid"></div>
+      </div>
+      <div class="ban ban-caution"><span class="ban-icon">⚠️</span><span>부신억제 (일시적). 패혈증 쇼크에서 코티솔 생성 억제 주의.</span></div>
+      <div class="ban ban-info"><span class="ban-icon">💡</span><span>혈역학 안정 — 저혈압 환자 RSI 1st choice.</span></div>
+    </div>
+  </div>
+
+  <!-- HALOPERIDOL -->
+  <div class="dc" id="c-halo">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-halo')">
+      <div class="dc-l"><div class="dc-bar" style="background:#ca8a04;"></div>
+        <div><div class="dc-name">Haloperidol &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">할로페리돌 · ICU Delirium</span></div>
+        <div class="dc-sub">3mg/1mL · bolus + infusion</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-yellow">🧠 Delirium</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="sub-box yellow">
+        <div class="sub-box-title">⚖️ 체중 기반 IV Bolus</div>
+        <div id="halo-grid" class="bolus-grid"></div>
+      </div>
+      <div class="sub-box surface">
+        <div class="sub-box-title">Infusion 세팅</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8;">5A(15mg)+D/W 145mL→150mL (0.1 mg/mL)<br>시작 <b style="font-family:var(--mono);">5 mL/hr</b> → 유지 5–20 mL/hr (0.5–2 mg/hr)</div>
+      </div>
+      <div class="ban ban-caution"><span class="ban-icon">⚠️</span><span>QTc 연장 모니터링. QTc &gt; 500ms 시 중단. 파킨슨 금기.</span></div>
+    </div>
+  </div>
+
+  <!-- BECARONE -->
+  <div class="dc" id="c-bec">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-bec')">
+      <div class="dc-l"><div class="dc-bar" style="background:#6d28d9;"></div>
+        <div><div class="dc-name">Becarone &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">베카론 · NMBA</span></div>
+        <div class="dc-sub">50mg/100mL (500 mcg/mL) · 0.8–1.7 mcg/kg/min</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-purple">💜 NMBA</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="info-row"><span class="ic">💉 베카론 <b>50mg</b>(5A)</span><span class="sep">+</span><span class="ic">💧 D/W <b>100mL</b></span><span class="sep">=</span><span class="ic">농도 <b>500 mcg/mL</b></span></div>
+      <div class="dose-row">
+        <span class="d-label">목표 용량</span>
+        <div class="d-wrap"><input type="number" id="bec-d" value="1.0" min="0.8" max="1.7" step="0.1" inputmode="decimal" oninput="cBec()"><span class="d-unit">mcg/kg/min</span></div>
+        <div class="qbtns">
+          <button class="qbtn" type="button" onclick="setD('bec-d',0.8,cBec)">0.8</button>
+          <button class="qbtn" type="button" onclick="setD('bec-d',1.0,cBec)">1.0</button>
+          <button class="qbtn" type="button" onclick="setD('bec-d',1.3,cBec)">1.3</button>
+          <button class="qbtn" type="button" onclick="setD('bec-d',1.7,cBec)">1.7</button>
+        </div>
+      </div>
+      <div id="bec-res" class="res empty"><span class="res-rate empty">체중 입력 후 계산</span></div>
+      <div class="ban ban-caution"><span class="ban-icon">⚠️</span><span>TOF 모니터링 권장. ICU-AW 위험.</span></div>
+    </div>
+  </div>
+
+  <!-- LASIX -->
+  <div class="dc" id="c-lasix">
+    <button class="dc-hdr-btn" type="button" onclick="tog('c-lasix')">
+      <div class="dc-l"><div class="dc-bar" style="background:#0891b2;"></div>
+        <div><div class="dc-name">Furosemide (Lasix) &nbsp;<span style="font-weight:400;color:var(--muted);font-size:12px;">라식스 Infusion</span></div>
+        <div class="dc-sub">400mg/250mL (1.6 mg/mL) · 5–40 mg/hr</div></div>
+      </div>
+      <div class="dc-r"><span class="bd bd-cyan">💧 Loop Diuretic</span><span class="chev">▾</span></div>
+    </button>
+    <div class="dc-body">
+      <div class="info-row"><span class="ic">💉 라식스 <b>400mg</b>(10A)</span><span class="sep">+</span><span class="ic">💧 NS <b>250mL</b></span><span class="sep">=</span><span class="ic">농도 <b>1.6 mg/mL</b></span></div>
+      <div class="sub-box cyan">
+        <div class="sub-box-title">① Loading (체중 기반)</div>
+        <div id="lasix-load" style="font-size:13px;color:var(--text2);line-height:1.8;"></div>
+      </div>
+      <div class="dose-row">
+        <span class="d-label">유지 속도</span>
+        <div class="d-wrap"><input type="number" id="lasix-d" value="10" min="5" max="40" step="5" inputmode="decimal" oninput="cLasix()"><span class="d-unit">mg/hr</span></div>
+        <div class="qbtns">
+          <button class="qbtn" type="button" onclick="setD('lasix-d',5,cLasix)">5</button>
+          <button class="qbtn" type="button" onclick="setD('lasix-d',10,cLasix)">10</button>
+          <button class="qbtn" type="button" onclick="setD('lasix-d',15,cLasix)">15</button>
+          <button class="qbtn" type="button" onclick="setD('lasix-d',20,cLasix)">20</button>
+          <button class="qbtn" type="button" onclick="setD('lasix-d',30,cLasix)">30</button>
+          <button class="qbtn" type="button" onclick="setD('lasix-d',40,cLasix)">40 Max</button>
+        </div>
+      </div>
+      <div id="lasix-res" class="res empty"><span class="res-rate empty">속도 입력 후 계산</span></div>
+      <div id="lasix-sub" style="margin-top:8px;font-size:12px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;"></div>
+      <div class="ban ban-caution"><span class="ban-icon">⚠️</span><span>Max 4 mg/min (이독성). K⁺·Mg²⁺ 모니터링.</span></div>
+      <div class="ban ban-info"><span class="ban-icon">💡</span><span>목표 UO 0.5–1 mL/kg/hr. 이뇨저항 시 알부민 병용.</span></div>
+    </div>
+  </div>
+
+</div><!-- /tab-sd -->
+
+<!-- ══════════ TAB 3 ══════════ -->
+<div id="tab-ot" style="display:none;">
+
+  <div class="sec-hdr"><div class="sec-bar" style="background:var(--accent);"></div><span class="sec-lbl">항부정맥제</span></div>
+  <div class="o-grid">
+
+    <div class="oc">
+      <div class="oc-hdr"><div class="oc-icon" style="background:#eff6ff;">⚡</div><div><div class="oc-name">Lidocaine (리도카인 2%)</div><div class="oc-conc">400mg/20mL · 5 vial</div></div></div>
+      <div class="oc-body">
+        <span class="bd bd-blue" style="font-size:11px;display:inline-flex;margin-bottom:5px;">Loading — 체중 기반</span><br>
+        <div id="lido-bolus" style="background:var(--accent-lt);border:1px solid #bfdbfe;border-radius:6px;padding:6px 9px;margin-bottom:6px;font-family:var(--mono);font-size:12px;color:var(--accent);"></div>
+        추가 <span class="mono">0.5 mg/kg</span>씩, 누적 Max <span class="mono">3 mg/kg</span><br>
+        <span class="bd bd-blue" style="font-size:11px;display:inline-flex;margin:5px 0;">Infusion</span><br>
+        5vial+D/W 400mL → <span class="rp rp-bl">15–60 mL/hr</span>
+      </div>
+    </div>
+
+    <div class="oc">
+      <div class="oc-hdr"><div class="oc-icon" style="background:#fff7ed;">⚡</div><div><div class="oc-name">Amiodarone (코다론)</div><div class="oc-conc">150mg/3mL</div></div></div>
+      <div class="oc-body">
+        <span class="bd bd-orange" style="font-size:11px;display:inline-flex;margin-bottom:5px;">CPR V.fib</span><br>
+        <span class="mono">300mg/6mL</span> bolus → 재발 시 1A 추가<br>
+        <span class="bd bd-orange" style="font-size:11px;display:inline-flex;margin:5px 0;">Infusion</span><br>
+        6A(900mg)+D/W 482mL→500mL<br>
+        초기 6시간 <span class="rp rp-or">34 mL/hr</span> → 이후 <span class="rp rp-or">17 mL/hr</span>
+      </div>
+    </div>
+
+    <div class="oc">
+      <div class="oc-hdr"><div class="oc-icon" style="background:#f0fdf4;">💚</div><div><div class="oc-name">Adenosine (아데노신)</div><div class="oc-conc">6mg/2mL</div></div></div>
+      <div class="oc-body">
+        <span class="mono">6mg</span> IV 급속 push → 반응없으면 <span class="mono">12mg</span><br>
+        Max <span class="mono">30mg</span><br>
+        <span style="color:var(--orange);font-size:11px;">⚡ 최대한 빠르게 + NS flush</span>
+      </div>
+    </div>
+
+    <div class="oc">
+      <div class="oc-hdr"><div class="oc-icon" style="background:#f5f3ff;">💜</div><div><div class="oc-name">Verapamil (이솝틴)</div><div class="oc-conc">5mg/2mL</div></div></div>
+      <div class="oc-body">
+        <span class="mono">2.5–5mg</span> IV (2분 이상) → 반응없으면 추가<br>
+        2A+D/W 96mL → <span class="rp rp-pu">10 mL/hr</span> 시작
+      </div>
+    </div>
+
+    <div class="oc">
+      <div class="oc-hdr"><div class="oc-icon" style="background:#fefce8;">💛</div><div><div class="oc-name">Digoxin (디곡신)</div><div class="oc-conc">0.25mg/1mL</div></div></div>
+      <div class="oc-body">
+        Loading: <span class="mono">0.5mg</span>→<span class="mono">0.25mg</span>×2 (6h 간격, 총 1.0mg)<br>
+        유지 <span class="mono">0.125–0.25mg</span>/day<br>
+        <span style="color:var(--orange);font-size:11px;">⚠️ 신기능 이상 시 감량</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sec-hdr"><div class="sec-bar" style="background:var(--red);"></div><span class="sec-lbl">강압제</span></div>
+  <div class="o-grid">
+    <div class="oc">
+      <div class="oc-hdr"><div class="oc-icon" style="background:#fef2f2;">🔴</div><div><div class="oc-name">Nitroglycerin (니트로링구알)</div><div class="oc-conc">10mg/10mL</div></div></div>
+      <div class="oc-body">5A+D/W 450mL→500mL (100 mcg/mL)<br>시작 <span class="rp rp-bl">3 mL/hr</span> → 5 mcg/min씩 증가<br>목표 5–200 mcg/min</div>
+    </div>
+    <div class="oc">
+      <div class="oc-hdr"><div class="oc-icon" style="background:#fef2f2;">🔴</div><div><div class="oc-name">Nicardipine (페르디핀)</div><div class="oc-conc">10mg/10mL</div></div></div>
+      <div class="oc-body">5A+D/W 450mL→500mL (0.1 mg/mL)<br>시작 <span class="rp rp-bl">50 mL/hr</span> → Max <span class="mono">15 mg/hr</span></div>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><div class="sec-bar" style="background:var(--green);"></div><span class="sec-lbl">길항제</span></div>
+  <div class="o-grid">
+    <div class="oc">
+      <div class="oc-hdr"><div class="oc-icon" style="background:#f0fdf4;">💚</div><div><div class="oc-name">Flumazenil (플루닐)</div><div class="oc-conc">0.5mg/5mL</div></div></div>
+      <div class="oc-body">
+        <span class="mono">0.2mg</span> IV over 15초 → 0.1mg씩 1분 간격, Max <span class="mono">1.0mg</span><br>
+        4A(2mg)+D/W 80mL→100mL → <span class="rp rp-gr">25 mL/hr</span>
+      </div>
+    </div>
+    <div class="oc">
+      <div class="oc-hdr"><div class="oc-icon" style="background:#fff7ed;">🟠</div><div><div class="oc-name">Naloxone (날록손)</div><div class="oc-conc">0.4mg/1mL · 원액 그대로 사용</div></div></div>
+      <div class="oc-body">
+        <span class="bd bd-orange" style="font-size:11px;display:inline-flex;margin-bottom:5px;">Opioid 길항 — 고정용량 (성인)</span><br>
+        <div id="nalox-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:6px 0;"></div>
+        2–3분마다 반복, 최대 <span class="mono">10mg</span><br>
+        <span style="color:var(--orange);font-size:11px;">⚠️ ICU 오피오이드 의존 시 0.04mg부터 소량 시작 — 금단 방지</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><div class="sec-bar" style="background:var(--teal);"></div><span class="sec-lbl">기타</span></div>
+  <div class="o-grid">
+    <div class="oc">
+      <div class="oc-hdr"><div class="oc-icon" style="background:#f0fdfa;">🩵</div><div><div class="oc-name">Vitamin K</div><div class="oc-conc">10mg/1mL</div></div></div>
+      <div class="oc-body"><span class="mono">5–10mg</span> 30분 이상 IV infusion<br><span style="color:var(--red);font-size:11px;">⚠️ 급속 IV → 아나필락시스</span></div>
+    </div>
+  </div>
+
+</div><!-- /tab-ot -->
+
+<footer>
+  화성유일병원 내과중환자실 약물 계산기 · 2025 Rev.<br>
+  SSC 2021 · AHA ACLS 2020 · FDA 2024 · Precedex PI<br>
+  <span style="color:var(--red);font-weight:700;">임상 적용 전 주치의 확인 필수</span>
+</footer>
+</div>
+
+<script>
+// ── 데이터 ──
+var DOPA_F=[
+  {drug:400,vol:200,conc_mgml:2.0},
+  {drug:800,vol:500,conc_mgml:1.6},
+  {drug:1600,vol:500,conc_mgml:3.2}
+];
+var NOREPI_F=[
+  {drug:16,vol:500,conc_ugml:32},
+  {drug:48,vol:200,conc_ugml:240}
+];
+var VASO_D=[
+  {dose:0.01,rate:3},
+  {dose:0.02,rate:6},
+  {dose:0.03,rate:9,warn:true},
+  {dose:0.04,rate:12,salvage:true}
+];
+var dopaFi=0, norepiFi=0;
+
+// ── 기본 함수 ──
+function bwt(){return parseFloat(document.getElementById('bwt').value)||60;}
+function setBwt(v){document.getElementById('bwt').value=v;updateAll();}
+function setD(id,v,fn){document.getElementById(id).value=v;fn();}
+function fmt(n){if(!isFinite(n))return'—';return n<10?(Math.round(n*100)/100).toFixed(2):(Math.round(n*10)/10).toFixed(1);}
+
+function renderRes(id,rate,dose,minD,maxD,unit,note){
+  var el=document.getElementById(id);
+  var over=dose>maxD, near=dose>=maxD*0.85;
+  var lvl=over?'danger':near?'warn':'ok';
+  var tags={ok:'tag-ok',warn:'tag-warn',danger:'tag-danger'};
+  var lbls={ok:'정상 범위',warn:'상한 근접',danger:'범위 초과'};
+  el.className='res '+lvl;
+  el.innerHTML='<div class="res-l"><div class="res-rate '+lvl+'">'+(rate>999?'>999':fmt(rate))+'</div><div class="res-unit">'+(unit||'mL/hr')+'</div></div>'
+    +'<div class="res-r"><span class="res-tag '+tags[lvl]+'">'+lbls[lvl]+'</span><span class="res-note">'+(note||dose+' — BWT '+bwt()+' kg')+'</span></div>';
+}
+
+function mkCells(items){
+  var h='';
+  for(var i=0;i<items.length;i++){
+    h+='<div class="bolus-cell"><div class="bc-label">'+items[i].label+'</div><div class="bc-val">'+items[i].val+'</div><div class="bc-unit">'+items[i].unit+'</div></div>';
+  }
+  return h;
+}
+
+// ── 세팅 info 업데이트 ──
+function setDopaInfo(){
+  var f=DOPA_F[dopaFi];
+  document.getElementById('dopa-info').innerHTML=
+    '<span class="ic">💉 Dopamine <b>'+f.drug+'mg</b></span><span class="sep">+</span>'
+    +'<span class="ic">💧 총량 <b>'+f.vol+'mL</b></span><span class="sep">=</span>'
+    +'<span class="ic">농도 <b>'+f.conc_mgml+' mg/mL</b> ('+(f.conc_mgml*1000).toFixed(0)+' mcg/mL)</span>';
+}
+function setNorepiInfo(){
+  var f=NOREPI_F[norepiFi];
+  document.getElementById('norepi-info').innerHTML=
+    '<span class="ic">💉 큐프린 <b>'+f.drug+'mg</b> ('+(f.drug===16?'4A':'12A')+')</span><span class="sep">+</span>'
+    +'<span class="ic">💧 D/W <b>'+(f.vol-f.drug)+'mL</b>→'+f.vol+'mL</span><span class="sep">=</span>'
+    +'<span class="ic">농도 <b>'+f.conc_ugml+' mcg/mL</b></span>';
+}
+
+// ── Formulation 탭 ──
+function selF(drug,idx){
+  if(drug==='dopa'){
+    dopaFi=idx;
+    for(var i=0;i<3;i++){
+      var t=document.getElementById('dopa-f'+i);
+      if(i===idx){t.classList.add('active');t.style.color='var(--accent)';t.style.borderColor='var(--accent)';}
+      else{t.classList.remove('active');t.style.color='';t.style.borderColor='';}
+    }
+    setDopaInfo();cDopa();
+  } else {
+    norepiFi=idx;
+    for(var i=0;i<2;i++){
+      var t=document.getElementById('norepi-f'+i);
+      if(i===idx){t.classList.add('active');t.style.color='var(--red)';t.style.borderColor='var(--red)';}
+      else{t.classList.remove('active');t.style.color='';t.style.borderColor='';}
+    }
+    setNorepiInfo();cNorepi();
+  }
+}
+
+// ── Vasopressin 테이블 ──
+function buildVasoTable(){
+  var tb=document.getElementById('vaso-tb');tb.innerHTML='';
+  for(var i=0;i<VASO_D.length;i++){
+    var d=VASO_D[i];
+    var bg=d.salvage?'#fef2f2':d.warn?'#fff7ed':'';
+    var rc=d.salvage?'var(--red)':d.warn?'var(--orange)':'var(--accent)';
+    var badge=d.salvage?'<span class="bd bd-red">🚨 SALVAGE ONLY</span>':d.warn?'<span class="bd bd-orange">⚠️ 권장 상한</span>':'<span class="bd bd-green">✓ 표준</span>';
+    tb.innerHTML+='<tr style="background:'+bg+';">'
+      +'<td style="font-family:var(--mono);font-weight:700;">'+d.dose+' <span style="font-size:11px;color:var(--muted);font-weight:400;">u/min</span></td>'
+      +'<td style="text-align:center;font-family:var(--mono);font-weight:700;font-size:18px;color:'+rc+';">'+d.rate+' <span style="font-size:11px;font-weight:400;color:var(--muted);">mL/hr</span></td>'
+      +'<td style="text-align:center;">'+badge+'</td>'
+      +'<td style="text-align:right;font-size:11px;color:var(--muted);">'+(d.salvage?'허혈위험':d.warn?'SSC상한':'SSC권장')+'</td></tr>';
+  }
+}
+
+// ── 계산 함수들 ──
+function cDopa(){var d=parseFloat(document.getElementById('dopa-d').value)||5;renderRes('dopa-res',d*bwt()*60/(DOPA_F[dopaFi].conc_mgml*1000),d,2,20);}
+function cDobu(){var d=parseFloat(document.getElementById('dobu-d').value)||5;renderRes('dobu-res',d*bwt()*60/2000,d,2,20);}
+function cNorepi(){
+  var d=parseFloat(document.getElementById('norepi-d').value)||0.1;
+  var f=NOREPI_F[norepiFi];
+  renderRes('norepi-res',d*bwt()*60/f.conc_ugml,d,0.025,norepiFi===0?1:3);
+  document.getElementById('norepi-warn').innerHTML=d>=0.5?'<div class="ban ban-caution"><span class="ban-icon">⚠️</span><span>≥0.5 mcg/kg/min — Vasopressin 추가 고려.</span></div>':'';
+}
+function cEpi(){var d=parseFloat(document.getElementById('epi-d').value)||0.1;renderRes('epi-res',d*bwt()*60/16,d,0.01,0.5);}
+function cEsmo(){
+  var d=parseFloat(document.getElementById('esmo-d').value)||100;
+  var r=d*bwt()*60/10000;
+  var over=d>200;
+  var el=document.getElementById('esmo-res');
+  el.className='res '+(over?'danger':'ok');
+  el.innerHTML='<div class="res-l"><div class="res-rate '+(over?'danger':'ok')+'">'+fmt(r)+'</div><div class="res-unit">mL/hr</div></div>'
+    +'<div class="res-r"><span class="res-tag '+(over?'tag-danger':'tag-ok')+'">'+(over?'⚠️ FDA초과':'정상범위')+'</span>'
+    +'<span class="res-note">'+d+' mcg/kg/min · '+bwt()+'kg</span></div>';
+}
+function cPhe(){
+  // 고정 mcg 단위 (FDA: 40-200 mcg, 체중 무관)
+  var doses=[50,100,150,200];
+  var items=[];
+  for(var i=0;i<doses.length;i++){
+    var ml=(doses[i]/100).toFixed(1);
+    items.push({label:doses[i]+' mcg',val:ml+' mL',unit:'100 mcg/mL'});
+  }
+  document.getElementById('phe-grid').innerHTML='<div style="grid-column:1/-1;font-size:12px;color:var(--muted);margin-bottom:4px;">농도 <b style="font-family:var(--mono);">100 mcg/mL</b> 기준 주입 용량</div>'+mkCells(items);
+}
+
+function cDex(){
+  var d=parseFloat(document.getElementById('dex-d').value)||0.4;
+  var w=bwt();
+  var lv=(w/4).toFixed(1);
+  var lr=(w/4*6).toFixed(1);
+  document.getElementById('dex-load').innerHTML='<b>1 mcg/kg</b> over 10분 → [<b>'+w+'kg</b>] <b style="font-family:var(--mono);color:var(--indigo);">'+lv+' mL</b> at <b style="font-family:var(--mono);color:var(--indigo);">'+lr+' mL/hr</b> × 10분';
+  renderRes('dex-res',d*w/4,d,0.2,0.7,'mL/hr',d+' mcg/kg/hr · BWT '+w+' kg');
+}
+function cMidaz(){
+  var d=parseFloat(document.getElementById('midaz-d').value)||0.05;
+  var w=bwt();
+  document.getElementById('midaz-load').innerHTML='<b>0.03–0.3 mg/kg</b> over 2–3분 → [<b>'+w+'kg</b>] <b style="font-family:var(--mono);color:var(--purple);">'+(0.03*w).toFixed(1)+'–'+(0.3*w).toFixed(1)+'mg / '+(0.03*w).toFixed(1)+'–'+(0.3*w).toFixed(1)+'mL</b>';
+  renderRes('midaz-res',d*w,d,0.02,0.2,'mL/hr',d+' mg/kg/hr · BWT '+w+' kg');
+}
+function cUltiva(){var d=parseFloat(document.getElementById('ultiva-d').value)||0.1;renderRes('ultiva-res',d*bwt()*60/40,d,0.025,0.4,'mL/hr',d+' mcg/kg/min · BWT '+bwt()+' kg');}
+function cEtom(){
+  var w=bwt();
+  var items=[
+    {label:'0.2 mg/kg',val:(0.2*w).toFixed(1)+' mg',unit:(0.1*w).toFixed(1)+' mL'},
+    {label:'0.25 mg/kg',val:(0.25*w).toFixed(1)+' mg',unit:(0.125*w).toFixed(1)+' mL'},
+    {label:'0.3 mg/kg',val:(0.3*w).toFixed(1)+' mg',unit:(0.15*w).toFixed(1)+' mL'}
+  ];
+  document.getElementById('etom-grid').innerHTML='<div style="grid-column:1/-1;font-size:12px;color:var(--muted);margin-bottom:2px;">BWT <b style="font-family:var(--mono);color:var(--purple);">'+w+' kg</b> · 2 mg/mL</div>'+mkCells(items);
+}
+function cHalo(){
+  var w=bwt();
+  var items=[
+    {label:'0.05 mg/kg',val:(0.05*w).toFixed(1)+' mg',unit:((0.05*w)/3).toFixed(1)+' mL'},
+    {label:'0.1 mg/kg',val:(0.1*w).toFixed(1)+' mg',unit:((0.1*w)/3).toFixed(1)+' mL'},
+    {label:'Max',val:'10 mg',unit:'3.3 mL'}
+  ];
+  document.getElementById('halo-grid').innerHTML='<div style="grid-column:1/-1;font-size:12px;color:var(--muted);margin-bottom:2px;">BWT <b style="font-family:var(--mono);color:var(--yellow);">'+w+' kg</b> · 3 mg/mL</div>'+mkCells(items);
+}
+function cBec(){var d=parseFloat(document.getElementById('bec-d').value)||1.0;renderRes('bec-res',d*bwt()*60/500,d,0.8,1.7,'mL/hr');}
+function cLasix(){
+  var m=parseFloat(document.getElementById('lasix-d').value)||10;
+  var w=bwt();
+  document.getElementById('lasix-load').innerHTML=
+    '이뇨제 미사용: <b style="font-family:var(--mono);color:var(--cyan);">20–40mg</b> IV push<br>'
+    +'체중 기반 0.5–1 mg/kg: <b style="font-family:var(--mono);color:var(--cyan);">'+(0.5*w).toFixed(0)+'–'+(1.0*w).toFixed(0)+'mg</b>';
+  var r=m/1.6;
+  var over=m>40,near=m>=34;
+  var lvl=over?'danger':near?'warn':'ok';
+  var tags={ok:'tag-ok',warn:'tag-warn',danger:'tag-danger'};
+  var lbls={ok:'정상 범위',warn:'상한 근접',danger:'범위 초과'};
+  document.getElementById('lasix-res').className='res '+lvl;
+  document.getElementById('lasix-res').innerHTML='<div class="res-l"><div class="res-rate '+lvl+'">'+(Math.round(r*10)/10).toFixed(1)+'</div><div class="res-unit">mL/hr</div></div>'
+    +'<div class="res-r"><span class="res-tag '+tags[lvl]+'">'+lbls[lvl]+'</span><span class="res-note">'+m+' mg/hr</span></div>';
+  document.getElementById('lasix-sub').innerHTML='투여속도 '+(m/60).toFixed(2)+' mg/min · 6h누적 '+(m*6).toFixed(0)+'mg · 24h누적 '+(m*24).toFixed(0)+'mg';
+}
+function cLido(){
+  var w=bwt();
+  document.getElementById('lido-bolus').textContent='['+w+'kg]  1 mg/kg → '+(w).toFixed(0)+'mg/'+(w/20).toFixed(1)+'mL   |   1.5 mg/kg → '+(1.5*w).toFixed(0)+'mg/'+(1.5*w/20).toFixed(1)+'mL';
+}
+function cNalox(){
+  // 성인 고정용량 (체중 무관) — 0.4mg/1mL 원액
+  var doses=[
+    {mg:0.04, label:'0.04 mg', note:'의존환자 시작'},
+    {mg:0.1,  label:'0.1 mg',  note:'보존적'},
+    {mg:0.4,  label:'0.4 mg',  note:'표준 1A'},
+    {mg:0.8,  label:'0.8 mg',  note:'고용량'}
+  ];
+  var h='';
+  for(var i=0;i<doses.length;i++){
+    var ml=(doses[i].mg/0.4).toFixed(2);
+    h+='<div class="bolus-cell">'
+      +'<div class="bc-label">'+doses[i].note+'</div>'
+      +'<div class="bc-val">'+doses[i].label+'</div>'
+      +'<div class="bc-unit">'+ml+' mL (원액)</div>'
+      +'</div>';
+  }
+  var el=document.getElementById('nalox-grid');
+  if(el) el.innerHTML=h;
+}
+
+// ── 전체 업데이트 ──
+function updateAll(){
+  cDopa();cDobu();cNorepi();cEpi();cEsmo();cPhe();
+  cDex();cMidaz();cUltiva();cEtom();cHalo();cBec();cLasix();
+  cLido();cNalox();
+}
+
+// ── 카드 토글 ──
+function tog(id){document.getElementById(id).classList.toggle('open');}
+
+// ── 탭 전환 ──
+function switchTab(name,btn){
+  var tabs=document.querySelectorAll('.tab');
+  for(var i=0;i<tabs.length;i++) tabs[i].classList.remove('active');
+  btn.classList.add('active');
+  var names=['vp','sd','ot'];
+  for(var i=0;i<names.length;i++) document.getElementById('tab-'+names[i]).style.display=names[i]===name?'block':'none';
+}
+
+// ── Sticky bar scroll detection ──
+(function(){
+  var bar = document.getElementById('sticky-bar');
+  var threshold = 10;
+  function onScroll(){
+    if(window.scrollY > threshold){
+      bar.classList.add('stuck');
+    } else {
+      bar.classList.remove('stuck');
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+})();
+
+// ── 초기화 ──
+setDopaInfo();
+setNorepiInfo();
+buildVasoTable();
+updateAll();
+document.getElementById('c-dopa').classList.add('open');
+</script>
+</body>
+</html>
