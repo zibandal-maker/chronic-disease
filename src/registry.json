@@ -107,6 +107,17 @@
       "tag": "류마티스"
     },
     {
+      "id": "gout",
+      "title": "통풍",
+      "emoji": "🦶",
+      "src": "gout_guide.html",
+      "out": "gout.html",
+      "guideline": "대한류마티스학회 통풍 진료지침 · ACR 2020 · 심평원 급여",
+      "group": "A",
+      "accent": "#8a6d3b",
+      "tag": "류마티스"
+    },
+    {
       "id": "antimicrobial",
       "title": "감염·항생제",
       "emoji": "🦠",

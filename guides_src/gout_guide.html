@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>통풍 처방 가이드 · Gout Advisor</title>
+<style>
+:root{
+  --bg:#eef2f5; --panel:#ffffff; --panel2:#f4f7f9; --line:#d8e0e6;
+  --ink:#16212c; --ink-dim:#48586a; --ink-faint:#7e8e9c;
+  --clin:#2566a8; --clin-bg:#e6f0fa; --clin-line:#bcd6ef;
+  --pay:#a9690f; --pay-bg:#fbf0d9; --pay-line:#ecd3a3;
+  --edu:#15806a; --edu-bg:#d9f0ea; --edu-line:#a8ddcf;
+  --ok:#1c9150; --ok-bg:#dff3e6;
+  --warn:#a9690f; --warn-bg:#fbf0d9;
+  --block:#c0362f; --block-bg:#fbe6e4;
+  --alert:#cc5a26; --alert-bg:#fceadd;
+  --urate:#5b3fa6; --urate-bg:#ece6f8;
+  --radius:14px; --radius-sm:9px;
+  --shadow:0 1px 2px rgba(20,33,44,.05),0 2px 8px rgba(20,33,44,.04);
+  --shadow-lg:0 6px 24px rgba(20,33,44,.13);
+  --mono:'SF Mono',ui-monospace,'Menlo','Consolas',monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  padding-bottom:24px;
+}
+h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.01em}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.mono{font-family:var(--mono)}
+
+/* ===== Header ===== */
+.app-header{
+  position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line);
+}
+.app-header-inner{max-width:760px;margin:0 auto;padding:11px 16px;display:flex;align-items:center;gap:11px}
+.crystal{flex-shrink:0;width:30px;height:30px}
+.app-title{font-size:16px;font-weight:750;letter-spacing:-.02em}
+.app-sub{font-size:11px;color:var(--ink-faint);font-weight:500;margin-top:1px;letter-spacing:.01em}
+.app-flag{margin-left:auto;font-size:10.5px;color:var(--ink-faint);text-align:right;line-height:1.35;font-weight:600}
+
+/* ===== Tabs (상단) ===== */
+.tabbar{
+  max-width:760px;margin:0 auto;display:flex;
+  padding:4px 12px 9px;gap:6px;
+}
+.tabbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 4px;border-radius:11px;color:var(--ink-faint);transition:.15s;background:var(--panel2);border:1px solid var(--line)}
+.tabbtn .ic{font-size:15px;line-height:1}
+.tabbtn .lb{font-size:12.5px;font-weight:650}
+.tabbtn.on{color:#fff;background:var(--clin);border-color:var(--clin)}
+
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+.view{display:none;animation:fade .22s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* ===== Search ===== */
+.searchbar{position:relative;margin-bottom:14px}
+.searchbar input{
+  width:100%;padding:12px 14px 12px 40px;border:1.5px solid var(--line);border-radius:12px;
+  font-size:15px;background:var(--panel);color:var(--ink);transition:.15s;font-family:inherit;
+}
+.searchbar input:focus{outline:none;border-color:var(--clin);box-shadow:0 0 0 3px var(--clin-bg)}
+.searchbar .sic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink-faint);font-size:15px}
+
+/* ===== Cards / topics ===== */
+.banner{
+  background:linear-gradient(135deg,#2566a8,#1d5391);color:#fff;border-radius:var(--radius);
+  padding:15px 17px;margin-bottom:14px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.banner::after{content:"";position:absolute;right:-22px;top:-22px;width:120px;height:120px;
+  background:radial-gradient(circle,rgba(255,255,255,.14),transparent 70%)}
+.banner h3{font-size:15.5px;margin-bottom:3px;position:relative}
+.banner p{font-size:12.5px;opacity:.92;margin:0;position:relative;line-height:1.5}
+.banner .go{margin-top:10px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.3);padding:7px 13px;border-radius:9px;font-size:12.5px;font-weight:650;position:relative}
+
+.sec-label{font-size:11px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.07em;margin:18px 2px 9px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.topic{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:13px 13px 12px;text-align:left;box-shadow:var(--shadow);transition:.16s;position:relative;overflow:hidden;
+}
+.topic:active{transform:scale(.975)}
+.topic .tnum{font-family:var(--mono);font-size:10px;color:var(--ink-faint);font-weight:600}
+.topic .tcat{display:inline-block;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:20px;margin-bottom:7px;letter-spacing:.02em}
+.tcat.clin{background:var(--clin-bg);color:var(--clin)}
+.tcat.pay{background:var(--pay-bg);color:var(--pay)}
+.tcat.edu{background:var(--edu-bg);color:var(--edu)}
+.topic h4{font-size:13.5px;line-height:1.3;margin-bottom:4px}
+.topic p{font-size:11px;color:var(--ink-dim);margin:0;line-height:1.45}
+.topic .edge{position:absolute;left:0;top:0;bottom:0;width:3px}
+.edge.clin{background:var(--clin)} .edge.pay{background:var(--pay)} .edge.edu{background:var(--edu)}
+
+.src-banner{margin-top:18px;padding:12px 14px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:11px;font-size:11px;color:var(--ink-faint);line-height:1.6}
+.src-banner b{color:var(--ink-dim)}
+.src-banner a{color:var(--clin);text-decoration:none}
+
+/* ===== Detail sheet ===== */
+.sheet-back{position:fixed;inset:0;background:rgba(16,24,33,.46);z-index:60;opacity:0;pointer-events:none;transition:.2s;backdrop-filter:blur(2px)}
+.sheet-back.on{opacity:1;pointer-events:auto}
+.sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:61;background:var(--bg);
+  border-radius:20px 20px 0 0;max-height:92vh;overflow-y:auto;transform:translateY(100%);
+  transition:transform .28s cubic-bezier(.32,.72,0,1);box-shadow:0 -8px 40px rgba(0,0,0,.2);
+  -webkit-overflow-scrolling:touch;
+}
+.sheet.on{transform:translateY(0)}
+.sheet-grip{position:sticky;top:0;background:var(--bg);padding:9px 0 5px;display:flex;justify-content:center;z-index:5}
+.sheet-grip::before{content:"";width:38px;height:4.5px;border-radius:3px;background:var(--line)}
+.sheet-head{position:sticky;top:0;background:rgba(238,242,245,.94);backdrop-filter:blur(10px);
+  padding:3px 18px 12px;border-bottom:1px solid var(--line);z-index:4}
+.sheet-head h2{font-size:18px;letter-spacing:-.02em;padding-right:40px}
+.sheet-head .shsub{font-size:12px;color:var(--ink-dim);margin-top:3px}
+.sheet-x{position:absolute;right:14px;top:2px;width:30px;height:30px;border-radius:50%;background:var(--panel2);
+  display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--ink-dim);border:1px solid var(--line)}
+.sheet-body{max-width:760px;margin:0 auto;padding:16px 18px 40px}
+
+/* ===== Generic content blocks ===== */
+.kp{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:10px;box-shadow:var(--shadow)}
+.kp h4{font-size:13.5px;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.kp p{margin:5px 0;font-size:13px;color:var(--ink-dim);line-height:1.6}
+.kp ul{margin:6px 0;padding-left:18px}
+.kp li{font-size:12.5px;color:var(--ink-dim);line-height:1.6;margin:3px 0}
+.kp .lead{color:var(--ink);font-weight:600;font-size:13.5px}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;vertical-align:middle}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+.pill.block{background:var(--block-bg);color:var(--block)}
+.pill.alert{background:var(--alert-bg);color:var(--alert)}
+.pill.info{background:var(--clin-bg);color:var(--clin)}
+.pill.urate{background:var(--urate-bg);color:var(--urate)}
+
+.note{font-size:11.5px;color:var(--ink-faint);font-style:normal;line-height:1.55;margin-top:6px;
+  padding:8px 11px;background:var(--panel2);border-radius:9px;border-left:3px solid var(--line)}
+.note.warn{border-left-color:var(--warn);background:var(--warn-bg);color:#7a4d0a}
+.note.block{border-left-color:var(--block);background:var(--block-bg);color:#8f2820}
+.note.clin{border-left-color:var(--clin);background:var(--clin-bg);color:#1c4f80}
+
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}
+.tbl th{background:var(--panel2);text-align:left;padding:7px 9px;font-weight:700;color:var(--ink-dim);font-size:11px;border-bottom:1.5px solid var(--line)}
+.tbl td{padding:7px 9px;border-bottom:1px solid var(--line);color:var(--ink-dim);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .em{color:var(--ink);font-weight:650}
+
+/* expandable */
+.exp{border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden;background:var(--panel)}
+.exp-h{display:flex;align-items:center;gap:9px;padding:12px 14px;cursor:pointer;user-select:none}
+.exp-h .chev{margin-left:auto;color:var(--ink-faint);transition:.2s;font-size:13px}
+.exp.open .exp-h .chev{transform:rotate(90deg)}
+.exp-h h4{font-size:13.5px}
+.exp-c{display:none;padding:0 14px 13px;border-top:1px solid var(--line);margin-top:-1px;padding-top:12px}
+.exp.open .exp-c{display:block}
+.exp-mini{font-size:11px;color:var(--ink-faint);font-weight:500}
+
+/* drug status badges */
+.dstat{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px}
+.dstat.preferred{background:var(--ok-bg);color:var(--ok)}
+.dstat.usable{background:var(--clin-bg);color:var(--clin)}
+.dstat.caution{background:var(--warn-bg);color:var(--warn)}
+.dstat.avoid{background:var(--alert-bg);color:var(--alert)}
+.dstat.contra{background:var(--block-bg);color:var(--block)}
+.dstat.dose{background:var(--warn-bg);color:var(--warn)}
+.dstat.ok{background:var(--ok-bg);color:var(--ok)}
+.dstat.special{background:var(--urate-bg);color:var(--urate)}
+
+/* info modal (evidence) */
+.ibtn{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;
+  background:var(--clin-bg);color:var(--clin);font-size:11px;font-weight:700;vertical-align:middle;margin-left:3px;font-style:normal}
+
+/* flow inputs */
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12px;font-weight:650;color:var(--ink-dim);margin-bottom:6px}
+.field input[type=number],.field select{
+  width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font-size:15px;
+  background:var(--panel);color:var(--ink);font-family:inherit;-webkit-appearance:none;
+}
+.field input:focus,.field select:focus{outline:none;border-color:var(--clin);box-shadow:0 0 0 3px var(--clin-bg)}
+.field .hint{font-size:10.5px;color:var(--ink-faint);margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{padding:7px 12px;border:1.5px solid var(--line);border-radius:20px;font-size:12.5px;font-weight:600;
+  color:var(--ink-dim);background:var(--panel);transition:.13s}
+.chip.on{background:var(--clin);color:#fff;border-color:var(--clin)}
+.chip.on.care{background:var(--edu);border-color:var(--edu)}
+.seg{display:flex;gap:0;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
+.seg button{flex:1;padding:9px 6px;font-size:12.5px;font-weight:650;color:var(--ink-dim);border-right:1px solid var(--line)}
+.seg button:last-child{border-right:none}
+.seg button.on{background:var(--clin);color:#fff}
+
+.run-btn{width:100%;padding:14px;background:var(--clin);color:#fff;border-radius:12px;font-size:15px;font-weight:700;
+  box-shadow:0 4px 14px rgba(37,102,168,.32);margin-top:4px;letter-spacing:.01em}
+.run-btn:active{transform:scale(.985)}
+
+/* result cards */
+.rcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow)}
+.rcard-h{padding:12px 15px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);font-weight:700;font-size:14px}
+.rcard-h.clin{background:var(--clin-bg);color:var(--clin)}
+.rcard-h.pay{background:var(--pay-bg);color:var(--pay)}
+.rcard-h.edu{background:var(--edu-bg);color:var(--edu)}
+.rcard-h.urate{background:var(--urate-bg);color:var(--urate)}
+.rcard-b{padding:13px 15px}
+.rrow{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--line)}
+.rrow:last-child{border-bottom:none}
+.rrow .rmain{flex:1;min-width:0}
+.rrow .rdrug{font-weight:650;font-size:13.5px}
+.rrow .rdose{font-size:11.5px;color:var(--ink-dim);margin-top:2px;font-family:var(--mono)}
+.rrow .rwhy{font-size:11.5px;color:var(--ink-faint);margin-top:3px;line-height:1.5}
+
+/* big number / metric */
+.metric{display:flex;gap:11px;flex-wrap:wrap;margin:4px 0 10px}
+.metric .mbox{flex:1;min-width:88px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:10px 12px}
+.metric .mval{font-size:22px;font-weight:750;letter-spacing:-.02em;font-family:var(--mono)}
+.metric .mlb{font-size:10.5px;color:var(--ink-faint);font-weight:600;margin-top:1px}
+
+/* sticky accumulator (sim) */
+.sim-sticky{position:sticky;bottom:12px;z-index:30;margin-top:14px}
+.sim-sticky-inner{background:var(--ink);color:#fff;border-radius:13px;padding:12px 15px;box-shadow:var(--shadow-lg)}
+.sim-sticky h4{font-size:12px;color:#9fb2c4;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+.sim-sticky ul{margin:0;padding-left:17px}
+.sim-sticky li{font-size:12.5px;line-height:1.55;margin:3px 0;color:#e6edf3}
+.sim-empty{font-size:12px;color:#7e94a8;font-style:italic}
+
+/* sim nodes */
+.node{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px 15px;margin-bottom:11px;box-shadow:var(--shadow)}
+.node h4{font-size:14px;margin-bottom:4px}
+.node .nq{font-size:12.5px;color:var(--ink-dim);margin-bottom:10px;line-height:1.5}
+.opt{display:block;width:100%;text-align:left;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;
+  margin-bottom:7px;font-size:13px;color:var(--ink);background:var(--panel);transition:.13s;font-weight:550}
+.opt:active{transform:scale(.99)}
+.opt.sel{border-color:var(--clin);background:var(--clin-bg);color:var(--clin);font-weight:650}
+.opt .osub{display:block;font-size:11px;color:var(--ink-faint);font-weight:500;margin-top:2px}
+.opt.sel .osub{color:var(--clin)}
+
+/* food db */
+.food-tier{display:flex;align-items:center;gap:8px;padding:5px 0}
+.food-q{display:inline-flex;align-items:center;justify-content:center;min-width:54px;padding:3px 8px;border-radius:7px;font-family:var(--mono);font-size:11px;font-weight:700;text-align:center}
+.foodrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.foodrow:last-child{border-bottom:none}
+.foodrow .fname{flex:1;font-size:13px;font-weight:550}
+.foodrow .fmg{font-family:var(--mono);font-size:12px;font-weight:700}
+.foodrow .fadd{width:28px;height:28px;border-radius:8px;background:var(--clin-bg);color:var(--clin);font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.t1c{color:var(--block)} .t1bg{background:var(--block-bg)}
+.t2c{color:var(--alert)} .t2bg{background:var(--alert-bg)}
+.t3c{color:var(--warn)} .t3bg{background:var(--warn-bg)}
+.t4c{color:var(--ok)} .t4bg{background:var(--ok-bg)}
+
+/* pathway diagram */
+.pathway{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:15px 13px;margin:10px 0;overflow-x:auto}
+.pwstep{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:center;font-size:12px}
+.pwnode{background:var(--panel);border:1.5px solid var(--clin-line);border-radius:9px;padding:7px 10px;font-weight:650;font-size:11.5px;text-align:center;color:var(--clin)}
+.pwnode.urate{border-color:var(--urate);color:var(--urate);background:var(--urate-bg)}
+.pwarrow{color:var(--ink-faint);font-size:14px;font-weight:700}
+.pwenz{font-size:9.5px;color:var(--alert);font-weight:700;background:var(--alert-bg);padding:1px 6px;border-radius:6px}
+
+.divider{height:1px;background:var(--line);margin:16px 0}
+.foot{font-size:10.5px;color:var(--ink-faint);text-align:center;line-height:1.7;padding:20px 10px 4px}
+.warn-strip{background:var(--block-bg);border:1px solid var(--block);border-radius:10px;padding:10px 13px;margin:9px 0;font-size:12px;color:#8f2820;font-weight:600;display:flex;gap:8px;align-items:flex-start}
+
+mark{background:#fde9a8;color:inherit;padding:0 2px;border-radius:3px}
+.calc-out{background:var(--clin-bg);border:1px solid var(--clin-line);border-radius:11px;padding:12px 14px;margin-top:10px}
+.calc-out .cval{font-size:17px;font-weight:750;color:var(--clin)}
+</style>
+</head>
+<body>
+<!-- ============ HEADER + TABS markup ============ -->
+<header class="app-header">
+  <div class="app-header-inner">
+    <svg class="crystal" viewBox="0 0 32 32" fill="none">
+      <path d="M16 2l5 6-2 9-3 13-3-13-2-9z" fill="#2566a8" opacity=".9"/>
+      <path d="M16 2l5 6-5 2-5-2z" fill="#4a86c8"/>
+      <path d="M11 8l5 2 5-2-2 9-3 4-3-4z" fill="#5b3fa6" opacity=".85"/>
+      <path d="M16 10v20" stroke="#fff" stroke-width=".6" opacity=".4"/>
+    </svg>
+    <div>
+      <div class="app-title">통풍 처방 가이드</div>
+      <div class="app-sub">Gout Advisor · 조언자 도구</div>
+    </div>
+    <div class="app-flag">2024 류마티스학회 지침<br>심평원 급여 · ACR/EULAR</div>
+  </div>
+  <nav class="tabbar">
+    <button class="tabbtn on" data-tab="lib"><span class="ic">📚</span><span class="lb">도서관</span></button>
+    <button class="tabbtn" data-tab="sim"><span class="ic">🧭</span><span class="lb">시뮬레이션</span></button>
+    <button class="tabbtn" data-tab="flow"><span class="ic">⚡</span><span class="lb">플로우</span></button>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section id="view-lib" class="view on"></section>
+  <section id="view-sim" class="view"></section>
+  <section id="view-flow" class="view"></section>
+</main>
+
+<div class="sheet-back" id="sheetBack"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-grip"></div>
+  <div class="sheet-head"><h2 id="sheetTitle"></h2><div class="shsub" id="sheetSub"></div><button class="sheet-x" id="sheetX">✕</button></div>
+  <div class="sheet-body" id="sheetBody"></div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   DATA LAYER — 단일 진실 공급원. 엔진은 ID로 인용만.
+   전역 ID: drug:* / class:* / comorbid:* / lab:*
+   질환 ID: gout:*
+   ════════════════════════════════════════════════════════════ */
+
+/* ---------- 약물 DB (성분 단위 전역 ID) ---------- */
+const DRUG_DB = {
+  "drug:allopurinol":{name:"알로푸리놀",eng:"Allopurinol",cls:"class:xoi",clsKr:"잔틴산화효소억제제(XOI)",
+    role:"ULT 1차",mech:"잔틴산화효소(XO) 억제 → 요산 생성 차단",
+    start:"50~100mg 1일1회",titrate:"2~4주마다 50~100mg 증량, 목표 도달까지",max:"300mg 초과도 교육·모니터 하 가능",
+    key:["1차 요산저하제(배출저하·과다생성 모두)","★HLA-B*5801 양성 시 중증피부반응(AHS) — 한국인 ~12% 보유","신장 배설 → eGFR 따라 시작 낮게"],
+    se:"발진·소양감·간효소↑·드물게 AHS(SJS/TEN/DRESS)·잔틴결석",
+    ci:"HLA-B*5801 양성(상대적), 과거 알로푸리놀 과민"},
+  "drug:febuxostat":{name:"페북소스타트",eng:"Febuxostat",cls:"class:xoi",clsKr:"잔틴산화효소억제제(XOI)",
+    role:"ULT 2차(대개)",mech:"XO 선택적 억제(비퓨린계) → 요산 생성 차단",
+    start:"40mg 1일1회",titrate:"2~4주 후 sUA 미달 시 80mg",max:"80mg(국내 허가)",
+    key:["주로 간대사(신배설 1~6%) → 경·중등도 신장애 용량조정 불필요","알로푸리놀 AHS·효과불충분·신기능저하 시 유용","★CARES: CV 사망↑ 신호 / FAST: 비열등 — 논쟁, 허가상 경고 유지"],
+    se:"간효소↑·구역·관절통·발진(고용량)·CV 경고",
+    ci:"중증 간장애 신중, 중증 신장애·ESRD 자료 제한"},
+  "drug:benzbromarone":{name:"벤즈브로마론",eng:"Benzbromarone",cls:"class:uricosuric",clsKr:"요산배설촉진제",
+    role:"배설촉진",mech:"근위세뇨관 URAT1 억제 → 요산 재흡수↓·배설↑",
+    start:"25~50mg 1일1회",titrate:"유지 50mg 1일1~3회",max:"50mg×3",
+    key:["XOI 부작용/효과미비 시 단독 또는 XOI와 병용","★신기능 약간 저하에도 비교적 효과 유지(프로베네시드 대비 장점)","★치명적 간독성 → 간기능 모니터 필수(FDA 미승인, 한·일 사용)"],
+    se:"간독성(치명적 가능)·요로결석·설사",
+    ci:"중증 간장애, 요로결석·고요산뇨"},
+  "drug:probenecid":{name:"프로베네시드",eng:"Probenecid",cls:"class:uricosuric",clsKr:"요산배설촉진제",
+    role:"배설촉진",mech:"URAT1 등 억제 → 요산 배설 촉진",
+    start:"500mg 1일1~2회",titrate:"점진 증량",max:"가변",
+    key:["배출저하형에 효과 있으나 신기능 의존도 큼","★eGFR<50 효과↓ · <30 사실상 무효 → 회피","요로결석 부작용 → 수분·소변 알칼리화 동반"],
+    se:"요로결석·발진·위장장애",
+    ci:"eGFR<30, 요로결석, 신요산결석"},
+  "drug:colchicine":{name:"콜키신",eng:"Colchicine",cls:"class:antiinflam",clsKr:"항염증(미세소관 억제)",
+    role:"급성기·예방",mech:"호중구 미세소관(β-tubulin) 중합 억제 → MSU 유발 염증 억제",
+    start:"급성: 1.2mg→1h 후 0.6mg",titrate:"이후 0.6mg 1~2회/일, 예방: 0.6mg 1~2회/일",max:"급성 첫날 1.8mg",
+    key:["급성 발작 48h 이내 시작이 효과적","★이미 예방 복용 중 발작 → 증량 말고 NSAID/GC로 전환","★CYP3A4+P-gp 억제제·스타틴 병용 시 독성·근병증 — 신기능 저하서 가중"],
+    se:"설사·복통·구역(흔함)·드물게 골수억제·근병증·신경병증",
+    ci:"중증 신·간장애서 P-gp/CYP3A4 강력억제제 병용"},
+  "drug:naproxen":{name:"나프록센",eng:"Naproxen",cls:"class:nsaid",clsKr:"NSAID",
+    role:"급성기·예방",mech:"COX 억제 → 프로스타글란딘·염증 억제",
+    start:"급성: 충분용량 조기, 예방: 250mg 1일2회",titrate:"증상 따라",max:"제품 기준",
+    key:["확진 환자 급성기 효과 우수","★eGFR<30 회피(<60 신중)·소화성궤양·심부전·항응고 병용 주의","사용 시 PPI 병용·최단기간"],
+    se:"위장관 출혈·신기능 악화·체액저류·혈압↑",
+    ci:"활동성 소화성궤양, eGFR<30, 심부전, 조절 안된 고혈압"},
+  "drug:prednisolone":{name:"프레드니솔론",eng:"Prednisolone",cls:"class:gc",clsKr:"글루코코르티코이드",
+    role:"급성기",mech:"광범위 항염증",
+    start:"경구 30~35mg/일 ×3~5일 또는 0.5mg/kg/일",titrate:"단기 후 감량 또는 급중단 가능",max:"-",
+    key:["NSAID·콜키신 금기/신장저하 시 유용 — CKD서 상대적으로 안전","큰 관절 단일 침범 → 관절천자 후 관절강내 스테로이드","★당뇨 혈당불량·활동성 감염 회피, 위궤양 시 NSAID보다 선호"],
+    se:"혈당↑·혈압↑·체액저류·감염위험·기분변화",
+    ci:"활동성 감염(전신), 조절 안된 당뇨(상대적)"}
+};
+
+/* ---------- 신기능별 용량표 (drug × eGFR band) ---------- */
+/* band: g0:≥60  g1:30~59  g2:15~29(또는<30)  g3:투석 — 약물별 컷오프 note 명시 */
+const RENAL_DOSE = {
+  "drug:allopurinol":{
+    cutoffNote:"신장 배설 — 시작용량을 eGFR로 보정(AHS 위험은 시작용량과 비례)",
+    g0:{s:"ok",dose:"50~100mg 시작, 2~4주마다↑",note:"목표까지 적정"},
+    g1:{s:"dose",dose:"50mg 시작, 천천히(2~5주)",note:"start-low-go-slow"},
+    g2:{s:"caution",dose:"50mg 시작, 더 천천히",note:"AHS 위험↑·HLA 고려·면밀 모니터"},
+    g3:{s:"special",dose:"감량·간격연장",note:"oxypurinol 축적 — 전문가 영역"},
+    twist:"★통념 교정: '신기능 나쁘면 300mg 못 넘는다'는 틀림. 시작은 낮게, 교육·모니터 하 300mg 초과 적정 가능. 저용량 고정이 흔한 실패원인."},
+  "drug:febuxostat":{
+    cutoffNote:"주로 간대사(신배설 1~6%) — 신기능에 유리",
+    g0:{s:"ok",dose:"40→80mg",note:"조정 불필요"},
+    g1:{s:"ok",dose:"40→80mg",note:"경·중등도 조정 불필요"},
+    g2:{s:"caution",dose:"신중",note:"중증(<30) 안전성·유효성 충분평가 안됨"},
+    g3:{s:"caution",dose:"미평가",note:"ESRD/투석 자료 없음"},
+    twist:"알로푸리놀 AHS·신기능저하 대안. CARES 심혈관 경고(FAST 반박) 병기."},
+  "drug:benzbromarone":{
+    cutoffNote:"요산배설촉진 — 중등도 신장애도 비교적 효과 유지",
+    g0:{s:"ok",dose:"25~50→50mg×1~3",note:""},
+    g1:{s:"ok",dose:"25~50→50mg",note:"비교적 효과 유지(장점)"},
+    g2:{s:"caution",dose:"신중",note:"효과 감소 가능"},
+    g3:{s:"avoid",dose:"회피",note:""},
+    twist:"★치명적 간독성 → 간기능 모니터 필수(eGFR 무관 상시 주의)."},
+  "drug:probenecid":{
+    cutoffNote:"요산배설촉진 — 신기능 의존도 매우 큼",
+    g0:{s:"ok",dose:"500mg×1~2",note:"≥50 사용 가능"},
+    g1:{s:"caution",dose:"효과↓",note:"eGFR<50 효과 감소"},
+    g2:{s:"contra",dose:"무효→회피",note:"eGFR<30 사실상 무효"},
+    g3:{s:"contra",dose:"회피",note:""},
+    twist:"요로결석 부작용 → 수분·소변 알칼리화 동반. 배출저하형 많은 한국서 의미 있으나 신기능 제약 큼."},
+  "drug:colchicine":{
+    cutoffNote:"신배설·투석 제거 안됨 → 누적독성. CrCl 기준",
+    g0:{s:"ok",dose:"급성 1.2→0.6 / 예방 0.6×1~2",note:"CrCl 50~80 모니터"},
+    g1:{s:"caution",dose:"급성 표준 가능·감량고려 / 예방 감량고려",note:"CrCl 30~50 모니터"},
+    g2:{s:"dose",dose:"예방 0.3mg/일 / 급성 신중·반복코스 회피",note:"중증 노출 2배↑"},
+    g3:{s:"special",dose:"급성 단회 0.6mg(2주내 반복금지) / 예방 0.3mg 주2회",note:"투석"},
+    twist:"★이미 예방 콜키신 복용 중 발작(특히 CKD3+) → 급성 콜키신 추가 말고 다른 약. CYP3A4/P-gp·스타틴 병용은 신기능 저하와 곱해져 위험."},
+  "class:nsaid":{
+    cutoffNote:"신혈류 의존 — 신손상·고K 위험",
+    g0:{s:"ok",dose:"충분용량·최단기간",note:"±PPI"},
+    g1:{s:"caution",dose:"신중",note:"위험인자 시 회피"},
+    g2:{s:"avoid",dose:"회피",note:"eGFR<30 급성신손상·고K"},
+    g3:{s:"contra",dose:"회피",note:""},
+    twist:"신장저하 시 GC로 대체."},
+  "class:gc":{
+    cutoffNote:"신기능 제약 적음 — CKD서 상대적으로 안전한 선택",
+    g0:{s:"ok",dose:"30~35mg×3~5일",note:""},
+    g1:{s:"ok",dose:"동일",note:""},
+    g2:{s:"ok",dose:"동일",note:"신기능 안전"},
+    g3:{s:"ok",dose:"동일",note:""},
+    twist:"혈당·감염·궤양만 주의. CKD/다관절/NSAID·콜키신 금기 시 선호."}
+};
+function egfrBand(e){ if(e==null||isNaN(e))return null; if(e>=60)return"g0"; if(e>=30)return"g1"; if(e>=15)return"g2"; return"g3"; }
+const BAND_LABEL={g0:"eGFR ≥60",g1:"eGFR 30~59",g2:"eGFR 15~29",g3:"eGFR<15·투석"};
+
+/* ---------- 식품 퓨린 정량 DB (mg/100g, 4 tier) ---------- */
+const PURINE_DAILY_LIMIT=400;
+const DIET_DB=[
+  // T1 매우높음 >300 회피
+  {f:"멸치",mg:321,t:1,c:"어류"},{f:"정어리",mg:345,t:1,c:"어류"},{f:"청어",mg:210,t:2,c:"어류"},
+  {f:"고등어",mg:194,t:2,c:"어류"},{f:"이리/어란(생선정소)",mg:480,t:1,c:"어류"},
+  {f:"소 간",mg:220,t:1,c:"내장"},{f:"소 신장",mg:200,t:1,c:"내장"},{f:"곱창·내장류",mg:300,t:1,c:"내장"},
+  {f:"뇌·흉선(sweetbread)",mg:330,t:1,c:"내장"},{f:"농축육수·고기엑기스",mg:500,t:1,c:"가공"},
+  {f:"건조효모",mg:560,t:1,c:"가공"},{f:"게임고기(사슴 등)",mg:300,t:1,c:"육류"},
+  // T2 높음 150~300 제한
+  {f:"소고기(살코기)",mg:110,t:3,c:"육류"},{f:"돼지고기",mg:120,t:3,c:"육류"},{f:"양고기",mg:180,t:2,c:"육류"},
+  {f:"조개류",mg:150,t:2,c:"해산물"},{f:"가리비",mg:130,t:3,c:"해산물"},{f:"새우",mg:230,t:2,c:"해산물"},
+  {f:"거위",mg:165,t:2,c:"육류"},{f:"오징어",mg:135,t:3,c:"해산물"},
+  // T3 중등도 50~150 조절
+  {f:"닭고기",mg:120,t:3,c:"육류"},{f:"칠면조",mg:130,t:3,c:"육류"},{f:"연어",mg:120,t:3,c:"어류"},
+  {f:"콩(대두)",mg:75,t:3,c:"콩류",veg:true},{f:"렌틸콩",mg:70,t:3,c:"콩류",veg:true},{f:"완두",mg:60,t:3,c:"채소",veg:true},
+  {f:"시금치",mg:57,t:3,c:"채소",veg:true},{f:"아스파라거스",mg:50,t:3,c:"채소",veg:true},{f:"버섯",mg:50,t:3,c:"채소",veg:true},
+  {f:"콜리플라워",mg:51,t:3,c:"채소",veg:true},
+  // T4 낮음 <50 자유
+  {f:"쌀밥",mg:25,t:4,c:"곡류"},{f:"빵",mg:4,t:4,c:"곡류"},{f:"국수/면",mg:10,t:4,c:"곡류"},{f:"감자",mg:16,t:4,c:"곡류"},
+  {f:"우유",mg:1,t:4,c:"유제품",dairy:true},{f:"치즈",mg:6,t:4,c:"유제품",dairy:true},{f:"저지방 요구르트",mg:1,t:4,c:"유제품",dairy:true},
+  {f:"계란",mg:2,t:4,c:"단백"},{f:"두부",mg:30,t:4,c:"단백"},{f:"대부분 과일",mg:10,t:4,c:"과일"},
+  {f:"김·미역(해조류)",mg:25,t:4,c:"채소",veg:true},{f:"견과류",mg:25,t:4,c:"단백"},
+  {f:"양상추·오이·당근·피망",mg:15,t:4,c:"채소",veg:true},{f:"체리",mg:8,t:4,c:"과일"}
+];
+const TIER_INFO={
+  1:{lb:"매우높음·회피",range:">300",cls:"t1",icon:"🔴"},
+  2:{lb:"높음·제한",range:"150~300",cls:"t2",icon:"🟠"},
+  3:{lb:"중등도·조절",range:"50~150",cls:"t3",icon:"🟡"},
+  4:{lb:"낮음·자유",range:"<50",cls:"t4",icon:"🟢"}
+};
+
+/* ---------- 진단: ACR/EULAR 2015 ---------- */
+const ACR_EULAR=[
+  {id:"pattern",q:"증상 관절/점액낭 침범 패턴",opts:[
+    {l:"발목·중족(1st MTP 미침범)",v:1},{l:"제1중족지(1st MTP) 침범",v:2},{l:"기타 부위만",v:0}]},
+  {id:"char",q:"발작 특성(발적·심한 압통·보행장애)",opts:[
+    {l:"해당 없음",v:0},{l:"1가지",v:1},{l:"2가지",v:2},{l:"3가지 모두",v:3}]},
+  {id:"course",q:"시간 경과(24h내 최고조·14일내 소실·발작간 완전회복)",opts:[
+    {l:"해당 없음",v:0},{l:"전형적 1회",v:1},{l:"재발성(2회 이상)",v:2}]},
+  {id:"tophus",q:"통풍결절 임상 증거",opts:[{l:"없음",v:0},{l:"있음",v:4}]},
+  {id:"sua",q:"혈청 요산(mg/dL)",opts:[
+    {l:"<4 (감점)",v:-4},{l:"4~<6",v:0},{l:"6~<8",v:2},{l:"8~<10",v:3},{l:"≥10",v:4}]},
+  {id:"fluid",q:"활액 MSU 검사",opts:[{l:"미시행",v:0},{l:"음성(감점)",v:-2}]},
+  {id:"imgUS",q:"영상: 초음파 DCS 또는 DECT 요산침착",opts:[{l:"없음/미시행",v:0},{l:"있음",v:4}]},
+  {id:"imgXR",q:"영상: X선 통풍 관련 미란",opts:[{l:"없음/미시행",v:0},{l:"있음",v:4}]}
+];
+
+/* ---------- 신흥·개발 약물 ---------- */
+const EMERGING=[
+  {n:"도티누라드",e:"Dotinurad",av:"global",mech:"선택적 URAT1 억제(SURI) — 요산 재흡수만 차단, ABCG2/OAT1/OAT3 보존",
+    pos:"일본 2020·중국 승인 / 국내 미도입",mean:"신기능 영향 적어 CKD 동반서 유망. 벤즈브로마론 대비 간·신 안전성 신호 양호"},
+  {n:"페그로티케이스",e:"Pegloticase",av:"global",mech:"PEG화 재조합 요산분해효소(uricase) — 요산→알란토인",
+    pos:"미국 승인(불응성 만성통풍) / 국내 미도입",mean:"경구 ULT 불응 결절성서 빠른 결절 용해. 정맥주입·주입반응(전처치 sUA<6 중요)"},
+  {n:"카나키누맙",e:"Canakinumab",av:"global",mech:"IL-1β 단클론항체",
+    pos:"해외 발작 적응(불응·금기시) / 국내 통풍 적응 제한",mean:"NSAID·콜키신·GC 모두 금기인 발작에 표적 항염. 고가·감염위험"},
+  {n:"티굴릭소스타트",e:"Tigulixostat (LC350189)",av:"dev",mech:"XOI(요산생성억제) — ★국산(LG화학)",
+    pos:"개발중 — EURELIA-1 3상 성공(48% vs 위약 2%), 글로벌 중단 후 중국 3상 재개",mean:"국산 신약 지견. 상용화 미정 — 개발 동향으로만 소개"},
+  {n:"레시뉴라드·베리누라드",e:"Lesinurad/Verinurad",av:"global",mech:"URAT1 억제(요산배설)",
+    pos:"해외(레시뉴라드 단독 신독성 이슈로 제한) / 국내 미도입",mean:"URAT1 계열 진화 맥락"},
+  {n:"토피록소스타트",e:"Topiroxostat",av:"global",mech:"XOI",
+    pos:"일본 승인 / 국내 미도입",mean:"XOI 선택지 다양화 맥락"}
+];
+const AV_BADGE={kr:{lb:"🇰🇷 국내가용",cls:"ok"},global:{lb:"🌏 해외승인·국내미도입",cls:"warn"},dev:{lb:"🔬 개발중",cls:"info"}};
+
+/* ---------- 요산 목표 ---------- */
+const URATE_TARGET={nontophus:6.0,tophus:5.0};
+
+/* ---------- KCD 급여코드 DB ---------- */
+const KCD_SITE=[
+  {c:".0",s:"여러 부위"},{c:".1",s:"어깨부분"},{c:".2",s:"위팔"},{c:".3",s:"아래팔"},
+  {c:".4",s:"손"},{c:".5",s:"골반 및 넓적다리"},{c:".6",s:"아래다리"},{c:".7",s:"발목 및 발"},
+  {c:".8",s:"기타"},{c:".9",s:"상세불명 부위"}
+];
+const KCD_DB=[
+  {code:"M10",label:"통풍",grp:"통풍(M10)",desc:"5번째 자리로 침범 부위 세분(.0 여러부위 ~ .9 상세불명). 예: M10.07 특발성 통풍, 발목 및 발",site:true,
+   key:["통풍 진단의 기본 상병","XOI·콜키신·NSAID 등 통풍 약제 급여의 근거 상병","부위 세분 권장(.7 발목·발 호발)"]},
+  {code:"M10.0",label:"특발성 통풍",grp:"통풍(M10)",desc:"원발성 통풍결절(통풍결절성 점액낭염·심장·신장 등 포함 분류). 가장 흔함",site:true,
+   key:["대부분의 1차성 통풍","요산저하제 급여 핵심 상병"]},
+  {code:"M10.1",label:"납-유발 통풍",grp:"통풍(M10)",desc:"납 중독 관련",site:true,key:["이차성 — 원인 명시"]},
+  {code:"M10.2",label:"약물-유발 통풍",grp:"통풍(M10)",desc:"이뇨제·약물 등 유발. 원인 약물 추가코드 병기",site:true,
+   key:["thiazide/loop·cyclosporine·pyrazinamide 등 유발 시","원인 약물 검토와 함께"]},
+  {code:"M10.3",label:"신장기능장애로 인한 통풍",grp:"통풍(M10)",desc:"CKD 등 신기능장애 동반",site:true,
+   key:["CKD 동반 통풍 — 신기능별 약물 제약과 연결","eGFR 용량표 참조"]},
+  {code:"M10.4",label:"기타 이차성 통풍",grp:"통풍(M10)",desc:"기타 명시된 이차 원인",site:true,key:["혈액질환 등 과다생성형 포함 가능"]},
+  {code:"M10.9",label:"상세불명의 통풍",grp:"통풍(M10)",desc:"원인 미상. 부위 세분(.90~.99)",site:true,
+   key:["원인 분류 어려울 때","가능하면 M10.0 등 구체 코드 권장"]},
+  {code:"E79.0",label:"염증성 관절병증 및 통풍결절 증후 없는 고요산혈증",grp:"고요산혈증(E79)",desc:"무증상 고요산혈증 — 통풍 발작·결절 없이 sUA만 높은 상태",site:false,
+   key:["★무증상 고요산혈증 상병","통풍(M10)과 구분 — 약물치료는 일반적으로 비권장 영역","요산저하제 급여는 통풍 상병에서 인정되는 점 유의"]},
+  {code:"N20.0",label:"신장결석(콩팥돌)",grp:"요로결석(N20)",desc:"요산결석 동반 시. 통풍과 연계",site:false,
+   key:["요산 요로결석 동반","알칼리화·수분·알로푸리놀과 연결"]},
+  {code:"N20.1",label:"요관결석",grp:"요로결석(N20)",desc:"요관 부위 결석",site:false,key:["요산결석 가능"]},
+  {code:"N22.8",label:"기타 달리 분류된 질환에서의 요로결석",grp:"요로결석(N20)",desc:"통풍 등 기저질환의 요로결석",site:false,key:["기저 통풍 명시 시 †* 이중분류 고려"]}
+];
+const KCD_GROUPS=["통풍(M10)","고요산혈증(E79)","요로결석(N20)"];
+</script>
+<script>
+/* ════════════════════════════════════════════════════════════
+   ENGINE LAYER — 데이터 참조만. 판정·계산. 강제 아닌 옵션 차등.
+   ════════════════════════════════════════════════════════════ */
+
+/* ---- 진단 자동채점 ---- */
+function acrEularScore(sel){
+  let total=0; const bd=[];
+  ACR_EULAR.forEach(item=>{
+    const v=sel[item.id]; if(v==null)return;
+    total+=v; if(v!==0)bd.push({q:item.q,v});
+  });
+  return {score:total, gout:total>=8, bd};
+}
+
+/* ---- 요산 목표 ---- */
+function urateTarget(tophus){ return tophus?URATE_TARGET.tophus:URATE_TARGET.nontophus; }
+
+/* ---- 콜키신 용량 자동(급성/예방 × 신기능) ---- */
+function colchicineDose(egfr, mode, onProphylaxis){
+  const band=egfrBand(egfr);
+  const r=RENAL_DOSE["drug:colchicine"][band||"g0"];
+  let out={dose:"",warn:[]};
+  if(mode==="acute"){
+    if(onProphylaxis){out.dose="다른 약(NSAID/GC)로 전환 권장";out.warn.push("이미 예방 콜키신 복용 중 — 급성 콜키신 추가 대신 전환");return out;}
+    if(band==="g3"){out.dose="단회 0.6mg (2주 내 반복 금지)";}
+    else if(band==="g2"){out.dose="신중 사용·반복코스 회피";out.warn.push("중증 신부전 노출 2배↑");}
+    else {out.dose="1.2mg → 1h 후 0.6mg → 이후 0.6mg 1~2회/일";}
+  }else{ // prophylaxis
+    if(band==="g3"){out.dose="0.3mg 주2회";}
+    else if(band==="g2"){out.dose="0.3mg/일 시작";}
+    else if(band==="g1"){out.dose="0.6mg 1~2회/일 (감량 고려·모니터)";}
+    else {out.dose="0.6mg 1~2회/일";}
+  }
+  if(band&&band!=="g0")out.warn.push(BAND_LABEL[band]+" — CYP3A4/P-gp 억제제·스타틴 병용 시 독성 가중");
+  return out;
+}
+
+/* ---- 급성기 약물 차등 ---- */
+function acuteOptions(inp){
+  // inp: {egfr, pud, dm_uncontrolled, infection, hf, anticoag, onColchicine, joints, monoLarge}
+  const e=inp.egfr, band=egfrBand(e);
+  const res=[];
+  // 콜키신
+  let cStat="usable",cWhy=[];
+  if(inp.onColchicine){cStat="caution";cWhy.push("이미 예방 복용 중 → 전환 고려");}
+  if(band==="g2"){cStat="caution";cWhy.push("중증 신부전 노출↑");}
+  if(band==="g3"){cStat="caution";cWhy.push("투석 — 단회만");}
+  const cd=colchicineDose(e,"acute",inp.onColchicine);
+  res.push({id:"drug:colchicine",name:"콜키신",stat:cStat,dose:cd.dose,why:cWhy.concat(cd.warn).join(" · ")||"48h 이내 시작이 효과적",pr:2});
+  // NSAID
+  let nStat="usable",nWhy=[];
+  if(inp.pud){nStat="contra";nWhy.push("소화성궤양");}
+  if(band==="g2"||band==="g3"){nStat="contra";nWhy.push("eGFR<30");}
+  else if(band==="g1"){nStat="caution";nWhy.push("신기능 주의");}
+  if(inp.hf){nStat= nStat==="contra"?"contra":"avoid";nWhy.push("심부전");}
+  if(inp.anticoag){if(nStat!=="contra")nStat="avoid";nWhy.push("항응고제");}
+  res.push({id:"drug:naproxen",name:"NSAID (나프록센 등)",stat:nStat,dose:"충분용량 조기 ±PPI",why:nWhy.join(" · ")||"확진 환자 급성기 효과 우수",pr:1});
+  // 경구 GC
+  let gStat="usable",gWhy=[];
+  if(inp.dm_uncontrolled){gStat="caution";gWhy.push("당뇨 혈당불량");}
+  if(inp.infection){gStat="avoid";gWhy.push("활동성 감염");}
+  if(inp.pud||band==="g2"||band==="g3"){if(gStat==="usable")gStat="preferred";gWhy.push("NSAID 금기 대안");}
+  res.push({id:"drug:prednisolone",name:"경구 글루코코르티코이드",stat:gStat,dose:"prednisolone 30~35mg×3~5일",why:gWhy.join(" · ")||"CKD서 상대적 안전",pr:3});
+  // 관절강내 GC
+  if(inp.monoLarge){
+    res.push({id:"gc:intra",name:"관절강내 스테로이드",stat:"preferred",dose:"관절천자 후 트리암시놀론/덱사 ±국소마취",why:"큰 관절 단일 침범 — 활액배출·감염배제 겸",pr:0});
+  }
+  // 정렬: preferred > usable > caution > avoid > contra, 동급은 pr
+  const order={preferred:0,usable:1,caution:2,avoid:3,contra:4};
+  res.sort((a,b)=> (order[a.stat]-order[b.stat]) || (a.pr-b.pr));
+  // 병용 안내
+  const combos=["단독요법 우선 · 중증/다관절은 콜키신+NSAID 또는 콜키신+GC 병용 고려","★NSAID+전신GC 병용은 회피(GI독성·체액저류)"];
+  return {drugs:res,combos};
+}
+
+/* ---- ULT 옵션 ---- */
+function ultOptions(inp){
+  // inp:{egfr, hla(null/'pos'/'neg'/'unk'), cvd}
+  const e=inp.egfr, band=egfrBand(e);
+  const out=[];
+  ["drug:allopurinol","drug:febuxostat","drug:benzbromarone","drug:probenecid"].forEach(id=>{
+    const rd=RENAL_DOSE[id][band||"g0"];
+    let flags=[];
+    if(id==="drug:allopurinol"){
+      if(inp.hla==="pos")flags.push({t:"block",x:"HLA-B*5801 양성 — AHS 위험, 회피/대안 고려"});
+      else if(inp.hla==="unk"||inp.hla==null)flags.push({t:"warn",x:"한국인 ~12% HLA 보유 — 검사 고려 또는 저용량 시작"});
+    }
+    if(id==="drug:febuxostat"&&inp.cvd)flags.push({t:"warn",x:"CVD 동반 — CARES 심혈관 경고(FAST 반박) 유의"});
+    if(id==="drug:benzbromarone")flags.push({t:"warn",x:"간독성 — 간기능 모니터"});
+    out.push({id,name:DRUG_DB[id].name,role:DRUG_DB[id].role,stat:rd.s,dose:rd.dose,note:rd.note,flags});
+  });
+  // XOI 우선(특히 CKD)
+  const order={ok:0,dose:1,caution:2,special:3,avoid:4,contra:5};
+  out.sort((a,b)=>order[a.stat]-order[b.stat]);
+  return out;
+}
+
+/* ---- ULT 적응증 ---- */
+function ultIndication(inp){
+  // inp:{tophus, flaresPerYear, jointDamage, urolithiasis, sua}
+  const hits=[];
+  if(inp.tophus)hits.push("통풍결절 존재");
+  if(inp.flaresPerYear>=2)hits.push("재발성 발작(연 2회 이상)");
+  if(inp.jointDamage)hits.push("통풍성 관절손상");
+  if(inp.urolithiasis)hits.push("요로결석 동반");
+  return {indicated:hits.length>0, reasons:hits};
+}
+
+/* ---- 반발성 발작 예방 ---- */
+function flareProphylaxis(inp){
+  // inp:{egfr, pud, statin, cyp3a4, tophus, flaresPerYear}
+  const e=inp.egfr, band=egfrBand(e);
+  const agents=[];
+  // 1차 콜키신
+  const cd=colchicineDose(e,"prophylaxis",false);
+  agents.push({rank:"1차",name:"콜키신",dose:cd.dose,note:(cd.warn.join(" · ")||"발작 ~85% 감소"),stat:"preferred"});
+  // 2차 NSAID
+  let nStat="usable",nNote="콜키신 불내약/금기·상호작용 시";
+  if(inp.pud||band==="g2"||band==="g3"){nStat="avoid";nNote="신장·GI 위험군 회피";}
+  agents.push({rank:"2차",name:"저용량 NSAID",dose:"나프록센 250mg bid",note:nNote,stat:nStat});
+  // 3차 GC
+  agents.push({rank:"3차",name:"저용량 경구 GC",dose:"prednisone 저용량",note:"콜키신·NSAID 둘 다 금기 시(예방효과 다소 약할 수 있음)",stat:"usable"});
+  // 기간
+  let dur="최소 3~6개월";
+  if(inp.tophus||inp.flaresPerYear>=2)dur="6개월 이상(결절·잦은 발작 → 6~9개월 연장)";
+  const warns=[];
+  if(inp.statin)warns.push("스타틴 병용 → 근병증 위험, CK 모니터");
+  if(inp.cyp3a4)warns.push("CYP3A4/P-gp 억제제 병용 → 콜키신 감량/회피");
+  return {agents,duration:dur,
+    stop:"요산 목표 도달 AND 일정기간(3~6개월) 무발작 → 예방약 중단. 발작 지속 시 연장.",
+    teach:"초기 수개월 발작은 예상된 반응(조직 요산 동원). 치료 실패 아님 — ULT는 지속, 예방약으로 줄인다.",
+    warns};
+}
+
+/* ---- 무증상 고요산혈증 ---- */
+function ahuAdvisor(inp){
+  // inp:{sua, ckd, cvd, htn, dm, urolithiasis, metabolic, special}
+  const layerA=[
+    "대다수는 평생 통풍으로 진행하지 않는다 → 일률적 약물치료 비권장",
+    "모든 고요산혈증에서 2차 원인·동반질환 반드시 평가(비만·음주·이뇨제·신질환·대사증후군)",
+    "약물 시작 전 생활습관·원인교정 우선",
+    "치료 안 할 경우 정기 추적(sUA + 동반질환 관리)"
+  ];
+  const layerB=[
+    {who:"한국 2024 / ACR 2020 / KDIGO",pos:"조건부 반대 — CKD·CVD·요로결석·고혈압 동반해도 일반적으로 시작 안 함",t:"info"},
+    {who:"한국 지침 예외",pos:"sUA>9.0 무증상 → 신손상 위험↑ → 개별 ULT 고려. 첫 발작이어도 신기능저하·sUA 8~9↑·요로결석이면 시작",t:"warn"},
+    {who:"일본 2011(가장 적극적)",pos:"sUA≥8.0+동반질환 → ULT / sUA≥9.0이면 동반질환 없어도 ULT",t:"warn"},
+    {who:"ACR 특수 예외",pos:"종양용해(방사선·항암 예정)·유전성 과다생성·현저한 고요산뇨",t:"alert"}
+  ];
+  const rct="RCT(FEATHER·CKD-FIX·PERL) 신보호 주요결과 무효(FEATHER 일부 하위군만 신호) ↔ 대규모 코호트는 ULT 신보호 신호(인과 아님). 일률치료 근거 부족, 고위험 개별환자는 득실 고려.";
+  // 행동 분기
+  const s=inp.sua; const hasComorbid=inp.ckd||inp.cvd||inp.htn||inp.dm||inp.urolithiasis||inp.metabolic;
+  let decision,strength,opts=[];
+  if(inp.special){
+    decision="예방적 ULT 적응 가능"; strength="alert";
+    opts=["종양용해/유전성/현저 고요산뇨 → 알칼리화·수분·(라스부리카제) 연계","요산신병증·결석 예방 목적"];
+  }else if(s!=null&&s>9){
+    decision="ULT 고려 강도↑"; strength="warn";
+    opts=["신손상 위험·한국지침 예외(>9)·일본기준(≥9 단독) 모두 부합","단 생활습관·원인교정 병행, HLA·신기능 고려한 약물선택"];
+  }else if(s!=null&&s>=8&&hasComorbid){
+    decision="옵션 양면 제시 (강제 아님)"; strength="warn";
+    opts=["옵션 A: 생활습관·원인교정 우선(한국/ACR 기조)","옵션 B: 일본식 ULT 고려(sUA≥8+동반질환)","→ 환자와 득실 공유 후 결정"];
+  }else{
+    decision="추적관찰 + 생활습관"; strength="info";
+    opts=["치료 일반적으로 불필요","생활습관 교정 + 정기 sUA·동반질환 추적"];
+  }
+  const workup=["BMI/비만","음주(종류·양)","이뇨제(thiazide/loop)","저용량 아스피린","cyclosporine","신기능(eGFR)","대사증후군(혈압·혈당·지질)","요로결석력","과다생성질환(혈액암·건선) 단서"];
+  return {layerA,layerB,rct,decision,strength,opts,workup,
+    krNote:"★한국인 HLA-B*5801 ~12% → 무증상에 알로푸리놀 시작은 SCAR 위험까지 떠안음 → 득실 더 불리(쓸 거면 HLA 검사/페북소스타트 고려)"};
+}
+
+/* ---- 급여 엔진(간이) ---- */
+function reimbBadge(id){
+  const m={
+    "drug:allopurinol":{b:"급여 1차",cls:"ok",note:"무난. HLA-B*5801 검사 식약처 권고(투여 전)"},
+    "drug:febuxostat":{b:"대개 2차",cls:"warn",note:"알로푸리놀 부작용/효과불충분/금기 시 — 소견 첨부 권장"},
+    "drug:benzbromarone":{b:"조건부",cls:"warn",note:"XOI 부작용/효과미비 시 단독 또는 병용"},
+    "drug:probenecid":{b:"조건부",cls:"warn",note:"배설촉진, 신기능 제약"},
+    "drug:colchicine":{b:"급여",cls:"ok",note:"급성·예방 모두"},
+    "drug:naproxen":{b:"급여",cls:"ok",note:""},
+    "drug:prednisolone":{b:"급여",cls:"ok",note:""}
+  };
+  return m[id]||{b:"-",cls:"info",note:""};
+}
+</script>
+<script>
+/* ════════════════════════════════════════════════════════════
+   CONTENT LAYER — 도서관 토픽
+   ════════════════════════════════════════════════════════════ */
+const LIBRARY=[
+  {id:"dx",cat:"clin",n:"진단 · ACR/EULAR 자동채점",d:"분류기준·확진(MSU)·DECT/US",render:"renderDx"},
+  {id:"stage",cat:"clin",n:"병기 · 자연경과",d:"4병기·전이·합병증",render:"renderStage"},
+  {id:"asymptomatic",cat:"clin",n:"무증상 고요산혈증",d:"3층 구조·한미일 비교·RCT·예외",render:"renderAhu"},
+  {id:"acute",cat:"clin",n:"급성 발작 치료",d:"3약물 세부분기·위험도차등·용량",render:"renderAcute"},
+  {id:"ult",cat:"clin",n:"요산저하요법(ULT)",d:"적응증·목표·반발성발작 예방",render:"renderUlt"},
+  {id:"safety",cat:"clin",n:"안전성 · 신기능 용량표",d:"eGFR별 전약물·HLA·CV·간독성",render:"renderSafety"},
+  {id:"reimb",cat:"pay",n:"급여기준",d:"알로푸리놀1차/페북2차·HLA검사",render:"renderReimb"},
+  {id:"kcd",cat:"pay",n:"급여코드(KCD)",d:"M10 통풍·E79 고요산·N20 결석·검색",render:"renderKcd"},
+  {id:"purine",cat:"edu",n:"퓨린대사 · 요산생성",d:"대사경로·배설·포화·온도",render:"renderPurine"},
+  {id:"diet",cat:"edu",n:"식이 · 음주 · 과당",d:"퓨린 정량DB·기전·채소 예외",render:"renderDiet"},
+  {id:"comorbid",cat:"edu",n:"동반질환 · 요산상승 약물",d:"HTN/DM/CKD·이뇨제·아스피린",render:"renderComorbid"},
+  {id:"special",cat:"clin",n:"특수: 요로결석·종양용해",d:"알칼리화·라스부리카제·투석",render:"renderSpecial"},
+  {id:"emerging",cat:"clin",n:"신흥 · 개발 약물",d:"도티누라드·페그로티케이스·국산",render:"renderEmerging"}
+];
+const CAT_LB={clin:"임상",pay:"급여",edu:"교육"};
+</script>
+<script>
+/* ════════════════════════════════════════════════════════════
+   UI LAYER
+   ════════════════════════════════════════════════════════════ */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+const esc=s=>String(s).replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+
+/* ---- 탭 ---- */
+$$(".tabbtn").forEach(b=>b.onclick=()=>{
+  $$(".tabbtn").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");
+  $$(".view").forEach(v=>v.classList.remove("on"));
+  $("#view-"+b.dataset.tab).classList.add("on");
+  window.scrollTo(0,0);
+});
+
+/* ---- 시트 ---- */
+function openSheet(title,sub,html){
+  $("#sheetTitle").innerHTML=title;
+  $("#sheetSub").innerHTML=sub||"";
+  $("#sheetBody").innerHTML="";
+  if(typeof html==="string")$("#sheetBody").innerHTML=html;
+  else $("#sheetBody").appendChild(html);
+  $("#sheet").classList.add("on");$("#sheetBack").classList.add("on");
+  $("#sheetBody").scrollTop=0;
+}
+function closeSheet(){$("#sheet").classList.remove("on");$("#sheetBack").classList.remove("on");}
+$("#sheetX").onclick=closeSheet;$("#sheetBack").onclick=closeSheet;
+
+/* ---- 공통 빌더 ---- */
+function kp(title,bodyHtml,icon){
+  return `<div class="kp">${title?`<h4>${icon?icon+" ":""}${title}</h4>`:""}${bodyHtml}</div>`;
+}
+function noteBox(txt,cls){return `<div class="note ${cls||""}">${txt}</div>`;}
+function pill(txt,cls){return `<span class="pill ${cls}">${txt}</span>`;}
+function expand(title,mini,inner){
+  return `<div class="exp"><div class="exp-h" onclick="this.parentElement.classList.toggle('open')">
+    <h4>${title}</h4>${mini?`<span class="exp-mini">${mini}</span>`:""}<span class="chev">›</span></div>
+    <div class="exp-c">${inner}</div></div>`;
+}
+function statBadge(s){
+  const m={preferred:"우선 고려",usable:"사용 가능",caution:"주의",avoid:"회피",contra:"금기",
+    ok:"조정 불필요",dose:"감량",special:"특수"};
+  return `<span class="dstat ${s}">${m[s]||s}</span>`;
+}
+
+/* ---- 도서관 렌더 ---- */
+function renderLibrary(){
+  const v=$("#view-lib");
+  v.innerHTML=`
+  <div class="searchbar"><span class="sic">🔍</span><input id="libSearch" placeholder="약물·증상·상황 검색 (예: 콜키신, 발작, 신기능)"></div>
+  <div class="banner">
+    <h3>환자 앞에서 바로 — 시뮬레이션</h3>
+    <p>병기·동반질환을 체크하면 고려할 옵션과 근거를 누적해 보여줍니다. 처방을 강제하지 않는 조언자.</p>
+    <button class="go" onclick="document.querySelector('[data-tab=sim]').click()">시뮬 시작 →</button>
+  </div>
+  <div class="sec-label">전문가 라이브러리 · 12 토픽</div>
+  <div class="grid" id="libGrid"></div>
+  <div class="src-banner">
+    <b>출처</b> · 2024 한국인 통풍 치료 임상 진료지침(대한류마티스학회) · 2015 ACR/EULAR 분류기준 · 2020 ACR Gout Guideline · KDIGO · 심평원 급여고시 · 식약처 허가사항 · USDA/ODS-NIH Purine DB<br>
+    <span style="color:var(--ink-faint)">급여·허가는 갱신될 수 있으므로 처방·청구 시 최신 고시 확인 권장. 임상 판단 보조 도구 · 최종 결정은 처방의 책임.</span>
+  </div>
+  <div class="foot">통풍 처방 가이드 · v1.0 · 조언자 도구 (강제 아님)</div>`;
+  const grid=$("#libGrid");
+  LIBRARY.forEach((t,i)=>{
+    const c=el("button","topic");
+    c.innerHTML=`<span class="edge ${t.cat}"></span>
+      <span class="tcat ${t.cat}">${CAT_LB[t.cat]}</span>
+      <h4>${t.n}</h4><p>${t.d}</p>`;
+    c.onclick=()=>window[t.render]();
+    grid.appendChild(c);
+  });
+  $("#libSearch").oninput=e=>{
+    const q=e.target.value.trim().toLowerCase();
+    $$("#libGrid .topic").forEach((c,i)=>{
+      const t=LIBRARY[i];
+      const hay=(t.n+t.d+t.cat).toLowerCase();
+      c.style.display=(!q||hay.includes(q))?"":"none";
+    });
+  };
+}
+</script>
+<script>
+/* ===== 진단 (자동채점 계산기) ===== */
+function renderDx(){
+  const body=el("div");
+  body.innerHTML=`
+  ${kp("진단 원칙",`<p class="lead">확진은 활액·결절에서 <b>MSU 결정 확인</b>(편광현미경).</p>
+    <p>활액 확보 곤란 시 ACR/EULAR 2015 분류기준(민감도 92%·특이도 89%)으로 분류. ${pill("≥8점 = 통풍","urate")}</p>`,"🔬")}
+  ${kp("Entry · Sufficient",`
+    <p><b>Entry</b>: 말초 관절/점액낭 부종·통증·압통 1회 이상 (충족해야 채점 적용)</p>
+    <p><b>Sufficient</b>: 증상 관절/점액낭 활액 또는 결절에서 MSU 결정 확인 → <mark>즉시 통풍 확정</mark>(채점 불필요)</p>`,"①②")}
+  <div class="kp"><h4>③ 자동 채점기 <span class="pill info">실시간 합산</span></h4>
+    <div id="dxCalc"></div>
+    <div class="calc-out" id="dxOut" style="display:none"></div>
+  </div>
+  ${noteBox("이 분류기준은 임상연구 대상 식별용으로 개발됨 — 진단의 보조이며 임상 판단을 대체하지 않음.","clin")}`;
+  const calc=$("#dxCalc",body);
+  const sel={};
+  ACR_EULAR.forEach(item=>{
+    const f=el("div","field");
+    f.innerHTML=`<label>${item.q}</label>`;
+    const seg=el("div","chips");
+    item.opts.forEach(o=>{
+      const b=el("button","chip");
+      b.textContent=o.l+(o.v!==0?` (${o.v>0?"+":""}${o.v})`:"");
+      b.onclick=()=>{
+        [...seg.children].forEach(x=>x.classList.remove("on"));
+        b.classList.add("on");sel[item.id]=o.v;recompute();
+      };
+      seg.appendChild(b);
+    });
+    f.appendChild(seg);calc.appendChild(f);
+  });
+  function recompute(){
+    const r=acrEularScore(sel);
+    const out=$("#dxOut",body);out.style.display="block";
+    out.innerHTML=`<span class="cval">${r.score}점</span> / 8 &nbsp; ${r.gout?pill("통풍 분류 (≥8)","block"):pill("기준 미달 (<8)","info")}
+      ${r.bd.length?`<div style="font-size:11.5px;color:var(--ink-dim);margin-top:7px">${r.bd.map(b=>`${b.q}: <b>${b.v>0?"+":""}${b.v}</b>`).join(" · ")}</div>`:""}
+      ${!r.gout?`<div style="font-size:11px;color:var(--ink-faint);margin-top:6px">미달 시 가성통풍·패혈성관절염·반응성/건선/류마티스 관절염 등 감별 고려</div>`:""}`;
+  }
+  openSheet("진단 · ACR/EULAR 2015","자동 채점 계산기",body);
+}
+
+/* ===== 병기 ===== */
+function renderStage(){
+  openSheet("병기 · 자연경과","무증상 → 급성 → 간헐기 → 만성결절성",`
+  ${kp("4병기 전형 경과",`
+    <p><b>① 무증상 고요산혈증</b> — sUA↑이나 증상 없음. 대부분 평생 무증상.</p>
+    <p><b>② 급성 통풍성 관절염</b> — 흔히 1st MTP. 수시간 내 발적·종창·극심한 통증, 밤·새벽 호발.</p>
+    <p><b>③ 간헐기</b> — 발작 사이 무증상기. 대부분 6개월~2년 내 2차 발작, 미치료 시 빈도·관절수↑.</p>
+    <p><b>④ 만성 결절성</b> — 결절(tophus) 형성(첫발작 후 평균 ~10년), 관절 손상·변형.</p>`,"📈")}
+  ${kp("왜 1st MTP·발·발목인가",`<p>요산 포화농도 ~7mg/dL(37℃)이나 <mark>온도가 낮으면 급락</mark> → 중심부보다 찬 말단 관절에서 결정 석출. 밤에 체온·혈류·수분↓ → 통증 심화.</p>`,"❄️")}
+  ${kp("합병증",`<ul>
+    <li>통풍결절 → 관절 광범위 손상·기형</li>
+    <li>요로결석·요산신병증(첫 발작 전 10~40%가 신산통 경험)</li>
+    <li>대사증후군·CVD 동반·사망위험 연관(산화스트레스·내피기능 손상)</li></ul>`,"⚠️")}`);
+}
+
+/* ===== 무증상 고요산혈증 ===== */
+function renderAhu(){
+  const a=ahuAdvisor({sua:null});
+  const body=el("div");
+  body.innerHTML=`
+  ${noteBox("외래 최빈·최난 상황. 답을 둘러대지 않으려면 <b>합의·갈림·행동</b>을 분리해 전부 펼친다.","clin")}
+  ${kp("LAYER A · 합의된 사실",`<ul>${a.layerA.map(x=>`<li>${x}</li>`).join("")}</ul>`,"🟢")}
+  <div class="kp"><h4>🟠 LAYER B · 갈리는 지점 (지침별 입장)</h4>
+    ${a.layerB.map(b=>`<div style="padding:8px 0;border-bottom:1px solid var(--line)">
+      ${pill(b.who,b.t)}<div style="font-size:12.5px;color:var(--ink-dim);margin-top:5px">${b.pos}</div></div>`).join("")}
+    ${noteBox("<b>왜 갈리나</b> · "+a.rct,"")}
+  </div>
+  ${kp("한국인 특이 가중치",a.krNote+`<br><span style="color:var(--ink-faint);font-size:11.5px">페북소스타트 CARES 심혈관 경고(FAST 반박)도 CVD 동반 무증상서 신중.</span>`,"🇰🇷")}
+  <div class="kp"><h4>🧭 LAYER C · 행동 트리 (직접 계산)</h4>
+    <div class="field"><label>혈청 요산 sUA (mg/dL)</label><input type="number" id="ahuSua" step="0.1" placeholder="예: 9.2"></div>
+    <div class="field"><label>동반질환 (해당 모두)</label><div class="chips" id="ahuCom"></div></div>
+    <div class="field"><label>특수 상황</label><div class="chips" id="ahuSpec"></div></div>
+    <button class="run-btn" onclick="ahuRun()">행동 옵션 보기</button>
+    <div id="ahuOut" style="margin-top:12px"></div>
+  </div>
+  ${kp("공통 Workup (모든 무증상)",`<div class="tag-row">${a.workup.map(w=>pill(w,"info")).join("")}</div>
+    <p style="font-size:11.5px;color:var(--ink-faint)">2차 원인·동반질환 평가는 치료 여부와 무관하게 항상.</p>`,"🔍")}`;
+  openSheet("무증상 고요산혈증","근거가 갈리는 영역 — 구조화해서 펼침",body);
+  // comorbid chips
+  const coms=[["ckd","CKD"],["cvd","CVD"],["htn","고혈압"],["dm","당뇨"],["urolithiasis","요로결석"],["metabolic","대사증후군"]];
+  const cwrap=$("#ahuCom",body);const cstate={};
+  coms.forEach(([k,l])=>{const b=el("button","chip");b.textContent=l;b.onclick=()=>{cstate[k]=!cstate[k];b.classList.toggle("on");};cwrap.appendChild(b);});
+  const specs=[["special","종양용해/유전성/현저 고요산뇨"]];
+  const swrap=$("#ahuSpec",body);const sstate={};
+  specs.forEach(([k,l])=>{const b=el("button","chip");b.textContent=l;b.onclick=()=>{sstate[k]=!sstate[k];b.classList.toggle("on");};swrap.appendChild(b);});
+  window.ahuRun=()=>{
+    const sua=parseFloat($("#ahuSua",body).value);
+    const r=ahuAdvisor({sua:isNaN(sua)?null:sua,...cstate,...sstate});
+    $("#ahuOut",body).innerHTML=`<div class="calc-out">
+      <div style="margin-bottom:6px">${pill(r.decision,r.strength)}</div>
+      <ul style="margin:6px 0 0;padding-left:18px">${r.opts.map(o=>`<li style="font-size:12.5px;color:var(--ink-dim);margin:3px 0">${o}</li>`).join("")}</ul>
+      <div style="font-size:11px;color:var(--ink-faint);margin-top:8px">결정이 아니라 옵션 + 양면 근거. 한국/미국/일본 입장은 위 LAYER B 참조.</div>
+    </div>`;
+  };
+}
+
+/* ===== 급성 발작 ===== */
+function renderAcute(){
+  const body=el("div");
+  body.innerHTML=`
+  ${noteBox("3약물(콜키신·NSAID·GC) <b>효능 동등</b> → '1차'를 강제하지 않고 환자 위험으로 차등. 발작 24h 이내 시작이 효과를 좌우.","clin")}
+  <div class="kp"><h4>⚡ 급성기 약물 차등 (직접 입력)</h4>
+    <div class="field"><label>eGFR (mL/min/1.73m²)</label><input type="number" id="acE" placeholder="예: 28"></div>
+    <div class="field"><label>위험·상황 (해당 모두)</label><div class="chips" id="acChips"></div></div>
+    <button class="run-btn" onclick="acRun()">약물 옵션 차등 보기</button>
+    <div id="acOut" style="margin-top:12px"></div>
+  </div>
+  ${expand("콜키신 세부","급성 1.2→0.6",`
+    <p>미복용자: <b>1.2mg → 1시간 후 0.6mg</b>(첫날 최대 1.8mg) → 12시간 후부터 0.6mg 1~2회/일, 소실까지.</p>
+    <p>★이미 예방 콜키신 복용 중 발작 → 증량 말고 <b>NSAID/GC로 전환</b>.</p>
+    <p>48h 이내 시작이 효과적. 신기능 감량·반복코스 제한.</p>
+    ${noteBox("★상호작용: 강력/중등도 CYP3A4 + P-gp 억제제(clarithromycin·erythromycin·cyclosporine·verapamil·diltiazem) → 독성. 스타틴 병용 → 근병증·횡문근융해 → CK 모니터.","warn")}`)}
+  ${expand("NSAID 세부","위궤양·신장 회피",`<p>나프록센·이부프로펜·나부메톤·멜록시캄·세레콕시브 등 충분용량·조기.</p>
+    <p>회피: eGFR<30(<60 신중)·소화성궤양·심부전·조절 안된 고혈압·항응고제 병용·고령. 사용 시 PPI·최단기간.</p>`)}
+  ${expand("스테로이드 세부","30~35mg×3~5일",`<p>경구 prednisolone 30~35mg/일×3~5일 또는 0.5mg/kg/일 후 감량.</p>
+    <p>큰 관절(무릎·어깨) 단일 침범 → 관절천자 후 관절강내 스테로이드.</p>
+    <p>당뇨 혈당불량·활동성 감염 회피. 위궤양 동반 시 NSAID보다 선호.</p>`)}
+  ${kp("병용 · 회피",`<ul>
+    <li>단독요법 우선 → 중증/다관절은 콜키신+NSAID 또는 콜키신+GC</li>
+    <li><b>★NSAID + 전신 GC 병용은 회피</b> (GI 독성·체액저류)</li>
+    <li>보조: 안정·환부 거상·냉찜질 15~20분·수분</li></ul>`,"🔀")}
+  ${kp("급성기 ULT 처리",`<p>발작 중 ULT 신규시작/지속 모두 <mark>악화 근거 없음</mark> → 항염증제와 동시투여 고려 가능.</p>
+    <p style="color:var(--ink-faint);font-size:11.5px">단 일부 전통적 접근은 신규 ULT를 발작 가라앉은 후 2~4주로 미루기도 — 양 입장 병존.</p>`,"💊")}`;
+  openSheet("급성 발작 치료","3약물 세부 분기 · 위험도 차등",body);
+  const chipDefs=[["onColchicine","예방 콜키신 복용중"],["pud","소화성궤양"],["dm_uncontrolled","당뇨 혈당불량"],
+    ["infection","활동성 감염"],["hf","심부전"],["anticoag","항응고제"],["monoLarge","큰 관절 단일 침범"]];
+  const cw=$("#acChips",body);const st={};
+  chipDefs.forEach(([k,l])=>{const b=el("button","chip");b.textContent=l;b.onclick=()=>{st[k]=!st[k];b.classList.toggle("on");};cw.appendChild(b);});
+  window.acRun=()=>{
+    const e=parseFloat($("#acE",body).value);
+    const r=acuteOptions({egfr:isNaN(e)?null:e,...st});
+    $("#acOut",body).innerHTML=`<div class="calc-out" style="background:var(--panel);border-color:var(--line)">
+      ${r.drugs.map(d=>`<div class="rrow"><div class="rmain">
+        <div class="rdrug">${d.name} ${statBadge(d.stat)}</div>
+        <div class="rdose">${d.dose}</div>
+        <div class="rwhy">${d.why}</div></div></div>`).join("")}
+      ${r.combos.map(c=>noteBox(c,c.includes("회피")?"warn":"")).join("")}
+    </div>`;
+  };
+}
+
+/* ===== ULT ===== */
+function renderUlt(){
+  const body=el("div");
+  body.innerHTML=`
+  ${kp("ULT 적응증",`<ul>
+    <li>통풍결절 존재</li><li>재발성 발작(연 2회 이상)</li>
+    <li>통풍성 관절손상</li><li>요로결석 동반</li></ul>
+    <p style="font-size:11.5px;color:var(--ink-faint)">첫 발작이어도 신기능저하·sUA 8~9↑·요로결석이면 시작 고려.</p>`,"🎯")}
+  ${kp("요산 목표",`<div class="metric">
+    <div class="mbox"><div class="mval" style="color:var(--urate)">&lt;6.0</div><div class="mlb">무결절 mg/dL</div></div>
+    <div class="mbox"><div class="mval" style="color:var(--urate)">&lt;5.0</div><div class="mlb">결절성 mg/dL</div></div>
+    </div><p style="font-size:11.5px;color:var(--ink-faint)">&lt;3.0 장기유지는 비권장(비용·근거). 중단 시 재발 36~81% → 부작용·금기 없으면 지속.</p>`,"📉")}
+  <div class="warn-strip">⚠️ ULT 시작 시 최대 <b>80%</b>에서 반발성 발작(mobilization flare). 예방 동반 + 환자 설명 필수.</div>
+  <div class="kp"><h4>🛡️ 반발성 발작 예방 (직접 입력)</h4>
+    <div class="field"><label>eGFR</label><input type="number" id="fpE" placeholder="예: 45"></div>
+    <div class="field"><label>해당 사항</label><div class="chips" id="fpChips"></div></div>
+    <button class="run-btn" onclick="fpRun()">예방 프로토콜 보기</button>
+    <div id="fpOut" style="margin-top:12px"></div>
+  </div>
+  ${kp("왜 생기나 (환자 설명)",`<p>ULT로 요산이 빠르게 떨어지면 침착된 MSU 결정이 불안정해지며 일부 동원·용해 → 일시적 발작↑. <mark>치료가 잘 되는 신호이지 실패가 아님.</mark> 예방약으로 줄이고 ULT는 지속.</p>`,"💡")}`;
+  openSheet("요산저하요법(ULT)","적응증·목표·반발성 발작 예방",body);
+  const defs=[["pud","소화성궤양"],["statin","스타틴 복용"],["cyp3a4","CYP3A4/P-gp 억제제"],["tophus","통풍결절"],["frequent","잦은 발작(≥2/년)"]];
+  const cw=$("#fpChips",body);const st={};
+  defs.forEach(([k,l])=>{const b=el("button","chip");b.textContent=l;b.onclick=()=>{st[k]=!st[k];b.classList.toggle("on");};cw.appendChild(b);});
+  window.fpRun=()=>{
+    const e=parseFloat($("#fpE",body).value);
+    const r=flareProphylaxis({egfr:isNaN(e)?null:e,pud:st.pud,statin:st.statin,cyp3a4:st.cyp3a4,tophus:st.tophus,flaresPerYear:st.frequent?2:0});
+    $("#fpOut",body).innerHTML=`<div class="calc-out" style="background:var(--panel);border-color:var(--line)">
+      ${r.agents.map(a=>`<div class="rrow"><div class="rmain">
+        <div class="rdrug"><span class="pill ${a.stat==="avoid"?"alert":a.stat==="preferred"?"ok":"info"}">${a.rank}</span> ${a.name} ${a.stat==="avoid"?statBadge("avoid"):""}</div>
+        <div class="rdose">${a.dose}</div><div class="rwhy">${a.note}</div></div></div>`).join("")}
+      <div class="rrow"><div class="rmain"><div class="rdrug">기간</div><div class="rwhy">${r.duration}</div></div></div>
+      <div class="rrow"><div class="rmain"><div class="rdrug">중단 기준</div><div class="rwhy">${r.stop}</div></div></div>
+      ${r.warns.map(w=>noteBox(w,"warn")).join("")}
+      ${noteBox("👤 환자 설명: "+r.teach,"clin")}
+    </div>`;
+  };
+}
+
+/* ===== 안전성 · 신기능 용량표 ===== */
+function renderSafety(){
+  const body=el("div");
+  const drugs=["drug:allopurinol","drug:febuxostat","drug:benzbromarone","drug:probenecid","drug:colchicine","class:nsaid","class:gc"];
+  const names={"class:nsaid":"NSAID","class:gc":"글루코코르티코이드"};
+  let html=`${noteBox("통풍 약물의 최대 함정은 신기능. eGFR 입력으로 약물별 상태·용량 즉시 확인.","clin")}
+  <div class="kp"><h4>🧮 eGFR 입력 → 전 약물 판정</h4>
+    <div class="field"><label>eGFR (mL/min/1.73m²)</label><input type="number" id="rdE" placeholder="예: 35" oninput="rdRun()"></div>
+    <div id="rdOut"></div>
+  </div>`;
+  drugs.forEach(id=>{
+    const rd=RENAL_DOSE[id];const nm=names[id]||DRUG_DB[id].name;
+    html+=expand(nm,rd.cutoffNote,`
+      <table class="tbl"><tr><th>eGFR</th><th>상태</th><th>용량·비고</th></tr>
+      ${["g0","g1","g2","g3"].map(b=>`<tr><td class="em">${BAND_LABEL[b]}</td><td>${statBadge(rd[b].s)}</td><td>${rd[b].dose}${rd[b].note?` · <span style="color:var(--ink-faint)">${rd[b].note}</span>`:""}</td></tr>`).join("")}
+      </table>${noteBox(rd.twist,rd.twist.includes("★")?"warn":"")}`);
+  });
+  html+=kp("HLA-B*5801",`<p>한국인 유병률 <b>~12%</b>. 양성 시 알로푸리놀 중증피부반응(SJS/TEN/DRESS) 위험 급증(OR 매우 높음).</p>
+    <p>식약처: 알로푸리놀 투여 전 검사 권고. 양성 → 페북소스타트 등 대안.</p>`,"🧬");
+  body.innerHTML=html;
+  openSheet("안전성 · 신기능 용량표","전 약물 × eGFR 구간",body);
+  window.rdRun=()=>{
+    const e=parseFloat($("#rdE",body).value);const band=egfrBand(e);
+    if(band==null){$("#rdOut",body).innerHTML="";return;}
+    $("#rdOut",body).innerHTML=`<div class="calc-out"><div style="margin-bottom:8px">${pill(BAND_LABEL[band],"urate")}</div>
+      ${drugs.map(id=>{const rd=RENAL_DOSE[id][band];const nm=names[id]||DRUG_DB[id].name;
+        return `<div class="rrow"><div class="rmain"><div class="rdrug">${nm} ${statBadge(rd.s)}</div>
+        <div class="rdose">${rd.dose}</div>${rd.note?`<div class="rwhy">${rd.note}</div>`:""}</div></div>`;}).join("")}
+    </div>`;
+  };
+}
+</script>
+<script>
+/* ===== 급여 ===== */
+function renderReimb(){
+  const ids=["drug:allopurinol","drug:febuxostat","drug:benzbromarone","drug:probenecid","drug:colchicine","drug:naproxen","drug:prednisolone"];
+  let html=`${noteBox("지침 최적과 급여 현실의 간극을 명시. 급여·허가는 갱신될 수 있어 처방·청구 시 최신 고시 확인.","clin")}`;
+  ids.forEach(id=>{
+    const d=DRUG_DB[id],b=reimbBadge(id);
+    html+=`<div class="kp"><h4>${d.name} <span class="dstat ${b.cls==="ok"?"ok":"caution"}">${b.b}</span></h4>
+      <p style="font-size:12.5px;color:var(--ink-dim)">${b.note||"—"}</p></div>`;
+  });
+  html+=kp("핵심 포인트",`<ul>
+    <li><b>알로푸리놀</b> 1차 — HLA-B*5801 검사 식약처 권고(투여 전)</li>
+    <li><b>페북소스타트</b> 대개 2차 — 알로푸리놀 부작용/효과불충분/금기 시(소견 첨부)</li>
+    <li><b>배출저하형이 통풍의 ~90%</b> → 배설촉진제 역할 크나 안전성 제약(벤즈브로마론 간독성·프로베네시드 신기능)</li>
+    <li><b>무증상 고요산혈증</b> 일반적으로 약물치료 비권장(근거 불충분)</li></ul>`,"💰");
+  html+=kp("흔한 급여 코드",`<p>통풍 상병(M10)에서 통풍 약제 급여가 인정됩니다. 무증상 고요산혈증(E79.0)은 별도 상병으로 약물 급여 영역이 다릅니다.</p>
+    <p style="font-size:12px;color:var(--clin);font-weight:600;margin-top:6px">→ 도서관 "급여코드(KCD)" 토픽에서 코드 검색·세분류 확인</p>`,"🏷️");
+  openSheet("급여기준","약물별 인정",html);
+}
+
+/* ===== 급여코드 KCD ===== */
+function renderKcd(){
+  const body=el("div");
+  body.innerHTML=`
+  ${noteBox("통풍 약제 급여는 <b>통풍 상병(M10)</b>에서 인정. 무증상 고요산혈증(E79.0)은 약물 급여 영역이 다름 — 상병 선택이 삭감 방어의 시작.","clin")}
+  <div class="kp"><h4>🔍 코드 검색</h4>
+    <input id="kcdSearch" placeholder="코드·상병명 검색 (예: M10, 고요산, 결석)" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;font-family:inherit">
+  </div>
+  <div id="kcdList"></div>
+  ${kp("부위 세분 (M10 5번째 자리)",`<div style="font-size:12px;color:var(--ink-dim);line-height:1.9">${KCD_SITE.map(s=>`<span class="mono" style="color:var(--ink)">${s.c}</span> ${s.s}`).join(" · ")}</div>
+    <p style="font-size:11.5px;color:var(--ink-faint);margin-top:7px">예: <span class="mono">M10.07</span> 특발성 통풍, 발목 및 발 (.7 = 발목·발, 호발 부위)</p>`,"📍")}
+  ${kp("청구 실전 팁",`<ul>
+    <li>가능하면 <b>구체 코드</b>(M10.0 등) — 상세불명(M10.9)보다 권장</li>
+    <li>CKD 동반 → <b>M10.3</b> 또는 통풍+CKD 코드 병기, 신기능별 약물 제약 함께 기록</li>
+    <li>약물-유발(이뇨제 등) → <b>M10.2</b> + 원인 약물 검토</li>
+    <li>요로결석 동반 → <b>N20.x</b> 병기, 요산결석이면 알로푸리놀·알칼리화 연계</li>
+    <li>★요산저하제 급여는 통풍 상병에서 인정 — E79.0 단독으론 ULT 급여 제한적</li></ul>`,"💡")}
+  ${noteBox("KCD·심사기준은 개정될 수 있음 — 청구 시 최신 KCD(KOICD)·심평원 기준 확인.","")}`;
+  openSheet("급여코드 (KCD)","통풍 M10 · 고요산 E79 · 결석 N20",body);
+  function renderKcdList(q){
+    const list=$("#kcdList",body);list.innerHTML="";
+    KCD_GROUPS.forEach(g=>{
+      const items=KCD_DB.filter(k=>k.grp===g && (!q||(k.code+k.label+k.desc).toLowerCase().includes(q.toLowerCase())));
+      if(!items.length)return;
+      list.appendChild(el("div","sec-label",g));
+      items.forEach(k=>{
+        const card=el("div","kp");
+        card.innerHTML=`<h4><span class="mono" style="color:var(--pay);background:var(--pay-bg);padding:2px 8px;border-radius:7px;font-size:13px">${k.code}</span> ${k.label}</h4>
+          <p style="font-size:12.5px;color:var(--ink-dim);margin-top:6px">${k.desc}</p>
+          ${k.key?`<ul style="margin:6px 0 0">${k.key.map(x=>`<li style="font-size:11.5px">${x}</li>`).join("")}</ul>`:""}`;
+        list.appendChild(card);
+      });
+    });
+    if(!list.children.length)list.innerHTML=`<div class="note">검색 결과 없음</div>`;
+  }
+  $("#kcdSearch",body).oninput=e=>renderKcdList(e.target.value.trim());
+  renderKcdList("");
+}
+
+/* ===== 퓨린 대사 ===== */
+function renderPurine(){
+  openSheet("퓨린대사 · 요산생성","대사경로 · 배설 · 포화",`
+  ${kp("요산은 어디서 오나",`<p>요산 = 퓨린 뉴클레오티드 대사의 최종산물. 체내 합성 + 음식 섭취 퓨린.</p>`,"🧪")}
+  <div class="pathway"><div class="pwstep">
+    <span class="pwnode">Ribose-5-P</span><span class="pwarrow">→</span>
+    <span class="pwnode">IMP</span><span class="pwarrow">→</span>
+    <span class="pwnode">AMP / GMP</span><span class="pwarrow">→</span>
+    <span class="pwnode">Hypoxanthine</span><span class="pwarrow">→<br><span class="pwenz">XO</span></span>
+    <span class="pwnode">Xanthine</span><span class="pwarrow">→<br><span class="pwenz">XO</span></span>
+    <span class="pwnode urate">요산<br>Uric acid</span>
+  </div></div>
+  ${kp("XOI의 작용점",`<p>알로푸리놀·페북소스타트는 <b>잔틴산화효소(XO)</b>를 차단 → hypoxanthine·xanthine이 요산으로 전환되는 마지막 두 단계를 막아 생성↓.</p>`,"🎯")}
+  ${kp("요산 배설",`<p>전체의 98% 중 <b>신장 2/3 · 장 1/3</b> 배설. 고요산혈증의 <mark>85~90%는 배출저하형</mark>(신세뇨관 재흡수↑/배설↓), 10~15%는 과다생성형.</p>
+    <p>요산배설촉진제(벤즈브로마론·프로베네시드)는 신세뇨관 <b>URAT1</b> 억제 → 재흡수 차단.</p>`,"🚽")}
+  ${kp("포화와 온도",`<p>포화농도 ~7mg/dL(37℃). <mark>온도 낮으면 포화농도 급락</mark> → 찬 말단(1st MTP·발목)에서 결정 석출. 침착된 MSU를 대식세포·호중구가 탐식 → IL-1β 등 분비 → 급성 염증.</p>`,"❄️")}`);
+}
+
+/* ===== 식이 (퓨린 DB + 합산) ===== */
+function renderDiet(){
+  const body=el("div");
+  body.innerHTML=`
+  ${noteBox("'퓨린 적은 거 드세요'는 둘러대기. 정량 + 등급 + <b>예외</b>로 환자가 실제로 뭘 먹을지 답한다.","clin")}
+  ${kp("핵심 예외 (통념 교정)",`<ul>
+    <li>🥬 <b>고퓨린 채소는 발작 안 늘림</b> — 시금치·아스파라거스·버섯·완두는 다수 코호트서 무관. 채소 자유.</li>
+    <li>🍺 <b>맥주는 퓨린 수치로 설명 안 됨</b> — 퓨린 부하 + 알코올의 신배설 차단 이중타격. 1잔에 sUA 0.5~1.0↑.</li>
+    <li>🥛 <b>저지방 유제품은 보호적</b> — 요산 배설 촉진.</li>
+    <li>☕ <b>블랙커피</b>(무가당) 발작↓ 관찰 / 🍒 체리 위험↓ 신호.</li>
+    <li>📊 식이 기여는 혈중 요산의 <b>~30%</b> — 식이만으론 한계, 만성은 약물 병행.</li></ul>`,"💡")}
+  <div class="kp"><h4>🔍 식품 퓨린 DB + 1일 합산</h4>
+    <input id="foodSearch" placeholder="식품 검색 (예: 멸치, 우유)" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;margin-bottom:10px;font-family:inherit">
+    <div id="foodTally" class="calc-out" style="display:none"></div>
+    <div id="foodList"></div>
+  </div>`;
+  // 음주/과당 기전
+  body.innerHTML+=expand("술이 나쁜 3중 기전","맥주 최악",`
+    <p>① 맥주·막걸리 = 퓨린 직접 함유 ② 알코올 = 신장 요산배설 방해 ③ 대사 시 젖산↑ → 요산배설 경쟁억제.</p>
+    <p>1년 무발작 + 조절양호 시 맥주 1~2잔/와인 1잔 정도 허용. 비알코올 맥주 포함 절주 권장.</p>`);
+  body.innerHTML+=expand("과당이 나쁜 기전","하이볼·청량음료",`
+    <p>과당은 인슐린 비의존 흡수 → 간에서 빠르게 ATP 고갈하며 대사 → 퓨린대사 활성화 → 요산생성↑. 콘시럽·청량음료·과일주스 주의.</p>`);
+  openSheet("식이 · 음주 · 과당","퓨린 정량 DB · 기전",body);
+  // food list + tally
+  const tally=[];
+  function renderFoodList(q){
+    const list=$("#foodList",body);list.innerHTML="";
+    const items=DIET_DB.filter(f=>!q||f.f.includes(q)).sort((a,b)=>b.mg-a.mg);
+    items.forEach(f=>{
+      const ti=TIER_INFO[f.t];
+      const row=el("div","foodrow");
+      row.innerHTML=`<span class="food-q ${ti.cls}c ${ti.cls}bg">${f.mg}</span>
+        <span class="fname">${f.f} <span style="color:var(--ink-faint);font-size:10.5px">${f.c}${f.veg?" · 채소예외":""}${f.dairy?" · 보호적":""}</span></span>
+        <button class="fadd">+</button>`;
+      row.querySelector(".fadd").onclick=()=>{tally.push(f);updateTally();};
+      list.appendChild(row);
+    });
+  }
+  function updateTally(){
+    const t=$("#foodTally",body);
+    if(!tally.length){t.style.display="none";return;}
+    t.style.display="block";
+    const sum=tally.reduce((a,f)=>a+f.mg,0);
+    const over=sum>PURINE_DAILY_LIMIT;
+    t.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center">
+      <div><span class="cval" style="color:${over?'var(--block)':'var(--clin)'}">${sum}</span> <span style="font-size:12px;color:var(--ink-faint)">mg / ${PURINE_DAILY_LIMIT}mg 목표 (100g 기준 합산)</span></div>
+      <button onclick="window._clearTally()" style="font-size:11px;color:var(--clin);font-weight:600">초기화</button></div>
+    <div style="font-size:11px;color:var(--ink-dim);margin-top:6px">${tally.map(f=>esc(f.f)).join(", ")}</div>
+    ${over?noteBox("1일 권장(~400mg) 초과 — 발작기엔 더 제한.","warn"):""}`;
+  }
+  window._clearTally=()=>{tally.length=0;updateTally();};
+  $("#foodSearch",body).oninput=e=>renderFoodList(e.target.value.trim());
+  renderFoodList("");
+}
+
+/* ===== 동반질환 ===== */
+function renderComorbid(){
+  openSheet("동반질환 · 요산상승 약물","대사질환 연관 · 약물 검토",`
+  ${kp("통풍은 대사질환의 결과이자 동반질환",`<ul>
+    <li><b>고혈압</b> — 신혈류↓ → 요산배설↓. 통풍 위험인자.</li>
+    <li><b>이상지질혈증</b> — 중성지방↑ → 인슐린저항성 → 세뇨관 재흡수↑.</li>
+    <li><b>당뇨</b> — 통풍 환자 ~10% 동반. 상호 위험 증가.</li>
+    <li><b>비만</b> — 인슐린저항성 → 요산↑. 체중감량은 요산·발작↓(단 과격 다이어트=탈수→역효과).</li>
+    <li><b>CKD</b> — 배설↓로 요산↑. 약물 선택·용량의 핵심 제약.</li>
+    <li><b>CVD</b> — 고요산혈증이 산화스트레스·내피손상 → 죽상경화 촉진.</li></ul>`,"🔗")}
+  ${kp("요산을 올리는 약물",`<ul>
+    <li>thiazide / loop 이뇨제</li><li>저용량 아스피린</li>
+    <li>cyclosporine (면역억제제)</li><li>pyrazinamide · ethambutol (항결핵)</li></ul>
+    <p style="font-size:11.5px;color:var(--ink-faint)">대체 가능성·모니터링 검토. 특히 무증상 고요산혈증 workup의 핵심.</p>`,"💊")}
+  ${kp("동반질환 목표(참고)",`<p>BP·LDL·혈당은 각 질환 지침을 따르되, 요산저하제는 통풍 환자에서 부가적 신기능 보호 효과 — 금기 없으면 사용 권고.</p>
+    <p style="font-size:11px;color:var(--ink-faint)">이 도구는 통풍 중심 — 동반질환 상세는 해당 질환 가이드 참조.</p>`,"🎯")}`);
+}
+
+/* ===== 특수 ===== */
+function renderSpecial(){
+  openSheet("특수: 요로결석 · 종양용해","알칼리화 · 라스부리카제",`
+  ${kp("요로결석",`<p>물 많이 마셔 소변량↑. 지속 산성뇨 → <b>소변 pH 6.0~6.5</b>로 알칼리화. 혈청·소변 요산 모두 낮추는 <b>알로푸리놀</b> 적합(칼슘결석도 감소).</p>`,"🪨")}
+  ${kp("급성 요산 신병증",`<p>고위험: 소변 pH>6.5·소변량 유지·예방적 알로푸리놀/페북소스타트. 해결 안 되면 혈액투석.</p>`,"🫘")}
+  ${kp("종양용해증후군",`<p>화학요법 중 악성종양: 재조합 urate-oxidase <b>라스부리카제</b>(요산→알란토인 전환·배설). 예방적 ULT·수분·알칼리화.</p>`,"⚗️")}`);
+}
+
+/* ===== 신흥 약물 ===== */
+function renderEmerging(){
+  let html=`${noteBox("처방 대상이 아니라 지견 제공. <b>국내 가용 여부</b>를 명확히 — 플로우/시뮬 옵션엔 미포함.","clin")}`;
+  EMERGING.forEach(d=>{
+    const av=AV_BADGE[d.av==="dev"?"dev":d.av==="kr"?"kr":"global"];
+    html+=expand(`${d.n} <span class="exp-mini">${d.e}</span>`,"",`
+      <div style="margin-bottom:7px">${pill(av.lb,av.cls)}</div>
+      <p><b>기전</b> · ${d.mech}</p>
+      <p><b>위치</b> · ${d.pos}</p>
+      <p><b>의미</b> · ${d.mean}</p>`);
+  });
+  html+=noteBox("도티누라드·티굴릭소스타트(국산) 등 국내 도입·허가 시 플로우 옵션으로 승격 예정. 현재는 도서관 지견으로만.","");
+  openSheet("신흥 · 개발 약물","URAT1 억제제 · uricase · 국산 XOI",html);
+}
+</script>
+<script>
+/* ════════════════════════════════════════════════════════════
+   시뮬레이션 — 체크형 조언 누적 (강제 아님)
+   ════════════════════════════════════════════════════════════ */
+const SIM_PICK={}; // node -> choice
+const SIM_ITEMS=[]; // 누적 챙길 항목
+function renderSim(){
+  const v=$("#view-sim");
+  v.innerHTML=`
+  ${`<div class="banner"><h3>시뮬레이션 · 조언자</h3><p>각 단계를 선택하면 고려할 옵션·근거가 아래에 누적됩니다. 처방을 내리지 않고 "챙길 것"을 모읍니다.</p></div>`}
+  <div id="simNodes"></div>
+  <div class="sim-sticky"><div class="sim-sticky-inner">
+    <h4>📋 챙길 항목</h4><div id="simAcc"><div class="sim-empty">선택을 시작하면 여기에 누적됩니다.</div></div>
+  </div></div>`;
+  SIM_ITEMS.length=0;for(const k in SIM_PICK)delete SIM_PICK[k];
+  renderSimNodes();
+}
+const SIM_NODES=[
+  {id:"dx",h:"1 · 진단 확인",q:"통풍이 확진/분류되었나?",opts:[
+    {l:"MSU 결정 확인 또는 ACR/EULAR ≥8",s:"진단 확정 — 병기 판정으로",add:null},
+    {l:"불확실",s:"활액검사/분류기준 재확인 권장",add:"진단 재확인: 활액 MSU 또는 ACR/EULAR 채점(도서관 진단 탭)"}]},
+  {id:"stage",h:"2 · 병기",q:"현재 상태는?",opts:[
+    {l:"무증상 고요산혈증",s:"→ 무증상 분기",add:"무증상: 2차원인 workup + LAYER C 행동트리(도서관)"},
+    {l:"급성 발작 중",s:"→ 급성 분기",add:"급성: 항염증 3약물 위험도 차등 선택(24h 내 시작)"},
+    {l:"간헐기/만성·결절성",s:"→ ULT 분기",add:"ULT 적응증·목표 평가 + 반발성 발작 예방 동반"}]},
+  {id:"comorbid",h:"3 · 동반질환·안전성",q:"고려할 동반질환 (대표)",opts:[
+    {l:"CKD 동반",s:"신기능별 약물 제약 — 용량표 확인",add:"CKD: eGFR별 용량표(콜키신 감량·프로베네시드 회피·GC 안전)"},
+    {l:"CVD 동반",s:"페북소스타트 CV 경고 유의",add:"CVD: 페북소스타트 CARES 경고(FAST 반박) 고려"},
+    {l:"특이사항 없음",s:"표준 진행",add:null}]},
+  {id:"hla",h:"4 · HLA-B*5801",q:"알로푸리놀 고려 시 HLA",opts:[
+    {l:"검사 안 함/모름",s:"한국인 ~12% 보유 — 검사 또는 저용량 시작",add:"HLA-B*5801: 검사 고려(한국인 12%) 또는 알로푸리놀 저용량 시작"},
+    {l:"음성",s:"알로푸리놀 사용 가능",add:null},
+    {l:"양성",s:"알로푸리놀 회피 → 페북소스타트 등",add:"HLA 양성: 알로푸리놀 회피 → 페북소스타트 대안"}]},
+  {id:"ult",h:"5 · ULT 결정",q:"요산저하요법 적응?",opts:[
+    {l:"적응 충족(결절·재발·손상·결석)",s:"ULT 시작 + 목표 설정",add:"ULT 시작: 목표 sUA<6(결절<5) + 발작예방 콜키신 병용"},
+    {l:"첫 발작·적응 불충분",s:"생활습관 + 추적",add:"추적: 생활습관 교정 + sUA 모니터, 재발 시 ULT 재평가"}]},
+  {id:"life",h:"6 · 생활습관 (항상)",q:"환자교육 핵심",opts:[
+    {l:"교육 항목 추가",s:"음주·과당·체중·식이",add:"생활습관: 절주(맥주 최악)·과당 제한·체중감량·저지방유제품/채소 권장(채소예외)"}]}
+];
+function renderSimNodes(){
+  const wrap=$("#simNodes");wrap.innerHTML="";
+  // 항상 첫 노드부터, 선택 시 다음 노드 공개
+  let show=true;
+  SIM_NODES.forEach((node,idx)=>{
+    if(!show)return;
+    const n=el("div","node");
+    n.innerHTML=`<h4>${node.h}</h4><div class="nq">${node.q}</div>`;
+    node.opts.forEach((o,oi)=>{
+      const b=el("button","opt"+(SIM_PICK[node.id]===oi?" sel":""));
+      b.innerHTML=`${o.l}<span class="osub">${o.s}</span>`;
+      b.onclick=()=>{
+        SIM_PICK[node.id]=oi;
+        rebuildAcc();renderSimNodes();
+      };
+      n.appendChild(b);
+    });
+    wrap.appendChild(n);
+    if(SIM_PICK[node.id]==null)show=false; // 미선택 시 다음 잠금
+  });
+  // finale
+  if(SIM_PICK["life"]!=null){
+    const fin=el("div","node");
+    fin.style.borderColor="var(--clin)";
+    fin.innerHTML=`<h4>✓ 요약</h4><div class="nq">아래 "챙길 항목"이 이 환자의 고려사항입니다. 모든 선택은 조언이며 최종 결정은 처방의 책임입니다.</div>
+      <button class="opt" onclick="renderSim()" style="text-align:center;color:var(--clin);font-weight:650">처음부터 다시</button>`;
+    fin.querySelector(".opt").classList.remove("opt");
+    wrap.appendChild(fin);
+  }
+}
+function rebuildAcc(){
+  SIM_ITEMS.length=0;
+  SIM_NODES.forEach(node=>{
+    const pick=SIM_PICK[node.id];
+    if(pick!=null&&node.opts[pick].add)SIM_ITEMS.push(node.opts[pick].add);
+  });
+  const acc=$("#simAcc");
+  if(!SIM_ITEMS.length){acc.innerHTML=`<div class="sim-empty">선택을 시작하면 여기에 누적됩니다.</div>`;return;}
+  acc.innerHTML=`<ul>${SIM_ITEMS.map(i=>`<li>${i}</li>`).join("")}</ul>`;
+}
+
+/* ════════════════════════════════════════════════════════════
+   플로우 — 실시간 입력 → 3엔진 카드
+   ════════════════════════════════════════════════════════════ */
+function renderFlow(){
+  const v=$("#view-flow");
+  v.innerHTML=`
+  <div class="banner"><h3>플로우 · 환자 앞 실시간</h3><p>입력하면 진단·급성기·ULT·급여·교육 카드가 자동 계산됩니다.</p></div>
+  <div class="kp">
+    <div class="field"><label>병기</label><div class="seg" id="fStage">
+      <button data-v="asymptomatic">무증상</button><button data-v="acute" class="on">급성</button><button data-v="chronic">만성/간헐</button></div></div>
+    <div class="field"><label>혈청 요산 sUA (mg/dL)</label><input type="number" id="fSua" step="0.1" placeholder="예: 8.4"></div>
+    <div class="field"><label>eGFR</label><input type="number" id="fEgfr" placeholder="예: 42"></div>
+    <div class="field"><label>통풍결절</label><div class="seg" id="fTophus"><button data-v="0" class="on">없음</button><button data-v="1">있음</button></div></div>
+    <div class="field"><label>HLA-B*5801</label><div class="seg" id="fHla">
+      <button data-v="unk" class="on">모름</button><button data-v="neg">음성</button><button data-v="pos">양성</button></div></div>
+    <div class="field"><label>연 발작 횟수</label><input type="number" id="fFlares" placeholder="예: 3"></div>
+    <div class="field"><label>동반질환 (해당 모두)</label><div class="chips" id="fComorbid"></div></div>
+    <div class="field"><label>급성기 상황 (발작 시)</label><div class="chips" id="fAcute"></div></div>
+    <button class="run-btn" onclick="flowRun()">3엔진 카드 생성</button>
+  </div>
+  <div id="flowOut"></div>`;
+  // segs
+  $$("#fStage button,#fTophus button,#fHla button").forEach(b=>b.onclick=()=>{
+    [...b.parentElement.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");});
+  const coDefs=[["ckd","CKD"],["cvd","CVD"],["htn","고혈압"],["dm","당뇨"],["pud","소화성궤양"],["hf","심부전"],["urolithiasis","요로결석"]];
+  const cw=$("#fComorbid",v);const coState={};
+  coDefs.forEach(([k,l])=>{const b=el("button","chip");b.textContent=l;b.onclick=()=>{coState[k]=!coState[k];b.classList.toggle("on");};cw.appendChild(b);});
+  const acDefs=[["onColchicine","예방콜키신중"],["infection","활동성감염"],["dm_uncontrolled","혈당불량"],["anticoag","항응고제"],["monoLarge","큰관절단일"]];
+  const aw=$("#fAcute",v);const acState={};
+  acDefs.forEach(([k,l])=>{const b=el("button","chip");b.textContent=l;b.onclick=()=>{acState[k]=!acState[k];b.classList.toggle("on");};aw.appendChild(b);});
+  window._flowState={coState,acState};
+}
+function flowRun(){
+  const v=$("#view-flow");
+  const stage=$("#fStage .on",v).dataset.v;
+  const sua=parseFloat($("#fSua",v).value);
+  const egfr=parseFloat($("#fEgfr",v).value);
+  const tophus=$("#fTophus .on",v).dataset.v==="1";
+  const hla=$("#fHla .on",v).dataset.v;
+  const flares=parseInt($("#fFlares",v).value)||0;
+  const {coState,acState}=window._flowState;
+  const inp={stage,sua:isNaN(sua)?null:sua,egfr:isNaN(egfr)?null:egfr,tophus,hla,flaresPerYear:flares,...coState,...acState};
+  let html="";
+
+  // 진단·병기 카드
+  const tgt=urateTarget(tophus);
+  html+=`<div class="rcard"><div class="rcard-h urate">🎯 병기 · 요산 목표</div><div class="rcard-b">
+    <div class="metric">
+      <div class="mbox"><div class="mval">${inp.sua!=null?inp.sua:"–"}</div><div class="mlb">현재 sUA</div></div>
+      <div class="mbox"><div class="mval" style="color:var(--urate)">&lt;${tgt}</div><div class="mlb">목표 ${tophus?"결절":"무결절"}</div></div>
+      <div class="mbox"><div class="mval">${egfrBand(egfr)?BAND_LABEL[egfrBand(egfr)].replace("eGFR ",""):"–"}</div><div class="mlb">신기능</div></div>
+    </div>
+    ${inp.sua!=null&&inp.sua>tgt?noteBox(`목표(<${tgt}) 미달 — ULT 적응 시 적정 필요`,"warn"):inp.sua!=null?noteBox("목표 범위 내","clin"):""}
+  </div></div>`;
+
+  // 무증상 분기
+  if(stage==="asymptomatic"){
+    const a=ahuAdvisor(inp);
+    html+=`<div class="rcard"><div class="rcard-h clin">🧭 무증상 — 행동 옵션</div><div class="rcard-b">
+      <div style="margin-bottom:7px">${pill(a.decision,a.strength)}</div>
+      <ul style="margin:4px 0;padding-left:18px">${a.opts.map(o=>`<li style="font-size:12.5px;color:var(--ink-dim);margin:3px 0">${o}</li>`).join("")}</ul>
+      ${noteBox(a.krNote,"warn")}
+      <div style="font-size:11px;color:var(--ink-faint);margin-top:8px">한/미/일 입장·RCT 근거는 도서관 무증상 탭 참조. 일률치료 아닌 개별 득실.</div>
+    </div></div>`;
+  }
+
+  // 급성기 카드
+  if(stage==="acute"){
+    const r=acuteOptions(inp);
+    html+=`<div class="rcard"><div class="rcard-h clin">⚡ 급성기 — 약물 차등</div><div class="rcard-b">
+      ${r.drugs.map(d=>`<div class="rrow"><div class="rmain">
+        <div class="rdrug">${d.name} ${statBadge(d.stat)}</div>
+        <div class="rdose">${d.dose}</div><div class="rwhy">${d.why}</div></div></div>`).join("")}
+      ${r.combos.map(c=>noteBox(c,c.includes("회피")?"warn":"")).join("")}
+    </div></div>`;
+  }
+
+  // ULT 카드 (만성 또는 적응)
+  if(stage==="chronic"||stage==="acute"){
+    const ind=ultIndication(inp);
+    const opts=ultOptions(inp);
+    html+=`<div class="rcard"><div class="rcard-h clin">💊 ULT — 요산저하 옵션</div><div class="rcard-b">
+      ${ind.indicated?noteBox("ULT 적응: "+ind.reasons.join(" · "),"clin"):noteBox("적응 불충분 — 첫발작·저빈도면 추적 고려(신기능저하·sUA 8~9↑·결석은 시작 고려)","")}
+      ${opts.map(d=>`<div class="rrow"><div class="rmain">
+        <div class="rdrug">${d.name} <span style="font-size:10.5px;color:var(--ink-faint)">${d.role}</span> ${statBadge(d.stat)}</div>
+        <div class="rdose">${d.dose}${d.note?" · "+d.note:""}</div>
+        ${d.flags.map(f=>`<div class="rwhy"><span class="pill ${f.t}">${f.t==="block"?"⛔":f.t==="warn"?"⚠":"ⓘ"}</span> ${f.x}</div>`).join("")}
+      </div></div>`).join("")}
+    </div></div>`;
+    // 반발성 발작 예방 (ULT 떴으면 항상)
+    const fp=flareProphylaxis({egfr,pud:coState.pud,statin:false,cyp3a4:false,tophus,flaresPerYear:flares});
+    html+=`<div class="rcard"><div class="rcard-h edu">🛡️ 반발성 발작 예방 (ULT 동반 필수)</div><div class="rcard-b">
+      <div class="warn-strip">⚠️ ULT 시작 시 최대 80% 발작 — 예방 없이 시작 금물</div>
+      ${fp.agents.map(a=>`<div class="rrow"><div class="rmain">
+        <div class="rdrug"><span class="pill ${a.stat==="avoid"?"alert":a.stat==="preferred"?"ok":"info"}">${a.rank}</span> ${a.name}</div>
+        <div class="rdose">${a.dose}</div><div class="rwhy">${a.note}</div></div></div>`).join("")}
+      <div class="rrow"><div class="rmain"><div class="rdrug">기간</div><div class="rwhy">${fp.duration}</div></div></div>
+      ${noteBox("👤 "+fp.teach,"clin")}
+    </div></div>`;
+  }
+
+  // 급여 카드
+  const reimbIds=stage==="acute"?["drug:colchicine","drug:naproxen","drug:prednisolone"]:["drug:allopurinol","drug:febuxostat","drug:benzbromarone"];
+  html+=`<div class="rcard"><div class="rcard-h pay">💰 급여</div><div class="rcard-b">
+    ${reimbIds.map(id=>{const b=reimbBadge(id);return `<div class="rrow"><div class="rmain">
+      <div class="rdrug">${DRUG_DB[id].name} <span class="dstat ${b.cls==="ok"?"ok":"caution"}">${b.b}</span></div>
+      ${b.note?`<div class="rwhy">${b.note}</div>`:""}</div></div>`;}).join("")}
+  </div></div>`;
+
+  // 교육 카드
+  html+=`<div class="rcard"><div class="rcard-h edu">🥗 교육 · 관리</div><div class="rcard-b">
+    <ul style="margin:0;padding-left:18px">
+      <li style="font-size:12.5px;color:var(--ink-dim);margin:3px 0">절주 — 맥주·막걸리 최악(퓨린+배설차단+젖산)</li>
+      <li style="font-size:12.5px;color:var(--ink-dim);margin:3px 0">과당 제한 — 하이볼·청량음료·콘시럽</li>
+      <li style="font-size:12.5px;color:var(--ink-dim);margin:3px 0">체중감량(점진), 저지방 유제품·채소·커피 권장(채소 예외)</li>
+      ${coState.ckd||coState.htn||coState.dm?`<li style="font-size:12.5px;color:var(--ink-dim);margin:3px 0">동반질환 목표 관리(각 질환 지침) + 요산상승 약물(이뇨제·아스피린) 검토</li>`:""}
+    </ul>
+  </div></div>`;
+
+  html+=`<div class="foot">조언자 도구 · 모든 결과는 참고이며 최종 결정은 처방의 책임</div>`;
+  $("#flowOut",v).innerHTML=html;
+  $("#flowOut",v).scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ════════════════════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════════════════════ */
+renderLibrary();
+renderSim();
+renderFlow();
+</script>
+</body>
+</html>
