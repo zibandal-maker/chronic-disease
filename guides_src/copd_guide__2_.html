@@ -39,10 +39,23 @@ body{padding-bottom:20px;}
 .wrap{max-width:680px;margin:0 auto;padding:12px;}
 
 /* 검색 */
+/* 검색바 (돋보기 아이콘) */
+.searchbar{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);
+  border-radius:11px;padding:10px 13px;margin-bottom:12px;box-shadow:var(--shadow);}
+.searchbar .si{color:var(--ink-faint);font-size:15px;}
+.searchbar input{flex:1;border:none;outline:none;font-size:15px;font-family:inherit;background:none;color:var(--ink);}
 .search{display:flex;gap:8px;margin-bottom:12px;}
 .search input{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;
   background:var(--panel);color:var(--ink);font-family:inherit;}
 .search input:focus{outline:none;border-color:var(--care);}
+
+/* 시뮬 유도 인트로 카드 */
+.intro-card{display:block;width:100%;text-align:left;border:0;cursor:pointer;font-family:inherit;
+  background:linear-gradient(135deg,var(--care),#14786a);color:#fff;border-radius:14px;
+  padding:14px 16px;margin-bottom:13px;box-shadow:0 2px 8px rgba(20,138,114,.18);}
+.intro-card:active{transform:scale(.99);}
+.intro-card .t{font-size:16px;font-weight:700;margin-bottom:3px;}
+.intro-card .d{font-size:12.5px;opacity:.93;line-height:1.45;}
 
 /* 카드 */
 .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;
@@ -53,16 +66,22 @@ body{padding-bottom:20px;}
 .card.bio{border-left:3px solid var(--bio);}
 .sec-title{font-size:13px;font-weight:700;color:var(--ink-dim);margin-bottom:8px;letter-spacing:-.2px;}
 
-/* 토픽 그리드 */
+/* 토픽 그리드 — 아이콘 + 카테고리 배지 상단 행 */
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.topic{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 12px;
-  cursor:pointer;box-shadow:var(--shadow);transition:transform .08s;position:relative;overflow:hidden;}
+@media(max-width:380px){.grid{grid-template-columns:1fr;}}
+.topic{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 14px;
+  cursor:pointer;box-shadow:var(--shadow);transition:transform .08s;text-align:left;font-family:inherit;
+  border-left:3px solid var(--line);display:block;width:100%;}
 .topic:active{transform:scale(.98);}
-.topic .num{font-size:11px;font-weight:700;opacity:.5;}
-.topic .ttl{font-size:14px;font-weight:700;margin-top:3px;letter-spacing:-.3px;}
-.topic .star{font-size:10px;margin-top:5px;color:var(--ink-faint);line-height:1.3;}
-.topic .bar{position:absolute;left:0;top:0;bottom:0;width:3px;}
-.topic.pay .bar{background:var(--pay);} .topic.clin .bar{background:var(--clin);} .topic.care .bar{background:var(--care);}
+.topic.clin{border-left-color:var(--clin);} .topic.care{border-left-color:var(--care);} .topic.pay{border-left-color:var(--pay);}
+.topic .th{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.topic .ico{font-size:19px;line-height:1;}
+.topic .cat{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:auto;}
+.topic .cat.clin{background:var(--clin-bg);color:var(--clin);}
+.topic .cat.care{background:var(--care-bg);color:var(--care);}
+.topic .cat.pay{background:var(--pay-bg);color:var(--pay);}
+.topic .tt{font-size:14.5px;font-weight:700;letter-spacing:-.3px;color:var(--ink);}
+.topic .ts{font-size:11px;margin-top:4px;color:var(--ink-faint);line-height:1.4;}
 
 /* 배지 */
 .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;line-height:1.6;}
@@ -1072,16 +1091,16 @@ function el(){return document.getElementById("app");}
 
 /* ── 토픽 정의 ── */
 var TOPICS = [
-  {id:"diagnosis", cat:"clin", num:1, title:"진단·분류", star:"국내 고/저위험 ↔ GOLD A/B/E"},
-  {id:"inhaler",   cat:"clin", num:2, title:"흡입제 치료", star:"★알고리즘 그림 + 제품·디바이스"},
-  {id:"eos",       cat:"clin", num:3, title:"호산구·표현형", star:"100/300 cut-off"},
-  {id:"biologic",  cat:"pay",  num:4, title:"생물학제제", star:"★R-CHECK · 급여 절벽"},
-  {id:"exac",      cat:"clin", num:5, title:"급성악화", star:"중증도·치료·예방"},
-  {id:"device_care",cat:"care",num:6, title:"디바이스·비약물", star:"술기·금연·재활·산소"},
-  {id:"comorbid_vacc",cat:"care",num:7,title:"동반질환·백신", star:"심혈관·폐암선별·백신7종"},
-  {id:"reimb",     cat:"pay",  num:8, title:"급여 기준", star:"지침↔급여 괴리"},
-  {id:"kcd",       cat:"pay",  num:9, title:"질병코드", star:"J44 · 청구"},
-  {id:"pft",       cat:"clin", num:10, title:"PFT 해석 (부록)", star:"★약어·패턴·신뢰성 기준"}
+  {id:"diagnosis", cat:"clin", icon:"🩺", num:1, title:"진단·분류", star:"국내 고/저위험 ↔ GOLD A/B/E · CAT·mMRC"},
+  {id:"inhaler",   cat:"clin", icon:"💨", num:2, title:"흡입제 치료", star:"★알고리즘 그림 + 제품·디바이스"},
+  {id:"eos",       cat:"clin", icon:"🔬", num:3, title:"호산구·표현형", star:"100/300 cut-off · 제2형 염증"},
+  {id:"biologic",  cat:"pay",  icon:"🧬", num:4, title:"생물학제제", star:"★R-CHECK · 급여 절벽(100/100)"},
+  {id:"exac",      cat:"clin", icon:"🔥", num:5, title:"급성악화", star:"중증도·치료·예방"},
+  {id:"device_care",cat:"care",icon:"🫁", num:6, title:"디바이스·비약물", star:"술기·금연·재활·산소"},
+  {id:"comorbid_vacc",cat:"care",icon:"💉",num:7,title:"동반질환·백신", star:"심혈관·폐암선별·백신7종"},
+  {id:"reimb",     cat:"pay",  icon:"💰", num:8, title:"급여 기준", star:"지침 ↔ 급여 괴리"},
+  {id:"kcd",       cat:"pay",  icon:"🔖", num:9, title:"질병코드", star:"J44 · 청구 팁"},
+  {id:"pft",       cat:"clin", icon:"📈", num:10, title:"PFT 해석 (부록)", star:"★곡선 그림·약어·신뢰성 기준"}
 ];
 var CAT_LABEL={clin:"임상",care:"관리",pay:"급여"};
 
@@ -1368,15 +1387,22 @@ function figBox(key,cap){
 function renderLibGrid(){
   var h='<div class="banner">📖 <b>도서관</b> — 환자 없이 깊게 검색·열람. 겉은 핵심, 클릭하면 근거가 펼쳐집니다. '
     +'<b>조언자 도구</b>이며 처방을 강제하지 않습니다.</div>';
-  h+='<div class="search"><input type="text" placeholder="약물명·상황 검색 (예: 호산구, 듀피젠트)" '
+  // 검색바 (돋보기 아이콘)
+  h+='<div class="searchbar"><span class="si">🔍</span><input type="text" '
+    +'placeholder="약물·상황·코드 검색 (예: 호산구, 듀피젠트, J44)" '
     +'oninput="doSearch(this.value)" value="'+esc(APP.q||"")+'"></div>';
   if(APP.q){h+=renderSearch();return h;}
+  // 시뮬·플로우 유도 인트로 카드
+  h+='<button type="button" class="intro-card" onclick="switchTab(\'sim\')">'
+    +'<div class="t">🧭 시뮬레이션 열기</div>'
+    +'<div class="d">환자 데이터 입력 → 증상·폐기능 심각도 판정 → 약제 제안. CAT·mMRC 평가도구 + 알고리즘 도표 하이라이트 포함.</div></button>';
+  // 토픽 그리드
   h+='<div class="grid">';
   TOPICS.forEach(function(t){
-    h+='<div class="topic '+t.cat+'" onclick="openTopic(\''+t.id+'\')"><div class="bar"></div>'
-      +'<div class="num">'+CAT_LABEL[t.cat]+' · '+t.num+'</div>'
-      +'<div class="ttl">'+esc(t.title)+'</div>'
-      +'<div class="star">'+esc(t.star)+'</div></div>';
+    h+='<button type="button" class="topic '+t.cat+'" onclick="openTopic(\''+t.id+'\')">'
+      +'<div class="th"><span class="ico">'+t.icon+'</span><span class="cat '+t.cat+'">'+CAT_LABEL[t.cat]+'</span></div>'
+      +'<div class="tt">'+esc(t.title)+'</div>'
+      +'<div class="ts">'+esc(t.star)+'</div></button>';
   });
   h+='</div>';
   h+='<div class="note-foot">'
@@ -1402,8 +1428,9 @@ function renderSearch(){
   });
   var h='';
   if(hits.length){h+='<div class="sec-title">토픽</div><div class="grid">';
-    hits.forEach(function(t){h+='<div class="topic '+t.cat+'" onclick="openTopic(\''+t.id+'\')"><div class="bar"></div>'
-      +'<div class="num">'+CAT_LABEL[t.cat]+'</div><div class="ttl">'+esc(t.title)+'</div></div>';});
+    hits.forEach(function(t){h+='<button type="button" class="topic '+t.cat+'" onclick="openTopic(\''+t.id+'\')">'
+      +'<div class="th"><span class="ico">'+t.icon+'</span><span class="cat '+t.cat+'">'+CAT_LABEL[t.cat]+'</span></div>'
+      +'<div class="tt">'+esc(t.title)+'</div><div class="ts">'+esc(t.star)+'</div></button>';});
     h+='</div>';}
   if(drugHits.length){h+='<div class="card clin" style="margin-top:10px"><div class="sec-title">약물</div>';
     drugHits.forEach(function(d){h+='<div style="font-size:13px;margin-bottom:4px"><b>'+esc(d.name)+'</b> '
@@ -1420,7 +1447,8 @@ function closeTopic(){APP.topic=null;render(true);}
 function renderTopic(id){
   var t=TOPICS.filter(function(x){return x.id===id;})[0];
   var h='<div style="margin-bottom:10px"><span style="color:var(--care);font-weight:600;cursor:pointer" onclick="closeTopic()">‹ 도서관</span></div>';
-  h+='<div class="card '+t.cat+'"><div class="sec-title" style="font-size:16px;color:var(--ink)">'+esc(t.title)+'</div>';
+  h+='<div class="card '+t.cat+'"><div class="sec-title" style="font-size:16px;color:var(--ink)">'
+    +'<span style="margin-right:6px">'+t.icon+'</span>'+esc(t.title)+'</div>';
   h+=TOPIC_RENDER[id]?TOPIC_RENDER[id]():'준비 중';
   h+='</div>';
   return h;
