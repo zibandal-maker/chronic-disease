@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>천식 Total Care</title>
+<style>
+  :root{
+    /* 천식 흡입제 관행색: reliever 블루 기조 + controller/생물학 핑크·퍼플 포인트 */
+    --ink:#1a2333; --muted:#5e6b80; --line:#dde3ec; --bg:#f3f6fb;
+    --card:#ffffff; --accent:#1f6fb2; --accent-soft:#e4eef7;
+    --clin:#1f6fb2; --clin-bg:#e4eef7;     /* 임상 — reliever 블루 */
+    --care:#6a8fb8; --care-bg:#eaf0f6;     /* 관리 — 연한 블루그레이 */
+    --pay:#b23a6f;  --pay-bg:#f9e6ef;      /* 급여 — 핑크(생물학제제 강조) */
+    --met:#1f6fb2; --met-bg:#e4eef7; --notmet:#b23a6f; --notmet-bg:#f9e6ef;
+    --warn:#9a5b1a; --warn-bg:#f7efdf;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;
+    font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%}
+  .wrap{max-width:820px;margin:0 auto}
+
+  /* 상단 고정 */
+  .topbar{position:sticky;top:0;z-index:50;background:var(--bg);
+    border-bottom:1px solid var(--line);padding:10px 16px 0}
+  .topbar-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    max-width:820px;margin:0 auto}
+  .brand{font-size:18px;font-weight:800;letter-spacing:-.01em}
+  .brand span{color:var(--accent)}
+  .search-box{flex:0 1 200px;display:flex;align-items:center;gap:6px;
+    background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+  .search-box input{border:none;outline:none;font-size:16px;width:100%;background:transparent;
+    font-family:inherit;color:var(--ink)}
+  .tabs{display:flex;gap:4px;max-width:820px;margin:10px auto 0}
+  .tab{appearance:none;border:none;background:transparent;font-family:inherit;
+    font-size:15px;font-weight:700;color:var(--muted);padding:10px 16px;cursor:pointer;
+    border-bottom:3px solid transparent;touch-action:manipulation}
+  .tab.on{color:var(--ink);border-bottom-color:var(--accent)}
+
+  .view{padding:18px 16px 60px}
+
+  /* 도서관 그리드 */
+  .cat-band{margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+  .cat-dot{width:10px;height:10px;border-radius:50%}
+  .cat-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:800}
+  .cat-clin .cat-dot{background:var(--clin)} .cat-clin .cat-label{color:var(--clin)}
+  .cat-care .cat-dot{background:var(--care)} .cat-care .cat-label{color:var(--care)}
+  .cat-pay .cat-dot{background:var(--pay)} .cat-pay .cat-label{color:var(--pay)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .topic-card{appearance:none;text-align:left;font-family:inherit;cursor:pointer;
+    background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;
+    touch-action:manipulation;border-left:3px solid var(--line)}
+  .topic-card.clin{border-left-color:var(--clin)}
+  .topic-card.care{border-left-color:var(--care)}
+  .topic-card.pay{border-left-color:var(--pay)}
+  .tc-num{font-size:11px;color:var(--muted);font-weight:700}
+  .tc-title{font-size:16px;font-weight:700;margin-top:3px;line-height:1.3}
+  .tc-star{font-size:11px;color:var(--pay);font-weight:700;margin-top:5px}
+
+  /* 토픽 상세 */
+  .back-btn{appearance:none;border:none;background:none;font-family:inherit;font-size:15px;
+    color:var(--accent);font-weight:700;cursor:pointer;padding:4px 0;margin-bottom:6px;touch-action:manipulation}
+  .topic-h{font-size:22px;font-weight:800;margin:0 0 4px;letter-spacing:-.01em}
+  .topic-desc{color:var(--muted);font-size:14px;margin:0 0 16px}
+  .placeholder{background:var(--card);border:1px dashed var(--line);border-radius:11px;
+    padding:24px;text-align:center;color:var(--muted);font-size:14px}
+
+  /* 생물학제제 카드 (토픽7) */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px}
+  .sec-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent);font-weight:800;margin:6px 0 10px}
+  .bio-card{border:1px solid var(--line);border-radius:10px;padding:13px 14px;margin-bottom:9px;cursor:pointer;touch-action:manipulation}
+  .bio-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .bio-name{font-size:17px;font-weight:700}
+  .bio-pill{font-size:11px;font-weight:700;background:var(--accent-soft);color:var(--accent);
+    padding:2px 8px;border-radius:20px}
+  .bio-meta{font-size:12px;color:var(--muted);margin-top:3px}
+  .bio-cta{margin-top:11px;display:inline-block;background:var(--pay-bg);color:var(--pay);
+    border:1px solid var(--pay);border-radius:8px;padding:8px 13px;font-size:13px;font-weight:700;
+    cursor:pointer;font-family:inherit;touch-action:manipulation}
+  .gap-box{background:var(--warn-bg);border-left:3px solid var(--warn);border-radius:8px;
+    padding:11px 13px;font-size:13px;color:var(--warn);margin-top:6px}
+
+  /* R-CHECK 모달 */
+  .modal-bg{position:fixed;inset:0;background:rgba(10,20,16,.45);z-index:100;
+    display:none;align-items:flex-end;justify-content:center}
+  .modal-bg.on{display:flex}
+  .modal{background:var(--bg);width:100%;max-width:600px;max-height:90vh;overflow-y:auto;
+    border-radius:16px 16px 0 0;padding:18px 16px 30px}
+  .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+  .modal-title{font-size:18px;font-weight:800}
+  .modal-close{appearance:none;border:none;background:none;font-size:24px;color:var(--muted);
+    cursor:pointer;line-height:1;padding:0 4px;touch-action:manipulation}
+  .precond{margin:10px 0;padding:10px 12px;background:var(--card);border-radius:8px;font-size:13px;color:var(--muted)}
+  .precond b{color:var(--ink)}
+  .note-strict{margin:8px 0;font-size:12.5px;color:var(--notmet);background:var(--notmet-bg);padding:8px 11px;border-radius:7px}
+  .phase-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:800;margin:14px 0 6px}
+  .path-group{border:1px dashed var(--line);border-radius:9px;padding:11px;margin-bottom:9px;background:var(--card)}
+  .path-head{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between}
+  .ck{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line);cursor:pointer}
+  .ck:first-child{border-top:none}
+  .ck input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--accent);flex:0 0 auto;touch-action:manipulation}
+  .ck label{font-size:14.5px;cursor:pointer;flex:1}
+  .req{font-size:10px;color:var(--notmet);font-weight:700;margin-left:4px}
+  .verdict{margin-top:16px;border-radius:11px;padding:15px;border:1.5px solid}
+  .verdict.met{background:var(--met-bg);border-color:var(--met)}
+  .verdict.notmet{background:var(--notmet-bg);border-color:var(--notmet)}
+  .v-status{font-size:16px;font-weight:800}
+  .verdict.met .v-status{color:var(--met)} .verdict.notmet .v-status{color:var(--notmet)}
+  .v-text{font-size:13.5px;margin-top:6px;line-height:1.55}
+  .switch-warn{margin-top:11px;background:var(--warn-bg);border-radius:8px;padding:10px 12px;
+    font-size:12.5px;color:var(--warn);border-left:3px solid var(--warn)}
+  .switch-warn b{display:block;margin-bottom:2px}
+  .eval-box{background:var(--card);border:1px solid var(--line);border-radius:8px;
+    padding:10px 12px;font-size:13px;color:var(--ink);line-height:1.5}
+
+  .stub{text-align:center;color:var(--muted);font-size:14px;padding:40px 16px}
+
+  /* 섹션 렌더러 공통 */
+  .kp{margin:0;padding-left:20px} .kp li{margin:5px 0;font-size:14.5px;line-height:1.5}
+  .callout{background:var(--bg);border-radius:8px;padding:11px 13px;font-size:13.5px;
+    line-height:1.55;margin-top:8px;color:var(--ink)}
+  .callout.accent{background:var(--accent-soft);color:var(--accent);font-weight:500}
+  .callout.warn{background:var(--warn-bg);color:var(--warn);border-left:3px solid var(--warn)}
+  .kv{font-size:14px;margin:7px 0;line-height:1.5} .kv b{color:var(--accent)}
+  .tbl-wrap{overflow-x:auto} .tbl{width:100%;border-collapse:collapse;font-size:13px}
+  .tbl th,.tbl td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+  .tbl th{background:var(--accent-soft);color:var(--accent);font-weight:700;white-space:nowrap}
+  .step-row{display:flex;gap:11px;padding:9px 0;border-top:1px solid var(--line)}
+  .step-row:first-child{border-top:none}
+  .step-n{flex:0 0 auto;width:34px;height:24px;background:var(--accent-soft);color:var(--accent);
+    border-radius:6px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .step-ex{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .mini-steps{font-size:12.5px;color:var(--muted);margin:4px 0 8px 8px;line-height:1.7}
+  .inh-row{display:flex;justify-content:space-between;align-items:center;gap:8px;
+    padding:10px 0;border-top:1px solid var(--line)}
+  .inh-row:first-child{border-top:none}
+  .inh-item{border:1px solid var(--line);border-radius:10px;padding:0;margin-bottom:9px;overflow:hidden}
+  .inh-open{border-color:var(--accent)}
+  .inh-clickhead{width:100%;display:flex;gap:12px;align-items:flex-start;background:none;border:none;
+    font-family:inherit;text-align:left;cursor:pointer;padding:12px 13px;touch-action:manipulation}
+  .inh-icon{width:40px;height:38px;flex:0 0 auto;margin-top:2px}
+  .inh-body{flex:1;min-width:0}
+  .inh-arrow{font-size:18px;font-weight:700;color:var(--accent);flex:0 0 auto;line-height:1.2}
+  .inh-detail{padding:0 13px 13px 65px;border-top:1px solid var(--line)}
+  .inh-detail .inh-feat{margin-top:10px}
+  .inh-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .inh-name{font-weight:700;font-size:15px} .inh-type{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .inh-dose{font-size:13px;color:var(--accent);font-weight:700;margin-top:6px}
+  .inh-feat{font-size:13px;margin-top:5px;line-height:1.5;color:var(--ink)}
+  .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;flex:0 0 auto}
+  .badge-blue{background:var(--accent-soft);color:var(--accent)}
+  .badge-soft{background:var(--care-bg);color:var(--care)}
+  .badge-warn{background:var(--warn-bg);color:var(--warn)}
+  .test-card{border:1px solid var(--line);border-radius:9px;padding:11px 12px;margin-bottom:8px}
+  .test-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .test-head b{font-size:15px} .test-cat{font-size:11px;color:var(--muted);font-weight:600}
+  .test-cut{font-size:13.5px;margin-top:4px;line-height:1.5}
+  .test-warn{font-size:12.5px;color:var(--warn);margin-top:5px;background:var(--warn-bg);padding:5px 8px;border-radius:6px}
+  .test-pay{font-size:12.5px;margin-top:5px;padding:5px 8px;border-radius:6px;line-height:1.5}
+  .test-pay.pay-yes{color:var(--care);background:var(--care-bg)}
+  .test-pay.pay-no{color:var(--pay);background:var(--pay-bg);font-weight:600}
+  .test-pay.pay-na{color:var(--muted);background:var(--bg)}
+  .pheno-bio{font-size:13px;color:var(--accent);font-weight:700;margin-top:5px}
+
+  /* 시뮬레이터 */
+  .sim-crumb{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .trig-box{border:1.5px solid var(--warn);border-radius:11px;margin-bottom:16px;overflow:hidden;background:var(--warn-bg)}
+  .trig-head{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;
+    border:none;font-family:inherit;cursor:pointer;padding:12px 14px;font-size:14px;font-weight:800;
+    color:var(--warn);touch-action:manipulation}
+  .trig-ic{font-size:18px}
+  .trig-item{padding:10px 14px;border-top:1px solid var(--line)}
+  .trig-when{font-size:13.5px;font-weight:700;color:var(--ink)}
+  .trig-act{font-size:13px;color:var(--warn);margin-top:3px;line-height:1.5}
+
+  /* 인터랙티브 매트릭스 */
+  .mtx-box{border:1px solid var(--accent);border-radius:12px;padding:14px;margin-bottom:16px;background:var(--card)}
+  .mtx-title{font-size:15px;font-weight:800;color:var(--accent)}
+  .mtx-desc{font-size:12.5px;color:var(--muted);margin:4px 0 12px;line-height:1.5}
+  .mtx-field{margin-bottom:10px}
+  .mtx-label{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:5px}
+  .mtx-chips{display:flex;flex-wrap:wrap;gap:6px}
+  .mtx-chip{appearance:none;border:1px solid var(--line);background:var(--bg);font-family:inherit;
+    font-size:12.5px;padding:7px 11px;border-radius:18px;cursor:pointer;color:var(--ink);touch-action:manipulation}
+  .mtx-chip.on{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
+  .mtx-grid{margin:12px 0 8px;display:flex;flex-direction:column;gap:6px}
+  .mtx-row{border:1.5px solid var(--line);border-radius:9px;padding:10px 12px;
+    display:grid;grid-template-columns:84px 1fr;gap:4px 10px;transition:all .15s;background:var(--card)}
+  .mtx-step{font-size:13px;font-weight:800;color:var(--ink);grid-row:span 2;
+    display:flex;flex-direction:column;justify-content:center;gap:3px}
+  .mtx-cond{font-size:12px;color:var(--muted);line-height:1.45}
+  .mtx-rx{font-size:12.5px;color:var(--ink);line-height:1.5}
+  .mtx-rx b{color:var(--accent)}
+  .mtx-row.hit{border-color:var(--accent);border-width:2.5px;background:var(--accent-soft);
+    box-shadow:0 0 0 2px rgba(31,111,178,.12)}
+  .mtx-row.hit .mtx-step{color:var(--accent)}
+  .mtx-row.dim{opacity:.4}
+  .mtx-hitlabel{display:inline-block;background:var(--accent);color:#fff;font-size:9px;font-weight:800;
+    padding:2px 7px;border-radius:10px;letter-spacing:.03em}
+  .crumb-cur{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.05em}
+  .sim-q{font-size:18px;font-weight:800;margin:6px 0 14px;line-height:1.4}
+  .sim-opt{display:block;width:100%;text-align:left;font-family:inherit;cursor:pointer;
+    background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;
+    font-size:15px;font-weight:600;margin-bottom:9px;touch-action:manipulation;color:var(--ink)}
+  .sim-opt.consider{display:flex;gap:9px;align-items:center}
+  .consider-dot{color:var(--accent);font-size:16px}
+  .sim-route{display:block;width:100%;text-align:left;font-family:inherit;cursor:pointer;
+    background:var(--card);border:1px solid var(--line);border-radius:11px;padding:15px;
+    margin-bottom:10px;touch-action:manipulation;border-left:3px solid var(--accent)}
+  .sim-route:active{background:var(--bg)}
+  .route-label{font-size:16px;font-weight:700;color:var(--ink)}
+  .route-desc{font-size:12.5px;color:var(--muted);margin-top:3px}
+  .sim-next{appearance:none;border:none;background:var(--accent);color:#fff;font-family:inherit;
+    font-size:14px;font-weight:700;padding:11px 18px;border-radius:9px;cursor:pointer;
+    margin:2px 0 14px;touch-action:manipulation}
+  .sim-skip{appearance:none;border:1px dashed var(--muted);background:transparent;color:var(--muted);
+    font-family:inherit;font-size:13px;font-weight:700;padding:9px 14px;border-radius:8px;
+    cursor:pointer;margin-bottom:12px;touch-action:manipulation}
+  .stage-box{background:var(--accent-soft);border-radius:9px;padding:11px 13px;font-size:13.5px;
+    color:var(--accent);line-height:1.55;margin:0 0 12px;position:relative}
+  .stage-tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.1em;
+    background:var(--accent);color:#fff;padding:2px 7px;border-radius:4px;margin-right:7px;vertical-align:1px}
+  .gate-item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 13px;margin-bottom:8px}
+  .gate-head{display:flex;align-items:center;gap:10px;cursor:pointer}
+  .gate-head input{width:19px;height:19px;accent-color:var(--accent);touch-action:manipulation}
+  .gate-head b{font-size:15px}
+  .gate-reveal{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5;padding-left:29px}
+  .gate-toggle{margin-left:auto;font-size:11px;color:var(--accent);font-weight:700}
+  .gate-detail-title{font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.04em;
+    margin:10px 0 6px;padding-left:29px}
+  .gate-checklist{margin:0 0 6px;padding-left:46px;list-style:none}
+  .gate-checklist li{position:relative;font-size:13.5px;line-height:1.5;margin:6px 0;padding-left:18px;color:var(--ink)}
+  .gate-checklist li:before{content:"☐";position:absolute;left:0;color:var(--accent);font-size:13px}
+  .gate-link{display:inline-block;margin:4px 0 0 29px;font-size:12.5px}
+  .sim-opt-on{border-color:var(--accent);border-width:1.5px}
+  .base-check{margin:0 0 10px;padding:2px 0}
+  .base-check-t{font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.06em;
+    text-transform:uppercase;margin:4px 0 8px}
+  .base-grp-h{font-size:13.5px;font-weight:700;color:var(--ink);margin:10px 0 2px}
+
+  /* 아코디언 (심화) */
+  .acc{border:1px solid var(--line);border-radius:9px;margin-bottom:8px;overflow:hidden;background:var(--card)}
+  .acc-open{border-color:var(--accent)}
+  .acc-head{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;
+    background:none;border:none;font-family:inherit;cursor:pointer;padding:13px 14px;
+    text-align:left;touch-action:manipulation}
+  .acc-title{font-size:14.5px;font-weight:700;color:var(--ink)}
+  .acc-open .acc-title{color:var(--accent)}
+  .acc-icon{font-size:18px;font-weight:700;color:var(--accent);flex:0 0 auto;line-height:1}
+  .acc-body{padding:0 14px 14px;border-top:1px solid var(--line)}
+  .acc-body .kp{margin:10px 0 0} .acc-body .kp li{margin:6px 0;font-size:13.5px}
+  .acc-text{font-size:13.5px;line-height:1.6;margin-top:10px}
+  .deep-label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);margin:18px 0 8px;display:flex;align-items:center;gap:8px}
+  .deep-label:before,.deep-label:after{content:"";flex:1;height:1px;background:var(--line)}
+  .kcd-tbl td{font-size:12px;vertical-align:top} .kcd-tbl th{font-size:11.5px}
+  .kcd-code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-weight:700;
+    color:var(--pay);white-space:nowrap}
+  .opt-reveal{font-size:13.5px;color:var(--muted);background:var(--bg);border-radius:8px;
+    padding:10px 12px;margin:0 0 10px;line-height:1.55}
+  .opt-detail{margin:0 0 12px}
+  .ex-h{font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.04em;margin:10px 0 6px}
+  .ex-drug{font-size:13.5px;line-height:1.55;padding:7px 11px;background:var(--card);
+    border:1px solid var(--line);border-radius:7px;margin-bottom:6px}
+  .ex-drug b{color:var(--ink)}
+  .ex-drug.ex-warn{border-color:var(--warn);background:var(--warn-bg)}
+  .ex-mini{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:6px}
+  .ex-note{font-size:12.5px;color:var(--accent);background:var(--accent-soft);
+    border-radius:7px;padding:8px 11px;margin-top:4px;line-height:1.5}
+  .topic-link{color:var(--accent);font-weight:700;cursor:pointer;white-space:nowrap}
+
+  /* 약물 무기 아이템 */
+  .drug-item{border-top:1px solid var(--line);padding:10px 0}
+  .drug-item:first-child{border-top:none}
+  .drug-item-h{display:flex;align-items:center;gap:8px}
+  .drug-item-h b{font-size:15px}
+  .drug-gen{font-size:12.5px;color:var(--muted);margin-top:1px}
+  .drug-note{font-size:13.5px;margin-top:4px;line-height:1.5}
+  .drug-tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px}
+  .drug-tag.hot{background:var(--accent);color:#fff}
+  .drug-tag.warn{background:var(--warn-bg);color:var(--warn)}
+  /* 간단한 답 박스 (시뮬) */
+  .summary-box{background:var(--accent-soft);border:1.5px solid var(--accent);border-radius:11px;
+    padding:14px;margin-top:16px;font-size:14px;line-height:1.6;color:var(--ink)}
+  .summary-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;
+    background:var(--accent);color:#fff;padding:3px 9px;border-radius:5px;margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-row">
+    <div class="brand">천식 <span>Total Care</span></div>
+    <div class="search-box">🔍 <input id="search" placeholder="토픽·약제 검색" oninput="onSearch(this.value)"></div>
+  </div>
+  <div class="tabs">
+    <button type="button" class="tab on" id="tab-lib" onclick="switchTab('lib')">📚 도서관</button>
+    <button type="button" class="tab" id="tab-sim" onclick="switchTab('sim')">🧭 시뮬레이터</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="view" id="view"></div>
+</div>
+
+<!-- R-CHECK 모달 -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<!-- ===================== DATA LAYER ===================== -->
+<script>
+window.ASTHMA_DATA = window.ASTHMA_DATA || {};
+
+// 토픽 정의 (cat별 분류 — 번호는 화면 표시 순서)
+ASTHMA_DATA.TOPICS = [
+  {id:"assess",  cat:"clin", num:1,  title:"조절 평가"},
+  {id:"tracks",  cat:"clin", num:2,  title:"치료 단계"},
+  {id:"inhaler", cat:"clin", num:3,  title:"흡입제"},
+  {id:"pheno",   cat:"clin", num:4,  title:"표현형"},
+  {id:"exac",    cat:"clin", num:5,  title:"악화·OCS"},
+  {id:"device",  cat:"care", num:6,  title:"디바이스·술기"},
+  {id:"monitor", cat:"care", num:7,  title:"검사"},
+  {id:"ait",     cat:"care", num:8,  title:"면역치료"},
+  {id:"comorbid",cat:"care", num:9,  title:"동반질환"},
+  {id:"biologic",cat:"pay",  num:10, title:"생물학제제", star:"★ R-CHECK 급여검증"},
+  {id:"kcd",     cat:"pay",  num:11, title:"질병코드", star:"KCD 상병코드·청구"}
+];
+ASTHMA_DATA.CAT_INFO = {
+  clin:{label:"임상", key:"clin"},
+  care:{label:"관리", key:"care"},
+  pay:{label:"급여",  key:"pay"}
+};
+
+// 생물학제제 급여 (R-CHECK) — 4부 구조: 공통전제 + 투여대상 + 평가/지속 + 중단
+ASTHMA_DATA.BIO_COMMON = {
+  shared_precondition:"모든 생물학제제 공통 전제 — 고용량 ICS + LABA를 충분한 기간 적정하게 사용했는데도 조절되지 않는 중증 천식. (LAMA 등 부가요법 포함하여 최적 치료에도 불구하고)",
+  verdict_met:"투여대상 기준 충족 — 사전 서류·바이오마커 근거를 구비해 청구하세요. (평가·중단 기준도 함께 확인)",
+  verdict_notmet:"급여기준 미충족 → 100/100 전액본인부담으로 처방 (※임의 비급여 아님). 복지부 고시 상한금액 기준이라 기관 간 금액이 동일합니다.",
+  switch_text:"졸레어·누칼라·싱케어·파센라 간 교체투여는 급여 불인정. 단, 졸레어 3–6개월 사용 후 효과 불충분·부작용·순응도 문제 시에만 졸레어→타제제 교체 인정.",
+  reeval:"공통 재평가: 1년마다 ① 연간 급성악화 ≥50% 감소 또는 ② 경구스테로이드(OCS) 용량 ≥50% 감소 중 1개 이상 충족 시 지속 인정. 미달 시 중단.",
+  eos_note:"※ 모든 호산구 기준은 '혈중(말초혈) 호산구'입니다. 객담 호산구 아님."
+};
+ASTHMA_DATA.BIOLOGICS = [
+  {id:"OMA", brand:"졸레어", ingredient:"오말리주맙", target:"anti-IgE", date:"2020.7",
+   age:"만 6세 이상 (주 대상 12세+). 성인/청소년 IgE 하한 76, 소아 200 IU/mL.",
+   precondition:"고용량 ICS-LABA(±LAMA)에도 조절되지 않는 중증 지속성 알레르기성 천식",
+   logic:"ALL",
+   criteria:[
+     {id:"c0",label:"[전제] 고용량 ICS + LABA 충분 사용에도 조절되지 않음",required:true},
+     {id:"c1",label:"치료 시작 전 혈청 총 IgE ≥ 76 IU/mL (소아 ≥200)",required:true},
+     {id:"c2",label:"통년성 흡입 알레르겐에 혈청 특이 IgE 검사(MAST/RAST) 또는 피부단자검사 양성",required:true},
+     {id:"c3",label:"FEV1 < 예측정상치 80%",required:true},
+     {id:"c4",label:"치료 시작 전 12개월 내 전신스테로이드 요하는 급성악화 ≥ 2회",required:true}],
+   eval:"투여 시작 16주째(최소 12주 이상 치료 후) 유효성 평가 — 전반적 천식조절의 현저한 개선 여부로 지속 결정.",
+   stop:"16주 평가에서 개선 없으면 중단. 이후 1년마다 공통 재평가(악화 또는 OCS ≥50%↓).",
+   dose_note:"용량은 치료 전 IgE×체중 도징표로 결정(75–600mg, 2주/4주). 금기: 심근경색 병력."},
+
+  {id:"MEPO", brand:"누칼라", ingredient:"메폴리주맙", target:"anti-IL5", date:"2026.5",
+   age:"만 12세 이상",
+   precondition:"고용량 ICS-LABA(±LAMA)에도 조절되지 않는 중증 호산구성 천식",
+   logic:"ANY_PATH",
+   sharedChecks:[{id:"m0",label:"[전제] 고용량 ICS + LABA 충분 사용에도 조절되지 않음",required:true}],
+   paths:[
+     {id:"pA",label:"경로 A",criteria:[
+       {id:"a1",label:"최근 1년 내 혈중 호산구 ≥ 300 cells/㎕",required:true},
+       {id:"a2",label:"같은 기간 급성악화 ≥ 4회, 또는 6개월 전부터 OCS 지속 투여",required:true}]},
+     {id:"pB",label:"경로 B",criteria:[
+       {id:"b1",label:"최근 1년 내 혈중 호산구 ≥ 400 cells/㎕",required:true},
+       {id:"b2",label:"같은 기간 급성악화 ≥ 3회",required:true}]}],
+   eval:"투여 후 4개월~1년 시점 반응 평가.",
+   stop:"1년마다 공통 재평가. 악화 또는 OCS ≥50%↓ 미달 시 중단."},
+
+  {id:"RESL", brand:"싱케어", ingredient:"레슬리주맙", target:"anti-IL5", date:"2023.11",
+   age:"성인(18세+)",
+   precondition:"고용량 ICS-LABA(±LAMA)에도 조절되지 않는 중증 호산구성 천식",
+   logic:"ALL",
+   criteria:[
+     {id:"r0",label:"[전제] 고용량 ICS + LABA 충분 사용에도 조절되지 않음",required:true},
+     {id:"r1",label:"치료 시작 시 혈중 호산구 ≥ 400 cells/㎕",required:true},
+     {id:"r2",label:"12개월 내 전신스테로이드 요하는 급성악화 ≥ 3회",required:true}],
+   eval:"체중기반 정맥주사(3mg/kg, 4주 간격). 반응 평가 후 지속 결정.",
+   stop:"1년마다 공통 재평가. 미달 시 중단."},
+
+  {id:"BENRA", brand:"파센라", ingredient:"벤랄리주맙", target:"anti-IL5Rα", date:"2024.7",
+   age:"성인(18세+)",
+   precondition:"고용량 ICS-LABA(±LAMA)에도 조절되지 않는 중증 호산구성 천식",
+   logic:"ANY_PATH",
+   sharedChecks:[{id:"n0",label:"[전제] 고용량 ICS + LABA 충분 사용에도 조절되지 않음",required:true}],
+   paths:[
+     {id:"pA",label:"경로 A",criteria:[
+       {id:"a1",label:"최근 1년 내 혈중 호산구 ≥ 300 cells/㎕",required:true},
+       {id:"a2",label:"급성악화 ≥ 4회, 또는 6개월 전부터 pred 5mg/day 동등 이상 OCS 지속",required:true}]},
+     {id:"pB",label:"경로 B",criteria:[
+       {id:"b1",label:"최근 1년 내 혈중 호산구 ≥ 400 cells/㎕",required:true},
+       {id:"b2",label:"급성악화 ≥ 3회",required:true}]}],
+   eval:"초기 4주 간격 3회 후 8주 간격. 반응 평가 후 지속 결정.",
+   stop:"1년마다 공통 재평가. 미달 시 중단."},
+
+  {id:"DUPI", brand:"듀피젠트", ingredient:"두필루맙", target:"anti-IL4Rα", date:"2025.1",
+   age:"만 12세 이상",
+   precondition:"고용량 ICS-LABA(±LAMA)에도 조절되지 않는 중증 제2형(T2) 염증성 천식",
+   strict:"★ 급여기준이 허가사항(혈중 호산구 ≥150 또는 FeNO ≥25 단독)보다 엄격 — 급여는 여기에 '악화 ≥4회'가 추가됩니다.",
+   logic:"ANY_PATH",
+   sharedChecks:[{id:"d0",label:"[전제] 고용량 ICS + LABA 충분 사용에도 조절되지 않음",required:true}],
+   paths:[
+     {id:"pA",label:"경로 A (바이오마커 + 악화)",criteria:[
+       {id:"a1",label:"최근 1년 혈중 호산구 ≥ 150 cells/㎕ 또는 FeNO ≥ 25 ppb",required:true},
+       {id:"a2",label:"같은 기간 전신스테로이드 요하는 급성악화 ≥ 4회",required:true}]},
+     {id:"pB",label:"경로 B (OCS 의존)",criteria:[
+       {id:"b1",label:"경구 스테로이드(OCS) 지속 투여(의존성)",required:true}]}],
+   eval:"초회 2배 용량 후 2주 간격. 반응 평가 후 지속 결정.",
+   stop:"1년마다 공통 재평가. 미달 시 중단."}
+];
+</script>
+
+<!-- ===================== DATA LAYER 2 (토픽 콘텐츠) ===================== -->
+<script>
+var A = window.ASTHMA_DATA;
+
+// ── 1. 조절 평가 (assess) ──
+A.ASSESS = {
+  gina4:{ title:"GINA 증상조절 4문항 (지난 4주)",
+    items:["주간 증상 주 2회 초과","야간 각성(천식으로)","증상완화제 주 2회 초과 사용","천식으로 인한 활동 제한"],
+    interpret:"모두 없음=양호 / 1–2개=부분조절 / 3–4개=조절 안 됨" },
+  tools:[
+    {name:"ACT", note:"5문항 자가설문. ≥20 양호, 16–19 부분, ≤15 미조절"},
+    {name:"ACQ", note:"증상+완화제+FEV1. 낮을수록 양호"}
+  ],
+  twoaxis:{ title:"2축 평가 — 조절 ↔ 위험",
+    control:"현재 증상 조절도 (위 4문항·ACT)",
+    risk:"향후 악화 위험: 지난해 악화력, ICU 입원력, 낮은 FEV1, 흡연, 고용량 약물, 흡입술기·순응도 불량" },
+  note:"★'조절되지 않는 증상'은 환자 주관 호소 포함. 증상조절과 미래위험은 별개 축 — 둘 다 평가."
+};
+
+// ── 2. 치료 단계 (tracks) ──
+A.TRACKS = {
+  overview:"GINA 2-track. Track1(우선): 저용량 ICS-formoterol을 reliever로(AIR/MART). Track2: SABA/ICS-SABA reliever + 매일 controller.",
+  track1:[
+    {step:"1–2", controller:"필요시 저용량 ICS-formoterol (AIR)", ex:"심비코트 라피헬러 80/2.25, 부데소니드-포르모테롤 저용량"},
+    {step:"3", controller:"저용량 ICS-formoterol 유지+증상시 (MART)", ex:"심비코트 터부헬러 160/4.5, 포스터 100/6"},
+    {step:"4", controller:"중간용량 ICS-formoterol (MART)", ex:"심비코트 160/4.5 증량, 포스터 200/6"},
+    {step:"5", controller:"LAMA 추가 + 표현형 평가·의뢰 + 생물학제제 고려", ex:"에너제어(3제) 또는 스피리바 레스피맷 추가"}
+  ],
+  track2:[
+    {step:"1", controller:"SABA 쓸 때마다 저용량 ICS 동반", ex:"후릭소타이드 50 + 벤토린"},
+    {step:"2", controller:"저용량 ICS 매일 유지", ex:"아뉴이티 100, 후릭소타이드 125, 풀미코트"},
+    {step:"3", controller:"저용량 ICS-LABA", ex:"렐바 100, 플루티폼 125, 어텍트라"},
+    {step:"4", controller:"중간~고용량 ICS-LABA", ex:"렐바 200, 플루티폼 250, 심비코트 증량"},
+    {step:"5", controller:"LAMA 추가 + 의뢰 + 생물학제제. 저용량 OCS는 최후", ex:"에너제어(3제), + 스피리바"}
+  ],
+  ics:{ title:"ICS 1일 용량 (성인, µg/day)",
+    cols:["약제","저용량","중간","고용량"],
+    rows:[
+      ["BDP-HFA","100–200",">200–400",">400"],
+      ["부데소니드-DPI","200–400",">400–800",">800"],
+      ["플루티카손 FP","100–250",">250–500",">500"],
+      ["플루티카손 FF-DPI","100(low-med)","—","200(med-high)"],
+      ["모메타손","110–220",">220–440",">440"]
+    ]},
+  stepdown:"3개월 이상 잘 조절·폐기능 안정 시 강하 고려. step up 전 필수 점검: 순응도→흡입술기→동반질환→유발인자.",
+  oral_addon:{ title:"경구 add-on (보조 — 흡입제 우선)",
+    items:[
+      {name:"류코트리엔 조절제 (LTRA)", drug:"몬테루카스트·프란루카스트·자피르루카스트", note:"기관지확장·증상·악화 감소(효과는 ICS보다 약함). ★아스피린 과민성 천식·비염 동반·운동유발에 특히 유용. ICS 단독 부족 시 add-on."},
+      {name:"테오필린(서방형)", drug:"theophylline SR", note:"약한 기관지확장·항염. 치료역 좁아 혈중농도 모니터 필요. 저단계 보조로 제한적."},
+      {name:"항히스타민", drug:"2세대 항히스타민", note:"천식 자체엔 권고 약함. 알레르기비염·두드러기 등 동반 시 보조. 단독 천식 치료제 아님."}
+    ],
+    note:"경구약은 흡입제를 대체하지 않는 보조. LABA·LAMA는 흡입 단독사용 금지(ICS 동반 필수)."
+  }
+};
+
+// ── 3. 흡입제 (inhaler) ── 함량·용량등급·특성 포함
+A.INHALERS = {
+  intro:"제품별 함량(µg)·ICS 용량등급(저/중/고)·천식·COPD·MART 여부가 처방과 삭감 방어의 핵심.",
+  list:[
+    {brand:"심비코트 터부헬러 160/4.5", type:"부데소니드/포르모테롤", device:"DPI",
+     ics:"중간용량(부데소니드 160×2회=320~)", asthma:true, mart:true, badge:"천식 · MART",
+     feat:"단일 흡입기로 유지+증상완화(SMART). formoterol 빠른 작용. 흡기력 필요(DPI).",
+     detail:{ use:"유지 아침·저녁 1회씩 + 증상 시 추가. 1일 총(유지+추가) 통상 최대 8회(일시 12회)", caution:"흡기력 약한 고령·중증 급성기엔 부적합", tip:"흡입 후 가글(구강칸디다·목쉼 예방). 잔량 카운터 확인" }},
+    {brand:"심비코트 라피헬러 80/2.25", type:"부데소니드/포르모테롤", device:"pMDI",
+     ics:"저용량", asthma:true, mart:true, badge:"천식 · MART",
+     feat:"pMDI라 흡입력 약해도 사용 가능. 잔량 표시. SMART 가능."},
+    {brand:"포스터 100/6", type:"베클로메타손/포르모테롤", device:"pMDI",
+     ics:"저~중간용량(초미세입자)", asthma:true, mart:true, badge:"천식 · MART",
+     feat:"초미세입자(extrafine)로 말초기도 침착 우수. formoterol→MART 가능."},
+    {brand:"렐바 엘립타 100", type:"플루티카손FF/빌란테롤", device:"DPI",
+     ics:"저~중간용량(FF 100)", asthma:true, mart:false, badge:"천식·COPD",
+     feat:"★1일 1회. 100=천식·COPD 모두. 엘립타 조작 간편. MART 불가(LABA가 vilanterol).",
+     detail:{ use:"1일 1회, 매일 같은 시간. 유지전용(증상완화는 별도 reliever)", caution:"COPD와 공용이라 천식 처방 시 상병 명확히", tip:"1일 1회라 순응도 유리" }},
+    {brand:"렐바 엘립타 200", type:"플루티카손FF/빌란테롤", device:"DPI",
+     ics:"중간~고용량(FF 200)", asthma:true, mart:false, badge:"천식 전용",
+     feat:"★1일 1회. 200=천식만(COPD 적응 없음). 고용량 단계.",
+     detail:{ use:"1일 1회. 중등증~중증 지속 천식", caution:"200은 COPD 적응 없음 — COPD에 쓰면 삭감", tip:"고용량 단계 환자" }},
+    {brand:"플루티폼 50·125·250", type:"플루티카손FP/포르모테롤", device:"pMDI",
+     ics:"50=저 / 125=중 / 250=고용량", asthma:true, mart:false, badge:"천식 전용",
+     feat:"strength 3종으로 단계 조절. formoterol 함유하나 MART 적응 없음(유지전용).",
+     detail:{ use:"1일 2회. 1회 2puff. strength로 단계 조절", caution:"formoterol 함유하나 MART 미적응 — reliever 별도", tip:"pMDI라 스페이서 권장" }},
+    {brand:"어텍트라 제뉴에어", type:"부데소니드/포르모테롤", device:"DPI",
+     ics:"중간용량", asthma:true, mart:false, badge:"천식 전용",
+     feat:"제뉴에어 디바이스(조작 피드백). 유지전용."},
+    {brand:"아뉴이티 엘립타 100·200", type:"플루티카손FF 단독", device:"DPI",
+     ics:"100=저~중 / 200=중~고", asthma:true, mart:false, badge:"천식 · ICS단독",
+     feat:"★1일 1회 ICS 단독(LABA 없음). 경증 controller 또는 LABA 별도 병용 시."},
+    {brand:"후릭소타이드 에보할러 50·125·250", type:"플루티카손FP 단독", device:"pMDI",
+     ics:"50=저 / 125=중 / 250=고", asthma:true, mart:false, badge:"천식 · ICS단독",
+     feat:"ICS 단독 pMDI. 스페이서 권장. 소아~성인 단계별."},
+    {brand:"에너제어 엘립타", type:"FF/우메클리디늄/빌란테롤(3제)", device:"DPI",
+     ics:"ICS+LAMA+LABA", asthma:true, mart:false, badge:"3제 · 천식 ✓",
+     feat:"★천식 적응 3제. 5단계 LAMA 추가에. 1일 1회."},
+    {brand:"트렐리지 엘립타", type:"FF/우메클리디늄/빌란테롤(3제)", device:"DPI",
+     ics:"ICS+LAMA+LABA", asthma:false, mart:false, badge:"3제 · COPD ⚠",
+     feat:"⚠ COPD 적응. 천식 처방 시 삭감 주의(에너제어와 성분 유사하나 적응 다름)."},
+    {brand:"트림보우", type:"베클로메타손/포르모테롤/글리코피로늄(3제)", device:"pMDI",
+     ics:"ICS+LABA+LAMA", asthma:false, mart:false, badge:"3제 · COPD ⚠",
+     feat:"⚠ COPD 적응. 초미세입자 3제. 천식 처방 시 삭감 주의."}
+  ],
+  reliever:{ title:"증상완화제 (reliever)",
+    items:["SABA: 살부타몰(벤토린)·터부탈린 — 청색 관행. 급성 완화.",
+           "ICS-formoterol: MART의 reliever(심비코트·포스터). SABA 단독보다 악화↓"]},
+  reimb:"천식 ICS/LABA 급여: 차트에 '부분조절 이상 단계의 천식' 기재(폐기능검사 불필요). 렐바100은 천식·COPD 공용, 렐바200·플루티폼·아뉴이티는 천식 전용. LAMA단독·LABA-LAMA복합·트렐리지·트림보우는 COPD 허가 → 천식 처방 시 삭감 주의. ※세레타이드(GSK)는 2025년 5월 한국 철수 — 처방 불가."
+};
+
+// ── 4. 디바이스·술기 (device) ──
+A.DEVICE = {
+  key:"★ 천식 환자 최대 90%가 흡입기 오사용. 미조절·잦은 악화 시 약제 변경 전 술기·순응도부터 재확인.",
+  choice:"흡입력 부족 → pMDI(+스페이서). 흡입력 충분 → DPI. 인지저하·동조 어려움 → SMI.",
+  techniques:[
+    {dev:"pMDI", key:"천천히·깊게(60 L/min 이하, 4–5초). 분사-흡입 동조 필요.",
+     steps:["흔들기 3–4회","완전히 내쉬기","흡입 시작과 동시에 분사","5초 천천히 흡입","5–10초 숨 참기"]},
+    {dev:"DPI", key:"빠르고 깊게(흡기력 의존). 흡입구에 대고 내쉬지 말 것(분말 날아감).",
+     steps:["약물 장전","흡입기 밖에서 내쉬기","빠르고 깊게 흡입","4–10초 숨 참기"]},
+    {dev:"SMI", key:"느린 연무 → 동조 쉬움. 흡입력 약한 환자에 적합."}
+  ],
+  errors:["흡입 후 숨 참음 부족","너무 빠른 흡입(pMDI)/약한 흡입력(DPI)","흡입 전 잔기량까지 안 내쉼","분사-흡입 시점 불일치"],
+  adherence:"순응도 불량은 미조절의 가장 흔한 숨은 원인. 리필 간격·잔량·controller를 reliever처럼 쓰는지 점검."
+};
+
+// ── 5. 검사 (monitor) ──
+A.MONITOR = {
+  tests:[
+    {name:"폐활량(BDR)", cut:"가역성: salbutamol 후 FEV1 ≥12% 그리고 ≥200mL 증가 = 양성", cat:"진단·가역성", pay:"급여 — 가장 기본. 진단·중증도·치료반응에 반복 가능"},
+    {name:"메타콜린(MCT)", cut:"PC20 < 16 mg/mL = 기도과민성 양성(rule-out에 적합)", warn:"⚠ FEV1 <60% 또는 <1.5L 투여금지", cat:"기도과민성", pay:"급여 — 진단 시. 약물 중단(SABA 6–8h·LABA 24–48h 등) 필요"},
+    {name:"FeNO", cut:"<25 낮음 / 25–50 회색지대 / >50 ppb 높음(T2 염증)", warn:"★기관지확장제·폐기능검사 전에 먼저 측정", cat:"T2 바이오마커", pay:"★비급여(한국). 미국 등과 달리 보험 적용 안 됨 → 비용 부담으로 반복 제한"},
+    {name:"혈중 호산구", cut:"150 / 300 / 400 cells/㎕ — 생물학제제 급여와 연동", warn:"OCS 사용 시 억제됨. 아침에 높음", cat:"T2·생물학", pay:"급여 — CBC with diff에 포함. 저렴·반복 용이"},
+    {name:"총 IgE", cut:"≥76 IU/mL — 졸레어 진입. 체중×IgE로 도징", cat:"오말리주맙", pay:"급여 — 알레르기 평가·졸레어 도징 근거"},
+    {name:"특이 IgE/SPT", cut:"통년성 알레르겐 양성 = 알레르기성 표현형(MAST/RAST/피부단자)", cat:"감작·면역치료", pay:"급여 — MAST(다중)·단일 특이IgE·피부단자. 알레르겐 수에 따라 산정"},
+    {name:"ACT/ACQ", cut:"ACT ≥20 양호 — 증상조절 정량", cat:"증상조절", pay:"설문 — 별도 검사료 없음. 매 방문 권장"}
+  ],
+  order:"★검사 순서 함정: FeNO를 가역성·과민성 검사보다 먼저. 폐기능검사 후 FeNO 변동.",
+  pay_note:"★FeNO는 한국에서 비급여 — 임상 유용성에도 비용 부담으로 반복 측정 제한. 호산구(혈중)는 급여라 T2 평가의 현실적 대안. 검사 급여주기·세부 산정은 심평원 고시 확인."
+};
+
+// ── 6. 표현형 (pheno) ──
+A.PHENO = {
+  intro:"표현형이 생물학제제 급여 진입과 정합한다.",
+  types:[
+    {label:"알레르기성 (T2)", cyto:"IgE", crit:"특이IgE/SPT 양성 + 총IgE 상승", bio:"졸레어"},
+    {label:"호산구성 (T2)", cyto:"IL-5", crit:"혈중 호산구 ≥300~400 + FeNO 상승", bio:"누칼라·싱케어·파센라"},
+    {label:"제2형 광의 (T2)", cyto:"IL-4/13", crit:"호산구 ≥150 또는 FeNO ≥25 또는 알레르기", bio:"듀피젠트"},
+    {label:"비제2형 (T2-low)", cyto:"비호산구성", crit:"호산구·FeNO·알레르기 모두 음성", bio:"테제펠루맙(비급여) · LAMA·macrolide 우선"}
+  ]
+};
+
+// ── 8. 악화·OCS (exac) ──
+A.EXAC = {
+  acute:{ title:"급성 악화 — 응급 프로토콜",
+    steps:[
+      {s:"초기 평가", d:"청진·보조근·심박·호흡수 + PEF/FEV1 + SpO2 + (필요시 ABGA)"},
+      {s:"초기 치료", d:"산소(SpO2≥90%) · SABA 1시간 지속 · 전신스테로이드 · ★진정제 금기"},
+      {s:"중증도", d:"중등증 PEF 60–80% / 중증 <60%, 흉곽함몰 / 생명위협 <30%, PCO2>45, PaO2<60 → ICU"},
+      {s:"재평가(1–2h)", d:"양호(PEF>70%,SpO2>90%)→퇴원 / 불완전→입원 / 불량→ICU(스테로이드 정주·삽관 고려)"},
+      {s:"퇴원 ★", d:"PEF>60%. SABA만으로 퇴원 금지 — controller(ICS)·흡입술기·서면 행동지침·외래예약·OCS누적 점검 필수"}
+    ]},
+  ocs_acute:"단기: prednisolone 30–50 mg/day × 3–7일(한국) / ≤0.5 mg/kg × 5–7일(ATS). 경구=정주 동등.",
+  ocs_long:"장기 최소화: ≤5(ATS)/≤7.5(GINA) mg/day. ★연 누적 ≥0.5–1g = 미조절 시사 → 전문가 의뢰. 지난 1년 ≥2회 전신스테로이드도 의뢰 신호.",
+  taper:{ title:"OCS 감량 (KAAACI 2025)",
+    pace:["≥20mg/day → 주 5mg","10–20mg → 주 2.5mg","<10mg → 2주마다 2.5mg","5mg 도달 → 부신위험 평가 후 0.5mg 주~격주"],
+    candidate:"감량 4분류: 적절(생물학제제로 조절 등) / 주의(생명위협력·6개월+ 노출) / 금지(ABPA·EGPA 재발) / 완전중단(≤5mg+증상없음+동의)",
+    adrenal:"pred ≥5mg 1개월+ → 아침 코티솔(≤3 저하 / ≥18 정상). 골다공증: pred ≥2.5mg 3개월+ → Ca+VitD"},
+  sparing:"OCS 늘리기 전 순서: ICS 최적화 → LAMA → macrolide → 생물학제제. + treatable traits 교정.",
+  acute_drugs:{ title:"급성 악화 — 약물 무기",
+    items:[
+      {name:"SABA (속효성 β2)", drug:"살부타몰·터부탈린", note:"★1차. 모든 환자. MDI(+스페이서) 또는 네뷸라이저. 1시간 지속 반복 가능.", tag:"hot"},
+      {name:"네뷸라이저", drug:"SABA±SAMA 분무", note:"중등증+ 또는 흡입 협조 어려운 환자. SABA에 ipratropium(SAMA) 병용 가능.", tag:""},
+      {name:"전신 스테로이드", drug:"prednisolone 30–50mg/day × 3–7일", note:"★SABA 무효·중증·기존 스테로이드 사용 시. 경구=정주 동등(구토 등 없으면 경구).", tag:"hot"},
+      {name:"흡입 항콜린제 (SAMA)", drug:"ipratropium", note:"중등증+ 급성기 SABA에 병용. 추가 기관지확장.", tag:""},
+      {name:"황산마그네슘 (MgSO4)", drug:"IV", note:"중증·초기치료 반응 불량 시 고려(응급/입원).", tag:""},
+      {name:"항생제", drug:"세균감염 동반 시만", note:"⚠ 천식 악화 자체엔 비권고. 폐렴 등 명확한 세균감염 동반 시에만. (macrolide의 중증천식 add-on은 별개)", tag:"warn"},
+      {name:"aminophylline", drug:"IV", note:"중증 발작서 전문가 판단 하 신중. ★진정제는 금기.", tag:""}
+    ]
+  }
+};
+
+// ── 9. 면역치료 (ait) ──
+A.AIT = {
+  overview:"피부검사/sIgE로 원인 알레르겐 1~소수 선정. 최소 3년 이상.",
+  routes:[
+    {name:"SCIT(피하)", note:"다중항원 가능. 의료기관 투여."},
+    {name:"SLIT(설하)", note:"제품화 단일/제한 알레르겐. 자가투약, 삼키기 전 5분 혀밑 보유. 국내: 집먼지진드기·화분, 대부분 비염 적응·비급여."}
+  ],
+  contra:"★금기: 조절되지 않는 천식(아나필락시스 위험↑) · 심한 심혈관질환 · 임신 중 신규 시작 불가. 천식 환자는 '천식 조절된 상태'가 전제.",
+  note:"천식 단독 적응은 제한적. 비염 동반 + 천식 조절 시 보조적."
+};
+
+// ── 10. 동반질환 / treatable traits (comorbid) ──
+A.COMORBID = {
+  intro:"중증천식은 일괄 단계치료보다 treatable traits 기반 접근. ★OCS 추가·단계 올림 전 반드시 파악·교정.",
+  domains:[
+    {group:"호흡기", items:["T2 염증(호산구·FeNO)","고정 기류제한","기관지확장증","비용종/부비동염"]},
+    {group:"호흡기 외", items:["비염","GERD","비만","심질환·당뇨","아스피린 과민성(한국 중증천식 ~14%)","골다공증"]},
+    {group:"행동·위험", items:["★흡연(ICS 효과 저하 → 금연교육)","흡입술기·순응도","직업/환경 노출","원인 알레르겐 지속노출","정신적 요인"]}
+  ]
+};
+
+// ── 11. 질병코드 (kcd) — KCD 천식 상병코드 · 청구 ──
+A.KCD = {
+  intro:"천식 청구의 핵심은 정확한 상병코드. 세분 코드까지 기재해야 심사 반송·삭감을 막는다.",
+  basic:{ title:"기본 — 천식 상병코드 (J45 · J46)",
+    cols:["코드","상병명","비고"],
+    rows:[
+      ["J45.0","주로 알레르기성 천식","알레르기성·아토피·외인성"],
+      ["J45.1","비알레르기성 천식","내인성·특발성"],
+      ["J45.8","혼합형 천식","알레르기+비알레르기"],
+      ["J45.9","상세불명 천식","원인 미특정 (가장 흔히 쓰이나 세분 권장)"],
+      ["J46","천식지속상태","★급성 중증 천식발작(status asthmaticus)"]
+    ],
+    note:"★한국 KCD에선 J45가 중증도를 구분하지 않아 중증 천식도 '경증'으로 인식되는 한계. 진단서·청구 시 가능한 세분(J45.0 등)·동반 코드로 중증도를 보강."},
+  severity:{ title:"중증도 구분 (ICD-10-CM 참고)",
+    cols:["코드","중증도"],
+    rows:[
+      ["J45.2x","경증 간헐성 (mild intermittent)"],
+      ["J45.3x","경증 지속성 (mild persistent)"],
+      ["J45.4x","중등증 지속성 (moderate persistent)"],
+      ["J45.5x","중증 지속성 (severe persistent)"]
+    ],
+    note:"끝자리: 0=비합병, 1=급성악화 동반, 2=천식지속상태. (한국 KCD 적용 범위는 koicd.kr 확인)"},
+  comorbid:{ title:"흔한 동반 상병코드 (함께 기재)",
+    cols:["코드","상병명","연결"],
+    rows:[
+      ["J30.x","알레르기비염","상하기도 일치 — 천식과 흔히 동반"],
+      ["J33.x","비용종","T2 염증 — 생물학제제 적응과 연결"],
+      ["J32.x","만성부비동염","비용종 동반 시"],
+      ["K21.x","위식도역류(GERD)","야간 기침·악화 유발 시"],
+      ["J44.x","COPD","ACO(천식-COPD 중복) 시 함께 고려"],
+      ["T78.4 / Z88.x","아스피린/약물 과민","NERD — NSAID 회피 근거"]
+    ],
+    note:"동반질환 코드는 약제 급여·치료의 근거가 된다(예: 비염 동반 → 비강스테로이드, 비용종 → 생물학제제 적응 보강)."},
+  tips:{ title:"청구 실전 팁",
+    items:[
+      "세분 코드까지 기재 — 'J45'만 쓰면 반송 위험, J45.0/J45.9 등 끝자리까지",
+      "급성 중증 발작·입원은 J46(천식지속상태)으로 — 중증도 근거",
+      "ICS/LABA 급여: 차트에 '부분조절 이상 단계의 천식' 기재(폐기능검사 불필요)",
+      "생물학제제는 중증 천식 상병 + 표현형 검사(호산구·FeNO·IgE) 근거 구비",
+      "주상병·부상병 구분 — 처방 약제와 상병 일치 확인(불일치 삭감)",
+      "구코드 자동복사 주의 — 변경 이력 확인. ★최신 코드는 koicd.kr·심평원 확인"
+    ]}
+};
+
+// ============ 심화(deep) 데이터 — 아코디언으로 표시 ============
+A.DEEP = {
+  assess:[
+    {key:"as1", title:"ACT/ACQ 점수 구간 해석", items:[
+      "ACT 25=완전조절 / 20–24=양호 / 16–19=부분조절 / ≤15=미조절. 3점 이상 변화=임상적 유의",
+      "소아 c-ACT(4–11세): ≤19 미조절",
+      "ACQ: 0=완전조절, ≥1.5=미조절. 0.5점 변화=최소임상중요차이(MCID)",
+      "ACT는 지난 4주 회고 — 변동 큰 환자는 과소·과대평가 가능"]},
+    {key:"as2", title:"조절 vs 중증도 vs 위험 — 세 개념 구분(흔한 혼동)", items:[
+      "조절(control): 현재 증상·완화제 — 단기, 치료로 즉시 변함",
+      "중증도(severity): 조절에 필요한 '치료 강도'로 사후 정의 — 경증=1–2단계로 조절, 중증=4–5단계 필요/그래도 미조절",
+      "미래위험(risk): 악화·폐기능 감소·부작용 — 조절과 별개 축(조절돼도 위험 높을 수 있음)",
+      "★'증상 없음=경증'이 아님. 고용량으로 겨우 조절 중이면 중증"]},
+    {key:"as3", title:"폐기능 해석", items:[
+      "FEV1/FVC 정상 하한(LLN) 또는 <0.7 — 기류제한",
+      "FEV1 %예측치로 중증도 보조 — 단 정상이어도 천식 배제 불가",
+      "PEF 일중변동률 >10%(성인)/>13%(소아) — 가변성 지지",
+      "FEV1 낮음 = 미래 악화 위험인자"]}
+  ],
+  tracks:[
+    {key:"tr1", title:"MART 실제 용법·상한", items:[
+      "MART = 유지(아침·저녁 정기) + 증상 시 추가, 같은 ICS-formoterol 흡입기 하나로",
+      "부데소니드/포르모테롤: 증상 시 1회씩 추가, 1일 총 흡입(유지+추가) 통상 최대 8회(일시적 12회)",
+      "★SABA를 reliever로 따로 주지 않음 — 중복·혼선 주의",
+      "formoterol은 LABA지만 작용발현 빠름(수분 내) → reliever 역할 가능. 살메테롤은 느려서 MART 불가"]},
+    {key:"tr2", title:"AIR vs MART", items:[
+      "AIR(as-needed only): 경증(1–2단계) — 증상 시에만 ICS-formoterol, 유지 없음",
+      "MART: 3단계+ — 유지 + 증상 시. 둘 다 SABA 단독보다 악화↓",
+      "공통 이점: ICS가 항상 동반돼 SABA 과의존·염증 방치 방지"]},
+    {key:"tr3", title:"Step-down 구체 방법", items:[
+      "조절 3개월 이상 안정 + 위험인자 없을 때 시도",
+      "ICS 용량 25–50%씩 감량 또는 투여횟수 감소",
+      "ICS-LABA에서 LABA 먼저 빼지 말 것(ICS 유지). 완전 중단 전 저용량 ICS 거침",
+      "감량 후 2–3개월 내 재평가. 악화력 있으면 신중"]}
+  ],
+  inhaler:[
+    {key:"in1", title:"스페이서(밸브형 챔버) 적응·관리", items:[
+      "pMDI는 스페이서 병용 시 폐 침착↑·구인두 부작용↓ — 소아·고령·동조 어려운 환자 필수",
+      "한 번 분사 후 즉시 흡입(여러 번 분사 후 흡입 금지)",
+      "세척: 월 1회 미온수+중성세제, 헹구지 말고 자연건조(정전기 방지)",
+      "DPI는 스페이서 사용 안 함"]},
+    {key:"in2", title:"DPI 흡기유속 요구·보관", items:[
+      "DPI는 환자 흡기력으로 분말 분산 — 충분히 빠르고 깊게(장치별 30–60 L/min 이상)",
+      "흡기력 약한 고령·중증 급성기엔 부적합 → pMDI+스페이서 또는 SMI",
+      "습기 주의 — 흡입구에 대고 내쉬면 분말 응집",
+      "유효기간·개봉 후 사용기한(제품별) 확인"]}
+  ],
+  device:[
+    {key:"dv1", title:"디바이스 선택 알고리즘", items:[
+      "흡기력 충분 + 손 협응 OK → DPI",
+      "흡기력 약함 또는 동조 어려움 → pMDI + 스페이서, 또는 SMI(레스피맷)",
+      "소아: 마스크형 스페이서(영유아), 연령 올라가며 마우스피스",
+      "고령·인지저하: 조작 단계 적은 장치(SMI·일부 DPI)·피드백 기능"]},
+    {key:"dv2", title:"교육·재평가 실무", items:[
+      "★말로 묻지 말고 실제 시연시켜 확인(teach-back)",
+      "매 방문·악화 시·약 변경 시 재확인",
+      "흡입 후 가글(ICS 구강칸디다·목쉼 예방), 뱉기",
+      "동시에 여러 디바이스 처방 시 사용법 혼선 — 가능하면 디바이스 통일"]}
+  ],
+  monitor:[
+    {key:"mo1", title:"FeNO 해석의 함정", items:[
+      "낮춤 요인: 흡연(현재), ICS 사용 중, 비흡연 남성 키 큰 경우",
+      "높임 요인: 알레르기 감작(아토피)·비염, 질산염 식이, 비흡연",
+      "낮아도 천식 배제 불가(rule-in 용도). 25–50 회색지대가 ~1/4",
+      "★기관지확장제·폐기능검사(FVC) 후 변동 → FeNO 먼저 측정"]},
+    {key:"mo2", title:"혈중 호산구·메타콜린 함정", items:[
+      "혈중 호산구: OCS·전신스테로이드가 억제(치료 전/감량 후 측정). 일중 변동(아침↑), 기생충·약물 영향",
+      "혈중 vs 객담: 급여·생물학제제는 모두 '혈중'. 객담은 가용성 제한",
+      "메타콜린: 5회 호흡 용량계법은 경증서 위음성, 2분 평상호흡법은 위양성 가능",
+      "메타콜린 검사 전 중단: SABA 6–8h, LABA 24–48h, 항히스타민·테오필린·카페인 영향"]},
+    {key:"mo3", title:"검사 조합 전략", items:[
+      "메타콜린(민감도↑, rule-out) + FeNO(특이도↑, rule-in) = 상호보완",
+      "진단 단계: 가역성 우선 → 음성이면 메타콜린/FeNO",
+      "표현형 단계: 혈중호산구+FeNO+IgE+특이IgE 묶어서",
+      "치료반응: ACT/ACQ + 폐기능 + (가능시) FeNO 추세"]}
+  ],
+  pheno:[
+    {key:"ph1", title:"표현형 vs 내재형(endotype)", items:[
+      "표현형(phenotype): 관찰 가능한 임상 특징(알레르기성·호산구성·성인발현·비만관련 등)",
+      "내재형(endotype): 분자 기전(T2-high = IL-4/5/13 / T2-low = Th17·호중구성·pauci-granulocytic)",
+      "T2-high: 호산구·FeNO·IgE↑, ICS·생물학제제 반응 좋음",
+      "T2-low: 바이오마커 음성, ICS 반응 약함 — LAMA·macrolide·체중관리"]},
+    {key:"ph2", title:"T2 판정 알고리즘·overlap", items:[
+      "T2-high 시사: 혈중 호산구 ≥150 또는 FeNO ≥25 또는 객담호산구 ≥2% 또는 알레르기 유발",
+      "OCS 치료 중이면 바이오마커 억제 — 판정 주의",
+      "알레르기성·호산구성은 흔히 overlap(둘 다 T2)",
+      "표현형이 약제 선택을 좌우: 알레르기성→오말리주맙, 호산구성→IL-5, 광의 T2→두필루맙"]}
+  ],
+  biologic:[
+    {key:"bi1", title:"약제 간 비교", table:{ cols:["약제","표적","투여간격","자가주사"],
+      rows:[
+        ["졸레어","IgE","2–4주","제한적"],
+        ["누칼라","IL-5","4주","가능"],
+        ["싱케어","IL-5","4주(IV)","불가(정맥)"],
+        ["파센라","IL-5Rα","4주×3 후 8주","가능"],
+        ["듀피젠트","IL-4Rα","2주","가능"]]}},
+    {key:"bi2", title:"부작용·주의·전환", items:[
+      "공통: 주사부위 반응. 졸레어 — 아나필락시스(투여 후 관찰), 심근경색 병력 금기",
+      "듀피젠트 — 결막염·주사부위, 일시적 호산구 증가(과호산구증가 드묾)",
+      "IL-5 계열 — 기생충 감염 위험 지역 주의, 대상포진",
+      "효과 판정: 통상 4–6개월(졸레어 16주). 실패 시 다른 표적으로 전환 고려(단 급여 교체규칙 확인)",
+      "생백신은 병용 주의"]}
+  ],
+  exac:[
+    {key:"ex1", title:"악화 위험인자·예측", items:[
+      "지난해 중증 악화 ≥1회 = 가장 강한 예측인자",
+      "낮은 FEV1, 높은 SABA 사용(연 ≥3캔), ICS 미사용·순응불량",
+      "혈중 호산구↑·FeNO↑, 흡연, 동반질환(비염·비만·GERD)",
+      "★중증 악화력 환자는 조절돼 보여도 step-down 신중"]},
+    {key:"ex2", title:"천식 행동계획(action plan)", items:[
+      "녹색(잘 조절): 평소 controller 유지",
+      "황색(악화 조짐: 증상↑·PEF 50–80%): reliever 증량 ± ICS 증량/OCS 시작 기준 명시",
+      "적색(중증: PEF <50%·호흡곤란): OCS 시작 + 즉시 의료기관",
+      "서면으로 제공 — 개인 최고 PEF 기준치 기록"]},
+    {key:"ex3", title:"악화 후 추적", items:[
+      "퇴원 1–2주 내 외래 — 조절·술기·순응·유발인자 재평가",
+      "controller 적정성 재검토(악화는 step-up 신호일 수 있음)",
+      "OCS 코스 완료 확인, 부작용 모니터",
+      "반복 악화면 표현형 검사·전문가 의뢰"]}
+  ],
+  ait:[
+    {key:"ai1", title:"적응·금기 상세", items:[
+      "적응: IgE 매개 반응과 증상의 뚜렷한 연관 + 회피 곤란 + 약물로 조절 불충분, 순응도 양호",
+      "★금기: 조절되지 않는 천식(아나필락시스 위험), 중증/불안정 천식, 심한 심혈관질환, 베타차단제 병용, 임신 중 신규 시작",
+      "천식은 '조절된 상태'가 전제 — FEV1 저하 시 위험",
+      "원인 알레르겐 1~소수로 명확할 때 효과적"]},
+    {key:"ai2", title:"SCIT 스케줄·방식", items:[
+      "고식적: 증량기 주 1회씩 약 2배 증량 → 유지기 3–4주 간격",
+      "집중(cluster): 1회 방문 시 2–3회 주사로 1–2개월 내 유지도달",
+      "급속(rush): 3–5일 내 유지도달(아나필락시스 위험↑, 입원·전처치)",
+      "효과는 약 6개월부터, 총 3–5년 유지 권장. 양측 상박 교대 주사"]},
+    {key:"ai3", title:"SLIT·이상반응·효과판정", items:[
+      "SLIT: 자가투약, 혀밑 1–2분 보유 후 연하. 국소반응(구강 가려움·부종) 흔함",
+      "SCIT 전신반응 대비 — 주사 후 30분 관찰, 응급대비",
+      "효과 판정: 증상·약물점수(CSMS) 추세. 중단 후 재발 가능",
+      "천식 예방효과·새 감작 예방 근거 있음(주로 비염 동반)"]}
+  ],
+  comorbid:[
+    {key:"co1", title:"비염·부비동·비용종 (상하기도 일치)", items:[
+      "ARIA 기반 — 비강 스테로이드·항히스타민으로 비염 조절이 천식 조절 개선",
+      "만성부비동염·비용종 = T2 염증 신호 → 듀피젠트·오말리주맙 적응과 연결",
+      "'one airway, one disease' — 상기도 방치 시 하기도 악화"]},
+    {key:"co2", title:"GERD·비만·NERD", items:[
+      "GERD: 야간 기침·악화 유발. 증상 있으면 PPI 시도(무증상 경험적 투여는 비권고)",
+      "비만: 조절 악화·약물반응 저하·비T2 경향. 감량이 조절·삶의질 개선",
+      "NERD(아스피린과민): 한국 중증천식 ~14%. NSAID 회피, LTRA 유효, 필요시 아스피린 탈감작"]},
+    {key:"co3", title:"기타·평가", items:[
+      "수면무호흡: 야간증상·미조절과 연관, 의심 시 수면검사",
+      "불안·우울: 증상 과인지·순응도 영향 — 동반 평가",
+      "음성기능이상(VCD): 천식 모방·공존, 흡기 천명·치료저항 시 의심",
+      "골다공증: 장기 OCS·고용량 ICS 환자 골밀도·FRAX"]}
+  ]
+};
+
+// ── 시뮬레이터 노드 (진료 흐름순, "고려할 수 있다" 톤) ──
+A.SIM = {
+  // 인터랙티브 매트릭스 (COPD 가이드 그림 재현 방식)
+  matrix:{
+    step:{
+      title:"GINA 시작 단계 — 증상으로 결정",
+      desc:"증상 빈도·야간각성을 입력하면 해당 시작 단계가 하이라이트됩니다.",
+      inputs:[
+        {id:"sx", label:"주간 증상 빈도", opts:[
+          {v:"low", t:"주 1–2일 이하"},
+          {v:"mid", t:"주 3–5일 미만"},
+          {v:"most", t:"대부분의 날"},
+          {v:"daily", t:"매일"}]},
+        {id:"night", label:"야간 각성(천식으로)", opts:[
+          {v:"no", t:"없음/드묾"},
+          {v:"yes", t:"주 1회 이상"}]}
+      ],
+      rows:[
+        {step:"1단계", cond:"증상 주 1–2일 이하", t1:"필요시 저용량 ICS-formoterol (AIR)", t2:"SABA 쓸 때마다 ICS"},
+        {step:"2단계", cond:"증상 주 3–5일 미만, 폐기능 정상~약간감소", t1:"필요시 저용량 ICS-formoterol (AIR)", t2:"저용량 ICS 매일"},
+        {step:"3단계", cond:"대부분의 날 증상 또는 주 1회+ 야간각성 또는 폐기능 감소", t1:"저용량 ICS-formoterol 유지 (MART)", t2:"저용량 ICS-LABA"},
+        {step:"4단계", cond:"매일 증상 또는 주 1회+ 야간각성 또는 낮은 폐기능/최근 악화", t1:"중간용량 ICS-formoterol (MART)", t2:"중간~고용량 ICS-LABA"},
+        {step:"5단계", cond:"4단계에도 미조절 — 전문가 의뢰", t1:"LAMA 추가 + 표현형 평가 + 생물학제제", t2:"LAMA 추가 + 생물학제제"}
+      ],
+      note:"★증상만으로 진단하지 말 것 — 객관적 폐기능(가역성)으로 천식 확진 후 단계 적용. 4–8주 후 재평가."
+    },
+    bio:{
+      title:"표현형 → 생물학제제 (중증·미조절 시)",
+      desc:"혈중 호산구·FeNO·알레르기를 입력하면 해당 표현형과 후보 약제가 하이라이트됩니다.",
+      inputs:[
+        {id:"eos", label:"혈중 호산구 (/㎕)", opts:[
+          {v:"lt150", t:"< 150"},
+          {v:"150_300", t:"150–299"},
+          {v:"ge300", t:"≥ 300"}]},
+        {id:"feno", label:"FeNO (ppb)", opts:[
+          {v:"lt25", t:"< 25"},
+          {v:"ge25", t:"≥ 25"}]},
+        {id:"allergy", label:"통년성 알레르겐 감작", opts:[
+          {v:"no", t:"없음"},
+          {v:"yes", t:"있음(특이IgE/SPT 양성)"}]}
+      ],
+      rows:[
+        {ph:"알레르기성 (T2)", crit:"특이IgE 양성 + 총IgE 상승", drug:"졸레어(오말리주맙)", key:"allergic"},
+        {ph:"호산구성 (T2)", crit:"호산구 ≥300~400", drug:"누칼라·파센라·싱케어(IL-5)", key:"eos"},
+        {ph:"제2형 광의 (T2)", crit:"호산구 ≥150 또는 FeNO ≥25", drug:"듀피젠트(IL-4Rα)", key:"t2"},
+        {ph:"비제2형 (T2-low)", crit:"바이오마커 모두 음성", drug:"테제펠루맙(비급여)·LAMA·macrolide", key:"low"}
+      ],
+      note:"★급여기준은 더 엄격(악화 횟수 등) — 표현형 충족돼도 R-CHECK로 급여 별도 확인. 호산구는 혈중 기준."
+    }
+  },
+  triggers:[
+    {when:"연간 OCS 누적 ≥0.5–1g 또는 1년 ≥2회 전신스테로이드 코스", action:"★전문가 의뢰 + 생물학제제·OCS 감량 검토 — '미조절'의 객관 신호. 매년 반복되는 악화 루프를 끊을 시점.", icon:"⚠"},
+    {when:"고용량 ICS-LABA에도 미조절 + 호산구↑/FeNO↑/잦은악화", action:"★표현형 검사 → 생물학제제 적격 검토. 충족 안 돼도 100/100 경로 안내.", icon:"🔬"},
+    {when:"급성 악화로 내원·퇴원", action:"★controller(ICS) 반드시 처방 — SABA만으로 퇴원 금지. 서면 행동지침·외래예약·흡입술기 재확인.", icon:"🚪"},
+    {when:"장기 OCS(pred ≥5mg 1개월+)", action:"★부신기능(아침 코티솔)·골다공증(pred ≥2.5mg 3개월+ → Ca/VitD) 모니터. 감량 프로토콜 가동.", icon:"💊"}
+  ],
+  // 진입점: 상황 선택
+  entry:{
+    q:"지금 어떤 상황인가요?",
+    options:[
+      {label:"신규 — 치료 시작 전", goto:"new", desc:"진단 확정 → GINA 단계 → 시작 약제"},
+      {label:"치료 중인데 증상이 조절 안 됨", goto:"uncontrolled", desc:"올리기 전 점검 → step-up 선택지"},
+      {label:"최근 급성 악화 / 입원", goto:"acute", desc:"급성 처치 → 퇴원 체크 → 재발 방지"},
+      {label:"생물학제제를 고려 중", goto:"biologic", desc:"표현형 → R-CHECK 급여 확인"}
+    ]
+  },
+  // ── 경로 1: 신규 ──
+  new:{
+    title:"신규 — 진단부터 시작 약제까지",
+    steps:[
+      {h:"① 천식이 확실한가 (진단 확정)", type:"checklist", items:[
+        "객관적 검사로 가변적 기류제한 입증 (증상만으로 진단 금지)",
+        "기관지확장제 가역성: FEV1 ≥12% 그리고 ≥200mL 증가",
+        "또는 메타콜린 PC20 < 16 mg/mL",
+        "FeNO ≥25 ppb (보조 — rule in)",
+        "감별: COPD·심부전·후비루·GERD·VCD 배제"]},
+      {h:"② 증상으로 시작 단계 결정", type:"matrix", which:"step"},
+      {h:"③ 시작 시 함께", type:"checklist", items:[
+        "Track 1(ICS-formoterol) 우선 — 단일 흡입기·악화↓",
+        "흡입술기 교육 + 시연 확인",
+        "천식행동계획(서면) 제공",
+        "4–8주 후 재평가 (진단·반응)"]}
+    ],
+    summary:"신규는 ① 객관적 검사로 천식 확진 → ② 증상 빈도로 시작 단계 결정(위 매트릭스) → ③ Track1 ICS-formoterol로 시작 + 술기교육·행동계획. ★SABA 단독 시작 금지. 4–8주 후 재평가."
+  },
+  // ── 경로 2: 치료 중 미조절 ──
+  uncontrolled:{
+    title:"치료 중 미조절 — 올리기 전 점검부터",
+    intro:"용량을 올리기 전, '진짜 미조절'인지부터 가른다. 아래를 먼저 점검(강제 아님, 건너뛸 수 있음).",
+    gate:[
+      {label:"순응도", summary:"미조절의 가장 흔한 숨은 원인. 약을 안 쓰는데 용량만 올리면 부작용만 는다.",
+       items:["리필 간격이 처방보다 긴가","증상 있을 때만 쓰고 평소 거르나(controller를 reliever처럼)","부작용(목쉼·칸디다) 때문에 임의 중단","비용 부담으로 줄여 쓰나","흡입기 잔량 카운터 확인"], link:"device"},
+      {label:"흡입술기", summary:"천식 90%가 오사용. 제대로 못 마시면 용량 올려도 소용없음.",
+       items:["흡입 전 끝까지 내쉬는가","pMDI 분사-흡입 동조","DPI 충분히 빠르고 깊게","흡입 후 5–10초 숨 참기","★실제 시연시켜 확인(teach-back)"], link:"device"},
+      {label:"동반질환", summary:"천식만 봐선 안 잡힌다. 동반질환이 천식을 끌고 간다.",
+       items:["알레르기비염(가장 흔)","GERD(야간기침)","비용종/부비동염(T2)","비만","아스피린 과민성(NERD)","★흡연(ICS 효과↓)"], link:"comorbid"},
+      {label:"유발인자", summary:"노출이 계속되면 약을 올려도 못 잡는다.",
+       items:["원인 알레르겐 지속노출","반려동물","직업성 노출(월~금 악화 패턴)","담배연기·대기오염","약물(아스피린/NSAID·베타차단제)"], link:"comorbid"}
+    ],
+    options:[
+      {label:"현재 Track/용량 내 조정", reveal:"같은 Track에서 ICS 용량 한 단계 위로. 부작용 적고 익숙.", expand:"ics_step"},
+      {label:"add-on: LAMA (흡입 3제)", reveal:"표현형 무관 폐기능·악화 개선. T2-low 우선.", expand:"lama"},
+      {label:"add-on: 경구 LTRA / 테오필린", reveal:"흡입제 보조. 몬테루카스트는 아스피린 과민성·비염·운동유발에.", expand:"oral"},
+      {label:"Track 전환 (1↔2)", reveal:"환자 선호·순응도로 선택.", expand:"track_compare"},
+      {label:"표현형 검사 → 생물학제제", reveal:"고용량에도 미조절+반복악화면 검토.", expand:"pheno_bio", goto:"biologic"}
+    ],
+    summary:"통상: ① 순응도·술기부터 확인(여기서 대부분 해결) → ② 동반질환·유발인자 교정 → ③ 그래도면 ICS 용량/Track 조정 → ④ LAMA 추가(3제) → ⑤ 비염·아스피린 과민성이면 LTRA → ⑥ 미조절+반복악화면 표현형→생물학제제."
+  },
+  // ── 경로 3: 급성 악화 ──
+  acute:{
+    title:"급성 악화 — 처치부터 재발 방지까지",
+    steps:[
+      {h:"① 급성기 처치", type:"checklist", items:[
+        "산소(SpO2 ≥90%)",
+        "SABA(±SAMA) 1시간 지속 — 네뷸/MDI",
+        "전신스테로이드 pred 30–50mg/day × 3–7일",
+        "★진정제 금기",
+        "중증(PEF<60%)·생명위협(PEF<30%·PCO2>45) → 입원/ICU, MgSO4 고려"]},
+      {h:"② 퇴원 체크 (가장 잘 빠지는 부분)", type:"checklist", items:[
+        "★controller(ICS) 처방 — SABA만으로 퇴원 금지",
+        "흡입술기 재교육·시연",
+        "천식행동계획(녹/황/적) 서면 제공",
+        "외래 추적 예약(1–2주)",
+        "PEF >60% 확인"]},
+      {h:"③ 재발 방지", type:"checklist", items:[
+        "연간 OCS 누적 ≥0.5–1g 또는 1년 ≥2회 → 전문가 의뢰 신호",
+        "controller 적정성 재검토(악화는 step-up 신호)",
+        "유발인자·동반질환 점검",
+        "반복 악화면 표현형 검사 → 생물학제제 검토"]}
+    ],
+    summary:"급성기: 산소 + SABA(±SAMA) + 전신스테로이드(pred 30–50mg×3–7일). 중증·반응불량이면 MgSO4·입원. ★퇴원 = controller(ICS) 반드시 + 행동계획 + 외래예약. 항생제는 세균감염 동반 시만. 반복되면 의뢰·생물학제제."
+  },
+  // ── 경로 4: 생물학제제 ──
+  biologic:{
+    title:"생물학제제 — 표현형 확인 후 급여 검증",
+    stage:"혈중 호산구·FeNO·총IgE·통년성 특이IgE(MAST/RAST) 확보. 급여기준이 까다로워 미충족 시 100/100.",
+    matrix:"bio",
+    intro:"위 매트릭스로 표현형을 확인한 뒤, 해당 약제의 급여 체크리스트(R-CHECK)로 충족 여부를 확인하세요. 강제 아님.",
+    rcheck:true,
+    summary:"표현형 확인(혈중 호산구·FeNO·IgE) → 해당 약제 R-CHECK로 급여 점검. 충족=청구, 미충족=100/100(임의 비급여 아님). 알레르기성=졸레어, 호산구성=IL-5계열, 광의T2=듀피젠트."
+  }
+};
+</script>
+
+<!-- ===================== ENGINE LAYER ===================== -->
+<script>
+// R-CHECK 엔진 (검증 완료, 18 테스트 통과)
+function rcEvalCriteria(criteria, checked){
+  for(var i=0;i<criteria.length;i++){ var c=criteria[i]; if(c.required && !checked[c.id]) return false; }
+  return true;
+}
+function rcEvaluate(rec, checked){
+  checked=checked||{}; var res={met:false,paths:[],sharedMet:true};
+  // 공통 전제(sharedChecks) — ANY_PATH에서 경로와 무관하게 먼저 충족돼야
+  if(rec.sharedChecks){ res.sharedMet = rcEvalCriteria(rec.sharedChecks, checked); }
+  if(rec.logic==="ALL"){ res.met=rcEvalCriteria(rec.criteria,checked); }
+  else if(rec.logic==="ANY_PATH"){ var any=false;
+    for(var p=0;p<rec.paths.length;p++){ var pm=rcEvalCriteria(rec.paths[p].criteria,checked);
+      res.paths.push({id:rec.paths[p].id,label:rec.paths[p].label,met:pm}); if(pm)any=true; }
+    res.met = any && res.sharedMet; }
+  return res;
+}
+function rcVerdict(ev){
+  var C=ASTHMA_DATA.BIO_COMMON;
+  return ev.met ? {status:"MET",text:C.verdict_met,sw:C.switch_text}
+                : {status:"NOT_MET",text:C.verdict_notmet,sw:null};
+}
+function findBio(id){ var B=ASTHMA_DATA.BIOLOGICS; for(var i=0;i<B.length;i++) if(B[i].id===id) return B[i]; }
+</script>
+
+<!-- ===================== UI LAYER ===================== -->
+<script>
+var APP = { tab:"lib", topic:null, rcheck:{drugId:null, checked:{}},
+  sim:{ route:null, gate:{}, opened:{} }, acc:{}, mtx:{step:{}, bio:{}} };
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ---------- 탭 ---------- */
+function switchTab(t){
+  APP.tab=t; APP.topic=null;
+  document.getElementById("tab-lib").className = "tab"+(t==="lib"?" on":"");
+  document.getElementById("tab-sim").className = "tab"+(t==="sim"?" on":"");
+  render(true);
+}
+
+/* ---------- 도서관 ---------- */
+function renderLibraryGrid(){
+  var cats=["clin","care","pay"];
+  var html="";
+  for(var ci=0;ci<cats.length;ci++){
+    var cat=cats[ci];
+    var info=ASTHMA_DATA.CAT_INFO[cat];
+    html += '<div class="cat-band cat-'+cat+'"><span class="cat-dot"></span>'+
+      '<span class="cat-label">'+info.label+'</span></div><div class="grid">';
+    var ts=ASTHMA_DATA.TOPICS;
+    for(var i=0;i<ts.length;i++){
+      if(ts[i].cat!==cat) continue;
+      var t=ts[i];
+      html += '<button type="button" class="topic-card '+cat+'" onclick="openTopic(\''+t.id+'\')">'+
+        '<div class="tc-num">'+t.num+'</div><div class="tc-title">'+esc(t.title)+'</div>'+
+        (t.star?'<div class="tc-star">'+esc(t.star)+'</div>':'')+'</button>';
+    }
+    html += '</div>';
+  }
+  return html;
+}
+
+function findTopic(id){ var ts=ASTHMA_DATA.TOPICS; for(var i=0;i<ts.length;i++) if(ts[i].id===id) return ts[i]; }
+
+function openTopic(id){ APP.topic=id; APP.acc={}; render(true); }
+function closeTopic(){ APP.topic=null; render(true); }
+
+function renderTopicDetail(id){
+  var t=findTopic(id);
+  var html='<button type="button" class="back-btn" onclick="closeTopic()">← 도서관</button>';
+  html += '<h2 class="topic-h">'+t.num+'. '+esc(t.title)+'</h2>';
+  var R={ biologic:renderBiologicTopic, assess:renderAssess, tracks:renderTracks,
+    inhaler:renderInhaler, device:renderDevice, monitor:renderMonitor,
+    pheno:renderPheno, exac:renderExac, ait:renderAit, comorbid:renderComorbid, kcd:renderKcd };
+  if(R[id]){ html += R[id](); }
+  else { html += '<div class="placeholder">📋 준비 중</div>'; }
+  if(A.DEEP && A.DEEP[id]){
+    html += '<div class="deep-label">심화 — 펼쳐서 보기</div>'+deepBlocks(A.DEEP[id]);
+  }
+  return html;
+}
+
+/* ---------- 공통 섹션 헬퍼 ---------- */
+function secCard(title, inner){ return '<div class="card"><div class="sec-title">'+esc(title)+'</div>'+inner+'</div>'; }
+
+/* 아코디언: 심화 내용 접기/펼치기 */
+function accToggle(key){ APP.acc[key]=!APP.acc[key]; render(); }
+function deepAccordion(key, title, bodyHtml){
+  var open=APP.acc[key];
+  return '<div class="acc'+(open?' acc-open':'')+'">'+
+    '<button type="button" class="acc-head" onclick="accToggle(\''+key+'\')">'+
+    '<span class="acc-title">'+esc(title)+'</span><span class="acc-icon">'+(open?'−':'+')+'</span></button>'+
+    (open?'<div class="acc-body">'+bodyHtml+'</div>':'')+'</div>';
+}
+/* 심화 블록을 리스트로 렌더 (deep 배열) */
+function deepBlocks(deepArr){
+  var h='';
+  for(var i=0;i<deepArr.length;i++){ var d=deepArr[i];
+    var body='';
+    if(d.items){ body+='<ul class="kp">'; for(var j=0;j<d.items.length;j++) body+='<li>'+esc(d.items[j])+'</li>'; body+='</ul>'; }
+    if(d.table){ body+=dataTable(d.table.cols, d.table.rows); }
+    if(d.text){ body+='<div class="acc-text">'+esc(d.text)+'</div>'; }
+    h += deepAccordion(d.key, d.title, body);
+  }
+  return h;
+}
+function kpList(arr){ var h='<ul class="kp">'; for(var i=0;i<arr.length;i++) h+='<li>'+esc(arr[i])+'</li>'; return h+'</ul>'; }
+function calloutBox(text, kind){ return '<div class="callout '+(kind||'')+'">'+esc(text)+'</div>'; }
+function dataTable(cols, rows){
+  var h='<div class="tbl-wrap"><table class="tbl"><thead><tr>';
+  for(var i=0;i<cols.length;i++) h+='<th>'+esc(cols[i])+'</th>'; h+='</tr></thead><tbody>';
+  for(var r=0;r<rows.length;r++){ h+='<tr>'; for(var c=0;c<rows[r].length;c++) h+='<td>'+esc(rows[r][c])+'</td>'; h+='</tr>'; }
+  return h+'</tbody></table></div>';
+}
+
+/* ---------- 1. 조절 평가 ---------- */
+function renderAssess(){
+  var d=A.ASSESS, h='';
+  h += secCard(d.gina4.title, kpList(d.gina4.items)+calloutBox(d.gina4.interpret));
+  var tools=''; for(var i=0;i<d.tools.length;i++) tools+='<div class="kv"><b>'+esc(d.tools[i].name)+'</b> '+esc(d.tools[i].note)+'</div>';
+  h += secCard("정량 도구", tools);
+  h += secCard(d.twoaxis.title, '<div class="kv"><b>조절</b> '+esc(d.twoaxis.control)+'</div><div class="kv"><b>위험</b> '+esc(d.twoaxis.risk)+'</div>');
+  h += calloutBox(d.note, 'accent');
+  return h;
+}
+
+/* ---------- 2. 치료 단계 ---------- */
+function renderTracks(){
+  var d=A.TRACKS, h=calloutBox(d.overview, 'accent');
+  function trackHtml(arr){ var s=''; for(var i=0;i<arr.length;i++){ s+='<div class="step-row"><span class="step-n">'+esc(arr[i].step)+'</span><div><div>'+esc(arr[i].controller)+'</div>'+(arr[i].ex?'<div class="step-ex">예: '+esc(arr[i].ex)+'</div>':'')+'</div></div>'; } return s; }
+  h += secCard("Track 1 (우선) — ICS-formoterol reliever", trackHtml(d.track1));
+  h += secCard("Track 2 — SABA/ICS-SABA reliever + 매일 controller", trackHtml(d.track2));
+  h += secCard(d.ics.title, dataTable(d.ics.cols, d.ics.rows));
+  var oa=''; for(var i=0;i<d.oral_addon.items.length;i++){ var it=d.oral_addon.items[i];
+    oa += '<div class="drug-item"><div class="drug-item-h"><b>'+esc(it.name)+'</b><span class="drug-gen">'+esc(it.drug)+'</span></div><div class="drug-note">'+esc(it.note)+'</div></div>'; }
+  h += secCard(d.oral_addon.title, oa+calloutBox(d.oral_addon.note,'warn'));
+  h += calloutBox(d.stepdown, 'accent');
+  return h;
+}
+
+/* ---------- 3. 흡입제 ---------- */
+function renderInhaler(){
+  var d=A.INHALERS, h=calloutBox(d.intro,'accent');
+  var rows='';
+  for(var i=0;i<d.list.length;i++){ var x=d.list[i];
+    var bcls = x.badge.indexOf('COPD ⚠')>=0?'badge-warn':(x.badge.indexOf('MART')>=0?'badge-blue':'badge-soft');
+    var key='inh'+i, open=APP.acc[key];
+    rows += '<div class="inh-item'+(open?' inh-open':'')+'">'+
+      '<button type="button" class="inh-clickhead" onclick="accToggle(\''+key+'\')">'+
+      deviceIcon(x.device,x.brand)+
+      '<div class="inh-body"><div class="inh-top"><div class="inh-name">'+esc(x.brand)+'</div>'+
+      '<span class="badge '+bcls+'">'+esc(x.badge)+'</span></div>'+
+      '<div class="inh-type">'+esc(x.type)+' · '+esc(x.device)+'</div>'+
+      '<div class="inh-dose">📊 '+esc(x.ics)+'</div></div>'+
+      '<span class="inh-arrow">'+(open?'−':'+')+'</span></button>';
+    if(open){
+      rows += '<div class="inh-detail"><div class="inh-feat">'+esc(x.feat)+'</div>';
+      if(x.detail){
+        if(x.detail.use) rows+='<div class="kv"><b>용법</b> '+esc(x.detail.use)+'</div>';
+        if(x.detail.caution) rows+='<div class="kv"><b>주의</b> '+esc(x.detail.caution)+'</div>';
+        if(x.detail.tip) rows+='<div class="kv"><b>tip</b> '+esc(x.detail.tip)+'</div>';
+      }
+      rows += '</div>';
+    }
+    rows += '</div>';
+  }
+  h += secCard("제품 — 탭하면 상세 (함량·용법·주의)", rows);
+  var rl=''; for(var j=0;j<d.reliever.items.length;j++) rl+='<li>'+esc(d.reliever.items[j])+'</li>';
+  h += secCard(d.reliever.title, '<ul class="kp">'+rl+'</ul>');
+  h += secCard("급여 팁 (삭감 방어)", calloutBox(d.reimb,'warn'));
+  return h;
+}
+
+/* 디바이스 형태 SVG 아이콘 (CDN 의존 없음, 가벼움) */
+function deviceIcon(device, brand){
+  var b=brand||"", svg='';
+  // 엘립타(납작 디스크형)
+  if(b.indexOf("엘립타")>=0){
+    svg='<rect x="6" y="14" width="36" height="22" rx="4" fill="#cfe0f0" stroke="#1f6fb2"/>'+
+        '<rect x="10" y="9" width="14" height="8" rx="2" fill="#1f6fb2"/>'+
+        '<circle cx="33" cy="25" r="5" fill="#fff" stroke="#1f6fb2"/>';
+  } else if(b.indexOf("터부헬러")>=0){
+    // 터부헬러(원통+회전 그립)
+    svg='<rect x="17" y="6" width="14" height="34" rx="6" fill="#cfe0f0" stroke="#1f6fb2"/>'+
+        '<rect x="15" y="30" width="18" height="7" rx="2" fill="#1f6fb2"/>'+
+        '<rect x="20" y="4" width="8" height="5" rx="2" fill="#1f6fb2"/>';
+  } else if(device==="pMDI"){
+    // pMDI(분무 캔 + L자 마우스피스)
+    svg='<rect x="18" y="5" width="13" height="20" rx="3" fill="#cfe0f0" stroke="#1f6fb2"/>'+
+        '<path d="M18 23 L18 33 L31 33 L31 25" fill="none" stroke="#1f6fb2" stroke-width="2.5"/>'+
+        '<rect x="14" y="31" width="10" height="9" rx="2" fill="#1f6fb2"/>'+
+        '<rect x="21" y="2" width="7" height="5" rx="2" fill="#1f6fb2"/>';
+  } else if(b.indexOf("제뉴에어")>=0){
+    svg='<rect x="10" y="16" width="30" height="18" rx="4" fill="#cfe0f0" stroke="#1f6fb2"/>'+
+        '<rect x="14" y="10" width="12" height="8" rx="2" fill="#1f6fb2"/>'+
+        '<circle cx="34" cy="25" r="4" fill="#7fd18a" stroke="#1f6fb2"/>';
+  } else {
+    // 일반 DPI
+    svg='<rect x="14" y="10" width="20" height="28" rx="5" fill="#cfe0f0" stroke="#1f6fb2"/>'+
+        '<rect x="18" y="6" width="12" height="7" rx="2" fill="#1f6fb2"/>'+
+        '<circle cx="24" cy="28" r="4" fill="#fff" stroke="#1f6fb2"/>';
+  }
+  return '<svg class="inh-icon" viewBox="0 0 48 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+svg+'</svg>';
+}
+
+/* ---------- 4. 디바이스·술기 ---------- */
+function renderDevice(){
+  var d=A.DEVICE, h=calloutBox(d.key,'warn');
+  h += secCard("디바이스 선택", calloutBox(d.choice,'accent'));
+  var tech='';
+  for(var i=0;i<d.techniques.length;i++){ var t=d.techniques[i];
+    tech += '<div class="kv"><b>'+esc(t.dev)+'</b> '+esc(t.key)+'</div>';
+    if(t.steps) tech += '<div class="mini-steps">'+t.steps.map(function(s,j){return (j+1)+'. '+esc(s);}).join('<br>')+'</div>';
+  }
+  h += secCard("술기", tech);
+  h += secCard("흔한 오류", kpList(d.errors));
+  h += secCard("순응도", calloutBox(d.adherence,'accent'));
+  return h;
+}
+
+/* ---------- 5. 검사 ---------- */
+function renderMonitor(){
+  var d=A.MONITOR, h='';
+  var rows='';
+  for(var i=0;i<d.tests.length;i++){ var t=d.tests[i];
+    var payCls = t.pay&&t.pay.indexOf('비급여')>=0?'pay-no':(t.pay&&t.pay.indexOf('급여')>=0?'pay-yes':'pay-na');
+    rows += '<div class="test-card"><div class="test-head"><b>'+esc(t.name)+'</b><span class="test-cat">'+esc(t.cat)+'</span></div>'+
+      '<div class="test-cut">'+esc(t.cut)+'</div>'+(t.warn?'<div class="test-warn">'+esc(t.warn)+'</div>':'')+
+      (t.pay?'<div class="test-pay '+payCls+'">💰 '+esc(t.pay)+'</div>':'')+'</div>';
+  }
+  h += secCard("검사 패널 — 급여 여부 포함", rows);
+  h += calloutBox(d.pay_note,'warn');
+  h += calloutBox(d.order,'accent');
+  return h;
+}
+
+/* ---------- 6. 표현형 ---------- */
+function renderPheno(){
+  var d=A.PHENO, h=calloutBox(d.intro,'accent');
+  var rows='';
+  for(var i=0;i<d.types.length;i++){ var t=d.types[i];
+    rows += '<div class="test-card"><div class="test-head"><b>'+esc(t.label)+'</b><span class="test-cat">'+esc(t.cyto)+'</span></div>'+
+      '<div class="test-cut">'+esc(t.crit)+'</div><div class="pheno-bio">→ '+esc(t.bio)+'</div></div>';
+  }
+  h += secCard("표현형 → 생물학제제", rows);
+  return h;
+}
+
+/* ---------- 8. 악화·OCS ---------- */
+function renderExac(){
+  var d=A.EXAC, h='';
+  var steps='';
+  for(var i=0;i<d.acute.steps.length;i++){ var s=d.acute.steps[i];
+    steps += '<div class="step-row"><span class="step-n">'+(i+1)+'</span><div><div><b>'+esc(s.s)+'</b></div><div class="step-ex">'+esc(s.d)+'</div></div></div>';
+  }
+  h += secCard(d.acute.title, steps);
+  var ad=''; for(var j=0;j<d.acute_drugs.items.length;j++){ var it=d.acute_drugs.items[j];
+    var tg = it.tag==="hot"?'<span class="drug-tag hot">1차/필수</span>':(it.tag==="warn"?'<span class="drug-tag warn">주의</span>':'');
+    ad += '<div class="drug-item"><div class="drug-item-h"><b>'+esc(it.name)+'</b>'+tg+'</div>'+
+      '<div class="drug-gen">'+esc(it.drug)+'</div><div class="drug-note">'+esc(it.note)+'</div></div>'; }
+  h += secCard(d.acute_drugs.title, ad);
+  h += secCard("OCS 사용", '<div class="kv"><b>단기</b> '+esc(d.ocs_acute)+'</div><div class="kv"><b>장기</b> '+esc(d.ocs_long)+'</div>');
+  h += secCard(d.taper.title, kpList(d.taper.pace)+calloutBox(d.taper.candidate)+calloutBox(d.taper.adrenal));
+  h += secCard("OCS 대체 (sparing)", calloutBox(d.sparing,'accent'));
+  return h;
+}
+
+/* ---------- 9. 면역치료 ---------- */
+function renderAit(){
+  var d=A.AIT, h=calloutBox(d.overview,'accent');
+  var routes='';
+  for(var i=0;i<d.routes.length;i++) routes+='<div class="kv"><b>'+esc(d.routes[i].name)+'</b> '+esc(d.routes[i].note)+'</div>';
+  h += secCard("경로", routes);
+  h += secCard("금기 ★", calloutBox(d.contra,'warn'));
+  h += calloutBox(d.note,'accent');
+  return h;
+}
+
+/* ---------- 10. 동반질환 ---------- */
+function renderComorbid(){
+  var d=A.COMORBID, h=calloutBox(d.intro,'warn');
+  for(var i=0;i<d.domains.length;i++){ h += secCard(d.domains[i].group, kpList(d.domains[i].items)); }
+  return h;
+}
+
+/* ---------- 11. 질병코드 (KCD) ---------- */
+function renderKcd(){
+  var d=A.KCD, h=calloutBox(d.intro,'accent');
+  function codeTable(sec){
+    var rows='';
+    for(var i=0;i<sec.rows.length;i++){ var r=sec.rows[i];
+      rows += '<tr><td class="kcd-code">'+esc(r[0])+'</td>';
+      for(var c=1;c<r.length;c++) rows += '<td>'+esc(r[c])+'</td>';
+      rows += '</tr>';
+    }
+    var head='<tr>'; for(var hi=0;hi<sec.cols.length;hi++) head+='<th>'+esc(sec.cols[hi])+'</th>'; head+='</tr>';
+    var t='<div class="tbl-wrap"><table class="tbl kcd-tbl"><thead>'+head+'</thead><tbody>'+rows+'</tbody></table></div>';
+    if(sec.note) t += calloutBox(sec.note, 'warn');
+    return t;
+  }
+  h += secCard(d.basic.title, codeTable(d.basic));
+  h += secCard(d.severity.title, codeTable(d.severity));
+  h += secCard(d.comorbid.title, codeTable(d.comorbid));
+  h += secCard(d.tips.title, kpList(d.tips.items));
+  return h;
+}
+
+
+/* ---------- 토픽7: 생물학제제 (R-CHECK) ---------- */
+function renderBiologicTopic(){
+  var html='<p class="topic-desc">5종의 생물학제제 — 표적·특징과 급여 충족 여부를 확인합니다. 강제가 아닌 제안이며, 미충족 시 100/100 경로를 안내합니다.</p>';
+  html += '<div class="card"><div class="sec-title">약제 (표적별)</div>';
+  var B=ASTHMA_DATA.BIOLOGICS;
+  for(var i=0;i<B.length;i++){
+    var d=B[i];
+    html += '<div class="bio-card"><div class="bio-row">'+
+      '<span class="bio-name">'+esc(d.brand)+'</span>'+
+      '<span class="bio-pill">'+esc(d.target)+'</span></div>'+
+      '<div class="bio-meta">'+esc(d.ingredient)+' · 급여 '+esc(d.date)+'</div>'+
+      '<button type="button" class="bio-cta" onclick="openRcheck(\''+d.id+'\')">급여 체크리스트 열기 →</button>'+
+      '</div>';
+  }
+  html += '</div>';
+  html += '<div class="card"><div class="sec-title">교체투여 규칙</div>'+
+    '<div class="gap-box">'+esc(ASTHMA_DATA.BIO_COMMON.switch_text)+'</div></div>';
+  html += '<div class="card"><div class="sec-title">지침 ↔ 급여 간극</div>'+
+    '<div class="gap-box">실제 급여기준(특히 IL-5 계열 악화 3~4회)은 달성이 어려워, 임상에서는 100/100 전액본인부담으로 사용하는 경우가 많습니다. 듀피젠트는 허가사항보다 급여기준이 더 엄격합니다.</div></div>';
+  return html;
+}
+
+/* ---------- R-CHECK 모달 ---------- */
+function openRcheck(drugId){ APP.rcheck={drugId:drugId, checked:{}}; renderModal(); document.getElementById("modalBg").className="modal-bg on"; }
+function closeModal(){ document.getElementById("modalBg").className="modal-bg"; }
+function rcToggle(cid){ APP.rcheck.checked[cid]=!APP.rcheck.checked[cid]; renderModal(); }
+
+function renderCriteriaList(criteria){
+  var html="";
+  for(var i=0;i<criteria.length;i++){
+    var c=criteria[i];
+    var ck=APP.rcheck.checked[c.id]?"checked":"";
+    html += '<div class="ck" onclick="rcToggle(\''+c.id+'\')">'+
+      '<input type="checkbox" '+ck+' onclick="event.stopPropagation();rcToggle(\''+c.id+'\')">'+
+      '<label>'+esc(c.label)+(c.required?'<span class="req">필수</span>':'')+'</label></div>';
+  }
+  return html;
+}
+
+function renderModal(){
+  var d=findBio(APP.rcheck.drugId);
+  var ev=rcEvaluate(d, APP.rcheck.checked);
+  var v=rcVerdict(ev);
+  var html='<div class="modal-head"><span class="modal-title">'+esc(d.brand)+' 급여 체크리스트</span>'+
+    '<button type="button" class="modal-close" onclick="closeModal()">×</button></div>';
+  html += '<div class="precond"><b>전제:</b> '+esc(d.precondition)+'<br><b>대상 연령:</b> '+esc(d.age)+'</div>';
+  if(d.strict) html += '<div class="note-strict">'+esc(d.strict)+'</div>';
+  // 공통 전제(ANY_PATH의 sharedChecks)
+  if(d.sharedChecks){
+    html += '<div class="phase-label">공통 전제조건</div>'+renderCriteriaList(d.sharedChecks);
+  }
+  html += '<div class="phase-label">투여대상 기준</div>';
+  if(d.logic==="ALL"){
+    html += renderCriteriaList(d.criteria);
+  } else {
+    html += '<div style="font-size:12.5px;color:var(--muted);margin-bottom:7px">아래 경로 중 하나를 충족 (+ 위 공통 전제)</div>';
+    for(var p=0;p<d.paths.length;p++){
+      var path=d.paths[p]; var pm=ev.paths[p].met;
+      html += '<div class="path-group"><div class="path-head"><span>'+esc(path.label)+'</span>'+
+        '<span style="color:'+(pm?'var(--met)':'var(--muted)')+'">'+(pm?'✓ 충족':'미충족')+'</span></div>'+
+        renderCriteriaList(path.criteria)+'</div>';
+    }
+  }
+  var cls=v.status==="MET"?"met":"notmet";
+  var label=v.status==="MET"?"✓ 투여대상 기준 충족":"→ 급여 미충족 · 100/100 경로";
+  html += '<div class="verdict '+cls+'"><div class="v-status">'+label+'</div>'+
+    '<div class="v-text">'+esc(v.text)+'</div>';
+  if(v.sw) html += '<div class="switch-warn"><b>⚠ 교체투여 주의</b>'+esc(v.sw)+'</div>';
+  html += '</div>';
+  // 평가·중단 (4부 구조의 나머지)
+  html += '<div class="phase-label">반응 평가</div><div class="eval-box">'+esc(d.eval)+'</div>';
+  html += '<div class="phase-label">지속 / 중단</div><div class="eval-box">'+esc(d.stop)+'</div>';
+  if(d.dose_note) html += '<div class="eval-box" style="margin-top:6px">'+esc(d.dose_note)+'</div>';
+  html += '<div style="font-size:11px;color:var(--muted);margin-top:12px">'+esc(ASTHMA_DATA.BIO_COMMON.eos_note)+'<br>'+esc(ASTHMA_DATA.BIO_COMMON.reeval)+'<br>출처: 보건복지부 고시·심평원 약제 세부사항·식약처 허가사항.</div>';
+  document.getElementById("modalContent").innerHTML = html;
+}
+
+/* ---------- 검색 ---------- */
+function onSearch(q){
+  q=(q||"").trim().toLowerCase();
+  if(!q){ render(); return; }
+  // 약제명 매칭 → 생물학제제 토픽
+  var B=ASTHMA_DATA.BIOLOGICS;
+  for(var i=0;i<B.length;i++){ if(B[i].brand.toLowerCase().indexOf(q)>=0 || B[i].ingredient.toLowerCase().indexOf(q)>=0){ APP.tab="lib"; openTopic("biologic"); return; } }
+  // 토픽명 매칭
+  var ts=ASTHMA_DATA.TOPICS;
+  for(var j=0;j<ts.length;j++){ if(ts[j].title.toLowerCase().indexOf(q)>=0){ APP.tab="lib"; openTopic(ts[j].id); return; } }
+}
+
+/* ---------- 시뮬 (2단계 stub) ---------- */
+/* ---------- 시뮬레이터 ---------- */
+function simRoute(r){ APP.sim.route=r; APP.sim.gate={}; APP.sim.opened={}; render(true); }
+function simReset(){ APP.sim={route:null, gate:{}, opened:{}}; render(true); }
+function simToggleGate(i){ APP.sim.gate[i]=!APP.sim.gate[i]; render(); }
+function simToggleOpen(i){ APP.sim.opened[i]=!APP.sim.opened[i]; render(); }
+
+/* ── 인터랙티브 매트릭스 (COPD 가이드 그림 재현) ── */
+function mtxSet(which, id, v){ if(APP.mtx[which][id]===v) APP.mtx[which][id]=null; else APP.mtx[which][id]=v; render(); }
+function calcStep(inp){
+  var s=inp.sx, n=inp.night;
+  if(!s) return -1;
+  if(s==="daily") return 3;
+  if(s==="most") return 2;
+  if(n==="yes" && s==="mid") return 2;
+  if(s==="mid") return 1;
+  if(s==="low") return 0;
+  return -1;
+}
+function calcBioRows(inp){
+  var hits={}, eos=inp.eos, feno=inp.feno, allergy=inp.allergy;
+  if(allergy==="yes") hits.allergic=true;
+  if(eos==="ge300") hits.eos=true;
+  if(eos==="150_300"||eos==="ge300"||feno==="ge25") hits.t2=true;
+  if((eos==="lt150"||!eos) && feno==="lt25" && (allergy==="no"||!allergy)) hits.low=true;
+  return hits;
+}
+function renderMatrix(which){
+  var m=A.SIM.matrix[which], inp=APP.mtx[which];
+  var h='<div class="mtx-box"><div class="mtx-title">'+esc(m.title)+'</div>'+
+    '<div class="mtx-desc">'+esc(m.desc)+'</div>';
+  for(var i=0;i<m.inputs.length;i++){ var f=m.inputs[i];
+    h+='<div class="mtx-field"><div class="mtx-label">'+esc(f.label)+'</div><div class="mtx-chips">';
+    for(var j=0;j<f.opts.length;j++){ var o=f.opts[j];
+      var on=inp[f.id]===o.v;
+      h+='<button type="button" class="mtx-chip'+(on?" on":"")+'" onclick="mtxSet(\''+which+'\',\''+f.id+'\',\''+o.v+'\')">'+esc(o.t)+'</button>';
+    }
+    h+='</div></div>';
+  }
+  if(which==="step"){
+    var hitIdx=calcStep(inp);
+    h+='<div class="mtx-grid">';
+    for(var r=0;r<m.rows.length;r++){ var row=m.rows[r];
+      var cls=hitIdx===r?"hit":(hitIdx>=0?"dim":"");
+      h+='<div class="mtx-row '+cls+'">'+
+        '<div class="mtx-step">'+(cls==="hit"?'<span class="mtx-hitlabel">내 환자</span>':"")+esc(row.step)+'</div>'+
+        '<div class="mtx-cond">'+esc(row.cond)+'</div>'+
+        '<div class="mtx-rx"><b>T1:</b> '+esc(row.t1)+'<br><b>T2:</b> '+esc(row.t2)+'</div></div>';
+    }
+    h+='</div>';
+  } else {
+    var hits=calcBioRows(inp), any=false;
+    for(var k in hits){ if(hits[k]){any=true;break;} }
+    h+='<div class="mtx-grid">';
+    for(var b=0;b<m.rows.length;b++){ var br=m.rows[b];
+      var hit=hits[br.key], cls=hit?"hit":(any?"dim":"");
+      h+='<div class="mtx-row '+cls+'">'+
+        '<div class="mtx-step">'+(hit?'<span class="mtx-hitlabel">해당</span>':"")+esc(br.ph)+'</div>'+
+        '<div class="mtx-cond">'+esc(br.crit)+'</div>'+
+        '<div class="mtx-rx">'+esc(br.drug)+'</div></div>';
+    }
+    h+='</div>';
+  }
+  h+=calloutBox(m.note,"warn")+'</div>';
+  return h;
+}
+
+/* 까먹음 방지 트리거 — 항상 환기 (접이식) */
+function renderTriggers(){
+  var open=APP.acc.trig;
+  var h='<div class="trig-box'+(open?' trig-open':'')+'">'+
+    '<button type="button" class="trig-head" onclick="accToggle(\'trig\')">'+
+    '<span>⚡ 놓치기 쉬운 것 — 항상 확인</span><span class="trig-ic">'+(open?'−':'+')+'</span></button>';
+  if(open){
+    var ts=A.SIM.triggers;
+    for(var i=0;i<ts.length;i++){
+      h += '<div class="trig-item"><div class="trig-when">'+esc(ts[i].icon)+' '+esc(ts[i].when)+'</div>'+
+        '<div class="trig-act">'+esc(ts[i].action)+'</div></div>';
+    }
+  }
+  h += '</div>';
+  return h;
+}
+
+/* 선택지 클릭 시 도서관 데이터를 시뮬 안에서 직접 풀어서 보여줌 */
+function renderExpand(type){
+  if(type==="ics_step"){
+    // ICS 용량 등급표 + Track step 직접 표시
+    var t=A.TRACKS, h='<div class="ex-h">ICS 용량 등급 (성인 µg/day)</div>'+dataTable(t.ics.cols,t.ics.rows);
+    h+='<div class="ex-h">Track별 단계 — 한 단계 위로</div>';
+    h+='<div class="ex-mini">Track1(MART): ';
+    for(var i=0;i<t.track1.length;i++) h+=(i?' · ':'')+t.track1[i].step+'단계 '+esc(t.track1[i].ex||t.track1[i].controller);
+    h+='</div><div class="ex-mini">Track2: ';
+    for(var j=0;j<t.track2.length;j++) h+=(j?' · ':'')+t.track2[j].step+'단계 '+esc(t.track2[j].ex||t.track2[j].controller);
+    h+='</div>';
+    return h;
+  }
+  if(type==="lama"){
+    // 3제(LAMA 포함) 흡입제만 필터 + 천식/COPD 구분
+    var h='<div class="ex-h">LAMA 추가 옵션 — 천식 적응 확인 필수</div>';
+    var list=A.INHALERS.list.filter(function(x){return x.type.indexOf("LAMA")>=0||x.type.indexOf("3제")>=0;});
+    for(var i=0;i<list.length;i++){ var x=list[i];
+      var warn=x.badge.indexOf("⚠")>=0;
+      h+='<div class="ex-drug'+(warn?' ex-warn':'')+'"><b>'+esc(x.brand)+'</b> — '+esc(x.feat)+'</div>';
+    }
+    h+='<div class="ex-note">★별도 LAMA 단독(스피리바 레스피맷)을 기존 ICS-LABA에 추가하는 방법도 있음. T2-low에서 특히 고려.</div>';
+    return h;
+  }
+  if(type==="oral"){
+    var oa=A.TRACKS.oral_addon, h='<div class="ex-h">'+esc(oa.title)+'</div>';
+    for(var i=0;i<oa.items.length;i++){ var it=oa.items[i];
+      h+='<div class="ex-drug"><b>'+esc(it.name)+'</b> ('+esc(it.drug)+') — '+esc(it.note)+'</div>'; }
+    h+='<div class="ex-note">'+esc(oa.note)+'</div>';
+    return h;
+  }
+  if(type==="track_compare"){
+    return '<div class="ex-h">Track 1 vs Track 2</div>'+
+      '<div class="ex-drug"><b>Track 1 (MART)</b> — 유지+증상완화를 한 흡입기로(ICS-formoterol). 흡입기 1개라 술기오류·순응도 유리. SABA 단독보다 악화↓.</div>'+
+      '<div class="ex-drug"><b>Track 2</b> — 매일 controller + 별도 reliever(SABA/ICS-SABA). MART에 익숙지 않거나 formoterol 접근 어려울 때.</div>'+
+      '<div class="ex-note">환자 선호·순응도·기존 익숙함으로 선택. 정답 없음.</div>';
+  }
+  if(type==="pheno_bio"){
+    var ph=A.PHENO, h='<div class="ex-h">표현형 → 해당 생물학제제</div>';
+    for(var i=0;i<ph.types.length;i++){ var t=ph.types[i];
+      h+='<div class="ex-drug"><b>'+esc(t.label)+'</b> ('+esc(t.crit)+') → '+esc(t.bio)+'</div>'; }
+    h+='<div class="ex-note">먼저 혈중 호산구·FeNO·총IgE·통년성 특이IgE(MAST/RAST) 확보 → 아래 "생물학제제 검토"에서 R-CHECK로 급여 확인.</div>';
+    return h;
+  }
+  if(type==="technique"){
+    var d=A.DEVICE, h='<div class="ex-h">흔한 흡입 오류</div>';
+    for(var i=0;i<d.errors.length;i++) h+='<div class="ex-drug">• '+esc(d.errors[i])+'</div>';
+    h+='<div class="ex-note">'+esc(d.key)+'</div>';
+    return h;
+  }
+  if(type==="comorbid"){
+    var d=A.COMORBID, h='<div class="ex-h">'+esc(d.intro)+'</div>';
+    for(var i=0;i<d.domains.length;i++){ h+='<div class="ex-drug"><b>'+esc(d.domains[i].group)+'</b>: '+d.domains[i].items.join(' · ')+'</div>'; }
+    return h;
+  }
+  if(type==="ocs"){
+    var d=A.EXAC, h='<div class="ex-h">OCS 사용·누적</div>';
+    h+='<div class="ex-drug"><b>단기</b> '+esc(d.ocs_acute)+'</div>';
+    h+='<div class="ex-drug"><b>장기</b> '+esc(d.ocs_long)+'</div>';
+    h+='<div class="ex-note">'+esc(d.taper.candidate)+'</div>';
+    return h;
+  }
+  return '';
+}
+
+function simCrumb(){
+  var labels={"new":"신규",uncontrolled:"미조절",acute:"급성악화",biologic:"생물학제제"};
+  var cur=APP.sim.route;
+  return '<div class="sim-crumb">'+
+    (cur?'<button type="button" class="back-btn" onclick="simReset()">↺ 상황 다시 선택</button><span class="crumb-cur">'+esc(labels[cur]||"")+'</span>':'<span></span>')+
+    '</div>';
+}
+
+function stageBox(text){ return '<div class="stage-box"><span class="stage-tag">CHECK</span>'+esc(text)+'</div>'; }
+
+/* 체크리스트 스텝 렌더 (신규·급성 경로) */
+function renderStepChecklist(grp){
+  var h='<div class="base-grp-h">'+esc(grp.h)+'</div><ul class="gate-checklist">';
+  for(var i=0;i<grp.items.length;i++) h+='<li>'+esc(grp.items[i])+'</li>';
+  return h+'</ul>';
+}
+
+function renderSim(){
+  var S=A.SIM, route=APP.sim.route, h=simCrumb();
+
+  // 진입점: 상황 선택
+  if(!route){
+    h += renderTriggers();
+    h += '<div class="sim-q">'+esc(S.entry.q)+'</div>';
+    for(var i=0;i<S.entry.options.length;i++){ var o=S.entry.options[i];
+      h += '<button type="button" class="sim-route" onclick="simRoute(\''+o.goto+'\')">'+
+        '<div class="route-label">'+esc(o.label)+'</div><div class="route-desc">'+esc(o.desc)+'</div></button>';
+    }
+    return h;
+  }
+
+  // ── 경로 1: 신규 (진단 → 단계 매트릭스 → 시작) ──
+  if(route==="new"){
+    var N=S["new"];
+    h += '<div class="sim-q">'+esc(N.title)+'</div>';
+    for(var s=0;s<N.steps.length;s++){ var st=N.steps[s];
+      if(st.type==="checklist"){ h += '<div class="card">'+renderStepChecklist({h:st.h,items:st.items})+'</div>'; }
+      else if(st.type==="matrix"){ h += '<div class="base-grp-h" style="margin-left:2px">'+esc(st.h)+'</div>'+renderMatrix(st.which); }
+    }
+    h += '<div class="summary-box"><div class="summary-tag">간단한 답</div>'+esc(N.summary)+'</div>';
+    return h;
+  }
+
+  // ── 경로 2: 미조절 (게이트 → 선택지) ──
+  if(route==="uncontrolled"){
+    var U=S.uncontrolled;
+    h += '<div class="sim-q">'+esc(U.title)+'</div>';
+    h += calloutBox(U.intro,'accent');
+    h += '<div class="deep-label">올리기 전 점검</div>';
+    for(var g=0;g<U.gate.length;g++){ var c=U.gate[g]; var on=APP.sim.gate[g];
+      h += '<div class="gate-item"><div class="gate-head" onclick="simToggleGate('+g+')">'+
+        '<input type="checkbox" '+(on?'checked':'')+' onclick="event.stopPropagation();simToggleGate('+g+')"><b>'+esc(c.label)+'</b>'+
+        '<span class="gate-toggle">'+(on?'▲':'▼ 점검항목')+'</span></div>';
+      if(on){
+        h += '<div class="gate-reveal">'+esc(c.summary)+'</div><ul class="gate-checklist">';
+        for(var ci=0;ci<c.items.length;ci++) h+='<li>'+esc(c.items[ci])+'</li>';
+        h += '</ul><a class="topic-link gate-link" onclick="gotoTopic(\''+c.link+'\')">→ '+esc(findTopic(c.link).title)+' 자세히</a>';
+      }
+      h += '</div>';
+    }
+    h += '<div class="deep-label">점검해도 미조절이면 — 선택지</div>';
+    for(var k=0;k<U.options.length;k++){ var op=U.options[k];
+      h += '<button type="button" class="sim-opt consider" onclick="simToggleOpen('+k+')"><span class="consider-dot">'+(APP.sim.opened[k]?'●':'○')+'</span>'+esc(op.label)+'</button>';
+      if(APP.sim.opened[k]){
+        h += '<div class="opt-reveal">'+esc(op.reveal)+'</div>';
+        if(op.expand) h += '<div class="opt-detail">'+renderExpand(op.expand)+'</div>';
+        if(op.goto) h += '<button type="button" class="sim-next" onclick="simRoute(\''+op.goto+'\')">생물학제제 경로로 →</button>';
+      }
+    }
+    h += '<div class="summary-box"><div class="summary-tag">간단한 답</div>'+esc(U.summary)+'</div>';
+    return h;
+  }
+
+  // ── 경로 3: 급성 악화 (처치 → 퇴원 → 재발방지) ──
+  if(route==="acute"){
+    var AC=S.acute;
+    h += '<div class="sim-q">'+esc(AC.title)+'</div>';
+    for(var a=0;a<AC.steps.length;a++){ h += '<div class="card">'+renderStepChecklist(AC.steps[a])+'</div>'; }
+    h += '<div class="summary-box"><div class="summary-tag">간단한 답</div>'+esc(AC.summary)+'</div>';
+    return h;
+  }
+
+  // ── 경로 4: 생물학제제 (표현형 매트릭스 → R-CHECK) ──
+  if(route==="biologic"){
+    var B=S.biologic;
+    h += '<div class="sim-q">'+esc(B.title)+'</div>';
+    if(B.stage) h += stageBox(B.stage);
+    h += renderMatrix("bio");
+    h += calloutBox(B.intro,'accent');
+    var bl=A.BIOLOGICS;
+    for(var b=0;b<bl.length;b++){ var d=bl[b];
+      h += '<div class="bio-card"><div class="bio-row"><span class="bio-name">'+esc(d.brand)+'</span>'+
+        '<span class="bio-pill">'+esc(d.target)+'</span></div>'+
+        '<div class="bio-meta">'+esc(d.ingredient)+' · 급여 '+esc(d.date)+'</div>'+
+        '<button type="button" class="bio-cta" onclick="openRcheck(\''+d.id+'\')">급여 체크리스트 열기 →</button></div>';
+    }
+    h += calloutBox(A.BIO_COMMON.switch_text,'warn');
+    h += '<div class="summary-box"><div class="summary-tag">간단한 답</div>'+esc(B.summary)+'</div>';
+    return h;
+  }
+  return h;
+}
+
+/* 시뮬→도서관 토픽 점프 */
+function gotoTopic(id){ APP.tab="lib"; APP.topic=id; APP.acc={};
+  document.getElementById("tab-lib").className="tab on";
+  document.getElementById("tab-sim").className="tab";
+  render(true);
+}
+
+/* ---------- 메인 렌더 ---------- */
+function render(scrollTop){
+  var v=document.getElementById("view");
+  if(APP.tab==="lib"){
+    v.innerHTML = APP.topic ? renderTopicDetail(APP.topic) : renderLibraryGrid();
+  } else {
+    v.innerHTML = renderSim();
+  }
+  if(scrollTop) window.scrollTo(0,0);
+}
+render();
+</script>
+</body>
+</html>

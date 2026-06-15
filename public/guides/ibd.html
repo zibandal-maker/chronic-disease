@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>IBD 통합 가이드 — 궤양성대장염·크론병</title>
+<style>
+:root{
+  --bg:#f4f6f8; --panel:#ffffff; --panel2:#eef1f4; --line:#d6dde3;
+  --ink:#1a2530; --ink-dim:#4a5a68; --ink-faint:#8493a0;
+  --clin:#2c6fb0; --clin-bg:#e4eef8;
+  --pay:#b87514; --pay-bg:#fbf0d8;
+  --care:#1a8a72; --care-bg:#dcf2ec;
+  --uc:#2c6fb0; --uc-bg:#e4eef8;
+  --cd:#c0533a; --cd-bg:#fbe7e0;
+  --ok:#1f9d54; --ok-bg:#e3f5ea;
+  --warn:#b87514; --warn-bg:#fbf0d8;
+  --block:#c43838; --block-bg:#fbe6e6;
+  --alert:#d8632a;
+  --accent:var(--uc); --accent-bg:var(--uc-bg);
+  --radius:14px; --radius-sm:9px;
+  --shadow:0 1px 3px rgba(20,40,60,.06),0 4px 16px rgba(20,40,60,.05);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",Roboto,sans-serif;
+  font-size:15px;line-height:1.5;-webkit-text-size-adjust:100%;}
+body{padding-bottom:84px;}
+.wrap{max-width:760px;margin:0 auto;padding:0 14px;}
+
+.appbar{position:sticky;top:0;z-index:40;background:rgba(244,246,248,.92);
+  backdrop-filter:saturate(1.4) blur(8px);-webkit-backdrop-filter:saturate(1.4) blur(8px);
+  border-bottom:1px solid var(--line);}
+.appbar-in{max-width:760px;margin:0 auto;padding:10px 14px 0;}
+.title-row{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.title-row h1{font-size:17px;font-weight:800;margin:0;letter-spacing:-.3px;}
+.title-row .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);flex:none;
+  box-shadow:0 0 0 4px var(--accent-bg);transition:background .25s,box-shadow .25s;}
+.title-row .sub{margin-left:auto;font-size:11px;color:var(--ink-faint);font-weight:600;}
+
+.disease-toggle{display:flex;gap:6px;margin-bottom:9px;}
+.disease-toggle button{flex:1;border:1.5px solid var(--line);background:var(--panel);
+  border-radius:var(--radius-sm);padding:9px 6px;font-size:14px;font-weight:700;color:var(--ink-dim);
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.disease-toggle button .ic{font-size:16px;}
+.disease-toggle button.on[data-d="uc"]{border-color:var(--uc);background:var(--uc-bg);color:var(--uc);}
+.disease-toggle button.on[data-d="cd"]{border-color:var(--cd);background:var(--cd-bg);color:var(--cd);}
+
+.tabbar{display:flex;gap:2px;}
+.tabbar button{flex:1;border:none;background:none;padding:9px 2px 11px;font-size:12px;font-weight:700;
+  color:var(--ink-faint);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .18s;
+  display:flex;flex-direction:column;align-items:center;gap:3px;}
+.tabbar button .ic{font-size:17px;}
+.tabbar button.on{color:var(--accent);border-bottom-color:var(--accent);}
+
+.view{padding-top:14px;}
+.view[hidden]{display:none;}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);margin-bottom:11px;overflow:hidden;}
+.card-head{padding:13px 15px;display:flex;align-items:flex-start;gap:11px;cursor:pointer;}
+.card-head .icon{font-size:22px;flex:none;line-height:1;margin-top:1px;}
+.card-head .ht{flex:1;min-width:0;}
+.card-head .ht .t{font-size:15.5px;font-weight:750;letter-spacing:-.2px;}
+.card-head .ht .l{font-size:12.5px;color:var(--ink-faint);margin-top:2px;}
+.card-head .chev{color:var(--ink-faint);font-size:13px;transition:transform .2s;flex:none;margin-top:3px;}
+.card.open .card-head .chev{transform:rotate(90deg);}
+.card-body{padding:0 15px;max-height:0;overflow:hidden;transition:max-height .01s;}
+.card.open .card-body{max-height:none;padding:0 15px 15px;}
+
+.cat-tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px;vertical-align:middle;}
+.cat-clin{background:var(--clin-bg);color:var(--clin);}
+.cat-pay{background:var(--pay-bg);color:var(--pay);}
+.cat-care{background:var(--care-bg);color:var(--care);}
+
+.sec{margin-top:14px;}
+.sec:first-child{margin-top:4px;}
+.sec-t{font-size:13px;font-weight:750;color:var(--ink-dim);margin-bottom:7px;
+  display:flex;align-items:center;gap:6px;}
+.sec-t::before{content:"";width:3px;height:13px;background:var(--accent);border-radius:2px;}
+
+.kp{list-style:none;margin:0;padding:0;}
+.kp li{position:relative;padding:6px 0 6px 18px;font-size:13.5px;color:var(--ink);border-bottom:1px dashed var(--line);}
+.kp li:last-child{border-bottom:none;}
+.kp li::before{content:"›";position:absolute;left:3px;color:var(--accent);font-weight:800;}
+.kp li b{color:var(--accent);}
+
+.note{background:var(--panel2);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;
+  color:var(--ink-dim);margin-top:9px;border-left:3px solid var(--accent);}
+.note .nt{font-weight:750;color:var(--ink);font-size:12.5px;margin-bottom:3px;}
+.note.why{border-left-color:var(--clin);background:var(--clin-bg);}
+.note.why .nt{color:var(--clin);}
+
+.drugmini{border:1px solid var(--line);border-radius:var(--radius-sm);margin-top:8px;overflow:hidden;background:var(--panel);}
+.drugmini-h{padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:9px;}
+.drugmini-h .bn{font-weight:750;font-size:14px;}
+.drugmini-h .gn{font-size:12px;color:var(--ink-faint);}
+.drugmini-h .tg{margin-left:auto;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:14px;background:var(--clin-bg);color:var(--clin);white-space:nowrap;}
+.drugmini-h .uctag{font-size:10px;font-weight:800;padding:2px 6px;border-radius:10px;margin-left:4px;}
+.drugmini-h .uctag.uc{background:var(--uc-bg);color:var(--uc);}
+.drugmini-h .uctag.cd{background:var(--cd-bg);color:var(--cd);}
+.drugmini-b{padding:0 12px;max-height:0;overflow:hidden;transition:max-height .01s;font-size:12.5px;color:var(--ink-dim);}
+.drugmini.open .drugmini-b{max-height:none;padding:2px 12px 12px;}
+.drugmini .row{padding:5px 0;border-top:1px dashed var(--line);}
+.drugmini .row .k{font-weight:700;color:var(--ink);font-size:11.5px;display:block;margin-bottom:1px;}
+.drugmini .bx{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px;}
+.drugmini .bx span{background:var(--panel2);border-radius:10px;padding:2px 8px;font-size:11px;}
+.drugmini .warnbox{background:var(--block-bg);color:var(--block);border-radius:7px;padding:6px 9px;margin-top:6px;font-size:11.5px;font-weight:600;}
+.drugmini .paybox{background:var(--pay-bg);color:var(--pay);border-radius:7px;padding:6px 9px;margin-top:6px;font-size:11.5px;font-weight:600;}
+.drugmini .tiplist{margin:3px 0 0;padding-left:16px;}
+.drugmini .tiplist li{font-size:11.5px;color:var(--ink-dim);padding:2px 0;line-height:1.45;}
+
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:14px;}
+.b-ok{background:var(--ok-bg);color:var(--ok);}
+.b-warn{background:var(--warn-bg);color:var(--warn);}
+.b-block{background:var(--block-bg);color:var(--block);}
+.gaterow{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--line);
+  border-radius:var(--radius-sm);margin-top:7px;background:var(--panel);}
+.gaterow .gi{font-size:16px;}
+.gaterow .gl{flex:1;font-size:13px;font-weight:650;}
+.gaterow .gv{font-size:11.5px;color:var(--ink-faint);}
+.tracktag{display:inline-block;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:10px;background:var(--pay-bg);color:var(--pay);margin-bottom:6px;}
+
+.ladder{counter-reset:lad;list-style:none;margin:6px 0 0;padding:0;}
+.ladder li{position:relative;padding:9px 0 9px 34px;border-bottom:1px solid var(--line);font-size:13px;}
+.ladder li:last-child{border-bottom:none;}
+.ladder li::before{counter-increment:lad;content:counter(lad);position:absolute;left:0;top:8px;
+  width:24px;height:24px;border-radius:50%;background:var(--accent-bg);color:var(--accent);
+  font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;}
+.ladder li .lt{font-weight:700;color:var(--ink);}
+.ladder li .ld{font-size:11.5px;color:var(--ink-faint);margin-top:2px;}
+
+.codetbl{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px;}
+.codetbl td{padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top;}
+.codetbl td.c{font-weight:750;color:var(--accent);white-space:nowrap;width:78px;}
+.codetbl tr.hot td{background:var(--pay-bg);}
+
+.searchbar{position:relative;margin-bottom:12px;}
+.searchbar input{width:100%;border:1.5px solid var(--line);border-radius:var(--radius-sm);
+  padding:11px 14px 11px 38px;font-size:14px;background:var(--panel);color:var(--ink);}
+.searchbar input:focus{outline:none;border-color:var(--accent);}
+.searchbar .si{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--ink-faint);}
+
+.banner{background:linear-gradient(135deg,var(--accent-bg),var(--panel));border:1px solid var(--line);
+  border-radius:var(--radius);padding:13px 15px;margin-bottom:13px;font-size:12.5px;color:var(--ink-dim);}
+.banner b{color:var(--ink);}
+
+.simnode{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px;margin-bottom:10px;box-shadow:var(--shadow);}
+.simnode .sq{font-size:14.5px;font-weight:750;margin-bottom:9px;}
+.simopt{display:flex;flex-wrap:wrap;gap:7px;}
+.simopt button{border:1.5px solid var(--line);background:var(--panel);border-radius:20px;padding:8px 14px;font-size:13px;font-weight:650;color:var(--ink-dim);cursor:pointer;transition:all .18s;}
+.simopt button.sel{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
+.simnext{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line);font-size:13px;color:var(--ink-dim);}
+.simhint{font-size:12px;color:var(--ink-dim);background:var(--panel2);border-radius:8px;padding:8px 11px;margin-bottom:10px;line-height:1.5;border-left:3px solid var(--clin);}
+.calc-launch{border:1px solid var(--accent);background:var(--accent-bg);color:var(--accent);border-radius:var(--radius-sm);padding:9px 13px;font-size:13px;font-weight:700;cursor:pointer;width:100%;}
+.sticky-collect{position:fixed;left:0;right:0;bottom:64px;z-index:30;background:rgba(255,255,255,.97);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line);
+  padding:9px 14px;font-size:12px;color:var(--ink-dim);max-height:140px;overflow-y:auto;}
+.sticky-collect b{color:var(--accent);}
+.sticky-collect[hidden]{display:none;}
+
+.inpgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
+.inpgrid .fld{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 11px;position:relative;}
+.inpgrid .fld.full{grid-column:1/-1;}
+.inpgrid .fld label{font-size:11px;font-weight:700;color:var(--ink-faint);display:block;margin-bottom:4px;}
+.inpgrid .fld input,.inpgrid .fld select{width:100%;border:none;background:none;font-size:15px;color:var(--ink);padding:2px 0;}
+.inpgrid .fld input:focus,.inpgrid .fld select:focus{outline:none;}
+.fld-calc{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:1px solid var(--accent);background:var(--accent-bg);color:var(--accent);border-radius:14px;padding:4px 9px;font-size:11px;font-weight:700;cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chips button{border:1.4px solid var(--line);background:var(--panel);border-radius:18px;padding:6px 12px;font-size:12.5px;font-weight:650;color:var(--ink-dim);cursor:pointer;transition:all .16s;}
+.chips button.on{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
+.runbtn{width:100%;border:none;background:var(--accent);color:#fff;font-size:15px;font-weight:750;padding:13px;border-radius:var(--radius-sm);cursor:pointer;margin-bottom:14px;box-shadow:var(--shadow);}
+.runbtn:active{opacity:.85;}
+
+.rescard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:11px;overflow:hidden;}
+.rescard .rh{padding:11px 15px;font-weight:750;font-size:14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);}
+.rescard .rh .ricon{font-size:17px;}
+.rescard .rb{padding:13px 15px;}
+.rescard.clin .rh{background:var(--clin-bg);color:var(--clin);}
+.rescard.pay .rh{background:var(--pay-bg);color:var(--pay);}
+.rescard.care .rh{background:var(--care-bg);color:var(--care);}
+.optrow{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px dashed var(--line);}
+.optrow:last-child{border-bottom:none;}
+.optrow .on{font-weight:700;font-size:13.5px;flex:none;}
+.optrow .od{font-size:11.5px;color:var(--ink-faint);flex:1;}
+.prio{width:22px;height:22px;border-radius:50%;background:var(--accent-bg);color:var(--accent);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none;}
+
+.refitem{border:1px solid var(--line);border-radius:var(--radius-sm);margin-top:7px;overflow:hidden;background:var(--clin-bg);cursor:pointer;}
+.refhead{padding:9px 11px;display:flex;align-items:center;gap:8px;}
+.refgrade{font-size:10.5px;font-weight:800;color:#fff;background:var(--clin);padding:2px 7px;border-radius:10px;white-space:nowrap;flex:none;}
+.reftxt{flex:1;font-size:12.5px;font-weight:650;color:var(--ink);line-height:1.4;}
+.refchev{color:var(--clin);font-size:14px;flex:none;}
+.refbody{max-height:0;overflow:hidden;transition:max-height .01s;padding:0 11px;}
+.refitem.open .refbody{max-height:none;padding:0 11px 11px;}
+.refsrc{font-size:11.5px;color:var(--clin);font-weight:700;margin-bottom:5px;}
+.refdetail{font-size:12px;color:var(--ink-dim);line-height:1.55;}
+
+.calcsrc{font-size:11.5px;color:var(--ink-faint);margin-bottom:8px;}
+.calctip{font-size:12px;color:var(--ink-dim);background:var(--panel2);border-radius:8px;padding:8px 11px;margin-bottom:12px;line-height:1.5;border-left:3px solid var(--accent);}
+.calcregion{border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 11px;margin-bottom:10px;background:var(--panel);}
+.calcreg-h{font-size:13.5px;font-weight:750;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.calcw{font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-bg);padding:1px 7px;border-radius:10px;}
+.calcrow{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.calclab{flex:1;min-width:0;font-size:12px;font-weight:600;color:var(--ink-dim);line-height:1.3;}
+.calclab .calcdesc{display:block;font-size:10.5px;color:var(--ink-faint);font-weight:400;margin-top:1px;}
+.calcseg{display:flex;gap:3px;flex:none;flex-wrap:wrap;justify-content:flex-end;max-width:60%;}
+.calcbtn{min-width:28px;height:30px;padding:0 5px;border:1.3px solid var(--line);background:var(--panel);border-radius:7px;font-size:11.5px;font-weight:700;color:var(--ink-dim);cursor:pointer;transition:all .12s;}
+.calcbtn.on{border-color:var(--accent);background:var(--accent);color:#fff;}
+.calcnum{flex:none;width:78px;}
+.calcnum input{width:100%;border:1.3px solid var(--line);border-radius:7px;padding:6px 8px;font-size:13px;text-align:center;color:var(--ink);}
+.calcnum input:focus{outline:none;border-color:var(--accent);}
+.calcresult{border:2px solid var(--accent);border-radius:var(--radius);padding:14px;text-align:center;margin:14px 0;background:var(--panel);}
+.calcrn{font-size:12px;font-weight:700;color:var(--ink-faint);}
+.calcrs{font-size:38px;font-weight:850;line-height:1.1;letter-spacing:-1px;color:var(--ink);}
+.calcrb{font-size:14px;font-weight:750;}
+.calcrsub{font-size:12px;color:var(--ink-dim);margin-top:4px;}
+.calcgate{font-size:12px;font-weight:700;margin-top:8px;padding:7px 10px;border-radius:8px;}
+.calcgate.met{background:var(--ok-bg);color:var(--ok);}
+.calcgate.unmet{background:var(--warn-bg);color:var(--warn);}
+.calcapply{width:100%;border:none;background:var(--accent);color:#fff;font-size:14px;font-weight:750;padding:12px;border-radius:var(--radius-sm);cursor:pointer;margin-top:4px;}
+
+.modal-bg{position:fixed;inset:0;z-index:100;background:rgba(20,30,40,.45);display:flex;align-items:flex-end;justify-content:center;}
+.modal-bg[hidden]{display:none;}
+.modal{background:var(--bg);width:100%;max-width:760px;max-height:92vh;overflow-y:auto;border-radius:18px 18px 0 0;padding:16px 16px 80px;}
+.modal-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;position:sticky;top:-16px;background:var(--bg);padding:8px 0;z-index:2;}
+.modal-top .mt{font-size:16px;font-weight:800;flex:1;}
+.modal-close{border:none;background:var(--panel2);color:var(--ink-dim);width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;}
+
+.foot{font-size:11px;color:var(--ink-faint);line-height:1.6;padding:16px 0 8px;border-top:1px solid var(--line);margin-top:18px;}
+.foot b{color:var(--ink-dim);}
+.foot a{color:var(--clin);}
+
+.tabnav{position:fixed;left:0;right:0;bottom:0;z-index:35;background:var(--panel);border-top:1px solid var(--line);display:flex;max-width:760px;margin:0 auto;box-shadow:0 -2px 12px rgba(20,30,40,.06);}
+body{padding-bottom:60px;}
+
+.disclaimer{font-size:11.5px;color:var(--alert);background:var(--block-bg);border-radius:8px;padding:8px 11px;margin-bottom:12px;font-weight:600;border-left:3px solid var(--alert);}
+</style>
+</head>
+<body>
+<!--PORTAL_HEADER_V1-->
+<style>
+  #portal-hdr{position:fixed;top:0;left:0;right:0;height:46px;z-index:99999;
+    display:flex;align-items:center;gap:10px;padding:0 12px;box-sizing:border-box;
+    background:rgba(248,250,252,.94);backdrop-filter:saturate(1.4) blur(10px);
+    -webkit-backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid rgba(20,40,60,.10);
+    font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;}
+  #portal-hdr a.ph-back,#portal-hdr a.ph-home{display:inline-flex;align-items:center;justify-content:center;
+    height:30px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;
+    color:#1a2530;background:#fff;border:1px solid rgba(20,40,60,.14);transition:.15s;}
+  #portal-hdr a.ph-back{padding:0 11px 0 8px;gap:3px;}
+  #portal-hdr a.ph-home{width:32px;font-size:15px;}
+  #portal-hdr a.ph-back:active,#portal-hdr a.ph-home:active{transform:scale(.96);background:#eef1f4;}
+  #portal-hdr .ph-emoji{font-size:17px;line-height:1;}
+  #portal-hdr .ph-title{font-size:14.5px;font-weight:700;color:#16202b;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;}
+  #portal-hdr .ph-tag{font-size:11px;font-weight:600;color:#5a6a78;background:#eef1f4;
+    padding:2px 7px;border-radius:999px;white-space:nowrap;}
+  #portal-hdr .ph-accent{width:3px;height:18px;border-radius:2px;background:#2c6fb0;flex:0 0 auto;}
+  #portal-hdr .ph-spacer{flex:1 1 auto;min-width:0;}
+  body{padding-top:46px !important;}
+  @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
+</style>
+<div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
+  <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
+  <a class="ph-home" href="../index.html" title="홈">🏠</a>
+  <span class="ph-accent"></span>
+  <span class="ph-emoji">🔥</span>
+  <span class="ph-title">염증성 장질환</span>
+  <span class="ph-spacer"></span>
+  <span class="ph-tag">소화기</span>
+</div>
+
+<!--/PORTAL_HEADER_V1-->
+
+<div class="appbar">
+  <div class="appbar-in">
+    <div class="title-row">
+      <span class="dot" id="appDot"></span>
+      <h1 id="htitle">IBD 통합 가이드</h1>
+      <span class="sub">조언자 · 근거기반</span>
+    </div>
+    <div class="disease-toggle" id="diseaseToggle">
+      <button data-d="uc" class="on"><span class="ic">🟦</span>궤양성대장염</button>
+      <button data-d="cd"><span class="ic">🟥</span>크론병</button>
+    </div>
+    <div class="tabbar" id="tabbar">
+      <button data-tab="library" class="on"><span class="ic">📚</span>도서관</button>
+      <button data-tab="sim"><span class="ic">🧭</span>시뮬레이션</button>
+      <button data-tab="flow"><span class="ic">⚡</span>플로우</button>
+      <button data-tab="calc"><span class="ic">🧮</span>계산기</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="view" id="view-library"></div>
+  <div class="view" id="view-sim" hidden></div>
+  <div class="view" id="view-flow" hidden></div>
+  <div class="view" id="view-calc" hidden></div>
+</div>
+
+<div class="sticky-collect" id="simCollect" hidden></div>
+
+<nav class="tabnav" id="bottomnav"></nav>
+
+<div class="modal-bg" id="modal" hidden onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-top"><span class="mt" id="modalTitle"></span><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ibd_data.js — IBD 통합 가이드 데이터 레이어 (Single Source of Truth)
+   궤양성대장염(UC, K51) · 크론병(CD, K50)
+   ID: drug:<성분> / class:<계열> / lab:<지표> / uc:* cd:* ibd:*
+   ES5(var), 외부 의존성 0, 문자열 concat
+   근거: KASID UC/CD 치료 가이드라인 2차 개정판 + 중등도-중증 생물학제제/소분자 CPG(2023),
+        STRIDE-II, 보건복지부 IBD 생물학제제 급여 고시
+   ============================================================ */
+
+var STATE = { disease:"uc", tab:"library", openCards:{}, openDrugs:{}, openRefs:{} };
+
+/* ====================== 계열 ====================== */
+var DRUG_CLASS = {
+  "class:5asa":          { label:"5-아미노살리실산(5-ASA)", short:"5-ASA" },
+  "class:steroid":       { label:"코르티코스테로이드", short:"스테로이드" },
+  "class:thiopurine":    { label:"티오퓨린", short:"티오퓨린" },
+  "class:mtx":           { label:"메토트렉세이트", short:"MTX" },
+  "class:anti_tnf":      { label:"항-TNF 생물학제제", short:"anti-TNF" },
+  "class:anti_integrin": { label:"항-인테그린 α4β7", short:"anti-α4β7" },
+  "class:il1223":        { label:"항-IL12/23(p40)", short:"IL-12/23" },
+  "class:il23":          { label:"항-IL23(p19)", short:"IL-23" },
+  "class:jak":           { label:"JAK 억제제(소분자)", short:"JAK" },
+  "class:s1p":           { label:"S1P 수용체 조절제", short:"S1P" },
+  "class:cni":           { label:"칼시뉴린억제제(구제)", short:"CNI" },
+  "class:abx":           { label:"항생제(누공·농양)", short:"항생제" }
+};
+
+/* ====================== 약물 DB ======================
+   필드: name brand en cls target route moa
+        induction maintenance dose monitor[] ae[] contra[] tbhbv pearls[] tips[]
+        kr_reimb useUC useCD advanced(생물/소분자 여부) */
+var DRUG_DB = {
+
+  "drug:mesalazine": {
+    name:"메살라진", brand:"펜타사·아사콜·메자반트", en:"mesalazine(5-ASA)", cls:"class:5asa",
+    target:"장점막 국소 항염(PPAR-γ 등)", route:"경구·관장·좌약",
+    moa:"대장 점막에서 국소 작용. 아라키돈산 대사·NF-κB 억제로 항염. 전신흡수 적어 안전.",
+    induction:"UC 경증-중등증 1차. 경구 2~4.8g/일.", maintenance:"UC 관해유지 근간. ≥2g/일.",
+    dose:"제형별 방출부위 상이(펜타사=소장~대장, 아사콜=원위대장, 메자반트MMX=1일1회). 직장형엔 좌약, 좌측형엔 관장 병용.",
+    pearls:["UC의 backbone — 경구+국소(좌약/관장) 병용이 단독보다 관해율 우월","직장염=좌약, 좌측대장염=관장, 광범위=경구+국소",
+            "★CD엔 근거 약함 — 경증 대장형 일부 외 권고 낮음","점막치유·대장암 예방 효과 시사"],
+    tips:["반응 부족 시 용량 증량 먼저(4.8g까지), 그 다음 스테로이드","유지 순응도가 재발 좌우 — 1일1회 제형(MMX) 고려"],
+    ae:["드묾(설사악화·두통)","간질성신염(드묾, 주기적 신기능)","췌장염(드묾)"],
+    contra:["살리실산 과민","중증 신장애 주의"],
+    monitor:["기저·주기적 신기능(Cr)"],
+    kr_reimb:"UC 급여. 제형·경로 허가범위 내.",
+    useUC:"primary", useCD:"minor", advanced:false
+  },
+  "drug:sulfasalazine": {
+    name:"설파살라진", brand:"사라조피린", en:"sulfasalazine", cls:"class:5asa",
+    target:"5-ASA + 술파피리딘", route:"경구",
+    moa:"대장균이 분해→5-ASA(활성)+술파피리딘(부작용 주범). 관절증상에 추가 이점.",
+    induction:"경증-중등증 대장형, 말초관절염 동반 시.", maintenance:"가능.",
+    dose:"2~4g/일 분복. 엽산 보충 권장.",
+    pearls:["관절증상(말초관절염) 동반 IBD에 선호","CD 대장형 경증에도 사용","저렴"],
+    tips:["엽산 보충(흡수 저해)","정자수 감소 가역적 — 가임남성 상담","서서히 증량으로 부작용↓"],
+    ae:["오심·두통·발진","용혈(G6PD)","정자감소(가역)","드물게 무과립구증"],
+    contra:["술파제 과민","G6PD결핍 주의"],
+    monitor:["기저 CBC·간기능, 주기적"],
+    kr_reimb:"급여.", useUC:"option", useCD:"option", advanced:false
+  },
+  "drug:budesonide": {
+    name:"부데소나이드", brand:"부데닐·코티멘트MMX·엔토코트", en:"budesonide", cls:"class:steroid",
+    target:"국소 글루코코르티코이드", route:"경구(서방형)·관장",
+    moa:"간 초회통과 90%↑ 대사 → 전신 스테로이드 부작용 최소화하며 국소 항염.",
+    induction:"★CD 회맹부 경증-중등증 1차 유도(9mg). UC=MMX제형(코티멘트) 경증-중등증.",
+    maintenance:"유지 목적 권장 안 됨(장기 부작용).",
+    dose:"CD 회맹부 9mg/일 8주 → 감량. UC MMX 9mg/일.",
+    pearls:["★CD 회맹부형 1차 유도 — 전신 prednisolone보다 부작용 적음","UC는 MMX(대장 전체 방출) 제형","좌측 UC=부데소나이드 관장"],
+    tips:["전신증상·광범위 침범엔 부족 → 전신 스테로이드","8주 넘기지 말고 감량","무반응 시 전신스테로이드/생물학제제 단계 상향"],
+    ae:["전신 스테로이드보다 적으나 장기 시 부신억제·골밀도"],
+    contra:["과민"],
+    monitor:["장기 시 부신·골밀도"],
+    kr_reimb:"급여(제형별 허가범위).", useUC:"option", useCD:"primary", advanced:false
+  },
+  "drug:prednisolone": {
+    name:"프레드니솔론", brand:"소론도·니소론", en:"prednisolone", cls:"class:steroid",
+    target:"전신 글루코코르티코이드", route:"경구·정주(중증)",
+    moa:"광범위 항염·면역억제. 유도(rescue)용 — 관해유지 부적합.",
+    induction:"중등증-중증 유도. 경구 0.5~1mg/kg/일. ASUC=IV 메틸프레드니솔론/하이드로코르티손.",
+    maintenance:"★유지 금지 — 의존성=생물학제제 전환 신호.",
+    dose:"0.5~1mg/kg/일(40~60mg) 유도 후 점감(주당 5~10mg). 8주 내 중단 목표.",
+    pearls:["★스테로이드 불응(충분용량 충분기간 무반응)·의존(감량 시 재발)=급여게이트 A트랙 충족",
+            "급여 게이트: 경구 prednisolone 0.5~1mg/kg 2~4주↑ 사용 이력","ASUC는 입원·IV 3일 평가→무반응 시 구제"],
+    tips:["감량 실패 반복=조기 면역조절제/생물학제제 도입 신호","장기 시 골보호(Ca/Vit D)·PCP 고려","CMV·C.difficile 감별 후 증량"],
+    ae:["고혈당·고혈압·골다공증·감염·정신증상·체중·쿠싱","장기 다수 합병증"],
+    contra:["조절안된 감염","상대적: 당뇨·골다공증"],
+    monitor:["혈당·혈압·골밀도(장기)·감염징후"],
+    kr_reimb:"급여.", useUC:"option", useCD:"option", advanced:false
+  },
+  "drug:azathioprine": {
+    name:"아자티오프린", brand:"이뮤란·아자프린", en:"azathioprine", cls:"class:thiopurine",
+    target:"퓨린대사 억제(6-TGN)", route:"경구",
+    moa:"6-MP 전구체→6-TGN으로 림프구 증식 억제. 발현 느림(8~12주).",
+    induction:"단독 유도엔 느려 부적합. 스테로이드 절약·관해유지 중심.",
+    maintenance:"★UC·CD 관해유지 핵심. anti-TNF와 병용 시 항체↓·약물농도↑.",
+    dose:"2~2.5mg/kg/일. ★투여 전 NUDT15·TPMT 유전형 필수.",
+    pearls:["★한국인: NUDT15 변이가 TPMT보다 골수억제 예측에 중요 — 사전검사 필수",
+            "NUDT15 C/C(homozygous)=금기 → 티오퓨린 생략해도 급여게이트 C트랙(금기) 충족",
+            "anti-TNF 병용(combo)으로 면역원성↓","발현 8~12주 — 급성기 단독 부적합"],
+    tips:["NUDT15 정상 normal/중간 intermediate에 따라 용량 차등","최초 4주 CBC 빈번 모니터(골수억제)","발열·인후통=무과립구증 의심 즉시 중단"],
+    ae:["골수억제(NUDT15/TPMT)","췌장염(2~4%)","간독성","감염·림프종 위험 미미↑","독감양 반응"],
+    contra:["★NUDT15 C/C(중증 골수억제 위험)","중증 골수억제·췌장염 이력","임신 시 신중(상대적)"],
+    monitor:["★투여 전 NUDT15·TPMT","CBC: 초기 격주~월, 이후 3개월","간기능·아밀라제"],
+    kr_reimb:"급여. NUDT15/TPMT 검사 급여.", useUC:"primary", useCD:"primary", advanced:false
+  },
+  "drug:mercaptopurine": {
+    name:"6-메르캅토푸린", brand:"퓨리네톨", en:"6-mercaptopurine", cls:"class:thiopurine",
+    target:"퓨린대사 억제", route:"경구",
+    moa:"AZA 활성대사체. AZA 불내약(오심 등) 시 대안.",
+    induction:"유지 중심.", maintenance:"UC·CD 관해유지.",
+    dose:"1~1.5mg/kg/일. NUDT15·TPMT 사전검사.",
+    pearls:["AZA 위장장애 시 전환 대안","동일 NUDT15/TPMT 주의","용량 AZA의 약 절반"],
+    tips:["NUDT15 변이 시 감량/회피","CBC 모니터 동일"],
+    ae:["골수억제·췌장염·간독성"],
+    contra:["NUDT15 C/C","골수억제 이력"],
+    monitor:["NUDT15·TPMT·CBC·간기능"],
+    kr_reimb:"급여.", useUC:"option", useCD:"option", advanced:false
+  },
+  "drug:methotrexate": {
+    name:"메토트렉세이트", brand:"엠티엑스·메토젝트", en:"methotrexate", cls:"class:mtx",
+    target:"엽산대사(DHFR) 억제", route:"피하·근주·경구(주 1회)",
+    moa:"항증식·항염. ★CD 관해유지 근거 — UC는 근거 약함.",
+    induction:"CD 25mg/주 IM/SC 유도 보조.", maintenance:"CD 15mg/주 유지.",
+    dose:"유도 25mg/주 → 유지 15mg/주. ★엽산 보충 필수.",
+    pearls:["★CD 유지에 급여·근거 — CD 게이트 면역억제제군에 반드시 포함","UC 근거 약함(주로 CD)","티오퓨린 불내약·무효 시 대안"],
+    tips:["엽산 보충(부작용↓)","주 1회 — 매일 복용 금지(치명적)","음주 제한·간섬유화 모니터"],
+    ae:["오심·구내염","간독성·간섬유화","골수억제","폐렴(드묾)"],
+    contra:["★임신·수유(기형·중절)","중증 간장애·과음","신장애"],
+    monitor:["기저·주기적 간기능·CBC","가임여성 피임"],
+    kr_reimb:"CD 급여(유지 인정). UC는 제한적.", useUC:"minor", useCD:"primary", advanced:false
+  },
+
+  "drug:infliximab": {
+    name:"인플릭시맙", brand:"레미케이드·램시마·인플렉트라", en:"infliximab", cls:"class:anti_tnf",
+    target:"TNF-α (키메라 단클론항체)", route:"정맥주사(IV)",
+    moa:"TNF-α 중화 → 강력 항염·점막치유. 발현 빠름(수일~수주).",
+    induction:"5mg/kg 0·2·6주.", maintenance:"5mg/kg q8w(필요 시 증량/단축).",
+    dose:"5mg/kg IV 0-2-6주 유도 → q8w. ★티오퓨린 병용(combo)으로 항체↓·효과↑.",
+    pearls:["★ASUC IV스테로이드 무반응 시 구제요법 1차(또는 cyclosporine)","★누공형 CD 1차(점막+누공 치유)","바이오시밀러(램시마 등) 급여","IV로 입원/외래 인퓨전"],
+    tips:["★투여 전 잠복결핵(IGRA/흉부X선)·HBV 필수 — 국내 결핵 유병률 高","항체형성=효과소실 → 티오퓨린 병용·약물농도검사(TDM)","주입반응 — 전처치 고려"],
+    ae:["주입반응","감염(결핵재활성·HBV재활성)","드물게 루푸스양·탈수초·림프종"],
+    contra:["활동성 결핵·중증감염","중등도-중증 심부전","탈수초성질환"],
+    monitor:["★투여 전 결핵·HBV·CBC·간","반응평가(8~14주)","TDM 고려"],
+    kr_reimb:"UC/CD 급여(게이트 충족 시). 누공형 CD 별도 트랙. 산정특례 연계.",
+    useUC:"primary", useCD:"primary", advanced:true
+  },
+  "drug:adalimumab": {
+    name:"아달리무맙", brand:"휴미라·유플라이마", en:"adalimumab", cls:"class:anti_tnf",
+    target:"TNF-α (100% human)", route:"피하주사(SC) 자가",
+    moa:"TNF-α 중화. SC 자가주사로 편의성.",
+    induction:"160mg(0주)→80mg(2주)→40mg q2w.", maintenance:"40mg q2w(증량 가능).",
+    dose:"160/80mg 유도 → 40mg q2w SC. 자가주사.",
+    pearls:["SC 자가주사 — 인퓨전 불필요","누공형 CD에도 사용","바이오시밀러 급여","IFX 항체형성/주입반응 대안"],
+    tips:["결핵·HBV 사전검사 동일","효과소실 시 q1w 증량 또는 교체","자가주사 교육"],
+    ae:["주사부위반응","감염(결핵·HBV)","드물게 루푸스양·탈수초"],
+    contra:["활동성 결핵·중증감염","중등도-중증 심부전","탈수초"],
+    monitor:["투여 전 결핵·HBV·CBC·간","반응평가"],
+    kr_reimb:"UC/CD 급여(게이트). 누공형 CD 포함. 산정특례.",
+    useUC:"primary", useCD:"primary", advanced:true
+  },
+  "drug:golimumab": {
+    name:"골리무맙", brand:"심퍼니", en:"golimumab", cls:"class:anti_tnf",
+    target:"TNF-α (human)", route:"피하주사(SC)",
+    moa:"TNF-α 중화. ★UC 전용(CD 적응 없음).",
+    induction:"200mg(0주)→100mg(2주).", maintenance:"체중별 50~100mg q4w.",
+    dose:"200/100mg 유도 → 50~100mg q4w SC.",
+    pearls:["★UC 전용 — CD엔 적응증 없음","q4w 투여","TNF 친화도 高"],
+    tips:["결핵·HBV 사전검사","UC 중등도-중증 게이트 충족 시"],
+    ae:["주사부위반응","감염(결핵·HBV)"],
+    contra:["활동성 결핵·중증감염","심부전"],
+    monitor:["결핵·HBV·반응평가"],
+    kr_reimb:"UC 급여(게이트). CD 비적응. 산정특례.",
+    useUC:"primary", useCD:"no", advanced:true
+  },
+  "drug:vedolizumab": {
+    name:"베돌리주맙", brand:"킨텔레스", en:"vedolizumab", cls:"class:anti_integrin",
+    target:"α4β7 인테그린(장선택)", route:"정맥주사(IV)·피하(유지)",
+    moa:"★장 선택적 — 림프구의 장점막 유입만 차단 → 전신 면역억제 적어 안전성 우수.",
+    induction:"300mg IV 0·2·6주.", maintenance:"300mg IV q8w(또는 SC 108mg q2w).",
+    dose:"300mg IV 0-2-6주 → q8w. 유지 SC 전환 가능.",
+    pearls:["★장선택성 → 전신감염·결핵재활성 위험 낮음 → 고령·감염위험·악성종양력 환자 선호","UC/CD 모두","발현 느린 편(유지효과 우수)"],
+    tips:["발현 느려 급성 중증 단독 부적합 — 안정적 유지에 강점","결핵 위험 낮으나 기저검사 권장","장외증상엔 상대적 약함"],
+    ae:["비교적 경미 — 비인두염·관절통","드물게 주입반응"],
+    contra:["과민","활동성 중증감염"],
+    monitor:["기저 결핵/HBV(권장)","반응평가"],
+    kr_reimb:"UC/CD 급여(게이트). 산정특례.",
+    useUC:"primary", useCD:"primary", advanced:true
+  },
+  "drug:ustekinumab": {
+    name:"우스테키누맙", brand:"스텔라라", en:"ustekinumab", cls:"class:il1223",
+    target:"IL-12/23 공통 p40", route:"IV(유도)→SC(유지)",
+    moa:"IL-12·23 p40 차단 → Th1/Th17 억제. 안전성·지속성 우수.",
+    induction:"체중기반 IV 1회.", maintenance:"90mg SC q8w(또는 q12w).",
+    dose:"체중별 IV 유도(~6mg/kg) → 90mg SC q8w.",
+    pearls:["안전성 우수 — 감염·결핵 위험 낮은 편","UC/CD 모두","장기 지속성·낮은 면역원성","장외(건선) 동반 시 이점"],
+    tips:["결핵/HBV 기저검사","반응 시 q12w 연장 가능","발현 비교적 빠름(유도 IV)"],
+    ae:["비인두염·두통","주사부위반응","드물게 감염"],
+    contra:["과민","활동성 중증감염"],
+    monitor:["기저 결핵/HBV","반응평가"],
+    kr_reimb:"UC/CD 급여(게이트). 산정특례.",
+    useUC:"primary", useCD:"primary", advanced:true
+  },
+  "drug:risankizumab": {
+    name:"리산키주맙", brand:"스카이리치", en:"risankizumab", cls:"class:il23",
+    target:"IL-23 p19 선택", route:"IV(유도)→SC(유지)",
+    moa:"IL-23 p19 선택 차단(IL-12 보존) → Th17 정밀 억제. ★CD 강력.",
+    induction:"600mg IV 0·4·8주.", maintenance:"360mg SC q8w.",
+    dose:"600mg IV 유도(0-4-8주) → 360mg SC q8w.",
+    pearls:["★CD에 강력한 효능 — 점막치유 우수","IL-23 선택(p19)으로 정밀","UC 적응 확대 중"],
+    tips:["결핵/HBV 기저검사","SC 유지 자가주사"],
+    ae:["상기도감염·두통","주사부위반응"],
+    contra:["과민","활동성 중증감염·결핵"],
+    monitor:["기저 결핵/HBV","반응평가"],
+    kr_reimb:"CD 급여(게이트). UC는 적응/급여 확인. 산정특례.",
+    useUC:"minor", useCD:"primary", advanced:true
+  },
+  "drug:mirikizumab": {
+    name:"미리키주맙", brand:"옴보", en:"mirikizumab", cls:"class:il23",
+    target:"IL-23 p19 선택", route:"IV(유도)→SC(유지)",
+    moa:"IL-23 p19 선택 차단. ★UC 적응.",
+    induction:"300mg IV 0·4·8주.", maintenance:"200mg SC q4w.",
+    dose:"300mg IV 유도 → 200mg SC q4w.",
+    pearls:["★UC에 IL-23 선택제 옵션","CD 적응 확대 중","p19 선택"],
+    tips:["결핵/HBV 기저검사","급여 발효·적응 최신 고시 확인"],
+    ae:["상기도감염·관절통","주사부위반응"],
+    contra:["과민","활동성 중증감염"],
+    monitor:["기저 결핵/HBV","반응평가"],
+    kr_reimb:"UC 급여 여부·발효일 최신 고시 확인. 산정특례.",
+    useUC:"primary", useCD:"minor", advanced:true
+  },
+  "drug:tofacitinib": {
+    name:"토파시티닙", brand:"젤잔즈", en:"tofacitinib", cls:"class:jak",
+    target:"JAK1/3 (비선택)", route:"경구",
+    moa:"JAK 신호 차단 → 다중 사이토카인 억제. 경구·빠른 발현. ★UC 전용.",
+    induction:"10mg bid 8주.", maintenance:"5mg bid(필요 시 10mg bid).",
+    dose:"10mg bid 유도 → 5mg bid 유지. ★UC 전용(CD 효과 미흡).",
+    pearls:["★UC 전용 경구 소분자 — 빠른 발현","항체형성 없음(소분자)","anti-TNF 무반응 후 옵션"],
+    tips:["★대상포진 위험↑ → 사전 재조합 대상포진백신 고려","혈전(VTE)·MACE 계열경고 — 고위험군 신중","지질·CPK 상승 모니터","결핵/HBV 기저"],
+    ae:["대상포진","지질상승","감염","혈전(고위험)","CPK"],
+    contra:["활동성 결핵·중증감염","임신","혈전 고위험"],
+    monitor:["기저 결핵/HBV·지질·CBC","대상포진백신","65세↑·심혈관위험 신중"],
+    kr_reimb:"UC 급여(게이트). CD 비적응. 산정특례.",
+    useUC:"primary", useCD:"no", advanced:true
+  },
+  "drug:upadacitinib": {
+    name:"유파다시티닙", brand:"린버크", en:"upadacitinib", cls:"class:jak",
+    target:"JAK1 선택", route:"경구(1일 1회)",
+    moa:"JAK1 선택 → 빠른 항염. ★UC+CD 모두 급여(2024.4.1).",
+    induction:"UC 45mg/일 8주, CD 45mg/일 12주.", maintenance:"15 또는 30mg/일.",
+    dose:"45mg 유도 → 15/30mg 유지. ★UC·CD 양쪽 급여.",
+    pearls:["★UC+CD 모두 급여(2024.4 고시)","경구·빠른 발현","JAK1 선택(비선택 tofa 대비)","무반응 anti-TNF 후 강력 옵션"],
+    tips:["★대상포진·혈전·MACE 계열경고(JAK)","대상포진백신 고려","지질·간·CBC 모니터","결핵/HBV 기저"],
+    ae:["대상포진","여드름","지질상승","감염","혈전(고위험)"],
+    contra:["활동성 결핵·중증감염","임신","혈전 고위험"],
+    monitor:["기저 결핵/HBV·지질·CBC·간","대상포진백신","고위험군 신중"],
+    kr_reimb:"UC·CD 급여(2024.4.1, 게이트 충족). 산정특례.",
+    useUC:"primary", useCD:"primary", advanced:true
+  },
+  "drug:filgotinib": {
+    name:"필고티닙", brand:"지셀레카", en:"filgotinib", cls:"class:jak",
+    target:"JAK1 선택", route:"경구",
+    moa:"JAK1 선택. UC 적응.",
+    induction:"200mg/일.", maintenance:"200mg/일.",
+    dose:"200mg/일 경구. UC.",
+    pearls:["UC 경구 옵션","JAK1 선택","급여·적응 최신 고시 확인"],
+    tips:["JAK 계열경고 동일","결핵/HBV 기저","대상포진백신 고려"],
+    ae:["감염·대상포진·지질"],
+    contra:["활동성 결핵·중증감염","임신"],
+    monitor:["결핵/HBV·지질·CBC"],
+    kr_reimb:"UC 급여 여부·발효일 최신 고시 확인.",
+    useUC:"option", useCD:"no", advanced:true
+  },
+  "drug:ozanimod": {
+    name:"오자니모드", brand:"제포지아", en:"ozanimod", cls:"class:s1p",
+    target:"S1P 수용체 조절", route:"경구",
+    moa:"림프구 림프절 격리 → 장 유입 차단. ★UC 경구.",
+    induction:"7일 점증 → 0.92mg/일.", maintenance:"0.92mg/일.",
+    dose:"점증 스케줄 후 0.92mg/일. ★UC.",
+    pearls:["UC 경구 소분자","점증 도입(서맥 회피)","항체형성 없음"],
+    tips:["★기저 심전도·안과(황반부종)·간 검사","서맥·전도장애 — 도입기 심박 모니터","대상포진백신 고려","결핵/HBV 기저"],
+    ae:["서맥·전도장애(도입기)","황반부종","간효소↑","감염·대상포진"],
+    contra:["최근 심근경색·불안정협심증·중증 전도장애","중증 수면무호흡"],
+    monitor:["기저 심전도·안과검진·간·CBC","도입기 심박"],
+    kr_reimb:"UC 급여 여부·발효일 최신 고시 확인.",
+    useUC:"option", useCD:"no", advanced:true
+  },
+  "drug:cyclosporine": {
+    name:"사이클로스포린", brand:"산디문·사이폴엔", en:"cyclosporine", cls:"class:cni",
+    target:"칼시뉴린(IL-2 억제)", route:"정맥주사(IV)",
+    moa:"T세포 IL-2 억제 → 빠른 면역억제. ★ASUC IV 구제(IFX 대안).",
+    induction:"2~4mg/kg/일 IV 지속주입.", maintenance:"부적합 — 가교용(thiopurine로 이행).",
+    dose:"IV 2~4mg/kg/일, 혈중농도 조절. 반응 시 경구 전환·thiopurine 가교.",
+    pearls:["★ASUC IV스테로이드 무반응 시 구제(IFX와 양자택일)","빠른 발현","가교요법 — 이후 thiopurine 유지로 이행"],
+    tips:["혈중농도·신기능·전해질·혈압 엄격 모니터","경련·PCP 예방(고려)","장기 사용 부적합 — 단기 구제"],
+    ae:["신독성·고혈압·신경독성(경련)","전해질이상·다모·치은비대","감염(PCP)"],
+    contra:["조절안된 고혈압·신장애","중증감염"],
+    monitor:["혈중농도·신기능·전해질·혈압·Mg","PCP 예방 고려"],
+    kr_reimb:"ASUC 구제 사용. 허가·급여범위 확인.",
+    useUC:"option", useCD:"minor", advanced:false
+  },
+  "drug:tacrolimus": {
+    name:"타크로리무스", brand:"프로그랍", en:"tacrolimus", cls:"class:cni",
+    target:"칼시뉴린", route:"경구·국소",
+    moa:"칼시뉴린 억제. 일부 난치 UC·누공·구강 CD에 사용.",
+    induction:"혈중농도 기반.", maintenance:"제한적.",
+    dose:"혈중농도 조절. off-label 영역 다수.",
+    pearls:["난치 UC·일부 누공/구강 CD","CSA 대안"],
+    tips:["신독성·혈중농도 모니터","감염 주의"],
+    ae:["신독성·고혈당·진전·고혈압"],
+    contra:["중증 신장애"],
+    monitor:["혈중농도·신기능·혈당"],
+    kr_reimb:"적응·급여범위 확인(off-label 다수).",
+    useUC:"minor", useCD:"minor", advanced:false
+  },
+  "drug:metronidazole": {
+    name:"메트로니다졸", brand:"후라시닐", en:"metronidazole", cls:"class:abx",
+    target:"혐기성균", route:"경구·정주",
+    moa:"혐기성 항균. ★회음부 누공·농양 보조.",
+    induction:"누공 보조 250~500mg tid.", maintenance:"제한(신경병증).",
+    dose:"보조요법. 장기 시 말초신경병증 주의.",
+    pearls:["★누공형 CD 보조(±cipro)","농양 — 배농과 병행","단독 관해유도 근거 약함"],
+    tips:["장기 사용=말초신경병증 — 기간 제한","금주(disulfiram 반응)"],
+    ae:["금속맛·오심","말초신경병증(장기)","금주 필요"],
+    contra:["임신 초기 신중"],
+    monitor:["장기 시 신경증상"],
+    kr_reimb:"급여.", useUC:"no", useCD:"minor", advanced:false
+  },
+  "drug:ciprofloxacin": {
+    name:"시프로플록사신", brand:"시프로바이", en:"ciprofloxacin", cls:"class:abx",
+    target:"그람음성균", route:"경구·정주",
+    moa:"퀴놀론. ★누공형 CD 보조(±metronidazole).",
+    induction:"누공 보조 500mg bid.", maintenance:"제한.",
+    dose:"보조. anti-TNF·배농과 병행.",
+    pearls:["★누공형 CD 보조","metronidazole 병용 흔함"],
+    tips:["건염·QT 주의","장기 사용 제한"],
+    ae:["건염·QT연장·광과민","C.difficile"],
+    contra:["건염 이력·QT 위험"],
+    monitor:["QT(위험군)"],
+    kr_reimb:"급여.", useUC:"no", useCD:"minor", advanced:false
+  }
+};
+
+/* ====================== 계산기 ====================== */
+function num(x){ var n=parseFloat(x); return isNaN(n)?0:n; }
+function bandOf(bands,s){ for(var i=0;i<bands.length;i++){ if(s<=bands[i].max) return bands[i]; } return bands[bands.length-1]; }
+
+/* ---- Mayo Score (Full, 0~12) ---- */
+var CALC_MAYO = {
+  id:"lab:mayo", label:"Mayo Score (Full)", range:"0~12", disease:"uc",
+  src:"Schroeder 1987 · KASID UC 가이드라인 채택",
+  tip:"4항목 각 0~3점 합산(0~12). 내시경 하위점수(MES)는 점막치유 목표(MES≤1)의 기준. 반응=기저 대비 3점↓ & 30%↓ 및 직장출혈 ≤1.",
+  items:[
+    { key:"stool", label:"배변 빈도", desc:"평소 대비",
+      opts:[{v:0,l:"0 정상"},{v:1,l:"1 +1~2회"},{v:2,l:"2 +3~4회"},{v:3,l:"3 +5회↑"}] },
+    { key:"blood", label:"직장 출혈", desc:"",
+      opts:[{v:0,l:"0 없음"},{v:1,l:"1 줄무늬<50%"},{v:2,l:"2 대부분 혈액"},{v:3,l:"3 순수혈액"}] },
+    { key:"endo", label:"내시경 소견(MES)", desc:"점막치유 목표 ≤1",
+      opts:[{v:0,l:"0 정상"},{v:1,l:"1 경증(발적·혈관소실)"},{v:2,l:"2 중등(미란)"},{v:3,l:"3 중증(자연출혈·궤양)"}] },
+    { key:"pga", label:"의사 전반평가(PGA)", desc:"",
+      opts:[{v:0,l:"0 정상"},{v:1,l:"1 경증"},{v:2,l:"2 중등"},{v:3,l:"3 중증"}] }
+  ],
+  bands:[
+    { max:2,  label:"관해", color:"ok", note:"각 항목 ≤1" },
+    { max:5,  label:"경증", color:"ok" },
+    { max:10, label:"중등증", color:"warn" },
+    { max:12, label:"중증", color:"block" }
+  ],
+  gate:6, gateNote:"중등도-중증(≈6↑) = 생물학제제·소분자 임상 진입 고려 구간(서류는 사전치료 실패 병행)"
+};
+function calcMayo(inp){ inp=inp||{}; var t=0,det=[]; for(var i=0;i<CALC_MAYO.items.length;i++){var k=CALC_MAYO.items[i].key;var v=num(inp[k]);t+=v;det.push({k:k,v:v});} return {score:t,detail:det,band:bandOf(CALC_MAYO.bands,t),gate:CALC_MAYO.gate,gateMet:(t>=CALC_MAYO.gate)}; }
+
+/* ---- Partial Mayo (0~9) ---- */
+var CALC_PMAYO = {
+  id:"lab:pmayo", label:"Partial Mayo", range:"0~9", disease:"uc",
+  src:"내시경 제외 3항목 · 외래 추적",
+  tip:"내시경 제외(배변빈도+직장출혈+PGA). 외래 비침습 추적용. 반응=2점↓ & 30%↓.",
+  items:[
+    { key:"stool", label:"배변 빈도", desc:"", opts:[{v:0,l:"0"},{v:1,l:"1"},{v:2,l:"2"},{v:3,l:"3"}] },
+    { key:"blood", label:"직장 출혈", desc:"", opts:[{v:0,l:"0"},{v:1,l:"1"},{v:2,l:"2"},{v:3,l:"3"}] },
+    { key:"pga",   label:"의사 전반평가", desc:"", opts:[{v:0,l:"0"},{v:1,l:"1"},{v:2,l:"2"},{v:3,l:"3"}] }
+  ],
+  bands:[{max:1,label:"관해",color:"ok"},{max:4,label:"경증",color:"ok"},{max:6,label:"중등증",color:"warn"},{max:9,label:"중증",color:"block"}]
+};
+function calcPMayo(inp){ inp=inp||{}; var t=num(inp.stool)+num(inp.blood)+num(inp.pga); return {score:t,band:bandOf(CALC_PMAYO.bands,t)}; }
+
+/* ---- UCEIS (0~8) ---- */
+var CALC_UCEIS = {
+  id:"lab:uceis", label:"UCEIS (내시경)", range:"0~8", disease:"uc",
+  src:"Travis 2012 · 내시경 객관지표",
+  tip:"가장 심한 부위에서 혈관양상+출혈+미란/궤양 합산(0~8). 점막치유 평가 객관화.",
+  items:[
+    { key:"vasc", label:"혈관 양상", desc:"",
+      opts:[{v:0,l:"0 정상"},{v:1,l:"1 부분소실"},{v:2,l:"2 완전소실"}] },
+    { key:"bleed", label:"출혈", desc:"",
+      opts:[{v:0,l:"0 없음"},{v:1,l:"1 점막"},{v:2,l:"2 경미한 내강"},{v:3,l:"3 중등/중증 내강"}] },
+    { key:"ero", label:"미란·궤양", desc:"",
+      opts:[{v:0,l:"0 없음"},{v:1,l:"1 미란"},{v:2,l:"2 표재궤양"},{v:3,l:"3 심부궤양"}] }
+  ],
+  bands:[{max:1,label:"관해/경미",color:"ok"},{max:4,label:"경증",color:"ok"},{max:6,label:"중등증",color:"warn"},{max:8,label:"중증",color:"block"}]
+};
+function calcUceis(inp){ inp=inp||{}; var t=num(inp.vasc)+num(inp.bleed)+num(inp.ero); return {score:t,band:bandOf(CALC_UCEIS.bands,t)}; }
+
+/* ---- Truelove-Witts (ASUC 판정) ---- */
+var CALC_TW = {
+  id:"lab:tw", label:"Truelove-Witts (급성중증 ASUC)", range:"판정", disease:"uc",
+  src:"Truelove & Witts 1955",
+  tip:"혈성변 ≥6회/일 + 전신독성 지표 중 1개↑ = 급성중증(ASUC) → 입원·IV스테로이드. CMV·C.difficile 동반감염 점검.",
+  items:[
+    { key:"stool6", label:"혈성변 ≥6회/일", desc:"필수 기준", opts:[{v:0,l:"아니오"},{v:1,l:"예"}] },
+    { key:"pulse",  label:"맥박 >90회/분", desc:"전신독성", opts:[{v:0,l:"아니오"},{v:1,l:"예"}] },
+    { key:"temp",   label:"체온 >37.8℃", desc:"전신독성", opts:[{v:0,l:"아니오"},{v:1,l:"예"}] },
+    { key:"hb",     label:"Hb <10.5 g/dL", desc:"전신독성", opts:[{v:0,l:"아니오"},{v:1,l:"예"}] },
+    { key:"esr",    label:"ESR >30 mm/h (또는 CRP↑)", desc:"전신독성", opts:[{v:0,l:"아니오"},{v:1,l:"예"}] }
+  ]
+};
+function calcTW(inp){ inp=inp||{}; var stool=num(inp.stool6); var systemic=num(inp.pulse)+num(inp.temp)+num(inp.hb)+num(inp.esr); var asuc=(stool>=1 && systemic>=1); return {asuc:asuc,systemic:systemic,label:asuc?"급성중증(ASUC)":"비ASUC"}; }
+
+/* ---- CDAI (0~600) ---- */
+var CALC_CDAI = {
+  id:"lab:cdai", label:"CDAI", range:"0~600", disease:"cd",
+  src:"Best 1976 · KASID CD 가이드라인 · ★급여 게이트(≥220)",
+  tip:"8항목 가중합. 액상변·복통·전반상태는 7일 일기 합산. ★중등도-중증 220~450이 생물학제제 급여게이트.",
+  items:[
+    { key:"stool", label:"① 액상/무른변 (7일 합계)", desc:"×2", weight:2, type:"num", ph:"7일 총횟수" },
+    { key:"pain", label:"② 복통 (7일 합, 일 0~3)", desc:"×5 · 0없음~3중증", weight:5, type:"num", ph:"0~21" },
+    { key:"general", label:"③ 전반적 상태 (7일 합, 일 0~4)", desc:"×7 · 0양호~4매우나쁨", weight:7, type:"num", ph:"0~28" },
+    { key:"comp", label:"④ 합병증 (항목수)", desc:"×20 · 관절·홍채·피부·구강·치열·누공·농양·발열≥37.8", weight:20, type:"num", ph:"개수" },
+    { key:"antidiar", label:"⑤ 지사제 사용", desc:"×30", weight:30, type:"seg", opts:[{v:0,l:"아니오"},{v:1,l:"예"}] },
+    { key:"mass", label:"⑥ 복부 종괴", desc:"×10", weight:10, type:"seg", opts:[{v:0,l:"0 없음"},{v:2,l:"2 의심"},{v:5,l:"5 확실"}] },
+    { key:"hct", label:"⑦ Hct 편차", desc:"×6 · (남 47−Hct, 여 42−Hct)", weight:6, type:"hct" },
+    { key:"weight", label:"⑧ 체중 편차%", desc:"×1 · 100×(1−체중/표준)", weight:1, type:"wt" }
+  ],
+  bands:[
+    { max:149, label:"관해", color:"ok" },
+    { max:219, label:"경증", color:"ok" },
+    { max:450, label:"중등증~중증", color:"warn", note:"★급여게이트 220~450" },
+    { max:600, label:"고도활성", color:"block" }
+  ],
+  gate:220, gateNote:"★CDAI ≥220 = 중등도-중증 활성 = 생물학제제·소분자 급여게이트(관강형)"
+};
+function calcCDAI(inp){
+  inp=inp||{};
+  var stool=num(inp.stool)*2;
+  var pain=num(inp.pain)*5;
+  var gen=num(inp.general)*7;
+  var comp=num(inp.comp)*20;
+  var anti=num(inp.antidiar)*30;
+  var mass=num(inp.mass)*10;
+  // Hct: 남 기준 47, 여 42 → (기준-실측), 음수 0 처리는 안 함(편차 그대로 ×6)
+  var sex=inp.sex||"m"; var hctRef=(sex==="f")?42:47;
+  var hctDev=(inp.hct!==undefined && inp.hct!=="")?(hctRef-num(inp.hct)):0;
+  var hct=hctDev*6;
+  // 체중: 표준체중 대비 % 부족. wtPct = 100*(1 - 실제/표준)
+  var wtPct=0;
+  if(inp.weight!==undefined && inp.weight!=="" && inp.stdweight!==undefined && inp.stdweight!=="" && num(inp.stdweight)>0){
+    wtPct=100*(1 - num(inp.weight)/num(inp.stdweight));
+  }
+  var wt=wtPct*1;
+  var total=stool+pain+gen+comp+anti+mass+hct+wt;
+  total=Math.round(total*10)/10;
+  return { score:total, parts:{stool:stool,pain:pain,gen:gen,comp:comp,anti:anti,mass:mass,hct:Math.round(hct*10)/10,wt:Math.round(wt*10)/10},
+    band:bandOf(CALC_CDAI.bands,total), gate:CALC_CDAI.gate, gateMet:(total>=CALC_CDAI.gate) };
+}
+
+/* ---- HBI (Harvey-Bradshaw) ---- */
+var CALC_HBI = {
+  id:"lab:hbi", label:"HBI (Harvey-Bradshaw)", range:"간이", disease:"cd",
+  src:"Harvey & Bradshaw 1980 · CDAI 상관 高 · 외래 신속",
+  tip:"CDAI 간이판. 전반상태+복통+묽은변수+종괴+합병증. 관해<5, 경증5~7, 중등8~16, 중증>16.",
+  items:[
+    { key:"general", label:"① 전반적 상태", desc:"", type:"seg", opts:[{v:0,l:"0 매우좋음"},{v:1,l:"1 약간나쁨"},{v:2,l:"2 나쁨"},{v:3,l:"3 매우나쁨"},{v:4,l:"4 끔찍"}] },
+    { key:"pain", label:"② 복통", desc:"", type:"seg", opts:[{v:0,l:"0 없음"},{v:1,l:"1 경증"},{v:2,l:"2 중등"},{v:3,l:"3 중증"}] },
+    { key:"stool", label:"③ 묽은변 횟수(일)", desc:"실제 횟수 입력", type:"num", ph:"일 횟수" },
+    { key:"mass", label:"④ 복부 종괴", desc:"", type:"seg", opts:[{v:0,l:"0 없음"},{v:1,l:"1 의심"},{v:2,l:"2 명확"},{v:3,l:"3 압통동반"}] },
+    { key:"comp", label:"⑤ 합병증 (항목수)", desc:"관절통·홍채염·결절홍반·아프타·치열·누공·농양", type:"num", ph:"개수" }
+  ],
+  bands:[{max:4,label:"관해",color:"ok"},{max:7,label:"경증",color:"ok"},{max:16,label:"중등증",color:"warn"},{max:99,label:"중증",color:"block"}]
+};
+function calcHBI(inp){ inp=inp||{}; var t=num(inp.general)+num(inp.pain)+num(inp.stool)+num(inp.mass)+num(inp.comp); return {score:t,band:bandOf(CALC_HBI.bands,t)}; }
+
+var CALC_REGISTRY = {
+  mayo:CALC_MAYO, pmayo:CALC_PMAYO, uceis:CALC_UCEIS, tw:CALC_TW, cdai:CALC_CDAI, hbi:CALC_HBI
+};
+
+/* ====================== 공유: 급여·산정특례·교체·모니터 ====================== */
+var IBD_SANJEONG = {
+  id:"ibd:sanjeong", title:"산정특례(희귀난치성질환)",
+  rows:[
+    "K50 크론병 · K51 궤양성대장염 → 희귀난치성질환 산정특례 등록 대상",
+    "본인부담 ★10%, 등록일로부터 ★5년 (재등록 갱신)",
+    "생물학제제·소분자 고가 치료 부담 완화의 핵심 — 등록 누락 주의",
+    "⚠️ 등록 V코드·서식·세부 적용은 최신 복지부 고시 대조 권장"
+  ]
+};
+var IBD_PRECHECK = {
+  id:"ibd:precheck", title:"생물학제제·JAK 투여 전 필수검사",
+  rows:[
+    { k:"결핵(TB)", v:"IGRA(퀀티페론) 또는 흉부X선·TST. ★국내 결핵 유병률 高 — 잠복결핵 시 예방치료 후/병행. anti-TNF·JAK 특히 중요" },
+    { k:"B형간염", v:"HBsAg·anti-HBc·HBV DNA. 보균 시 재활성 예방(항바이러스 병행)" },
+    { k:"기본혈액", v:"CBC·간기능·신기능·CRP/ESR" },
+    { k:"기타", v:"C형간염·HIV(위험군)·임신 여부·백신력(생백신은 면역억제 전 완료)" },
+    { k:"JAK/S1P 추가", v:"지질·대상포진백신 고려 / S1P=심전도·안과(황반)" }
+  ]
+};
+var IBD_SWITCH = {
+  id:"ibd:switch", title:"교체투여(스위칭) 원칙",
+  rows:[
+    "1차 생물학제제 ★1차 무반응(primary non-response) 또는 ★효과소실(LOR)·내약불가 시 타 기전으로 교체 고려",
+    "기전 전환 전략: anti-TNF → vedolizumab/ustekinumab/IL-23/JAK 등",
+    "anti-TNF 효과소실 시 약물농도검사(TDM)로 면역원성(항체)·저농도 감별 → 증량 vs 교체 결정",
+    "⚠️ 급여상 교체 인정범위·횟수·서류는 약제별 고시 상이 → ★최신 고시 확인 필수"
+  ]
+};
+var IBD_T2T = {
+  id:"ibd:t2t", title:"치료목표(STRIDE-II / treat-to-target)",
+  rows:[
+    "단기: 임상반응 → 임상관해(증상) + 생화학(CRP·분변칼프로텍틴 정상화)",
+    "중장기: ★내시경 치유(UC: MES≤1 / CD: 궤양소실) — 재발·수술·암 위험↓",
+    "심부목표: 조직치유·정상 삶의질·정상 성장(소아)",
+    "2026 KASID: ‘지속성·맞춤형’ — 목표 도달 후에도 유지·주기적 재평가",
+    "도구: 증상점수 + CRP + 분변칼프로텍틴 + 내시경(주기적)"
+  ]
+};
+
+/* ====================== 근거(refs) ====================== */
+var REFS = {
+  "r_uc_5asa":      { grade:"A", txt:"경증-중등증 UC 1차는 5-ASA(경구+국소 병용)", src:"KASID UC 가이드라인 · ECCO", detail:"경증-중등증 활동성 UC의 관해유도·유지 1차는 5-ASA. 직장/좌측은 국소(좌약·관장) 병용이 경구 단독보다 우월. 용량 최적화(4.8g) 후에도 무반응 시 스테로이드." },
+  "r_uc_steroid":   { grade:"A", txt:"5-ASA 실패 시 스테로이드 유도, 유지엔 부적합", src:"KASID UC", detail:"중등증-중증 또는 5-ASA 무반응 시 전신 스테로이드로 유도. 의존·불응은 면역조절제/생물학제제 전환 신호. 유지요법으로 사용 금지." },
+  "r_asuc":         { grade:"A", txt:"ASUC: 입원·IV스테로이드 3일 → 구제(IFX/CSA) → 대장절제", src:"KASID UC · ECCO", detail:"급성중증 UC(Truelove-Witts)는 입원·정주 스테로이드. 3일째 반응평가(예: Oxford 기준)→무반응 시 인플릭시맙 또는 사이클로스포린 구제, 무반응 시 대장절제. CMV·C.difficile 동반감염 점검 필수." },
+  "r_uc_advanced":  { grade:"A", txt:"중등도-중증 UC: 생물학제제·소분자 다기전 선택", src:"KASID 중등도-중증 UC 생물학제제·소분자 CPG(2023)", detail:"스테로이드·티오퓨린 실패 중등도-중증 UC에 anti-TNF·vedolizumab·ustekinumab·JAK(tofa/upa/filgo)·S1P(ozanimod)·IL-23(miri) 등 선택. 환자요인(고령·감염위험·발현속도·경구선호)으로 개별화." },
+  "r_thiopurine":   { grade:"A", txt:"티오퓨린 전 NUDT15·TPMT 유전형 — 한국인 NUDT15 중요", src:"KASID 티오퓨린 합의문", detail:"한국인 등 동아시아는 NUDT15 변이가 TPMT보다 티오퓨린 골수억제 예측에 결정적. C/C(homozygous)=중증 골수억제 고위험으로 금기. 사전 유전형 검사로 용량 조절·회피." },
+  "r_combo":        { grade:"A", txt:"anti-TNF + 티오퓨린 병용이 단독보다 우월(SONIC 등)", src:"SONIC · KASID", detail:"인플릭시맙+아자티오프린 병용이 각 단독보다 관해율·점막치유 우월. 면역원성(항체)↓·약물농도↑. 위험(림프종 등) 대비 이익 개별 판단." },
+  "r_cd_budesonide":{ grade:"A", txt:"CD 회맹부 경증-중등증 1차 유도는 budesonide 9mg", src:"KASID CD", detail:"회맹부형 경증-중등증 CD 유도에 부데소나이드 9mg 선호(전신 부작용↓). 무반응·전신증상·광범위는 전신 스테로이드." },
+  "r_cd_gate":      { grade:"A", txt:"CD 생물학제제: 2제(스테로이드+면역억제제) 실패 + CDAI≥220", src:"보건복지부 IBD 생물학제제 급여 고시", detail:"중등도-중증 활성 CD(CDAI≥220)에서 코르티코스테로이드 + 면역억제제(티오퓨린 또는 MTX) 등 2가지 이상 보편치료에 반응없음·내약불가·금기 시 생물학제제·소분자 급여. ★5-ASA는 개수 산정 제외." },
+  "r_cd_fistula":   { grade:"A", txt:"누공형 CD: anti-TNF 1차(±항생제·외과) — 별도 트랙", src:"KASID CD · 급여 고시", detail:"활동성 항문주위 누공 동반 CD는 anti-TNF(인플릭시맙/아달리무맙)가 점막+누공 치유에 1차. 급여상 관강형 CDAI≥220 요건과 별개의 누공형 트랙 — 단, 누공이 보편치료(항생제·면역억제제·배농)에 반응 없을 것을 요함. 항생제·외과 배농 병행." },
+  "r_vedo_safety":  { grade:"B", txt:"vedolizumab 장선택성 — 고령·감염위험 안전성 우수", src:"KASID · GEMINI 등", detail:"α4β7 장선택적 기전으로 전신 면역억제·결핵재활성 위험이 낮아 고령·감염력·악성종양력 환자에 선호. 단 발현 느려 급성 중증 단독엔 불리." },
+  "r_jak_risk":     { grade:"B", txt:"JAK 계열: 대상포진·혈전·MACE 경고, 고위험군 신중", src:"허가·안전성 정보", detail:"JAK억제제(tofa·upa·filgo)는 빠른 경구 옵션이나 대상포진·VTE·MACE·악성종양 위험. 65세↑·심혈관/혈전 위험군 신중, 대상포진백신 고려, 지질 모니터." },
+  "r_t2t":          { grade:"A", txt:"STRIDE-II: 내시경 치유를 치료목표로", src:"STRIDE-II · 2026 KASID", detail:"증상관해를 넘어 내시경 치유(UC MES≤1, CD 궤양소실)·생화학 정상화를 목표로 단계적 상향(treat-to-target). CRP·분변칼프로텍틴·주기적 내시경으로 추적." }
+};
+
+/* ====================== 산정특례·교체 등은 위 공유 객체 사용 ====================== */
+
+
+/* ===== content/engine layer ===== */
+/* ============================================================
+   ibd_content.js — UC/CD 도서관 토픽 + 게이트 엔진(트랙형) + 시뮬 플로우
+   게이트는 모듈 트랙 ID로 분리: uc:gate:track_a/b/c, cd:gate:luminal/fistula
+   ============================================================ */
+
+/* ====================== UC 급여 게이트(트랙) ====================== */
+var UC_GATE = {
+  id:"uc:gate", title:"UC 생물학제제·소분자 진입 게이트", disease:"uc",
+  intro:"고시: ‘코르티코스테로이드나 6-MP/아자티오프린 등 보편치료에 적정반응 없음·내약불가·금기’ + 중등도-중증. 삭감 방어 위해 아래 트랙으로 세분.",
+  tracks:[
+    { id:"uc:gate:track_a", name:"A트랙 — 스테로이드 실패",
+      checks:[
+        { k:"a_dose", label:"경구 prednisolone 0.5~1mg/kg/일 충분용량 사용" },
+        { k:"a_dur",  label:"2~4주 이상 충분기간 투여" },
+        { k:"a_fail", label:"불응(무반응) 또는 의존(감량 시 재발) 확인" }
+      ],
+      need:"3개 모두(또는 의존성 명확)" },
+    { id:"uc:gate:track_b", name:"B트랙 — 티오퓨린 실패",
+      checks:[
+        { k:"b_dur",  label:"AZA 또는 6-MP 최소 3개월 이상 투여" },
+        { k:"b_fail", label:"활동성 병변 지속(무효) 기록" }
+      ],
+      need:"2개 모두" },
+    { id:"uc:gate:track_c", name:"C트랙 — 티오퓨린 예외(금기/내약불가) ★B 대체",
+      checks:[
+        { k:"c_nudt15", label:"★NUDT15 C/C(homozygous) 변이 — 티오퓨린 금기" },
+        { k:"c_myelo",  label:"티오퓨린에 의한 중증 골수억제 이력" },
+        { k:"c_panc",   label:"티오퓨린에 의한 중증 췌장염 이력" }
+      ],
+      need:"1개 이상 → 티오퓨린 치료력 없이도 ‘금기로 사전치료 충족’으로 게이트 OK" }
+  ],
+  logic:"게이트 OK = (A트랙 충족) AND (B트랙 충족 OR C트랙 충족) AND 중등도-중증",
+  sev:"Mayo 중등도-중증(≈6↑) 또는 내시경 활성"
+};
+/* UC 게이트 평가: input.checks(객체) + sevMet(bool) → {ok, trackA, trackB, trackC, rows[]} */
+function ucGateEval(c, sevMet){
+  c=c||{};
+  var A = c.a_dose && c.a_dur && c.a_fail;
+  var Adep = c.a_fail; // 의존성만으로도 일부 인정 — 보수적으론 A 전체
+  var B = c.b_dur && c.b_fail;
+  var C = c.c_nudt15 || c.c_myelo || c.c_panc;
+  var pre = A && (B || C);
+  var ok = pre && sevMet;
+  return { ok:ok, A:A, B:B, C:C, pre:pre, sevMet:sevMet };
+}
+
+/* ====================== CD 급여 게이트(트랙) ====================== */
+var CD_GATE = {
+  id:"cd:gate", title:"CD 생물학제제·소분자 진입 게이트", disease:"cd",
+  intro:"고시 ‘2가지 이상 보편치료 실패’ = ★[스테로이드] + [면역억제제(티오퓨린/MTX)]. ★5-ASA는 산정 제외. + CDAI≥220(관강형). 누공형은 별도 트랙.",
+  tracks:[
+    { id:"cd:gate:luminal", name:"관강형(Luminal) 트랙",
+      checks:[
+        { k:"l_steroid", label:"① 스테로이드군 실패 — 전신 prednisolone 불응/의존" },
+        { k:"l_budeso",  label:"  (또는 회맹부형: budesonide 9mg 실패도 1제 인정 여부 체크)" },
+        { k:"l_immuno",  label:"② 면역억제제군 실패 — AZA/6-MP ≥3개월 무효" },
+        { k:"l_mtx",     label:"  (또는 MTX 실패 — ★CD는 MTX 유지 급여 인정)" },
+        { k:"l_cdai",    label:"③ CDAI ≥220 (중등도-중증 활성)" }
+      ],
+      need:"스테로이드군 ① AND 면역억제제군 ② AND CDAI≥220 ③" },
+    { id:"cd:gate:fistula", name:"누공형(Fistulizing) 트랙 ★별도 요건",
+      checks:[
+        { k:"f_active",  label:"① 활동성 항문주위 누공 동반" },
+        { k:"f_conv",    label:"② 누공이 보편치료(항생제·면역억제제·배농) 실패" }
+      ],
+      need:"① AND ② → CDAI≥220 면제, anti-TNF(IFX/ADA) 1차 인정",
+      note:"⚠️ ‘요건 제로 자동통과’ 아님 — 누공의 보편치료 실패 서류 필수(삭감 방어)" }
+  ],
+  logic:"게이트 OK = [관강형 트랙 충족] OR [누공형 트랙 충족]"
+};
+/* CD 게이트 평가: input.checks + cdai 값 */
+function cdGateEval(c, cdaiVal){
+  c=c||{};
+  var steroid = c.l_steroid || c.l_budeso;
+  var immuno  = c.l_immuno  || c.l_mtx;
+  var cdaiMet = (cdaiVal!=null && cdaiVal>=220);
+  var luminal = steroid && immuno && cdaiMet;
+  var fistula = c.f_active && c.f_conv;
+  var ok = luminal || fistula;
+  return { ok:ok, luminal:luminal, fistula:fistula, steroid:steroid, immuno:immuno, cdaiMet:cdaiMet };
+}
+
+/* ====================== UC 도서관 ====================== */
+var UC_LIBRARY = [
+  { id:"uc:topic:severity", disease:"uc", cat:"clin", icon:"📏",
+    title:"중증도 평가", lead:"Mayo·UCEIS·Truelove-Witts — 게이트·목표의 출발점",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "Full Mayo(0~12): 배변+출혈+내시경(MES)+PGA. 관해≤2",
+        "Partial Mayo(0~9): 내시경 제외, 외래 추적",
+        "★MES(내시경 0~3): 점막치유 목표 = MES≤1 (treat-to-target)",
+        "UCEIS(0~8): 내시경 객관지표",
+        "★Truelove-Witts: 급성중증(ASUC) 판정 → 입원·IV스테로이드"
+      ]},
+      { type:"calcband", title:"Mayo 밴드", calc:"mayo" },
+      { type:"note", title:"왜 Mayo·MES인가", body:"급여 진입(중등도-중증)·반응평가·점막치유(MES≤1)가 모두 Mayo 기반. 정확한 산출이 청구·치료목표의 시작점.", why:true }
+    ]},
+  { id:"uc:topic:5asa", disease:"uc", cat:"clin", icon:"🧴",
+    title:"5-ASA & 국소치료", lead:"경구+국소 병용 — UC backbone",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "경증-중등증 UC 1차 = 5-ASA(권고A)",
+        "★경구+국소(좌약/관장) 병용이 단독보다 우월",
+        "직장염=좌약, 좌측형=관장, 광범위=경구+국소",
+        "용량 최적화(4.8g) 후 무반응 시 스테로이드"
+      ]},
+      { type:"drugcards", title:"5-ASA 제제", drugs:["drug:mesalazine","drug:sulfasalazine"] },
+      { type:"note", title:"제형 방출부위", body:"펜타사=소장~대장, 아사콜=원위대장, 메자반트MMX=1일1회 대장전체. 침범부위에 맞춰 선택.", why:false },
+      { type:"refs", title:"근거", items:["r_uc_5asa"] }
+    ]},
+  { id:"uc:topic:steroid", disease:"uc", cat:"clin", icon:"💊",
+    title:"스테로이드 유도", lead:"불응·의존 = 게이트 A트랙 신호",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "중등증-중증 또는 5-ASA 무반응 시 전신 스테로이드 유도",
+        "경구 prednisolone 0.5~1mg/kg/일, 8주 내 점감·중단",
+        "★불응(무반응)·의존(감량 시 재발) = 면역조절제/생물학제제 전환 신호",
+        "유지요법으로 사용 금지"
+      ]},
+      { type:"drugcards", title:"스테로이드", drugs:["drug:prednisolone","drug:budesonide"] },
+      { type:"refs", title:"근거", items:["r_uc_steroid"] }
+    ]},
+  { id:"uc:topic:immuno", disease:"uc", cat:"clin", icon:"🧬",
+    title:"면역조절제 (NUDT15)", lead:"티오퓨린 — 한국인 NUDT15 사전검사",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "★티오퓨린 전 NUDT15·TPMT 유전형 필수 — 한국인은 NUDT15가 핵심",
+        "NUDT15 C/C(homozygous)=금기 → 게이트 C트랙(금기) 충족",
+        "관해유지·스테로이드 절약. anti-TNF 병용 시 항체↓",
+        "발현 느림(8~12주) — 급성기 단독 부적합"
+      ]},
+      { type:"drugcards", title:"티오퓨린", drugs:["drug:azathioprine","drug:mercaptopurine"] },
+      { type:"note", title:"NUDT15 메커니즘", body:"NUDT15는 활성대사체(6-TGN)를 분해하는 효소. 변이로 효소활성↓ → 6-TGN 축적 → 중증 골수억제. 동아시아인에서 TPMT보다 빈도·임상영향 큼 → 한국 가이드라인은 NUDT15 우선 검사 권고.", why:true },
+      { type:"refs", title:"근거", items:["r_thiopurine","r_combo"] }
+    ]},
+  { id:"uc:topic:advanced", disease:"uc", cat:"clin", icon:"🎯",
+    title:"생물학제제 · 소분자", lead:"다기전 선택전략 — 중등도-중증",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "스테로이드·티오퓨린 실패 중등도-중증에 다기전 선택",
+        "anti-TNF(IFX/ADA/골리무맙UC) · vedolizumab · ustekinumab",
+        "JAK(토파·우파·필고) · S1P(오자니모드) · IL-23(미리키주맙)",
+        "★개별화: 고령·감염위험→vedolizumab, 빠른효과·경구→JAK, 안전성→ustekinumab/vedo"
+      ]},
+      { type:"drugcards", title:"생물학제제", drugs:["drug:infliximab","drug:adalimumab","drug:golimumab","drug:vedolizumab","drug:ustekinumab","drug:mirikizumab"] },
+      { type:"drugcards", title:"경구 소분자", drugs:["drug:tofacitinib","drug:upadacitinib","drug:filgotinib","drug:ozanimod"] },
+      { type:"note", title:"기전으로 고르기", body:"anti-TNF=강력·누공·빠름(항체관리). vedolizumab=장선택·안전(느림). ustekinumab=안전·지속. JAK=경구·빠름(대상포진·혈전경고). S1P=경구(심전도·안과).", why:true },
+      { type:"refs", title:"근거", items:["r_uc_advanced","r_vedo_safety","r_jak_risk"] }
+    ]},
+  { id:"uc:topic:asuc", disease:"uc", cat:"clin", icon:"🚨",
+    title:"ASUC 급성중증", lead:"입원 → IV스테로이드 → 구제 → 수술",
+    sections:[
+      { type:"keypoints", title:"핵심 알고리즘", items:[
+        "Truelove-Witts로 급성중증 판정 → ★입원",
+        "IV 스테로이드(메틸프레드니솔론/하이드로코르티손) 3일",
+        "★3일째 무반응 → 구제: 인플릭시맙 또는 사이클로스포린(양자택일)",
+        "구제 무반응 → ★대장절제(외과 조기 협진)",
+        "★CMV·C.difficile 동반감염 반드시 점검"
+      ]},
+      { type:"ladder", title:"단계", steps:[
+        { lt:"입원·평가", ld:"Truelove-Witts, 혈액·영상, CMV/C.diff 검사, 외과 협진 대기" },
+        { lt:"IV 스테로이드 3일", ld:"메틸프레드니솔론 등. 3일째 반응평가(예: 배변빈도·CRP)" },
+        { lt:"구제요법", ld:"인플릭시맙 또는 사이클로스포린 — 양자택일" },
+        { lt:"대장절제", ld:"구제 무반응·천공·독성거대결장 시" }
+      ]},
+      { type:"drugcards", title:"구제 약물", drugs:["drug:infliximab","drug:cyclosporine"] },
+      { type:"refs", title:"근거", items:["r_asuc"] }
+    ]},
+  { id:"uc:topic:reimb", disease:"uc", cat:"pay", icon:"💳",
+    title:"급여 · 산정특례", lead:"3트랙 게이트 · K51 · 사전검사",
+    sections:[
+      { type:"gate", title:"진입 게이트(3트랙)", ref:"UC_GATE" },
+      { type:"precheck", title:"투여 전 필수검사", ref:"IBD_PRECHECK" },
+      { type:"switch", title:"교체투여 원칙", ref:"IBD_SWITCH" },
+      { type:"sanjeong", title:"산정특례", ref:"IBD_SANJEONG" },
+      { type:"note", title:"삭감 방어 포인트", body:"청구 시 (A)스테로이드 충분용량·기간·불응/의존 + (B)티오퓨린 ≥3개월 무효 또는 (C)NUDT15 C/C 등 금기 + 중등도-중증(Mayo/내시경) 서류 정합. 결핵/HBV 결과 첨부.", why:false }
+    ]},
+  { id:"uc:topic:monitor", disease:"uc", cat:"care", icon:"🔬",
+    title:"모니터링 · 목표", lead:"treat-to-target · 결핵/HBV · 대장암감시",
+    sections:[
+      { type:"t2t", title:"치료목표(STRIDE-II)", ref:"IBD_T2T" },
+      { type:"keypoints", title:"감시·예방", items:[
+        "★대장암 감시: 광범위 UC 8~10년 후 주기적 감시대장내시경",
+        "분변칼프로텍틴·CRP로 비침습 활성도 추적",
+        "백신(생백신은 면역억제 전), 골보호(스테로이드)",
+        "JAK=대상포진·혈전 / S1P=심전도·안과 추적"
+      ]},
+      { type:"refs", title:"근거", items:["r_t2t"] }
+    ]},
+  { id:"uc:topic:kcd", disease:"uc", cat:"pay", icon:"🏷️",
+    title:"질병코드", lead:"K51.x · 산정특례 연계",
+    sections:[
+      { type:"codetable", title:"UC 상병코드", rows:[
+        { code:"K51.0", label:"궤양성(만성) 전대장염(pancolitis)" },
+        { code:"K51.2", label:"궤양성(만성) 직장염(proctitis)" },
+        { code:"K51.3", label:"궤양성(만성) 직장구불결장염" },
+        { code:"K51.5", label:"점막성 직장결장염" },
+        { code:"K51.9", label:"궤양성 대장염, 상세불명 ↔ 산정특례·생물학제제 급여 연계", hot:true }
+      ]},
+      { type:"note", title:"청구 포인트", body:"생물학제제/소분자 급여 청구는 K51.x + 산정특례 등록 + 게이트(사전치료·중증도·결핵/HBV) 서류 정합.", why:false }
+    ]}
+];
+
+/* ====================== CD 도서관 ====================== */
+var CD_LIBRARY = [
+  { id:"cd:topic:severity", disease:"cd", cat:"clin", icon:"📏",
+    title:"중증도 평가", lead:"CDAI·HBI — ★게이트(CDAI≥220)",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "★CDAI(0~600): 8항목 가중합. 관해<150, 중등도-중증 220~450",
+        "★CDAI ≥220 = 생물학제제 급여게이트(관강형)",
+        "HBI: CDAI 간이판, 외래 신속(관해<5)",
+        "SES-CD: 내시경 치유 평가(궤양소실 목표)"
+      ]},
+      { type:"calcband", title:"CDAI 계산", calc:"cdai" },
+      { type:"calcband", title:"HBI 계산", calc:"hbi" },
+      { type:"note", title:"왜 CDAI≥220인가", body:"고시가 중등도-중증 활성을 CDAI≥220으로 규정 → 생물학제제 급여 게이트. 정확한 8항목 산출이 삭감 방어의 핵심. 단 CDAI는 누공·협착을 잘 반영 못함 → 누공형은 별도 트랙.", why:true }
+    ]},
+  { id:"cd:topic:classify", disease:"cd", cat:"clin", icon:"🗺️",
+    title:"위치·형태 분류", lead:"Montreal — 치료선택의 축",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "위치: 회장말단(L1)·대장(L2)·회결장(L3)·상부위장관(L4)",
+        "형태: 염증형(B1)·협착형(B2)·누공형(B3) ±항문주위(p)",
+        "★형태가 약물·수술 결정: 누공형→anti-TNF, 협착형→내시경/수술 고려",
+        "고위험(불량예후): 젊은발병·광범위·깊은궤양·항문병변·협착·조기스테로이드 필요"
+      ]},
+      { type:"note", title:"transmural의 의미", body:"CD는 전층(transmural) 염증 → 누공·협착·농양·천공. 이 병태가 약물(누공=anti-TNF, 장선택=vedolizumab)과 수술 의미(절제해도 문합부 재발)를 가른다. UC(점막국한)와의 근본 차이.", why:true }
+    ]},
+  { id:"cd:topic:induction", disease:"cd", cat:"clin", icon:"💊",
+    title:"유도 치료", lead:"budesonide·스테로이드·조기 top-down",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "★회맹부 경증-중등증 1차: budesonide 9mg(전신부작용↓)",
+        "전신증상·광범위: 전신 prednisolone 유도",
+        "대장형 경증: sulfasalazine. ★5-ASA는 CD 근거 약함",
+        "★고위험군: 진단초기부터 면역조절제/생물학제제 조기 도입(top-down)"
+      ]},
+      { type:"drugcards", title:"유도 약물", drugs:["drug:budesonide","drug:prednisolone","drug:sulfasalazine"] },
+      { type:"refs", title:"근거", items:["r_cd_budesonide"] }
+    ]},
+  { id:"cd:topic:immuno", disease:"cd", cat:"clin", icon:"🧬",
+    title:"면역조절제 유지", lead:"티오퓨린 · ★MTX(CD 급여)",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "관해유지 핵심: 티오퓨린(NUDT15 사전검사) 또는 ★MTX",
+        "★MTX는 CD 유지에 급여·근거 — UC와 달리 게이트 면역억제제군 포함",
+        "anti-TNF 병용으로 면역원성↓",
+        "스테로이드 유지 금지"
+      ]},
+      { type:"drugcards", title:"면역조절제", drugs:["drug:azathioprine","drug:mercaptopurine","drug:methotrexate"] },
+      { type:"note", title:"MTX 주의", body:"주 1회 투여(매일 금지·치명적), 엽산 보충 필수, 임신 절대금기. 티오퓨린 불내약·무효 시 CD에서 중요 대안.", why:false },
+      { type:"refs", title:"근거", items:["r_thiopurine","r_combo"] }
+    ]},
+  { id:"cd:topic:advanced", disease:"cd", cat:"clin", icon:"🎯",
+    title:"생물학제제 · 소분자", lead:"누공형 전략 포함",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "anti-TNF(IFX/ADA) · vedolizumab · ustekinumab · ★risankizumab · upadacitinib",
+        "★누공형 CD: anti-TNF 1차(±항생제·외과 배농)",
+        "고령·감염위험→vedolizumab(장선택·안전)",
+        "골리무맙·토파시티닙·오자니모드=★CD 비적응(UC 전용)"
+      ]},
+      { type:"drugcards", title:"생물학제제", drugs:["drug:infliximab","drug:adalimumab","drug:vedolizumab","drug:ustekinumab","drug:risankizumab"] },
+      { type:"drugcards", title:"경구 소분자", drugs:["drug:upadacitinib"] },
+      { type:"note", title:"누공형 메커니즘·전략", body:"항문주위 누공은 anti-TNF가 점막+누공 치유에 1차. 항생제(metronidazole/cipro)·외과 배농(seton) 병행. 약물농도(TDM)가 누공치유와 연관 — 충분농도 유지가 관건.", why:true },
+      { type:"drugcards", title:"누공 보조 항생제", drugs:["drug:metronidazole","drug:ciprofloxacin"] },
+      { type:"refs", title:"근거", items:["r_cd_gate","r_cd_fistula","r_vedo_safety","r_jak_risk"] }
+    ]},
+  { id:"cd:topic:reimb", disease:"cd", cat:"pay", icon:"💳",
+    title:"급여 · 산정특례", lead:"관강형/누공형 2트랙 · K50",
+    sections:[
+      { type:"gate", title:"진입 게이트(2트랙)", ref:"CD_GATE" },
+      { type:"precheck", title:"투여 전 필수검사", ref:"IBD_PRECHECK" },
+      { type:"switch", title:"교체투여 원칙", ref:"IBD_SWITCH" },
+      { type:"sanjeong", title:"산정특례", ref:"IBD_SANJEONG" },
+      { type:"note", title:"삭감 방어 포인트", body:"관강형=스테로이드 실패 + 면역억제제(티오퓨린/MTX) 실패 + CDAI≥220. ★5-ASA는 2제 산정 제외. 누공형=활동성 누공 + 보편치료(항생제·면역억제제·배농) 실패 서류. 결핵/HBV 결과 첨부.", why:false }
+    ]},
+  { id:"cd:topic:surgery", disease:"cd", cat:"care", icon:"🔪",
+    title:"협착 · 수술 · 재발예방", lead:"transmural 합병증 관리",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "수술 적응: 협착·농양·누공·천공·내과 불응·출혈",
+        "★절제해도 재발(문합부) — 수술은 완치 아님(UC와 차이)",
+        "절제 후 재발예방: 고위험은 생물학제제, 6~12개월 내시경 재평가",
+        "협착=내시경 풍선확장 또는 협착성형술 고려",
+        "★금연 — CD 경과·재발에 흡연이 명확한 악화인자"
+      ]},
+      { type:"note", title:"왜 금연이 약인가", body:"흡연은 CD에서 재발·수술·생물학제제 필요성을 높이는 명확한 악화인자(UC와 정반대). 금연 자체가 강력한 치료 개입.", why:true }
+    ]},
+  { id:"cd:topic:monitor", disease:"cd", cat:"care", icon:"🔬",
+    title:"모니터링 · 목표", lead:"treat-to-target · 결핵/HBV",
+    sections:[
+      { type:"t2t", title:"치료목표(STRIDE-II)", ref:"IBD_T2T" },
+      { type:"keypoints", title:"감시·예방", items:[
+        "내시경 치유(궤양소실)·분변칼프로텍틴 정상화 목표",
+        "anti-TNF/JAK 전 결핵·HBV — 국내 결핵 유병률 高",
+        "영양·성장(소아)·골밀도·빈혈(철·B12) 평가",
+        "TDM(약물농도)로 누공치유·효과소실 관리"
+      ]},
+      { type:"refs", title:"근거", items:["r_t2t","r_cd_fistula"] }
+    ]},
+  { id:"cd:topic:kcd", disease:"cd", cat:"pay", icon:"🏷️",
+    title:"질병코드", lead:"K50.x · 산정특례 연계",
+    sections:[
+      { type:"codetable", title:"CD 상병코드", rows:[
+        { code:"K50.0", label:"소장의 크론병(회장말단 등)" },
+        { code:"K50.1", label:"대장의 크론병" },
+        { code:"K50.8", label:"기타 크론병(회결장 등)" },
+        { code:"K50.9", label:"크론병, 상세불명 ↔ 산정특례·생물학제제 급여 연계", hot:true }
+      ]},
+      { type:"note", title:"청구 포인트", body:"생물학제제/소분자 청구는 K50.x + 산정특례 + 게이트(관강형 2제실패·CDAI≥220 또는 누공형) + 결핵/HBV 서류 정합.", why:false }
+    ]}
+];
+
+/* ====================== 시뮬레이션 플로우 ====================== */
+/* 각 노드: {id, q, hint, calc, opts[{k,label}], next(ans), info, collect, collectFn, finale} */
+var UC_SIM = [
+  { id:"q_acute", q:"급성중증(ASUC) 의심 소견이 있나요?", hint:"혈성변 ≥6회/일 + 빈맥·발열·빈혈·염증수치 상승 → Truelove-Witts로 확인하세요.",
+    calc:"tw",
+    opts:[{k:"yes",label:"예 — ASUC 의심"},{k:"no",label:"아니오 — 외래 관리"}],
+    next:function(a){ return a==="yes"?"asuc_admit":"q_extent"; },
+    collectFn:function(a){ return a==="yes"?"ASUC: 입원·IV스테로이드·CMV/C.diff 검사·외과 협진 준비":null; } },
+  { id:"asuc_admit", info:"입원 → IV 스테로이드 3일 → 3일째 무반응 시 구제(인플릭시맙 또는 사이클로스포린) → 무반응 시 대장절제. CMV·C.difficile 동반감염 점검은 필수.",
+    collect:"ASUC 구제: IFX vs CSA 양자택일 / 대장절제 외과협진 / 감염 배제" },
+  { id:"q_extent", q:"침범 범위는?", hint:"범위가 국소(좌약/관장) vs 광범위(경구+국소) 치료 선택을 가릅니다.",
+    opts:[{k:"proct",label:"직장염"},{k:"left",label:"좌측 대장염"},{k:"ext",label:"광범위(전대장)"}],
+    next:function(){ return "q_5asa"; },
+    collectFn:function(a){ return a==="proct"?"직장염: 5-ASA 좌약 우선":a==="left"?"좌측: 5-ASA 관장+경구":"광범위: 경구 5-ASA+국소"; } },
+  { id:"q_5asa", q:"5-ASA(경구+국소, 4.8g까지 최적화)로 관해되었나요?", hint:"용량 최적화 먼저. 무반응 시 스테로이드 단계로.",
+    opts:[{k:"yes",label:"예 — 유지로"},{k:"no",label:"아니오 — 스테로이드"}],
+    next:function(a){ return a==="yes"?"uc_maint":"q_steroid"; } },
+  { id:"uc_maint", info:"5-ASA ≥2g/일 유지. 순응도 강조. 분변칼프로텍틴·CRP로 추적, MES≤1 점막치유 목표.",
+    collect:"유지: 5-ASA ≥2g/일 + 비침습 추적(칼프로텍틴)" },
+  { id:"q_steroid", q:"스테로이드 반응은? (게이트 A트랙)", hint:"prednisolone 0.5~1mg/kg 2~4주↑. 불응/의존이면 advanced 단계.",
+    opts:[{k:"ok",label:"반응·관해"},{k:"dep",label:"의존(감량 시 재발)"},{k:"fail",label:"불응(무반응)"}],
+    next:function(a){ return a==="ok"?"uc_thio":"q_gate"; },
+    collectFn:function(a){ return a==="ok"?"스테로이드 반응 — 티오퓨린으로 절약·유지":"★A트랙 충족(불응/의존) → 게이트 진행"; } },
+  { id:"uc_thio", info:"스테로이드 절약·유지로 티오퓨린(★NUDT15·TPMT 사전검사). NUDT15 C/C면 금기 → 회피.",
+    collect:"티오퓨린 전 NUDT15/TPMT 검사" },
+  { id:"q_gate", q:"티오퓨린 트랙은? (게이트 B/C)", hint:"B=AZA/6-MP ≥3개월 무효. C=NUDT15 C/C 등 금기(B 대체).",
+    opts:[{k:"b",label:"B: 티오퓨린 ≥3개월 무효"},{k:"c",label:"C: NUDT15 C/C·중증부작용 이력"},{k:"none",label:"아직 미충족"}],
+    next:function(a){ return a==="none"?"gate_pending":"uc_advanced"; },
+    collectFn:function(a){ return a==="b"?"B트랙 충족(티오퓨린 무효)":a==="c"?"★C트랙 충족(금기) — 티오퓨린 생략 가능":"게이트 미충족 — 사전치료 보완 필요"; } },
+  { id:"gate_pending", info:"게이트 미충족 — A(스테로이드 불응/의존) + B(티오퓨린 ≥3개월 무효) 또는 C(금기) + 중등도-중증 서류를 갖춰야 급여 진입.",
+    collect:"게이트 보완: 사전치료 이력·중증도·결핵/HBV 서류" },
+  { id:"uc_advanced", finale:true }
+];
+
+var CD_SIM = [
+  { id:"q_fistula", q:"활동성 항문주위 누공이 있나요?", hint:"누공형은 관강형과 다른 게이트 트랙(anti-TNF 1차)으로 갑니다.",
+    opts:[{k:"yes",label:"예 — 누공형"},{k:"no",label:"아니오 — 관강형"}],
+    next:function(a){ return a==="yes"?"q_fistula_conv":"q_location"; },
+    collectFn:function(a){ return a==="yes"?"누공형 트랙 진입":null; } },
+  { id:"q_fistula_conv", q:"누공이 보편치료(항생제·면역억제제·배농)에 실패했나요?", hint:"★누공형도 ‘요건 제로’ 아님 — 보편치료 실패 서류가 anti-TNF 급여의 핵심.",
+    opts:[{k:"yes",label:"예 — 보편치료 실패"},{k:"no",label:"아직 — 보편치료 진행"}],
+    next:function(a){ return a==="yes"?"cd_fistula_ok":"cd_fistula_pre"; },
+    collectFn:function(a){ return a==="yes"?"★누공형 게이트 충족 → anti-TNF(IFX/ADA) 1차":"누공 보편치료(항생제·면역억제제·배농) 먼저"; } },
+  { id:"cd_fistula_ok", info:"anti-TNF(인플릭시맙/아달리무맙) 1차. 항생제(metronidazole/cipro)·외과 배농(seton) 병행. TDM으로 충분농도 유지 — 누공치유와 연관. 결핵/HBV 사전검사 필수.",
+    collect:"누공형: anti-TNF + 항생제 + 외과 배농 + 결핵/HBV" },
+  { id:"cd_fistula_pre", info:"누공 보편치료: 항생제(metronidazole±cipro) + 면역억제제 + 외과 배농(농양 시). 실패 시 anti-TNF 급여 트랙으로.",
+    collect:"누공 보편치료 단계 — 실패 시 anti-TNF" },
+  { id:"q_location", q:"침범 위치는?", hint:"회맹부=budesonide 1차, 대장형=sulfasalazine 고려.",
+    opts:[{k:"ileo",label:"회맹부"},{k:"colon",label:"대장형"},{k:"ext",label:"광범위/상부"}],
+    next:function(){ return "q_risk"; },
+    collectFn:function(a){ return a==="ileo"?"회맹부: budesonide 9mg 유도":a==="colon"?"대장형: sulfasalazine 고려":"광범위: 전신스테로이드 + 조기 면역조절제"; } },
+  { id:"q_risk", q:"고위험(불량예후) 인자가 있나요?", hint:"젊은발병·광범위·깊은궤양·항문병변·협착·조기 스테로이드 필요 → top-down 조기 생물학제제.",
+    opts:[{k:"yes",label:"예 — 고위험"},{k:"no",label:"아니오 — 표준"}],
+    next:function(){ return "q_cdai"; },
+    collectFn:function(a){ return a==="yes"?"★고위험 → 조기 생물학제제(top-down) 고려":"표준 step-up"; } },
+  { id:"q_cdai", q:"CDAI를 계산해 활성도를 확인하세요 (게이트 ③)", hint:"★CDAI≥220이 관강형 급여게이트. 계산기로 8항목 자동 산출.",
+    calc:"cdai",
+    opts:[{k:"high",label:"CDAI ≥220 (중등도-중증)"},{k:"low",label:"CDAI <220"}],
+    next:function(a){ return "q_cd_gate"; },
+    collectFn:function(a){ return a==="high"?"CDAI≥220 충족(③)":"CDAI<220 — 관강형 게이트 미충족"; } },
+  { id:"q_cd_gate", q:"보편치료 실패 이력은? (게이트 ①②, 2제)", hint:"①스테로이드(또는 budesonide) 실패 ②면역억제제(티오퓨린/★MTX) 실패. ★5-ASA 제외.",
+    opts:[{k:"both",label:"①스테로이드 + ②면역억제제 모두 실패"},{k:"one",label:"1제만 실패"},{k:"none",label:"미충족"}],
+    next:function(a){ return a==="both"?"cd_advanced":"cd_gate_pending"; },
+    collectFn:function(a){ return a==="both"?"관강형 게이트 ①②③ 충족 → 생물학제제 진입":"2제 실패 요건 미충족 — 보완 필요"; } },
+  { id:"cd_gate_pending", info:"관강형 게이트: ①스테로이드 실패 ②면역억제제(티오퓨린/MTX) 실패 ③CDAI≥220. ★5-ASA는 2제 산정 제외. 부족분 보완 후 진입.",
+    collect:"게이트 보완: 2제(스테로이드+면역억제제) 실패·CDAI·결핵/HBV" },
+  { id:"cd_advanced", finale:true }
+];
+
+var SIM_REGISTRY = { uc:UC_SIM, cd:CD_SIM };
+var LIBRARY_REGISTRY = { uc:UC_LIBRARY, cd:CD_LIBRARY };
+
+</script>
+<script>
+/* ============================================================
+   ibd_ui.js — UI 렌더링 레이어
+   데이터/엔진(ibd_data.js, ibd_content.js)을 ID 참조로 그림.
+   ES5(var), 외부 의존성 0.
+   ============================================================ */
+
+var DISEASE_META = {
+  uc:{ label:"궤양성대장염", accent:"var(--uc)", accentBg:"var(--uc-bg)", hex:"#2c6fb0", bg:"#e4eef8" },
+  cd:{ label:"크론병",       accent:"var(--cd)", accentBg:"var(--cd-bg)", hex:"#c0533a", bg:"#f7e7e1" }
+};
+var CAT_META = {
+  clin:{ cls:"cat-clin", label:"임상" },
+  pay:{ cls:"cat-pay", label:"급여" },
+  care:{ cls:"cat-care", label:"관리" }
+};
+var USE_BADGE = {
+  primary:{ t:"◎", c:"y" }, option:{ t:"○", c:"y" }, minor:{ t:"△", c:"y" }, no:{ t:"✕", c:"n" }
+};
+
+var SIM = { started:false, disease:null, path:[], answers:{}, collected:[] };
+var FLOW = { uc:{}, cd:{} };
+var CALCVAL = {};       /* per-calc input store */
+var CALC_CB = null;     /* injection callback when calc opened from sim/flow */
+var CALC_TARGET = null; /* which calc currently in modal */
+
+function esc(s){ return (""+s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function qs(id){ return document.getElementById(id); }
+
+/* ---------- 부팅 ---------- */
+function boot(){
+  renderBottomNav();
+  applyDisease(STATE.disease);
+  wireHeader();
+  renderAll();
+}
+function wireHeader(){
+  var dt=qs("diseaseToggle");
+  dt.addEventListener("click",function(e){ var b=e.target.closest("button"); if(b) setDisease(b.getAttribute("data-d")); });
+  qs("tabbar").addEventListener("click",function(e){ var b=e.target.closest("button"); if(b) setTab(b.getAttribute("data-tab")); });
+}
+function renderBottomNav(){
+  var tabs=[["library","📚","도서관"],["sim","🧭","시뮬"],["flow","⚡","플로우"],["calc","🧮","계산기"]];
+  var h="";
+  for(var i=0;i<tabs.length;i++){
+    h+='<button data-tab="'+tabs[i][0]+'" style="flex:1;border:none;background:none;padding:9px 2px 11px;font-size:11px;font-weight:700;color:var(--ink-faint);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px"><span style="font-size:18px">'+tabs[i][1]+'</span>'+tabs[i][2]+'</button>';
+  }
+  var bn=qs("bottomnav"); bn.innerHTML=h;
+  bn.addEventListener("click",function(e){ var b=e.target.closest("button"); if(b) setTab(b.getAttribute("data-tab")); });
+}
+
+/* ---------- 질환/탭 전환 ---------- */
+function applyDisease(d){
+  var m=DISEASE_META[d];
+  document.documentElement.style.setProperty("--accent", m.accent);
+  document.documentElement.style.setProperty("--accent-bg", m.accentBg);
+  qs("htitle").textContent = m.label+" 가이드";
+  var btns=qs("diseaseToggle").querySelectorAll("button");
+  for(var i=0;i<btns.length;i++){ btns[i].className=(btns[i].getAttribute("data-d")===d)?"on":""; }
+}
+function setDisease(d){
+  if(STATE.disease===d) return;
+  STATE.disease=d; applyDisease(d);
+  SIM.started=false;
+  renderAll();
+  window.scrollTo(0,0);
+}
+function setTab(t){
+  STATE.tab=t;
+  var ids=["library","sim","flow","calc"];
+  for(var i=0;i<ids.length;i++){ qs("view-"+ids[i]).hidden=(ids[i]!==t); }
+  var top=qs("tabbar").querySelectorAll("button");
+  for(var j=0;j<top.length;j++){ top[j].className=(top[j].getAttribute("data-tab")===t)?"on":""; }
+  var bot=qs("bottomnav").querySelectorAll("button");
+  for(var k=0;k<bot.length;k++){ bot[k].style.color=(bot[k].getAttribute("data-tab")===t)?"var(--accent)":"var(--ink-faint)"; }
+  qs("simCollect").hidden=!(t==="sim" && SIM.collected.length);
+  window.scrollTo(0,0);
+}
+function renderAll(){
+  renderLibrary(); renderSim(); renderFlow(); renderCalc();
+  setTab(STATE.tab);
+}
+
+/* ============================================================
+   도서관
+   ============================================================ */
+function renderLibrary(){
+  var lib=LIBRARY_REGISTRY[STATE.disease];
+  var m=DISEASE_META[STATE.disease];
+  var h='';
+  h+='<div class="banner"><b>'+m.label+' 통합 가이드</b> — 임상(파랑)·급여(주황)·관리(초록) 3레이어. 카드를 탭하면 펼쳐지고, 약물·근거는 클릭하면 상세가 나옵니다. <b>조언자 역할이며 처방을 강제하지 않습니다.</b></div>';
+  h+='<div class="searchbar"><span class="si">🔍</span><input id="libSearch" type="text" placeholder="약물·상황 검색 (예: 누공, 티오퓨린, 게이트)" oninput="filterLib()"></div>';
+  h+='<div id="libGrid">';
+  for(var i=0;i<lib.length;i++){ h+=renderTopicCard(lib[i]); }
+  h+='</div>';
+  h+=renderFoot();
+  qs("view-library").innerHTML=h;
+}
+function filterLib(){
+  var q=(qs("libSearch").value||"").toLowerCase().replace(/\s/g,"");
+  var lib=LIBRARY_REGISTRY[STATE.disease];
+  var h="";
+  for(var i=0;i<lib.length;i++){
+    var t=lib[i]; var blob=(t.title+t.lead+JSON.stringify(t.sections)).toLowerCase().replace(/\s/g,"");
+    if(!q || blob.indexOf(q)>=0){ h+=renderTopicCard(t); }
+  }
+  qs("libGrid").innerHTML=h || '<div class="note">검색 결과가 없습니다.</div>';
+}
+function renderTopicCard(t){
+  var cat=CAT_META[t.cat]||CAT_META.clin;
+  var open=STATE.openCards[t.id]?" open":"";
+  var h='<div class="card'+open+'" id="card_'+t.id+'">';
+  h+='<div class="card-head" onclick="toggleCard(\''+t.id+'\')">';
+  h+='<span class="icon">'+t.icon+'</span><div class="ht"><div class="t">'+esc(t.title)+'<span class="cat-tag '+cat.cls+'">'+cat.label+'</span></div><div class="l">'+esc(t.lead)+'</div></div><span class="chev">›</span></div>';
+  h+='<div class="card-body">';
+  for(var i=0;i<t.sections.length;i++){ h+=renderSection(t.sections[i], t.id, i); }
+  h+='</div></div>';
+  return h;
+}
+function toggleCard(id){
+  STATE.openCards[id]=!STATE.openCards[id];
+  var c=qs("card_"+id); if(c) c.className="card"+(STATE.openCards[id]?" open":"");
+}
+function renderSection(s, cid, si){
+  var h='<div class="sec"><div class="sec-t">'+esc(s.title||"")+'</div>';
+  switch(s.type){
+    case "keypoints":
+      h+='<ul class="kp">';
+      for(var i=0;i<s.items.length;i++){ h+='<li>'+boldStar(s.items[i])+'</li>'; }
+      h+='</ul>'; break;
+    case "note":
+      h+='<div class="note'+(s.why?" why":"")+'"><div class="nt">'+(s.why?"왜 그런가 · ":"")+esc(s.title)+'</div>'+boldStar(s.body)+'</div>'; break;
+    case "drugcards":
+      h+=renderDrugCards(s.drugs); break;
+    case "gate":
+      h+=renderGate(s.ref); break;
+    case "calcband":
+      h+=renderCalcBand(s.calc); break;
+    case "ladder":
+      h+=renderLadderSteps(s.steps); break;
+    case "codetable":
+      h+=renderCodeTable(s.rows); break;
+    case "refs":
+      h+=renderRefs(s.items); break;
+    case "precheck": h+=renderRows(IBD_PRECHECK,true); break;
+    case "sanjeong": h+=renderRows(IBD_SANJEONG,false); break;
+    case "switch":   h+=renderRows(IBD_SWITCH,false); break;
+    case "t2t":      h+=renderRows(IBD_T2T,false); break;
+    default: h+='<div class="note">'+esc(JSON.stringify(s))+'</div>';
+  }
+  h+='</div>'; return h;
+}
+function boldStar(s){ s=esc(s); s=s.replace(/★/g,'<b>★</b>'); return s; }
+
+/* ---- 약물 카드 ---- */
+function renderDrugCards(ids){
+  var h="";
+  for(var i=0;i<ids.length;i++){
+    var d=DRUG_DB[ids[i]]; if(!d) continue;
+    var open=STATE.openDrugs[ids[i]]?" open":"";
+    var ub=USE_BADGE[d.useUC]||USE_BADGE.no, cb=USE_BADGE[d.useCD]||USE_BADGE.no;
+    h+='<div class="drugmini'+open+'" id="drug_'+ids[i].replace(/[:]/g,"_")+'">';
+    h+='<div class="drugmini-h" onclick="toggleDrug(\''+ids[i]+'\')">';
+    h+='<span class="bn">'+esc(d.name)+'</span><span class="gn">'+esc(d.brand)+'</span>';
+    h+='<span class="uctag"><span class="uc-y" title="UC">UC '+ub.t+'</span><span class="cd-y" title="CD">CD '+cb.t+'</span></span></div>';
+    h+='<div class="drugmini-b">';
+    h+=drow("표적·계열", esc(d.target)+' / '+(DRUG_CLASS[d.cls]?DRUG_CLASS[d.cls].label:""));
+    h+=drow("기전", esc(d.moa));
+    h+=drow("투여경로", esc(d.route));
+    if(d.induction) h+=drow("유도", esc(d.induction));
+    if(d.maintenance) h+=drow("유지", esc(d.maintenance));
+    if(d.dose) h+=drow("용량", boldStar(d.dose));
+    if(d.pearls) h+=drowList("핵심", d.pearls);
+    if(d.tips) h+=drowTips("실전 팁", d.tips);
+    if(d.ae) h+=drowChips("부작용", d.ae);
+    if(d.contra) h+=drowChips("금기", d.contra);
+    if(d.monitor) h+=drowChips("모니터링", d.monitor);
+    if(d.boxedWarning) h+='<div class="warnbox">⚠ '+esc(d.boxedWarning)+'</div>';
+    if(d.kr_reimb) h+=drow("급여", boldStar(d.kr_reimb));
+    h+='</div></div>';
+  }
+  return h;
+}
+function drow(k,v){ return '<div class="row"><span class="k">'+k+'</span>'+v+'</div>'; }
+function drowList(k,arr){ var s='<div class="row"><span class="k">'+k+'</span><ul class="tiplist">'; for(var i=0;i<arr.length;i++){ s+='<li>'+boldStar(arr[i])+'</li>'; } return s+'</ul></div>'; }
+function drowTips(k,arr){ return drowList(k,arr); }
+function drowChips(k,arr){ var s='<div class="row"><span class="k">'+k+'</span><div class="bx">'; for(var i=0;i<arr.length;i++){ s+='<span>'+esc(arr[i])+'</span>'; } return s+'</div></div>'; }
+function toggleDrug(id){
+  STATE.openDrugs[id]=!STATE.openDrugs[id];
+  var el=qs("drug_"+id.replace(/[:]/g,"_")); if(el) el.className="drugmini"+(STATE.openDrugs[id]?" open":"");
+}
+
+/* ---- 근거(refs) ---- */
+function renderRefs(ids){
+  var h="";
+  for(var i=0;i<ids.length;i++){
+    var r=REFS[ids[i]]; if(!r) continue;
+    var open=STATE.openRefs[ids[i]]?" open":"";
+    h+='<div class="refitem'+open+'" id="ref_'+ids[i]+'" onclick="toggleRef(\''+ids[i]+'\')">';
+    h+='<div class="refhead"><span class="refgrade">'+esc(r.grade)+'</span><span class="reftxt">'+esc(r.txt)+'</span><span class="refchev">›</span></div>';
+    h+='<div class="refbody"><div class="refsrc">'+esc(r.src)+'</div><div class="refdetail">'+esc(r.detail)+'</div></div></div>';
+  }
+  return h;
+}
+function toggleRef(id){
+  STATE.openRefs[id]=!STATE.openRefs[id];
+  var el=qs("ref_"+id); if(el) el.className="refitem"+(STATE.openRefs[id]?" open":"");
+}
+
+/* ---- 게이트 ---- */
+function renderGate(refName){
+  var g=(refName==="UC_GATE")?UC_GATE:CD_GATE;
+  var h='<div class="note why"><div class="nt">'+esc(g.title)+'</div>'+boldStar(g.intro||"")+'</div>';
+  for(var i=0;i<g.tracks.length;i++){
+    var t=g.tracks[i];
+    h+='<div class="calcregion"><div class="calcreg-h">'+boldStar(t.name)+'</div>';
+    if(t.checks){
+      h+='<ul class="kp" style="margin-top:2px">';
+      for(var j=0;j<t.checks.length;j++){ h+='<li>'+boldStar(t.checks[j].label)+'</li>'; }
+      h+='</ul>';
+    }
+    if(t.need) h+='<div class="calcreg-d" style="margin-top:4px">필요: '+boldStar(t.need)+'</div>';
+    if(t.note) h+='<div class="warnbox" style="color:var(--block);background:var(--block-bg);border-radius:7px;padding:6px 9px;margin-top:6px;font-size:11.5px;font-weight:600">'+boldStar(t.note)+'</div>';
+    h+='</div>';
+  }
+  if(g.logic) h+='<div class="note"><div class="nt">판정 로직</div>'+boldStar(g.logic)+'</div>';
+  return h;
+}
+
+/* ---- 공유 rows 객체 (precheck/sanjeong/switch/t2t) ---- */
+function renderRows(obj,kv){
+  var h='';
+  if(kv){
+    for(var i=0;i<obj.rows.length;i++){ var r=obj.rows[i]; h+='<div class="gaterow"><div class="gl">'+esc(r.k)+'</div><div class="gv" style="flex:2;text-align:left;color:var(--ink-dim)">'+boldStar(r.v)+'</div></div>'; }
+  } else {
+    h+='<ul class="kp">';
+    for(var j=0;j<obj.rows.length;j++){ h+='<li>'+boldStar(obj.rows[j])+'</li>'; }
+    h+='</ul>';
+  }
+  return h;
+}
+
+/* ---- 사다리 ---- */
+function renderLadderSteps(steps){
+  var h='<div class="ladder">';
+  for(var i=0;i<steps.length;i++){ h+='<div class="ladstep"><div class="ln"></div><div class="lc"><div class="lt">'+boldStar(steps[i].lt)+'</div><div class="ld">'+boldStar(steps[i].ld)+'</div></div></div>'; }
+  return h+'</div>';
+}
+
+/* ---- 상병코드 ---- */
+function renderCodeTable(rows){
+  var h='<table class="codetbl">';
+  for(var i=0;i<rows.length;i++){ h+='<tr'+(rows[i].hot?' class="hot"':'')+'><td class="c">'+esc(rows[i].code)+'</td><td>'+boldStar(rows[i].label)+'</td></tr>'; }
+  return h+'</table>';
+}
+
+/* ---- 도서관 내 계산기 밴드 (탭하면 계산기 열기) ---- */
+function renderCalcBand(calcId){
+  var c=CALC_REGISTRY[calcId]; if(!c) return "";
+  var h='<div class="calcsrc">'+esc(c.src)+'</div>';
+  if(c.bands){
+    h+='<table class="codetbl">';
+    var prev=-1;
+    for(var i=0;i<c.bands.length;i++){
+      var b=c.bands[i]; var rng=(prev+1)+"~"+b.max; prev=b.max;
+      var col=b.color==="block"?"var(--block)":b.color==="warn"?"var(--warn)":"var(--ok)";
+      h+='<tr><td class="c" style="color:'+col+'">'+rng+'</td><td><b>'+esc(b.label)+'</b>'+(b.note?' · '+esc(b.note):'')+'</td></tr>';
+    }
+    h+='</table>';
+  }
+  h+='<button class="calc-launch" style="margin-top:9px" onclick="openCalc(\''+calcId+'\')">🧮 '+esc(c.label)+' 계산기 열기</button>';
+  return h;
+}
+
+/* ============================================================
+   시뮬레이션
+   ============================================================ */
+function curSimFlow(){ return SIM_REGISTRY[STATE.disease]; }
+function renderSim(){
+  var m=DISEASE_META[STATE.disease];
+  var banner='<div class="banner"><b>'+m.label+' 치료 시뮬레이션</b> — 단계별로 점검하며 <b>급여 게이트</b>를 확인하고 "챙길 항목"을 모읍니다. <b>조언자 역할이며 처방을 강제하지 않습니다.</b> 최종 결정·비용 동의는 환자와 함께.</div>';
+  qs("view-sim").innerHTML=banner+'<div id="simStream"></div>';
+  if(!SIM.started || SIM.disease!==STATE.disease){
+    SIM.collected=[]; SIM.answers={}; SIM.disease=STATE.disease;
+    SIM.path=[ curSimFlow()[0].id ]; SIM.started=true;
+  }
+  renderSimStream();
+}
+function simNode(id){ var fl=curSimFlow(); for(var i=0;i<fl.length;i++){ if(fl[i].id===id) return fl[i]; } return null; }
+function renderSimStream(){
+  var stream=qs("simStream"); if(!stream) return;
+  var h="";
+  for(var i=0;i<SIM.path.length;i++){
+    var n=simNode(SIM.path[i]); if(!n) continue;
+    if(n.finale){ h+=renderSimFinale(); continue; }
+    if(n.info){ h+='<div class="simnode"><div class="simnext">ℹ️ '+boldStar(n.info)+'</div></div>'; continue; }
+    h+='<div class="simnode"><div class="sq">'+boldStar(n.q)+'</div>';
+    if(n.hint){ h+='<div class="simhint">'+boldStar(n.hint)+'</div>'; }
+    if(n.calc){ h+='<button class="calc-launch" style="margin-bottom:10px" onclick="openCalc(\''+n.calc+'\')">🧮 '+n.calc.toUpperCase()+' 점수 계산기 열기</button>'; }
+    h+='<div class="simopt">';
+    for(var o=0;o<n.opts.length;o++){
+      var sel=(SIM.answers[n.id]===n.opts[o].k)?" sel":"";
+      h+='<button class="'+sel.replace(/ /,"")+'" onclick="simAnswer(\''+n.id+'\',\''+n.opts[o].k+'\')">'+esc(n.opts[o].label)+'</button>';
+    }
+    h+='</div></div>';
+  }
+  stream.innerHTML=h;
+  renderSimCollect();
+}
+function simAnswer(nodeId,ans){
+  SIM.answers[nodeId]=ans;
+  var n=simNode(nodeId);
+  var idx=SIM.path.indexOf(nodeId);
+  SIM.path=SIM.path.slice(0,idx+1);
+  var nx=n.next?n.next(ans):null;
+  if(nx && SIM.path.indexOf(nx)<0){ SIM.path.push(nx); }
+  recomputeCollect();
+  renderSimStream();
+}
+function recomputeCollect(){
+  SIM.collected=[];
+  for(var i=0;i<SIM.path.length;i++){
+    var n=simNode(SIM.path[i]); if(!n) continue;
+    if(n.info && n.collect) SIM.collected.push(n.collect);
+    if(n.collectFn && SIM.answers[n.id]){ var c=n.collectFn(SIM.answers[n.id]); if(c) SIM.collected.push(c); }
+  }
+}
+function renderSimFinale(){
+  var d=STATE.disease;
+  var h='<div class="simnode" style="border-color:var(--accent)"><div class="sq">🎯 진입 게이트 충족 — 다음 단계 안내</div><div class="simnext">';
+  if(d==="uc"){
+    h+='<b>생물학제제·소분자 선택 가이드</b><br>· 빠른 효과/경구 선호 → JAK·S1P(계열경고·심전도/안과)<br>· 안전성 우선(고령·감염위험) → vedolizumab·ustekinumab<br>· 강력·누공·ASUC력 → anti-TNF<br><br>'+
+       '<b>투여 전</b> 결핵(IGRA/CXR)·HBV·CBC·간 / 산정특례 K51 등록(10%).<br>'+
+       '<b>유지</b> 8~14주 반응평가(Mayo/내시경) → 점막치유(MES≤1) 목표.';
+  } else {
+    h+='<b>생물학제제·소분자 선택 가이드</b><br>· 누공형 → anti-TNF 1차(±항생제·외과 배농, TDM)<br>· 안전성 우선 → vedolizumab·ustekinumab<br>· 강력(최신 IL-23) → risankizumab<br>· 경구 → upadacitinib(계열경고)<br><br>'+
+       '<b>투여 전</b> 결핵·HBV·CBC·간 / 산정특례 K50 등록(10%).<br>'+
+       '<b>유지(고시)</b> 누공없음=2주 내 CDAI 70↓ or 25%↓ / 누공형=3회 후 누공 50%↓.';
+  }
+  h+='<br><br><i>조언자 안내입니다 — 최종 처방·비용 결정은 환자와 함께.</i></div></div>';
+  return h;
+}
+function renderSimCollect(){
+  var box=qs("simCollect");
+  if(STATE.tab!=="sim" || SIM.collected.length===0){ box.hidden=true; return; }
+  box.hidden=false;
+  var h='<b>📋 챙길 항목</b><br>';
+  for(var i=0;i<SIM.collected.length;i++){ h+='• '+esc(SIM.collected[i])+'<br>'; }
+  box.innerHTML=h;
+}
+
+/* ============================================================
+   플로우 (실시간 입력 → 게이트 + 관리 카드)
+   ============================================================ */
+function renderFlow(){
+  if(STATE.disease==="uc") renderUCFlow(); else renderCDFlow();
+}
+function chk(id,label){ return '<button data-id="'+id+'" onclick="toggleChip(this)">'+esc(label)+'</button>'; }
+function toggleChip(b){ b.className=(b.className==="on")?"":"on"; }
+function chipsOn(cid){ var o=[],bs=document.querySelectorAll("#"+cid+" button.on"); for(var i=0;i<bs.length;i++) o.push(bs[i].getAttribute("data-id")); return o; }
+function valNum(id){ var v=qs(id).value; return v===""?null:parseFloat(v); }
+
+function renderUCFlow(){
+  var h='<div class="banner"><b>UC 실시간 플로우</b> — 입력 → 급여게이트·관리 카드. 조언자 역할, 처방 강제 아님.</div>';
+  h+='<div class="inpgrid">';
+  h+='<div class="fld full"><label>Mayo 또는 활동도</label><input id="uf_mayo" type="number" inputmode="decimal" placeholder="Mayo 총점"><button class="fld-calc" onclick="openCalc(\'mayo\',function(v){qs(\'uf_mayo\').value=v;})">🧮 계산</button></div>';
+  h+='</div>';
+  h+='<div class="chiplabel">사전치료 이력 (게이트)</div>';
+  h+='<div class="chips" id="uf_gate" style="margin-bottom:11px">'+
+     chk("a_all","A: 스테로이드 불응/의존(충분용량·기간)")+
+     chk("b_fail","B: 티오퓨린 ≥3개월 무효")+
+     chk("c_contra","C: NUDT15 C/C·중증부작용(금기)")+'</div>';
+  h+='<div class="chiplabel">사전검사·동반</div>';
+  h+='<div class="chips" id="uf_pre" style="margin-bottom:11px">'+
+     chk("tb","결핵 선별 완료")+chk("hbv","HBV 선별 완료")+chk("elderly","고령/감염위험")+'</div>';
+  h+='<button class="runbtn" onclick="runUCFlow()">분석 →</button><div id="uf_result"></div>';
+  h+=renderFoot();
+  qs("view-flow").innerHTML=h;
+}
+function runUCFlow(){
+  var g=chipsOn("uf_gate"), pre=chipsOn("uf_pre");
+  var has=function(arr,x){ for(var i=0;i<arr.length;i++) if(arr[i]===x) return true; return false; };
+  var mayo=valNum("uf_mayo");
+  var sevMet=(mayo!=null && mayo>=6);
+  var c={ a_dose:has(g,"a_all"), a_dur:has(g,"a_all"), a_fail:has(g,"a_all"),
+          b_dur:has(g,"b_fail"), b_fail:has(g,"b_fail"),
+          c_nudt15:has(g,"c_contra") };
+  var ev=ucGateEval(c, sevMet);
+  var rows=[
+    {ok:sevMet,label:"중등도-중증 활성 (Mayo≥6)",val:mayo!=null?("Mayo "+mayo):"입력"},
+    {ok:ev.A,label:"A트랙: 스테로이드 불응/의존",val:ev.A?"✅":"⬜"},
+    {ok:ev.B,label:"B트랙: 티오퓨린 ≥3개월 실패",val:ev.B?"✅":"⬜"},
+    {ok:ev.C,label:"C트랙: 금기(NUDT15 등)·내약불가",val:ev.C?"✅":"⬜"}
+  ];
+  var reasons=[];
+  if(!sevMet) reasons.push("중등도-중증 활성도 근거 필요");
+  if(!ev.A) reasons.push("A트랙(스테로이드 불응/의존) 필요");
+  if(!(ev.B||ev.C)) reasons.push("B(티오퓨린 실패) 또는 C(금기) 필요");
+  if(ev.C && !ev.B) reasons.push("✔ 금기로 티오퓨린 사전치료 면제 적용");
+  drawFlowResult("uf_result", ev.ok, rows, reasons, pre, "uc");
+}
+
+function renderCDFlow(){
+  var h='<div class="banner"><b>CD 실시간 플로우</b> — 입력 → 급여게이트(관강형/누공형)·관리 카드. 조언자 역할, 처방 강제 아님.</div>';
+  h+='<div class="inpgrid">';
+  h+='<div class="fld full"><label>CDAI (관강형 게이트 ≥220)</label><input id="cf_cdai" type="number" inputmode="decimal" placeholder="CDAI 총점"><button class="fld-calc" onclick="openCalc(\'cdai\',function(v){qs(\'cf_cdai\').value=v;})">🧮 계산</button></div>';
+  h+='</div>';
+  h+='<div class="chiplabel">형태</div>';
+  h+='<div class="chips" id="cf_form" style="margin-bottom:11px">'+
+     chk("fistula","활동성 항문주위 누공")+'</div>';
+  h+='<div class="chiplabel">관강형 사전치료 (2제, ★5-ASA 제외)</div>';
+  h+='<div class="chips" id="cf_lum" style="margin-bottom:11px">'+
+     chk("s_fail","①스테로이드 불응/의존")+chk("i_fail","②면역억제제(티오퓨린/MTX) 실패")+'</div>';
+  h+='<div class="chiplabel">누공형 사전치료 (항생제·배농·면역억제 中 2)</div>';
+  h+='<div class="chips" id="cf_fis" style="margin-bottom:11px">'+
+     chk("f_conv","누공 보편치료 2가지 이상 실패")+'</div>';
+  h+='<div class="chiplabel">사전검사·위험</div>';
+  h+='<div class="chips" id="cf_pre" style="margin-bottom:11px">'+
+     chk("tb","결핵 선별")+chk("hbv","HBV 선별")+chk("highrisk","고위험(top-down 고려)")+'</div>';
+  h+='<button class="runbtn" onclick="runCDFlow()">분석 →</button><div id="cf_result"></div>';
+  h+=renderFoot();
+  qs("view-flow").innerHTML=h;
+}
+function runCDFlow(){
+  var form=chipsOn("cf_form"), lum=chipsOn("cf_lum"), fis=chipsOn("cf_fis"), pre=chipsOn("cf_pre");
+  var has=function(arr,x){ for(var i=0;i<arr.length;i++) if(arr[i]===x) return true; return false; };
+  var cdai=valNum("cf_cdai");
+  var c={ s_fail:has(lum,"s_fail"), i_fail:has(lum,"i_fail"),
+          f_active:has(form,"fistula"), f_conv:has(fis,"f_conv") };
+  var ev=cdGateEval(c, cdai);
+  var rows=[];
+  if(ev.fistula || c.f_active){
+    rows.push({ok:true,label:"누공형 — CDAI≥220 면제(별도트랙)",val:"별도"});
+    rows.push({ok:ev.fistula,label:"항생제·배농·면역억제 中 2 실패",val:ev.fistula?"✅":"⬜"});
+  }
+  rows.push({ok:ev.steroid,label:"관강형 ①스테로이드 실패",val:ev.steroid?"✅":"⬜"});
+  rows.push({ok:ev.immuno,label:"관강형 ②면역억제제(티오퓨린/MTX) 실패",val:ev.immuno?"✅":"⬜"});
+  rows.push({ok:ev.cdaiMet,label:"CDAI ≥220",val:cdai!=null?cdai:"입력"});
+  var reasons=[];
+  if(c.f_active && !ev.fistula) reasons.push("누공형: 보편치료(항생제·배농·면역억제 中 2) 실패 서류 필요 — ★자동통과 아님(삭감방어)");
+  if(ev.fistula) reasons.push("✔ 누공형 별도트랙 충족 → anti-TNF 1차 유도 인정");
+  if(!ev.fistula && !ev.luminal){
+    if(!ev.steroid) reasons.push("①스테로이드 실패 필요");
+    if(!ev.immuno) reasons.push("②면역억제제(티오퓨린/MTX) 실패 필요 (★5-ASA 제외)");
+    if(!ev.cdaiMet) reasons.push("CDAI ≥220 필요");
+  }
+  if(ev.luminal) reasons.push("✔ 관강형 게이트 ①②③ 충족");
+  drawFlowResult("cf_result", ev.ok, rows, reasons, pre, "cd");
+}
+
+function drawFlowResult(targetId, ok, rows, reasons, pre, disease){
+  var has=function(arr,x){ for(var i=0;i<arr.length;i++) if(arr[i]===x) return true; return false; };
+  var h='';
+  /* 급여 카드 */
+  h+='<div class="rescard pay"><div class="rh"><span class="ricon">💳</span>급여 게이트 · R-CHECK</div><div class="rb">';
+  for(var i=0;i<rows.length;i++){ h+='<div class="gaterow"><span class="gi">'+(rows[i].ok?"✅":"⬜")+'</span><div class="gl">'+boldStar(rows[i].label)+'</div><span class="gv">'+esc(rows[i].val)+'</span></div>'; }
+  h+='<div class="note" style="margin-top:9px;border-left-color:'+(ok?"var(--ok)":"var(--warn)")+'">'+
+     (ok?'<b>게이트 충족</b> → 생물학제제·소분자 급여 가능 (산정특례 '+(disease==="uc"?"K51":"K50")+', 본인부담 10%).':'<b>게이트 미충족 항목 있음</b> — 보완 필요 (조언자: 강제 아님).')+'</div>';
+  if(reasons.length){ h+='<ul class="kp" style="margin-top:6px">'; for(var r=0;r<reasons.length;r++){ h+='<li>'+boldStar(reasons[r])+'</li>'; } h+='</ul>'; }
+  h+='</div></div>';
+  /* 관리 카드 */
+  h+='<div class="rescard care"><div class="rh"><span class="ricon">🔬</span>투여 전 점검 · 관리</div><div class="rb">';
+  h+='<div class="gaterow"><span class="gi">'+(has(pre,"tb")?"✅":"⬜")+'</span><div class="gl">결핵(IGRA/CXR) — ★anti-TNF 전 필수</div></div>';
+  h+='<div class="gaterow"><span class="gi">'+(has(pre,"hbv")?"✅":"⬜")+'</span><div class="gl">HBV 선별·재활성 예방</div></div>';
+  if(has(pre,"elderly")||has(pre,"highrisk")) h+='<div class="note">고위험/고령 — JAK 신중(대상포진·혈전), 안전성 우선 시 vedolizumab/ustekinumab 고려'+(disease==="cd"&&has(pre,"highrisk")?", 고위험 CD는 조기 top-down 고려":"")+'</div>';
+  h+='<div class="note"><div class="nt">반응 평가</div>'+(disease==="uc"?"8~14주 Mayo/내시경 → 점막치유(MES≤1) 목표.":"누공없음=2주 내 CDAI 70↓/25%↓, 누공형=3회 후 누공 50%↓ (고시 유지 인정).")+'</div>';
+  h+='</div></div>';
+  qs(targetId).innerHTML=h;
+}
+
+/* ============================================================
+   계산기 탭 + 모달 (자동 계산)
+   ============================================================ */
+function renderCalc(){
+  var list = (STATE.disease==="uc") ? ["mayo","pmayo","uceis","tw"] : ["cdai","hbi"];
+  var m=DISEASE_META[STATE.disease];
+  var h='<div class="banner"><b>'+m.label+' 점수 계산기</b> — 클릭 입력 → <b>실시간 자동 합산·밴드·급여게이트</b> 판정. 결과는 플로우/시뮬에 적용할 수 있습니다.</div>';
+  for(var i=0;i<list.length;i++){
+    var c=CALC_REGISTRY[list[i]];
+    h+='<div class="card open"><div class="card-head" style="cursor:default"><span class="icon">🧮</span><div class="ht"><div class="t">'+esc(c.label)+' <span style="font-size:11px;color:var(--ink-faint)">'+esc(c.range)+'</span></div><div class="l">'+esc(c.src)+'</div></div></div>';
+    h+='<div class="card-body" style="max-height:none;padding:0 15px 15px"><button class="calc-launch" onclick="openCalc(\''+list[i]+'\')">계산기 열기 →</button></div></div>';
+  }
+  h+=renderFoot();
+  qs("view-calc").innerHTML=h;
+}
+
+function openCalc(id, cb){
+  CALC_TARGET=id; CALC_CB=cb||null;
+  if(!CALCVAL[id]) CALCVAL[id]={};
+  var c=CALC_REGISTRY[id];
+  qs("modalTitle").textContent=c.label;
+  qs("modalBody").innerHTML=buildCalcUI(id);
+  qs("modal").hidden=false;
+  recalc(id);
+}
+function closeModal(){ qs("modal").hidden=true; CALC_TARGET=null; CALC_CB=null; }
+
+function buildCalcUI(id){
+  var c=CALC_REGISTRY[id];
+  var h='<div class="calctip">'+boldStar(c.tip)+'</div>';
+  /* CDAI 성별 토글(Hct 기준) */
+  if(id==="cdai"){
+    var sex=CALCVAL[id].sex||"m";
+    h+='<div class="calcregion"><div class="calcreg-h">성별 (Hct 기준)</div><div class="calcseg">'+
+       '<button class="calcbtn'+(sex==="m"?" on":"")+'" onclick="setSex(\'m\')">남(47)</button>'+
+       '<button class="calcbtn'+(sex==="f"?" on":"")+'" onclick="setSex(\'f\')">여(42)</button></div></div>';
+  }
+  for(var i=0;i<c.items.length;i++){
+    var it=c.items[i];
+    h+='<div class="calcregion"><div class="calcreg-h">'+esc(it.label)+'</div>';
+    if(it.desc) h+='<div class="calcreg-d">'+esc(it.desc)+'</div>';
+    if(it.opts){
+      h+='<div class="calcseg">';
+      for(var o=0;o<it.opts.length;o++){
+        var sel=(CALCVAL[id][it.key]===it.opts[o].v)?" on":"";
+        h+='<button class="calcbtn'+sel+'" onclick="setSeg(\''+id+'\',\''+it.key+'\','+it.opts[o].v+')">'+esc(it.opts[o].l)+'</button>';
+      }
+      h+='</div>';
+    } else if(it.type==="wt"){
+      h+='<div class="calcnum"><input type="number" inputmode="decimal" placeholder="실제체중(kg)" value="'+(CALCVAL[id].weight||"")+'" oninput="setNum(\''+id+'\',\'weight\',this.value)"><input type="number" inputmode="decimal" placeholder="표준체중(kg)" value="'+(CALCVAL[id].stdweight||"")+'" oninput="setNum(\''+id+'\',\'stdweight\',this.value)"></div>';
+    } else {
+      var key=(it.type==="hct")?"hct":it.key;
+      h+='<div class="calcnum"><input type="number" inputmode="decimal" placeholder="'+(it.ph||"값")+'" value="'+(CALCVAL[id][key]||"")+'" oninput="setNum(\''+id+'\',\''+key+'\',this.value)"></div>';
+    }
+    h+='</div>';
+  }
+  h+='<div class="calcresult" id="calcResult"></div>';
+  return h;
+}
+function setSeg(id,key,v){ CALCVAL[id][key]=v; recalc(id); rebuildSegs(id); }
+function setNum(id,key,v){ CALCVAL[id][key]=v; recalc(id); }
+function setSex(s){ CALCVAL[CALC_TARGET].sex=s; recalc(CALC_TARGET); rebuildSegs(CALC_TARGET); }
+function rebuildSegs(id){
+  /* re-render to reflect selected segments (cheap full rebuild keeps inputs) */
+  var body=qs("modalBody");
+  /* preserve focus is hard; only rebuild segment 'on' classes */
+  var btns=body.querySelectorAll(".calcbtn"); /* recolor handled by recalc via rebuild */
+  qs("modalBody").innerHTML=buildCalcUI(id);
+  recalc(id);
+}
+
+function recalc(id){
+  var res;
+  if(id==="mayo") res=calcMayo(CALCVAL[id]);
+  else if(id==="pmayo") res=calcPMayo(CALCVAL[id]);
+  else if(id==="uceis") res=calcUceis(CALCVAL[id]);
+  else if(id==="tw") res=calcTW(CALCVAL[id]);
+  else if(id==="cdai") res=calcCDAI(CALCVAL[id]);
+  else if(id==="hbi") res=calcHBI(CALCVAL[id]);
+  var box=qs("calcResult"); if(!box) return;
+  var h='';
+  if(id==="tw"){
+    var col=res.asuc?"var(--block)":"var(--ok)";
+    h+='<div class="calcrn">판정</div><div class="calcrs" style="color:'+col+'">'+(res.asuc?"ASUC":"비ASUC")+'</div>';
+    h+='<div class="calcrsub">'+(res.asuc?"★급성중증 — 입원·IV스테로이드·CMV/C.difficile 점검":"급성중증 기준 미충족 (전신독성 "+res.systemic+"/4)")+'</div>';
+  } else {
+    var b=res.band, col2=b.color==="block"?"var(--block)":b.color==="warn"?"var(--warn)":"var(--ok)";
+    h+='<div class="calcrn">'+esc(CALC_REGISTRY[id].label)+'</div><div class="calcrs" style="color:'+col2+'">'+res.score+'</div>';
+    h+='<div class="calcrb" style="color:'+col2+'">'+esc(b.label)+(b.note?' · '+esc(b.note):'')+'</div>';
+    if(typeof res.gate!=="undefined" && res.gate!==null){
+      h+='<div class="calcgate '+(res.gateMet?"met":"unmet")+'">급여게이트('+CALC_REGISTRY[id].label+' ≥'+res.gate+'): '+(res.gateMet?"충족 ✅":"미충족")+'</div>';
+    }
+    if(id==="cdai" && res.parts){
+      h+='<div class="calcrsub">①변'+res.parts.stool+' ②통'+res.parts.pain+' ③상태'+res.parts.gen+' ④합병증'+res.parts.comp+' ⑤지사'+res.parts.anti+' ⑥종괴'+res.parts.mass+' ⑦Hct'+res.parts.hct+' ⑧체중'+res.parts.wt+'</div>';
+    }
+  }
+  if(CALC_CB && id!=="tw"){
+    h+='<button class="calcapply" onclick="applyCalc('+(res.score||0)+')">이 점수를 플로우에 적용 →</button>';
+  }
+  box.innerHTML=h;
+}
+function applyCalc(score){ if(CALC_CB){ CALC_CB(score); } closeModal(); }
+
+/* ---------- 푸터 ---------- */
+function renderFoot(){
+  return '<div class="foot">'+
+    '<b>출처</b> · 대한장연구학회(KASID) UC/CD 치료 가이드라인 2차 개정판 + 중등도-중증 생물학제제·소분자 CPG(2023) · STRIDE-II · 보건복지부 IBD 생물학제제 급여 고시(제2025-200호 등) · KCD 한국표준질병사인분류<br><br>'+
+    '★ 급여기준·약가·산정특례 V코드·발효일·교체 인정범위는 변동되므로 처방·청구 시 <b>최신 고시(심평원)·허가사항 확인</b> 권장. 누공형 CD는 "자동통과"가 아니라 누공 보편치료 실패 서류가 필요(삭감 방어).<br><br>'+
+    '<b>본 도구는 임상 판단 보조(조언자)이며 최종 처방·결정·비용 동의는 처방의·환자의 책임입니다.</b></div>';
+}
+
+/* ---------- 시작 ---------- */
+if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded", boot); } else { boot(); }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>류마티스·자가면역 초기 감별 가이드</title>
+<style>
+:root{
+  --bg:#eef1f4; --panel:#ffffff; --panel2:#f5f7f9; --line:#d6dde3;
+  --ink:#16202b; --ink-dim:#48586a; --ink-faint:#8595a3;
+  --clin:#2c6fb0; --clin-bg:#e6f0fa; --clin-line:#bcd6ef;   /* 임상·감별 */
+  --pay:#b07514;  --pay-bg:#fbf1da;  --pay-line:#ecd2a0;    /* 급여 */
+  --ref:#c43838;  --ref-bg:#fce5e5;  --ref-line:#f0bcbc;    /* 의뢰·적신호 */
+  --inflam:#c05a1e; --inflam-bg:#fceadd; --inflam-line:#f1c4a3; /* 자가염증 */
+  --ra:#1a8a72;   --ra-bg:#dcf2ec;   --ra-line:#a9ddd0;     /* RA */
+  --ok:#1f9d54; --warn:#b07514; --block:#c43838; --alert:#d8632a;
+  --nav:#1b2c3d; --nav-ink:#dce4ec;
+  --radius:13px; --radius-sm:8px;
+  --shadow:0 1px 3px rgba(20,40,60,.07),0 4px 14px rgba(20,40,60,.05);
+  --fz-display:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--fz-display);font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;padding-bottom:60px;
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== 상단 고정 메뉴 (sticky) ===== */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:var(--nav);color:var(--nav-ink);
+  box-shadow:0 2px 10px rgba(15,25,35,.18);
+}
+.topbar-inner{
+  max-width:880px;margin:0 auto;display:flex;align-items:stretch;
+  gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.topbar-inner::-webkit-scrollbar{display:none}
+.brand{
+  display:flex;align-items:center;gap:7px;padding:11px 13px 11px 15px;
+  font-weight:800;font-size:14.5px;white-space:nowrap;color:#fff;letter-spacing:-.01em;
+  border-right:1px solid rgba(255,255,255,.1);
+}
+.brand .mk{font-size:17px}
+.navbtn{
+  appearance:none;border:0;background:transparent;color:var(--nav-ink);
+  font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  padding:0 12px;display:flex;align-items:center;gap:5px;white-space:nowrap;
+  border-bottom:3px solid transparent;transition:background .15s,border-color .15s,color .15s;
+}
+.navbtn .ic{font-size:15px}
+.navbtn:hover{background:rgba(255,255,255,.06)}
+.navbtn.active{color:#fff;border-bottom-color:var(--accent,#6fb0e8);background:rgba(255,255,255,.08)}
+.navbtn[data-tab="symptom"].active{--accent:var(--clin)}
+.navbtn[data-tab="result"].active{--accent:var(--clin)}
+.navbtn[data-tab="inflam"].active{--accent:#e08043}
+.navbtn[data-tab="ra"].active{--accent:#3fb89c}
+.navbtn[data-tab="library"].active{--accent:#6fb0e8}
+
+.wrap{max-width:880px;margin:0 auto;padding:16px 14px 40px}
+
+/* ===== 공통 카드 ===== */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);margin:0 0 13px;overflow:hidden}
+.card-h{padding:13px 15px;font-weight:750;font-size:15px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--line)}
+.card-b{padding:13px 15px}
+.card-b.tight{padding:11px 15px}
+
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;
+  padding:2px 8px;border-radius:20px;line-height:1.5;white-space:nowrap}
+.tag.clin{background:var(--clin-bg);color:var(--clin)}
+.tag.pay{background:var(--pay-bg);color:var(--pay)}
+.tag.ref{background:var(--ref-bg);color:var(--ref)}
+.tag.inflam{background:var(--inflam-bg);color:var(--inflam)}
+.tag.ra{background:var(--ra-bg);color:var(--ra)}
+.tag.ok{background:#dff3e6;color:var(--ok)}
+.tag.warn{background:var(--pay-bg);color:var(--warn)}
+.tag.block{background:var(--ref-bg);color:var(--block)}
+
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-faint)}
+
+/* 페이지 헤더 */
+.phead{margin:4px 0 16px}
+.phead h1{font-size:21px;font-weight:800;margin:0 0 4px;letter-spacing:-.02em}
+.phead p{margin:0;color:var(--ink-dim);font-size:13.5px}
+.axis-line{height:3px;border-radius:3px;margin-top:11px;width:54px}
+.axis-line.clin{background:var(--clin)} .axis-line.inflam{background:var(--inflam)}
+.axis-line.ra{background:var(--ra)} .axis-line.ref{background:var(--ref)}
+
+/* 칩 입력 */
+.chipgrid{display:flex;flex-wrap:wrap;gap:7px;margin:4px 0}
+.chip{appearance:none;border:1.4px solid var(--line);background:var(--panel);
+  font-family:inherit;font-size:13px;font-weight:600;color:var(--ink-dim);
+  padding:7px 12px;border-radius:22px;cursor:pointer;transition:all .13s;line-height:1.3;text-align:left}
+.chip:hover{border-color:var(--clin-line);background:var(--clin-bg)}
+.chip.on{background:var(--clin);border-color:var(--clin);color:#fff}
+.chip.on.spec{background:var(--ref);border-color:var(--ref)}
+.chip.redflag{border-color:var(--ref-line)}
+.chip.redflag.on{background:var(--ref);border-color:var(--ref)}
+.chip small{display:block;font-size:10.5px;font-weight:600;opacity:.72;margin-top:1px}
+
+.grouplbl{font-size:12px;font-weight:750;color:var(--ink-dim);margin:14px 0 6px;
+  display:flex;align-items:center;gap:6px}
+.grouplbl::before{content:"";width:3px;height:13px;border-radius:2px;background:var(--clin)}
+.grouplbl.spec::before{background:var(--ref)} .grouplbl.sug::before{background:var(--warn)}
+.grouplbl.non::before{background:var(--ink-faint)}
+
+/* 텍스트영역 */
+textarea.freetext{width:100%;min-height:80px;border:1.4px solid var(--line);border-radius:var(--radius-sm);
+  padding:11px 12px;font-family:inherit;font-size:14px;line-height:1.5;resize:vertical;color:var(--ink)}
+textarea.freetext:focus{outline:none;border-color:var(--clin);box-shadow:0 0 0 3px var(--clin-bg)}
+
+.btn{appearance:none;border:0;border-radius:var(--radius-sm);font-family:inherit;font-weight:700;
+  font-size:14px;cursor:pointer;padding:11px 18px;transition:filter .13s}
+.btn:hover{filter:brightness(.95)}
+.btn.primary{background:var(--clin);color:#fff;width:100%}
+.btn.ghost{background:var(--panel2);color:var(--ink-dim);border:1.4px solid var(--line)}
+.btn.sm{padding:7px 13px;font-size:12.5px}
+.btnrow{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap}
+
+.numrow{display:flex;flex-wrap:wrap;gap:9px;margin:4px 0}
+.numfield{flex:1;min-width:84px}
+.numfield label{display:block;font-size:11px;font-weight:700;color:var(--ink-dim);margin-bottom:3px}
+.numfield input,.numfield select{width:100%;border:1.4px solid var(--line);border-radius:7px;
+  padding:8px 9px;font-family:inherit;font-size:14px;color:var(--ink);background:var(--panel)}
+.numfield input:focus,.numfield select:focus{outline:none;border-color:var(--clin)}
+
+/* 결과 카드 강조 보더 */
+.card.accent-clin{border-left:4px solid var(--clin)}
+.card.accent-pay{border-left:4px solid var(--pay)}
+.card.accent-ref{border-left:4px solid var(--ref)}
+.card.accent-inflam{border-left:4px solid var(--inflam)}
+.card.accent-ra{border-left:4px solid var(--ra)}
+
+/* 적신호 카드 */
+.redflag-card{background:linear-gradient(180deg,#fff5f5,#fff);border:1.6px solid var(--ref-line);
+  border-radius:var(--radius);margin:0 0 13px;box-shadow:0 2px 12px rgba(196,56,56,.12);overflow:hidden}
+.redflag-card .rf-h{background:var(--ref);color:#fff;padding:11px 15px;font-weight:800;
+  display:flex;align-items:center;gap:8px;font-size:15px}
+.redflag-card .rf-b{padding:13px 15px}
+
+/* 확률 게이지 */
+.grade{display:flex;align-items:center;gap:13px;margin:2px 0 10px}
+.grade-badge{font-size:15px;font-weight:850;padding:8px 16px;border-radius:11px;white-space:nowrap}
+.grade-badge.low{background:#e9eef2;color:var(--ink-dim)}
+.grade-badge.mid{background:var(--pay-bg);color:var(--pay)}
+.grade-badge.high{background:var(--ref-bg);color:var(--ref)}
+.grade-meta{font-size:12.5px;color:var(--ink-dim);flex:1}
+
+/* 점수 기여 리스트 */
+.contrib{list-style:none;padding:0;margin:8px 0 0}
+.contrib li{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:7px 11px;border-radius:7px;background:var(--panel2);margin-bottom:5px;font-size:13px}
+.contrib li .sc{font-weight:800;font-size:13px;padding:1px 8px;border-radius:20px;min-width:30px;text-align:center}
+.contrib li .sc.pos{background:#dff3e6;color:var(--ok)}
+.contrib li .sc.neg{background:var(--ref-bg);color:var(--ref)}
+.contrib li .sc.zero{background:#e9eef2;color:var(--ink-faint)}
+
+/* 검사 패널 */
+.testitem{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.testitem:first-child{border-top:0}
+.testitem .ti-main{flex:1}
+.testitem .ti-name{font-weight:700;font-size:14px}
+.testitem .ti-why{font-size:12px;color:var(--ink-dim);margin-top:2px}
+.testitem .ti-tags{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+
+.note{font-size:12.5px;color:var(--ink-dim);background:var(--panel2);border-radius:8px;
+  padding:9px 12px;margin-top:10px;line-height:1.5}
+.note.warn{background:var(--pay-bg);color:#7a5210}
+.note.clin{background:var(--clin-bg);color:#1c4e7e}
+.note b{color:inherit}
+
+.banner-diag{font-size:11.5px;font-weight:700;color:var(--ref);background:var(--ref-bg);
+  border:1px solid var(--ref-line);border-radius:7px;padding:7px 11px;margin-bottom:11px;
+  display:flex;align-items:center;gap:6px}
+
+/* 도서관 */
+.searchbar{display:flex;align-items:center;gap:9px;background:var(--panel);border:1.4px solid var(--line);
+  border-radius:11px;padding:11px 14px;margin-bottom:14px;box-shadow:var(--shadow)}
+.searchbar input{flex:1;border:0;outline:none;font-family:inherit;font-size:15px;background:transparent;color:var(--ink)}
+.searchbar .si{font-size:16px;opacity:.5}
+
+.entrygrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.entrycard{border:1.4px solid var(--line);border-radius:var(--radius);padding:14px;cursor:pointer;
+  background:var(--panel);transition:all .14s;text-align:left;font-family:inherit}
+.entrycard:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(20,40,60,.1)}
+.entrycard .ec-ic{font-size:22px;margin-bottom:6px}
+.entrycard .ec-t{font-weight:800;font-size:15px;margin-bottom:2px}
+.entrycard .ec-d{font-size:12px;color:var(--ink-dim);line-height:1.45}
+.entrycard.e-clin{border-top:3px solid var(--clin)}
+.entrycard.e-inflam{border-top:3px solid var(--inflam)}
+.entrycard.e-ra{border-top:3px solid var(--ra)}
+.entrycard.e-ref{border-top:3px solid var(--ref)}
+
+.topicgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.topiccard{border:1.4px solid var(--line);border-radius:var(--radius);padding:13px;cursor:pointer;
+  background:var(--panel);transition:all .14s;text-align:left;font-family:inherit;display:flex;flex-direction:column;gap:4px}
+.topiccard:hover{border-color:var(--clin-line);background:var(--clin-bg)}
+.topiccard .tc-cat{font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.topiccard.t-clin .tc-cat{color:var(--clin)} .topiccard.t-pay .tc-cat{color:var(--pay)}
+.topiccard.t-care .tc-cat,.topiccard.t-ref .tc-cat{color:var(--ref)}
+.topiccard .tc-t{font-weight:750;font-size:14px}
+.topiccard .tc-d{font-size:11.5px;color:var(--ink-dim);line-height:1.4}
+
+/* 분류기준 점수표 */
+.crittable{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.crittable th{text-align:left;font-size:11px;font-weight:700;color:var(--ink-faint);
+  padding:6px 8px;border-bottom:1.5px solid var(--line);text-transform:uppercase;letter-spacing:.03em}
+.crittable td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.crittable td.sc{text-align:center;font-weight:800;white-space:nowrap;width:48px}
+.crittable td.sc.pos{color:var(--ok)} .crittable td.sc.neg{color:var(--ref)}
+.crittable tr.dom td{background:var(--panel2);font-weight:750;font-size:11.5px;color:var(--ink-dim);
+  text-transform:uppercase;letter-spacing:.03em}
+
+/* 모달 */
+.modal{position:fixed;inset:0;background:rgba(15,25,35,.55);z-index:200;display:none;
+  align-items:flex-start;justify-content:center;padding:18px;overflow-y:auto}
+.modal.open{display:flex}
+.modal-inner{background:var(--panel);border-radius:16px;max-width:760px;width:100%;margin:24px 0;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden}
+.modal-h{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;
+  align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;background:var(--panel);z-index:1}
+.modal-h .mh-t{font-weight:800;font-size:16px;display:flex;align-items:center;gap:8px}
+.modal-close{appearance:none;border:0;background:var(--panel2);width:32px;height:32px;border-radius:8px;
+  font-size:17px;cursor:pointer;color:var(--ink-dim);flex-shrink:0}
+.modal-b{padding:16px 18px}
+
+.def-card{border:1px solid var(--line);border-radius:10px;margin-bottom:9px;overflow:hidden}
+.def-card .dc-h{padding:10px 13px;font-weight:700;font-size:14px;cursor:pointer;display:flex;
+  justify-content:space-between;align-items:center;background:var(--panel2)}
+.def-card .dc-b{padding:11px 13px;font-size:13px;line-height:1.55;display:none;border-top:1px solid var(--line)}
+.def-card.open .dc-b{display:block}
+.def-card .dc-h .arr{transition:transform .15s}
+.def-card.open .dc-h .arr{transform:rotate(90deg)}
+
+h3.sec{font-size:14px;font-weight:800;margin:18px 0 8px;color:var(--ink)}
+h3.sec:first-child{margin-top:2px}
+ul.kp{margin:6px 0;padding-left:19px}
+ul.kp li{margin-bottom:5px;font-size:13.5px;line-height:1.5}
+
+/* 푸터 */
+.footer{max-width:880px;margin:30px auto 0;padding:18px 16px 40px;border-top:1px solid var(--line);
+  font-size:11.5px;color:var(--ink-faint);line-height:1.6}
+.footer h4{font-size:12px;font-weight:800;color:var(--ink-dim);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.04em}
+.footer a{color:var(--clin);text-decoration:none;word-break:break-all}
+.footer a:hover{text-decoration:underline}
+.footer .src-item{margin-bottom:4px}
+.footer .disclaim{background:var(--ref-bg);border:1px solid var(--ref-line);border-radius:8px;
+  padding:11px 13px;margin:14px 0;color:#8a2828;font-weight:600;line-height:1.55}
+
+.hint{font-size:12px;color:var(--ink-faint);margin-top:6px}
+.flow3{margin:12px 0;border:1px solid var(--clin-line);border-radius:10px;overflow:hidden}
+.flow-step{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--clin-bg);font-size:13px;line-height:1.45}
+.flow-step .fs-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--clin);color:#fff;
+  font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+.flow-step:nth-child(3){background:#fff}
+.flow-step:nth-child(5){background:var(--panel2)}
+.flow-arrow{text-align:center;color:var(--clin);font-size:12px;padding:1px 0;background:#fff}.empty-hint{text-align:center;color:var(--ink-faint);font-size:13px;padding:24px 12px;line-height:1.6}
+
+@media (max-width:560px){
+  .entrygrid,.topicgrid{grid-template-columns:1fr}
+  .brand span.full{display:none}
+  .navbtn{padding:0 9px;font-size:12px}
+}
+</style>
+</head>
+<body>
+<!--PORTAL_HEADER_V1-->
+<style>
+  #portal-hdr{position:fixed;top:0;left:0;right:0;height:46px;z-index:99999;
+    display:flex;align-items:center;gap:10px;padding:0 12px;box-sizing:border-box;
+    background:rgba(248,250,252,.94);backdrop-filter:saturate(1.4) blur(10px);
+    -webkit-backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid rgba(20,40,60,.10);
+    font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;}
+  #portal-hdr a.ph-back,#portal-hdr a.ph-home{display:inline-flex;align-items:center;justify-content:center;
+    height:30px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;
+    color:#1a2530;background:#fff;border:1px solid rgba(20,40,60,.14);transition:.15s;}
+  #portal-hdr a.ph-back{padding:0 11px 0 8px;gap:3px;}
+  #portal-hdr a.ph-home{width:32px;font-size:15px;}
+  #portal-hdr a.ph-back:active,#portal-hdr a.ph-home:active{transform:scale(.96);background:#eef1f4;}
+  #portal-hdr .ph-emoji{font-size:17px;line-height:1;}
+  #portal-hdr .ph-title{font-size:14.5px;font-weight:700;color:#16202b;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;}
+  #portal-hdr .ph-tag{font-size:11px;font-weight:600;color:#5a6a78;background:#eef1f4;
+    padding:2px 7px;border-radius:999px;white-space:nowrap;}
+  #portal-hdr .ph-accent{width:3px;height:18px;border-radius:2px;background:#1a8a72;flex:0 0 auto;}
+  #portal-hdr .ph-spacer{flex:1 1 auto;min-width:0;}
+  body{padding-top:46px !important;}
+  @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
+</style>
+<div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
+  <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
+  <a class="ph-home" href="../index.html" title="홈">🏠</a>
+  <span class="ph-accent"></span>
+  <span class="ph-emoji">🦴</span>
+  <span class="ph-title">류마티스·자가면역</span>
+  <span class="ph-spacer"></span>
+  <span class="ph-tag">류마티스</span>
+</div>
+
+<!--/PORTAL_HEADER_V1-->
+
+
+<!-- ===== 상단 고정 메뉴 ===== -->
+<nav class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="mk">🦴</span><span class="full">류마티스 감별</span></div>
+    <button class="navbtn active" data-tab="library"><span class="ic">📚</span>도서관</button>
+    <button class="navbtn" data-tab="symptom"><span class="ic">🩺</span>증상</button>
+    <button class="navbtn" data-tab="result"><span class="ic">🔬</span>결과해석</button>
+    <button class="navbtn" data-tab="inflam"><span class="ic">🔥</span>자가염증</button>
+    <button class="navbtn" data-tab="ra"><span class="ic">🖐</span>RA</button>
+  </div>
+</nav>
+
+<main class="wrap" id="main"></main>
+
+<footer class="footer" id="footer"></footer>
+
+<div class="modal" id="modal"><div class="modal-inner">
+  <div class="modal-h"><div class="mh-t" id="modalTitle"></div>
+    <button class="modal-close" onclick="closeModal()">✕</button></div>
+  <div class="modal-b" id="modalBody"></div>
+</div></div>
+
+<script>
+/* =========================================================================
+   DATA LAYER — 단일 진실 공급원. 엔진은 ID로 인용만.
+   ========================================================================= */
+
+/* ---- 증상: id·라벨·특이도(spec/sug/non)·질환 시사벡터·redflag·구어사전 ---- */
+const SYMPTOMS = [
+  // specific (강하게 CTD 시사)
+  {id:"rheum:sx:raynaud",label:"레이노 현상",grp:"vascular",spec:"spec",
+   vec:{ssc:3,sle:1,mctd:2},lex:["하얗게 변","창백","찬 데","찬데","손끝이 하","손가락 색","레이노","파랗게 변","손이 시리면서 색"]},
+  {id:"rheum:sx:malar_rash",label:"광과민 말라르(나비형) 발진",grp:"skin",spec:"spec",
+   vec:{sle:3},lex:["나비","볼에 발진","뺨에 발진","햇빛에 발진","햇빛 보면","광과민","뺨이 빨"]},
+  {id:"rheum:sx:oral_ulcer",label:"반복 구강궤양",grp:"mucosa",spec:"sug",
+   vec:{sle:2},lex:["입안이 자주 헐","입안이 헐","구내염","입안 궤양","입이 자주 헐"]},
+  {id:"rheum:sx:sicca",label:"시카(구강·안구건조)",grp:"mucosa",spec:"sug",
+   vec:{sjogren:3,sle:1},lex:["입이 마르","입도 마르","입도 자주 마","입이 자주 마","입 마름","입안이 마르","눈이 뻑뻑","눈이 건조","모래알","침이 안","구강건조","안구건조"]},
+  {id:"rheum:sx:proximal_weakness",label:"근위부 근력약화",grp:"muscle",spec:"sug",
+   vec:{iim:3},lex:["계단 오르기 힘","팔을 올리기 힘","팔 들기 힘","머리 감기 힘","의자에서 일어나기","앉았다 일어나기 힘"]},
+  {id:"rheum:sx:photosens_skin",label:"고트론/헬리오트로프 등 근염 피부",grp:"skin",spec:"spec",
+   vec:{iim:3},lex:["눈두덩 보라","눈꺼풀 보라","손등 마디 발진","고트론","헬리오트로프"]},
+  {id:"rheum:sx:fingertip_lesion",label:"손끝 궤양·sclerodactyly",grp:"skin",spec:"spec",
+   vec:{ssc:3},lex:["손끝 궤양","손끝이 헐","손가락 피부가 딱딱","손가락이 굳","피부가 두꺼","손가락이 뻣뻣하게 굳"]},
+  // suggestive
+  {id:"rheum:sx:morning_stiffness",label:"아침강직 ≥30~60분",grp:"joint",spec:"sug",
+   vec:{ra:2,pmr:1,sle:1},lex:["아침에 뻣","아침에 손이 뻣","자고 일어나면 굳","자고 나면 뻣","한참 주물","아침 강직","조조강직","아침에 한참","뻣뻣해"]},
+  {id:"rheum:sx:symmetric_small_joint",label:"대칭성 소관절(손) 종창",grp:"joint",spec:"sug",
+   vec:{ra:3,sle:1},lex:["양손 마디가 부","손가락 마디 종창","손가락 마디가 부","손가락 관절이 부","마디가 부어","양쪽 손이 부","대칭으로 부"]},
+  {id:"rheum:sx:shoulder_girdle_pain",label:"양측 견부·고관절대 통증(≥50세)",grp:"muscle",spec:"sug",
+   vec:{pmr:3},lex:["양쪽 어깨가 아","어깨가 아파","어깨 올리기 힘","고관절 아","골반이 아","엉덩이가 아","양 어깨"]},
+  // nonspecific (캡 적용)
+  {id:"rheum:sx:fatigue",label:"피로",grp:"const",spec:"non",
+   vec:{sle:1,ra:1,pmr:1},lex:["피곤","기운이 없","무기력","피로","나른"]},
+  {id:"rheum:sx:lowgrade_fever",label:"미열",grp:"const",spec:"non",
+   vec:{sle:1,aosd:1},lex:["미열","열이 살짝","몸이 미지근","미지근한 열"]},
+  {id:"rheum:sx:arthralgia_vague",label:"막연한 관절통",grp:"joint",spec:"non",
+   vec:{sle:1,ra:1},lex:["여기저기 아","관절이 쑤","온몸이 아","마디마디 아","삭신"]},
+  // 자가염증 진입 (항체 음성이 지지)
+  {id:"rheum:sx:quotidian_fever",label:"고열(≥39℃, 하루주기 스파이크)",grp:"inflam",spec:"sug",
+   vec:{aosd:3},lex:["고열이 났다","열이 났다 내","39도","열이 확 올","하루에 한번 열","고열","열이 오르락"]},
+  {id:"rheum:sx:salmon_rash",label:"일과성 연어색 발진(발열 시)",grp:"inflam",spec:"spec",
+   vec:{aosd:3},lex:["분홍 발진이 열","열나면 발진","열날 때 발진","연어색","살구색 발진","발진이 났다 사라"]},
+  {id:"rheum:sx:sore_throat",label:"인후통",grp:"inflam",spec:"non",
+   vec:{aosd:1},lex:["목이 아","인후통","목 따가","목구멍이 아"]},
+  // GCA 진입 (≥50세, 적신호)
+  {id:"rheum:sx:new_temporal_headache",label:"새로운 측두부 두통(≥50세)",grp:"gca",spec:"sug",
+   vec:{gca:3},lex:["관자놀이","측두부 두통","머리 옆이 아","옆머리가 아","새로운 두통"]},
+  {id:"rheum:sx:jaw_claudication",label:"턱 파행(씹을 때 통증)",grp:"gca",spec:"spec",redflag:"gca",
+   vec:{gca:3},lex:["씹으면 턱이 아","씹을 때 턱","음식 씹다 턱","턱이 피로","씹다가 턱"]},
+  {id:"rheum:sx:scalp_tenderness",label:"두피 압통",grp:"gca",spec:"sug",
+   vec:{gca:2},lex:["머리 만지면 아","두피가 따가","두피가 아","빗질하면 아","머리 빗을 때 아"]},
+  // ===== 적신호 (점수 우회) =====
+  {id:"rheum:sx:visual_transient",label:"일과성 시각이상·시력저하",grp:"redflag",spec:"spec",redflag:"gca",
+   vec:{gca:3},lex:["눈앞이 깜깜","갑자기 안 보","갑자기 안보","시야가 흐","시력이 떨어","복시","두개로 보"]},
+  {id:"rheum:sx:hemoptysis",label:"객혈·폐출혈 의심",grp:"redflag",spec:"spec",redflag:"dah",
+   vec:{gpa:2,mpa:2},lex:["피를 토","객혈","가래에 피","피가 섞인 가래","피 섞인 가래"]},
+  {id:"rheum:sx:hematuria_renal",label:"혈뇨 + 부종/신기능저하",grp:"redflag",spec:"spec",redflag:"rpgn",
+   vec:{mpa:2,gpa:2,sle:1},lex:["소변에 피","혈뇨","소변이 붉","소변 색이 붉","몸이 부어","다리가 부어"]},
+  {id:"rheum:sx:rapid_weakness_bulbar",label:"급격한 근력약화(삼킴·호흡)",grp:"redflag",spec:"spec",redflag:"myositis",
+   vec:{iim:3},lex:["삼키기 힘","삼킬 때 힘","숨쉬기 힘","숨이 차","갑자기 힘이 빠","사레"]},
+  {id:"rheum:sx:mononeuritis",label:"다발성 신경병증(foot/wrist drop)",grp:"redflag",spec:"spec",redflag:"vasculitis",
+   vec:{gpa:2,mpa:2,egpa:2},lex:["발목이 떨어","발이 끌","손목이 안 올","발목에 힘이 안","다발 신경"]},
+];
+
+const REDFLAGS = {
+  gca:{label:"GCA(거대세포동맥염) 의심 — 실명 위험",
+    action:"즉시 류마티스/안과 의뢰. ★스테로이드 시작 지연 금지(생검 기다리지 말 것). ESR/CRP 정상이어도 배제 안 됨.",
+    icon:"👁"},
+  dah:{label:"미만성 폐포출혈(DAH) 의심",
+    action:"응급 의뢰. ANCA연관혈관염 가능 — 호흡부전 진행 위험.",icon:"🫁"},
+  rpgn:{label:"급속진행사구체신염(RPGN) 의심",
+    action:"응급 의뢰. 혈뇨+신기능저하 — ANCA·항GBM·루푸스신염 감별, 신장 보존 시급.",icon:"🩸"},
+  myositis:{label:"중증 근염 — 연하·호흡근 침범",
+    action:"응급 의뢰. 흡인·호흡부전 위험.",icon:"💪"},
+  vasculitis:{label:"혈관염성 다발단신경염 의심",
+    action:"신속 의뢰. 비가역 신경손상 전 평가.",icon:"⚡"},
+  mas:{label:"대식세포활성증후군(MAS) 의심",
+    action:"응급 의뢰. 페리틴 급등+혈구감소+간기능악화 — AOSD 합병증, 치명적.",icon:"🔥"},
+};
+
+/* ---- ANA 패턴 (ICAP) ---- */
+const ANA_PATTERNS = [
+  {id:"homogeneous",icap:"AC-1",label:"균질형(Homogeneous)",
+   dz:"SLE, 약물유발루푸스(DILE)",follow:["anti-dsDNA","anti-histone"],fp:false},
+  {id:"speckled",icap:"AC-2/4/5",label:"반점형(Speckled)",
+   dz:"SLE·Sjögren·SSc·MCTD·근염·RA",follow:["anti-ENA(Sm·RNP·SSA·SSB)"],fp:false},
+  {id:"centromere",icap:"AC-3",label:"중심체형(Centromere)",
+   dz:"제한형 SSc(CREST) — 비교적 양호",follow:["anti-centromere(CENP)"],fp:false},
+  {id:"nucleolar",icap:"AC-8~10",label:"핵소체형(Nucleolar)",
+   dz:"SSc·근염 / ★악성종양 연관 RR↑",follow:["anti-Scl70·fibrillarin·RNAP-III","종양 경계"],fp:false},
+  {id:"dfs",icap:"AC-2",label:"치밀미세반점형(DFS)",
+   dz:"★주로 비질환(건강인). 위양성 시사",follow:["DFS70 확인","과도검사 자제"],fp:true},
+  {id:"nuclear_dots",icap:"AC-6/7",label:"핵점형(Nuclear dots)",
+   dz:"원발담즙성담관염(PBC) 등",follow:["anti-sp100/gp210"],fp:false},
+];
+
+/* ---- 자가항체 ---- */
+const AUTOANTIBODIES = [
+  {id:"anti_dsdna",label:"anti-dsDNA",dz:"SLE 특이·신염활성추적",kcd:"M32"},
+  {id:"anti_sm",label:"anti-Sm",dz:"SLE 매우 특이(낮은 민감도)",kcd:"M32"},
+  {id:"anti_ssa_ro",label:"anti-SSA(Ro)",dz:"Sjögren·SLE·신생아루푸스(임신)",kcd:"M35.0"},
+  {id:"anti_ssb_la",label:"anti-SSB(La)",dz:"Sjögren·SLE",kcd:"M35.0"},
+  {id:"anti_rnp",label:"anti-RNP",dz:"고역가→MCTD",kcd:"M35.1"},
+  {id:"anti_scl70",label:"anti-Scl70",dz:"미만형 SSc(폐섬유화 위험)",kcd:"M34"},
+  {id:"anti_centromere",label:"anti-centromere",dz:"제한형 SSc",kcd:"M34"},
+  {id:"anti_jo1",label:"anti-Jo1",dz:"항합성효소증후군(근염+ILD)",kcd:"M33"},
+  {id:"rf",label:"RF(류마티스인자)",dz:"RA(비특이·다질환 가능)",kcd:"M05/M06"},
+  {id:"anti_ccp",label:"anti-CCP(ACPA)",dz:"RA 특이·침습성 예측",kcd:"M05"},
+];
+
+/* ---- ANCA ---- */
+const ANCA_MAP = {
+  pr3:{label:"PR3-ANCA (C-ANCA)",lean:"GPA",note:"PR3 양성의 ~97~99%가 GPA로 분류. AAV2022 GPA +5"},
+  mpo:{label:"MPO-ANCA (P-ANCA)",lean:"MPA",note:"MPO 양성의 ~84%가 MPA로 분류. AAV2022 MPA +6, GPA −1"},
+};
+
+/* ---- 분류기준 (전체 점수표) ---- */
+const CRITERIA = {
+  "sle_2019":{label:"SLE",source:"EULAR/ACR 2019",threshold:10,maxScore:51,
+    entry:{lab:"ANA ≥1:80 (HEp-2 IIF, 평생 1회)",required:true},
+    rule:"각 도메인 내 최고가중 1개만 계수 · 최소 1개 임상항목 + 총 ≥10점",
+    domains:[
+      {dom:"전신(constitutional)",items:[["발열(>38.3℃)",2]]},
+      {dom:"혈액(hematologic)",items:[["백혈구감소(<4.0×10⁹)",3],["혈소판감소(<100×10⁹)",4],["자가면역용혈",4]]},
+      {dom:"신경정신(neuropsychiatric)",items:[["섬망",2],["정신병",3],["경련",5]]},
+      {dom:"점막피부(mucocutaneous)",items:[["비흉터성 탈모",2],["구강궤양",2],["아급성/원판상 루푸스",4],["급성피부루푸스(ACLE)",6]]},
+      {dom:"장막(serosal)",items:[["흉막/심막 삼출",5],["급성 심막염",6]]},
+      {dom:"근골격(musculoskeletal)",items:[["관절침범(활막염/압통+조조강직 ≥2관절)",6]]},
+      {dom:"신장(renal)",items:[["단백뇨 >0.5g/24h",4],["신생검 Class II/V",8],["신생검 Class III/IV",10]]},
+      {dom:"항인지질항체",items:[["항카디오리핀/β2GP1/루푸스항응고",2]]},
+      {dom:"보체",items:[["저C3 또는 저C4",3],["저C3 그리고 저C4",4]]},
+      {dom:"SLE 특이항체",items:[["anti-dsDNA 또는 anti-Sm",6]]},
+    ]},
+  "ra_2010":{label:"RA",source:"ACR/EULAR 2010",threshold:6,maxScore:10,
+    entry:{lab:"≥1관절 임상적 활막염(종창), 다른 질환으로 더 잘 설명 안 됨",required:true},
+    rule:"4도메인 합산 ≥6/10 · DIP·제1CMC·제1MTP 제외",
+    domains:[
+      {dom:"A. 관절침범",items:[["대관절 1개",0],["대관절 2~10개",1],["소관절 1~3개",2],["소관절 4~10개",3],[">10관절(소관절≥1)",5]]},
+      {dom:"B. 혈청",items:[["RF·ACPA 모두 음성",0],["저역가 RF 또는 ACPA",2],["고역가(>3×ULN)",3]]},
+      {dom:"C. 급성기반응",items:[["CRP·ESR 정상",0],["CRP 또는 ESR 비정상",1]]},
+      {dom:"D. 증상기간",items:[["<6주",0],["≥6주",1]]},
+    ]},
+  "aav_2022_gpa":{label:"GPA",source:"ACR/EULAR 2022",threshold:5,allowNeg:true,
+    prereq:"소-중혈관염 확립 + mimics 배제",rule:"가중점수 ≥5",
+    items:[["비강 침범(혈성분비/궤양/가피/울혈)",3,"임상"],["연골 침범(귀·코·기도)",2,"임상"],
+      ["전도/감각신경성 난청",1,"임상"],["PR3-ANCA(C-ANCA) 양성",5,"검사"],
+      ["MPO-ANCA(P-ANCA) 양성",-1,"검사"],["호산구 ≥1000/µL",-4,"검사"],
+      ["육아종/거대세포",2,"조직"],["약면역 사구체신염",1,"조직"],
+      ["폐결절·종괴·공동",2,"영상"],["비/부비동염·유양돌기염",1,"영상"]]},
+  "aav_2022_mpa":{label:"MPA",source:"ACR/EULAR 2022",threshold:5,allowNeg:true,
+    prereq:"소-중혈관염 확립 + mimics 배제",rule:"가중점수 ≥5",
+    items:[["비강 침범",-3,"임상"],["MPO-ANCA(P-ANCA) 양성",6,"검사"],
+      ["PR3-ANCA(C-ANCA) 양성",-1,"검사"],["호산구 ≥1000/µL",-4,"검사"],
+      ["약면역 사구체신염",3,"조직"],["폐섬유화/ILD",3,"영상"]]},
+  "aav_2022_egpa":{label:"EGPA",source:"ACR/EULAR 2022",threshold:6,allowNeg:true,
+    prereq:"소-중혈관염 확립 + mimics 배제",rule:"가중점수 ≥6",
+    items:[["최대 호산구 ≥1×10⁹/L",5,"검사"],["폐쇄성 기도질환(천식)",3,"임상"],
+      ["비용종",3,"임상"],["다발단신경염/운동신경병증",1,"임상"],
+      ["C-ANCA/PR3-ANCA 양성",-3,"검사"],["혈관외 호산구우세 염증",2,"조직"],["혈뇨",-1,"검사"]]},
+  "ssc_2013":{label:"전신경화증(SSc)",source:"ACR/EULAR 2013",threshold:9,
+    rule:"각 범주 최고점만 합산 · MCP근위 피부비후=충분조건(9점)",
+    domains:[
+      {dom:"충분조건",items:[["MCP 근위로 확장된 양손 손가락 피부비후",9]]},
+      {dom:"손가락 피부비후(최고만)",items:[["puffy fingers",2],["sclerodactyly(MCP~PIP)",4]]},
+      {dom:"손끝 병변(최고만)",items:[["손끝 궤양",2],["손끝 pitting 흉터",3]]},
+      {dom:"모세혈관확장",items:[["telangiectasia",2]]},
+      {dom:"조갑주름 모세혈관",items:[["비정상 NVC",2]]},
+      {dom:"폐(최대 2)",items:[["PAH",2],["ILD",2]]},
+      {dom:"레이노",items:[["레이노 현상",3]]},
+      {dom:"SSc 자가항체(최대 3)",items:[["anti-centromere/Scl70/RNAP-III",3]]},
+    ]},
+  "sjogren_2016":{label:"쇼그렌(pSS)",source:"ACR/EULAR 2016",threshold:4,
+    entry:{lab:"구강/안구 건조 증상 또는 전신소견상 SS 의심",required:true},
+    rule:"≥4점 · 제외: 두경부방사선·활동성HCV·사르코이드·아밀로이드·IgG4·GVHD·AIDS · ★anti-Ro만 인정(ANA·RF 제외)",
+    domains:[
+      {dom:"항목",items:[["입술 소타액선 FLS+focus≥1/4mm²",3],["anti-SSA(Ro) 양성",3],
+        ["안구염색점수(OSS)≥5",1],["Schirmer ≤5mm/5min",1],["비자극 타액유속 ≤0.1mL/min",1]]},
+    ]},
+  "iim_2017":{label:"특발성염증근병증(IIM)",source:"EULAR/ACR 2017",threshold:null,
+    rule:"확률기반: 점수 5.5(생검6.7)=probable≥55% · 7.5(8.7)=definite≥90% · <5.3 배제. ★1차 도구는 간이판정만",
+    probabilistic:true,
+    simpleItems:["발병연령 18~40 또는 ≥40","근위부 대칭 근력약화(상지/하지)","헬리오트로프 발진",
+      "고트론 구진/징후","연하곤란/식도운동이상","anti-Jo1 양성","CK·LDH·트랜스아미나제 상승","근생검 소견"]},
+  "pmr_2012":{label:"PMR(provisional)",source:"EULAR/ACR 2012",threshold:4,thresholdUS:5,
+    entry:{lab:"≥50세 + 양측 견부통 + ESR/CRP↑ + 다른 질환 배제",required:true},
+    rule:"≥4점(US없이)/≥5점(US포함) · RA감별 특이도 낮음(65%)",
+    domains:[
+      {dom:"항목",items:[["조조강직 >45분",2],["고관절 통증/ROM제한",1],["RF/ACPA 음성",2],["말초 관절통 없음",1]]},
+      {dom:"초음파(선택)",items:[["견부 점액낭염/건초염 + 고관절 활막염",1],["양측 견부 점액낭염/건초염",1]]},
+    ]},
+  "gca_2022":{label:"GCA",source:"ACR/EULAR 2022",threshold:6,
+    entry:{lab:"≥50세 (절대요건)",required:true},
+    rule:"가중점수 ≥6 · ★의심 시 분류점수 기다리지 말고 즉시 스테로이드",
+    domains:[
+      {dom:"항목",items:[["측두동맥생검 양성/초음파 halo",5],["ESR≥50 또는 CRP≥10",3],["갑작스런 시력소실",3],
+        ["견·경부 조조강직",2],["턱·혀 파행",2],["새 측두두통",2],["두피압통",2],["측두동맥 이상",2],
+        ["양측 액와침범(영상)",2],["대동맥 FDG-PET 활성",2]]},
+    ]},
+  "aosd_yamaguchi":{label:"성인발병스틸병(AOSD)",source:"Yamaguchi",threshold:5,
+    rule:"≥5개 + 대항목 ≥2개 + 배제(감염·악성·타류마티스) · ★ANA/RF 음성이 부항목(항체음성이 지지)",
+    domains:[
+      {dom:"대항목",items:[["발열 ≥39℃ ≥1주",1],["관절통 ≥2주",1],["일과성 연어색 발진",1],["백혈구≥10,000(호중구≥80%)",1]]},
+      {dom:"부항목",items:[["인후통",1],["림프절종대/비장종대",1],["간기능이상",1],["ANA·RF 음성",1]]},
+    ]},
+};
+
+/* ---- 검사 패널 (질환별 1차 권고) ---- */
+const TEST_PANELS = {
+  sle:{label:"SLE 의심",first:["ANA","CBC","Cr·UA","ESR/CRP"],
+    reflex:["anti-dsDNA","anti-Sm","C3/C4"],reflexNote:"ANA 양성 시 단계적"},
+  ra:{label:"RA 의심",first:["RF","anti-CCP","ESR/CRP","CBC","손/발 X-ray"],reflex:[],reflexNote:""},
+  sjogren:{label:"Sjögren 의심",first:["ANA","ESR/CRP"],
+    reflex:["anti-SSA(Ro)","anti-SSB(La)","Schirmer/OSS"],reflexNote:"ANA 양성 시 ENA"},
+  ssc:{label:"SSc 의심",first:["ANA","조갑주름 현미경(NVC)"],
+    reflex:["anti-centromere","anti-Scl70","anti-RNAP-III"],reflexNote:"ANA 패턴 연계"},
+  iim:{label:"근염 의심",first:["CK","ESR/CRP","ANA"],reflex:["anti-Jo1","근전도/MRI"],reflexNote:""},
+  pmr:{label:"PMR 의심(≥50세)",first:["ESR","CRP","CBC"],reflex:["RF/ACPA(감별)"],reflexNote:""},
+  gca:{label:"GCA 의심(≥50세)",first:["ESR","CRP"],reflex:["측두동맥 초음파/생검"],reflexNote:"의심 시 스테로이드 우선"},
+  aosd:{label:"AOSD 의심",first:["CBC(호중구%)","페리틴","간효소","ESR/CRP"],
+    reflex:["당화페리틴(특이도↑)","배제검사(감염·악성)"],reflexNote:"ANA/RF 음성이 지지"},
+  vasculitis:{label:"혈관염 의심",first:["ANCA(IIF)","Cr·UA","CBC","ESR/CRP"],
+    reflex:["PR3/MPO","흉부영상","요침사"],reflexNote:"IIF 양성 시 PR3/MPO"},
+};
+
+/* ---- 한국 급여 ---- */
+const REIMB = {
+  ana:{label:"ANA(항핵항체)",grade:"case",note:"별도 고시 부재 — 진료기록·상병코드 기반 사례심사. 임상의심 문서화 중요"},
+  ena:{label:"항ENA항체",grade:"conditional",
+    note:"★행위정의: 'ANA 양성 자가면역질환자에서 특정항체 검사'. ANA 음성/1:80미만에 동시 다종 시행 = 삭감 위험(심평원 불인정 사례). ANA 선행 단계적 시행이 급여 안전"},
+  anti_ccp:{label:"anti-CCP[IgG]",grade:"limited",
+    note:"고시 제2020-173호(2020.9.1): RA 의심 진단 시 1회 급여. 초과 시 선별급여 본인부담 90%"},
+  anti_dsdna:{label:"anti-dsDNA",grade:"linked",note:"SLE(M32) 추적·활성도 목적 반복검사"},
+  anca:{label:"ANCA",grade:"linked",note:"혈관염 의심 시. IIF→양성 시 PR3/MPO 단계적"},
+};
+
+const KCD = [
+  ["M32","SLE","anti-dsDNA·anti-Sm·보체"],
+  ["M05/M06","류마티스관절염(M06.0 혈청음성)","RF·anti-CCP"],
+  ["M35.0","쇼그렌증후군","anti-SSA/SSB"],
+  ["M34","전신경화증","anti-Scl70·centromere·RNAP-III"],
+  ["M33","피부근염/다발근염","CK·anti-Jo1"],
+  ["M35.3","류마티스성다발근통(PMR)","ESR·CRP"],
+  ["M31.5/M31.6","거대세포동맥염(GCA)","ESR·CRP·측두동맥"],
+  ["M30/M31","결절성다발동맥염·괴사혈관병증","ANCA"],
+  ["M31.3 / M31.7","GPA / MPA","PR3 / MPO"],
+  ["M06.1","성인발병스틸병(AOSD)","페리틴·호중구%"],
+];
+
+/* ---- 1차 공동관리(치료) 데이터 (v1.6) ---- */
+const RA_TREATMENT={
+  steps:[
+    ["DMARD-naive · 중등~고활성도","★MTX 단독요법 1차 (anchor). HCQ·SSZ·LEF·생물학·JAK 단독보다 강력 권고"],
+    ["DMARD-naive · 경도활성도","HCQ 또는 SSZ 우선 고려 (2021 변경점)"],
+    ["MTX 단독 실패","MTX + 생물학(bDMARD) 또는 JAK(tsDMARD) — 3제 csDMARD보다 권고"],
+    ["계열 무반응","같은 계열 교체보다 다른 계열로 전환 권고"],
+  ],
+  principle:"Treat-to-Target: 최소 저활성도, 가능하면 관해. 스테로이드는 최소·단기(장기=골다공증·감염·심혈관 위험).",
+  role1st:"진단·시작은 전문의. 1차는 안정기 처방 연장·모니터링·부작용 1차 대응·동반질환(심혈관위험↑) 관리.",
+};
+const MTX_MONITOR={
+  baseline:["CBC","AST/ALT","albumin","Cr(eGFR)","HBV/HCV (±HIV)","임신검사","흉부 X-ray(폐선별)"],
+  dose:"경구 10~15mg/주 시작 → 4~6주 내 15mg↑ 적정, 2~4주마다 5mg 증량(20~30mg/주). ★엽산 ≥5mg/주 필수 병용(MTX 다음날)",
+  monitor:"안정 도달 전 1~1.5개월마다 CBC·AST/ALT·Cr → 안정 후 1~3개월마다. ★투여 후 2일 내 LFT 일시상승, 그 창 회피",
+  redflags:[
+    "혈구감소(WBC<3000, Plt<100k) → 즉시 중단",
+    "AST/ALT 지속상승·간섬유화 → 회피·간장내과 의뢰",
+    "★eGFR<30(CrCl<50): 금기/감량 — 60~95% 신배설, 축적독성",
+    "급성 폐증상(기침·호흡곤란) → MTX 폐렴 의심, 중단·평가",
+    "감염·수술·조영제·임신계획 시 보류. probenecid·NSAID 병용 시 독성↑",
+  ],
+};
+const PMR_STEROID={
+  start:"prednisolone 12.5~25mg/일(흔히 15mg) → 극적 반응이 특징(진단 지지)",
+  taper:"15mg 4주 → 12.5mg → 10mg → 이후 4~8주마다 1mg씩. ★2년 내 중단 어려운 경우 많음(60% 감량 중 재발)",
+  relapse:"직전 효과 용량 복귀. ESR/CRP 보조(증상 우선 — 마커 정상이어도 재발 가능)",
+  mtx:"재발 반복·스테로이드 부작용 고위험·GC 부작용 시 MTX 절약 조건부 권고(전문의)",
+  comgmt:"칼슘·비타민D·골보호(비스포스포네이트 고려), 혈당·혈압·감염 감시",
+  gca:"★항상 GCA 동반 점검 — 새 두통·턱파행·시각이상 시 즉시 GCA 용량 상향+의뢰",
+};
+const GCA_STEROID={
+  novisual:"prednisolone/prednisone 40~60mg/일(1mg/kg, 최대 60mg) 단일 아침. ★격일요법 금지(재발↑)",
+  visual:"★IV methylprednisolone 500~1000mg/일 × 3일 → 경구 1mg/kg(최대60). 입원",
+  aspirin:"시력소실·뇌졸중 동반 시 저용량 아스피린 권고",
+  taper:"2~4주 후 시작, 2개월 내 <20mg. 10mg 도달 후 매우 천천히(9~12개월), <10mg는 월 1mg",
+  sparing:"재발·고위험 → MTX/토실리주맙(IL-6i, 2021 ACR/VF 조건부)",
+  support:"골보호·PPI·(PJP 예방 고려)",
+};
+const AOSD_TREATMENT={
+  steps:[
+    ["경증","NSAID 시도(단독 관해 일부)"],
+    ["중등~중증","글루코코르티코이드 0.5~1mg/kg"],
+    ["불응/재발/의존","IL-1 억제(아나킨라)·IL-6 억제(토실리주맙) — 사이토카인 표적"],
+  ],
+  mas:"★MAS 동반 시 응급(고용량 스테로이드±아나킨라). 1차는 인지·의뢰가 핵심",
+};
+const BIOLOGIC_REIMB_KR={
+  ra:"RA 생물학/JAK 급여: csDMARD(MTX 등) 일정기간(흔히 6개월) 충분치료 실패 + 활성도 기준(DAS28 등) 충족 시. 산정특례 연계",
+  note:"★스테로이드·csDMARD는 1차 처방 가능. 생물학/JAK 시작은 사실상 전문의(급여요건·모니터링). 구체 기준·서류는 심평원 최신 고시 확인",
+};
+
+/* ---- RA 진단 상세 (v1.7) ---- */
+const RA_DIAGNOSIS={
+  handSvg:`<svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:300px;display:block;margin:0 auto" role="img" aria-label="RA 관절 분포 손 도식"><defs><style>.bone{fill:#f0ede6;stroke:#c9c2b5;stroke-width:1.4}.ra{fill:#e8554e;stroke:#b83d37;stroke-width:1.6}.oa{fill:#9aa6b0;stroke:#6f7d88;stroke-width:1.4}.lbl{font:600 9px sans-serif;fill:#3a4652}.lbl-w{font:700 10px sans-serif;fill:#fff}.leg{font:600 10px sans-serif;fill:#48586a}</style></defs><rect x="92" y="170" width="120" height="78" rx="20" class="bone"/><rect x="100" y="244" width="104" height="34" rx="13" class="bone"/><circle cx="152" cy="261" r="11" class="ra"/><text x="152" y="265" text-anchor="middle" class="lbl-w">손목</text><g><rect x="96" y="60" width="20" height="115" rx="9" class="bone"/><circle cx="106" cy="170" r="9" class="ra"/><circle cx="106" cy="120" r="8" class="ra"/><circle cx="106" cy="72" r="7" class="oa"/></g><g><rect x="122" y="44" width="20" height="131" rx="9" class="bone"/><circle cx="132" cy="170" r="9" class="ra"/><circle cx="132" cy="108" r="8" class="ra"/><circle cx="132" cy="56" r="7" class="oa"/></g><g><rect x="148" y="52" width="20" height="123" rx="9" class="bone"/><circle cx="158" cy="170" r="9" class="ra"/><circle cx="158" cy="116" r="8" class="ra"/><circle cx="158" cy="64" r="7" class="oa"/></g><g><rect x="174" y="74" width="18" height="101" rx="8" class="bone"/><circle cx="183" cy="170" r="8" class="ra"/><circle cx="183" cy="130" r="7" class="ra"/><circle cx="183" cy="86" r="6" class="oa"/></g><g><rect x="196" y="150" width="46" height="18" rx="9" class="bone" transform="rotate(28 219 159)"/><circle cx="206" cy="182" r="8" class="oa"/></g><text x="60" y="124" class="lbl" text-anchor="end">PIP</text><line x1="62" y1="121" x2="97" y2="120" stroke="#b83d37" stroke-width="1"/><text x="60" y="174" class="lbl" text-anchor="end">MCP</text><line x1="62" y1="171" x2="97" y2="170" stroke="#b83d37" stroke-width="1"/><text x="252" y="76" class="lbl">DIP</text><line x1="190" y1="72" x2="250" y2="73" stroke="#6f7d88" stroke-width="1"/><text x="252" y="186" class="lbl">제1CMC</text><line x1="214" y1="182" x2="250" y2="183" stroke="#6f7d88" stroke-width="1"/><circle cx="20" cy="288" r="6" class="ra"/><text x="30" y="292" class="leg">RA 호발 (MCP·PIP·손목)</text><circle cx="190" cy="288" r="6" class="oa"/><text x="200" y="292" class="leg">OA 호발 (DIP·제1CMC)</text></svg>`,
+  distribution:[
+    ["호발 관절","손목 · MCP · PIP(2~5지) · 발 MTP. ★대칭성·양측성. 모든 활막관절 가능(경추 환축관절 포함)"],
+    ["전형 비침범","DIP·제1CMC는 RA 비전형 → 침범 시 OA·건선관절염 의심"],
+  ],
+  exam:[
+    ["시진","방추형(fusiform) 연부조직 종창. 물렁·따뜻·홍반 가능. OA의 단단한 bony 종창(Heberden/Bouchard)과 구별"],
+    ["촉진","활막이 boggy·말랑하게 만져짐. 압통+종창이 핵심(활막염)"],
+    ["★Squeeze test","MCP/MTP 열을 가로질러 압박 → 통증이면 염증관절염 시사. MCP squeeze 압통 민감도 ~66%"],
+    ["개별관절 기법","2-thumb(손목 ~80%), scissor(2nd MCP ~74%), 4-finger(3rd PIP ~69%)"],
+    ["가동범위","조조강직 ≥30~60분, 능동·수동 ROM 제한"],
+  ],
+  extra:[
+    "류마티스 결절(신전부·seropositive·중증에 호발)","건초염·건파열(손등 신전건)",
+    "공막염/상공막염·건조각결막염","간질성폐질환(RA-ILD)","심막염·혈관염(중증)","빈혈·혈소판증가(염증)",
+  ],
+  deformity:"진행 시: MCP 척측편위, 백조목(swan-neck)·단추구멍(boutonnière) 변형, 무지 Z변형. ★이건 늦은 소견 — 조기 진단·치료가 목표",
+  imaging:[
+    ["X-ray","초기 정상 가능. 연부조직 종창→관절주위 골다공증→대칭적 관절강 협소→변연부 미란. ★미란은 늦은 소견, 정상이 배제 아님"],
+    ["초음파(power Doppler)","활막염·건초염·조기 미란 조기 검출. 촉진보다 민감(잠재 활막염도 포착). PD 신호=활동성 염증"],
+    ["MRI","골수부종(미란 전조)·활막염 최고 민감. 조기 진단·예후"],
+  ],
+};
+
+/* ---- RA 약제 상세 (계열·성분·용법·특징·부작용·모니터링) ---- */
+const RA_DRUGS={
+  csdmard:{cat:"csDMARD (conventional synthetic)",color:"ra",items:[
+    {name:"메토트렉세이트 (MTX)",route:"경구/피하 주 1회",
+     dose:"10~15mg/주 시작 → 2~4주마다 5mg 증량, 20~30mg/주까지. ★엽산 ≥5mg/주 병용(MTX 다음날)",
+     feat:"★Anchor drug. 단독 1차 + 병용 기반. 효과·구조보호·비용효과 우수",
+     ae:"간독성·골수억제·구내염·오심·탈모·드물게 폐렴(pneumonitis)",
+     mon:"CBC·AST/ALT·Cr: 안정 전 1~1.5개월, 안정 후 1~3개월",
+     contra:"★eGFR<30 금기/감량 · 임신(기형) · 활동성 간질환 · 활동성 감염 · 과음"},
+    {name:"하이드록시클로로퀸 (HCQ)",route:"경구 1일 1회",
+     dose:"200~400mg/일 (≤5mg/kg 실체중 — 망막독성 위험 감소)",
+     feat:"경증·초기, 병용(triple therapy). 면역조절. 골수억제·간독성 거의 없어 안전",
+     ae:"★망막병증(누적용량 의존, 비가역) · 위장장애 · 드물게 신경정신",
+     mon:"★안과 검진: 기저 + 5년 후부터 매년(고위험은 조기). 자동시야검사·OCT",
+     contra:"기존 망막·황반질환 · G6PD 결핍 주의"},
+    {name:"설파살라진 (SSZ)",route:"경구 분복",
+     dose:"500mg/일 시작 → 주마다 증량, 2~3g/일 분복(유지)",
+     feat:"경증·병용·임신 비교적 안전. 효과 MTX·LEF와 유사",
+     ae:"오심·발진·두통 · 골수억제 · 간효소상승 · 정자감소(가역) · ★G6PD결핍 용혈",
+     mon:"CBC·LFT: 초기 2주마다(3개월)→이후 간격↑. G6PD 확인",
+     contra:"설파/살리실산 과민 · G6PD결핍 · 중증 간·신장애"},
+    {name:"레플루노마이드 (LEF)",route:"경구 1일 1회",
+     dose:"10~20mg/일 (부하용량 생략 흔함). 효과 MTX와 유사",
+     feat:"MTX 대안/병용. ★반감기 매우 김 → 임신 전 콜레스티라민 washout 필수",
+     ae:"설사(27%)·간효소상승·탈모·고혈압·말초신경병증 · 골수억제",
+     mon:"LFT·CBC: 안정까지 월 1회. 혈압",
+     contra:"★임신(강한 기형, washout 필요) · 중증 간장애"},
+  ]},
+  bdmard:{cat:"bDMARD (biologic) — 전문의 시작",color:"clin",items:[
+    {name:"TNF 억제제 (TNFi)",route:"피하/정주",
+     dose:"에타너셉트 50mg/주 SC · 아달리무맙 40mg 2주마다 SC · 인플릭시맙 IV(체중기반) · 골리무맙·세르톨리주맙",
+     feat:"가장 큰 계열, 1차 생물학 흔함. MTX 병용 시 효과↑",
+     ae:"★감염(결핵 재활성·기회감염) · B형간염 재활성 · 드물게 탈수초·약물유발 루푸스 · 울혈성심부전 악화",
+     mon:"★시작 전 결핵(IGRA/PPD·흉부X-ray)·HBV·HCV 선별 필수. 감염 감시",
+     contra:"활동성 감염·결핵 · 중증 심부전 · 탈수초질환"},
+    {name:"IL-6 억제제 (토실리주맙)",route:"정주/피하",
+     dose:"IV 8mg/kg 4주마다 또는 SC 162mg 주 1회",
+     feat:"CRP·ESR 강하게 억제(★감염 시 발열·CRP 안 오를 수 있어 주의). 단독효과도 양호",
+     ae:"호중구감소 · 간효소상승 · 지질상승 · 장천공(드묾) · 감염",
+     mon:"CBC·LFT·지질. HBV 선별",
+     contra:"활동성 감염 · 호중구·혈소판 감소 · 게실염 주의"},
+    {name:"B세포 (리툭시맙, anti-CD20)",route:"정주",
+     dose:"1000mg IV ×2회(2주 간격), 6개월 이상 간격 재투여",
+     feat:"seropositive·다른 생물학 실패에. T세포 아닌 B세포 표적",
+     ae:"주입반응 · 감염 · ★B형간염 재활성(고위험) · 드물게 PML",
+     mon:"★HBV 선별 필수. 면역글로불린·CBC",
+     contra:"활동성 감염 · 중증 심부전"},
+    {name:"T세포 공자극 (아바타셉트)",route:"정주/피하",
+     dose:"IV 체중기반 또는 SC 125mg 주 1회",
+     feat:"공자극 차단. 비교적 양호한 안전성",
+     ae:"감염 · 주입반응 · COPD 악화 주의",
+     mon:"HBV 선별 · 감염 감시",
+     contra:"활동성 감염"},
+  ]},
+  tsdmard:{cat:"tsDMARD (JAK 억제제) — 경구·전문의 시작",color:"pay",items:[
+    {name:"JAK 억제제 (토파시티닙·바리시티닙·우파다시티닙)",route:"★경구",
+     dose:"토파시티닙 5mg 1일 2회 · 바리시티닙 2~4mg 1일 1회 · 우파다시티닙 15mg 1일 1회",
+     feat:"★경구 소분자 — 주사 아님. csDMARD/생물학 실패에. 빠른 효과",
+     ae:"★박스경고: 중대감염·악성종양·MACE(심혈관)·혈전(VTE)·대상포진↑. 지질·간효소·호중구·림프구 변화",
+     mon:"CBC·LFT·지질. 결핵·HBV 선별. ★심혈관·혈전 위험인자 평가(고령·흡연)",
+     contra:"활동성 감염·결핵 · 혈전 고위험 · 중증 간장애 · ★타 JAK/생물학 병용 금지"},
+  ]},
+  steroid:{cat:"글루코코르티코이드 (교량·단기)",color:"ref",items:[
+    {name:"프레드니솔론 (저용량·단기)",route:"경구",
+     dose:"교량 목적 저용량 단기. ★장기사용 회피(2021 ACR)",
+     feat:"DMARD 효과 발현 전 교량·급성 악화 조절. 빠른 항염",
+     ae:"★장기: 골다공증·감염·당뇨·고혈압·백내장·체중. 부신억제",
+     mon:"혈당·혈압·골밀도. 칼슘·비타민D·골보호 동반",
+     contra:"조절 안 된 감염·당뇨 주의"},
+  ]},
+};
+
+/* ---- ANA 패턴 → 질환의심 → 검사 → 증상결부 플로우 ---- */
+const ANA_FLOW=[
+  {pattern:"균질형 (Homogeneous, AC-1)",suspect:"SLE · 약물유발루푸스",
+   next:"anti-dsDNA · anti-histone(약물유발 시) · 보체(C3/C4) · CBC · UA",
+   symptom:"말라르 발진·광과민·관절통·구강궤양·신장(단백뇨)·혈구감소 동반 시 SLE 강화. 약물력(hydralazine·procainamide 등) 있으면 DILE"},
+  {pattern:"반점형 (Speckled, AC-2/4/5)",suspect:"SLE · Sjögren · MCTD · SSc · 근염",
+   next:"anti-ENA 패널(Sm·RNP·SSA·SSB) — ANA 양성 후 단계적(급여)",
+   symptom:"시카(건조)→Sjögren / 고역가 RNP+레이노·부은손→MCTD / 근위약화→근염 방향"},
+  {pattern:"중심체형 (Centromere, AC-3)",suspect:"제한형 SSc (CREST)",
+   next:"anti-centromere(CENP) · 조갑주름 현미경(NVC) · 식도·폐 평가",
+   symptom:"레이노+손끝경화+모세혈관확장+석회증+연하곤란(CREST). 비교적 양호 예후"},
+  {pattern:"핵소체형 (Nucleolar, AC-8~10)",suspect:"SSc(미만형) · 근염 / ★악성 연관",
+   next:"anti-Scl70 · anti-RNAP III · 폐(HRCT)·신장 모니터 · ★연령맞춤 종양 선별",
+   symptom:"미만형 피부경화·폐섬유화 위험. nucleolar는 악성 RR↑ — 종양 경계"},
+  {pattern:"치밀미세반점형 (DFS, AC-2)",suspect:"★주로 건강인(위양성)",
+   next:"DFS70 단독 확인 → 임상의심 없으면 추가검사 자제(Choosing Wisely)",
+   symptom:"특이 증상 없이 DFS70 단독이면 SARD 가능성 낮춤 — 안심 단서"},
+  {pattern:"핵점형 (Nuclear dots, AC-6/7)",suspect:"원발담즙성담관염(PBC) 등",
+   next:"anti-sp100/gp210 · AMA · 간기능·담즙정체 효소(ALP·GGT)",
+   symptom:"소양증·피로·담즙정체 패턴이면 PBC 방향"},
+];
+
+/* ---- ANCA → 질환의심 → 검사 → 증상결부 플로우 ---- */
+const ANCA_FLOW=[
+  {type:"PR3-ANCA (C-ANCA)",suspect:"GPA(육아종증다발혈관염) 경향",
+   next:"흉부 영상(결절·공동) · 부비동 평가 · Cr·UA·요침사 · (필요시)생검",
+   symptom:"상기도(혈성 비루·가피·중격천공)·폐(결절)·신장(사구체신염) 삼주징. 안장코·청력저하"},
+  {type:"MPO-ANCA (P-ANCA)",suspect:"MPA(현미경다발혈관염) / EGPA 경향",
+   next:"Cr·UA·요침사(사구체신염) · 흉부 HRCT(ILD) · 호산구수(EGPA 감별)",
+   symptom:"급속진행 신염·폐출혈→MPA / 천식+호산구증+다발신경염→EGPA"},
+  {type:"양성이나 임상 불일치",suspect:"★해석 주의",
+   next:"항원특이(PR3/MPO) 면역측정 확인. IIF 단독 위양성 가능 — 감염·약물·IBD서도 ANCA 양성",
+   symptom:"혈관염 임상소견(자반·다발신경염·신폐침범) 없으면 위양성 고려"},
+];
+
+/* ---- 자가항체 → 질환 → 증상 결부 (결과해석 보조) ---- */
+const AUTOAB_FLOW=[
+  {ab:"anti-dsDNA",dz:"SLE(특이)",sym:"신염 활성도와 연동 — 단백뇨·혈뇨 추적"},
+  {ab:"anti-Sm",dz:"SLE(매우 특이)",sym:"낮은 민감도, 양성이면 SLE 강하게 시사"},
+  {ab:"anti-SSA(Ro)/SSB(La)",dz:"Sjögren·SLE",sym:"시카·이하선종대 / ★임신 시 신생아루푸스·선천성 심블록 위험"},
+  {ab:"anti-RNP(고역가)",dz:"MCTD",sym:"레이노+부은손+근염+관절염 중복"},
+  {ab:"anti-Scl70",dz:"미만형 SSc",sym:"광범위 피부경화·폐섬유화 위험 → HRCT"},
+  {ab:"anti-centromere",dz:"제한형 SSc",sym:"CREST·폐동맥고혈압 경계"},
+  {ab:"anti-Jo1",dz:"항합성효소증후군",sym:"근염+ILD+기계공손+발열+관절염"},
+  {ab:"RF / anti-CCP",dz:"RA",sym:"anti-CCP 특이도↑·침습성 예측. 고역가일수록 진행위험↑"},
+];
+
+/* ---- 출처 ---- */
+const SOURCES = {
+  criteria:[
+    ["SLE 2019","Aringer M, et al. Ann Rheum Dis 2019;78:1151-1159","https://ard.eular.org/article/S0003-4967(24)02190-3/fulltext"],
+    ["RA 2010","Aletaha D, et al. Ann Rheum Dis 2010","https://ard.eular.org/article/S0003-4967%2824%2919350-8/fulltext"],
+    ["AAV MPA 2022","Suppiah R, et al. Arthritis Rheumatol 2022","https://acrjournals.onlinelibrary.wiley.com/doi/10.1002/art.41983"],
+    ["EGPA 2022","Grayson PC, et al. Arthritis Rheumatol 2022","https://pubmed.ncbi.nlm.nih.gov/35110334/"],
+    ["SSc 2013","van den Hoogen F, et al. Ann Rheum Dis 2013;72:1747-1755","https://pubmed.ncbi.nlm.nih.gov/24122180/"],
+    ["Sjögren 2016","Shiboski CH, et al. Arthritis Rheumatol 2017;69:35","https://acrjournals.onlinelibrary.wiley.com/doi/10.1002/art.39859"],
+    ["IIM 2017","Lundberg IE, et al. Arthritis Rheumatol 2017","https://acrjournals.onlinelibrary.wiley.com/doi/10.1002/art.40320"],
+    ["PMR 2012","Dasgupta B, et al. Ann Rheum Dis 2012","https://ard.eular.org/article/S0003-4967(24)18918-2/fulltext"],
+    ["GCA 2022","Ponte C, et al. Ann Rheum Dis 2022","https://ard.eular.org/article/S0003-4967(24)08730-2/fulltext"],
+  ],
+  other:[
+    ["RA 치료 2021 ACR","Fraenkel L, et al. Arthritis Care Res 2021","https://acrjournals.onlinelibrary.wiley.com/doi/10.1002/acr.24596"],
+    ["MTX 모니터링·BSR","British Society for Rheumatology csDMARD guideline","https://www.sps.nhs.uk/monitorings/methotrexate-monitoring/"],
+    ["GCA/PMR 관리 EULAR","2018 EULAR LVV recommendations / ACR-VF 2021",""],
+    ["ICAP (ANA 패턴 명명)","International Consensus on ANA Patterns","https://anapatterns.org"],
+    ["ACR Choosing Wisely (ANA 하위검사, 2013)","American College of Rheumatology","https://www.choosingwisely.org"],
+    ["심평원 자가항체검사 급여 사례","건강보험심사평가원","https://www.hira.or.kr"],
+    ["anti-CCP 고시 제2020-173호 (2020.9.1)","보건복지부",""],
+    ["KCD 한국표준질병사인분류","통계청",""],
+  ],
+};
+
+/* =========================================================================
+   TOPIC CONTENT — 도서관 상세 (핵심 먼저, 밀도 높은 전문가용)
+   ========================================================================= */
+const TOPIC_CONTENT={
+  pretest:{title:"📊 검사 전 확률 & ANA 위양성",body:`
+    <h3 class="sec">핵심</h3>
+    <ul class="kp">
+      <li>건강인의 <b>25~30%</b>가 1:40 희석에서 ANA 양성. 고령일수록 증가.</li>
+      <li>1차 진료는 검사 전 확률이 낮아 ANA 양성의 부가가치가 2·3차보다 떨어짐.</li>
+      <li>ANA는 SLE·SSc 진단에 매우 유용, Sjögren·근염엔 다소 유용.</li>
+    </ul>
+    <h3 class="sec">언제 검사 자제</h3>
+    <ul class="kp">
+      <li>관절통·피로만 있고 특이 증상(레이노·말라르·광과민) 없으면 → 대부분 위양성, 오진 유도.</li>
+      <li>★ACR Choosing Wisely(2013): ANA 양성 + 임상의심 없이 ENA 하위검사 금지.</li>
+      <li>결합조직질환은 단독 다발관절염으로 오는 경우 드물고, 보통 피부·신·폐·신경 동반.</li>
+    </ul>
+    <div class="note clin">표적 검사 원칙: 작업진단에 맞춘 focused test. 광범위 패널 지양.</div>`},
+
+  ana_interp:{title:"🔬 ANA 패턴·역가 해석",body:`
+    <h3 class="sec">ICAP 패턴별 시사질환·후속검사</h3>
+    <table class="crittable"><thead><tr><th>패턴</th><th>시사</th><th>후속</th></tr></thead><tbody>
+    ${ANA_PATTERNS.map(p=>`<tr><td><b>${p.label}</b><br><small style="color:var(--ink-faint)">${p.icap}</small></td>
+      <td>${p.dz}</td><td>${p.follow.join(", ")}</td></tr>`).join("")}
+    </tbody></table>
+    <h3 class="sec">역가</h3>
+    <ul class="kp"><li>저역가(1:80 미만): 위양성 가능성↑, 건강인서도 흔함.</li>
+      <li>고역가(≥1:640): 임상적 의의↑.</li>
+      <li>★DFS(치밀미세반점): 주로 건강인. DFS70 단독은 SARD 가능성 낮춤.</li></ul>`},
+
+  autoab:{title:"🧬 자가항체별 시사질환",body:`
+    <table class="crittable"><thead><tr><th>항체</th><th>시사질환</th><th>KCD</th></tr></thead><tbody>
+    ${AUTOANTIBODIES.map(a=>`<tr><td><b>${a.label}</b></td><td>${a.dz}</td><td>${a.kcd}</td></tr>`).join("")}
+    </tbody></table>
+    <div class="note clin">anti-dsDNA·anti-Sm은 SLE 특이. anti-CCP는 RA 특이도 높고 침습성 예측. anti-SSA는 임신 시 신생아루푸스 위험으로 중요.</div>`},
+
+  anca:{title:"🩸 ANCA & 혈관염",body:`
+    <h3 class="sec">핵심</h3>
+    <ul class="kp">
+      <li><b>PR3-ANCA(C-ANCA)</b> → GPA 경향 (~97~99%). AAV2022 GPA +5.</li>
+      <li><b>MPO-ANCA(P-ANCA)</b> → MPA 경향 (~84%). AAV2022 MPA +6, GPA −1.</li>
+      <li>★IIF(C/P-ANCA) 먼저 → 양성 시 PR3/MPO 면역측정 (한국 검사실 관행).</li>
+    </ul>
+    <div class="redflag-card"><div class="rf-h">🚨 적신호</div><div class="rf-b">
+      폐출혈(DAH·객혈) / 급속진행사구체신염(RPGN·혈뇨+신기능저하) → 응급 의뢰.</div></div>
+    <div class="note warn">★분류기준상 ANCA 가중치가 높아 생검상 육아종이 있어도 MPO 양성이면 MPA로 분류되는 불일치. 분류 ≠ 진단.</div>`},
+
+  arthritis:{title:"🖐 염증성 관절염 감별 (RA)",body:`
+    <h3 class="sec">염증성 vs 퇴행성</h3>
+    <ul class="kp">
+      <li>염증성(RA): MCP·PIP·손목 대칭, 물렁·따뜻 종창, 조조강직 >1h, ESR/CRP↑.</li>
+      <li>퇴행성(OA): DIP·제1CMC, 단단한 bony 종창, 짧은 강직, 검사 정상.</li>
+      <li>★Squeeze test: MCP/MTP 압박 통증 → 염증관절염 시사.</li>
+    </ul>
+    <h3 class="sec">조기 의뢰 (window)</h3>
+    <ul class="kp"><li>첫 3개월~1년이 치료 결정적. 소관절·≥3종창·squeeze·강직≥30분·3개월 지연 중 하나라도 의뢰.</li>
+      <li>★의뢰 전 경구 스테로이드 주의(활막염 가림). NSAID로 교량.</li></ul>`},
+
+  criteria:{title:"📋 분류기준 모음 (9종)",body:`
+    <div class="banner-diag">⚠ 분류기준 ≠ 진단기준 · 임상판단 보조</div>
+    <p style="font-size:13.5px;color:var(--ink-dim)">각 질환을 탭하면 전체 점수표가 열립니다.</p>
+    <div class="chipgrid" style="flex-direction:column;align-items:stretch;margin-top:10px">
+    ${Object.entries(CRITERIA).map(([k,c])=>`<button class="chip" style="display:flex;justify-content:space-between"
+      onclick="closeModal();setTimeout(()=>openCriteriaModal('${k}'),60)">
+      <span><b>${c.label}</b></span><small style="color:var(--ink-faint)">${c.source}</small></button>`).join("")}
+    </div>`},
+
+  reimb:{title:"💰 자가항체검사 급여",body:`
+    <h3 class="sec">핵심 (심평원 확인)</h3>
+    ${Object.values(REIMB).map(r=>`<div class="note" style="margin-bottom:8px"><b>${r.label}:</b> ${r.note}</div>`).join("")}
+    <div class="note clin">★엔진은 "임상 최적(한번에)"과 "급여 안전(ANA 선행 단계적)"을 둘 다 제시. 판단은 의사.</div>`},
+
+  referral:{title:"🚨 의뢰 적신호 & 의뢰서",body:`
+    <h3 class="sec">즉시 의뢰 트리거</h3>
+    ${Object.values(REDFLAGS).map(r=>`<div class="note warn" style="margin-bottom:8px"><b>${r.icon} ${r.label}</b><br>${r.action}</div>`).join("")}
+    <h3 class="sec">의뢰서 체크리스트</h3>
+    <ul class="kp"><li>주소·의심 진단·증상 경과(관절 패턴·강직·발진·레이노·시카·발열·체중변화)</li>
+      <li>핵심 검사: RF·CCP·ANA·ENA·dsDNA·보체·ESR/CRP·CK·ANCA</li>
+      <li>영상(X-ray/초음파), 동반질환·임신 여부, 약물력</li>
+      <li>적신호 여부 명시 → 긴급도 표시</li></ul>`},
+
+  kcd:{title:"🏷 상병코드집 (KCD)",body:`
+    <table class="crittable"><thead><tr><th>코드</th><th>질환</th><th>연계 검사</th></tr></thead><tbody>
+    ${KCD.map(k=>`<tr><td><b>${k[0]}</b></td><td>${k[1]}</td><td>${k[2]}</td></tr>`).join("")}
+    </tbody></table>
+    <div class="note clin">상병코드와 검사 급여는 연계 심사됨. 임상 의심을 코드·기록으로 뒷받침.</div>`},
+
+  autoinflam:{title:"🔥 자가염증 축 (AOSD·PMR·GCA)",body:`
+    <h3 class="sec">왜 별도 축인가</h3>
+    <ul class="kp"><li>항체 양성 전제 플로우에 넣으면 "다 음성 → 류마티스 아님"으로 빠져나감.</li>
+      <li>AOSD는 야마구치 기준에서 'ANA/RF 음성'이 부항목 — 항체 음성이 지지.</li></ul>
+    <h3 class="sec">AOSD</h3>
+    <ul class="kp"><li>발열≥39℃ + 연어색 발진 + 관절통 + 호중구↑. 페리틴 폭증(정상상한 5배↑).</li>
+      <li>배제진단: 감염·악성·타류마티스. 적신호: MAS(페리틴 급등+혈구감소+간기능악화).</li></ul>
+    <h3 class="sec">PMR / GCA (≥50세)</h3>
+    <ul class="kp"><li>PMR: 양측 견부·고관절통 + 조조강직>45분 + ESR/CRP↑.</li>
+      <li>★GCA: 실명 위험. 측두두통·턱파행·시각이상 → 즉시 스테로이드(생검 기다리지 말 것).</li>
+      <li>★정상 ESR/CRP가 배제 근거 아님 — 드물게 정상으로 발현.</li></ul>
+    <button class="btn ghost sm" onclick="closeModal();setTimeout(()=>setTab('inflam'),60)">자가염증 축으로 이동</button>`},
+
+  ra_treat:{title:"💊 RA 치료·MTX 공동관리",body:`
+    <div class="banner-diag">⚙ 치료 시작·변경은 전문의 · 아래는 모니터링 보조</div>
+    <h3 class="sec">2021 ACR 알고리즘</h3>
+    <ul class="kp">${RA_TREATMENT.steps.map((s,i)=>`<li><b>${i+1}. ${s[0]}:</b> ${s[1]}</li>`).join("")}</ul>
+    <div class="note clin">${RA_TREATMENT.principle}</div>
+    <h3 class="sec">MTX 시작 전 기저검사</h3>
+    <p style="font-size:13px">${MTX_MONITOR.baseline.join(" · ")}</p>
+    <h3 class="sec">용량·엽산</h3><div class="note">${MTX_MONITOR.dose}</div>
+    <h3 class="sec">모니터링</h3><div class="note">${MTX_MONITOR.monitor}</div>
+    <h3 class="sec">🚨 중단·주의</h3>
+    <ul class="kp">${MTX_MONITOR.redflags.map(r=>`<li>${r}</li>`).join("")}</ul>
+    <h3 class="sec">생물학/JAK 급여</h3>
+    <div class="note">${BIOLOGIC_REIMB_KR.ra}</div>
+    <div class="note warn">${BIOLOGIC_REIMB_KR.note}</div>
+    <button class="btn ghost sm" onclick="closeModal();setTimeout(()=>setTab('ra'),60)">RA 축으로 이동</button>`},
+
+  steroid_proto:{title:"💉 스테로이드 프로토콜 (PMR/GCA)",body:`
+    <div class="banner-diag">⚙ 치료 시작·변경은 전문의 · 아래는 안내선</div>
+    <div class="redflag-card"><div class="rf-h">👁 GCA — 지연 = 실명</div><div class="rf-b">
+      <b>시각증상 없음:</b> ${GCA_STEROID.novisual}<br>
+      <span style="color:var(--ref)"><b>급성 시력소실:</b> ${GCA_STEROID.visual}</span><br>
+      <b>감량:</b> ${GCA_STEROID.taper}<br>
+      <b>절약:</b> ${GCA_STEROID.sparing}</div></div>
+    <h3 class="sec">PMR</h3>
+    <ul class="kp">
+      <li><b>시작:</b> ${PMR_STEROID.start}</li>
+      <li><b>감량:</b> ${PMR_STEROID.taper}</li>
+      <li><b>재발:</b> ${PMR_STEROID.relapse}</li>
+      <li><b>MTX 절약:</b> ${PMR_STEROID.mtx}</li>
+      <li><b>동반:</b> ${PMR_STEROID.comgmt}</li></ul>
+    <div class="note warn">${PMR_STEROID.gca}</div>`},
+};
+
+/* =========================================================================
+   ENGINE LAYER
+   ========================================================================= */
+
+/* ---- 자유텍스트 추출 (로컬 사전, 부정 스코프) ---- */
+function extractSymptoms(text){
+  if(!text||!text.trim())return [];
+  const t=text.toLowerCase();
+  const found=[];
+  const negWords=["없","아니","아닌","않","아님"];
+  SYMPTOMS.forEach(s=>{
+    if(!s.lex)return;
+    for(const phrase of s.lex){
+      const idx=t.indexOf(phrase.toLowerCase());
+      if(idx>=0){
+        // 부정 스코프: 어구 직후 8자 또는 직전 5자 내 부정어
+        const tail=t.slice(idx+phrase.length, idx+phrase.length+8);
+        const head=t.slice(Math.max(0,idx-5), idx);
+        const negated=negWords.some(n=>tail.includes(n)||head.includes(n));
+        if(!negated){found.push({id:s.id,phrase,label:s.label});}
+        break;
+      }
+    }
+  });
+  return found;
+}
+
+/* ---- 적신호 게이트 (점수 우회) ---- */
+function redflagGate(ids){
+  const hits=[];
+  ids.forEach(id=>{
+    const s=SYMPTOMS.find(x=>x.id===id);
+    if(s&&s.redflag&&!hits.find(h=>h.key===s.redflag)){
+      hits.push({key:s.redflag,...REDFLAGS[s.redflag],trigger:s.label});
+    }
+  });
+  return hits;
+}
+
+/* ---- 검사 전 확률 점수화 (비특이 캡) ---- */
+function pretestScore(ids){
+  const sel=ids.map(id=>SYMPTOMS.find(s=>s.id===id)).filter(Boolean);
+  const specW={spec:5,sug:2.5,non:1};
+  let raw=0, hasSpec=false, hasSug=false, nonOnly=true;
+  const vec={};
+  const contrib=[];
+  sel.forEach(s=>{
+    const w=specW[s.spec];
+    raw+=w;
+    if(s.spec==="spec"){hasSpec=true;nonOnly=false;}
+    if(s.spec==="sug"){hasSug=true;nonOnly=false;}
+    contrib.push({label:s.label,spec:s.spec,w});
+    if(s.vec)Object.entries(s.vec).forEach(([d,v])=>{vec[d]=(vec[d]||0)+v;});
+  });
+  // 등급 산정
+  let grade="low";
+  if(hasSpec && (hasSug||raw>=8)) grade="high";
+  else if(hasSpec||hasSug) grade="mid";
+  // 비특이 캡: nonOnly면 mid 이상 불가
+  let capped=false;
+  if(nonOnly && grade!=="low"){grade="low";capped=true;}
+  if(nonOnly && raw>=4){capped=true;} // 비특이 다수 경고
+  // 질환 기울기 정렬
+  const leaning=Object.entries(vec).sort((a,b)=>b[1]-a[1]).slice(0,3)
+    .map(([d,v])=>({dz:d,score:v}));
+  return {grade,raw:Math.round(raw*10)/10,contrib,leaning,capped,nonOnly,hasSpec,hasSug,count:sel.length};
+}
+
+/* dz 키 → 검사패널 키 매핑 */
+const DZ2PANEL={sle:"sle",ra:"ra",sjogren:"sjogren",ssc:"ssc",iim:"iim",pmr:"pmr",
+  gca:"gca",aosd:"aosd",gpa:"vasculitis",mpa:"vasculitis",egpa:"vasculitis",mctd:"sle"};
+
+function recommendPanels(leaning){
+  const seen=new Set(); const out=[];
+  leaning.forEach(l=>{
+    const pk=DZ2PANEL[l.dz]; if(pk&&!seen.has(pk)){seen.add(pk);out.push(TEST_PANELS[pk]);}
+  });
+  return out;
+}
+
+/* ---- ANA 해석 ---- */
+function interpretANA(patternId,titer){
+  const p=ANA_PATTERNS.find(x=>x.id===patternId);
+  if(!p)return null;
+  let titerNote="";
+  if(titer){
+    const n=parseInt(titer.replace(/[^0-9]/g,""))||0;
+    if(n>0&&n<80)titerNote="저역가(1:80 미만) — 위양성 가능성↑, 건강인서도 흔함. 단독으로 의미 약함";
+    else if(n>=640)titerNote="고역가 — 임상적 의의↑";
+    else if(n>=80)titerNote="유의 역가 — 임상 맥락과 함께 해석";
+  }
+  return {...p,titerNote};
+}
+
+/* ---- ANCA 해석 ---- */
+function interpretANCA(pr3,mpo){
+  const out=[];
+  if(pr3)out.push(ANCA_MAP.pr3);
+  if(mpo)out.push(ANCA_MAP.mpo);
+  return out;
+}
+
+/* ---- 분류기준 점수 (수동 항목 선택 기반) ---- */
+function criteriaScore(critId, checkedIdx){
+  const c=CRITERIA[critId]; if(!c)return null;
+  let total=0; const contributing=[];
+  if(c.items){ // AAV 평면 구조
+    c.items.forEach((it,i)=>{ if(checkedIdx.includes(critId+"_"+i)){total+=it[1];contributing.push({label:it[0],score:it[1]});} });
+  } else if(c.domains){ // 도메인 구조 (최고가중 1개 규칙 적용)
+    c.domains.forEach((d,di)=>{
+      let domMax=null;
+      d.items.forEach((it,ii)=>{
+        if(checkedIdx.includes(critId+"_"+di+"_"+ii)){
+          if(domMax===null||it[1]>domMax.score)domMax={label:it[0],score:it[1],dom:d.dom};
+        }
+      });
+      if(domMax){total+=domMax.score;contributing.push(domMax);}
+    });
+  }
+  const thr=c.threshold;
+  return {total,threshold:thr,classified:thr!=null&&total>=thr,contributing,label:c.label,source:c.source};
+}
+
+/* =========================================================================
+   UI LAYER
+   ========================================================================= */
+let STATE={tab:"library",sxSelected:new Set(),extracted:[]};
+const $=(s,r=document)=>r.querySelector(s);
+const main=()=>document.getElementById("main");
+
+function setTab(t){
+  STATE.tab=t;
+  document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.tab===t));
+  window.scrollTo(0,0);
+  render();
+}
+document.querySelectorAll(".navbtn").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
+
+function render(){
+  const t=STATE.tab;
+  if(t==="library")renderLibrary();
+  else if(t==="symptom")renderSymptom();
+  else if(t==="result")renderResult();
+  else if(t==="inflam")renderInflam();
+  else if(t==="ra")renderRA();
+}
+
+/* ---------- 도서관 ---------- */
+const TOPICS=[
+  {id:"pretest",cat:"clin",t:"검사 전 확률 & ANA 위양성",d:"건강인 25~30% 양성, Choosing Wisely, 언제 검사 자제"},
+  {id:"ana_interp",cat:"clin",t:"ANA 패턴·역가 해석",d:"ICAP 6패턴 매핑, 역가 의의, DFS 위양성"},
+  {id:"autoab",cat:"clin",t:"자가항체별 시사질환",d:"dsDNA·Sm·SSA/B·RNP·Scl70·centromere·Jo1 특이도"},
+  {id:"anca",cat:"clin",t:"ANCA & 혈관염",d:"PR3/MPO, AAV 2022, 폐·신 적신호"},
+  {id:"arthritis",cat:"ra",t:"염증성 관절염 감별 (RA)",d:"염증 vs 퇴행, RA 조기, squeeze, OA/통풍/PsA"},
+  {id:"criteria",cat:"clin",t:"분류기준 모음 (9종)",d:"SLE·RA·AAV·SSc·Sjögren·IIM·PMR·GCA·AOSD"},
+  {id:"reimb",cat:"pay",t:"자가항체검사 급여",d:"ANA 선행 원칙, ENA 단계적, anti-CCP 고시"},
+  {id:"referral",cat:"ref",t:"의뢰 적신호 & 의뢰서",d:"긴급 트리거, 의뢰서 체크리스트, 초기 안전조치"},
+  {id:"kcd",cat:"pay",t:"상병코드집 (KCD)",d:"M30~M35 ↔ 검사·질환 매핑"},
+  {id:"autoinflam",cat:"ref",t:"자가염증 축 (AOSD·PMR·GCA)",d:"항체음성 함정, 페리틴, 야마구치"},
+  {id:"ra_treat",cat:"ra",t:"RA 치료·MTX 공동관리",d:"2021 ACR 알고리즘, MTX 모니터링·금기, 동반질환"},
+  {id:"steroid_proto",cat:"ref",t:"스테로이드 프로토콜 (PMR/GCA)",d:"시작용량·감량·재발·골보호·GCA 응급"},
+];
+
+function renderLibrary(){
+  main().innerHTML=`
+  <div class="phead">
+    <div class="eyebrow">외래 1차·내과 · 의뢰 전 구간</div>
+    <h1>류마티스·자가면역 초기 감별</h1>
+    <p>조언자 도구 — 검사 전 확률을 먼저 세우고, 양성을 맥락 속에서 해석한다. 진단·치료 확정은 전문의 영역.</p>
+  </div>
+  <div class="searchbar"><span class="si">🔍</span>
+    <input id="libSearch" placeholder="증상·검사·질환 검색 (예: 레이노, ANA, 페리틴)" oninput="filterTopics(this.value)">
+  </div>
+  <div class="banner-diag">⚠ 분류기준 ≠ 진단기준 · 임상판단 보조용 · 최종결정은 진료의 책임</div>
+  <div class="eyebrow" style="margin:6px 0 8px">진입 — 환자 앞 실시간</div>
+  <div class="entrygrid">
+    <button class="entrycard e-clin" onclick="setTab('symptom')"><div class="ec-ic">🩺</div>
+      <div class="ec-t">증상 → 검사 판단</div><div class="ec-d">"검사할 가치가 있나?" 검사 전 확률 산출</div></button>
+    <button class="entrycard e-clin" onclick="setTab('result')"><div class="ec-ic">🔬</div>
+      <div class="ec-t">결과 해석</div><div class="ec-d">ANA·ANCA·RF 양성 → 후속검사·분류기준</div></button>
+    <button class="entrycard e-inflam" onclick="setTab('inflam')"><div class="ec-ic">🔥</div>
+      <div class="ec-t">자가염증 축</div><div class="ec-d">AOSD·PMR·GCA — 항체 음성이 지지</div></button>
+    <button class="entrycard e-ra" onclick="setTab('ra')"><div class="ec-ic">🖐</div>
+      <div class="ec-t">RA 축</div><div class="ec-d">활막염 분포·squeeze, 조기 의뢰 window</div></button>
+  </div>
+  <div class="eyebrow" style="margin:18px 0 8px">도서관 — 깊게 열람</div>
+  <div class="topicgrid" id="topicGrid">
+    ${TOPICS.map(tp=>`<button class="topiccard t-${tp.cat}" data-search="${tp.t} ${tp.d}" onclick="openTopic('${tp.id}')">
+      <div class="tc-cat">${({clin:"임상·감별",pay:"급여",ref:"의뢰·안전",ra:"RA"})[tp.cat]}</div>
+      <div class="tc-t">${tp.t}</div><div class="tc-d">${tp.d}</div></button>`).join("")}
+  </div>`;
+}
+function filterTopics(q){
+  q=q.toLowerCase().trim();
+  document.querySelectorAll("#topicGrid .topiccard").forEach(c=>{
+    c.style.display=(!q||c.dataset.search.toLowerCase().includes(q))?"":"none";
+  });
+}
+
+/* ---------- 증상 플로우 ---------- */
+function renderSymptom(){
+  const groups=[
+    ["spec","강한 시사 (specific)",["raynaud","malar_rash","photosens_skin","fingertip_lesion","salmon_rash"]],
+    ["sug","중간 시사 (suggestive)",["morning_stiffness","symmetric_small_joint","shoulder_girdle_pain","sicca","oral_ulcer","proximal_weakness","quotidian_fever"]],
+    ["non","비특이 (nonspecific)",["fatigue","lowgrade_fever","arthralgia_vague","sore_throat"]],
+    ["gca","고령·GCA (≥50세)",["new_temporal_headache","jaw_claudication","scalp_tenderness"]],
+    ["spec","🚨 적신호",["visual_transient","hemoptysis","hematuria_renal","rapid_weakness_bulbar","mononeuritis"]],
+  ];
+  main().innerHTML=`
+  <div class="phead"><div class="eyebrow">진입 A · 검사 전 확률</div>
+    <h1>증상 → 검사 판단</h1><p>먼저 묻는다: 이 환자, 검사할 가치가 있나? 저확률이면 ANA 위양성 폭포를 경고한다.</p>
+    <div class="axis-line clin"></div></div>
+
+  <div class="card"><div class="card-h">✍️ 환자 표현 그대로 입력 <span class="tag clin" style="margin-left:auto">자유텍스트</span></div>
+    <div class="card-b">
+      <textarea class="freetext" id="freeText" placeholder="예: 찬 데 가면 손끝이 하얗게 변하고, 아침에 손이 한참 뻣뻣해요. 피곤하고 입도 자주 마릅니다."></textarea>
+      <div class="btnrow">
+        <button class="btn ghost sm" onclick="doExtract()">🔍 핵심어 추출</button>
+        <span class="hint" id="extractHint">추출된 증상은 아래 칩으로 확인·수정 후 반영됩니다</span>
+      </div>
+      <div id="extractResult"></div>
+    </div>
+  </div>
+
+  <div class="card"><div class="card-h">☑️ 증상 체크리스트</div><div class="card-b">
+    ${groups.map(([sp,lbl,ids])=>`
+      <div class="grouplbl ${sp}">${lbl}</div>
+      <div class="chipgrid">
+        ${ids.map(sid=>{const s=SYMPTOMS.find(x=>x.id.endsWith(sid));if(!s)return"";
+          const on=STATE.sxSelected.has(s.id);
+          return `<button class="chip ${s.spec==='spec'?'spec':''} ${s.redflag?'redflag':''} ${on?'on':''}"
+            onclick="toggleSx('${s.id}')">${s.label}</button>`;}).join("")}
+      </div>`).join("")}
+    <div class="grouplbl">기본 검사값 (선택)</div>
+    <div class="numrow">
+      <div class="numfield"><label>ESR</label><input id="v_esr" type="number" inputmode="numeric"></div>
+      <div class="numfield"><label>CRP</label><input id="v_crp" type="number" inputmode="decimal"></div>
+      <div class="numfield"><label>연령</label><input id="v_age" type="number" inputmode="numeric"></div>
+    </div>
+    <button class="btn primary" style="margin-top:14px" onclick="runPretest()">검사 전 확률 산출</button>
+  </div></div>
+  <div id="pretestOut"></div>`;
+}
+
+function toggleSx(id){
+  if(STATE.sxSelected.has(id))STATE.sxSelected.delete(id);
+  else STATE.sxSelected.add(id);
+  // 칩만 토글 (전체 재렌더 방지 위해 클래스만)
+  document.querySelectorAll(`.chip`).forEach(c=>{
+    if(c.getAttribute("onclick")===`toggleSx('${id}')`)c.classList.toggle("on");
+  });
+}
+
+function doExtract(){
+  const txt=$("#freeText").value;
+  const res=extractSymptoms(txt);
+  const box=$("#extractResult");
+  if(!res.length){box.innerHTML=`<div class="note">추출된 증상이 없습니다. 체크리스트로 직접 선택하거나 표현을 바꿔보세요.</div>`;return;}
+  box.innerHTML=`<div class="note clin" style="margin-top:12px"><b>추출됨 — 확인 후 반영</b> (탭하면 체크리스트에 추가)</div>
+    <div class="chipgrid" style="margin-top:8px">
+    ${res.map(r=>{const on=STATE.sxSelected.has(r.id);
+      return `<button class="chip ${on?'on':''}" onclick="toggleSx('${r.id}');this.classList.toggle('on')">
+        ${r.label} <small>"${r.phrase}"</small></button>`;}).join("")}</div>`;
+}
+
+function runPretest(){
+  const ids=[...STATE.sxSelected];
+  const out=$("#pretestOut");
+  if(!ids.length){out.innerHTML=`<div class="empty-hint">증상을 하나 이상 선택하세요.</div>`;return;}
+  const rf=redflagGate(ids);
+  const sc=pretestScore(ids);
+  let html="";
+  // 적신호 우선
+  rf.forEach(r=>{
+    html+=`<div class="redflag-card"><div class="rf-h">${r.icon} ${r.label}</div>
+      <div class="rf-b"><div style="font-size:12px;color:var(--ink-dim);margin-bottom:5px">유발: ${r.trigger}</div>
+      ${r.action}</div></div>`;
+  });
+  // 확률 카드
+  const gradeLbl={low:"저확률",mid:"중확률",high:"고확률"}[sc.grade];
+  html+=`<div class="card accent-clin"><div class="card-h">📊 검사 전 확률</div><div class="card-b">
+    <div class="grade"><span class="grade-badge ${sc.grade}">${gradeLbl}</span>
+      <span class="grade-meta">가중점수 ${sc.raw} · 선택 증상 ${sc.count}개${sc.leaning.length?` · 기울기: ${sc.leaning.map(l=>dzLabel(l.dz)).join(", ")}`:""}</span></div>`;
+  if(sc.nonOnly||sc.capped){
+    html+=`<div class="note warn"><b>⚠ 비특이 증상 위주.</b> ANA 위양성 폭포 주의 — 건강인 25~30%가 ANA 양성(고령↑). 무차별 ANA는 오진 유도. 특이 증상(레이노·말라르 발진 등) 없이 관절통·피로만이면 검사 자제 고려.</div>`;
+  }
+  if(sc.contrib.length){
+    html+=`<ul class="contrib">${sc.contrib.map(c=>{
+      const cls=c.spec==="spec"?"pos":c.spec==="sug"?"pos":"zero";
+      const tag={spec:"강",sug:"중",non:"비특이"}[c.spec];
+      return `<li><span>${c.label} <small style="color:var(--ink-faint)">[${tag}]</small></span><span class="sc ${cls}">+${c.w}</span></li>`;}).join("")}</ul>`;
+  }
+  html+=`</div></div>`;
+  // 검사 패널
+  if(sc.grade!=="low"||sc.leaning.length){
+    const panels=recommendPanels(sc.leaning);
+    if(panels.length){
+      html+=`<div class="card accent-clin"><div class="card-h">🧪 권고 검사 패널 (표적)</div><div class="card-b tight">
+        ${panels.map(p=>`<div class="testitem"><div class="ti-main">
+          <div class="ti-name">${p.label}</div>
+          <div class="ti-why">1차: ${p.first.join(" · ")}${p.reflex.length?` → 반사: ${p.reflex.join(" · ")}`:""}</div>
+          ${p.reflexNote?`<div class="ti-why" style="color:var(--pay)">${p.reflexNote}</div>`:""}
+        </div></div>`).join("")}
+        <div class="note"><b>급여:</b> ${REIMB.ena.note}</div>
+      </div></div>`;
+    }
+  }
+  out.innerHTML=html;
+  out.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function dzLabel(d){return ({sle:"SLE",ra:"RA",sjogren:"Sjögren",ssc:"SSc",iim:"근염",pmr:"PMR",
+  gca:"GCA",aosd:"AOSD",mctd:"MCTD",gpa:"GPA",mpa:"MPA",egpa:"EGPA"})[d]||d;}
+
+/* ---------- 결과 해석 ---------- */
+function renderResult(){
+  main().innerHTML=`
+  <div class="phead"><div class="eyebrow">진입 B · result-first</div>
+    <h1>결과 해석</h1><p>이미 나온 양성 결과를 시사질환으로 매핑하고 후속검사·분류기준을 안내한다.</p>
+    <div class="axis-line clin"></div></div>
+
+  <div class="card"><div class="card-h">🔬 ANA 양성</div><div class="card-b">
+    <div class="numrow">
+      <div class="numfield" style="flex:2"><label>패턴</label>
+        <select id="anaPattern"><option value="">선택</option>
+          ${ANA_PATTERNS.map(p=>`<option value="${p.id}">${p.label}</option>`).join("")}</select></div>
+      <div class="numfield"><label>역가(예 1:320)</label><input id="anaTiter" placeholder="1:160"></div>
+    </div>
+    <button class="btn primary" style="margin-top:12px" onclick="runANA()">ANA 해석</button>
+    <div id="anaOut"></div>
+  </div></div>
+
+  <div class="card"><div class="card-h">🩸 ANCA 양성</div><div class="card-b">
+    <div class="chipgrid">
+      <button class="chip" id="pr3chip" onclick="this.classList.toggle('on')">PR3-ANCA (C-ANCA)</button>
+      <button class="chip" id="mpochip" onclick="this.classList.toggle('on')">MPO-ANCA (P-ANCA)</button>
+    </div>
+    <button class="btn primary" style="margin-top:12px" onclick="runANCA()">ANCA 해석</button>
+    <div id="ancaOut"></div>
+  </div></div>
+
+  <div class="card"><div class="card-h">🧬 자가항체 → 질환 → 증상 빠른참조</div><div class="card-b tight">
+    <table class="crittable"><thead><tr><th>항체</th><th>질환</th><th>증상 결부</th></tr></thead><tbody>
+    ${AUTOAB_FLOW.map(a=>`<tr><td><b>${a.ab}</b></td><td>${a.dz}</td><td style="font-size:12px">${a.sym}</td></tr>`).join("")}
+    </tbody></table>
+  </div></div>
+
+  <div class="card"><div class="card-h">📋 분류기준 대조</div><div class="card-b">
+    <div class="banner-diag">⚠ 분류기준 ≠ 진단기준 · 전문의 평가 권고</div>
+    <div class="numfield"><label>질환 선택</label>
+      <select id="critSel" onchange="renderCritForm(this.value)"><option value="">선택</option>
+        ${Object.entries(CRITERIA).map(([k,c])=>`<option value="${k}">${c.label} (${c.source})</option>`).join("")}</select></div>
+    <div id="critForm"></div>
+  </div></div>`;
+}
+
+function runANA(){
+  const p=$("#anaPattern").value, titer=$("#anaTiter").value;
+  const out=$("#anaOut");
+  if(!p){out.innerHTML=`<div class="note">패턴을 선택하세요.</div>`;return;}
+  const r=interpretANA(p,titer);
+  // 패턴별 플로우 매칭
+  const flow=ANA_FLOW.find(f=>f.pattern.includes(r.label.split(" ")[0])||r.label.includes(f.pattern.split(" ")[0]));
+  out.innerHTML=`<div class="card accent-clin" style="margin-top:13px"><div class="card-b">
+    <div style="font-weight:750">${r.label} <span class="tag clin">${r.icap}</span>${r.fp?` <span class="tag warn">위양성 주의</span>`:""}</div>
+    ${r.titerNote?`<div class="note ${r.fp?'warn':'clin'}" style="margin-top:8px"><b>역가:</b> ${r.titerNote}</div>`:""}
+    <div class="flow3">
+      <div class="flow-step"><span class="fs-num">1</span><div><b>의심 질환</b><br>${flow?flow.suspect:r.dz}</div></div>
+      <div class="flow-arrow">▾</div>
+      <div class="flow-step"><span class="fs-num">2</span><div><b>다음 검사</b><br>${flow?flow.next:r.follow.join(" · ")}</div></div>
+      <div class="flow-arrow">▾</div>
+      <div class="flow-step"><span class="fs-num">3</span><div><b>증상 결부</b><br>${flow?flow.symptom:"임상 증상과 함께 해석"}</div></div>
+    </div>
+    ${r.fp?`<div class="note warn">DFS 패턴은 주로 건강인에서 보이는 위양성 시사. 임상 의심 없으면 과도한 하위검사 자제(ACR Choosing Wisely).</div>`:""}
+    <div class="note"><b>급여:</b> ${REIMB.ena.note}</div>
+  </div></div>`;
+}
+
+function runANCA(){
+  const pr3=$("#pr3chip").classList.contains("on");
+  const mpo=$("#mpochip").classList.contains("on");
+  const out=$("#ancaOut");
+  if(!pr3&&!mpo){out.innerHTML=`<div class="note">PR3 또는 MPO를 선택하세요.</div>`;return;}
+  const flows=[];
+  if(pr3)flows.push(ANCA_FLOW[0]);
+  if(mpo)flows.push(ANCA_FLOW[1]);
+  out.innerHTML=`<div class="card accent-ref" style="margin-top:13px"><div class="card-b">
+    ${flows.map(f=>`<div style="margin-bottom:6px">
+      <div class="flow3">
+        <div class="flow-step"><span class="fs-num">1</span><div><b>${f.type}</b><br>${f.suspect}</div></div>
+        <div class="flow-arrow">▾</div>
+        <div class="flow-step"><span class="fs-num">2</span><div><b>다음 검사</b><br>${f.next}</div></div>
+        <div class="flow-arrow">▾</div>
+        <div class="flow-step"><span class="fs-num">3</span><div><b>증상 결부</b><br>${f.symptom}</div></div>
+      </div></div>`).join("")}
+    <div class="note warn"><b>⚠ 적신호:</b> 폐출혈(객혈)·급속진행사구체신염(혈뇨+신기능저하)이면 응급 의뢰.</div>
+    <div class="note clin">★IIF 단독은 감염·약물·IBD서도 위양성. PR3/MPO 항원특이 면역측정으로 확인. 분류기준상 ANCA 가중치 높아 분류 ≠ 임상진단.</div>
+    <button class="btn ghost sm" style="margin-top:10px" onclick="openCriteriaModal('aav_2022_gpa')">AAV 2022 점수표 보기</button>
+  </div></div>`;
+}
+
+let CRIT_CHECKED=new Set();
+function renderCritForm(critId){
+  CRIT_CHECKED=new Set();
+  const box=$("#critForm");
+  if(!critId){box.innerHTML="";return;}
+  const c=CRITERIA[critId];
+  if(c.probabilistic){
+    box.innerHTML=`<div class="note clin" style="margin-top:12px"><b>${c.label}</b> — ${c.rule}</div>
+      <h3 class="sec">간이 점검 항목</h3><ul class="kp">${c.simpleItems.map(i=>`<li>${i}</li>`).join("")}</ul>
+      <div class="note warn">확률 기반 정밀 회귀점수는 전문의 영역. 1차에서는 anti-Jo1·CK·근위부약화가 핵심 단서.</div>`;
+    return;
+  }
+  let rows="";
+  if(c.entry)rows+=`<div class="note clin" style="margin-bottom:10px"><b>진입조건:</b> ${c.entry.lab}</div>`;
+  if(c.prereq)rows+=`<div class="note clin" style="margin-bottom:10px"><b>전제:</b> ${c.prereq}</div>`;
+  rows+=`<div class="note" style="margin-bottom:10px">${c.rule}</div>`;
+  if(c.items){
+    rows+=`<div class="chipgrid" style="flex-direction:column;align-items:stretch">`;
+    c.items.forEach((it,i)=>{
+      rows+=`<button class="chip" style="display:flex;justify-content:space-between" onclick="toggleCrit('${critId}_${i}',this)">
+        <span>${it[0]} <small style="color:var(--ink-faint)">${it[2]}</small></span>
+        <b style="color:${it[1]<0?'var(--ref)':'var(--ok)'}">${it[1]>0?'+':''}${it[1]}</b></button>`;
+    });
+    rows+=`</div>`;
+  } else if(c.domains){
+    c.domains.forEach((d,di)=>{
+      rows+=`<div class="grouplbl">${d.dom}</div><div class="chipgrid" style="flex-direction:column;align-items:stretch">`;
+      d.items.forEach((it,ii)=>{
+        rows+=`<button class="chip" style="display:flex;justify-content:space-between" onclick="toggleCrit('${critId}_${di}_${ii}',this)">
+          <span>${it[0]}</span><b style="color:${it[1]<0?'var(--ref)':'var(--ok)'}">${it[1]>0?'+':''}${it[1]}</b></button>`;
+      });
+      rows+=`</div>`;
+    });
+  }
+  rows+=`<button class="btn primary" style="margin-top:14px" onclick="calcCrit('${critId}')">점수 계산</button><div id="critResult"></div>`;
+  box.innerHTML=rows;
+}
+function toggleCrit(key,el){
+  if(CRIT_CHECKED.has(key))CRIT_CHECKED.delete(key);else CRIT_CHECKED.add(key);
+  el.classList.toggle("on");
+}
+function calcCrit(critId){
+  const r=criteriaScore(critId,[...CRIT_CHECKED]);
+  const box=$("#critResult");
+  box.innerHTML=`<div class="card ${r.classified?'accent-ref':'accent-clin'}" style="margin-top:13px"><div class="card-b">
+    <div class="grade"><span class="grade-badge ${r.classified?'high':'low'}">${r.total}점 / 역치 ${r.threshold}</span>
+      <span class="grade-meta">${r.classified?'분류기준 충족':'미충족'}</span></div>
+    ${r.contributing.length?`<ul class="contrib">${r.contributing.map(c=>`<li><span>${c.label}</span>
+      <span class="sc ${c.score<0?'neg':c.score>0?'pos':'zero'}">${c.score>0?'+':''}${c.score}</span></li>`).join("")}</ul>`:""}
+    <div class="note warn">★이것은 <b>분류기준상 점수</b>일 뿐 진단이 아닙니다. "${r.label} 분류기준 ${r.total}점(역치 ${r.threshold}) — 전문의 평가 권고".</div>
+  </div></div>`;
+  box.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+/* ---------- 자가염증 축 ---------- */
+function renderInflam(){
+  main().innerHTML=`
+  <div class="phead"><div class="eyebrow">진입 C · 항체 음성이 지지</div>
+    <h1>자가염증 축</h1><p>AOSD·PMR·GCA. 자가항체가 음성인 게 오히려 진단을 지지하는 질환군. 이 축은 위음성(검사 정상인데 진짜 병)을 막는다.</p>
+    <div class="axis-line inflam"></div></div>
+
+  <div class="card accent-inflam"><div class="card-h">🔥 갈래 분기</div><div class="card-b tight">
+    <div class="testitem"><div class="ti-main"><div class="ti-name">AOSD (전 연령)</div>
+      <div class="ti-why">불명열 ≥39℃ + 연어색 발진 + 관절통 + 호중구↑. 페리틴 폭증. ANA/RF 음성이 지지.</div></div>
+      <button class="btn ghost sm" onclick="openCriteriaModal('aosd_yamaguchi')">야마구치</button></div>
+    <div class="testitem"><div class="ti-main"><div class="ti-name">PMR (≥50세)</div>
+      <div class="ti-why">양측 견부·고관절대 통증 + 조조강직 >45분 + ESR/CRP↑. ★GCA 동반 항상 점검.</div></div>
+      <button class="btn ghost sm" onclick="openCriteriaModal('pmr_2012')">PMR 기준</button></div>
+    <div class="testitem"><div class="ti-main"><div class="ti-name">GCA (≥50세) 🚨</div>
+      <div class="ti-why">측두부 두통·턱파행·시각이상·두피압통. 실명 위험 — 의심 시 즉시 스테로이드.</div></div>
+      <button class="btn ghost sm" onclick="openCriteriaModal('gca_2022')">GCA 기준</button></div>
+  </div></div>
+
+  <div class="redflag-card"><div class="rf-h">👁 GCA — 점수 우회 긴급 게이트</div><div class="rf-b">
+    <b>≥50세 + (턱 파행 / 새 측두두통 / 시각이상 / 두피압통)</b> 중 하나라도 → 분류점수와 무관하게 <b>즉시 의뢰 + 스테로이드 지연 금지</b>.
+    생검·확진을 기다리지 않는다. ★ESR/CRP 정상이어도 강한 임상 의심이면 의뢰 유지(위음성 방지).
+  </div></div>
+
+  <div class="redflag-card"><div class="rf-h">🔥 MAS — AOSD 적신호</div><div class="rf-b">
+    페리틴 급등 + 혈구감소(2계열↓) + 간기능 악화 + 응고이상 → 점수 우회 응급의뢰. AOSD가 대식세포활성증후군으로 진행 시 치명적.
+  </div></div>
+
+  <div class="card accent-inflam"><div class="card-h">🧪 1차 검사 (외래 가능)</div><div class="card-b">
+    <ul class="kp">
+      <li><b>AOSD:</b> CBC(호중구%) · <b>페리틴</b>(정상상한 5배↑, 흔히 4,000~30,000) · 간효소 · ESR/CRP. 당화페리틴<20% 고특이도(의뢰영역)</li>
+      <li><b>PMR:</b> ESR · CRP · CBC. RF/ACPA(RA 감별)</li>
+      <li><b>GCA:</b> ESR · CRP. 측두동맥 초음파(halo)/생검 — 단 검사 전 스테로이드 우선</li>
+    </ul>
+    <div class="note warn">★자가염증 축의 핵심: 정상 염증표지자가 배제 근거가 아니다. GCA·PMR은 드물게 ESR/CRP 정상으로 발현.</div>
+  </div></div>
+
+  <div class="banner-diag" style="margin-top:20px">⚙ 1차 공동관리 — 치료 시작·변경은 전문의 · 아래는 모니터링 보조 안내선</div>
+
+  <div class="redflag-card"><div class="rf-h">👁 GCA 응급 스테로이드 — 지연 = 실명</div><div class="rf-b">
+    <div style="margin-bottom:8px"><b>시각증상 없음:</b> ${GCA_STEROID.novisual}</div>
+    <div style="margin-bottom:8px;color:var(--ref)"><b>급성 시력소실·복시:</b> ${GCA_STEROID.visual}</div>
+    <div style="margin-bottom:6px;font-size:13px"><b>아스피린:</b> ${GCA_STEROID.aspirin}</div>
+    <div style="margin-bottom:6px;font-size:13px"><b>감량:</b> ${GCA_STEROID.taper}</div>
+    <div style="margin-bottom:6px;font-size:13px"><b>스테로이드-절약:</b> ${GCA_STEROID.sparing}</div>
+    <div style="font-size:13px"><b>동반:</b> ${GCA_STEROID.support}</div>
+  </div></div>
+
+  <div class="card accent-inflam"><div class="card-h">💊 PMR 스테로이드 프로토콜 (1차 관리 빈번)</div><div class="card-b">
+    <h3 class="sec">시작</h3><div class="note">${PMR_STEROID.start}</div>
+    <h3 class="sec">감량 스케줄</h3><div class="note">${PMR_STEROID.taper}</div>
+    <h3 class="sec">재발</h3><div class="note">${PMR_STEROID.relapse}</div>
+    <ul class="kp" style="margin-top:10px">
+      <li><b>MTX 절약:</b> ${PMR_STEROID.mtx}</li>
+      <li><b>동반관리:</b> ${PMR_STEROID.comgmt}</li>
+    </ul>
+    <div class="note warn">${PMR_STEROID.gca}</div>
+  </div></div>
+
+  <div class="card accent-inflam"><div class="card-h">💊 AOSD 치료 (방향 — 전문의 영역)</div><div class="card-b tight">
+    ${AOSD_TREATMENT.steps.map(s=>`<div class="testitem"><div class="ti-main">
+      <div class="ti-name">${s[0]}</div><div class="ti-why">${s[1]}</div></div></div>`).join("")}
+    <div class="note warn" style="margin-top:8px">${AOSD_TREATMENT.mas}</div>
+  </div></div>`;
+}
+
+/* ---------- RA 축 ---------- */
+function renderRA(){
+  main().innerHTML=`
+  <div class="phead"><div class="eyebrow">진입 D · 신체진찰 우선</div>
+    <h1>RA 축 — 류마티스 관절염</h1><p>외래 자가면역 최빈. 손이 검사보다 먼저 말한다. 조기 의뢰 window가 핵심.</p>
+    <div class="axis-line ra"></div></div>
+
+  <div class="card accent-ra"><div class="card-h">🖐 관절 분포 — 어디를 보나</div><div class="card-b">
+    ${RA_DIAGNOSIS.handSvg}
+    <ul class="kp" style="margin-top:12px">
+      ${RA_DIAGNOSIS.distribution.map(d=>`<li><b>${d[0]}:</b> ${d[1]}</li>`).join("")}
+      <li>아침강직 <b>≥30~60분</b>(흔히 1시간 이상) — 활동으로 호전(OA는 사용 시 악화)</li>
+      <li>≥3개 종창관절, 증상 ≥6주(12주 이상이면 더 예측적)</li>
+    </ul>
+  </div></div>
+
+  <div class="card accent-ra"><div class="card-h">🔬 신체진찰 상세</div><div class="card-b tight">
+    ${RA_DIAGNOSIS.exam.map(e=>`<div class="testitem"><div class="ti-main">
+      <div class="ti-name">${e[0]}</div><div class="ti-why">${e[1]}</div></div></div>`).join("")}
+    <button class="btn ghost sm" style="margin-top:10px" onclick="openCriteriaModal('ra_2010')">2010 분류기준 점수표</button>
+  </div></div>
+
+  <div class="card accent-ra"><div class="card-h">🫁 관절 외 소견 (extra-articular)</div><div class="card-b">
+    <div class="chipgrid">${RA_DIAGNOSIS.extra.map(x=>`<span class="chip" style="cursor:default;pointer-events:none">${x}</span>`).join("")}</div>
+    <div class="note">${RA_DIAGNOSIS.deformity}</div>
+  </div></div>
+
+  <div class="card accent-ra"><div class="card-h">🩻 영상</div><div class="card-b tight">
+    ${RA_DIAGNOSIS.imaging.map(i=>`<div class="testitem"><div class="ti-main">
+      <div class="ti-name">${i[0]}</div><div class="ti-why">${i[1]}</div></div></div>`).join("")}
+  </div></div>
+
+  <div class="card accent-ra"><div class="card-h">🔍 감별진단</div><div class="card-b tight">
+    <table class="crittable"><thead><tr><th>감별</th><th>분포</th><th>키 포인트</th></tr></thead><tbody>
+      <tr><td><b>OA</b></td><td>DIP·제1CMC</td><td>bony 종창, 짧은 강직, ESR/CRP·CCP 정상</td></tr>
+      <tr><td><b>통풍</b></td><td>제1MTP 급성</td><td>급성 발적·격통, 요산↑(발작시 정상가능)</td></tr>
+      <tr><td><b>건선관절염</b></td><td>비대칭·DIP·축성</td><td>dactylitis, 피부·손발톱, CCP(−)</td></tr>
+      <tr><td><b>반응성/바이러스</b></td><td>다양</td><td>parvovirus·풍진·HCV, 선행감염</td></tr>
+      <tr><td><b>SLE 관절통</b></td><td>비미란성</td><td>ANA(+)·다장기, RA와 중복가능</td></tr>
+    </tbody></table>
+  </div></div>
+
+  <div class="redflag-card"><div class="rf-h">⏱ Window of Opportunity — RA 축의 심장</div><div class="rf-b">
+    RA는 <b>첫 3개월~1년이 치료 결정적</b>. 미란은 늦게 와서 X-ray 정상이 안심 근거가 아니다.<br>
+    <b>의뢰 트리거(하나라도):</b> 소관절 침범 / ≥3 종창관절 / squeeze 양성 / 아침강직 ≥30분 / 증상~내원 3개월 이상 지연.<br>
+    <span style="color:var(--ref)">★의뢰 전 경구 스테로이드 주의 — 활막염 가려 전문의 평가 왜곡. NSAID로 교량하며 신속 의뢰.</span>
+  </div></div>
+
+  <div class="card accent-ra"><div class="card-h">🧪 1차 검사 + 급여</div><div class="card-b">
+    <ul class="kp"><li>RF · anti-CCP(ACPA, 저/고역가 구분) · ESR/CRP · CBC · 손/발 X-ray</li>
+      <li>★혈청음성 RA 흔함 — RF/CCP 음성이어도 임상 RA 가능, "음성=배제" 아님</li></ul>
+    <div class="note"><b>anti-CCP 급여:</b> ${REIMB.anti_ccp.note}</div>
+  </div></div>
+
+  <div class="banner-diag" style="margin-top:20px">⚙ 1차 공동관리 — 치료 시작·변경은 전문의 · 아래는 모니터링 보조 안내선</div>
+
+  <div class="card accent-ra"><div class="card-h">💊 RA 치료 알고리즘 (2021 ACR)</div><div class="card-b tight">
+    ${RA_TREATMENT.steps.map((s,i)=>`<div class="testitem"><div class="ti-main">
+      <div class="ti-name"><span style="color:var(--ra);font-weight:800">${i+1}</span> ${s[0]}</div>
+      <div class="ti-why">${s[1]}</div></div></div>`).join("")}
+    <div class="note clin" style="margin-top:10px"><b>원칙:</b> ${RA_TREATMENT.principle}</div>
+    <div class="note"><b>1차 역할:</b> ${RA_TREATMENT.role1st}</div>
+  </div></div>
+
+  <div class="card accent-ra"><div class="card-h">🔬 MTX 모니터링 (자주 위임받는 영역)</div><div class="card-b">
+    <h3 class="sec">시작 전 기저검사</h3>
+    <div class="chipgrid">${MTX_MONITOR.baseline.map(b=>`<span class="chip" style="cursor:default;pointer-events:none">${b}</span>`).join("")}</div>
+    <h3 class="sec">용량</h3><div class="note">${MTX_MONITOR.dose}</div>
+    <h3 class="sec">모니터링 주기</h3><div class="note">${MTX_MONITOR.monitor}</div>
+    <h3 class="sec">🚨 중단·주의</h3>
+    <ul class="kp">${MTX_MONITOR.redflags.map(r=>`<li>${r}</li>`).join("")}</ul>
+  </div></div>
+
+  <div class="card accent-ra"><div class="card-h">💊 RA 약제 상세 (계열·용법·특징·부작용)</div><div class="card-b">
+    <p style="font-size:12.5px;color:var(--ink-dim);margin:0 0 10px">계열 카드를 탭하면 성분별 용법·특징·부작용·모니터링·금기가 펼쳐집니다.</p>
+    ${Object.entries(RA_DRUGS).map(([k,grp])=>`
+      <div class="def-card"><div class="dc-h" onclick="this.parentElement.classList.toggle('open')">
+        <span><span class="tag ${grp.color}">${({csdmard:'csDMARD',bdmard:'bDMARD',tsdmard:'JAK',steroid:'스테로이드'})[k]}</span> ${grp.cat}</span><span class="arr">▸</span></div>
+        <div class="dc-b">
+          ${grp.items.map(it=>`<div style="border-bottom:1px solid var(--line);padding:9px 0">
+            <div style="font-weight:750;font-size:13.5px">${it.name} <span style="font-weight:600;color:var(--ink-faint);font-size:11.5px">· ${it.route}</span></div>
+            <div style="font-size:12.5px;margin-top:4px"><b>용법:</b> ${it.dose}</div>
+            <div style="font-size:12.5px;margin-top:2px"><b>특징:</b> ${it.feat}</div>
+            <div style="font-size:12.5px;margin-top:2px;color:#9a3a3a"><b>부작용:</b> ${it.ae}</div>
+            <div style="font-size:12.5px;margin-top:2px"><b>모니터링:</b> ${it.mon}</div>
+            <div style="font-size:12.5px;margin-top:2px;color:var(--pay)"><b>금기·주의:</b> ${it.contra}</div>
+          </div>`).join("")}
+        </div></div>`).join("")}
+  </div></div>
+
+  <div class="card accent-pay"><div class="card-h">💰 생물학적제제·JAK 급여 (안내선)</div><div class="card-b">
+    <div class="note">${BIOLOGIC_REIMB_KR.ra}</div>
+    <div class="note warn">${BIOLOGIC_REIMB_KR.note}</div>
+  </div></div>`;
+}
+
+/* ---------- 토픽 모달 ---------- */
+function openTopic(id){
+  const content=TOPIC_CONTENT[id];
+  if(!content){openModalRaw("준비 중","이 토픽은 다음 빌드에서 확장됩니다.");return;}
+  openModalRaw(content.title,content.body);
+}
+function openCriteriaModal(critId){
+  const c=CRITERIA[critId];
+  let body=`<div class="banner-diag">⚠ 분류기준 ≠ 진단기준 · 임상판단 보조용</div>`;
+  if(c.entry)body+=`<div class="note clin"><b>진입조건:</b> ${c.entry.lab}</div>`;
+  if(c.prereq)body+=`<div class="note clin"><b>전제:</b> ${c.prereq}</div>`;
+  body+=`<div class="note">${c.rule}</div>`;
+  body+=`<table class="crittable"><thead><tr><th>항목</th><th style="text-align:center">점수</th></tr></thead><tbody>`;
+  if(c.items){
+    c.items.forEach(it=>{body+=`<tr><td>${it[0]} <small style="color:var(--ink-faint)">${it[2]}</small></td>
+      <td class="sc ${it[1]<0?'neg':'pos'}">${it[1]>0?'+':''}${it[1]}</td></tr>`;});
+  } else if(c.domains){
+    c.domains.forEach(d=>{body+=`<tr class="dom"><td colspan="2">${d.dom}</td></tr>`;
+      d.items.forEach(it=>{body+=`<tr><td>${it[0]}</td><td class="sc ${it[1]<0?'neg':'pos'}">${it[1]>0?'+':''}${it[1]}</td></tr>`;});});
+  } else if(c.simpleItems){
+    c.simpleItems.forEach(i=>{body+=`<tr><td>${i}</td><td class="sc">✓</td></tr>`;});
+  }
+  body+=`</tbody></table>`;
+  const src=SOURCES.criteria.find(s=>s[0].includes(c.label)||c.source.includes(s[0].split(" ")[1]||"___"));
+  body+=`<div class="note" style="margin-top:12px"><b>출처:</b> ${c.source}</div>`;
+  openModalRaw(`${c.label} — ${c.source}`,body);
+}
+function openModalRaw(title,body){
+  $("#modalTitle").innerHTML=title;
+  $("#modalBody").innerHTML=body;
+  $("#modal").classList.add("open");
+}
+function closeModal(){$("#modal").classList.remove("open");}
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal();});
+
+/* ---------- 푸터 (출처) ---------- */
+function renderFooter(){
+  document.getElementById("footer").innerHTML=`
+  <div class="disclaim">분류기준은 진단기준이 아니며, 본 도구는 임상판단 보조용입니다. 자가면역질환 확진·치료는 류마티스 전문의 영역이며, 최종 결정은 진료의 책임입니다. 급여기준은 갱신될 수 있으므로 청구 시 최신 심평원 고시·허가사항을 확인하세요.</div>
+  <h4>분류기준 (ACR/EULAR 등)</h4>
+  ${SOURCES.criteria.map(s=>`<div class="src-item">• ${s[0]} — ${s[1]}${s[2]?` · <a href="${s[2]}" target="_blank" rel="noopener">link</a>`:""}</div>`).join("")}
+  <h4>ANA 패턴·검사·급여</h4>
+  ${SOURCES.other.map(s=>`<div class="src-item">• ${s[0]} — ${s[1]}${s[2]?` · <a href="${s[2]}" target="_blank" rel="noopener">link</a>`:""}</div>`).join("")}
+  <div style="margin-top:16px;color:var(--ink-faint)">박형도 · 화성유일병원 · 외래 임상판단 보조 도구 · 단일 HTML 로컬</div>`;
+}
+
+/* 초기 렌더 */
+renderFooter();
+render();
+
+</script>
+</body>
+</html>

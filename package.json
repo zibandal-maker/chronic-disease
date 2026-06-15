@@ -1,0 +1,11 @@
+{
+  "name": "chronic-disease-guide-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "만성질환 처방 가이드 포털 — 독립 실행 HTML 가이드 + 통합 대시보드",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "node scripts/build.js && npx --yes serve public -l 3000"
+  },
+  "license": "UNLICENSED"
+}

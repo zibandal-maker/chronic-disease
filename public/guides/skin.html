@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>피부질환 통합 가이드</title>
+<style>
+:root{
+  --bg:#f4f6f8; --panel:#ffffff; --panel2:#eef1f4; --line:#d6dde3;
+  --ink:#1a2530; --ink-dim:#4a5a68; --ink-faint:#8493a0;
+  --clin:#2c6fb0; --clin-bg:#e4eef8;
+  --pay:#b87514; --pay-bg:#fbf0d8;
+  --care:#1a8a72; --care-bg:#dcf2ec;
+  --ad:#d8632a; --ad-bg:#fbe9df;
+  --csu:#b5478f; --csu-bg:#f7e6f1;
+  --ok:#1f9d54; --ok-bg:#e3f5ea;
+  --warn:#b87514; --warn-bg:#fbf0d8;
+  --block:#c43838; --block-bg:#fbe6e6;
+  --alert:#d8632a;
+  --accent:var(--ad); --accent-bg:var(--ad-bg);
+  --radius:14px; --radius-sm:9px;
+  --shadow:0 1px 3px rgba(20,40,60,.06),0 4px 16px rgba(20,40,60,.05);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",Roboto,sans-serif;
+  font-size:15px;line-height:1.5;-webkit-text-size-adjust:100%;}
+body{padding-bottom:84px;}
+.wrap{max-width:760px;margin:0 auto;padding:0 14px;}
+
+/* 헤더 */
+.appbar{position:sticky;top:0;z-index:40;background:rgba(244,246,248,.92);
+  backdrop-filter:saturate(1.4) blur(8px);-webkit-backdrop-filter:saturate(1.4) blur(8px);
+  border-bottom:1px solid var(--line);}
+.appbar-in{max-width:760px;margin:0 auto;padding:10px 14px 0;}
+.title-row{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.title-row h1{font-size:18px;font-weight:800;margin:0;letter-spacing:-.3px;}
+.title-row .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);flex:none;
+  box-shadow:0 0 0 4px var(--accent-bg);transition:background .25s,box-shadow .25s;}
+
+/* 질환 토글 */
+.disease-toggle{display:flex;gap:6px;margin-bottom:9px;}
+.disease-toggle button{flex:1;border:1.5px solid var(--line);background:var(--panel);
+  border-radius:var(--radius-sm);padding:9px 6px;font-size:14px;font-weight:700;color:var(--ink-dim);
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.disease-toggle button .ic{font-size:16px;}
+.disease-toggle button.on[data-d="ad"]{border-color:var(--ad);background:var(--ad-bg);color:var(--ad);}
+.disease-toggle button.on[data-d="csu"]{border-color:var(--csu);background:var(--csu-bg);color:var(--csu);}
+
+/* 탭바 */
+.tabbar{display:flex;gap:4px;}
+.tabbar button{flex:1;border:none;background:none;padding:9px 4px 11px;font-size:13px;font-weight:700;
+  color:var(--ink-faint);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .18s;
+  display:flex;flex-direction:column;align-items:center;gap:3px;}
+.tabbar button .ic{font-size:17px;}
+.tabbar button.on{color:var(--accent);border-bottom-color:var(--accent);}
+
+/* 콘텐츠 */
+.view{padding-top:14px;}
+.view[hidden]{display:none;}
+
+/* 카드 공통 */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);margin-bottom:11px;overflow:hidden;}
+.card-head{padding:13px 15px;display:flex;align-items:flex-start;gap:11px;cursor:pointer;}
+.card-head .icon{font-size:22px;flex:none;line-height:1;margin-top:1px;}
+.card-head .ht{flex:1;min-width:0;}
+.card-head .ht .t{font-size:15.5px;font-weight:750;letter-spacing:-.2px;}
+.card-head .ht .l{font-size:12.5px;color:var(--ink-faint);margin-top:2px;}
+.card-head .chev{color:var(--ink-faint);font-size:13px;transition:transform .2s;flex:none;margin-top:3px;}
+.card.open .card-head .chev{transform:rotate(90deg);}
+.card-body{padding:0 15px;max-height:0;overflow:hidden;transition:max-height .01s;}
+.card.open .card-body{max-height:none;padding:0 15px 15px;}
+
+/* 카테고리 색 태그 */
+.cat-tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px;vertical-align:middle;}
+.cat-clin{background:var(--clin-bg);color:var(--clin);}
+.cat-pay{background:var(--pay-bg);color:var(--pay);}
+.cat-care{background:var(--care-bg);color:var(--care);}
+
+/* 섹션 */
+.sec{margin-top:14px;}
+.sec:first-child{margin-top:4px;}
+.sec-t{font-size:13px;font-weight:750;color:var(--ink-dim);margin-bottom:7px;
+  display:flex;align-items:center;gap:6px;}
+.sec-t::before{content:"";width:3px;height:13px;background:var(--accent);border-radius:2px;}
+
+/* keypoints */
+.kp{list-style:none;margin:0;padding:0;}
+.kp li{position:relative;padding:6px 0 6px 18px;font-size:13.5px;color:var(--ink);border-bottom:1px dashed var(--line);}
+.kp li:last-child{border-bottom:none;}
+.kp li::before{content:"›";position:absolute;left:3px;color:var(--accent);font-weight:800;}
+.kp li b{color:var(--ad);}
+
+/* note */
+.note{background:var(--panel2);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;
+  color:var(--ink-dim);margin-top:9px;border-left:3px solid var(--accent);}
+.note .nt{font-weight:750;color:var(--ink);font-size:12.5px;margin-bottom:3px;}
+
+/* 약물 카드(클릭형) */
+.drugmini{border:1px solid var(--line);border-radius:var(--radius-sm);margin-top:8px;overflow:hidden;background:var(--panel);}
+.drugmini-h{padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:9px;}
+.drugmini-h .bn{font-weight:750;font-size:14px;}
+.drugmini-h .gn{font-size:12px;color:var(--ink-faint);}
+.drugmini-h .tg{margin-left:auto;font-size:11px;font-weight:700;padding:2px 8px;border-radius:14px;background:var(--clin-bg);color:var(--clin);}
+.drugmini-b{padding:0 12px;max-height:0;overflow:hidden;transition:max-height .01s;font-size:12.5px;color:var(--ink-dim);}
+.drugmini.open .drugmini-b{max-height:none;padding:2px 12px 12px;}
+.drugmini .row{padding:5px 0;border-top:1px dashed var(--line);}
+.drugmini .row .k{font-weight:700;color:var(--ink);font-size:11.5px;display:block;margin-bottom:1px;}
+.drugmini .bx{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px;}
+.drugmini .bx span{background:var(--panel2);border-radius:10px;padding:2px 8px;font-size:11px;}
+.drugmini .warnbox{background:var(--block-bg);color:var(--block);border-radius:7px;padding:6px 9px;margin-top:6px;font-size:11.5px;font-weight:600;}
+.drugmini .tiplist{margin:3px 0 0;padding-left:16px;}
+.drugmini .tiplist li{font-size:11.5px;color:var(--ink-dim);padding:2px 0;line-height:1.45;}
+
+/* 게이트/뱃지 */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:14px;}
+.b-ok{background:var(--ok-bg);color:var(--ok);}
+.b-warn{background:var(--warn-bg);color:var(--warn);}
+.b-block{background:var(--block-bg);color:var(--block);}
+.gaterow{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--line);
+  border-radius:var(--radius-sm);margin-top:7px;background:var(--panel);}
+.gaterow .gi{font-size:16px;}
+.gaterow .gl{flex:1;font-size:13px;font-weight:650;}
+.gaterow .gv{font-size:11.5px;color:var(--ink-faint);}
+
+/* table */
+.codetbl{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px;}
+.codetbl td{padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top;}
+.codetbl td.c{font-weight:750;color:var(--ad);white-space:nowrap;width:74px;}
+.codetbl tr.hot td{background:var(--pay-bg);}
+
+/* 검색바 */
+.searchbar{position:relative;margin-bottom:12px;}
+.searchbar input{width:100%;border:1.5px solid var(--line);border-radius:var(--radius-sm);
+  padding:11px 14px 11px 38px;font-size:14px;background:var(--panel);color:var(--ink);}
+.searchbar input:focus{outline:none;border-color:var(--accent);}
+.searchbar .si{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--ink-faint);}
+
+/* 배너 */
+.banner{background:linear-gradient(135deg,var(--accent-bg),var(--panel));border:1px solid var(--line);
+  border-radius:var(--radius);padding:13px 15px;margin-bottom:13px;font-size:12.5px;color:var(--ink-dim);}
+.banner b{color:var(--ink);}
+
+/* 시뮬 */
+.simnode{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px;margin-bottom:10px;box-shadow:var(--shadow);}
+.simnode .sq{font-size:14.5px;font-weight:750;margin-bottom:9px;}
+.simopt{display:flex;flex-wrap:wrap;gap:7px;}
+.simopt button{border:1.5px solid var(--line);background:var(--panel);border-radius:20px;padding:8px 14px;font-size:13px;font-weight:650;color:var(--ink-dim);cursor:pointer;transition:all .18s;}
+.simopt button.sel{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
+.simnext{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line);font-size:13px;color:var(--ink-dim);}
+.simhint{font-size:12px;color:var(--ink-dim);background:var(--panel2);border-radius:8px;padding:8px 11px;margin-bottom:10px;line-height:1.5;border-left:3px solid var(--clin);}
+.sticky-collect{position:fixed;left:0;right:0;bottom:64px;z-index:30;background:rgba(255,255,255,.96);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line);
+  padding:9px 14px;font-size:12px;color:var(--ink-dim);max-height:120px;overflow-y:auto;}
+.sticky-collect b{color:var(--accent);}
+.sticky-collect[hidden]{display:none;}
+
+/* 플로우 입력 */
+.inpgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
+.inpgrid .fld{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 11px;}
+.inpgrid .fld.full{grid-column:1/-1;}
+.inpgrid .fld label{font-size:11px;font-weight:700;color:var(--ink-faint);display:block;margin-bottom:4px;}
+.inpgrid .fld input,.inpgrid .fld select{width:100%;border:none;background:none;font-size:15px;color:var(--ink);padding:2px 0;}
+.inpgrid .fld input:focus,.inpgrid .fld select:focus{outline:none;}
+.inpgrid .fld{position:relative;}
+.fld-calc{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:1px solid var(--accent);background:var(--accent-bg);color:var(--accent);border-radius:14px;padding:4px 9px;font-size:11px;font-weight:700;cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chips button{border:1.4px solid var(--line);background:var(--panel);border-radius:18px;padding:6px 12px;font-size:12.5px;font-weight:650;color:var(--ink-dim);cursor:pointer;transition:all .16s;}
+.chips button.on{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
+.runbtn{width:100%;border:none;background:var(--accent);color:#fff;font-size:15px;font-weight:750;padding:13px;border-radius:var(--radius-sm);cursor:pointer;margin-bottom:14px;box-shadow:var(--shadow);}
+.runbtn:active{opacity:.85;}
+
+/* 결과 카드 */
+.rescard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:11px;overflow:hidden;}
+.rescard .rh{padding:11px 15px;font-weight:750;font-size:14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);}
+.rescard .rh .ricon{font-size:17px;}
+.rescard .rb{padding:13px 15px;}
+.rescard.clin .rh{background:var(--clin-bg);color:var(--clin);}
+.rescard.pay .rh{background:var(--pay-bg);color:var(--pay);}
+.rescard.care .rh{background:var(--care-bg);color:var(--care);}
+.optrow{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px dashed var(--line);}
+.optrow:last-child{border-bottom:none;}
+.optrow .on{font-weight:700;font-size:13.5px;flex:none;}
+.optrow .od{font-size:11.5px;color:var(--ink-faint);flex:1;}
+.prio{width:22px;height:22px;border-radius:50%;background:var(--accent-bg);color:var(--accent);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none;}
+
+/* 근거(refs) */
+.refitem{border:1px solid var(--line);border-radius:var(--radius-sm);margin-top:7px;overflow:hidden;background:var(--clin-bg);cursor:pointer;}
+.refhead{padding:9px 11px;display:flex;align-items:center;gap:8px;}
+.refgrade{font-size:10.5px;font-weight:800;color:#fff;background:var(--clin);padding:2px 7px;border-radius:10px;white-space:nowrap;flex:none;}
+.reftxt{flex:1;font-size:12.5px;font-weight:650;color:var(--ink);line-height:1.4;}
+.refchev{color:var(--clin);font-size:14px;flex:none;}
+.refbody{max-height:0;overflow:hidden;transition:max-height .01s;padding:0 11px;}
+.refitem.open .refbody{max-height:none;padding:0 11px 11px;}
+.refsrc{font-size:11.5px;color:var(--clin);font-weight:700;margin-bottom:5px;}
+.refdetail{font-size:12px;color:var(--ink-dim);line-height:1.55;}
+
+/* 점수 계산기 */
+.calcsrc{font-size:11.5px;color:var(--ink-faint);margin-bottom:8px;}
+.calctip{font-size:12px;color:var(--ink-dim);background:var(--panel2);border-radius:8px;padding:8px 11px;margin-bottom:12px;line-height:1.5;border-left:3px solid var(--accent);}
+.calcregion{border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 11px;margin-bottom:10px;background:var(--panel);}
+.calcreg-h{font-size:13.5px;font-weight:750;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.calcw{font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-bg);padding:1px 7px;border-radius:10px;}
+.calcrow{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.calclab{flex:1;min-width:0;font-size:12px;font-weight:600;color:var(--ink-dim);line-height:1.25;}
+.calclab .calcdesc{display:block;font-size:10.5px;color:var(--ink-faint);font-weight:400;}
+.calcseg{display:flex;gap:3px;flex:none;}
+.calcseg.sm{gap:2px;}
+.calcbtn{width:28px;height:30px;border:1.3px solid var(--line);background:var(--panel);border-radius:7px;font-size:12px;font-weight:700;color:var(--ink-dim);cursor:pointer;padding:0;transition:all .12s;}
+.calcseg.sm .calcbtn{width:26px;height:28px;}
+.calcbtn.on{border-color:var(--accent);background:var(--accent);color:#fff;}
+.calcbtn.area{border-style:dashed;}
+.calcbtn.area.on{border-style:solid;background:var(--clin);border-color:var(--clin);}
+.calcsub{font-size:11px;color:var(--ink-faint);margin-top:4px;text-align:right;}
+.calcsub b{color:var(--ink);font-size:13px;}
+.calcresult{border:2px solid var(--ok);border-radius:var(--radius);padding:14px;text-align:center;margin:14px 0;background:var(--panel);}
+.calcrn{font-size:12px;font-weight:700;color:var(--ink-faint);}
+.calcrs{font-size:38px;font-weight:850;line-height:1.1;letter-spacing:-1px;}
+.calcrb{font-size:14px;font-weight:750;}
+.calcrsub{font-size:12px;color:var(--ink-dim);margin-top:4px;}
+.calcapply{width:100%;border:none;background:var(--accent);color:#fff;font-size:14px;font-weight:750;padding:12px;border-radius:var(--radius-sm);cursor:pointer;}
+.uastbl{width:100%;border-collapse:collapse;}
+.uastbl th{font-size:11px;color:var(--ink-faint);font-weight:700;padding:4px;text-align:center;}
+.uastbl td{padding:4px 2px;text-align:center;}
+.uastbl .uasday{font-size:12px;font-weight:700;color:var(--ink-dim);}
+.uctq{border:1px solid var(--line);border-radius:var(--radius-sm);padding:11px;margin-bottom:9px;background:var(--panel);}
+.uctq-t{font-size:13px;font-weight:650;margin-bottom:9px;line-height:1.4;}
+.uctopt{display:flex;align-items:center;gap:8px;width:100%;border:1.3px solid var(--line);background:var(--panel);border-radius:8px;padding:8px 11px;margin-bottom:5px;font-size:12.5px;color:var(--ink-dim);cursor:pointer;text-align:left;transition:all .12s;}
+.uctopt.on{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);font-weight:650;}
+.uctv{width:20px;height:20px;border-radius:50%;background:var(--panel2);color:var(--ink-faint);font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex:none;}
+.uctopt.on .uctv{background:var(--accent);color:#fff;}
+.calc-launch{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--accent);background:var(--accent-bg);color:var(--accent);border-radius:20px;padding:7px 14px;font-size:12.5px;font-weight:700;cursor:pointer;margin-top:8px;}
+
+/* 모달 */
+.modal{position:fixed;inset:0;z-index:60;background:rgba(20,30,40,.55);display:flex;align-items:flex-end;justify-content:center;}
+.modal[hidden]{display:none;}
+.modal-in{background:var(--panel);border-radius:18px 18px 0 0;max-width:760px;width:100%;max-height:86vh;overflow-y:auto;padding:18px 16px 28px;}
+.modal-in h3{margin:0 0 12px;font-size:16px;}
+.modal-close{position:sticky;top:0;float:right;border:none;background:var(--panel2);width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--ink-dim);}
+
+/* 푸터 */
+.foot{font-size:11px;color:var(--ink-faint);text-align:center;padding:18px 14px 8px;line-height:1.7;}
+.foot a{color:var(--clin);}
+
+/* 준비중 */
+.soon{text-align:center;padding:60px 20px;color:var(--ink-faint);}
+.soon .ic{font-size:42px;margin-bottom:14px;}
+.soon .t{font-size:16px;font-weight:700;color:var(--ink-dim);margin-bottom:6px;}
+</style>
+</head>
+<body>
+<!--PORTAL_HEADER_V1-->
+<style>
+  #portal-hdr{position:fixed;top:0;left:0;right:0;height:46px;z-index:99999;
+    display:flex;align-items:center;gap:10px;padding:0 12px;box-sizing:border-box;
+    background:rgba(248,250,252,.94);backdrop-filter:saturate(1.4) blur(10px);
+    -webkit-backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid rgba(20,40,60,.10);
+    font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;}
+  #portal-hdr a.ph-back,#portal-hdr a.ph-home{display:inline-flex;align-items:center;justify-content:center;
+    height:30px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;
+    color:#1a2530;background:#fff;border:1px solid rgba(20,40,60,.14);transition:.15s;}
+  #portal-hdr a.ph-back{padding:0 11px 0 8px;gap:3px;}
+  #portal-hdr a.ph-home{width:32px;font-size:15px;}
+  #portal-hdr a.ph-back:active,#portal-hdr a.ph-home:active{transform:scale(.96);background:#eef1f4;}
+  #portal-hdr .ph-emoji{font-size:17px;line-height:1;}
+  #portal-hdr .ph-title{font-size:14.5px;font-weight:700;color:#16202b;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;}
+  #portal-hdr .ph-tag{font-size:11px;font-weight:600;color:#5a6a78;background:#eef1f4;
+    padding:2px 7px;border-radius:999px;white-space:nowrap;}
+  #portal-hdr .ph-accent{width:3px;height:18px;border-radius:2px;background:#d8632a;flex:0 0 auto;}
+  #portal-hdr .ph-spacer{flex:1 1 auto;min-width:0;}
+  body{padding-top:46px !important;}
+  @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
+</style>
+<div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
+  <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
+  <a class="ph-home" href="../index.html" title="홈">🏠</a>
+  <span class="ph-accent"></span>
+  <span class="ph-emoji">🧴</span>
+  <span class="ph-title">피부질환</span>
+  <span class="ph-spacer"></span>
+  <span class="ph-tag">피부</span>
+</div>
+
+<!--/PORTAL_HEADER_V1-->
+
+
+<div class="appbar">
+  <div class="appbar-in">
+    <div class="title-row"><span class="dot" id="titleDot"></span><h1>피부질환 통합 가이드</h1></div>
+    <div class="disease-toggle" id="diseaseToggle">
+      <button data-d="ad" class="on"><span class="ic">🩹</span>아토피피부염</button>
+      <button data-d="csu"><span class="ic">🐝</span>만성두드러기</button>
+    </div>
+    <div class="tabbar" id="tabbar">
+      <button data-tab="library" class="on"><span class="ic">📚</span>도서관</button>
+      <button data-tab="sim"><span class="ic">🧭</span>시뮬레이션</button>
+      <button data-tab="flow"><span class="ic">⚡</span>플로우</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="view" id="view-library"></div>
+  <div class="view" id="view-sim" hidden></div>
+  <div class="view" id="view-flow" hidden></div>
+  <div class="foot" id="foot"></div>
+</div>
+
+<div class="sticky-collect" id="simCollect" hidden></div>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-in">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   drug_db.js — 전역 공통 약물 모듈 (Single Source of Truth)
+   피부질환 통합 가이드 · AD/CSU 양쪽이 전역 ID로 참조만 함
+   ID 규칙: drug:<성분명(영문소문자)> / class:<계열>
+   ES5 문법(var), 외부 의존성 없음
+   ============================================================ */
+
+/* ---- 계열(class) 정의 ---- */
+var DRUG_CLASS = {
+  "class:topical_steroid":   { label:"국소 스테로이드(TCS)", short:"TCS" },
+  "class:tci":               { label:"국소 칼시뉴린억제제(TCI)", short:"TCI" },
+  "class:pde4_topical":      { label:"국소 PDE4 억제제", short:"PDE4(국소)" },
+  "class:jak_topical":       { label:"국소 JAK 억제제", short:"JAK(국소)" },
+  "class:antihistamine_2g":  { label:"2세대 H1 항히스타민(비진정성)", short:"항히스타민2G" },
+  "class:il4_13_biologic":   { label:"IL-4/13 생물학제제", short:"IL-4/13" },
+  "class:il13_biologic":     { label:"IL-13 생물학제제", short:"IL-13" },
+  "class:jak_inhibitor":     { label:"경구 JAK 억제제", short:"JAK(경구)" },
+  "class:anti_ige":          { label:"항-IgE 생물학제제", short:"anti-IgE" },
+  "class:systemic_immuno":   { label:"전신 면역억제제", short:"전신면역억제" },
+  "class:systemic_steroid":  { label:"전신 스테로이드", short:"전신스테로이드" },
+  "class:ltra":              { label:"류코트리엔 수용체 길항제", short:"LTRA" }
+};
+
+/* ---- 약물(drug) 정의 — 성분 단위 전역 ID ----
+   각 약물은: 표적·기전·계열·상품명·용량·연령·금기·부작용·모니터링
+   질환별 '쓰임'과 '급여'는 각 질환 엔진이 ID로 인용 (여기엔 약물 본연 속성만) */
+var DRUG_DB = {
+
+  /* ===== 생물학제제 (AD) ===== */
+  "drug:dupilumab": {
+    name:"두필루맙", brand:"듀피젠트", en:"dupilumab",
+    cls:"class:il4_13_biologic", target:"IL-4Rα (IL-4·IL-13 동시 차단)",
+    route:"피하주사(SC)",
+    dose:"성인 초회 600mg→이후 300mg q2w. 청소년/소아 체중별 차등(200/300mg).",
+    age:"생후 6개월 이상(영유아 산정특례), 급여 6세~",
+    moa:"IL-4 수용체 알파 차단 → IL-4/IL-13 양 신호 동시 억제. Type2 염증 광범위 억제.",
+    efficacy:"실사용연구서 임상효과 일치 → 2024 지침 A등급. 다중 적응증(천식·CRSwNP·EoE·결절성양진)으로 동반질환 동시 커버.",
+    pearls:["천식·비염·비용종 등 동반 Type2 질환 있으면 1순위 후보",
+            "검사 모니터링 부담 적음(JAK 대비) — 정기 혈액검사 불필요",
+            "면역억제 아님 → 결핵·B형간염 사전검사 부담 적고 백신 제약 적음",
+            "효과 발현은 JAK보다 느린 편(수주~수개월), 장기 안정성 우수"],
+    tips:["결막염 발생 시 인공눈물 1차, 지속되면 안과의뢰(시클로스포린 점안 등) — 대개 약 중단 없이 관리",
+          "주사부위반응은 시간 지나며 감소, 실온 15~30분 후 주사로 통증↓",
+          "초기 호산구 일시 상승은 대개 자연 감소, 무증상이면 중단 불필요"],
+    ae:["결막염·안검염(약 29%, 위험군: 고령·결막염력·기저EASI≥28)","주사부위반응","호산구 일시 상승","두통","안면홍조(드묾)"],
+    contra:["과민반응"],
+    monitor:["안과증상(결막염) 문진 — 위험군은 선제 안내"],
+    switchNote:"불충분반응·결막염 등 시 JAK로 교차 전환 가능(2025.3.1 급여). 동일계열(아트랄자·엡글리스)로는 급여 교체 불가.",
+    ageBand:{ infant:true, child:true, adol:true, adult:true }
+  },
+  "drug:tralokinumab": {
+    name:"트랄로키누맙", brand:"아트랄자", en:"tralokinumab",
+    cls:"class:il13_biologic", target:"IL-13 단일 중화",
+    route:"피하주사(SC)",
+    dose:"성인 초회 600mg→300mg q2w(반응 양호 시 q4w 가능).",
+    age:"성인(12세 일부 허가)",
+    moa:"IL-13 리간드 직접 중화. IL-4 경로는 보존 → IL-4 관련 이상반응 최소화 설계.",
+    pearls:["두경부(head&neck) 병변·안면홍조에 강점 보고","결막염 발생 듀피 대비 적음",
+            "투여간격 넓힐 수 있음(q4w)"],
+    ae:["결막염(듀피보다 적음)","주사부위반응","상기도감염"],
+    contra:["과민반응"],
+    monitor:["안과증상 문진"],
+    ageBand:{ infant:false, child:false, adol:true, adult:true }
+  },
+  "drug:lebrikizumab": {
+    name:"레브리키주맙", brand:"엡글리스", en:"lebrikizumab",
+    cls:"class:il13_biologic", target:"IL-13 고친화 선택 차단",
+    route:"피하주사(SC)",
+    dose:"초회/4주차 500mg→이후 250mg q2w, 유지기 q4w 가능.",
+    age:"12세 이상 & 체중 40kg 이상",
+    moa:"IL-13에 고친화 결합, IL-13Rα1 이형이량체 형성 차단. 4주 1회 유지 가능.",
+    pearls:["국내 3번째 생물학제제(2025.7 급여)","유지기 4주 1회로 편의성",
+            "IL-13 단일축"],
+    ae:["결막염","주사부위반응"],
+    contra:["과민반응"],
+    monitor:["안과증상 문진"],
+    ageBand:{ infant:false, child:false, adol:true, adult:true }
+  },
+
+  /* ===== 경구 JAK 억제제 (AD) ===== */
+  "drug:upadacitinib": {
+    name:"유파다시티닙", brand:"린버크", en:"upadacitinib",
+    cls:"class:jak_inhibitor", target:"JAK1 선택",
+    route:"경구(1일 1회)",
+    dose:"15mg 또는 30mg 1일 1회(반응·연령 고려). 고령/위험군 15mg 권장.",
+    age:"성인 + 만 12세 이상 청소년",
+    moa:"JAK1 선택 억제 → 다수 사이토카인(IL-4,13,22,31, IFN 등) 신호 차단. 빠른 가려움 개선.",
+    efficacy:"빠른 반응(2주 내 소양 개선), 듀피 무반응자서도 효과. 30mg가 15mg보다 EASI 반응 높으나 부작용도 증가.",
+    pearls:["효과 발현 빠름(2주 내 소양증 개선) — 급히 잡아야 할 때 유리",
+            "경구 편의성(주사 거부 환자)","듀피 무반응·결막염 회피 시 교차 후보",
+            "용량 유연(15/30mg)으로 반응-안전성 균형 조절"],
+    tips:["여드름양 발진 흔함 → 국소치료로 대개 관리, 중단 드묾",
+          "투여 중 대상포진 주의 → 가능하면 사전 재조합 대상포진백신",
+          "지질 상승 가능 → 기저·추적 지질 확인, 필요시 스타틴",
+          "효과 부족 시 30mg 증량 또는 생물학제제로 교차 고려"],
+    age_dose:"청소년(12세↑·30kg↑) 15mg, 고령(65세↑)·위험군 15mg 상한 권장",
+    ae:["여드름","상기도감염","대상포진","임상검사이상(지질·CPK·간효소)","혈전(위험군)","림프구감소"],
+    contra:["활동성 결핵·중증감염","임신","중증 간장애"],
+    monitor:["투여 전 결핵·B형간염·CBC·간·지질","대상포진 백신 고려","65세↑·심혈관/악성종양 위험군 신중"],
+    boxedWarning:"심각한 감염·악성종양·혈전·MACE·사망 위험(계열 경고)",
+    switchNote:"생물학제제(듀피·아트랄자·엡글리스)로 교차 전환 급여 가능. 동일 JAK 간 교체는 급여 불가.",
+    ageBand:{ infant:false, child:false, adol:true, adult:true }
+  },
+  "drug:baricitinib": {
+    name:"바리시티닙", brand:"올루미언트", en:"baricitinib",
+    cls:"class:jak_inhibitor", target:"JAK1/JAK2",
+    route:"경구(1일 1회)",
+    dose:"2mg 또는 4mg 1일 1회.",
+    age:"성인만",
+    moa:"JAK1/2 억제. 류마티스관절염서 출발한 경구 JAK.",
+    pearls:["성인 전용(소아청소년 급여 없음)","경구"],
+    ae:["상기도감염","대상포진","혈전","임상검사이상"],
+    contra:["활동성 결핵·중증감염","임신"],
+    monitor:["투여 전 결핵·B형간염·CBC·간·지질","고령/위험군 신중"],
+    boxedWarning:"심각한 감염·악성종양·혈전·MACE·사망 위험(계열 경고)",
+    ageBand:{ infant:false, child:false, adol:false, adult:true }
+  },
+  "drug:abrocitinib": {
+    name:"아브로시티닙", brand:"시빈코", en:"abrocitinib",
+    cls:"class:jak_inhibitor", target:"JAK1 선택",
+    route:"경구(1일 1회)",
+    dose:"100mg 또는 200mg 1일 1회.",
+    age:"성인 + 만 12세 이상 청소년",
+    moa:"JAK1 선택 억제. 강한 소양증·EASI 개선.",
+    pearls:["듀피 무반응자서 EASI75 약 80% 보고","경구","용량 유연(100/200)"],
+    ae:["오심","여드름","대상포진","혈소판감소(초기)","임상검사이상"],
+    contra:["활동성 결핵·중증감염","임신","항혈소판제 병용 초기 주의"],
+    monitor:["투여 전 결핵·B형간염·CBC(혈소판)·간·지질","고령/위험군 신중"],
+    boxedWarning:"심각한 감염·악성종양·혈전·MACE·사망 위험(계열 경고)",
+    ageBand:{ infant:false, child:false, adol:true, adult:true }
+  },
+
+  /* ===== 항-IgE (CSU/천식 공유) ===== */
+  "drug:omalizumab": {
+    name:"오말리주맙", brand:"졸레어", en:"omalizumab",
+    cls:"class:anti_ige", target:"유리 IgE 및 막결합 IgE",
+    route:"피하주사(SC)",
+    dose:"CSU: 300mg q4w(고정용량, 체중·IgE 무관). 천식은 체중·IgE 기반 용량.",
+    age:"CSU 12세 이상",
+    moa:"유리 IgE 결합→FcεRI 하향조절. 비만세포·호염구 탈과립 억제. 자가면역·자가알레르기 기전 모두 작용.",
+    efficacy:"H1 불응 CSU서 권고등급 A·근거수준 II. 반응자는 1~2주 내 빠른 반응(early responder), 일부는 12~16주 느린 반응(late responder).",
+    pearls:["CSU 3차 치료 핵심·지침 우선 권고(>사이클로스포린, 안전성 우위)",
+            "★국내 CSU 적응증 비급여 = 전액본인부담 — 최대 현실 장벽",
+            "총 IgE·D-dimer 높으면 반응 좋은 경향(반응예측 보조)",
+            "기저질환 부담 적어 사이클로스포린 부적합자(신장애·고혈압)에 유리"],
+    tips:["3~4회(12~16주) 투여해도 무반응이면 late responder 가능성 vs 중단 판단",
+          "반응 후 감량·간격연장(q6w 등) 시도로 비용 절감 모색",
+          "중단 후 재발 흔함 → 재투여 시 재반응 양호",
+          "천식 동반 시 천식 적응증으로 급여 경로 검토(용량은 천식 기준)"],
+    costReality:"1회 약 30만원, 연 360만원(월1회)/720만원(월2회, 유럽기준). 약 20%의 항히스타민 불응 환자가 비용으로 적정치료 못 받는 현실.",
+    ae:["주사부위반응","두통","아나필락시스(드묾, 초기 관찰)"],
+    contra:["과민반응"],
+    monitor:["초기 투여 후 아나필락시스 관찰(2시간)"],
+    ageBand:{ infant:false, child:false, adol:true, adult:true }
+  },
+
+  /* ===== 전신 면역억제제 (AD 게이트 / CSU 3차) ===== */
+  "drug:cyclosporine": {
+    name:"사이클로스포린", brand:"사이폴엔 등", en:"cyclosporine",
+    cls:"class:systemic_immuno", target:"칼시뉴린(T세포 활성 억제)",
+    route:"경구",
+    dose:"3~5mg/kg/day 분복(반응 보며 감량). 단기·교량 목적.",
+    age:"성인(소아 신중)",
+    moa:"칼시뉴린 억제→IL-2 등 T세포 사이토카인 전사 차단.",
+    pearls:["AD 생물학제제 급여게이트의 '전신면역억제제 3개월' 조건 충족약",
+            "CSU 3차 옵션(off-label, 지침 권고)","신독성·고혈압으로 장기사용 제한"],
+    ae:["신기능저하","고혈압","다모증","잇몸증식","감염위험","이상지질"],
+    contra:["조절안된 고혈압","신장애","악성종양","생백신"],
+    monitor:["혈압·신기능(Cr)·전해질(K)·약물농도","감염징후"],
+    ageBand:{ infant:false, child:true, adol:true, adult:true }
+  },
+  "drug:methotrexate": {
+    name:"메토트렉세이트", brand:"MTX", en:"methotrexate",
+    cls:"class:systemic_immuno", target:"디하이드로엽산환원효소(항대사)",
+    route:"경구/피하(주1회)",
+    dose:"주 1회 투여(엽산 보충 병행).",
+    age:"성인·소아(신중)",
+    moa:"항대사·면역조절. AD 전신치료 대안.",
+    pearls:["AD 전신면역억제제 게이트 대체 충족약(CsA 외)","주 1회·엽산 병용 필수"],
+    ae:["간독성","골수억제","구내염","오심","폐독성(드묾)"],
+    contra:["임신","간질환","신부전","활동성감염","음주"],
+    monitor:["CBC·간기능·신기능 정기","엽산 보충"],
+    ageBand:{ infant:false, child:true, adol:true, adult:true }
+  },
+
+  /* ===== 전신 스테로이드 (양 질환 급성기 단기) ===== */
+  "drug:prednisolone": {
+    name:"프레드니솔론", brand:"전신스테로이드", en:"prednisolone",
+    cls:"class:systemic_steroid", target:"광범위 항염",
+    route:"경구",
+    dose:"급성악화 단기 저용량·단기간. 장기사용 회피.",
+    age:"전 연령",
+    moa:"광범위 항염·면역억제.",
+    pearls:["AD/CSU 모두 급성악화 단기 구제용","장기사용 권고 안 함(반동·부작용)"],
+    ae:["혈당상승","골다공증","감염","부신억제(장기)","반동악화"],
+    contra:["전신진균감염"],
+    monitor:["혈당·혈압(장기 시)"],
+    ageBand:{ infant:true, child:true, adol:true, adult:true }
+  },
+
+  /* ===== 국소치료제 (AD 기반) ===== */
+  "drug:tcs_generic": {
+    name:"국소 스테로이드(부위·강도별)", brand:"TCS", en:"topical corticosteroid",
+    cls:"class:topical_steroid", target:"국소 항염",
+    route:"국소도포",
+    dose:"강도 7등급(I 최강~VII 최약). 부위·연령별 강도 선택, FTU 도포량 기준.",
+    age:"전 연령(부위·강도 조정)",
+    moa:"국소 항염. AD 1차 국소치료 근간(권고A).",
+    pearls:["급여게이트 '국소치료제 4주' 핵심","proactive(주2회 유지)요법","FTU로 도포량 표준화"],
+    ae:["피부위축","모세혈관확장","경구주위피부염","장기·고강도 시 전신흡수"],
+    contra:["국소감염부위 단독"],
+    monitor:["장기·민감부위 사용 시 위축 관찰"],
+    ageBand:{ infant:true, child:true, adol:true, adult:true }
+  },
+  "drug:tacrolimus_top": {
+    name:"타크로리무스(국소)", brand:"프로토픽", en:"tacrolimus topical",
+    cls:"class:tci", target:"국소 칼시뉴린 억제",
+    route:"국소도포",
+    dose:"0.03%(소아)/0.1%(성인). 얼굴·간찰부 등 민감부위 선호.",
+    age:"2세 이상",
+    moa:"국소 칼시뉴린 억제. 피부위축 없어 민감부위·유지요법 적합.",
+    pearls:["얼굴·눈주위 등 TCS 부담부위 대안","proactive 유지","초기 화끈거림"],
+    ae:["도포부 작열감·소양","일광민감"],
+    contra:["2세 미만","국소감염"],
+    monitor:["블랙박스(이론적 악성)—실사용 위험 낮음"],
+    ageBand:{ infant:false, child:true, adol:true, adult:true }
+  },
+  "drug:pimecrolimus_top": {
+    name:"피메크로리무스(국소)", brand:"엘리델", en:"pimecrolimus topical",
+    cls:"class:tci", target:"국소 칼시뉴린 억제",
+    route:"국소도포",
+    dose:"1% 크림. 경증~중등도·민감부위.",
+    age:"2세 이상",
+    moa:"국소 칼시뉴린 억제(타크로보다 약함).",
+    pearls:["경증·얼굴 선호","위축 없음"],
+    ae:["도포부 작열감"],
+    contra:["2세 미만","국소감염"],
+    monitor:[],
+    ageBand:{ infant:false, child:true, adol:true, adult:true }
+  },
+
+  /* ===== 2세대 항히스타민 (CSU 1차 / AD 보조) ===== */
+  "drug:bilastine": {
+    name:"빌라스틴", brand:"비라트론 등", en:"bilastine",
+    cls:"class:antihistamine_2g", target:"H1 수용체",
+    route:"경구", dose:"20mg 1일1회(공복). CSU 증량 시 최대 4배.",
+    age:"12세 이상",
+    moa:"비진정성 2세대 H1 차단.",
+    pearls:["진정 적음·CNS 침투 낮음","공복 복용","CSU 1차"],
+    ae:["두통(경미)","졸음(적음)"], contra:["과민반응"],
+    monitor:["고용량 시 졸음·QT 주의"],
+    ageBand:{ infant:false, child:false, adol:true, adult:true }
+  },
+  "drug:fexofenadine": {
+    name:"펙소페나딘", brand:"알레그라 등", en:"fexofenadine",
+    cls:"class:antihistamine_2g", target:"H1 수용체",
+    route:"경구", dose:"180mg 1일1회. CSU 증량 시 최대 4배.",
+    age:"소아~성인(연령별 용량)",
+    moa:"비진정성 2세대 H1 차단. 졸음 최소.",
+    pearls:["진정 거의 없음","운전·학업 병행 환자 선호"],
+    ae:["두통"], contra:["과민반응"],
+    monitor:["고용량 시 주의"],
+    ageBand:{ infant:false, child:true, adol:true, adult:true }
+  },
+  "drug:cetirizine": {
+    name:"세티리진", brand:"지르텍 등", en:"cetirizine",
+    cls:"class:antihistamine_2g", target:"H1 수용체",
+    route:"경구", dose:"10mg 1일1회. CSU 증량 시 최대 4배.",
+    age:"소아~성인",
+    moa:"2세대 H1, 효과 강하나 약한 진정 가능.",
+    pearls:["효과 빠르고 강함","고용량 시 졸음 다소"],
+    ae:["졸음(2세대 중 다소 있음)","구갈"], contra:["과민반응"],
+    monitor:["고용량 시 졸음"],
+    ageBand:{ infant:false, child:true, adol:true, adult:true }
+  },
+  "drug:levocetirizine": {
+    name:"레보세티리진", brand:"씨잘 등", en:"levocetirizine",
+    cls:"class:antihistamine_2g", target:"H1 수용체",
+    route:"경구", dose:"5mg 1일1회. CSU 증량 시 최대 4배.",
+    age:"소아~성인",
+    moa:"세티리진 활성 이성질체.",
+    pearls:["세티리진 대비 용량 절반","CSU 1차"],
+    ae:["졸음(경미)","구갈"], contra:["과민반응"],
+    monitor:["고용량 시 졸음"],
+    ageBand:{ infant:false, child:true, adol:true, adult:true }
+  },
+  "drug:loratadine": {
+    name:"로라타딘", brand:"클라리틴 등", en:"loratadine",
+    cls:"class:antihistamine_2g", target:"H1 수용체",
+    route:"경구", dose:"10mg 1일1회. CSU 증량 시 최대 4배.",
+    age:"소아~성인",
+    moa:"비진정성 2세대 H1.",
+    pearls:["진정 적음","무난한 1차"],
+    ae:["두통"], contra:["과민반응"], monitor:[],
+    ageBand:{ infant:false, child:true, adol:true, adult:true }
+  },
+  "drug:desloratadine": {
+    name:"데스로라타딘", brand:"에리우스 등", en:"desloratadine",
+    cls:"class:antihistamine_2g", target:"H1 수용체",
+    route:"경구", dose:"5mg 1일1회. CSU 증량 시 최대 4배.",
+    age:"소아~성인",
+    moa:"로라타딘 활성대사체.",
+    pearls:["진정 적음"],
+    ae:["두통"], contra:["과민반응"], monitor:[],
+    ageBand:{ infant:false, child:true, adol:true, adult:true }
+  },
+
+  /* ===== LTRA (CSU 보조) ===== */
+  "drug:montelukast": {
+    name:"몬테루카스트", brand:"싱귤레어 등", en:"montelukast",
+    cls:"class:ltra", target:"류코트리엔 수용체",
+    route:"경구", dose:"10mg 1일1회(저녁).",
+    age:"소아~성인",
+    moa:"류코트리엔 수용체 길항. CSU 보조(제한적 근거).",
+    pearls:["CSU 항히스타민 보조 추가(제한적 권고)","NSAID 악화형 두드러기 일부 유용"],
+    ae:["두통","신경정신 이상반응(드묾)"], contra:["과민반응"], monitor:[],
+    ageBand:{ infant:false, child:true, adol:true, adult:true }
+  }
+};
+
+/* ---- 헬퍼: ID로 약물/계열 조회 ---- */
+function getDrug(id){ return DRUG_DB[id] || null; }
+function getClass(id){ return DRUG_CLASS[id] || null; }
+function drugsByClass(clsId){
+  var out=[]; for(var k in DRUG_DB){ if(DRUG_DB[k].cls===clsId) out.push(k); } return out;
+}
+
+/* ============================================================
+   score_calc.js — 중증도 평가 점수 계산기 (공용)
+   도서관·시뮬·플로우 어디서든 호출. 전역 lab:* ID 기반.
+   EASI(AD) / UAS7(CSU) / UCT(CSU) 계산식 데이터 + 산출 함수
+   출처: Hanifin EASI(0~72), UAS7(Mlynek 0~42), UCT(Weller 0~16)
+   ============================================================ */
+
+/* ---- EASI 계산 정의 (lab:easi) ----
+   4부위 × (홍반E+침윤/구진I+표피탈락Ex+태선화L) × 면적점수 × 가중치 */
+var CALC_EASI = {
+  id:"lab:easi", label:"EASI", range:"0~72",
+  src:"Hanifin & Rajka EASI · 2024 한국 아토피 가이드라인 채택",
+  regions:[
+    { key:"h", label:"머리·목", weight:0.1 },
+    { key:"u", label:"상지(팔)", weight:0.2 },
+    { key:"t", label:"몸통(겨드랑·서혜 포함)", weight:0.3 },
+    { key:"l", label:"하지(둔부 포함)", weight:0.4 }
+  ],
+  signs:[
+    { key:"E",  label:"홍반(Erythema)", desc:"붉은 정도" },
+    { key:"I",  label:"침윤/구진(Induration/Papulation)", desc:"부종·도드라짐" },
+    { key:"Ex", label:"표피탈락(Excoriation)", desc:"긁은 상처" },
+    { key:"L",  label:"태선화(Lichenification)", desc:"피부 두꺼워짐" }
+  ],
+  signScale:[
+    { v:0, label:"0 없음" },{ v:0.5, label:"0.5" },{ v:1, label:"1 경증" },
+    { v:1.5, label:"1.5" },{ v:2, label:"2 중등" },{ v:2.5, label:"2.5" },{ v:3, label:"3 중증" }
+  ],
+  areaScale:[
+    { v:0, label:"0%", note:"없음" },{ v:1, label:"1~9%" },{ v:2, label:"10~29%" },
+    { v:3, label:"30~49%" },{ v:4, label:"50~69%" },{ v:5, label:"70~89%" },{ v:6, label:"90~100%" }
+  ],
+  bands:[
+    { max:0,  label:"깨끗", color:"ok" },{ max:1, label:"거의 깨끗", color:"ok" },
+    { max:7,  label:"경증", color:"ok" },{ max:21, label:"중등증", color:"warn" },
+    { max:50, label:"중증", color:"block" },{ max:72, label:"최중증", color:"block" }
+  ],
+  gate:23, gateNote:"생물학제제·JAK 급여 게이트: 투여 전 EASI ≥ 23",
+  tip:"각 부위마다 4징후(0~3, 0.5단위)와 면적점수(0~6)를 매기면 자동 계산. 두피·손발바닥 제외 시 최대점은 72 미만."
+};
+/* EASI 계산: input = { h:{E,I,Ex,L,area}, u:{...}, t:{...}, l:{...} } */
+function calcEASI(input){
+  input=input||{};
+  var total=0, detail=[];
+  for(var i=0;i<CALC_EASI.regions.length;i++){
+    var r=CALC_EASI.regions[i], d=input[r.key]||{};
+    var sevSum=(num(d.E)+num(d.I)+num(d.Ex)+num(d.L));
+    var area=num(d.area);
+    var sub=sevSum*area*r.weight;
+    total+=sub;
+    detail.push({ region:r.label, sevSum:sevSum, area:area, weight:r.weight, sub:Math.round(sub*10)/10 });
+  }
+  total=Math.round(total*10)/10;
+  return { score:total, detail:detail, band:easiBandOf(total), gate:CALC_EASI.gate, gateMet:(total>=CALC_EASI.gate) };
+}
+function easiBandOf(s){ var b=CALC_EASI.bands; for(var i=0;i<b.length;i++){ if(s<=b[i].max) return b[i]; } return b[b.length-1]; }
+
+/* ---- UAS7 계산 정의 (lab:uas7) ----
+   매일 팽진(0~3)+가려움(0~3)=0~6, 7일 합산=0~42 */
+var CALC_UAS7 = {
+  id:"lab:uas7", label:"UAS7", range:"0~42",
+  src:"Młynek 2008 · 한국 만성두드러기 진료지침 채택",
+  wheal:[
+    { v:0, label:"0 없음" },{ v:1, label:"1 경증(1~6개/12h)" },
+    { v:2, label:"2 중등(7~12개)" },{ v:3, label:"3 중증(>12개)" }
+  ],
+  itch:[
+    { v:0, label:"0 없음" },{ v:1, label:"1 경증" },{ v:2, label:"2 중등" },{ v:3, label:"3 중증" }
+  ],
+  days:["1일","2일","3일","4일","5일","6일","7일"],
+  bands:[
+    { max:6,  label:"증상 거의 없음", color:"ok" },{ max:15, label:"경증", color:"ok" },
+    { max:27, label:"중등증", color:"warn" },{ max:42, label:"중증", color:"block" }
+  ],
+  mid:"임상의미차이(MID) 약 11점",
+  tip:"7일간 매일 팽진수(0~3)+가려움(0~3)을 입력하면 합산(0~42). 일일 0~6점."
+};
+/* UAS7 계산: input = { days:[{w,i},{w,i}...7개] } 또는 단순 {dailyAvg} */
+function calcUAS7(input){
+  input=input||{};
+  var total=0, dayScores=[];
+  var arr=input.days||[];
+  for(var i=0;i<7;i++){
+    var d=arr[i]||{};
+    var ds=num(d.w)+num(d.i);
+    dayScores.push(ds); total+=ds;
+  }
+  return { score:total, dayScores:dayScores, band:uas7BandOf(total) };
+}
+function uas7BandOf(s){ var b=CALC_UAS7.bands; for(var i=0;i<b.length;i++){ if(s<=b[i].max) return b[i]; } return b[b.length-1]; }
+
+/* ---- UCT 계산 정의 (lab:uct) ----
+   4문항 × 0~4 = 0~16, ≥12 well-controlled */
+var CALC_UCT = {
+  id:"lab:uct", label:"UCT (조절검사)", range:"0~16",
+  src:"Weller 2014 · 한국판(K-UCT) 검증",
+  recall:"최근 4주 기준",
+  questions:[
+    { q:"최근 4주간 신체 증상(가려움·팽진·부종)이 얼마나 심했나요?",
+      opts:[{v:4,label:"전혀 없었다"},{v:3,label:"조금"},{v:2,label:"보통"},{v:1,label:"심하게"},{v:0,label:"매우 심하게"}] },
+    { q:"두드러기 때문에 삶의 질이 얼마나 영향받았나요?",
+      opts:[{v:4,label:"전혀 안 받음"},{v:3,label:"조금"},{v:2,label:"보통"},{v:1,label:"많이"},{v:0,label:"매우 많이"}] },
+    { q:"치료가 증상 조절에 충분치 않다고 느낀 적이 얼마나 자주 있었나요?",
+      opts:[{v:4,label:"전혀 없음"},{v:3,label:"드물게"},{v:2,label:"때때로"},{v:1,label:"자주"},{v:0,label:"매우 자주"}] },
+    { q:"전반적으로 두드러기가 얼마나 잘 조절되었나요?",
+      opts:[{v:4,label:"매우 잘"},{v:3,label:"잘"},{v:2,label:"보통"},{v:1,label:"잘 안 됨"},{v:0,label:"전혀 안 됨"}] }
+  ],
+  cutoff:12,
+  tip:"4문항 각 0~4점, 합산 0~16. ★12점 이상이면 잘 조절됨. 12점 미만은 치료 상향 고려."
+};
+/* UCT 계산: input = { answers:[v1,v2,v3,v4] } */
+function calcUCT(input){
+  input=input||{};
+  var a=input.answers||[], total=0;
+  for(var i=0;i<4;i++){ total+=num(a[i]); }
+  return { score:total, controlled:(total>=CALC_UCT.cutoff), cutoff:CALC_UCT.cutoff,
+    label:(total>=CALC_UCT.cutoff?"잘 조절됨":"조절 불충분") };
+}
+
+function num(x){ var n=parseFloat(x); return isNaN(n)?0:n; }
+
+/* ============================================================
+   ad_clinical.js — 아토피피부염(AD) 임상 엔진 (AUDITOR)
+   2024 대한아토피피부염학회 가이드라인 기반 '지침상 최적' 산출
+   네임스페이스: ad:*  /  약물은 전역 drug:* ID로 참조만
+   정문 함수 일부: adClinicalEngine(input)
+   ============================================================ */
+
+/* ---- 중증도 척도 (lab:* 전역 지표) ----
+   EASI 0~72, IGA 0~4, BSA %, SCORAD 0~103 */
+var AD_SEVERITY = {
+  "lab:easi": {
+    label:"EASI", range:"0~72",
+    bands:[
+      { id:"clear",    max:0,  label:"깨끗", color:"ok" },
+      { id:"mild",     max:6,  label:"경증", color:"ok" },
+      { id:"moderate", max:22, label:"중등증", color:"warn" },
+      { id:"severe",   max:72, label:"중증", color:"block" }
+    ],
+    gate:23, gateNote:"급여 게이트: 생물학제제·JAK 투여 전 EASI ≥ 23"
+  },
+  "lab:iga": {
+    label:"IGA", range:"0~4",
+    bands:[
+      { id:"0", label:"clear(0)" }, { id:"1", label:"almost clear(1)" },
+      { id:"2", label:"mild(2)" },  { id:"3", label:"moderate(3)" },
+      { id:"4", label:"severe(4)" }
+    ],
+    note:"IGA 3~4가 중등증-중증. 치료반응 평가 보조."
+  },
+  "lab:bsa": { label:"BSA(침범체표면적)", range:"0~100%",
+    note:"10% 이상이면 광범위. 손바닥 1개≈1%." },
+  "lab:scorad": { label:"SCORAD", range:"0~103",
+    bands:[{max:24,label:"경증"},{max:50,label:"중등증"},{max:103,label:"중증"}],
+    note:"객관징후+주관증상(소양·수면) 통합. 일부 급여 경과규정서 인용." }
+};
+
+/* ---- 치료 사다리 (단계 = ad:step:*) ----
+   각 단계는 약물 전역 ID 배열을 인용 */
+var AD_LADDER = [
+  {
+    id:"ad:step:basic", order:0, label:"기본관리(전 단계 병행)",
+    severity:["clear","mild","moderate","severe"],
+    drugs:[],
+    actions:["보습제 충분량 매일(주력 기반치료)","입욕 후 3분내 보습","악화인자·자극 회피","피부감염 관리"],
+    why:"피부장벽 회복은 모든 중증도의 토대. 보습 단독으로 경증 상당수 조절·재발↓."
+  },
+  {
+    id:"ad:step:topical", order:1, label:"국소 항염치료",
+    severity:["mild","moderate","severe"],
+    drugs:["drug:tcs_generic","drug:tacrolimus_top","drug:pimecrolimus_top"],
+    actions:["TCS 부위·강도 맞춰 도포(FTU 기준)","얼굴·간찰부는 TCI 선호","급성기 후 proactive(주2회) 유지","급여게이트상 국소치료제 4주↑ 이력 필요"],
+    why:"국소 스테로이드는 AD 국소치료 근간(권고A,1a). TCI는 위축 없어 민감부위·유지에 적합."
+  },
+  {
+    id:"ad:step:systemic_immuno", order:2, label:"전신 면역억제제",
+    severity:["moderate","severe"],
+    drugs:["drug:cyclosporine","drug:methotrexate"],
+    actions:["국소치료 4주 실패 후 고려","사이클로스포린 3~5mg/kg 단기","급여게이트상 전신면역억제제 3개월↑ 이력이 advanced 진입 조건","CsA 신독성·혈압 모니터"],
+    why:"중등증-중증서 단기 관해유도. 단 신독성으로 장기 제한 → advanced therapy로 가는 교량."
+  },
+  {
+    id:"ad:step:advanced", order:3, label:"생물학제제 / JAK (advanced)",
+    severity:["moderate","severe"],
+    drugs:["drug:dupilumab","drug:tralokinumab","drug:lebrikizumab",
+           "drug:upadacitinib","drug:baricitinib","drug:abrocitinib"],
+    actions:["국소 4주+전신면역억제제 3개월 실패 & EASI≥23 → 급여 진입",
+             "동반 Type2질환(천식·비염·비용종)→듀피젠트 우선 고려",
+             "빠른 소양 개선·경구 선호→JAK(검사 모니터 필수)",
+             "65세↑·심혈관/악성종양 위험→JAK 1차 급여 불가(생물 불응 후만)"],
+    why:"2024 지침 중등증-중증서 생물학제제·JAK 최고수준 권고. 기전·편의·동반질환으로 개별화."
+  },
+  {
+    id:"ad:step:acute_rescue", order:9, label:"급성악화 구제(단기)",
+    severity:["moderate","severe"],
+    drugs:["drug:prednisolone"],
+    actions:["광범위 급성악화 단기만","장기 전신스테로이드 회피(반동)"],
+    why:"전신스테로이드는 단기 구제용. 장기 사용은 권고하지 않음."
+  }
+];
+
+/* ---- advanced 약제 선택 프로파일 (ad:addon 후보 차등) ----
+   동반질환·연령·선호로 우선순위. 급여/연령은 reimb·drug_db가 판정 */
+var AD_ADVANCED_PROFILE = [
+  { drug:"drug:dupilumab", tags:["type2동반우선","검사부담낮음","장기데이터"], pref:"동반 천식/비염/비용종, 검사 모니터 부담 피하고 싶을 때" },
+  { drug:"drug:tralokinumab", tags:["두경부병변","결막염적음","q4w"], pref:"안면홍조·두경부 병변, 듀피 결막염 회피" },
+  { drug:"drug:lebrikizumab", tags:["q4w유지","IL13선택","최신"], pref:"투여간격 편의, IL-13 단일축 선호" },
+  { drug:"drug:upadacitinib", tags:["빠른효과","경구","강력"], pref:"빠른 소양 개선·경구 선호(위험군 아닐 때)" },
+  { drug:"drug:abrocitinib", tags:["빠른효과","경구","용량유연"], pref:"경구·듀피 무반응, 용량 조절 여지" },
+  { drug:"drug:baricitinib", tags:["경구","성인전용"], pref:"성인 경구 옵션(소아청소년 불가)" }
+];
+
+/* ---- 권고 근거 (refId) — 클릭 노출용. 등급·출처·핵심수치 ---- */
+var AD_RECOMMENDATIONS = {
+  "r_topical_first":   { txt:"국소 스테로이드·국소 칼시뉴린억제제(TCI) 사용 권고", grade:"권고A·근거1a", src:"2024 대한아토피피부염학회 치료 가이드라인", detail:"중증도·부위·연령에 따라 적절한 강도·제형 선택. 국소치료는 모든 중증도의 기반이며 advanced 진입의 급여 전제(4주↑)이기도 하다." },
+  "r_advanced_high":   { txt:"중등증-중증 성인·소아청소년에 생물학제제/JAK 높은 수준 권고", grade:"권고A(듀피·아트랄자)", src:"2024 가이드라인 · 실사용연구 일치", detail:"듀피젠트·아트랄자는 실사용연구(real-world)가 임상효과와 일치해 A등급. 국내 미허가였던 레브리키주맙·네몰리주맙은 당시 B등급이었다(엡글리스는 이후 2025.7 급여 등재)." },
+  "r_switch_allowed":  { txt:"불충분반응·부작용 시 생물학제제↔JAK 교차 전환 권고", grade:"권고(2024 가이드라인 방점)", src:"2024 가이드라인 · 급여 2025.3.1", detail:"9년만의 개정에서 교차투여(switch)가 핵심 화두. 가이드라인이 구체적 교차 권고를 담았고, 급여도 2025.3.1부터 생물↔JAK 교차를 인정(동일계열 제외)." },
+  "r_dupi_comorbid":   { txt:"동반 Type2 염증질환(천식·비염·비용종) 있으면 듀피젠트가 합리적", grade:"전문가의견·기전근거", src:"적응증·기전 근거", detail:"듀피젠트는 천식·만성비부비동염동반비용종·호산구식도염 등 다중 적응증. 한 약제로 동반 Type2 질환을 함께 커버해 약물부담·비용 효율." },
+  "r_jak_risk":        { txt:"고령·심혈관/악성종양 위험군은 JAK 안전성 신중", grade:"안전성경고(계열 박스경고)", src:"JAK 계열 경고 · 급여 단서", detail:"중증감염·악성종양·MACE·혈전·사망 위험. 65세↑·흡연·심혈관위험·악성종양력 환자는 위험-이익 재평가. 급여상 이들은 JAK 1차 불가(생물 불응 후만)." },
+  "r_dupi_conjunctivitis": { txt:"듀피젠트 결막염 위험인자: 고령·결막염 과거력·기저 EASI≥28", grade:"실사용연구(국내)", src:"국내 단일기관 후향연구(2024)", detail:"듀피 치료자 약 29%서 안구표면질환(DAOSD) 발생, 그중 약 11%는 안과부작용으로 중단. 위험군은 인공눈물·안과의뢰 선제 대비." },
+  "r_easi75_eval":     { txt:"생물/JAK 반응평가: 14주 투여 후 16주째 EASI-75", grade:"급여 평가기준", src:"심평원 급여기준", detail:"EASI 75% 이상 감소 시 추가 6개월 인정, 이후 6개월마다 재평가. 미달 시 지속 급여 불인정 → 교차 전환 고려 시점." }
+};
+
+/* ---- EASI → 중증도 밴드 ---- */
+function adEasiBand(easi){
+  var b=AD_SEVERITY["lab:easi"].bands;
+  for(var i=0;i<b.length;i++){ if(easi<=b[i].max) return b[i]; }
+  return b[b.length-1];
+}
+
+/* ---- 정문 보조: 임상 단계 권고 산출 ----
+   input: { easi, iga, bsa, scorad, ageBand, priorTopicalWeeks, priorSystemicMonths, comorbid:[], currentDrugs:[] } */
+function adClinicalEngine(input){
+  input = input||{};
+  var easi = (typeof input.easi==="number")? input.easi : null;
+  var band = (easi!=null)? adEasiBand(easi) : null;
+  var out = { severityBand:band, steps:[], notes:[], refs:[] };
+
+  // 적용 단계 필터
+  var sevId = band? band.id : "moderate";
+  for(var i=0;i<AD_LADDER.length;i++){
+    var st=AD_LADDER[i];
+    if(st.severity.indexOf(sevId)>=0 || st.order===0){
+      out.steps.push({ id:st.id, label:st.label, why:st.why, drugs:st.drugs.slice(), actions:st.actions.slice() });
+    }
+  }
+
+  // 게이트 환기
+  if(easi!=null){
+    if(easi>=23) out.notes.push("EASI "+easi+" → 급여 게이트(≥23) 충족. 국소4주+전신3개월 이력 확인 시 advanced 진입 가능.");
+    else out.notes.push("EASI "+easi+" → 급여 게이트(≥23) 미충족. advanced 급여는 EASI≥23 필요(경과규정 예외 별도).");
+  }
+
+  // 동반질환 → 듀피 우선 힌트
+  var comorbid = input.comorbid||[];
+  if(comorbid.indexOf("comorbid:asthma")>=0 || comorbid.indexOf("comorbid:ar")>=0 || comorbid.indexOf("comorbid:crswnp")>=0){
+    out.notes.push("동반 Type2 질환 → 듀피젠트가 한 약제로 동반질환까지 커버 가능(우선 고려 근거).");
+    out.refs.push("r_dupi_comorbid");
+  }
+  out.refs.push("r_topical_first","r_advanced_high");
+  return out;
+}
+
+/* ---- advanced 후보 우선순위(임상관점) — 급여/연령 판정은 외부 주입 ----
+   reimbCheck(drugId)->{grade}, ageOk(drugId)->bool 주입받아 차등 */
+function adAdvancedOptions(input, reimbCheck, ageOk){
+  input = input||{};
+  var comorbid = input.comorbid||[];
+  var current = input.currentDrugs||[];
+  var list=[];
+  for(var i=0;i<AD_ADVANCED_PROFILE.length;i++){
+    var p=AD_ADVANCED_PROFILE[i];
+    if(current.indexOf(p.drug)>=0) continue; // 이미 쓰는 약 제외
+    var score=0; var reasons=[];
+    // 동반질환 매칭
+    if(p.drug==="drug:dupilumab" && (comorbid.indexOf("comorbid:asthma")>=0||comorbid.indexOf("comorbid:ar")>=0||comorbid.indexOf("comorbid:crswnp")>=0)){
+      score+=3; reasons.push("동반 Type2 질환 동시 커버");
+    }
+    // 연령 적합
+    var aOk = ageOk? ageOk(p.drug) : true;
+    if(!aOk){ score-=5; reasons.push("연령 적응 미해당"); }
+    // 급여
+    var rb = reimbCheck? reimbCheck(p.drug) : {grade:"unknown"};
+    if(rb.grade==="benefit") score+=2;
+    else if(rb.grade==="switch_benefit") { score+=2; reasons.push("기전 교차 교체로 급여 가능"); }
+    else if(rb.grade==="switch_only") { score+=1; reasons.push("교체투여 경로로 급여 가능"); }
+    else if(rb.grade==="nonbenefit_sameclass") { score-=3; reasons.push("동일계열 교체 → 급여 불인정"); }
+    else if(rb.grade==="gate_unmet") { reasons.push("진입 게이트 미충족"); }
+    else if(rb.grade==="nonbenefit") reasons.push("현 조건상 비급여(전액본인)");
+    list.push({ drug:p.drug, pref:p.pref, tags:p.tags, score:score, ageOk:aOk, reimb:rb, reasons:reasons });
+  }
+  list.sort(function(a,b){ return b.score-a.score; });
+  return list;
+}
+
+/* ============================================================
+   ad_reimb.js — 아토피피부염(AD) 급여 엔진 (MAIN, 삭감 방어)
+   심평원 약제고시 + 산정특례(V308) 기반
+   ★핵심: 천식 R-CHECK '교체투여 불가' 원칙을 AD는 반전
+          (2025.3.1~ 생물↔JAK 교차 급여, 동일계열 X)
+   네임스페이스: ad:reimb:*  /  약물은 전역 drug:* 참조
+   ============================================================ */
+
+/* ---- 생물학제제·JAK 진입 게이트 (ad:reimb:biologic_gate) ---- */
+var AD_BIOLOGIC_GATE = {
+  id:"ad:reimb:biologic_gate",
+  duration:"3년 이상 지속된 만성 중증 아토피피부염",
+  gates:[
+    { id:"g_easi",     label:"투여 전 EASI ≥ 23", required:true },
+    { id:"g_topical",  label:"국소치료제(중등도↑ TCS 또는 TCI) 4주 이상 사용에도 실패", required:true },
+    { id:"g_systemic", label:"전신 면역억제제(사이클로스포린 또는 MTX) 3개월 이상에도 EASI 50%↓ 미달 또는 부작용/금기", required:true }
+  ],
+  history:"투약 개시 6개월 이내 국소+전신 투여이력 확인",
+  prescriber:"피부과·알레르기내과·소아청소년과(소아알레르기호흡기) 전문의",
+  note:"전신면역억제제 사용 불가(금기·부작용) 시 경과규정·대체조건 적용 여지"
+};
+
+/* ---- 산정특례 (ad:reimb:sanjeong) ---- */
+var AD_SANJEONG = {
+  id:"ad:reimb:sanjeong",
+  code:"L20.85", special:"V308",
+  copay:"본인부담 10%",
+  note:"중증 아토피피부염 산정특례. 등록기준은 급여 진입기준과 정합(EASI 등).",
+  ageNote:"소아환자 완화기준 적용(2023.4~). 영유아 6개월~ 듀피젠트 적응 확대."
+};
+
+/* ---- 약제별 연령·급여 적응 (ad:reimb:drug_age) ----
+   benefitAge: 급여 인정 연령 / adultOnly 등 */
+var AD_DRUG_REIMB = {
+  "drug:dupilumab":   { benefit:true, ageFrom:"6세(영유아6mo 산정특례)", listed:"2020.1", clsKind:"biologic" },
+  "drug:tralokinumab":{ benefit:true, ageFrom:"성인(12세 일부)", listed:"2024.5", clsKind:"biologic" },
+  "drug:lebrikizumab":{ benefit:true, ageFrom:"12세·40kg↑", listed:"2025.7", clsKind:"biologic" },
+  "drug:upadacitinib":{ benefit:true, ageFrom:"12세↑", listed:"2022", clsKind:"jak" },
+  "drug:baricitinib": { benefit:true, ageFrom:"성인만", listed:"2022", clsKind:"jak" },
+  "drug:abrocitinib": { benefit:true, ageFrom:"12세↑", listed:"2023.7", clsKind:"jak" }
+};
+
+/* ---- ★교체투여 규칙 (ad:reimb:switch) — 2025.3.1 시행 ----
+   천식과 정반대: 교차 교체는 급여, 동일계열은 불급여 */
+var AD_SWITCH_RULE = {
+  id:"ad:reimb:switch", effective:"2025.3.1",
+  crossAllowed:true,   // 생물학제제 <-> JAK 교차 급여 O
+  sameClassAllowed:false, // 생물↔생물, JAK↔JAK 동일계열 X
+  condition:"기존약 불충분반응 또는 내약성 없음 → 상대 기전으로 교체 시 급여",
+  reEval:"교체 시에도 게이트 재충족(기존약 후 EASI≥23 등) 필요",
+  highRisk:"65세↑·심혈관 고위험·악성종양 위험군: JAK 1차 급여 불가 → 생물학제제 불응 후에만 JAK 급여",
+  contrastNote:"※ 천식 생물학제제는 '교체투여 급여 불가'가 원칙 — AD는 2025 개정으로 정반대로 풀림."
+};
+
+/* ---- 반응 평가 스케줄 (ad:reimb:eval) ---- */
+var AD_EVAL_SCHEDULE = {
+  id:"ad:reimb:eval",
+  first:"14주 투여 후 16주째 평가",
+  criterion:"EASI 75% 이상 감소(EASI-75)",
+  ok:"기준 충족 → 추가 6개월 인정, 이후 6개월마다 재평가",
+  fail:"미충족 → 지속 급여 불인정(중단 또는 교체 고려)"
+};
+
+/* ---- class 종류 매핑 ---- */
+function adDrugKind(drugId){
+  var r=AD_DRUG_REIMB[drugId]; return r? r.clsKind : null;
+}
+
+/* ---- 급여 판정: 신규 진입 ----
+   input: { easi, priorTopicalWeeks, priorSystemicMonths, ageBand, highRisk:bool, currentDrugs:[] }
+   drugId: 평가 대상 약물 */
+function adReimbCheck(drugId, input){
+  input=input||{};
+  var r=AD_DRUG_REIMB[drugId];
+  if(!r) return { drug:drugId, grade:"unknown", msgs:["급여정보 없음"] };
+  var msgs=[], grade="benefit", gateMet=true;
+
+  // 게이트 점검
+  var easi = (typeof input.easi==="number")? input.easi : null;
+  if(easi!=null && easi<23){ gateMet=false; msgs.push("EASI "+easi+" < 23 → 진입 게이트 미충족"); }
+  var tw = input.priorTopicalWeeks;
+  if(typeof tw==="number" && tw<4){ gateMet=false; msgs.push("국소치료 "+tw+"주 < 4주 → 이력 부족"); }
+  var sm = input.priorSystemicMonths;
+  if(typeof sm==="number" && sm<3){ gateMet=false; msgs.push("전신면역억제제 "+sm+"개월 < 3개월 → 이력 부족"); }
+
+  // 고위험군 JAK 제한
+  if(r.clsKind==="jak" && input.highRisk){
+    msgs.push("고령/심혈관/악성종양 위험군 → JAK 1차 급여 불가(생물학제제 불응 후에만)");
+    grade="switch_only";
+  }
+
+  // 교체투여 평가 (현재약 있을 때)
+  var current = input.currentDrugs||[];
+  var hasCurrentAdvanced=false, currentKind=null;
+  for(var i=0;i<current.length;i++){
+    var k=adDrugKind(current[i]);
+    if(k){ hasCurrentAdvanced=true; currentKind=k; }
+  }
+  if(hasCurrentAdvanced){
+    var targetKind=r.clsKind;
+    if(currentKind===targetKind){
+      grade="nonbenefit_sameclass";
+      msgs.push("현재 "+(currentKind==="jak"?"JAK":"생물학제제")+" 사용 중 → 동일계열 교체는 급여 불인정(2025 규칙)");
+    } else {
+      grade= (grade==="switch_only")? "switch_only" : "switch_benefit";
+      msgs.push("기전 교차 교체("+(currentKind==="jak"?"JAK→생물":"생물→JAK")+") → 불충분반응/내약성 시 급여 가능. 게이트 재충족 필요.");
+    }
+  }
+
+  if(grade==="benefit" && gateMet) msgs.unshift("신규 진입 게이트 충족 → 급여 인정 (산정특례 V308, 본인부담 10%).");
+  else if(!gateMet && grade==="benefit"){ grade="gate_unmet"; }
+
+  return {
+    drug:drugId, kind:r.clsKind, grade:grade, gateMet:gateMet,
+    ageFrom:r.ageFrom, listed:r.listed, msgs:msgs,
+    eval:AD_EVAL_SCHEDULE.first+" · "+AD_EVAL_SCHEDULE.criterion
+  };
+}
+
+/* ---- 게이트 충족도 요약 ---- */
+function adGateStatus(input){
+  input=input||{};
+  var rows=[];
+  var easi=(typeof input.easi==="number")?input.easi:null;
+  rows.push({ id:"g_easi", label:"EASI ≥ 23", ok:(easi!=null && easi>=23), val:(easi!=null?("EASI "+easi):"미입력") });
+  var tw=input.priorTopicalWeeks;
+  rows.push({ id:"g_topical", label:"국소치료 4주↑ 실패", ok:(typeof tw==="number" && tw>=4), val:(typeof tw==="number"?(tw+"주"):"미입력") });
+  var sm=input.priorSystemicMonths;
+  rows.push({ id:"g_systemic", label:"전신면역억제제 3개월↑ 실패", ok:(typeof sm==="number" && sm>=3), val:(typeof sm==="number"?(sm+"개월"):"미입력") });
+  var allOk=true; for(var i=0;i<rows.length;i++){ if(!rows[i].ok) allOk=false; }
+  return { rows:rows, allOk:allOk };
+}
+
+/* ============================================================
+   ad_care.js — 아토피피부염(AD) 통합관리 엔진 (동반자, 챙기기)
+   "정답"이 아니라 "챙길 목록": 모니터링·감염·교육·동반질환
+   네임스페이스: ad:care:*  /  약물은 전역 drug:* 참조
+   ============================================================ */
+
+/* ---- JAK 투여 전/중 모니터링 (ad:care:jak_monitor) ---- */
+var AD_JAK_MONITORING = {
+  id:"ad:care:jak_monitor",
+  baseline:["결핵 검사(IGRA/흉부X)","B형·C형 간염","CBC(빈혈·혈소판·림프구)","간기능","지질(기저)","임신 여부"],
+  ongoing:["CBC·간·지질 정기(초기 후 주기적)","대상포진 징후 문진","감염징후"],
+  vaccine:["투여 전 대상포진 백신(생/재조합) 고려","생백신은 투여 중 회피"],
+  highRiskFlag:"65세↑·흡연·심혈관 위험·악성종양 과거력 → 위험-이익 재평가, 가능하면 저용량",
+  why:"JAK 계열 박스경고(중증감염·악성·혈전·MACE). 모니터링으로 위험 관리."
+};
+
+/* ---- 생물학제제 모니터링 (ad:care:biologic_monitor) ---- */
+var AD_BIOLOGIC_MONITORING = {
+  id:"ad:care:biologic_monitor",
+  baseline:["과민반응력","기생충감염 위험(듀피, 드묾)"],
+  ongoing:["결막염·안검염 문진(듀피>아트랄자/엡글리스)","주사부위반응","안과 증상 시 인공눈물/안과의뢰"],
+  note:"생물학제제는 JAK 대비 검사 모니터링 부담 적음. 결막염이 주된 관리 포인트.",
+  why:"IL-4/13 억제 관련 결막염은 흔하나 대개 관리 가능. 듀피젠트서 빈도 높음."
+};
+
+/* ---- 감염 관리 (ad:care:infection) ---- */
+var AD_INFECTION = {
+  id:"ad:care:infection",
+  items:[
+    { id:"staph", label:"황색포도상구균 정착·농가진", action:"삼출·가피·악취 시 국소/전신 항생제, 표백욕 고려" },
+    { id:"eczema_herpeticum", label:"포진성습진(eczema herpeticum)", action:"군집수포·통증·발열 → 응급, 항바이러스(아시클로버) 즉시", urgent:true },
+    { id:"molluscum", label:"물사마귀·사마귀", action:"소아 동반 흔함, 대증" }
+  ],
+  why:"장벽손상으로 감염 취약. 포진성습진은 응급 — 생물학제제/면역억제 중 특히 경계."
+};
+
+/* ---- 환자교육 (ad:care:education) ---- */
+var AD_EDUCATION = {
+  id:"ad:care:education",
+  moisturizer:["하루 여러 번·충분량(주당 250g+ 성인)","입욕 후 3분 내 도포(soak&seal)"],
+  bathing:["미온수 단시간","순한 무향 세정제","때밀기·뜨거운물 회피"],
+  triggers:["땀·과열·건조·울 자극","스트레스·수면부족","집먼지진드기 등 개별 악화인자"],
+  ftu:"1 FTU(손끝~첫마디)≈성인 양손바닥 면적 도포량. 강도·부위별 양 조절.",
+  proactive:"관해 후에도 호발부위 주2회 국소 항염(proactive)로 재발↓.",
+  why:"보습·장벽관리·악화인자 회피가 약물치료 효과를 좌우하는 토대."
+};
+
+/* ---- 동반질환 체크 (ad:care:comorbid) ---- */
+var AD_COMORBID = {
+  id:"ad:care:comorbid",
+  atopicMarch:["천식","알레르기비염","결막염","식품알레르기"],
+  mental:["수면장애","불안·우울(중증서 흔함)·삶의질"],
+  note:"동반 Type2 질환은 advanced 약제 선택(듀피젠트)에 직접 영향. 정신건강·QoL도 평가.",
+  why:"아토피행진(atopic march) 관점 — 동반질환을 함께 봐야 치료전략·약제선택이 정확."
+};
+
+/* ---- 정문 보조: 챙길 목록 산출 ----
+   input: { currentDrugs:[], comorbid:[], highRisk:bool, age } */
+function adComprehensiveCare(input){
+  input=input||{};
+  var cur=input.currentDrugs||[];
+  var care={ monitor:[], infection:AD_INFECTION, education:AD_EDUCATION, comorbid:AD_COMORBID, flags:[] };
+
+  // 현재약 기반 모니터링
+  var hasJak=false, hasBio=false;
+  for(var i=0;i<cur.length;i++){
+    if(cur[i]==="drug:upadacitinib"||cur[i]==="drug:baricitinib"||cur[i]==="drug:abrocitinib") hasJak=true;
+    if(cur[i]==="drug:dupilumab"||cur[i]==="drug:tralokinumab"||cur[i]==="drug:lebrikizumab") hasBio=true;
+    if(cur[i]==="drug:cyclosporine") care.flags.push("사이클로스포린 사용 중 → 혈압·신기능(Cr)·K 모니터");
+    if(cur[i]==="drug:methotrexate") care.flags.push("MTX 사용 중 → CBC·간기능 정기, 엽산 보충");
+    if(cur[i]==="drug:prednisolone") care.flags.push("전신스테로이드 → 단기로 제한, 장기 회피(반동)");
+  }
+  if(hasJak){ care.monitor.push(AD_JAK_MONITORING);
+    if(input.highRisk) care.flags.push("⚠ JAK + 고위험군 → 위험-이익 재평가, 저용량 고려"); }
+  if(hasBio) care.monitor.push(AD_BIOLOGIC_MONITORING);
+
+  // 동반질환 플래그
+  var comorbid=input.comorbid||[];
+  if(comorbid.indexOf("comorbid:asthma")>=0) care.flags.push("동반 천식 → 듀피젠트 한 약제로 양 질환 커버 가능");
+  return care;
+}
+
+/* ============================================================
+   ad_library.js — 아토피피부염(AD) 도서관 콘텐츠
+   8토픽. 각 토픽은 disease:"ad" 태그. 섹션 타입별 렌더.
+   약물 상세는 전역 DRUG_DB ID 참조(중복 정의 금지)
+   ============================================================ */
+var AD_LIBRARY = [
+  {
+    id:"ad:topic:severity", disease:"ad", cat:"clin", icon:"📏",
+    title:"중증도 평가", lead:"EASI·IGA·BSA·SCORAD — 급여 게이트의 출발점",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "EASI(0~72): 급여 게이트 ≥23이 advanced 진입 기준",
+        "IGA(0~4): 3~4가 중등증-중증, 반응평가 보조",
+        "BSA: 손바닥 1개≈1%, 10%↑면 광범위",
+        "SCORAD(0~103): 객관징후+주관(소양·수면), 경과규정서 인용"
+      ]},
+      { type:"easiband", title:"EASI 밴드", ref:"lab:easi" },
+      { type:"note", title:"왜 EASI 23인가", body:"급여 진입·산정특례·재평가(EASI-75)가 모두 EASI 기반. 투여 전 EASI≥23이 핵심 관문이라 정확한 산출이 청구·삭감방어의 시작점." }
+    ]
+  },
+  {
+    id:"ad:topic:topical", disease:"ad", cat:"clin", icon:"🧴",
+    title:"국소 항염치료", lead:"TCS 강도등급·TCI·FTU·proactive",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "국소 스테로이드(TCS): AD 국소치료 근간(권고A·1a)",
+        "TCI(타크로/피메크로): 위축 없어 얼굴·간찰부·유지요법",
+        "급여게이트: 국소치료제 4주↑ 사용 이력 필수",
+        "proactive(주2회 유지)로 재발↓"
+      ]},
+      { type:"drugcards", title:"국소 약제", drugs:["drug:tcs_generic","drug:tacrolimus_top","drug:pimecrolimus_top"] },
+      { type:"note", title:"TCS 강도(7등급)", body:"Class I(최강 clobetasol)~VII(최약 hydrocortisone). 부위·연령·중증도로 선택. 얼굴·접히는 부위·소아는 약한 강도 또는 TCI. 몸통·사지 두꺼운 태선화는 강한 강도 단기." },
+      { type:"note", title:"FTU 도포량", body:"1 FTU(손끝~첫마디 짜낸 양)≈성인 양손바닥 면적. 부위별 FTU 가이드로 과/소도포 방지." },
+      { type:"refs", title:"근거", items:["r_topical_first"] }
+    ]
+  },
+  {
+    id:"ad:topic:systemic", disease:"ad", cat:"clin", icon:"💊",
+    title:"전신 면역억제제", lead:"사이클로스포린·MTX — advanced로 가는 교량",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "국소 4주 실패 후 중등증-중증서 고려",
+        "사이클로스포린 3~5mg/kg 단기 관해유도",
+        "★급여게이트: 전신면역억제제 3개월↑ 실패가 advanced 진입조건",
+        "CsA 신독성·고혈압 → 장기제한, 모니터 필수"
+      ]},
+      { type:"drugcards", title:"전신 약제", drugs:["drug:cyclosporine","drug:methotrexate","drug:prednisolone"] },
+      { type:"note", title:"전신스테로이드 주의", body:"급성악화 단기 구제만. 장기 사용은 반동악화·부작용으로 권고하지 않음." }
+    ]
+  },
+  {
+    id:"ad:topic:advanced", disease:"ad", cat:"clin", icon:"🎯",
+    title:"생물학제제 · JAK", lead:"6종 표적·선택전략 — 2024 최고수준 권고",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "중등증-중증 성인·소아청소년 최고수준 권고(생물/JAK)",
+        "동반 Type2(천식·비염·비용종)→듀피젠트 우선 고려",
+        "빠른 소양·경구 선호→JAK(검사 모니터 필수)",
+        "65세↑·심혈관/악성종양 위험→JAK 1차 급여 불가"
+      ]},
+      { type:"drugcards", title:"생물학제제 3종", drugs:["drug:dupilumab","drug:tralokinumab","drug:lebrikizumab"] },
+      { type:"drugcards", title:"경구 JAK 3종", drugs:["drug:upadacitinib","drug:baricitinib","drug:abrocitinib"] },
+      { type:"selectguide", title:"선택 전략", ref:"AD_ADVANCED_PROFILE" },
+      { type:"note", title:"기전 한눈에", body:"듀피젠트=IL-4Rα(IL-4·IL-13 동시), 아트랄자·엡글리스=IL-13 단일. JAK 3종=경구·빠른효과·검사모니터. 생물은 검사부담 적고 결막염이 관리포인트." },
+      { type:"refs", title:"근거", items:["r_advanced_high","r_switch_allowed","r_dupi_comorbid","r_jak_risk","r_easi75_eval"] }
+    ]
+  },
+  {
+    id:"ad:topic:reimb", disease:"ad", cat:"pay", icon:"💳",
+    title:"급여 · 산정특례", lead:"EASI≥23 게이트·V308·16주평가·★교체투여 2025",
+    sections:[
+      { type:"gate", title:"생물학제제·JAK 진입 게이트", ref:"AD_BIOLOGIC_GATE" },
+      { type:"switch", title:"★교체투여 규칙(2025.3.1)", ref:"AD_SWITCH_RULE" },
+      { type:"eval", title:"반응 평가 스케줄", ref:"AD_EVAL_SCHEDULE" },
+      { type:"sanjeong", title:"산정특례", ref:"AD_SANJEONG" },
+      { type:"note", title:"천식과 무엇이 다른가", body:"천식 생물학제제는 '교체투여 급여 불가'가 원칙. AD는 2025.3.1부터 생물↔JAK 교차 교체가 급여 — 정반대로 풀렸다. 단 동일계열(생물↔생물, JAK↔JAK)은 여전히 불가. 이 차이가 처방 유연성을 크게 바꿈." },
+      { type:"refs", title:"근거", items:["r_switch_allowed","r_easi75_eval"] }
+    ]
+  },
+  {
+    id:"ad:topic:monitoring", disease:"ad", cat:"care", icon:"🔬",
+    title:"모니터링 · 부작용", lead:"JAK 검사·결막염·감염관리",
+    sections:[
+      { type:"monitor", title:"JAK 투여 전/중", ref:"AD_JAK_MONITORING" },
+      { type:"monitor", title:"생물학제제", ref:"AD_BIOLOGIC_MONITORING" },
+      { type:"infection", title:"감염 관리", ref:"AD_INFECTION" },
+      { type:"note", title:"포진성습진은 응급", body:"군집수포·통증·발열이면 eczema herpeticum 의심 — 면역억제/생물학제제 중 특히 경계, 아시클로버 즉시." },
+      { type:"refs", title:"근거", items:["r_dupi_conjunctivitis","r_jak_risk"] }
+    ]
+  },
+  {
+    id:"ad:topic:education", disease:"ad", cat:"care", icon:"📖",
+    title:"환자교육 · 생활관리", lead:"보습·입욕·악화인자·proactive",
+    sections:[
+      { type:"education", title:"생활관리", ref:"AD_EDUCATION" },
+      { type:"comorbid", title:"동반질환·아토피행진", ref:"AD_COMORBID" },
+      { type:"note", title:"보습이 약이다", body:"충분한 보습·장벽관리·악화인자 회피가 약물효과를 좌우. 입욕 후 3분 내 도포(soak&seal), 관해 후 proactive 유지." }
+    ]
+  },
+  {
+    id:"ad:topic:kcd", disease:"ad", cat:"pay", icon:"🏷️",
+    title:"질병코드", lead:"L20.x · L20.85(중증) · V308",
+    sections:[
+      { type:"codetable", title:"AD 상병코드", rows:[
+        { code:"L20.0", label:"바이어 양진" },
+        { code:"L20.8", label:"기타 아토피피부염" },
+        { code:"L20.84", label:"내인성(intrinsic) 아토피피부염" },
+        { code:"L20.85", label:"중증 아토피피부염 ↔ 산정특례 V308 · 생물/JAK 급여 연결", hot:true },
+        { code:"L20.9", label:"아토피피부염, 상세불명" }
+      ]},
+      { type:"note", title:"청구 포인트", body:"중증·생물학제제/JAK 급여 청구는 L20.85 + 산정특례 V308 연계. 게이트(EASI·이력) 서류와 정합 확인." }
+    ]
+  }
+];
+
+/* ============================================================
+   csu_clinical.js — 만성두드러기(CSU) 임상 엔진
+   2020 대한천식알레르기학회+피부면역학회 공동 진료지침 기반
+   네임스페이스: csu:*  /  약물은 전역 drug:* ID로 참조만
+   정문 보조: csuClinicalEngine(input)
+   ============================================================ */
+
+/* ---- 중증도/조절 척도 (lab:* 전역 지표) ---- */
+var CSU_SCALES = {
+  "lab:uas7": {
+    label:"UAS7", range:"0~42",
+    desc:"7일간 매일 팽진수(0~3)+가려움(0~3) 합산. 질병활성도.",
+    bands:[
+      { id:"none",     max:6,  label:"증상 거의 없음", color:"ok" },
+      { id:"mild",     max:15, label:"경증", color:"ok" },
+      { id:"moderate", max:27, label:"중등증", color:"warn" },
+      { id:"severe",   max:42, label:"중증", color:"block" }
+    ],
+    mid:"임상의미차이(MID) 7~8점", note:"치료반응 추적의 표준 지표."
+  },
+  "lab:uct": {
+    label:"UCT(조절검사)", range:"0~16",
+    desc:"4문항(각 0~4). 최근 4주 조절상태.",
+    cutoff:12, cutoffNote:"★UCT ≥ 12 = 잘 조절됨(well-controlled). <12면 조절 불충분→단계 상향 고려.",
+    note:"한국판(K-UCT) 검증 완료. UAS7과 상호보완."
+  }
+};
+
+/* ---- 진단·분류 (csu:topic 데이터) ---- */
+var CSU_CLASSIFY = {
+  id:"csu:classify",
+  acuteVsChronic:"6주 기준 — 6주 이상 거의 매일 팽진/혈관부종 지속 = 만성",
+  spontVsInducible:[
+    { id:"csu", label:"만성 자발성(CSU)", desc:"뚜렷한 외부 유발 없이 발생" },
+    { id:"cindu", label:"만성 유발성(CIndU)", desc:"한랭·콜린성·압박·일광·진동·피부묘기증 등 특정 자극" }
+  ],
+  angioedema:"혈관부종 동반 여부 평가(후두부종은 응급)",
+  note:"대부분 자발성(CSU). 유발성은 유발검사로 확인."
+};
+
+/* ---- 검사 (csu:workup) ---- */
+var CSU_WORKUP = {
+  id:"csu:workup",
+  basic:["CBC·ESR/CRP(기본 선별)","갑상선기능·갑상선자가항체(동반 흔함)"],
+  selective:["자가혈청피부반응검사(ASST, 자가면역형)","총 IgE(오말리주맙 반응 참고)","D-dimer(중증·난치 활성도)"],
+  inducible:["물리적 유발검사(한랭·압박·피부묘기 등) — 유발성 의심 시"],
+  avoid:"광범위 알레르기검사·무분별 검사는 권고하지 않음(원인 규명률 낮음).",
+  note:"기본검사 최소화 + 병력 중심. 갑상선·자가면역 단서는 챙김."
+};
+
+/* ---- 치료 단계 (csu:step) ---- */
+var CSU_LADDER = [
+  {
+    id:"csu:step:std", order:1, label:"1단계 — 2세대 H1 항히스타민 표준용량",
+    drugs:["drug:bilastine","drug:fexofenadine","drug:cetirizine","drug:levocetirizine","drug:loratadine","drug:desloratadine"],
+    actions:["비진정성 2세대 H1 1제 표준용량","4주 정도 경과 확인","규칙적 복용(필요시 복용보다 우월)"],
+    why:"2세대 H1이 1차. 진정·항콜린 부작용 적은 비진정성 우선(권고)."
+  },
+  {
+    id:"csu:step:updose", order:2, label:"2단계 — 4배 증량 또는 4종 병용",
+    drugs:["drug:bilastine","drug:fexofenadine","drug:cetirizine","drug:levocetirizine"],
+    actions:["표준용량 미조절 시 동일 약제 최대 4배 증량","또는 서로 다른 2세대 4종 병용",
+             "국내 허가사항 고려해 4종 병용을 선호하는 경향","4배 증량이 UAS7=0 도달률은 더 높음(국내연구)"],
+    why:"증량이 1차 전략(국제지침). 안전성 문제 없이 유의한 개선. 고용량 시 졸음·QT만 주의.",
+    adjunct:["drug:montelukast"], adjunctNote:"항류코트리엔(몬테루카스트) 추가 — 제한적 권고, NSAID악화형 일부 유용."
+  },
+  {
+    id:"csu:step:third", order:3, label:"3단계 — 오말리주맙 또는 사이클로스포린",
+    drugs:["drug:omalizumab","drug:cyclosporine"],
+    actions:["항히스타민 증량에도 불응 시 추가","오말리주맙 300mg q4w(지침 우선 권고)",
+             "★오말리주맙 CSU 적응증은 국내 비급여(전액본인)","사이클로스포린은 off-label·모니터 필요"],
+    why:"오말리주맙이 안전성·근거상 사이클로스포린보다 선호(국제지침). 단 국내 급여장벽이 현실 변수."
+  },
+  {
+    id:"csu:step:rescue", order:9, label:"급성악화 구제(단기)",
+    drugs:["drug:prednisolone"],
+    actions:["급성 악화·심한 발작 단기만(수일)","장기 전신스테로이드 회피"],
+    why:"전신스테로이드 단기 구제만. 장기 사용 권고하지 않음(근거IV·권고D)."
+  }
+];
+
+/* ---- 권고 근거 (refId) — 클릭 노출용 ---- */
+var CSU_RECOMMENDATIONS = {
+  "r_h1_first":   { txt:"2세대 비진정성 H1 항히스타민이 1차 치료", grade:"권고", src:"한국 만성두드러기 진료지침(대한천식알레르기·피부면역학회)", detail:"비진정성 2세대를 표준용량 규칙적으로. 약 20%가 단독요법에 불응 → 단계 상향. 1세대는 진정·항콜린으로 1차 부적합." },
+  "r_updose":     { txt:"표준용량 불응 시 4배 증량 또는 4종 병용", grade:"권고", src:"한국 진료지침 · EAACI/GA²LEN/EDF/WAO 2021", detail:"국제지침은 동일 약제 4배 증량이 1차 전략(안전성 양호). 국내는 허가사항 고려로 4종 병용을 많이 쓰나, 증량이 UAS7=0 도달률 더 높음(국내연구). 고용량 시 졸음·QT만 주의." },
+  "r_ltra":       { txt:"항류코트리엔제 추가의 제한적 사용", grade:"제한적 권고", src:"한국 진료지침", detail:"표준 항히스타민 불응 CSU에 보조 추가 — 근거 제한적. NSAID 악화형 일부서 유용할 수 있음. 단독 1차는 아님." },
+  "r_omalizumab": { txt:"H1 불응성 만성자발성두드러기에 오말리주맙 권고", grade:"근거수준 II · 권고등급 A", src:"한국 만성두드러기 진료지침", detail:"H1 불응 CSU서 증상개선 입증. 면역조절제로도 호전 안 되면 추가치료 고려(권고). 단 국내 CSU 적응증 비급여 = 전액본인(연 360만원, 월2회 시 720만원)." },
+  "r_cyclosporine":{ txt:"고용량/다제 항히스타민 불응 시 사이클로스포린 추가", grade:"권고등급 A(위험성 고려)", src:"한국 진료지침", detail:"대부분 환자에 적용 가능해 권고등급 A. 단 신독성·고혈압 위험 → 혈압·신기능 모니터 필수. CSU는 off-label." },
+  "r_steroid_short":{ txt:"전신스테로이드는 급성악화 단기만, 장기 사용 권고 안 함", grade:"권고D·근거IV", src:"한국 진료지침", detail:"급성악화·심한 발작 시 수일 단기 구제만. 장기·반복은 부작용·의존으로 부적절. 스테로이드 남용이 만성화의 함정." },
+  "r_workup":     { txt:"획일적·광범위 원인검사는 권고하지 않음", grade:"권고", src:"한국 진료지침 · 서울아산병원 등", detail:"모든 환자에 일률 검사 비권고. CBC·갑상선 정도 기본 + 병력 중심. 자가혈청피부반응·물리유발검사는 선택적." }
+};
+
+/* ---- UAS7 → 밴드 ---- */
+function csuUas7Band(uas7){
+  var b=CSU_SCALES["lab:uas7"].bands;
+  for(var i=0;i<b.length;i++){ if(uas7<=b[i].max) return b[i]; }
+  return b[b.length-1];
+}
+/* ---- UCT 조절 여부 ---- */
+function csuUctControlled(uct){ return (typeof uct==="number") ? (uct>=12) : null; }
+
+/* ---- 정문 보조: 단계 권고 산출 ----
+   input: { uas7, uct, currentStep, inducible, angioedema, currentDrugs:[] } */
+function csuClinicalEngine(input){
+  input=input||{};
+  var uas7=(typeof input.uas7==="number")?input.uas7:null;
+  var band=(uas7!=null)?csuUas7Band(uas7):null;
+  var controlled=csuUctControlled(input.uct);
+  var out={ activityBand:band, controlled:controlled, steps:[], notes:[], refs:[] };
+
+  // 현재 치료단계 기반 다음 권고
+  var cs=input.currentStep||0; // 0=미시작
+  for(var i=0;i<CSU_LADDER.length;i++){
+    var st=CSU_LADDER[i];
+    if(st.order>=1 && st.order<=3){ out.steps.push({ id:st.id, label:st.label, why:st.why, order:st.order,
+      drugs:st.drugs.slice(), actions:st.actions.slice(), adjunct:st.adjunct||null, adjunctNote:st.adjunctNote||null }); }
+  }
+  // 조절상태 환기
+  if(controlled===true) out.notes.push("UCT "+input.uct+" ≥ 12 → 잘 조절됨. 현 단계 유지하며 감량 시도 고려.");
+  else if(controlled===false) out.notes.push("UCT "+input.uct+" < 12 → 조절 불충분. 다음 단계 상향 고려.");
+  if(band) out.notes.push("UAS7 "+uas7+" → "+band.label+" (활성도).");
+
+  // 혈관부종/응급 환기
+  if(input.angioedema) out.notes.push("혈관부종 동반 — 후두부종 등 기도증상은 응급. 발작 시 대처 교육 필요.");
+  if(input.inducible) out.notes.push("유발성(CIndU) 의심 — 유발인자 회피 교육 + 유발검사로 확인.");
+
+  out.refs.push("r_h1_first","r_updose","r_omalizumab");
+  return out;
+}
+
+/* ============================================================
+   csu_reimb.js — 만성두드러기(CSU) 급여 엔진
+   ★핵심: 오말리주맙 적응증별 급여 비대칭
+          (천식=급여 / CSU=비급여, 전액본인) — "허가O·급여X"
+   네임스페이스: csu:reimb:*  /  약물은 전역 drug:* 참조
+   ============================================================ */
+
+/* ---- 오말리주맙 급여 현실 (csu:reimb:omalizumab) ---- */
+var CSU_OMALIZUMAB_STATUS = {
+  id:"csu:reimb:omalizumab",
+  approved:"2017년 CSU 적응증 허가(항히스타민 불응 CSU 추가요법)",
+  benefitCsu:false,
+  reality:"★CSU 적응증으로는 건강보험 급여 미적용 = 전액 본인부담",
+  asymmetry:"동일 약(졸레어 150mg 상한 27만1700원)이라도 '천식' 적응증은 급여, 'CSU' 적응증은 비급여. 적응증에 따라 급여가 갈림.",
+  dose:"CSU 300mg q4w 고정(체중·IgE 무관)",
+  costExample:"4주 1바이알 기준 대략 연 360만원 안팎(2바이알 시 약 2배). 환자 부담 큼.",
+  guidance:"지침은 3단계서 우선 권고하나, 국내 비급여라 비용 안내·동의가 현실 관문. 천식 동반 시 천식 적응증 급여 경로 별도 검토.",
+  note:"급여 등재 논의는 지속 제기되나 2026 현재 미적용. 최신 고시 확인 권장."
+};
+
+/* ---- 항히스타민 급여 (csu:reimb:antihistamine) ---- */
+var CSU_ANTIHISTAMINE_REIMB = {
+  id:"csu:reimb:antihistamine",
+  standard:"2세대 H1 항히스타민 표준용량 — 두드러기(L50.x) 상병에 급여",
+  updose:"4배 증량은 허가용량 초과 → 일부 성분 허가사항 범위 밖일 수 있어 삭감 주의. 4종 병용은 각 표준용량이라 상대적으로 무난.",
+  combo:"국내 임상서 증량보다 4종 병용을 택하는 배경에 급여·허가사항 고려가 있음.",
+  note:"성분별 허가용량·연령 상한 확인. 증량 청구 시 상병·소견 명확화."
+};
+
+/* ---- 사이클로스포린 급여 (csu:reimb:cyclosporine) ---- */
+var CSU_CYCLOSPORINE_REIMB = {
+  id:"csu:reimb:cyclosporine",
+  status:"CSU는 허가외(off-label) 사용 — 두드러기 적응증 별도 급여기준 제한적",
+  note:"중증·난치 CSU에 지침상 옵션이나 적응증·급여는 신중. 신독성·혈압 모니터 필수.",
+  monitor:"혈압·신기능(Cr)·전해질·약물상호작용"
+};
+
+/* ---- 전신스테로이드 (csu:reimb:steroid) ---- */
+var CSU_STEROID_NOTE = {
+  id:"csu:reimb:steroid",
+  status:"급성악화 단기 사용 — 일반 급여. 장기 사용은 임상적으로 권고 안 함.",
+  note:"단기·구제 목적 외 반복·장기 처방은 부적절."
+};
+
+/* ---- 약제별 급여 판정 ---- */
+function csuReimbCheck(drugId, input){
+  input=input||{};
+  if(drugId==="drug:omalizumab"){
+    return { drug:drugId, grade:"nonbenefit",
+      title:"오말리주맙(졸레어) — CSU 비급여",
+      msgs:[ CSU_OMALIZUMAB_STATUS.reality,
+             CSU_OMALIZUMAB_STATUS.asymmetry,
+             "용량: "+CSU_OMALIZUMAB_STATUS.dose,
+             "비용: "+CSU_OMALIZUMAB_STATUS.costExample ],
+      cost:true };
+  }
+  if(drugId==="drug:cyclosporine"){
+    return { drug:drugId, grade:"offlabel",
+      title:"사이클로스포린 — off-label",
+      msgs:[ CSU_CYCLOSPORINE_REIMB.status, "모니터: "+CSU_CYCLOSPORINE_REIMB.monitor ] };
+  }
+  // 항히스타민 계열
+  var DB=(typeof DRUG_DB!=="undefined")?DRUG_DB:null;
+  if(DB && DB[drugId] && DB[drugId].cls==="class:antihistamine_2g"){
+    return { drug:drugId, grade:"benefit",
+      title:DB[drugId].brand+" — 표준용량 급여",
+      msgs:[ CSU_ANTIHISTAMINE_REIMB.standard,
+             (input.updose?("⚠ 4배 증량: "+CSU_ANTIHISTAMINE_REIMB.updose):"") ].filter(Boolean) };
+  }
+  if(drugId==="drug:montelukast"){
+    return { drug:drugId, grade:"adjunct", title:"몬테루카스트 — 보조(제한적)",
+      msgs:["항히스타민 보조 추가. 두드러기 단독 1차 아님."] };
+  }
+  if(drugId==="drug:prednisolone"){
+    return { drug:drugId, grade:"short_only", title:"전신스테로이드 — 단기만",
+      msgs:[CSU_STEROID_NOTE.status] };
+  }
+  return { drug:drugId, grade:"unknown", msgs:["급여정보 없음"] };
+}
+
+/* ============================================================
+   csu_library.js — 만성두드러기(CSU) 도서관 콘텐츠
+   6토픽. disease:"csu" 태그. AD와 동일 섹션 렌더러 공유.
+   약물 상세는 전역 DRUG_DB ID 참조
+   ============================================================ */
+var CSU_LIBRARY = [
+  {
+    id:"csu:topic:approach", disease:"csu", cat:"clin", icon:"🔎",
+    title:"진단 · 분류", lead:"6주 기준 · 자발성/유발성 · 혈관부종",
+    sections:[
+      { type:"keypoints", title:"핵심", items:[
+        "6주 이상 거의 매일 팽진/혈관부종 = 만성",
+        "대부분 자발성(CSU), 일부 유발성(CIndU)",
+        "유발성: 한랭·콜린성·압박·일광·진동·피부묘기증",
+        "혈관부종 동반 — 후두부종은 응급"
+      ]},
+      { type:"csuclassify", title:"분류", ref:"CSU_CLASSIFY" },
+      { type:"note", title:"척도 두 축", body:"UAS7(0~42, 활성도)과 UCT(0~16, 조절상태)를 함께 본다. UCT≥12면 잘 조절됨. 추적의 표준." }
+    ]
+  },
+  {
+    id:"csu:topic:scale", disease:"csu", cat:"clin", icon:"📊",
+    title:"중증도 · 조절 척도", lead:"UAS7 · K-UCT — 추적의 표준",
+    sections:[
+      { type:"uas7band", title:"UAS7 활성도", ref:"lab:uas7" },
+      { type:"uct", title:"UCT 조절검사", ref:"lab:uct" },
+      { type:"note", title:"왜 두 개인가", body:"UAS7은 '지금 얼마나 심한가'(활성도), UCT는 '최근 4주 얼마나 잘 잡히나'(조절)를 본다. 치료 상향/감량 판단에 UCT<12가 실용적 분기점." }
+    ]
+  },
+  {
+    id:"csu:topic:workup", disease:"csu", cat:"clin", icon:"🧪",
+    title:"검사", lead:"기본 최소 + 병력 중심 · 무분별 검사 회피",
+    sections:[
+      { type:"csuworkup", title:"검사 구성", ref:"CSU_WORKUP" },
+      { type:"note", title:"검사 철학", body:"광범위 알레르기검사는 원인 규명률이 낮아 권고하지 않음. CBC·갑상선 정도의 기본 + 병력으로 충분한 경우가 많다. 유발성 의심 시에만 유발검사." },
+      { type:"refs", title:"근거", items:["r_workup"] }
+    ]
+  },
+  {
+    id:"csu:topic:ladder", disease:"csu", cat:"clin", icon:"🪜",
+    title:"치료 단계", lead:"항히스타민 표준 → 4배 증량 → 3차",
+    sections:[
+      { type:"csuladder", title:"단계별 치료", ref:"CSU_LADDER" },
+      { type:"drugcards", title:"2세대 항히스타민", drugs:["drug:bilastine","drug:fexofenadine","drug:cetirizine","drug:levocetirizine","drug:loratadine","drug:desloratadine"] },
+      { type:"note", title:"증량 vs 4종 병용", body:"국제지침은 동일 약제 4배 증량이 1차 전략. 국내는 허가사항 고려로 4종 병용을 많이 쓰나, 국내연구상 UAS7=0 도달은 4배 증량이 더 높았다. 고용량 시 졸음·QT만 주의." },
+      { type:"refs", title:"근거", items:["r_h1_first","r_updose","r_ltra","r_steroid_short"] }
+    ]
+  },
+  {
+    id:"csu:topic:omalizumab", disease:"csu", cat:"pay", icon:"💉",
+    title:"오말리주맙", lead:"★허가 O · CSU 급여 X — 비용 현실",
+    sections:[
+      { type:"omalizumab", title:"급여 현실", ref:"CSU_OMALIZUMAB_STATUS" },
+      { type:"drugcards", title:"성분 상세", drugs:["drug:omalizumab"] },
+      { type:"note", title:"적응증별 비대칭", body:"같은 졸레어라도 '천식' 적응증은 급여(2020.7~), 'CSU' 적응증은 비급여. CSU로 처방하면 전액본인부담. 천식 동반 환자는 천식 급여 경로를 별도 검토할 여지." },
+      { type:"refs", title:"근거", items:["r_omalizumab"] }
+    ]
+  },
+  {
+    id:"csu:topic:alt", disease:"csu", cat:"clin", icon:"🔁",
+    title:"대안 · 주의", lead:"사이클로스포린 · 스테로이드 단기",
+    sections:[
+      { type:"drugcards", title:"3차/구제 약제", drugs:["drug:cyclosporine","drug:prednisolone","drug:montelukast"] },
+      { type:"csualt", title:"급여·주의", ref:"CSU_ALT" },
+      { type:"note", title:"스테로이드 주의", body:"전신스테로이드는 급성악화 단기(수일) 구제만. 장기·반복 사용은 권고하지 않음(근거IV·권고D). 의존 회피." },
+      { type:"refs", title:"근거", items:["r_cyclosporine","r_steroid_short"] }
+    ]
+  },
+  {
+    id:"csu:topic:kcd", disease:"csu", cat:"pay", icon:"🏷️",
+    title:"질병코드", lead:"L50.x — 두드러기 분류",
+    sections:[
+      { type:"codetable", title:"CSU 상병코드", rows:[
+        { code:"L50.1", label:"특발성 두드러기 (만성 자발성 다수)", hot:true },
+        { code:"L50.2", label:"한랭·열에 의한 두드러기" },
+        { code:"L50.3", label:"피부묘기증성 두드러기" },
+        { code:"L50.5", label:"콜린성 두드러기" },
+        { code:"L50.8", label:"기타 두드러기" },
+        { code:"L50.9", label:"두드러기, 상세불명" }
+      ]},
+      { type:"note", title:"청구 포인트", body:"항히스타민 표준용량은 L50.x 상병에 급여. 4배 증량 청구 시 허가용량 초과분 삭감 주의. 오말리주맙 CSU는 비급여라 별도 동의." }
+    ]
+  }
+];
+
+/* alt 보조 데이터(렌더용) */
+var CSU_ALT = {
+  cyclosporine:"off-label, 중증·난치 옵션. 신독성·혈압 모니터.",
+  steroid:"급성악화 단기만, 장기 회피.",
+  montelukast:"항히스타민 보조(제한적)."
+};
+
+
+</script>
+<script>
+/* ============================================================
+   ui.js — 피부질환 통합 가이드 UI 로직
+   질환 토글 + 3탭 + 도서관 렌더러 + 시뮬 + 플로우 + 모달
+   AD 구동 / CSU placeholder (다음 라운드)
+   ============================================================ */
+
+var STATE = { disease:"ad", tab:"library" };
+
+/* ---------- 토글 ---------- */
+function setDisease(d){
+  STATE.disease=d;
+  var btns=document.querySelectorAll("#diseaseToggle button");
+  for(var i=0;i<btns.length;i++){ btns[i].className = (btns[i].getAttribute("data-d")===d)?"on":""; }
+  var dot=document.getElementById("titleDot");
+  var root=document.documentElement;
+  if(d==="ad"){ root.style.setProperty("--accent","var(--ad)"); root.style.setProperty("--accent-bg","var(--ad-bg)"); }
+  else { root.style.setProperty("--accent","var(--csu)"); root.style.setProperty("--accent-bg","var(--csu-bg)"); }
+  renderAll();
+}
+function setTab(t){
+  STATE.tab=t;
+  var btns=document.querySelectorAll("#tabbar button");
+  for(var i=0;i<btns.length;i++){ btns[i].className=(btns[i].getAttribute("data-tab")===t)?"on":""; }
+  document.getElementById("view-library").hidden = (t!=="library");
+  document.getElementById("view-sim").hidden = (t!=="sim");
+  document.getElementById("view-flow").hidden = (t!=="flow");
+  document.getElementById("simCollect").hidden = !(t==="sim" && SIM.collected.length>0);
+  renderAll();
+}
+
+/* ---------- 공통 렌더 진입 ---------- */
+function renderAll(){
+  if(STATE.tab==="library") renderLibrary();
+  else if(STATE.tab==="sim") renderSim();
+  else if(STATE.tab==="flow") renderFlow();
+  renderFoot();
+}
+
+/* ---------- 도서관 ---------- */
+function libCatClass(c){ return c==="clin"?"cat-clin":c==="pay"?"cat-pay":"cat-care"; }
+function libCatLabel(c){ return c==="clin"?"임상":c==="pay"?"급여":"관리"; }
+
+function renderLibrary(){
+  var isAd=(STATE.disease==="ad");
+  var topics=isAd?AD_LIBRARY:CSU_LIBRARY;
+  var banner=isAd
+    ? '<div class="banner"><b>아토피피부염 도서관</b> — 2024 대한아토피피부염학회 가이드라인 + 심평원 급여·산정특례 기준. 카드를 누르면 상세가 펼쳐집니다. 약물명을 누르면 성분별 상세.</div>'
+    : '<div class="banner"><b>만성두드러기 도서관</b> — 2020 대한천식알레르기·피부면역학회 공동 진료지침 + 심평원 급여기준. 오말리주맙 비급여 등 현실 정보 포함. 카드를 누르면 상세가 펼쳐집니다.</div>';
+  var ph=isAd?"약물·상황 검색 (예: 듀피젠트, EASI, 교체투여)":"약물·상황 검색 (예: 오말리주맙, UAS7, 4배 증량)";
+  var html=banner;
+  html+='<div class="searchbar"><span class="si">🔍</span><input id="libSearch" placeholder="'+ph+'" oninput="filterLib(this.value)"></div>';
+  html+='<div id="libList">';
+  for(var i=0;i<topics.length;i++){ html+=renderTopicCard(topics[i],i); }
+  html+='</div>';
+  document.getElementById("view-library").innerHTML=html;
+}
+function renderTopicCard(t,idx){
+  var h='<div class="card" id="card-'+idx+'" data-search="'+(t.title+' '+t.lead).toLowerCase()+'">';
+  h+='<div class="card-head" onclick="toggleCard('+idx+')">';
+  h+='<span class="icon">'+t.icon+'</span><div class="ht"><div class="t">'+t.title+
+     '<span class="cat-tag '+libCatClass(t.cat)+'">'+libCatLabel(t.cat)+'</span></div>'+
+     '<div class="l">'+t.lead+'</div></div><span class="chev">▶</span></div>';
+  h+='<div class="card-body" id="cardbody-'+idx+'">';
+  for(var s=0;s<t.sections.length;s++){ h+=renderSection(t.sections[s],idx,s); }
+  h+='</div></div>';
+  return h;
+}
+function toggleCard(idx){
+  var c=document.getElementById("card-"+idx);
+  c.className = (c.className.indexOf("open")>=0)?"card":"card open";
+}
+function filterLib(q){
+  q=(q||"").toLowerCase().trim();
+  var cards=document.querySelectorAll("#libList .card");
+  for(var i=0;i<cards.length;i++){
+    var hay=cards[i].getAttribute("data-search")+" "+cards[i].textContent.toLowerCase();
+    cards[i].style.display = (!q || hay.indexOf(q)>=0)?"":"none";
+  }
+}
+
+/* ---------- 섹션 렌더러 (타입 분기) ---------- */
+function renderSection(sec,ci,si){
+  var t=sec.type, h='<div class="sec">';
+  if(sec.title) h+='<div class="sec-t">'+sec.title+'</div>';
+  if(t==="keypoints"){
+    h+='<ul class="kp">';
+    for(var i=0;i<sec.items.length;i++){ h+='<li>'+boldStar(sec.items[i])+'</li>'; }
+    h+='</ul>';
+  }
+  else if(t==="note"){
+    h='<div class="note"><div class="nt">'+(sec.title||"")+'</div>'+sec.body+'</div>';
+    return h;
+  }
+  else if(t==="easiband"){ h+=renderEasiBand(); }
+  else if(t==="drugcards"){ h+=renderDrugCards(sec.drugs,ci,si); }
+  else if(t==="selectguide"){ h+=renderSelectGuide(); }
+  else if(t==="gate"){ h+=renderGateInfo(); }
+  else if(t==="switch"){ h+=renderSwitchInfo(); }
+  else if(t==="eval"){ h+=renderEvalInfo(); }
+  else if(t==="sanjeong"){ h+=renderSanjeong(); }
+  else if(t==="monitor"){ h+=renderMonitor(sec.ref); }
+  else if(t==="infection"){ h+=renderInfection(); }
+  else if(t==="education"){ h+=renderEducation(); }
+  else if(t==="comorbid"){ h+=renderComorbid(); }
+  else if(t==="codetable"){ h+=renderCodeTable(sec.rows); }
+  else if(t==="uas7band"){ h+=renderUas7Band(); }
+  else if(t==="uct"){ h+=renderUct(); }
+  else if(t==="csuclassify"){ h+=renderCsuClassify(); }
+  else if(t==="csuworkup"){ h+=renderCsuWorkup(); }
+  else if(t==="csuladder"){ h+=renderCsuLadder(); }
+  else if(t==="omalizumab"){ h+=renderOmalizumab(); }
+  else if(t==="csualt"){ h+=renderCsuAlt(); }
+  else if(t==="refs"){ h+=renderRefs(sec.items); }
+  h+='</div>';
+  return h;
+}
+
+/* ---- 근거(refId) 렌더러 — 클릭하면 등급·출처·상세 펼침 ---- */
+function getRec(refId){
+  if(typeof AD_RECOMMENDATIONS!=="undefined" && AD_RECOMMENDATIONS[refId]) return AD_RECOMMENDATIONS[refId];
+  if(typeof CSU_RECOMMENDATIONS!=="undefined" && CSU_RECOMMENDATIONS[refId]) return CSU_RECOMMENDATIONS[refId];
+  return null;
+}
+function renderRefs(items){
+  var h='';
+  for(var i=0;i<items.length;i++){
+    var r=getRec(items[i]); if(!r) continue;
+    var uid="ref_"+items[i]+"_"+i+"_"+Math.floor(Math.random()*100000);
+    h+='<div class="refitem" id="'+uid+'" onclick="toggleRef(\''+uid+'\')">';
+    h+='<div class="refhead"><span class="refgrade">'+r.grade+'</span><span class="reftxt">'+r.txt+'</span><span class="refchev">ⓘ</span></div>';
+    h+='<div class="refbody"><div class="refsrc">📚 '+r.src+'</div>'+(r.detail?'<div class="refdetail">'+r.detail+'</div>':'')+'</div>';
+    h+='</div>';
+  }
+  return h;
+}
+function toggleRef(uid){
+  var el=document.getElementById(uid);
+  el.className = (el.className.indexOf("open")>=0)?"refitem":"refitem open";
+}
+
+/* ---- CSU 섹션 렌더러 ---- */
+function renderUas7Band(){
+  var s=CSU_SCALES["lab:uas7"], b=s.bands, h='<div class="note" style="margin-bottom:8px">'+s.desc+'</div><div class="chips" style="margin-top:4px">';
+  var prevMax=-1;
+  for(var i=0;i<b.length;i++){
+    var col=b[i].color==="block"?"var(--block)":b[i].color==="warn"?"var(--warn)":"var(--ok)";
+    var rng=(prevMax+1)+"~"+b[i].max; prevMax=b[i].max;
+    h+='<span style="border:1.4px solid '+col+';color:'+col+';border-radius:16px;padding:5px 11px;font-size:12px;font-weight:700">'+b[i].label+' ('+rng+')</span>';
+  }
+  h+='</div><div class="note" style="margin-top:9px">'+s.mid+' · '+s.note+'</div>';
+  h+='<button class="calc-launch" onclick="openCalc(\'uas7\')">🧮 UAS7 점수 계산기 열기</button>';
+  return h;
+}
+function renderUct(){
+  var u=CSU_SCALES["lab:uct"];
+  var h='<div class="note">'+u.desc+'</div>';
+  h+='<div class="gaterow" style="margin-top:8px"><span class="gi">🎯</span><div class="gl">'+u.cutoffNote+'</div></div>';
+  h+='<div class="note" style="margin-top:8px">'+u.note+'</div>';
+  h+='<button class="calc-launch" onclick="openCalc(\'uct\')">🧮 UCT 조절검사 계산기 열기</button>';
+  return h;
+}
+function renderCsuClassify(){
+  var c=CSU_CLASSIFY;
+  var h='<div class="note"><div class="nt">급성 vs 만성</div>'+c.acuteVsChronic+'</div>';
+  for(var i=0;i<c.spontVsInducible.length;i++){
+    h+='<div class="gaterow"><span class="gi">•</span><div style="flex:1"><div class="gl">'+c.spontVsInducible[i].label+'</div><div class="gv">'+c.spontVsInducible[i].desc+'</div></div></div>';
+  }
+  h+='<div class="note" style="border-left-color:var(--block)"><div class="nt" style="color:var(--block)">혈관부종</div>'+c.angioedema+'</div>';
+  return h;
+}
+function renderCsuWorkup(){
+  var w=CSU_WORKUP, h='';
+  function blk(t,arr){ if(!arr||!arr.length)return''; var x='<div class="row" style="border-top:1px dashed var(--line);padding:7px 0"><span class="k">'+t+'</span><div class="bx">'; for(var i=0;i<arr.length;i++)x+='<span>'+arr[i]+'</span>'; return x+'</div></div>'; }
+  h+='<div class="drugmini open"><div class="drugmini-b" style="max-height:none;padding:4px 12px 10px">';
+  h+=blk("기본",w.basic)+blk("선택",w.selective)+blk("유발성 의심",w.inducible);
+  h+='</div></div>';
+  h+='<div class="note" style="border-left-color:var(--block)"><div class="nt" style="color:var(--block)">회피</div>'+w.avoid+'</div>';
+  return h;
+}
+function renderCsuLadder(){
+  var h='';
+  for(var i=0;i<CSU_LADDER.length;i++){
+    var st=CSU_LADDER[i];
+    if(st.order>3) continue;
+    h+='<div class="gaterow" style="align-items:flex-start"><span class="prio">'+st.order+'</span><div style="flex:1"><div class="gl">'+st.label.replace(/^\d단계 — /,'')+'</div><div class="gv" style="margin-top:3px">'+st.why+'</div></div></div>';
+  }
+  // rescue
+  var rescue=CSU_LADDER[CSU_LADDER.length-1];
+  h+='<div class="note" style="border-left-color:var(--alert)"><div class="nt">급성악화 구제</div>'+rescue.why+'</div>';
+  return h;
+}
+function renderOmalizumab(){
+  var o=CSU_OMALIZUMAB_STATUS;
+  var h='<div class="gaterow" style="border-color:var(--block)"><span class="gi">💉</span><div class="gl">CSU 적응증</div><span class="badge b-block">급여 X (전액본인)</span></div>';
+  h+='<div class="note"><div class="nt">허가</div>'+o.approved+'</div>';
+  h+='<div class="note" style="border-left-color:var(--block)"><div class="nt" style="color:var(--block)">★적응증별 비대칭</div>'+o.asymmetry+'</div>';
+  h+='<div class="note"><div class="nt">용량·비용</div>'+o.dose+'<br>'+o.costExample+'</div>';
+  h+='<div class="note"><div class="nt">실전</div>'+o.guidance+'</div>';
+  return h;
+}
+function renderCsuAlt(){
+  var a=CSU_ALT;
+  var h='<div class="row"><span class="k">사이클로스포린</span>'+a.cyclosporine+'</div>';
+  h+='<div class="row" style="border-top:1px dashed var(--line);padding-top:6px"><span class="k">전신스테로이드</span>'+a.steroid+'</div>';
+  h+='<div class="row" style="border-top:1px dashed var(--line);padding-top:6px"><span class="k">몬테루카스트</span>'+a.montelukast+'</div>';
+  return '<div class="drugmini open"><div class="drugmini-b" style="max-height:none;padding:4px 12px 10px">'+h+'</div></div>';
+}
+function boldStar(s){ return s.replace(/★([^,·\)]+)/g,'<b>★$1</b>'); }
+
+function renderEasiBand(){
+  var b=AD_SEVERITY["lab:easi"].bands, h='<div class="chips" style="margin-top:4px">';
+  for(var i=0;i<b.length;i++){
+    var col=b[i].color==="block"?"var(--block)":b[i].color==="warn"?"var(--warn)":"var(--ok)";
+    var rng = (i===0)?"0":((b[i-1].max+1)+"~"+(b[i].max===72?"72":b[i].max));
+    h+='<span style="border:1.4px solid '+col+';color:'+col+';border-radius:16px;padding:5px 11px;font-size:12px;font-weight:700">'+b[i].label+' ('+rng+')</span>';
+  }
+  h+='</div><div class="note" style="margin-top:9px"><div class="nt">급여 게이트</div>'+AD_SEVERITY["lab:easi"].gateNote+'</div>';
+  h+='<button class="calc-launch" onclick="openCalc(\'easi\')">🧮 EASI 점수 계산기 열기</button>';
+  return h;
+}
+
+function renderDrugCards(ids,ci,si){
+  var h='';
+  for(var i=0;i<ids.length;i++){
+    var d=DRUG_DB[ids[i]]; if(!d) continue;
+    var uid=ci+"_"+si+"_"+i;
+    h+='<div class="drugmini" id="dm-'+uid+'">';
+    h+='<div class="drugmini-h" onclick="toggleDrug(\''+uid+'\')"><span class="bn">'+d.brand+'</span>'+
+       '<span class="gn">'+d.name+'</span><span class="tg">'+d.target.split("(")[0].trim()+'</span></div>';
+    h+='<div class="drugmini-b">';
+    h+='<div class="row"><span class="k">기전</span>'+d.moa+'</div>';
+    if(d.efficacy){ h+='<div class="row"><span class="k">효과·근거</span>'+d.efficacy+'</div>'; }
+    h+='<div class="row"><span class="k">용량</span>'+d.dose+'</div>';
+    if(d.age_dose){ h+='<div class="row"><span class="k">연령별 용량</span>'+d.age_dose+'</div>'; }
+    h+='<div class="row"><span class="k">연령</span>'+d.age+'</div>';
+    if(d.pearls&&d.pearls.length){ h+='<div class="row"><span class="k">임상 포인트</span><div class="bx">'; for(var p=0;p<d.pearls.length;p++) h+='<span>'+d.pearls[p]+'</span>'; h+='</div></div>'; }
+    if(d.tips&&d.tips.length){ h+='<div class="row"><span class="k">실전 팁</span><ul class="tiplist">'; for(var tp=0;tp<d.tips.length;tp++) h+='<li>'+d.tips[tp]+'</li>'; h+='</ul></div>'; }
+    if(d.ae&&d.ae.length){ h+='<div class="row"><span class="k">부작용</span><div class="bx">'; for(var a=0;a<d.ae.length;a++) h+='<span>'+d.ae[a]+'</span>'; h+='</div></div>'; }
+    if(d.contra&&d.contra.length){ h+='<div class="row"><span class="k">금기</span><div class="bx">'; for(var c=0;c<d.contra.length;c++) h+='<span>'+d.contra[c]+'</span>'; h+='</div></div>'; }
+    if(d.monitor&&d.monitor.length){ h+='<div class="row"><span class="k">모니터</span><div class="bx">'; for(var m=0;m<d.monitor.length;m++) h+='<span>'+d.monitor[m]+'</span>'; h+='</div></div>'; }
+    if(d.switchNote){ h+='<div class="row"><span class="k">교체·전환</span>'+d.switchNote+'</div>'; }
+    if(d.costReality){ h+='<div class="warnbox" style="background:var(--pay-bg);color:var(--pay)">💰 '+d.costReality+'</div>'; }
+    if(d.boxedWarning){ h+='<div class="warnbox">⚠ 박스경고: '+d.boxedWarning+'</div>'; }
+    h+='</div></div>';
+  }
+  return h;
+}
+function toggleDrug(uid){
+  var c=document.getElementById("dm-"+uid);
+  c.className=(c.className.indexOf("open")>=0)?"drugmini":"drugmini open";
+}
+
+function renderSelectGuide(){
+  var h='';
+  for(var i=0;i<AD_ADVANCED_PROFILE.length;i++){
+    var p=AD_ADVANCED_PROFILE[i], d=DRUG_DB[p.drug];
+    h+='<div class="optrow"><span class="prio">'+(i+1)+'</span><div style="flex:1"><span class="on">'+d.brand+'</span> <span class="od">'+p.pref+'</span></div></div>';
+  }
+  return h+'<div class="note" style="margin-top:8px"><div class="nt">개별화</div>동반질환·연령·편의·검사부담으로 선택. 순위는 절대서열이 아니라 상황별 고려 우선도.</div>';
+}
+
+function renderGateInfo(){
+  var g=AD_BIOLOGIC_GATE, h='<div class="note"><div class="nt">'+g.duration+'</div>';
+  h+='처방: '+g.prescriber+'</div>';
+  for(var i=0;i<g.gates.length;i++){
+    h+='<div class="gaterow"><span class="gi">🔑</span><div class="gl">'+g.gates[i].label+'</div></div>';
+  }
+  h+='<div class="note" style="margin-top:9px"><div class="nt">이력 확인</div>'+g.history+'<br>'+g.note+'</div>';
+  return h;
+}
+function renderSwitchInfo(){
+  var s=AD_SWITCH_RULE;
+  var h='<div class="gaterow"><span class="gi">✅</span><div class="gl">생물학제제 ↔ JAK 교차 교체</div><span class="badge b-ok">급여 O</span></div>';
+  h+='<div class="gaterow"><span class="gi">⛔</span><div class="gl">동일계열(생물↔생물, JAK↔JAK)</div><span class="badge b-block">급여 X</span></div>';
+  h+='<div class="note" style="margin-top:9px"><div class="nt">조건</div>'+s.condition+'<br>'+s.reEval+'</div>';
+  h+='<div class="note"><div class="nt">고위험군 단서</div>'+s.highRisk+'</div>';
+  h+='<div class="note" style="border-left-color:var(--clin)"><div class="nt" style="color:var(--clin)">천식과의 대비</div>'+s.contrastNote+'</div>';
+  return h;
+}
+function renderEvalInfo(){
+  var e=AD_EVAL_SCHEDULE;
+  return '<div class="note"><div class="nt">'+e.first+'</div>기준: '+e.criterion+'<br>충족 → '+e.ok+'<br>미충족 → '+e.fail+'</div>';
+}
+function renderSanjeong(){
+  var s=AD_SANJEONG;
+  var h='<div class="gaterow"><span class="gi">🏷️</span><div class="gl">상병 '+s.code+' · 특정기호 '+s.special+'</div><span class="badge b-ok">'+s.copay+'</span></div>';
+  h+='<div class="note" style="margin-top:8px">'+s.note+'<br>'+s.ageNote+'</div>';
+  return h;
+}
+function renderMonitor(ref){
+  var m = ref==="AD_JAK_MONITORING"?AD_JAK_MONITORING:AD_BIOLOGIC_MONITORING;
+  var h='';
+  function lst(title,arr){ if(!arr||!arr.length)return''; var x='<div class="row" style="padding:6px 0"><span class="k" style="display:block;margin-bottom:4px">'+title+'</span><div class="bx">'; for(var i=0;i<arr.length;i++)x+='<span>'+arr[i]+'</span>'; return x+'</div></div>'; }
+  h+='<div class="drugmini open"><div class="drugmini-b" style="max-height:none;padding:4px 12px 12px">';
+  if(m.baseline) h+=lst("기저(투여 전)",m.baseline);
+  if(m.ongoing) h+=lst("투여 중",m.ongoing);
+  if(m.vaccine) h+=lst("백신",m.vaccine);
+  h+='</div></div>';
+  if(m.highRiskFlag) h+='<div class="note" style="border-left-color:var(--block)"><div class="nt" style="color:var(--block)">고위험군</div>'+m.highRiskFlag+'</div>';
+  h+='<div class="note">'+m.why+'</div>';
+  return h;
+}
+function renderInfection(){
+  var inf=AD_INFECTION,h='';
+  for(var i=0;i<inf.items.length;i++){
+    var it=inf.items[i];
+    h+='<div class="gaterow"'+(it.urgent?' style="border-color:var(--block)"':'')+'><span class="gi">'+(it.urgent?'🚨':'•')+'</span><div style="flex:1"><div class="gl">'+it.label+'</div><div class="gv">'+it.action+'</div></div></div>';
+  }
+  return h+'<div class="note">'+inf.why+'</div>';
+}
+function renderEducation(){
+  var e=AD_EDUCATION,h='';
+  function blk(t,arr){ var x='<div class="row" style="border-top:1px dashed var(--line);padding:7px 0"><span class="k">'+t+'</span><div class="bx">'; for(var i=0;i<arr.length;i++)x+='<span>'+arr[i]+'</span>'; return x+'</div></div>'; }
+  h+='<div class="drugmini open"><div class="drugmini-b" style="max-height:none;padding:4px 12px 10px">';
+  h+=blk("보습",e.moisturizer)+blk("입욕",e.bathing)+blk("악화인자",e.triggers);
+  h+='</div></div>';
+  h+='<div class="note"><div class="nt">FTU</div>'+e.ftu+'</div><div class="note"><div class="nt">proactive</div>'+e.proactive+'</div>';
+  return h;
+}
+function renderComorbid(){
+  var c=AD_COMORBID;
+  var h='<div class="row"><span class="k">아토피행진</span><div class="bx">'; for(var i=0;i<c.atopicMarch.length;i++)h+='<span>'+c.atopicMarch[i]+'</span>'; h+='</div></div>';
+  h+='<div class="row" style="border-top:1px dashed var(--line);padding-top:6px"><span class="k">정신건강·QoL</span><div class="bx">'; for(var j=0;j<c.mental.length;j++)h+='<span>'+c.mental[j]+'</span>'; h+='</div></div>';
+  return '<div class="drugmini open"><div class="drugmini-b" style="max-height:none;padding:4px 12px 10px">'+h+'</div></div><div class="note">'+c.why+'</div>';
+}
+function renderCodeTable(rows){
+  var h='<table class="codetbl">';
+  for(var i=0;i<rows.length;i++){
+    h+='<tr'+(rows[i].hot?' class="hot"':'')+'><td class="c">'+rows[i].code+'</td><td>'+rows[i].label+'</td></tr>';
+  }
+  return h+'</table>';
+}
+
+/* ---------- 시뮬레이션 ---------- */
+var SIM={ collected:[], answers:{} };
+var AD_SIM_FLOW=[
+  { id:"q_sev", q:"현재 중증도는? (EASI 기준)",
+    hint:"EASI는 머리·몸통·상지·하지 4부위의 홍반·부종/구진·찰상·태선화 + 면적으로 산출(0~72). IGA 3~4, BSA, 소양 NRS도 함께 보면 정확.", calc:"easi",
+    opts:[ {k:"mild",label:"경증 (EASI<7)"},{k:"moderate",label:"중등증 (7~22)"},{k:"severe",label:"중증 (≥23)"}],
+    next:function(a){ return a==="severe"?"q_topical":"info_topical"; } },
+  { id:"info_topical", info:"경증~중등증의 중심은 보습 + 국소 항염(TCS/TCI)입니다. 급성기엔 적정 강도 TCS로 빠르게 잡고, 관해 후 호발부위 proactive(주2회)로 재발을 낮춥니다. 얼굴·간찰부는 위축 위험 없는 TCI 선호. advanced 약제(생물/JAK)는 EASI≥23 + 국소4주 + 전신3개월 게이트가 필요하므로, 이 단계에선 국소 최적화가 우선입니다.", collect:"보습+국소 항염(급성 TCS·민감부위 TCI), proactive 유지" },
+  { id:"q_topical", q:"국소치료제 4주 이상 사용했으나 조절 실패?",
+    hint:"급여 게이트 1차 관문. 중등도↑ 강도 TCS 또는 TCI를 적정 도포량(FTU)으로 4주 이상 썼는지가 핵심. 도포량 부족·순응도 문제로 '가짜 실패'가 흔하니 도포 교육 먼저 점검.",
+    opts:[ {k:"yes",label:"예"},{k:"no",label:"아니오"}],
+    next:function(a){ return a==="yes"?"q_systemic":"info_needtopical"; } },
+  { id:"info_needtopical", info:"급여 게이트상 국소치료제 4주↑ 사용 이력이 필요합니다. 다만 진짜 난치인지, 도포량(FTU)·순응도·proactive 미시행 등 '국소 최적화 부족'인지 먼저 감별하세요. 강도를 올리거나 TCI를 병용하면 상당수가 추가 약제 없이 조절됩니다.", collect:"국소치료 4주↑ 이력 확보 + 도포량·순응도 점검(가짜 실패 감별)" },
+  { id:"q_systemic", q:"전신 면역억제제(사이클로스포린/MTX) 3개월 이상에도 실패 또는 금기?",
+    hint:"급여 게이트 2차 관문이자 advanced 진입의 마지막 문. 사이클로스포린 3~5mg/kg가 대표. 신독성·고혈압으로 장기엔 부적합해 '관해유도 후 advanced로 교량' 개념. 금기·부작용으로 못 쓰는 경우도 게이트 충족 사유.",
+    opts:[ {k:"yes",label:"예/금기"},{k:"no",label:"아직"}],
+    next:function(a){ return a==="yes"?"q_comorbid":"info_needsys"; } },
+  { id:"info_needsys", info:"급여 게이트상 전신면역억제제 3개월↑ 이력(또는 금기·부작용)이 필요합니다. 사이클로스포린은 빠른 관해유도엔 좋지만 신독성·고혈압·감염 위험으로 장기 사용이 제한됩니다. 이 단계는 advanced로 가기 위한 '교량'이며, 부작용·금기로 못 쓰는 것도 정당한 게이트 충족 근거가 됩니다.", collect:"전신면역억제제 3개월↑ 이력/금기 확보 (advanced 진입 마지막 관문)" },
+  { id:"q_comorbid", q:"동반 Type2 질환(천식·비염·비용종)이 있나요?",
+    hint:"약제 선택을 가르는 핵심 분기. 듀피젠트는 천식·CRSwNP·EoE 등 다중 적응증 → 한 약으로 동반질환까지 커버. 동반질환이 없으면 IL-13 단일(아트랄자/엡글리스)이나 빠른 효과의 JAK도 동등 후보.",
+    opts:[ {k:"yes",label:"있음"},{k:"no",label:"없음"}],
+    next:function(a){ return "q_risk"; },
+    collectFn:function(a){ return a==="yes"?"동반 Type2 → 듀피젠트 우선 고려(한 약제로 동반질환 동시 커버, 약물부담·비용↓)":"동반질환 없음 → 듀피·IL-13단일·JAK 모두 동등 후보, 발현속도·투여경로로 선택"; } },
+  { id:"q_risk", q:"65세↑ 또는 심혈관/악성종양 고위험군?",
+    hint:"JAK 안전성의 결정 분기. JAK 계열은 중증감염·악성종양·MACE·혈전·사망 박스경고. 고위험군은 급여상 JAK 1차 불가(생물 불응 후만)이며 임상적으로도 생물학제제 우선이 안전.",
+    opts:[ {k:"yes",label:"예"},{k:"no",label:"아니오"}],
+    next:function(a){ return "finale"; },
+    collectFn:function(a){ return a==="yes"?"⚠ 고위험군 → JAK 1차 급여 불가(생물 불응 후만). 임상적으로도 생물학제제 우선 안전":"JAK·생물학제제 모두 1차 선택 가능 — 발현속도(JAK 빠름)·경구선호·검사부담으로 결정"; } },
+  { id:"finale", finale:true }
+];
+var CSU_SIM_FLOW=[
+  { id:"q_dur", q:"6주 이상 거의 매일 팽진/혈관부종 지속?",
+    hint:"6주가 급성/만성을 가르는 기준. 만성은 대부분 자발성(CSU)이며, 개별 팽진은 24시간 내 사라지고 흉터를 남기지 않는 게 특징. 혈관부종만 단독이면 다른 감별(유전성 혈관부종 등) 고려.",
+    opts:[ {k:"yes",label:"예(만성)"},{k:"no",label:"6주 미만"}],
+    next:function(a){ return a==="yes"?"q_type":"info_acute"; } },
+  { id:"info_acute", info:"6주 미만은 급성두드러기입니다. 대개 감염·약물·음식 등 유발인자 후 자연 호전되며, 2세대 항히스타민 대증치료가 기본. 광범위 검사는 불필요하고 유발인자 회피·경과관찰이 핵심입니다. 6주 넘어 지속되면 만성으로 재평가하세요.", collect:"급성 — 대증(2세대 항히스타민)·유발인자 회피, 6주 경과 시 만성 재평가" },
+  { id:"q_type", q:"특정 자극(한랭·압박·일광·운동 등)에 유발되나요?",
+    hint:"자발성(CSU) vs 유발성(CIndU) 감별. 유발성은 한랭·콜린성(운동·열)·지연압박·일광·진동·피부묘기증 등 특정 자극에 재현성 있게 발생. 유발검사(자극 노출)로 확인하고 해당 인자 회피 교육이 치료의 큰 축.",
+    opts:[ {k:"inducible",label:"유발성 의심"},{k:"spont",label:"자발성"}],
+    next:function(a){ return "q_std"; },
+    collectFn:function(a){ return a==="inducible"?"유발성(CIndU) — 유발인자 회피 교육 + 유발검사 확인(한랭/압박/콜린성 등). 한랭·일광형은 사이클로스포린 고려":"자발성(CSU) — 기본검사(CBC·갑상선/항체) + 병력 중심, 광범위검사 회피"; } },
+  { id:"q_std", q:"2세대 H1 항히스타민 표준용량 4주에도 조절 안 됨?",
+    hint:"1차 치료. 비진정성 2세대를 표준용량으로 규칙적 복용(필요시 복용보다 우월). 약 20%가 단독요법 불응. 4주 정도 반응을 보고 UCT<12면 단계 상향. 1세대 병용·진정제 의존은 피함.", calc:"uct",
+    opts:[ {k:"yes",label:"예"},{k:"no",label:"조절됨"}],
+    next:function(a){ return a==="yes"?"q_updose":"info_controlled"; } },
+  { id:"info_controlled", info:"조절되면 현 용량을 유지하며 안정 후 단계적 감량을 시도합니다. UCT≥12(잘 조절됨)를 목표로 추적하고, 재발 시 즉시 원래 단계로 복귀. 자연 관해도 흔하므로 주기적으로 감량 가능성을 평가하세요.", collect:"조절 양호 — 유지 후 단계적 감량(UCT≥12 목표), 재발 시 복귀" },
+  { id:"q_updose", q:"4배 증량 또는 4종 병용에도 불응?",
+    hint:"2차 전략. 국제지침은 동일 약제 4배 증량이 1차(안전성 양호). 국내는 허가사항 고려로 4종 병용도 흔하나, 국내연구상 UAS7=0 도달은 4배 증량이 더 높음. 고용량 시 졸음·QT만 주의하면 안전성 문제는 크지 않음.",
+    opts:[ {k:"yes",label:"예"},{k:"no",label:"증량으로 조절"}],
+    next:function(a){ return a==="yes"?"q_third":"info_updose"; },
+    collectFn:function(a){ return a==="yes"?"항히스타민 4배 증량/병용 불응 확인 → 3차 진입":"항히스타민 증량 시 졸음·QT 주의 / 증량분 청구 삭감 주의(허가용량 초과)"; } },
+  { id:"info_updose", info:"증량/병용으로 조절되면 유지합니다. 4배 증량이 4종 병용보다 UAS7=0 도달률이 높다는 국내 근거가 있으나, 허가용량 초과분은 청구 삭감 주의가 필요합니다. 졸음·QT 연장 가능성을 점검하고 안정되면 감량을 시도하세요.", collect:"증량/병용으로 조절 — 유지, 삭감 주의(허가용량 초과분), 안정 후 감량" },
+  { id:"q_third", q:"3차 치료 진입 — 어느 쪽을 고려하나요?",
+    hint:"오말리주맙이 지침 우선(권고A·근거II, 안전성 우위). 사이클로스포린은 효과적이나 신독성·고혈압으로 모니터 부담. 결정적 변수는 비용 — 오말리주맙 CSU는 비급여(전액본인 연 360만원). 신장애·고혈압 환자는 오말리주맙이, 비용 제약 시 사이클로스포린이 현실 선택이 되기도.",
+    opts:[ {k:"oma",label:"오말리주맙"},{k:"csa",label:"사이클로스포린"}],
+    next:function(a){ return "finale"; },
+    collectFn:function(a){ return a==="oma"?"★오말리주맙: 지침 우선 권고(권고A)하나 CSU 비급여(전액본인 연 360만원, 월2회 720만원) — 비용 안내·동의 필수":"사이클로스포린: off-label, 권고A이나 신독성·고혈압 → 혈압·신기능 정기 모니터 필수"; } },
+  { id:"finale", finale:true, finaleCsu:true }
+];
+function curSimFlow(){ return STATE.disease==="ad"?AD_SIM_FLOW:CSU_SIM_FLOW; }
+function renderSim(){
+  var isAd=(STATE.disease==="ad");
+  var banner=isAd
+    ? '<div class="banner"><b>아토피 advanced 진입 시뮬레이션</b> — 조언자 역할입니다. 각 단계의 <b>급여 게이트</b>를 점검하고 챙길 항목을 모읍니다. 처방을 강제하지 않습니다.</div>'
+    : '<div class="banner"><b>만성두드러기 치료단계 시뮬레이션</b> — 조언자 역할입니다. 단계별 치료와 <b>오말리주맙 비급여 현실</b>을 점검하고 챙길 항목을 모읍니다. 처방을 강제하지 않습니다.</div>';
+  var html=banner+'<div id="simStream"></div>';
+  document.getElementById("view-sim").innerHTML=html;
+  if(!SIM.started || SIM.disease!==STATE.disease){
+    SIM.collected=[]; SIM.answers={}; SIM.disease=STATE.disease;
+    SIM.path=[isAd?"q_sev":"q_dur"]; SIM.started=true;
+  }
+  renderSimStream();
+}
+function simNode(id){ var fl=curSimFlow(); for(var i=0;i<fl.length;i++){ if(fl[i].id===id) return fl[i]; } return null; }
+function renderSimStream(){
+  var stream=document.getElementById("simStream"); if(!stream)return;
+  var html="";
+  for(var i=0;i<SIM.path.length;i++){
+    var n=simNode(SIM.path[i]);
+    if(!n) continue;
+    if(n.finale){ html+=renderSimFinale(); continue; }
+    if(n.info){ html+='<div class="simnode"><div class="simnext">ℹ️ '+n.info+'</div></div>'; continue; }
+    html+='<div class="simnode"><div class="sq">'+n.q+'</div>';
+    if(n.hint){ html+='<div class="simhint">'+n.hint+'</div>'; }
+    if(n.calc){ html+='<button class="calc-launch" style="margin-bottom:10px" onclick="openCalc(\''+n.calc+'\')">🧮 '+n.calc.toUpperCase()+' 점수 계산기 열기</button>'; }
+    html+='<div class="simopt">';
+    for(var o=0;o<n.opts.length;o++){
+      var sel = (SIM.answers[n.id]===n.opts[o].k)?" sel":"";
+      html+='<button class="'+sel.trim()+'" onclick="simAnswer(\''+n.id+'\',\''+n.opts[o].k+'\')">'+n.opts[o].label+'</button>';
+    }
+    html+='</div></div>';
+  }
+  stream.innerHTML=html;
+  renderSimCollect();
+}
+function simAnswer(nodeId,ans){
+  SIM.answers[nodeId]=ans;
+  var n=simNode(nodeId);
+  // path 잘라내기(재선택 시 이후 제거)
+  var idx=SIM.path.indexOf(nodeId);
+  SIM.path=SIM.path.slice(0,idx+1);
+  // next
+  var nx=n.next?n.next(ans):null;
+  if(nx && SIM.path.indexOf(nx)<0){ SIM.path.push(nx); }
+  // collect는 path 기준으로 일괄 재계산(중복 방지)
+  recomputeCollect();
+  renderSimStream();
+}
+function recomputeCollect(){
+  SIM.collected=[];
+  for(var i=0;i<SIM.path.length;i++){
+    var n=simNode(SIM.path[i]); if(!n)continue;
+    if(n.info&&n.collect) SIM.collected.push(n.collect);
+    if(n.collectFn && SIM.answers[n.id]){ var c=n.collectFn(SIM.answers[n.id]); if(c) SIM.collected.push(c); }
+  }
+}
+function renderSimFinale(){
+  if(STATE.disease==="csu") return renderCsuFinale();
+  var h='<div class="simnode" style="border-color:var(--accent)"><div class="sq">🎯 advanced 진입 게이트 충족</div>';
+  h+='<div class="simnext">국소 4주 + 전신면역억제제 3개월 실패 & EASI≥23 → 생물학제제/JAK 급여 진입 가능.<br><br>'+
+     '<b>선택 가이드</b><br>· 동반 Type2 질환 → 듀피젠트<br>· 빠른 소양·경구 → JAK(검사 모니터)<br>· 고위험군 → 생물학제제 우선<br><br>'+
+     '평가: 14주 투여 후 16주째 EASI-75 → 추가 6개월 인정.</div></div>';
+  return h;
+}
+function renderCsuFinale(){
+  var h='<div class="simnode" style="border-color:var(--accent)"><div class="sq">💉 3차 치료 — 비용·급여 점검</div>';
+  h+='<div class="simnext"><b>오말리주맙</b> (지침 우선 권고)<br>· 300mg q4w 고정<br>· ★CSU 적응증 비급여 = 전액본인(연 360만원 안팎)<br>· 천식 동반 시 천식 급여경로 별도 검토<br><br>'+
+     '<b>사이클로스포린</b> (대안)<br>· off-label, 신독성·혈압 모니터<br><br>'+
+     '둘 다 항히스타민 불응 확인 후. 최종 결정·비용 동의는 환자와 함께.</div></div>';
+  return h;
+}
+function renderSimCollect(){
+  var box=document.getElementById("simCollect");
+  if(STATE.tab!=="sim"||SIM.collected.length===0){ box.hidden=true; return; }
+  box.hidden=false;
+  var h='<b>📋 챙길 항목</b><br>';
+  for(var i=0;i<SIM.collected.length;i++){ h+='• '+SIM.collected[i]+'<br>'; }
+  box.innerHTML=h;
+}
+
+/* ---------- 플로우 ---------- */
+var FLOW={ comorbid:[], current:[], highRisk:false };
+function renderFlow(){
+  if(STATE.disease==="csu"){ renderCsuFlow(); return; }
+  var h='<div class="banner"><b>아토피 실시간 플로우</b> — 환자 앞에서 입력 → 3엔진(임상·급여·관리) 카드. 조언자 역할이며 처방을 강제하지 않습니다.</div>';
+  h+='<div class="inpgrid">';
+  h+='<div class="fld"><label>EASI (0~72)</label><input id="f_easi" type="number" inputmode="decimal" placeholder="예: 28"><button class="fld-calc" onclick="openCalc(\'easi\',function(v){document.getElementById(\'f_easi\').value=v;})">🧮 계산</button></div>';
+  h+='<div class="fld"><label>IGA (0~4)</label><input id="f_iga" type="number" inputmode="decimal" placeholder="예: 4"></div>';
+  h+='<div class="fld"><label>국소치료 사용(주)</label><input id="f_tw" type="number" inputmode="decimal" placeholder="예: 6"></div>';
+  h+='<div class="fld"><label>전신면역억제제(개월)</label><input id="f_sm" type="number" inputmode="decimal" placeholder="예: 3"></div>';
+  h+='<div class="fld"><label>연령</label><select id="f_age"><option value="adult">성인</option><option value="adol">청소년(12~17)</option><option value="child">소아(6~11)</option></select></div>';
+  h+='<div class="fld"><label>고위험군</label><select id="f_risk"><option value="no">아니오</option><option value="yes">예(65세↑·심혈관·악성종양)</option></select></div>';
+  h+='</div>';
+  h+='<div style="font-size:12px;font-weight:700;color:var(--ink-faint);margin-bottom:6px">동반질환</div>';
+  h+='<div class="chips" id="f_comorbid" style="margin-bottom:11px">'+
+     chipBtn("comorbid:asthma","천식")+chipBtn("comorbid:ar","알레르기비염")+chipBtn("comorbid:crswnp","비용종")+'</div>';
+  h+='<div style="font-size:12px;font-weight:700;color:var(--ink-faint);margin-bottom:6px">현재 advanced 약물</div>';
+  h+='<div class="chips" id="f_current" style="margin-bottom:14px">'+
+     chipBtn("drug:dupilumab","듀피젠트")+chipBtn("drug:tralokinumab","아트랄자")+chipBtn("drug:lebrikizumab","엡글리스")+
+     chipBtn("drug:upadacitinib","린버크")+chipBtn("drug:baricitinib","올루미언트")+chipBtn("drug:abrocitinib","시빈코")+'</div>';
+  h+='<button class="runbtn" onclick="runFlow()">분석 →</button>';
+  h+='<div id="flowResult"></div>';
+  document.getElementById("view-flow").innerHTML=h;
+}
+function chipBtn(id,label){ return '<button data-id="'+id+'" onclick="toggleChip(this)">'+label+'</button>'; }
+function toggleChip(btn){ btn.className = (btn.className==="on")?"":"on"; }
+function gatherChips(containerId){
+  var out=[], btns=document.querySelectorAll("#"+containerId+" button.on");
+  for(var i=0;i<btns.length;i++) out.push(btns[i].getAttribute("data-id"));
+  return out;
+}
+function numOrNull(id){ var v=document.getElementById(id).value; return v===""?null:parseFloat(v); }
+
+function runFlow(){
+  var input={
+    easi:numOrNull("f_easi"), iga:numOrNull("f_iga"),
+    priorTopicalWeeks:numOrNull("f_tw"), priorSystemicMonths:numOrNull("f_sm"),
+    ageBand:document.getElementById("f_age").value,
+    highRisk:document.getElementById("f_risk").value==="yes",
+    comorbid:gatherChips("f_comorbid"),
+    currentDrugs:gatherChips("f_current")
+  };
+  var clin=adClinicalEngine(input);
+  var gate=adGateStatus(input);
+  var care=adComprehensiveCare(input);
+  var ageOk=function(id){ var d=DRUG_DB[id]; if(!d)return false; var ab=input.ageBand; return d.ageBand[ab]; };
+  var reimbCheck=function(id){ return adReimbCheck(id,input); };
+  var addon=adAdvancedOptions(input, reimbCheck, ageOk);
+
+  var h="";
+  // 임상 카드
+  h+='<div class="rescard clin"><div class="rh"><span class="ricon">🩺</span>임상 권고 (2024 지침)</div><div class="rb">';
+  if(clin.severityBand) h+='<div style="margin-bottom:8px">중증도: <span class="badge '+(clin.severityBand.color==="block"?"b-block":clin.severityBand.color==="warn"?"b-warn":"b-ok")+'">'+clin.severityBand.label+'</span></div>';
+  h+='<div style="font-size:12px;color:var(--ink-faint);margin-bottom:6px">적용 단계</div>';
+  for(var i=0;i<clin.steps.length;i++){ h+='<div class="optrow"><div style="flex:1"><span class="on">'+clin.steps[i].label+'</span><div class="od">'+clin.steps[i].why+'</div></div></div>'; }
+  for(var n=0;n<clin.notes.length;n++){ h+='<div class="note">'+clin.notes[n]+'</div>'; }
+  h+='</div></div>';
+
+  // 급여 카드
+  h+='<div class="rescard pay"><div class="rh"><span class="ricon">💳</span>급여 게이트 · R-CHECK</div><div class="rb">';
+  for(var g=0;g<gate.rows.length;g++){
+    var r=gate.rows[g];
+    h+='<div class="gaterow"><span class="gi">'+(r.ok?"✅":"⬜")+'</span><div class="gl">'+r.label+'</div><span class="gv">'+r.val+'</span></div>';
+  }
+  h+='<div class="note" style="margin-top:9px;border-left-color:'+(gate.allOk?"var(--ok)":"var(--warn)")+'">'+
+     (gate.allOk?"게이트 충족 → 생물학제제/JAK 급여 진입 가능 (산정특례 V308, 본인부담 10%)":"게이트 미충족 항목 있음 — advanced 급여 진입 전 보완 필요")+'</div>';
+  // 현재약 교체 평가
+  if(input.currentDrugs.length){
+    h+='<div style="font-size:12px;font-weight:700;color:var(--ink-faint);margin:11px 0 5px">현재약 기준 교체 가능성</div>';
+    for(var ci2=0;ci2<addon.length;ci2++){
+      var a=addon[ci2], rb=a.reimb, gr=rb.grade;
+      var bcls=gr==="switch_benefit"||gr==="benefit"?"b-ok":gr==="nonbenefit_sameclass"?"b-block":"b-warn";
+      var glabel=gr==="switch_benefit"?"교차 교체 급여":gr==="benefit"?"급여":gr==="nonbenefit_sameclass"?"동일계열 불가":gr==="switch_only"?"생물 불응후만":gr==="gate_unmet"?"게이트 미충족":gr;
+      h+='<div class="optrow"><span class="on">'+DRUG_DB[a.drug].brand+'</span><span class="badge '+bcls+'" style="margin-left:auto">'+glabel+'</span></div>';
+    }
+  }
+  h+='</div></div>';
+
+  // 추가옵션 카드
+  h+='<div class="rescard clin"><div class="rh"><span class="ricon">🎯</span>추가 가능 옵션 (우선순위)</div><div class="rb">';
+  var rank=0;
+  for(var ai=0;ai<addon.length;ai++){
+    var op=addon[ai]; rank++;
+    var d=DRUG_DB[op.drug];
+    var rbg=op.reimb.grade;
+    var rtag=rbg==="benefit"?'<span class="badge b-ok">급여</span>':rbg==="switch_benefit"?'<span class="badge b-ok">교차교체 급여</span>':rbg==="nonbenefit_sameclass"?'<span class="badge b-block">동일계열 불가</span>':rbg==="switch_only"?'<span class="badge b-warn">생물 불응후</span>':rbg==="gate_unmet"?'<span class="badge b-warn">게이트 미충족</span>':'';
+    h+='<div class="optrow"><span class="prio">'+rank+'</span><div style="flex:1"><span class="on">'+d.brand+'</span> <span class="od">'+op.pref+'</span>'+
+       (op.reasons.length?'<div class="od" style="margin-top:2px">→ '+op.reasons.join(" · ")+'</div>':'')+'</div>'+rtag+'</div>';
+  }
+  h+='<div class="note" style="margin-top:8px">우선순위는 절대서열이 아닌 상황별 고려도(동반질환>급여>안전성). 최종 결정은 처방의.</div>';
+  h+='</div></div>';
+
+  // 관리 카드
+  h+='<div class="rescard care"><div class="rh"><span class="ricon">🛡️</span>종합관리 · 챙길 목록</div><div class="rb">';
+  if(care.flags.length){ for(var f=0;f<care.flags.length;f++){ h+='<div class="note">'+care.flags[f]+'</div>'; } }
+  if(care.monitor.length){
+    h+='<div style="font-size:12px;font-weight:700;color:var(--ink-faint);margin:9px 0 5px">모니터링</div>';
+    for(var mi=0;mi<care.monitor.length;mi++){
+      var mo=care.monitor[mi];
+      h+='<div class="optrow"><div style="flex:1"><span class="on" style="font-size:12.5px">'+(mo.id.indexOf("jak")>=0?"JAK":"생물학제제")+'</span><div class="od">'+(mo.baseline?mo.baseline.join(", "):"")+'</div></div></div>';
+    }
+  }
+  h+='<div class="note">감염: 포진성습진(군집수포·발열)은 응급 — 아시클로버 즉시. 보습·악화인자 관리 병행.</div>';
+  h+='</div></div>';
+
+  document.getElementById("flowResult").innerHTML=h;
+  document.getElementById("flowResult").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ---------- CSU 플로우 ---------- */
+function renderCsuFlow(){
+  var h='<div class="banner"><b>만성두드러기 실시간 플로우</b> — 입력 → 임상·급여 카드. 조언자 역할이며 처방을 강제하지 않습니다.</div>';
+  h+='<div class="inpgrid">';
+  h+='<div class="fld"><label>UAS7 (0~42)</label><input id="c_uas7" type="number" inputmode="decimal" placeholder="예: 28"><button class="fld-calc" onclick="openCalc(\'uas7\',function(v){document.getElementById(\'c_uas7\').value=v;})">🧮 계산</button></div>';
+  h+='<div class="fld"><label>UCT (0~16)</label><input id="c_uct" type="number" inputmode="decimal" placeholder="예: 8"><button class="fld-calc" onclick="openCalc(\'uct\',function(v){document.getElementById(\'c_uct\').value=v;})">🧮 계산</button></div>';
+  h+='<div class="fld full"><label>현재 치료 단계</label><select id="c_step">'+
+     '<option value="0">미시작</option><option value="1">1단계: 표준 항히스타민</option>'+
+     '<option value="2">2단계: 4배 증량/4종 병용</option><option value="3">3단계: 오말리주맙/CsA</option></select></div>';
+  h+='</div>';
+  h+='<div style="font-size:12px;font-weight:700;color:var(--ink-faint);margin-bottom:6px">임상 특징</div>';
+  h+='<div class="chips" id="c_feat" style="margin-bottom:14px">'+
+     chipBtn("inducible","유발성 의심")+chipBtn("angioedema","혈관부종 동반")+chipBtn("updose","항히스타민 증량 중")+'</div>';
+  h+='<button class="runbtn" onclick="runCsuFlow()">분석 →</button>';
+  h+='<div id="csuFlowResult"></div>';
+  document.getElementById("view-flow").innerHTML=h;
+}
+function runCsuFlow(){
+  var feat=gatherChips("c_feat");
+  var input={
+    uas7:numOrNull("c_uas7"), uct:numOrNull("c_uct"),
+    currentStep:parseInt(document.getElementById("c_step").value,10),
+    inducible:feat.indexOf("inducible")>=0,
+    angioedema:feat.indexOf("angioedema")>=0,
+    updose:feat.indexOf("updose")>=0
+  };
+  var clin=csuClinicalEngine(input);
+  var h="";
+  // 임상 카드
+  h+='<div class="rescard clin"><div class="rh"><span class="ricon">🩺</span>임상 권고 (2020 공동지침)</div><div class="rb">';
+  if(clin.activityBand) h+='<div style="margin-bottom:6px">활성도: <span class="badge '+(clin.activityBand.color==="block"?"b-block":clin.activityBand.color==="warn"?"b-warn":"b-ok")+'">'+clin.activityBand.label+'</span>';
+  if(clin.controlled===true) h+=' <span class="badge b-ok">UCT 조절됨</span>';
+  else if(clin.controlled===false) h+=' <span class="badge b-warn">UCT 조절 불충분</span>';
+  h+='</div>';
+  h+='<div style="font-size:12px;color:var(--ink-faint);margin:6px 0 4px">치료 단계</div>';
+  for(var i=0;i<clin.steps.length;i++){
+    var cur=(clin.steps[i].order===input.currentStep);
+    h+='<div class="optrow"><span class="prio">'+clin.steps[i].order+'</span><div style="flex:1"><span class="on">'+clin.steps[i].label.replace(/^\d단계 — /,'')+(cur?' (현재)':'')+'</span><div class="od">'+clin.steps[i].why+'</div></div></div>';
+  }
+  for(var n=0;n<clin.notes.length;n++){ h+='<div class="note">'+clin.notes[n]+'</div>'; }
+  h+='</div></div>';
+
+  // 급여 카드
+  h+='<div class="rescard pay"><div class="rh"><span class="ricon">💳</span>급여 · 비용 현실</div><div class="rb">';
+  // 항히스타민
+  var ah=csuReimbCheck("drug:cetirizine",{updose:input.updose});
+  h+='<div class="optrow"><span class="on">2세대 항히스타민</span><span class="badge b-ok" style="margin-left:auto">표준 급여</span></div>';
+  if(input.updose) h+='<div class="note" style="border-left-color:var(--warn)">⚠ 4배 증량: 허가용량 초과분 삭감 주의. 4종 병용은 상대적으로 무난. 고용량 시 졸음·QT 주의.</div>';
+  // 오말리주맙
+  var om=csuReimbCheck("drug:omalizumab",{});
+  h+='<div class="optrow"><span class="on">오말리주맙(졸레어)</span><span class="badge b-block" style="margin-left:auto">CSU 비급여</span></div>';
+  h+='<div class="note" style="border-left-color:var(--block)"><div class="nt" style="color:var(--block)">★전액 본인부담</div>'+CSU_OMALIZUMAB_STATUS.asymmetry+'<br>'+CSU_OMALIZUMAB_STATUS.costExample+'</div>';
+  // CsA
+  h+='<div class="optrow"><span class="on">사이클로스포린</span><span class="badge b-warn" style="margin-left:auto">off-label</span></div>';
+  h+='<div class="note">중증·난치 옵션. 신독성·혈압 모니터 필수.</div>';
+  h+='</div></div>';
+
+  // 관리 카드
+  h+='<div class="rescard care"><div class="rh"><span class="ricon">🛡️</span>챙길 목록</div><div class="rb">';
+  if(input.angioedema) h+='<div class="note" style="border-left-color:var(--block)">혈관부종 동반 — 후두부종 등 기도증상은 응급. 발작 시 대처·에피네프린 교육.</div>';
+  if(input.inducible) h+='<div class="note">유발성 의심 — 유발인자 회피 교육 + 유발검사로 확인.</div>';
+  h+='<div class="note">기본검사: CBC·갑상선기능/항체. 광범위 알레르기검사는 권고 안 함.</div>';
+  h+='<div class="note">추적: UAS7(활성도) + UCT(조절, ≥12 목표). 조절되면 단계적 감량.</div>';
+  h+='</div></div>';
+
+  document.getElementById("csuFlowResult").innerHTML=h;
+  document.getElementById("csuFlowResult").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ---------- 모달 ---------- */
+function closeModal(){ document.getElementById("modal").hidden=true; }
+
+/* ---------- 점수 계산기 ---------- */
+var CALC_STATE={ type:null, easi:{}, uas7:{}, uct:{}, onApply:null };
+
+function openCalc(type, onApply){
+  CALC_STATE.type=type;
+  CALC_STATE.onApply=onApply||null;
+  if(type==="easi" && !CALC_STATE.easi.h){ CALC_STATE.easi={h:{},u:{},t:{},l:{}}; }
+  if(type==="uas7" && !CALC_STATE.uas7.days){ CALC_STATE.uas7={days:[{},{},{},{},{},{},{}]}; }
+  if(type==="uct" && !CALC_STATE.uct.answers){ CALC_STATE.uct={answers:[null,null,null,null]}; }
+  renderCalc();
+  document.getElementById("modal").hidden=false;
+}
+function renderCalc(){
+  var body=document.getElementById("modalBody");
+  if(CALC_STATE.type==="easi") body.innerHTML=renderCalcEASI();
+  else if(CALC_STATE.type==="uas7") body.innerHTML=renderCalcUAS7();
+  else if(CALC_STATE.type==="uct") body.innerHTML=renderCalcUCT();
+}
+
+/* EASI 계산기 */
+function renderCalcEASI(){
+  var c=CALC_EASI;
+  var h='<h3>📏 EASI 자동 계산</h3>';
+  h+='<div class="calcsrc">'+c.src+' · 범위 '+c.range+'</div>';
+  h+='<div class="calctip">'+c.tip+'</div>';
+  for(var r=0;r<c.regions.length;r++){
+    var reg=c.regions[r], rd=CALC_STATE.easi[reg.key]||{};
+    h+='<div class="calcregion"><div class="calcreg-h">'+reg.label+' <span class="calcw">가중치 ×'+reg.weight+'</span></div>';
+    // 4징후
+    for(var s=0;s<c.signs.length;s++){
+      var sg=c.signs[s];
+      h+='<div class="calcrow"><div class="calclab">'+sg.label+'<span class="calcdesc">'+sg.desc+'</span></div><div class="calcseg">';
+      for(var v=0;v<c.signScale.length;v++){
+        var sv=c.signScale[v], on=(rd[sg.key]===sv.v)?" on":"";
+        h+='<button class="calcbtn'+on+'" onclick="setEasi(\''+reg.key+'\',\''+sg.key+'\','+sv.v+')">'+sv.v+'</button>';
+      }
+      h+='</div></div>';
+    }
+    // 면적
+    h+='<div class="calcrow"><div class="calclab">면적(Area)<span class="calcdesc">침범 %→0~6</span></div><div class="calcseg">';
+    for(var a=0;a<c.areaScale.length;a++){
+      var as=c.areaScale[a], aon=(rd.area===as.v)?" on":"";
+      h+='<button class="calcbtn area'+aon+'" onclick="setEasi(\''+reg.key+'\',\'area\','+as.v+')" title="'+as.label+'">'+as.v+'</button>';
+    }
+    h+='</div></div>';
+    var subVal=(num(rd.E)+num(rd.I)+num(rd.Ex)+num(rd.L))*num(rd.area)*reg.weight;
+    h+='<div class="calcsub">소계: <b>'+(Math.round(subVal*10)/10)+'</b> = (E+I+Ex+L) '+(num(rd.E)+num(rd.I)+num(rd.Ex)+num(rd.L))+' × 면적 '+num(rd.area)+' × '+reg.weight+'</div>';
+    h+='</div>';
+  }
+  var res=calcEASI(CALC_STATE.easi);
+  h+=calcResultBox("EASI", res.score, res.band, res.gateMet?"급여 게이트(≥23) 충족":"게이트(≥23) 미충족", res.gateMet);
+  if(CALC_STATE.onApply) h+='<button class="calcapply" onclick="applyCalc()">이 점수로 플로우 채우기 →</button>';
+  return h;
+}
+function setEasi(reg,sign,val){
+  if(!CALC_STATE.easi[reg]) CALC_STATE.easi[reg]={};
+  CALC_STATE.easi[reg][sign]=val;
+  renderCalc();
+}
+
+/* UAS7 계산기 */
+function renderCalcUAS7(){
+  var c=CALC_UAS7;
+  var h='<h3>📊 UAS7 자동 계산</h3>';
+  h+='<div class="calcsrc">'+c.src+' · 범위 '+c.range+'</div>';
+  h+='<div class="calctip">'+c.tip+'</div>';
+  h+='<table class="uastbl"><tr><th>일</th><th>팽진(0~3)</th><th>가려움(0~3)</th></tr>';
+  for(var d=0;d<7;d++){
+    var day=CALC_STATE.uas7.days[d]||{};
+    h+='<tr><td class="uasday">'+c.days[d]+'</td>';
+    h+='<td><div class="calcseg sm">';
+    for(var w=0;w<c.wheal.length;w++){ var won=(day.w===c.wheal[w].v)?" on":""; h+='<button class="calcbtn'+won+'" onclick="setUas('+d+',\'w\','+c.wheal[w].v+')" title="'+c.wheal[w].label+'">'+c.wheal[w].v+'</button>'; }
+    h+='</div></td><td><div class="calcseg sm">';
+    for(var it=0;it<c.itch.length;it++){ var ion=(day.i===c.itch[it].v)?" on":""; h+='<button class="calcbtn'+ion+'" onclick="setUas('+d+',\'i\','+c.itch[it].v+')" title="'+c.itch[it].label+'">'+c.itch[it].v+'</button>'; }
+    h+='</div></td></tr>';
+  }
+  h+='</table>';
+  h+='<div class="calctip" style="margin-top:6px">팽진: 0없음 / 1(1~6개) / 2(7~12개) / 3(>12개)</div>';
+  var res=calcUAS7(CALC_STATE.uas7);
+  h+=calcResultBox("UAS7", res.score, res.band, res.band.label, res.band.color==="ok");
+  if(CALC_STATE.onApply) h+='<button class="calcapply" onclick="applyCalc()">이 점수로 플로우 채우기 →</button>';
+  return h;
+}
+function setUas(day,key,val){
+  if(!CALC_STATE.uas7.days[day]) CALC_STATE.uas7.days[day]={};
+  CALC_STATE.uas7.days[day][key]=val;
+  renderCalc();
+}
+
+/* UCT 계산기 */
+function renderCalcUCT(){
+  var c=CALC_UCT;
+  var h='<h3>🎯 UCT 조절검사 자동 계산</h3>';
+  h+='<div class="calcsrc">'+c.src+' · '+c.recall+' · 범위 '+c.range+'</div>';
+  h+='<div class="calctip">'+c.tip+'</div>';
+  for(var q=0;q<c.questions.length;q++){
+    var qu=c.questions[q];
+    h+='<div class="uctq"><div class="uctq-t">'+(q+1)+'. '+qu.q+'</div>';
+    for(var o=0;o<qu.opts.length;o++){
+      var op=qu.opts[o], on=(CALC_STATE.uct.answers[q]===op.v)?" on":"";
+      h+='<button class="uctopt'+on+'" onclick="setUct('+q+','+op.v+')"><span class="uctv">'+op.v+'</span>'+op.label+'</button>';
+    }
+    h+='</div>';
+  }
+  var res=calcUCT(CALC_STATE.uct);
+  h+=calcResultBox("UCT", res.score, {label:res.label,color:res.controlled?"ok":"warn"}, res.label+" (기준 ≥12)", res.controlled);
+  if(CALC_STATE.onApply) h+='<button class="calcapply" onclick="applyCalc()">이 점수로 플로우 채우기 →</button>';
+  return h;
+}
+function setUct(q,val){ CALC_STATE.uct.answers[q]=val; renderCalc(); }
+
+function calcResultBox(name,score,band,sub,good){
+  var col=band.color==="block"?"var(--block)":band.color==="warn"?"var(--warn)":"var(--ok)";
+  return '<div class="calcresult" style="border-color:'+col+'"><div class="calcrn">'+name+'</div>'+
+    '<div class="calcrs" style="color:'+col+'">'+score+'</div>'+
+    '<div class="calcrb" style="color:'+col+'">'+band.label+'</div>'+
+    '<div class="calcrsub">'+sub+'</div></div>';
+}
+function applyCalc(){
+  var t=CALC_STATE.type, val=null;
+  if(t==="easi") val=calcEASI(CALC_STATE.easi).score;
+  else if(t==="uas7") val=calcUAS7(CALC_STATE.uas7).score;
+  else if(t==="uct") val=calcUCT(CALC_STATE.uct).score;
+  if(CALC_STATE.onApply) CALC_STATE.onApply(val);
+  closeModal();
+}
+
+/* ---------- 푸터 ---------- */
+function renderFoot(){
+  var f=document.getElementById("foot");
+  if(STATE.disease==="ad"){
+    f.innerHTML='2024 대한아토피피부염학회 치료 가이드라인 · 심평원 약제 급여기준·산정특례(V308) · 교체투여 개정(2025.3.1)<br>'+
+      '★급여기준은 갱신되므로 처방·청구 시 최신 고시 확인 권장 · 임상 판단 보조 도구, 최종 결정은 처방의 책임';
+  } else {
+    f.innerHTML='2020 대한천식알레르기학회·피부면역학회 공동 만성두드러기 진료지침 · 심평원 급여기준<br>'+
+      '★오말리주맙 CSU 적응증은 비급여(전액본인) · 급여기준은 갱신되므로 처방·청구 시 최신 고시 확인 권장 · 임상 판단 보조 도구, 최종 결정은 처방의 책임';
+  }
+}
+
+/* ---------- 이벤트 바인딩 ---------- */
+document.getElementById("diseaseToggle").addEventListener("click",function(e){
+  var b=e.target.closest("button"); if(b) setDisease(b.getAttribute("data-d"));
+});
+document.getElementById("tabbar").addEventListener("click",function(e){
+  var b=e.target.closest("button"); if(b) setTab(b.getAttribute("data-tab"));
+});
+
+/* ---------- 초기 렌더 ---------- */
+renderAll();
+
+</script>
+</body>
+</html>

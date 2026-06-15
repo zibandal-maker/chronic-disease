@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>만성질환 처방 가이드</title>
+<style>
+  :root{
+    --bg:#eef1f5; --panel:#ffffff; --panel2:#f5f7f9; --line:#dde3ea;
+    --ink:#16202b; --ink-dim:#48586a; --ink-faint:#8595a3;
+    --accent:#1a6fb0; --accent-bg:#e6f0fa;
+    --pay:#b07514; --care:#1a8a72;
+    --radius:16px; --radius-sm:11px;
+    --shadow:0 1px 2px rgba(20,40,60,.05),0 6px 22px rgba(20,40,60,.07);
+    --shadow-h:0 2px 6px rgba(20,40,60,.08),0 14px 38px rgba(20,40,60,.13);
+    --sans:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',sans-serif;
+    --mono:'SF Mono',ui-monospace,Consolas,monospace;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{background:
+      radial-gradient(1100px 480px at 78% -8%, #e3edf6 0%, rgba(227,237,246,0) 60%),
+      radial-gradient(900px 420px at 8% 4%, #eaf2ec 0%, rgba(234,242,236,0) 55%),
+      var(--bg);
+    color:var(--ink);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;min-height:100vh;
+    padding:max(18px,env(safe-area-inset-top)) 16px 56px;}
+  .wrap{max-width:980px;margin:0 auto;}
+
+  /* ── 헤더 ── */
+  header.hero{padding:14px 4px 22px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;
+    letter-spacing:.02em;color:var(--accent);background:var(--accent-bg);
+    padding:5px 12px;border-radius:999px;border:1px solid #cfe1f1;}
+  .eyebrow .pulse{width:7px;height:7px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 0 0 rgba(26,111,176,.5);animation:pulse 2.4s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(26,111,176,.45)}70%{box-shadow:0 0 0 8px rgba(26,111,176,0)}100%{box-shadow:0 0 0 0 rgba(26,111,176,0)}}
+  h1.title{font-size:clamp(26px,6.4vw,38px);line-height:1.12;font-weight:800;
+    letter-spacing:-.02em;margin:16px 0 8px;color:#0f1b27;}
+  h1.title .thin{font-weight:600;color:var(--ink-dim);}
+  .lede{font-size:14.5px;line-height:1.6;color:var(--ink-dim);max-width:60ch;margin:0;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .chip{font-size:11.5px;font-weight:600;color:var(--ink-dim);background:var(--panel);
+    border:1px solid var(--line);padding:5px 11px;border-radius:999px;}
+  .chip b{color:var(--ink);font-weight:700;}
+
+  /* ── 필터 바 ── */
+  .filterbar{display:flex;gap:7px;overflow-x:auto;padding:4px 2px 14px;margin-top:6px;
+    scrollbar-width:none;}
+  .filterbar::-webkit-scrollbar{display:none;}
+  .fbtn{flex:0 0 auto;font-size:13px;font-weight:600;color:var(--ink-dim);
+    background:var(--panel);border:1px solid var(--line);padding:7px 14px;border-radius:999px;
+    cursor:pointer;transition:.16s;white-space:nowrap;}
+  .fbtn:hover{border-color:#c2cdd8;}
+  .fbtn.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+
+  /* ── 카드 그리드 ── */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+  a.card{position:relative;display:flex;flex-direction:column;text-decoration:none;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 18px 16px;box-shadow:var(--shadow);overflow:hidden;
+    transition:transform .18s cubic-bezier(.2,.7,.3,1),box-shadow .18s,border-color .18s;}
+  a.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--ac,#888);}
+  a.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-h);border-color:#cdd7e1;}
+  a.card:active{transform:translateY(-1px) scale(.995);}
+  .card-top{display:flex;align-items:flex-start;gap:13px;}
+  .emoji{font-size:30px;line-height:1;flex:0 0 auto;width:48px;height:48px;
+    display:flex;align-items:center;justify-content:center;border-radius:13px;
+    background:var(--acbg,#eef1f4);}
+  .card-h{flex:1;min-width:0;}
+  .card-h .t{font-size:17.5px;font-weight:800;color:#101c28;letter-spacing:-.01em;
+    display:flex;align-items:center;gap:7px;}
+  .card-h .tag{font-size:11px;font-weight:700;color:var(--ac,#5a6a78);background:var(--acbg,#eef1f4);
+    padding:2px 8px;border-radius:999px;}
+  .card-h .gl{font-size:12.5px;line-height:1.5;color:var(--ink-faint);margin-top:5px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:15px;
+    padding-top:12px;border-top:1px dashed var(--line);}
+  .open{font-size:12.5px;font-weight:700;color:var(--ac,var(--accent));display:inline-flex;align-items:center;gap:4px;}
+  .open .arr{transition:transform .18s;}
+  a.card:hover .open .arr{transform:translateX(3px);}
+  .idlabel{font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);letter-spacing:.04em;}
+
+  .empty{grid-column:1/-1;text-align:center;color:var(--ink-faint);font-size:14px;padding:40px 0;}
+
+  /* ── 푸터 ── */
+  footer{margin-top:34px;padding:20px 6px 0;border-top:1px solid var(--line);
+    font-size:12px;line-height:1.7;color:var(--ink-faint);}
+  footer b{color:var(--ink-dim);font-weight:700;}
+  footer .disc{margin-top:8px;}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow"><span class="pulse"></span>임상 의사결정 지원 · 조언자 도구</span>
+    <h1 class="title">만성질환 처방 가이드<span class="thin"> 포털</span></h1>
+    <p class="lede">한국 학회 진료지침과 심평원 급여 기준을 함께 펼쳐 보는 외래 처방 보조 도구.
+      각 가이드는 독립 실행되며, 최종 처방 결정은 처방의의 책임입니다.</p>
+    <div class="meta-row">
+      <span class="chip"><b id="cnt">0</b>개 가이드</span>
+      <span class="chip">가이드라인 + <b>심평원 급여</b> 이중 레이어</span>
+      <span class="chip">업데이트 <b id="bdate">—</b></span>
+    </div>
+  </header>
+
+  <nav class="filterbar" id="filterbar" aria-label="분류 필터"></nav>
+
+  <main class="grid" id="grid"></main>
+
+  <footer>
+    <b>출처</b> · 각 가이드 내부에 해당 학회 진료지침·심평원 고시·참고문헌 링크 명시.
+    급여기준·약제 정보는 갱신될 수 있으므로 처방·청구 시 최신 고시(심평원)·허가사항 확인 권장.
+    <div class="disc"><b>면책</b> · 본 도구는 임상 판단을 보조하며, 진단·처방의 최종 책임은 사용 의사에게 있습니다.</div>
+  </footer>
+</div>
+
+<script>
+  // REGISTRY/BUILD_DATE 는 빌드 시 registry.json 으로 치환됨
+  const REGISTRY = {"meta":{"title":"만성질환 처방 가이드","subtitle":"한국 가이드라인 · 심평원 급여 기준 — 조언자 도구","owner":"화성유일병원 내과센터","version":"portal-1.0","note":"각 가이드는 독립 실행. 본 포털은 읽기 전용 허브이며 가이드 내부 로직을 수정하지 않는다."},"guides":[{"id":"htn","title":"고혈압","emoji":"🩺","src":"htn_prescribing_guide__7_.html","out":"htn.html","guideline":"대한고혈압학회 진료지침 2026 (제6판) · ESC 2024 · AHA/ACC 2025","group":"B","accent":"#1a73e8","tag":"순환기"},{"id":"dm","title":"당뇨병","emoji":"🍬","src":"dm_guide__5_.html","out":"dm.html","guideline":"대한당뇨병학회 2025 진료지침 (9판) · 심평원 당뇨병용제 고시","group":"A","accent":"#2c6fb0","tag":"내분비"},{"id":"dyslipidemia","title":"이상지질혈증","emoji":"🫀","src":"dyslipidemia_guide.html","out":"dyslipidemia.html","guideline":"한국지질·동맥경화학회 진료지침 (5판) · 심평원 급여","group":"A","accent":"#c0392b","tag":"내분비"},{"id":"asthma","title":"천식","emoji":"🫁","src":"asthma_totalcare_app__2_.html","out":"asthma.html","guideline":"대한천식알레르기학회 · GINA — Total Care","group":"B","accent":"#1f6fb2","tag":"호흡기"},{"id":"copd","title":"COPD","emoji":"💨","src":"copd_guide__2_.html","out":"copd.html","guideline":"대한결핵및호흡기학회 2024 · GOLD 2025 · 심평원 급여","group":"A","accent":"#2c6fb0","tag":"호흡기"},{"id":"ar","title":"알레르기 비염","emoji":"🤧","src":"ar_guide__2_.html","out":"ar.html","guideline":"KAAACI 2023/2024 · ARIA · 심평원 급여","group":"B","accent":"#0a82c4","tag":"알레르기"},{"id":"skin","title":"피부질환","emoji":"🧴","src":"skin_guide__1_.html","out":"skin.html","guideline":"대한피부과학회 · 아토피/만성두드러기 — 통합 가이드","group":"A","accent":"#d8632a","tag":"피부"},{"id":"ibd","title":"염증성 장질환","emoji":"🔥","src":"ibd_guide__1_.html","out":"ibd.html","guideline":"대한장연구학회 · UC/크론병 — 통합 가이드","group":"A","accent":"#2c6fb0","tag":"소화기"},{"id":"rheum","title":"류마티스·자가면역","emoji":"🦴","src":"rheum_guide.html","out":"rheum.html","guideline":"대한류마티스학회 · 초기 감별 가이드","group":"A","accent":"#1a8a72","tag":"류마티스"}]};
+  const BUILD_DATE = "2026-06-14";
+
+  const guides = REGISTRY.guides;
+  document.getElementById('cnt').textContent = guides.length;
+  document.getElementById('bdate').textContent = BUILD_DATE;
+
+  // 분류 필터 구성
+  const tags = ['전체', ...Array.from(new Set(guides.map(g => g.tag)))];
+  const fbar = document.getElementById('filterbar');
+  let active = '전체';
+  tags.forEach(t => {
+    const b = document.createElement('button');
+    b.className = 'fbtn' + (t === '전체' ? ' on' : '');
+    b.textContent = t;
+    b.onclick = () => { active = t; [...fbar.children].forEach(c => c.classList.toggle('on', c.textContent === t)); render(); };
+    fbar.appendChild(b);
+  });
+
+  function hexToRgba(hex, a){
+    const n = parseInt(hex.slice(1),16);
+    return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
+  }
+
+  const grid = document.getElementById('grid');
+  function render(){
+    const list = guides.filter(g => active === '전체' || g.tag === active);
+    grid.innerHTML = '';
+    if (!list.length){ grid.innerHTML = '<div class="empty">해당 분류의 가이드가 없습니다.</div>'; return; }
+    list.forEach(g => {
+      const a = document.createElement('a');
+      a.className = 'card';
+      a.href = 'guides/' + g.out;
+      a.style.setProperty('--ac', g.accent);
+      a.style.setProperty('--acbg', hexToRgba(g.accent, .12));
+      a.innerHTML = `
+        <div class="card-top">
+          <div class="emoji">${g.emoji}</div>
+          <div class="card-h">
+            <div class="t">${g.title}<span class="tag">${g.tag}</span></div>
+            <div class="gl">${g.guideline}</div>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="open">가이드 열기 <span class="arr">→</span></span>
+          <span class="idlabel">${g.id}</span>
+        </div>`;
+      grid.appendChild(a);
+    });
+  }
+  render();
+</script>
+</body>
+</html>

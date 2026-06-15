@@ -1,0 +1,41 @@
+{
+  "builtAt": "2026-06-14T23:57:56.485Z",
+  "built": [
+    {
+      "id": "htn",
+      "out": "htn.html"
+    },
+    {
+      "id": "dm",
+      "out": "dm.html"
+    },
+    {
+      "id": "dyslipidemia",
+      "out": "dyslipidemia.html"
+    },
+    {
+      "id": "asthma",
+      "out": "asthma.html"
+    },
+    {
+      "id": "copd",
+      "out": "copd.html"
+    },
+    {
+      "id": "ar",
+      "out": "ar.html"
+    },
+    {
+      "id": "skin",
+      "out": "skin.html"
+    },
+    {
+      "id": "ibd",
+      "out": "ibd.html"
+    },
+    {
+      "id": "rheum",
+      "out": "rheum.html"
+    }
+  ]
+}

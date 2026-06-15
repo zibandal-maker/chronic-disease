@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>알레르기 비염 처방 가이드</title>
+<style>
+:root{
+  --ink:#0e2230; --muted:#5a7180; --line:#d6e3ea; --bg:#f3f8fb; --card:#ffffff; --panel2:#eef4f8;
+  --accent:#0a82c4; --accent-soft:#e3f1f9;
+  --accent2:#7b5ea7; --accent2-soft:#efeaf6;
+  --clin:#0a82c4; --clin-bg:#e3f1f9;
+  --immuno:#0f8a6a; --immuno-bg:#e4f3ee;
+  --reimb:#c08416; --reimb-bg:#f8f0db;
+  --care:#0f8a6a; --care-bg:#e4f3ee;
+  --pay:#c08416; --pay-bg:#f8f0db;
+  --met:#0f8a6a; --met-bg:#e4f3ee;
+  --warn:#c08416; --warn-bg:#f8f0db;
+  --notmet:#b8442a; --notmet-bg:#f8ebe6;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;
+  font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{max-width:860px;margin:0 auto;padding:0 0 90px}
+header{padding:16px 16px 10px;background:var(--card);border-bottom:1px solid var(--line)}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:21px;margin:5px 0 3px;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:13px;margin:0}
+
+/* tab nav */
+.tabnav{position:sticky;top:0;z-index:60;display:flex;background:var(--card);border-bottom:1px solid var(--line)}
+.tabnav button{flex:1;appearance:none;border:none;background:none;font-family:inherit;font-size:15px;
+  padding:13px 8px;cursor:pointer;color:var(--muted);font-weight:600;touch-action:manipulation;border-bottom:3px solid transparent}
+.tabnav button.on{color:var(--accent);border-bottom-color:var(--accent)}
+.tabview{display:none}
+.tabview.on{display:block}
+
+/* ====== LIBRARY ====== */
+.lib{padding:14px 16px}
+.searchbar{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:10px 14px;margin-bottom:14px}
+.searchbar input{flex:1;border:none;outline:none;font-size:16px;font-family:inherit;background:none;color:var(--ink)}
+.searchbar .si{color:var(--muted)}
+.intro-card{background:linear-gradient(135deg,var(--accent),#0a6ba0);color:#fff;border-radius:14px;
+  padding:16px;margin-bottom:14px;cursor:pointer;touch-action:manipulation}
+.intro-card .t{font-size:16px;font-weight:700;margin-bottom:3px}
+.intro-card .d{font-size:13px;opacity:.92}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+.topic{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:13px 14px;cursor:pointer;
+  touch-action:manipulation;border-left:4px solid var(--line);transition:transform .1s,box-shadow .1s;text-align:left;
+  font-family:inherit;color:inherit;width:100%}
+.topic:active{transform:scale(.99)}
+.topic.clin{border-left-color:var(--clin)} .topic.care{border-left-color:var(--care)} .topic.pay{border-left-color:var(--pay)}
+.topic .th{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.topic .ico{font-size:18px}
+.topic .cat{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;margin-left:auto}
+.cat.clin{background:var(--clin-bg);color:var(--clin)} .cat.care{background:var(--care-bg);color:var(--care)} .cat.pay{background:var(--pay-bg);color:var(--pay)}
+.topic .tt{font-size:15px;font-weight:700}
+.topic .ts{font-size:12px;color:var(--muted);margin-top:3px}
+.srcbanner{margin-top:16px;padding:12px 14px;background:var(--panel2);border-radius:11px;font-size:11px;color:var(--muted);line-height:1.6}
+.srcbanner a{color:var(--accent)}
+
+/* library detail */
+.detail{display:none}
+.detail.on{display:block}
+.backbtn{appearance:none;border:1px solid var(--line);background:var(--card);font-family:inherit;font-size:14px;
+  padding:8px 14px;border-radius:10px;cursor:pointer;margin-bottom:12px;color:var(--accent);font-weight:600;touch-action:manipulation}
+.detail h2{font-size:19px;margin:2px 0 4px}
+.detail .dsub{color:var(--muted);font-size:13px;margin:0 0 14px}
+
+/* sections */
+.sec{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 16px;margin-bottom:12px}
+.sec-h{font-size:15px;font-weight:700;margin:0 0 10px;display:flex;align-items:center;gap:7px}
+.sec-h .si{font-size:16px}
+.kp{font-size:14px;margin:6px 0;padding-left:16px;position:relative}
+.kp:before{content:"•";position:absolute;left:2px;color:var(--accent)}
+.prose-key{font-size:14px;line-height:1.6}
+.prose-key b{color:var(--ink)}
+.more-btn{appearance:none;border:none;background:none;color:var(--accent);font-family:inherit;font-size:13px;
+  font-weight:600;cursor:pointer;padding:4px 0;touch-action:manipulation}
+.more-body{display:none;margin-top:8px;font-size:13.5px;color:var(--ink);line-height:1.65;
+  padding:10px 12px;background:var(--panel2);border-radius:9px}
+.more-body.on{display:block}
+.more-body b{color:var(--ink)}
+
+table.tbl{width:100%;border-collapse:collapse;font-size:13px}
+table.tbl th,table.tbl td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+table.tbl th{color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+.s-pay{color:var(--met);font-weight:700}.s-no{color:var(--notmet);font-weight:700}
+code.kcd{font-family:ui-monospace,Menlo,monospace;font-weight:700;color:var(--accent)}
+
+.callout{padding:12px 14px;border-radius:11px;font-size:13.5px;line-height:1.6;margin:4px 0}
+.callout.trig{background:var(--accent2-soft);border-left:4px solid var(--accent2)}
+.callout.trig b{color:var(--accent2)}
+.callout.warnc{background:var(--warn-bg);border-left:4px solid var(--warn)}
+.callout.warnc b{color:var(--warn)}
+
+/* drug cards (클릭형) */
+.dc{border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden}
+.dc-head{appearance:none;width:100%;text-align:left;background:var(--card);border:none;font-family:inherit;
+  padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;touch-action:manipulation}
+.dc-head .nm{font-weight:700;font-size:14px}
+.dc-head .br{font-size:12px;color:var(--muted)}
+.dc-head .arr{margin-left:auto;color:var(--muted);transition:transform .15s}
+.dc-head.open .arr{transform:rotate(90deg)}
+.dc-body{display:none;padding:0 14px 12px}
+.dc-body.open{display:block}
+.dc-row{font-size:13px;margin:6px 0;padding-top:6px;border-top:1px solid var(--line)}
+.dc-row .k{font-weight:700;color:var(--muted);display:inline-block;min-width:62px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cmp .col{background:var(--panel2);border-radius:10px;padding:10px 12px}
+.cmp .col h4{margin:0 0 6px;font-size:13px}
+.cmp .col .li{font-size:12.5px;margin:4px 0;color:var(--ink)}
+
+/* ====== SIM (flow) ====== */
+.inbar{background:var(--card);border-bottom:1px solid var(--line);padding:12px 16px}
+.row{margin-bottom:11px}.row:last-child{margin-bottom:0}
+.lab{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em;margin-bottom:5px;text-transform:uppercase}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:14px;padding:7px 12px;
+  border-radius:18px;cursor:pointer;touch-action:manipulation;font-family:inherit;transition:all .12s}
+.chip:active{transform:scale(.97)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.chip.on.care{background:var(--immuno);border-color:var(--immuno)}
+.chip.on.warnc{background:var(--reimb);border-color:var(--reimb)}
+.age-in{width:64px;font-size:16px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-family:inherit}
+.flexrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.assess-btn{appearance:none;border:1px dashed var(--accent);background:var(--accent-soft);color:var(--accent);
+  font-family:inherit;font-size:12px;font-weight:700;padding:5px 10px;border-radius:8px;cursor:pointer;
+  touch-action:manipulation;margin-left:6px}
+.assess{display:none;margin-top:8px;padding:11px 13px;background:var(--accent-soft);border-radius:11px}
+.assess.on{display:block}
+.assess .lab{color:var(--accent)}
+.assess .crit{font-size:13px;margin:6px 0}
+.checkrow{display:flex;align-items:flex-start;gap:8px;font-size:13.5px;margin:7px 0;cursor:pointer;touch-action:manipulation}
+.checkrow .box{width:20px;height:20px;border:2px solid var(--accent);border-radius:5px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;background:#fff}
+.checkrow.on .box{background:var(--accent)}
+.checkrow.on .box:after{content:"✓"}
+.vas-wrap{margin:10px 0}
+.vas-wrap input[type=range]{width:100%}
+.vas-val{font-weight:700;color:var(--accent)}
+.auto-out{font-size:12.5px;color:var(--muted);margin-top:8px}
+.auto-out b{color:var(--accent)}
+.tnss-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.tnss-grid label{font-size:12px;color:var(--muted)}
+.tnss-grid select{width:100%;font-size:15px;padding:5px;border:1px solid var(--line);border-radius:7px;font-family:inherit;margin-top:2px}
+
+.subpanel{margin-top:10px;padding:10px;background:var(--accent2-soft);border-radius:10px;display:none}
+.subpanel.show{display:block}
+.subpanel .lab{color:var(--accent2)}
+.numgrid{display:flex;flex-wrap:wrap;gap:8px}
+.numgrid label{font-size:12px;color:var(--muted)}
+.numgrid input{width:70px;font-size:16px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;font-family:inherit;display:block;margin-top:2px}
+
+.stream{padding:14px 16px}
+.scard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(14,34,48,.04)}
+.scard.clin{border-left:4px solid var(--clin)}.scard.immuno{border-left:4px solid var(--immuno)}.scard.bio{border-left:4px solid var(--reimb)}.scard.reimb{border-left:4px solid var(--reimb)}
+.chd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.chd .ico{font-size:18px}.chd .ttl{font-size:15px;font-weight:700}
+.chd .tag{margin-left:auto;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px}
+.tag.clin{background:var(--clin-bg);color:var(--clin)}.tag.immuno{background:var(--immuno-bg);color:var(--immuno)}.tag.reimb{background:var(--reimb-bg);color:var(--reimb)}
+.drugitem{padding:9px 0;border-top:1px solid var(--line)}.drugitem:first-of-type{border-top:none}
+.di-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.di-name{font-weight:600;font-size:15px}.di-brand{font-size:12px;color:var(--muted)}
+.role-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--accent-soft);color:var(--accent)}
+.role-badge.rec{background:var(--immuno-bg);color:var(--immuno)}
+.di-meta{font-size:13px;margin-top:3px}.di-caution{font-size:12px;color:var(--notmet);margin-top:2px}
+.reimb-pill{font-size:10px;font-weight:700;padding:2px 6px;border-radius:5px;margin-left:4px}
+.reimb-pill.pay{background:var(--met-bg);color:var(--met)}.reimb-pill.no{background:var(--notmet-bg);color:var(--notmet)}
+.recbox{margin-top:10px;padding:8px 10px;background:var(--clin-bg);border-radius:8px;font-size:13px;color:var(--clin)}
+.statusline{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:8px}
+.vbadge{font-size:12px;font-weight:700;padding:3px 10px;border-radius:6px}
+.vbadge.ok{background:var(--met-bg);color:var(--met)}.vbadge.warn{background:var(--warn-bg);color:var(--warn)}.vbadge.no{background:var(--notmet-bg);color:var(--notmet)}
+.kv{font-size:13px;margin:4px 0}.kv .k{color:var(--muted);font-weight:600;margin-right:6px}
+.note{font-size:12px;color:var(--muted);margin-top:6px}
+.bio-row{padding:9px 0;border-top:1px solid var(--line)}.bio-row:first-of-type{border-top:none}
+.bio-name{font-weight:600}.bio-tag{font-size:10px;color:var(--muted);margin-left:6px}
+.nonreimb{font-size:11px;font-weight:700;color:var(--notmet);background:var(--notmet-bg);padding:2px 7px;border-radius:5px;margin-left:6px}
+.bridge{margin-top:6px;padding:8px 10px;background:var(--met-bg);border-radius:8px;font-size:13px;color:var(--met);font-weight:600}
+.warnflag{padding:9px 11px;background:var(--warn-bg);border-radius:9px;font-size:13px;color:var(--warn);margin-bottom:12px;font-weight:600}
+.acc-btn{appearance:none;width:100%;text-align:left;background:none;border:none;font-family:inherit;cursor:pointer;padding:0;font-size:15px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;touch-action:manipulation}
+.acc-btn .arrow{margin-left:auto;color:var(--muted);transition:transform .15s}.acc-btn.open .arrow{transform:rotate(90deg)}
+.acc-body{display:none;margin-top:10px}.acc-body.open{display:block}
+footer{padding:16px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);line-height:1.6}
+footer a{color:var(--accent)}
+.empty{color:var(--muted);font-size:13px;padding:10px 0;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">만성질환 가이드 · 05</div>
+  <h1>알레르기 비염 처방 가이드</h1>
+  <p class="sub">KAAACI 2023/2024 · ARIA · 심평원 급여 — 조언자 도구 (최종 결정은 처방의 책임)</p>
+</header>
+
+<nav class="tabnav">
+  <button type="button" class="on" data-tab="library">📚 도서관</button>
+  <button type="button" data-tab="sim">🧭 시뮬레이션</button>
+</nav>
+
+<!-- ============ LIBRARY TAB ============ -->
+<div class="tabview on" id="tab-library">
+  <div class="lib">
+    <div class="searchbar"><span class="si">🔍</span><input id="search" type="text" placeholder="약물·상황·코드 검색 (예: 듀피젠트, 면역요법, J30)"></div>
+    <button type="button" class="intro-card" id="goSim">
+      <div class="t">🧭 시뮬레이션 열기</div>
+      <div class="d">환자 입력 → 처방·면역요법·생물학제제·급여 카드를 실시간으로. 빈도·중증도 평가 도우미 포함.</div>
+    </button>
+    <div class="grid" id="topicGrid"></div>
+    <div class="detail" id="topicDetail"></div>
+    <div class="srcbanner" id="srcBanner">
+      출처: 대한천식알레르기학회(KAAACI) 알레르기비염 진료지침 Part 1·2 (2023), 알레르기 면역요법 지침(2023)·설하면역요법 지침(2024), ARIA · 보건복지부·심평원 급여 고시(2026 기준) · 알레르기 검사 급여화(2021.03)<br>
+      ★급여기준·허가사항은 갱신될 수 있으므로 처방·청구 시 최신 고시(심평원)·허가사항 확인 권장. 면역요법 비급여 비용은 참고 범위(병원·제품별 상이).
+    </div>
+  </div>
+</div>
+
+<!-- ============ SIM TAB ============ -->
+<div class="tabview" id="tab-sim">
+  <div class="inbar">
+    <div class="row flexrow">
+      <div>
+        <div class="lab">연령</div>
+        <div class="flexrow"><input class="age-in" id="age" type="number" inputmode="numeric" placeholder="나이" value="30"><span id="agegroup" class="di-brand">성인</span></div>
+      </div>
+      <div>
+        <div class="lab">빈도 <button type="button" class="assess-btn" data-assess="freq">평가 ▾</button></div>
+        <div class="chips" id="freq">
+          <button type="button" class="chip on" data-v="intermittent">간헐성</button>
+          <button type="button" class="chip" data-v="persistent">지속성</button>
+        </div>
+      </div>
+      <div>
+        <div class="lab">중증도 <button type="button" class="assess-btn" data-assess="sev">평가 ▾</button></div>
+        <div class="chips" id="sev">
+          <button type="button" class="chip on" data-v="mild">경증</button>
+          <button type="button" class="chip" data-v="modsevere">중등-중증</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 빈도 평가 도우미 -->
+    <div class="assess" id="assess-freq">
+      <div class="lab">빈도 평가 (ARIA)</div>
+      <div class="crit flexrow">증상 <input class="age-in" id="fq-days" type="number" inputmode="numeric" value="0" style="width:54px"> 일/주, 지속 <input class="age-in" id="fq-weeks" type="number" inputmode="numeric" value="0" style="width:54px"> 주</div>
+      <div class="auto-out" id="fq-out">기준: 간헐성 = &lt;4일/주 <b>또는</b> &lt;4주 · 지속성 = ≥4일/주 <b>그리고</b> ≥4주</div>
+    </div>
+
+    <!-- 중증도 평가 도우미 (VAS 단독 자동분류) -->
+    <div class="assess" id="assess-sev">
+      <div class="lab">중증도 평가 — VAS 기준 자동 분류</div>
+      <div class="vas-wrap">
+        <div class="lab" style="text-transform:none">VAS (전반적 증상 0–10) — <b>≥5면 중등-중증</b> (MACVIA-ARIA 조절 cutoff)</div>
+        <input type="range" id="vas" min="0" max="10" step="1" value="0"><span class="vas-val" id="vas-val">0</span>/10
+      </div>
+      <div class="auto-out" id="sev-out2">VAS 0/10 → 판정 대기</div>
+      <div class="crit" style="font-size:12px;color:var(--muted);margin-top:8px">ARIA 정의(참고): 수면·일상/여가/운동·학업/업무 지장 또는 성가신 증상 중 하나라도 → 중등-중증. 상세는 도서관 '분류와 중증도 평가'.</div>
+      <div class="lab" style="text-transform:none;margin-top:8px">TNSS (각 0–3, 합 0–12) — 참고용 (자동분류 미사용)</div>
+      <div class="tnss-grid">
+        <label>콧물(rhinorrhea)<select class="tnss" data-k="rhino"><option>0</option><option>1</option><option>2</option><option>3</option></select></label>
+        <label>코막힘(congestion)<select class="tnss" data-k="cong"><option>0</option><option>1</option><option>2</option><option>3</option></select></label>
+        <label>코가려움(itching)<select class="tnss" data-k="itch"><option>0</option><option>1</option><option>2</option><option>3</option></select></label>
+        <label>재채기(sneezing)<select class="tnss" data-k="sneeze"><option>0</option><option>1</option><option>2</option><option>3</option></select></label>
+      </div>
+      <div class="auto-out" id="tnss-out">TNSS 합 <b id="tnss-sum">0</b>/12 (참고)</div>
+    </div>
+
+    <div class="row">
+      <div class="lab">동반질환 / 소견</div>
+      <div class="chips" id="comorbid">
+        <button type="button" class="chip" data-v="asthma">천식</button>
+        <button type="button" class="chip" data-v="conjunctivitis">결막염</button>
+        <button type="button" class="chip" data-v="pollen">꽃가루</button>
+        <button type="button" class="chip warnc" data-v="nasalPolyp">비용종</button>
+        <button type="button" class="chip warnc" data-v="smellLoss">후각저하</button>
+      </div>
+    </div>
+    <div class="row flexrow">
+      <div><div class="lab">치료 반응</div><div class="chips" id="refractory"><button type="button" class="chip care" data-v="1">약물불응</button></div></div>
+      <div><div class="lab" style="text-transform:none">sIgE</div><div class="chips" id="sIgE"><button type="button" class="chip care" data-v="1">확인됨</button></div></div>
+      <div><div class="lab">천식조절</div><div class="chips" id="uncontrolledAsthma"><button type="button" class="chip warnc" data-v="1">조절 안 됨</button></div></div>
+      <div><div class="lab">국소 비충혈제거제</div><div class="flexrow"><input class="age-in" id="decong" type="number" inputmode="numeric" value="0"><span class="di-brand">일</span></div></div>
+    </div>
+
+    <div class="subpanel" id="asthmaPanel">
+      <div class="lab">동반 천식 — 급여 우회 판정용 (중증 제2형 마커)</div>
+      <div class="numgrid">
+        <label>혈중 호산구<input id="eos" type="number" inputmode="numeric" placeholder="cells/μL" value="0"></label>
+        <label>FeNO<input id="feno" type="number" inputmode="numeric" placeholder="ppb" value="0"></label>
+        <label>연간 악화횟수<input id="exac" type="number" inputmode="numeric" placeholder="회" value="0"></label>
+        <label style="align-self:flex-end"><button type="button" class="chip warnc" id="ocsDep" data-on="0" style="margin-top:2px">OCS 의존</button></label>
+      </div>
+    </div>
+  </div>
+  <div class="stream" id="stream"></div>
+</div>
+
+<footer>
+  임상 판단 보조 도구 · 최종 결정은 처방의 책임. 출처·면책은 도서관 홈 배너 참조.
+</footer>
+</div>
+<script>
+/* ============================================================
+   알레르기 비염(AR) 가이드 — DATA + LIBRARY + ENGINE + UI (ES5/var)
+   ============================================================ */
+
+/* ===== 엔진 DATA ===== */
+var AR_CLASSIFY={freq:{intermittent:'간헐성(<4일/주 또는 <4주)',persistent:'지속성(≥4일/주 그리고 ≥4주)'},severity:{mild:'경증',modsevere:'중등도-중증'}};
+var AR_STEPS={
+ 'intermittent|mild':{id:'ar:step:1',label:'경증 간헐',first:['drug:ah2-oral','drug:ah-nasal'],add:['drug:saline']},
+ 'intermittent|modsevere':{id:'ar:step:2',label:'중등-중증 간헐',first:['drug:incs','drug:ah2-oral'],add:['drug:saline']},
+ 'persistent|mild':{id:'ar:step:2',label:'경증 지속',first:['drug:incs','drug:ah2-oral'],add:['drug:saline']},
+ 'persistent|modsevere':{id:'ar:step:3',label:'중등-중증 지속',first:['drug:incs'],add:['drug:combo-nasal']}};
+var DRUGS_AR={
+ 'drug:ah2-oral':{name:'2세대 경구 항히스타민',brand:'지르텍/알레그라/타리온',adult:'표준 용량',child:'시럽·연령별(세티리진/펙소페나딘 6개월+ 용량 상이)',caution:'1세대 진정·항콜린 회피',reimb:'급여(J30)'},
+ 'drug:incs':{name:'비강내 코르티코스테로이드',brand:'아바미스/나조넥스/옴나리스',adult:'1일 1회',child:'모메타손 3세+, 플루티카손푸로에이트(아바미스) 2세+ · 성장 모니터링',caution:'코피·비중격 자극·분무법 교육',reimb:'급여(J30)'},
+ 'drug:ah-nasal':{name:'비강내 항히스타민',brand:'아젤라스틴/올로파타딘',adult:'1일 2회',child:'연령 허가 확인',caution:'쓴맛',reimb:'급여(J30)'},
+ 'drug:combo-nasal':{name:'INCS+비강내 항히스타민 복합',brand:'디메스타/라이알트리스',adult:'중등-중증 지속 강력 옵션',child:'소아 허가 제한 — 확인',caution:'국소 자극',reimb:'급여(J30)'},
+ 'drug:ltra':{name:'류코트리엔 수용체 길항제',brand:'싱귤레어(몬테루카스트)',adult:'10mg 1일 1회',child:'4mg 과립(6개월–5세) · 5mg 츄정(6–14세) · 10mg(15세+)',caution:'신경정신 이상반응 경고(FDA)',reimb:'급여(J30) · 천식 동반 시 권고'},
+ 'drug:ocs-short':{name:'단기 경구 스테로이드',brand:'프레드니솔론',adult:'단기(수일)만',child:'소아 신중·성장 영향',caution:'의존 회피',reimb:'급여'},
+ 'drug:decong-nasal':{name:'국소 비충혈제거제',brand:'오트리빈(옥시메타졸린)',adult:'5일 미만',child:'소아 신중·저연령 회피',caution:'5일+ 약물성 비염',reimb:'급여'},
+ 'drug:saline':{name:'비강 식염수 세척',brand:'-',adult:'보조 요법',child:'안전·권장',caution:'-',reimb:'-'}};
+var IMMUNO={indication:'sIgE 확인 + 약물치료에도 일상/수면 영향 주는 중등도-중증 AR + 회피 어려운 알레르겐',ageMin:5,
+ products:{SLIT:['LAIS','Actair(정제)','Staloral(설하액)'],SCIT:['추출물(희귀의약품 수입)']},
+ duration:'3년+ 유지 시 중단 후 장기 효과',
+ contraindication:['조절 안 된 천식','중증 심혈관/베타차단제','임신 중 신규 개시','전신 아나필락시스 과거력(SCIT)'],
+ reimb:'비급여(추출물=희귀약 수입)',costRef:{SCIT:'연 약 40–50만원(참고)',SLIT:'연 약 150만원(참고)'},
+ benefit:'천식 진행 예방·신규 감작 억제(근치적·예방적)'};
+var BIO_CRSWNP={trigger:'12주+ 코막힘/콧물/후비루/안면압박/후각저하 + 비용종 의심·확인',
+ entNote:'CRS 상세 알고리즘 미수록 — 이비인후과 의뢰 + 경구스테로이드 단기·내시경수술(FESS)은 별도 고려',
+ drugs:{
+  'bio:dupilumab':{name:'듀피젠트',target:'IL-4/13',crswnpApproved:true,reimbursed:false,bridge:['중증 제2형 천식','중증 아토피']},
+  'bio:omalizumab':{name:'졸레어',target:'IgE',crswnpApproved:true,reimbursed:false,bridge:['중증 알레르기 천식','만성두드러기(CSU)']},
+  'bio:mepolizumab':{name:'누칼라',target:'IL-5',crswnpApproved:false,reimbursed:false,bridge:['중증 호산구성 천식']},
+  'bio:tezepelumab':{name:'테즈파이어',target:'TSLP',crswnpApproved:false,reimbursed:false,bridge:['(천식)']}},
+ costNote:'월 약제비 고액(전액본인부담). 원내처방 시 실비보험 통원 적용 여지'};
+var REIMB_KCD={boundary:[
+  {item:'진단검사(특이IgE/MAST·피부단자·총IgE·트립타제)',status:'급여',basis:'2021.03 알레르기 검사 급여화'},
+  {item:'표준약물(항히스타민·INCS·비강내항히·복합제·LTRA)',status:'급여',basis:'J30 상병'},
+  {item:'면역요법(SCIT/SLIT 추출물·시술)',status:'비급여',basis:'희귀약 수입·급여 미포함'},
+  {item:'생물학제제 CRSwNP',status:'비급여',basis:'허가O·급여X(천식 우회만 급여)'}],
+ kcd:[
+  {code:'J30.1',dx:'꽃가루로 인한 알레르기비염(건초열)',link:'계절성·pre-seasonal'},
+  {code:'J30.2',dx:'기타 계절성 알레르기비염',link:''},
+  {code:'J30.3',dx:'기타 알레르기비염(통년성 등)',link:'집먼지진드기 면역요법'},
+  {code:'J30.4',dx:'상세불명 알레르기비염',link:''},
+  {code:'J33',dx:'비용종(.0/.8/.9)',link:'↔ 생물학제제·수술'},
+  {code:'J32',dx:'만성 부비동염',link:'CRSwNP 동반'}]};
+
+/* ===== 도서관 콘텐츠 (8토픽) ===== */
+var LIBRARY_AR=[
+{id:'lib:classify',cat:'clin',icon:'📊',title:'분류와 중증도 평가',subtitle:'ARIA 빈도·중증도 · VAS·TNSS · 진단 흐름',keywords:'분류 중증도 빈도 간헐 지속 경증 ARIA VAS TNSS 진단 sIgE 피부단자',
+ sections:[
+  {type:'callout',kind:'trig',h:'왜 분류가 먼저인가',html:'<b>빈도(간헐/지속) × 중증도(경증/중등-중증)</b> 2축이 곧 치료 단계를 결정한다. 같은 "비염"이라도 경증 간헐은 필요시 항히스타민, 중등-중증 지속은 INCS 우선으로 출발점이 다르다. ARIA는 더 이상 계절성/통년성이 아니라 이 2축으로 분류한다.'},
+  {type:'htmltable',h:'빈도 (ARIA)',head:['구분','기준'],rows:[['간헐성','증상 <b>&lt;4일/주</b> <b>또는</b> <b>&lt;4주</b> 지속'],['지속성','증상 <b>≥4일/주</b> <b>그리고</b> <b>≥4주</b> 지속']]},
+  {type:'htmltable',h:'중증도 (ARIA · 하나라도 있으면 중등-중증)',head:['항목','경증→중등중증 전환'],rows:[['① 수면 장애','있으면 중등-중증'],['② 일상활동·여가·운동 지장','있으면 중등-중증'],['③ 학업·업무 지장','있으면 중등-중증'],['④ 성가신(troublesome) 증상','있으면 중등-중증']]},
+  {type:'prose',h:'정량 도구 — VAS / TNSS',key:'주관적 증상을 수치화하면 추적·치료반응 평가가 쉬워진다. <b>VAS</b>(0–10)는 ARIA 중증도와 잘 상관하고, <b>TNSS</b>(0–12)는 FDA가 선호하는 효능 지표다.',
+   more:'<b>VAS (Visual Analogue Scale):</b> 전반적 비증상 불편도를 0(없음)~10(최대)로 자가평가. MACVIA-ARIA에서 <b>≥5/10 = 조절 안 됨(uncontrolled)</b>, ≤2 잘 조절을 제안. MASK-rhinitis 앱에 탑재되어 스마트폰 자가평가로도 검증됨.<br><br><b>TNSS (Total Nasal Symptom Score):</b> 4개 비증상(콧물 rhinorrhea · 코막힘 congestion · 코가려움 itching · 재채기 sneezing)을 각 0–3(0 없음 / 1 경미 / 2 중등 / 3 심함)으로 평가, 합산 최대 12점. 24시간 회상형(rTNSS)이 임상시험 표준.<br><br>※ 주의: VAS/ARIA/환자 자가인식 간 일치도는 중등도(특히 천식 동반·성인·여성에서 낮음) — <b>수치는 보조</b>이고 임상 판단이 우선.'},
+  {type:'prose',h:'진단',key:'병력(증상·계절성·유발환경) + 신체검사 + <b>원인 알레르겐 입증</b>(혈청 특이IgE 또는 피부단자검사)이 핵심. 검사는 2021.03부터 급여.',
+   more:'<b>특이IgE:</b> ImmunoCAP(단일) 또는 MAST/패널(다중) — class 0–6. 임상 병력과 합치해야 의미. 감작(sensitization)만으로는 진단 불충분, <b>증상-노출 인과</b>가 있어야 함.<br><b>피부단자검사(SPT):</b> 즉시형 반응 15분 판독, 약물(항히스타민) 중단 필요. 비용·접근성 좋음.<br><b>경고 신호:</b> 12주+ 코막힘·후비루·안면압박과 <b>후각저하</b>가 두드러지면 단순 AR이 아니라 비용종/만성부비동염 의심 → CRSwNP 토픽 참조.<br><b>감별:</b> 비알레르기비염(혈관운동성·NARES), 약물성 비염(비충혈제거제 남용), 구조적(비중격만곡).'}
+ ]},
+{id:'lib:pharm',cat:'clin',icon:'💊',title:'단계별 약물치료',subtitle:'step therapy · 병합 · KAAACI 권고 4건',keywords:'약물 단계 step INCS 항히스타민 병합 LTRA 스테로이드 비충혈 식염수 KAAACI',
+ sections:[
+  {type:'htmltable',h:'단계 알고리즘',head:['상황','1차','추가/대안'],rows:[
+   ['경증 간헐','2세대 경구 항히스타민(필요시) / 비강내 항히스타민','식염수 세척'],
+   ['중등-중증 간헐 · 경증 지속','INCS 또는 경구 항히스타민','병합 고려'],
+   ['중등-중증 지속','<b>INCS 우선</b>','INCS+비강내 항히스타민 복합제'],
+   ['조절 안 됨','복합제 / 단기 경구 스테로이드','진단 재검토·동반질환 평가·면역요법'],
+   ['비용종/후각소실 동반','→ CRSwNP 경로','이비인후과 의뢰']]},
+  {type:'prose',h:'1차약 선택 논리',key:'<b>INCS가 모든 비증상(코막힘 포함)에 가장 효과적</b>인 단일 약제 — 중등-중증·지속에서 우선. 경증·간헐엔 작용 빠른 항히스타민이 편리.',
+   more:'경구 항히스타민은 재채기·가려움·콧물에 좋으나 <b>코막힘엔 약함</b>. INCS는 코막힘 포함 전 증상에 효과적이나 효과 발현이 수시간~수일(규칙 사용 필요). 비강내 항히스타민은 발현 빠르고 코막힘에도 INCS만큼은 아니나 도움. <b>분무법 교육</b>(코 바깥쪽으로, 반대 손)으로 비중격 자극·코피 줄임.'},
+  {type:'prose',h:'병합요법',key:'<b>INCS + 비강내 항히스타민 복합제</b>(아젤라스틴/플루티카손, 올로파타딘/모메타손)는 단독보다 빠르고 강력 — 중등-중증 지속·단독 실패 시.',
+   more:'KAAACI 권고: ① INCS+비강내 항히스타민 병합 ② INCS+경구 항히스타민 병합(근거수준 낮음→선택적). 복합제는 한 device로 순응도↑. 경구 항히스타민+INCS 병합은 추가 이득이 제한적이라는 근거도 있어 환자별 선택.'},
+  {type:'prose',h:'LTRA · 단기 스테로이드 · 비충혈제거제',key:'LTRA(몬테루카스트)는 <b>천식 동반 AR</b>에서 권고. 단기 경구 스테로이드는 중증 급성에 수일만. 국소 비충혈제거제는 <b>5일 미만</b>.',
+   more:'<b>LTRA:</b> 단독 효과는 항히스타민과 비슷하거나 약함, 천식 동반 시 한 약으로 둘 다 커버. FDA 신경정신 이상반응 경고(2020).<br><b>경구 스테로이드:</b> 데포 주사형은 권장 안 함. 짧게(예: 프레드니솔론 수일).<br><b>국소 비충혈제거제(옥시메타졸린):</b> 즉효지만 <b>5일+ → 약물성 비염(rhinitis medicamentosa)</b> 반동 충혈. 소아·임신 회피.<br><b>식염수 세척:</b> 안전·저렴한 보조, 소아·임신에도 권장.<br><b>예방적(pre-seasonal):</b> 꽃가루 AR은 시즌 전부터 INCS 시작이 효과적(KAAACI 권고4).'}
+ ]},
+{id:'lib:drugclass',cat:'clin',icon:'🧪',title:'약제 종류별 설명',subtitle:'클릭형 — 기전·효과·부작용·소아·급여',keywords:'항히스타민 INCS 스테로이드 LTRA 복합제 비충혈제거제 식염수 기전 부작용 소아 약제',
+ sections:[
+  {type:'drugcards',h:'계열별 카드 (탭하면 펼침)',cards:[
+   {name:'2세대 경구 항히스타민',brand:'세티리진/펙소페나딘/베포타스틴/로라타딘',mech:'H1 수용체 길항 — 재채기·가려움·콧물·결막증상',effect:'발현 빠름(1시간 내), 코막힘엔 약함',ae:'졸음 적음(개인차: 세티리진>펙소페나딘), 입마름',ped:'시럽·연령별. 세티리진/펙소페나딘 6개월+ (용량 상이)',reimb:'급여(J30)',tip:'결막염 동반 시 좋은 1차. 1세대(클로르페니라민 등)는 진정·항콜린으로 회피'},
+   {name:'1세대 경구 항히스타민',brand:'클로르페니라민 등',mech:'H1 길항 + 강한 항콜린·중추 진정',effect:'증상엔 효과 있으나',ae:'<b>진정·인지저하·항콜린(노인 위험)</b>',ped:'영유아 호흡억제 주의',reimb:'급여',tip:'가급적 회피 — 2세대 우선'},
+   {name:'비강내 코르티코스테로이드 (INCS)',brand:'아바미스/나조넥스/옴나리스/나잘크롬',mech:'국소 항염 — 모든 비증상(코막힘 포함)에 가장 효과적',effect:'규칙 사용 시 최강 단일 약제, 발현 수시간~수일',ae:'코피·비중격 자극·국소 건조 (분무법 교육으로 감소)',ped:'모메타손 3세+, 플루티카손푸로에이트 2세+ · 장기 시 성장 모니터링',reimb:'급여(J30)',tip:'중등-중증·지속의 backbone. 코 바깥쪽 분무'},
+   {name:'비강내 항히스타민',brand:'아젤라스틴/올로파타딘',mech:'국소 H1 길항',effect:'발현 빠름, 코막힘에도 일부 효과',ae:'쓴맛·국소 자극',ped:'연령 허가 확인',reimb:'급여(J30)',tip:'경구보다 코 국소 증상에 직접적'},
+   {name:'INCS + 비강내 항히스타민 복합제',brand:'디메스타(아젤라/플루티카손)/라이알트리스(올로파타딘/모메타손)',mech:'두 기전 한 device',effect:'<b>단독보다 빠르고 강력</b>',ae:'국소 자극·쓴맛',ped:'소아 허가 제한 — 확인',reimb:'급여(J30)',tip:'중등-중증 지속·단독 실패 시 강력 옵션'},
+   {name:'류코트리엔 수용체 길항제 (LTRA)',brand:'싱귤레어(몬테루카스트)',mech:'CysLT1 수용체 차단',effect:'단독은 항히스타민 수준, 천식 동반 시 한 약으로 커버',ae:'<b>신경정신 이상반응 경고(FDA 2020)</b>',ped:'4mg 과립(6개월–5세)/5mg 츄정(6–14세)/10mg(15세+)',reimb:'급여(J30)·천식 동반 권고',tip:'천식+AR에서 가치, 단독 1차로는 비추천'},
+   {name:'국소 비충혈제거제',brand:'오트리빈(옥시메타졸린)/자일로메타졸린',mech:'α-교감신경 작용 혈관수축',effect:'즉효 코막힘 완화',ae:'<b>5일+ → 약물성 비염(반동 충혈)</b>',ped:'소아 신중·저연령 회피',reimb:'급여',tip:'5일 미만 단기만'},
+   {name:'비강 식염수 세척',brand:'생리식염수',mech:'알레르겐·점액 물리적 제거',effect:'증상·약물 사용 감소 보조',ae:'거의 없음',ped:'안전·권장',reimb:'-',tip:'소아·임신 포함 안전한 보조'}
+  ]}
+ ]},
+{id:'lib:immuno',cat:'care',icon:'🌿',title:'면역요법',subtitle:'SCIT vs SLIT · 제제 · 프로토콜 · 비급여',keywords:'면역요법 SCIT SLIT 설하 피하 LAIS Actair Staloral 근치 알레르겐 비급여 소아',
+ sections:[
+  {type:'callout',kind:'trig',h:'적응 (언제 고려)',html:'<b>sIgE 확인 + 약물치료에도 일상/수면에 영향 주는 중등도-중증 AR + 회피 어려운 알레르겐</b>. AR을 <b>자연경과까지 바꾸는 유일한 근치적 치료</b> — 천식 진행 예방·신규 감작 억제. <b>5세 이상</b> 권장.'},
+  {type:'compare',h:'SCIT vs SLIT',left:{title:'SCIT (피하)',items:['전통적·근거 풍부','병원 방문 주사(증량기 매주→유지 매월)','전신반응·아나필락시스 위험 → 관찰 필요','비용 참고: 연 약 40–50만원']},right:{title:'SLIT (설하)',items:['자가 복용·편의·안전성↑(전신반응 ~0.7%)','국소 부작용(입·목 가려움) 주로','소아·주사거부에 우선','비용 참고: 연 약 150만원']}},
+  {type:'prose',h:'제제 · 프로토콜 · 기간',key:'국내 SLIT: <b>LAIS·Actair(정제), Staloral(설하액)</b> — 주로 집먼지진드기. 증량기→유지기, <b>3년+ 유지</b> 시 중단 후에도 장기 효과.',
+   more:'추출물은 희귀의약품으로 전량 수입. 꽃가루·집먼지진드기·반려동물털·일부 곰팡이(Alternaria/Cladosporium)에 효과 입증. 순응도가 관건(특히 SLIT 자가복용) — 증상일지·투약일지 권장. 초기 4–12주 조절T세포·IL-10 증가, 1년+ 지속 시 Th2→Th1 전환.'},
+  {type:'callout',kind:'warnc',h:'금기 · 비급여',html:'금기/주의: <b>조절 안 된 천식(금기)</b> · 중증 심혈관/베타차단제 · 임신 중 신규 개시 회피 · 전신 아나필락시스 과거력(SCIT). <b>급여: 비급여</b>(추출물=희귀약 수입, 급여 미포함). 비용은 병원·제품별 상이.'}
+ ]},
+{id:'lib:crswnp',cat:'pay',icon:'💉',title:'비용종·생물학제제',subtitle:'CRSwNP 결정점 · 4종 · 비급여·천식 우회',keywords:'비용종 CRSwNP 생물학제제 듀피젠트 졸레어 누칼라 테즈파이어 비급여 후각 수술 천식 우회',
+ sections:[
+  {type:'callout',kind:'trig',h:'CRSwNP 의심 (진입 기준)',html:'<b>12주+ 코막힘·콧물·후비루·안면압박·후각저하</b> 지속 + 비용종 의심/확인. 후각저하·반복 악화가 두드러지면 단순 AR이 아님 → <b>이비인후과 의뢰</b>(내시경·CT).'},
+  {type:'prose',h:'핵심 함정 — 허가O · 급여X',key:'비염·비용종 적응증 생물학제제는 <b>전부 비급여(전액본인부담)</b>. 듀피젠트는 2021.03 CRSwNP 허가됐지만 국내 급여는 아토피·중증 천식에만.',
+   more:'CRSwNP는 재발성 만성 2형 염증 질환 — 수술(FESS) 후에도 재발 잦아 경구 스테로이드 의존이 흔하다. 생물학제제는 이 악순환을 끊지만 비급여라 월 약제비 부담이 실제 접근성을 좌우. 원내처방 시 실비보험 통원 적용 여지.'},
+  {type:'htmltable',h:'생물학제제 4종',head:['약제','표적','CRSwNP 허가','급여','우회 적응증'],rows:[
+   ['듀피젠트','IL-4/13','O(2021.03)','<span class="s-no">X</span>','중증 제2형 천식·아토피'],
+   ['졸레어','IgE','O','<span class="s-no">X</span>','중증 알레르기 천식·CSU'],
+   ['누칼라','IL-5','△','<span class="s-no">X</span>','중증 호산구성 천식'],
+   ['테즈파이어','TSLP','신규','<span class="s-no">X</span>','(천식)']]},
+  {type:'callout',kind:'trig',h:'유일한 급여 우회로 — 동반 천식',html:'CRSwNP 환자의 약 60%가 천식 동반. <b>동반 천식이 중증 제2형</b>(호산구≥150 또는 FeNO≥25 + 악화≥4, 또는 OCS 의존)이면 <b>듀피젠트가 천식 적응증으로 급여 → 비용종도 동반 호전</b>. 시뮬레이션이 이 우회를 자동 판정한다.'}
+ ]},
+{id:'lib:reimb',cat:'pay',icon:'🧾',title:'급여 경계 & 검사',subtitle:'진단 급여 / 치료 비급여 · sIgE 해석',keywords:'급여 비급여 검사 특이IgE 피부단자 MAST 트립타제 면역요법 생물학제제 J30',
+ sections:[
+  {type:'prose',h:'한눈에 — 진단은 급여, 치료(면역·생물)는 비급여',key:'AR 급여 구도는 깔끔하다: <b>진단검사·표준약물 = 급여 / 면역요법·생물학제제 = 비급여</b>.',
+   more:'2021.03 건강보험 보장성 강화로 알레르기 진단·치료 검사가 필수급여화(특이IgE/피부단자/총IgE/트립타제/자가혈청피부반응). 표준약물은 J30 상병에 급여. 면역요법(추출물)과 CRSwNP 생물학제제만 비급여로 남음.'},
+  {type:'htmltable',h:'급여 경계',head:['항목','급여','근거'],rows:[
+   ['진단검사(특이IgE/MAST·피부단자·총IgE·트립타제)','<span class="s-pay">급여</span>','2021.03 검사 급여화'],
+   ['표준약물(항히스타민·INCS·복합제·LTRA)','<span class="s-pay">급여</span>','J30 상병'],
+   ['면역요법(SCIT/SLIT)','<span class="s-no">비급여</span>','희귀약 수입'],
+   ['생물학제제 CRSwNP','<span class="s-no">비급여</span>','허가O·급여X(천식 우회만)']]},
+  {type:'prose',h:'검사 해석 팁',key:'감작(sIgE+/SPT+) ≠ 진단. <b>증상-노출 인과</b>가 있어야 임상적 의미.',
+   more:'MAST/패널은 다중 동시검사로 선별에 유용하나 위양성·교차반응 주의. ImmunoCAP 정량(class 0–6)이 단일 항원 정밀. 총IgE 단독은 진단가치 낮음(아토피 경향 참고). 면역요법 전엔 원인 알레르겐 확정이 필수.'}
+ ]},
+{id:'lib:education',cat:'care',icon:'🏠',title:'환자교육·환경관리',subtitle:'알레르겐 회피 · 비강세척 · 소아·임신',keywords:'환경관리 회피 집먼지진드기 꽃가루 반려동물 곰팡이 비강세척 소아 임신 동반질환 결막염',
+ sections:[
+  {type:'prose',h:'알레르겐 회피 (원인별)',key:'<b>집먼지진드기</b>: 침구 55–60℃ 세탁·진드기커버·습도 50% 이하·카펫/봉제 줄이기. <b>꽃가루</b>: 시즌 외출·창문 관리, 귀가 후 세안. <b>반려동물</b>: 분리·HEPA. <b>곰팡이</b>: 습도·환기.',
+   more:'환경관리 단독 효과는 제한적이나(특히 집먼지진드기 단일 조치) <b>복합 적용</b>이 권장. 회피가 어려운(통년성·다감작) 경우가 면역요법의 주 적응. 비약물 근거(KAAACI Part 2)는 식염수 세척·환경관리·하비갑개 축소술 등을 다룸.'},
+  {type:'prose',h:'비강세척 · 생활습관',key:'생리식염수 비강세척은 안전·저렴하고 증상·약물 사용을 줄이는 보조. 흡연·자극물질·급격한 온도변화 회피.',
+   more:'세척은 INCS 사용 전 시행하면 약물 도달↑. 미온 등장성 식염수. 소아도 안전(보호자 도움).'},
+  {type:'callout',kind:'trig',h:'소아 · 임신 · 동반질환',html:'<b>소아:</b> 면역요법 5세+, SLIT 우선. INCS 장기 시 성장 모니터링. LTRA 연령별 용량.<br><b>임신:</b> 식염수 세척·일부 INCS·일부 2세대 항히스타민 비교적 안전(개별 확인), 면역요법 신규 개시는 회피.<br><b>동반질환(united airway):</b> AR은 천식·결막염·아토피와 연결 — 동반 평가가 치료·급여(천식 우회)에 직결.'}
+ ]},
+{id:'lib:kcd',cat:'pay',icon:'🔖',title:'질병코드집(KCD)',subtitle:'J30.x · J33 · J32 · 청구 팁',keywords:'KCD 코드 J30 J33 J32 청구 상병 건초열 비용종 부비동염',
+ sections:[
+  {type:'htmltable',h:'대표 상병코드',head:['코드','상병','연결'],rows:[
+   ['<code class="kcd">J30.1</code>','꽃가루로 인한 알레르기비염(건초열)','계절성·pre-seasonal'],
+   ['<code class="kcd">J30.2</code>','기타 계절성 알레르기비염',''],
+   ['<code class="kcd">J30.3</code>','기타 알레르기비염(통년성 등)','집먼지진드기 면역요법'],
+   ['<code class="kcd">J30.4</code>','상세불명 알레르기비염',''],
+   ['<code class="kcd">J33</code>','비용종(.0 비강 / .8 기타 / .9 상세불명)','↔ 생물학제제·수술'],
+   ['<code class="kcd">J32</code>','만성 부비동염','CRSwNP 동반']]},
+  {type:'prose',h:'청구 실전',key:'표준약물 급여는 <b>J30 상병 부여가 전제</b>. 비용종 동반 시 J33 병기. 검사 급여도 적절 상병 필요.',
+   more:'면역요법은 비급여라 상병과 무관하게 본인부담. 생물학제제를 천식 적응증으로 급여 청구하려면 천식 상병(J45)·중증 제2형 기준 충족이 별도로 필요(비용종 상병으론 급여 불가). 계절성은 J30.1/.2, 통년성은 J30.3로 구분하면 진료 맥락이 명확.'}
+ ]}
+];
+
+/* ===== ENGINE ===== */
+function has(arr,v){if(!arr)return false;for(var i=0;i<arr.length;i++)if(arr[i]===v)return true;return false;}
+function classify(input){var ageGroup=(input.age!=null&&input.age<19)?'child':'adult';var freq=input.freq||'intermittent';var severity=input.severity||'mild';
+ return{ageGroup:ageGroup,freq:freq,severity:severity,freqLabel:AR_CLASSIFY.freq[freq],severityLabel:AR_CLASSIFY.severity[severity]};}
+function dosing(id,ag){var d=DRUGS_AR[id];if(!d)return null;return ag==='child'?d.child:d.adult;}
+function buildStepPlan(input,cls){var key=cls.freq+'|'+cls.severity;var step=AR_STEPS[key]||AR_STEPS['intermittent|mild'];var list=[],i;
+ for(i=0;i<step.first.length;i++){var id=step.first[i],d=DRUGS_AR[id];list.push({id:id,name:d.name,brand:d.brand,role:'1차',dose:dosing(id,cls.ageGroup),caution:d.caution,reimb:d.reimb});}
+ for(i=0;i<step.add.length;i++){var aid=step.add[i],ad=DRUGS_AR[aid];list.push({id:aid,name:ad.name,brand:ad.brand,role:'추가/대안',dose:dosing(aid,cls.ageGroup),caution:ad.caution,reimb:ad.reimb});}
+ var recs=[];
+ if(has(input.comorbid,'asthma')){var l=DRUGS_AR['drug:ltra'];list.push({id:'drug:ltra',name:l.name,brand:l.brand,role:'권고(천식 동반)',dose:dosing('drug:ltra',cls.ageGroup),caution:l.caution,reimb:l.reimb});recs.push('천식 동반 AR: LTRA(몬테루카스트) 권고 (KAAACI Part 1)');}
+ if(has(input.comorbid,'pollen')){recs.push('꽃가루 유발 AR: 예방적(pre-seasonal) 약물치료 고려');}
+ return{stepId:step.id,stepLabel:step.label,drugs:list,recommendations:recs};}
+function immunoDecision(input,cls){var active=(input.refractory===true)&&(cls.severity==='modsevere');if(!active)return{active:false};
+ var reasons=[],verdict='적합';
+ if(input.uncontrolledAsthma===true){verdict='부적합';reasons.push('조절 안 된 천식 = 금기');}
+ if(input.sIgE!==true){if(verdict!=='부적합'){verdict='신중';}reasons.push('sIgE 확인 필요');}
+ if(input.age!=null&&input.age<IMMUNO.ageMin){if(verdict!=='부적합'){verdict='신중';}reasons.push('5세 미만 — 주사 협조 어려움, SLIT 고려');}
+ var route=(cls.ageGroup==='child')?'SLIT 우선':'SCIT 또는 SLIT';
+ if(reasons.length===0)reasons.push('sIgE 확인된 약물불응 중등-중증 — 면역요법 적합');
+ return{active:true,verdict:verdict,route:route,reasons:reasons,products:IMMUNO.products,duration:IMMUNO.duration,reimb:IMMUNO.reimb,costRef:IMMUNO.costRef,benefit:IMMUNO.benefit};}
+function asthmaDupiBridge(a){if(!a)return{met:false};var pathA=((a.eos>=150)||(a.feno>=25))&&(a.exac>=4);var pathB=(a.ocsDependent===true);return{met:(pathA||pathB),pathA:pathA,pathB:pathB};}
+function bioVerdict(input){var trig=(input.nasalPolyp===true)||(input.smellLoss===true);if(!trig)return{active:false};
+ var bridge=asthmaDupiBridge(has(input.comorbid,'asthma')?input.asthmaProfile:null);var out=[];
+ for(var id in BIO_CRSWNP.drugs){if(!BIO_CRSWNP.drugs.hasOwnProperty(id))continue;var b=BIO_CRSWNP.drugs[id];
+  var entry={id:id,name:b.name,target:b.target,status:'NON_REIMBURSED',approvedFor:(b.crswnpApproved?'CRSwNP 허가':'CRSwNP 허가 제한'),reimbursedFor:b.bridge,note:BIO_CRSWNP.costNote};
+  if(id==='bio:dupilumab'&&bridge.met){entry.bridge='동반 천식(중증 제2형) 경로로 듀피젠트 급여 가능 → 비용종 동반 호전 기대';}
+  out.push(entry);}
+ return{active:true,trigger:BIO_CRSWNP.trigger,entNote:BIO_CRSWNP.entNote,costNote:BIO_CRSWNP.costNote,drugs:out,bridgeMet:bridge.met};}
+function reimbMap(input){return{boundary:REIMB_KCD.boundary,kcd:REIMB_KCD.kcd};}
+function safetyFlags(input){var f=[];if(input.decongestantDays!=null&&input.decongestantDays>=5){f.push({level:'warn',text:'국소 비충혈제거제 5일+ 사용 — 약물성 비염(rhinitis medicamentosa) 위험, 중단 권고'});}return f;}
+function recommend(input){var cls=classify(input);var step=buildStepPlan(input,cls);var immuno=immunoDecision(input,cls);var bio=bioVerdict(input);var reimb=reimbMap(input);var flags=safetyFlags(input);
+ var targets=[{key:'분류',val:cls.freqLabel+' · '+cls.severityLabel+' ('+(cls.ageGroup==='child'?'소아':'성인')+')'}];
+ return{classification:cls,step:step,immuno:immuno,bio:bio,reimb:reimb,drugs:step.drugs,targets:targets,flags:flags};}
+
+/* ===== UI: 공통 ===== */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function escAllowB(s){return String(s);} /* 콘텐츠에 의도된 <b>/<span> 허용 */
+function reimbPill(r){if(!r||r==='-')return '';var no=r.indexOf('비급여')>=0;return '<span class="reimb-pill '+(no?'no':'pay')+'">'+esc(r)+'</span>';}
+function $(id){return document.getElementById(id);}
+
+/* ===== 탭 ===== */
+var tabBtns=document.querySelectorAll('.tabnav button');
+for(var ti=0;ti<tabBtns.length;ti++){(function(b){b.addEventListener('click',function(){switchTab(b.getAttribute('data-tab'));});})(tabBtns[ti]);}
+function switchTab(t){
+ var btns=document.querySelectorAll('.tabnav button');for(var i=0;i<btns.length;i++){btns[i].classList[btns[i].getAttribute('data-tab')===t?'add':'remove']('on');}
+ $('tab-library').classList[t==='library'?'add':'remove']('on');
+ $('tab-sim').classList[t==='sim'?'add':'remove']('on');
+ window.scrollTo(0,0);
+}
+$('goSim').addEventListener('click',function(){switchTab('sim');});
+
+/* ===== 도서관 렌더 ===== */
+function renderGrid(filter){
+ var g=$('topicGrid');var h='';var q=(filter||'').toLowerCase().trim();var n=0;
+ for(var i=0;i<LIBRARY_AR.length;i++){var t=LIBRARY_AR[i];
+  if(q){var hay=(t.title+' '+t.subtitle+' '+t.keywords).toLowerCase();if(hay.indexOf(q)<0)continue;}
+  n++;
+  h+='<button type="button" class="topic '+t.cat+'" data-id="'+t.id+'"><div class="th"><span class="ico">'+t.icon+'</span><span class="cat '+t.cat+'">'+catName(t.cat)+'</span></div><div class="tt">'+esc(t.title)+'</div><div class="ts">'+esc(t.subtitle)+'</div></button>';
+ }
+ if(n===0)h='<div class="empty">검색 결과 없음 — 다른 키워드로 시도</div>';
+ g.innerHTML=h;
+ var cards=g.querySelectorAll('.topic');
+ for(var j=0;j<cards.length;j++){(function(c){c.addEventListener('click',function(){openTopic(c.getAttribute('data-id'));});})(cards[j]);}
+}
+function catName(c){return c==='clin'?'임상':(c==='care'?'관리':'급여');}
+
+function openTopic(id){
+ var t=null;for(var i=0;i<LIBRARY_AR.length;i++)if(LIBRARY_AR[i].id===id){t=LIBRARY_AR[i];break;}
+ if(!t)return;
+ $('topicGrid').style.display='none';$('srcBanner').style.display='none';
+ document.querySelector('.searchbar').style.display='none';document.querySelector('.intro-card').style.display='none';
+ var d=$('topicDetail');var h='<button type="button" class="backbtn" id="backBtn">← 목록으로</button>';
+ h+='<h2><span style="margin-right:6px">'+t.icon+'</span>'+esc(t.title)+'</h2><p class="dsub">'+esc(t.subtitle)+'</p>';
+ for(var s=0;s<t.sections.length;s++){h+=renderSection(t.sections[s],s);}
+ d.innerHTML=h;d.classList.add('on');
+ $('backBtn').addEventListener('click',closeTopic);
+ wireSectionInteractions(d);
+ window.scrollTo(0,0);
+}
+function closeTopic(){
+ $('topicDetail').classList.remove('on');$('topicDetail').innerHTML='';
+ $('topicGrid').style.display='';$('srcBanner').style.display='';
+ document.querySelector('.searchbar').style.display='';document.querySelector('.intro-card').style.display='';
+}
+
+function renderSection(sec,idx){
+ var h='<div class="sec">';
+ if(sec.h)h+='<div class="sec-h">'+(sec.icon?'<span class="si">'+sec.icon+'</span>':'')+esc(sec.h)+'</div>';
+ if(sec.type==='keypoints'){for(var i=0;i<sec.items.length;i++)h+='<div class="kp">'+escAllowB(sec.items[i])+'</div>';}
+ else if(sec.type==='prose'){h+='<div class="prose-key">'+escAllowB(sec.key)+'</div>';if(sec.more){h+='<button type="button" class="more-btn" data-more="'+idx+'">＋ 더 자세히</button><div class="more-body" id="more-'+idx+'">'+escAllowB(sec.more)+'</div>';}}
+ else if(sec.type==='htmltable'){h+='<table class="tbl"><tr>';for(var c=0;c<sec.head.length;c++)h+='<th>'+esc(sec.head[c])+'</th>';h+='</tr>';for(var r=0;r<sec.rows.length;r++){h+='<tr>';for(var cc=0;cc<sec.rows[r].length;cc++)h+='<td>'+escAllowB(sec.rows[r][cc])+'</td>';h+='</tr>';}h+='</table>';}
+ else if(sec.type==='callout'){h+='<div class="callout '+sec.kind+'">'+escAllowB(sec.html)+'</div>';}
+ else if(sec.type==='compare'){h+='<div class="cmp"><div class="col"><h4>'+esc(sec.left.title)+'</h4>';for(var li=0;li<sec.left.items.length;li++)h+='<div class="li">• '+escAllowB(sec.left.items[li])+'</div>';h+='</div><div class="col"><h4>'+esc(sec.right.title)+'</h4>';for(var ri=0;ri<sec.right.items.length;ri++)h+='<div class="li">• '+escAllowB(sec.right.items[ri])+'</div>';h+='</div></div>';}
+ else if(sec.type==='drugcards'){for(var k=0;k<sec.cards.length;k++){var cd=sec.cards[k];var cid='dc-'+idx+'-'+k;
+  h+='<div class="dc"><button type="button" class="dc-head" data-dc="'+cid+'"><span class="nm">'+esc(cd.name)+'</span><span class="br">'+esc(cd.brand)+'</span><span class="arr">›</span></button><div class="dc-body" id="'+cid+'">';
+  h+=dcRow('기전',cd.mech)+dcRow('효과',cd.effect)+dcRow('부작용',cd.ae)+dcRow('소아',cd.ped)+dcRow('급여',cd.reimb)+dcRow('tip',cd.tip);
+  h+='</div></div>';}}
+ h+='</div>';return h;
+}
+function dcRow(k,v){if(!v)return '';return '<div class="dc-row"><span class="k">'+esc(k)+'</span>'+escAllowB(v)+'</div>';}
+
+function wireSectionInteractions(root){
+ var mores=root.querySelectorAll('.more-btn');
+ for(var i=0;i<mores.length;i++){(function(b){b.addEventListener('click',function(){var id='more-'+b.getAttribute('data-more');var el=$(id);el.classList.toggle('on');b.textContent=el.classList.contains('on')?'－ 접기':'＋ 더 자세히';});})(mores[i]);}
+ var dcs=root.querySelectorAll('.dc-head');
+ for(var j=0;j<dcs.length;j++){(function(b){b.addEventListener('click',function(){var el=$(b.getAttribute('data-dc'));el.classList.toggle('open');b.classList.toggle('open');});})(dcs[j]);}
+}
+
+$('search').addEventListener('input',function(){renderGrid(this.value);});
+renderGrid('');
+
+/* ===== 시뮬(flow) ===== */
+var state={age:30,freq:'intermittent',severity:'mild',comorbid:[],refractory:false,sIgE:false,uncontrolledAsthma:false,decongestantDays:0,asthmaProfile:{eos:0,feno:0,exac:0,ocsDependent:false}};
+function buildInput(){return{age:state.age,freq:state.freq,severity:state.severity,comorbid:state.comorbid,refractory:state.refractory,sIgE:state.sIgE,uncontrolledAsthma:state.uncontrolledAsthma,decongestantDays:state.decongestantDays,nasalPolyp:(state.comorbid.indexOf('nasalPolyp')>=0),smellLoss:(state.comorbid.indexOf('smellLoss')>=0),asthmaProfile:state.asthmaProfile};}
+
+function renderSim(){
+ var out=recommend(buildInput());var h='',i;
+ for(i=0;i<out.flags.length;i++)h+='<div class="warnflag">⚠ '+esc(out.flags[i].text)+'</div>';
+ h+='<div class="scard clin"><div class="chd"><span class="ico">💧</span><span class="ttl">처방 — '+esc(out.step.stepLabel)+'</span><span class="tag clin">임상</span></div>';
+ h+='<div class="di-brand" style="margin-bottom:6px">'+esc(out.targets[0].val)+'</div>';
+ for(i=0;i<out.step.drugs.length;i++){var d=out.step.drugs[i];var rb=(d.role==='1차')?'role-badge':(d.role.indexOf('권고')>=0?'role-badge rec':'role-badge');
+  h+='<div class="drugitem"><div class="di-top"><span class="di-name">'+esc(d.name)+'</span><span class="di-brand">'+esc(d.brand)+'</span><span class="'+rb+'">'+esc(d.role)+'</span>'+reimbPill(d.reimb)+'</div>';
+  if(d.dose)h+='<div class="di-meta">'+esc(d.dose)+'</div>';if(d.caution&&d.caution!=='-')h+='<div class="di-caution">⚠ '+esc(d.caution)+'</div>';h+='</div>';}
+ if(out.step.recommendations.length){h+='<div class="recbox">';for(i=0;i<out.step.recommendations.length;i++)h+=(i?'<br>':'')+'• '+esc(out.step.recommendations[i]);h+='</div>';}
+ h+='</div>';
+ if(out.immuno.active){var m=out.immuno;var vc=m.verdict==='적합'?'ok':(m.verdict==='신중'?'warn':'no');
+  h+='<div class="scard immuno"><div class="chd"><span class="ico">🌿</span><span class="ttl">면역요법 (근치적)</span><span class="tag immuno">면역</span></div>';
+  h+='<div class="statusline"><span class="vbadge '+vc+'">'+esc(m.verdict)+'</span><span>'+esc(m.route)+'</span></div>';
+  for(i=0;i<m.reasons.length;i++)h+='<div class="kv">• '+esc(m.reasons[i])+'</div>';
+  h+='<div class="kv"><span class="k">제제</span>SLIT: '+esc(m.products.SLIT.join(', '))+' / SCIT: '+esc(m.products.SCIT.join(', '))+'</div>';
+  h+='<div class="kv"><span class="k">기간</span>'+esc(m.duration)+'</div>';
+  h+='<div class="kv"><span class="k">부가효과</span>'+esc(m.benefit)+'</div>';
+  h+='<div class="kv"><span class="k">급여</span><span class="s-no">'+esc(m.reimb)+'</span> · SCIT '+esc(m.costRef.SCIT)+' / SLIT '+esc(m.costRef.SLIT)+'</div>';
+  h+='<div class="note">금기: '+esc(IMMUNO.contraindication.join(' · '))+'</div></div>';}
+ if(out.bio.active){var b=out.bio;
+  h+='<div class="scard bio"><div class="chd"><span class="ico">💉</span><span class="ttl">생물학제제 · 비용종(CRSwNP)</span><span class="tag reimb">급여</span></div>';
+  h+='<div class="warnflag" style="margin:0 0 10px">⚠ 비염·비용종 적응증 생물학제제는 전부 <b>비급여(전액본인부담)</b></div>';
+  for(i=0;i<b.drugs.length;i++){var x=b.drugs[i];
+   h+='<div class="bio-row"><span class="bio-name">'+esc(x.name)+'</span><span class="bio-tag">'+esc(x.target)+' · '+esc(x.approvedFor)+'</span><span class="nonreimb">비급여</span>';
+   h+='<div class="di-meta">급여 적응증: '+esc(x.reimbursedFor.join(', '))+'</div>';
+   if(x.bridge)h+='<div class="bridge">✅ '+esc(x.bridge)+'</div>';h+='</div>';}
+  h+='<div class="note">'+esc(b.costNote)+'</div><div class="note">'+esc(b.entNote)+'</div></div>';}
+ h+='<div class="scard reimb"><button type="button" class="acc-btn" id="accBtn"><span class="ico">🧾</span><span>급여 경계 &amp; KCD 코드</span><span class="arrow">›</span></button><div class="acc-body" id="accBody">';
+ h+='<table class="tbl"><tr><th>항목</th><th>급여</th><th>근거</th></tr>';
+ for(i=0;i<out.reimb.boundary.length;i++){var bd=out.reimb.boundary[i];var sc=bd.status==='급여'?'s-pay':'s-no';h+='<tr><td>'+esc(bd.item)+'</td><td class="'+sc+'">'+esc(bd.status)+'</td><td>'+esc(bd.basis)+'</td></tr>';}
+ h+='</table><table class="tbl" style="margin-top:10px"><tr><th>코드</th><th>상병</th><th>연결</th></tr>';
+ for(i=0;i<out.reimb.kcd.length;i++){var kc=out.reimb.kcd[i];h+='<tr><td><code class="kcd">'+esc(kc.code)+'</code></td><td>'+esc(kc.dx)+'</td><td class="di-brand">'+esc(kc.link)+'</td></tr>';}
+ h+='</table></div></div>';
+ $('stream').innerHTML=h;
+ var ab=$('accBtn'),abd=$('accBody');if(ab)ab.addEventListener('click',function(){ab.classList.toggle('open');abd.classList.toggle('open');});
+}
+
+/* chip wiring */
+function singleSelect(groupId,key){var btns=$(groupId).querySelectorAll('.chip');for(var i=0;i<btns.length;i++){(function(b){b.addEventListener('click',function(){for(var j=0;j<btns.length;j++)btns[j].classList.remove('on');b.classList.add('on');state[key]=b.getAttribute('data-v');afterChange();});})(btns[i]);}}
+function setSingle(groupId,key,val){var btns=$(groupId).querySelectorAll('.chip');for(var i=0;i<btns.length;i++){btns[i].classList[btns[i].getAttribute('data-v')===val?'add':'remove']('on');}state[key]=val;}
+function multiSelect(groupId){var btns=$(groupId).querySelectorAll('.chip');for(var i=0;i<btns.length;i++){(function(b){b.addEventListener('click',function(){var v=b.getAttribute('data-v');var idx=state.comorbid.indexOf(v);if(idx>=0){state.comorbid.splice(idx,1);b.classList.remove('on');}else{state.comorbid.push(v);b.classList.add('on');}afterChange();});})(btns[i]);}}
+function toggleSelect(groupId,key){var b=$(groupId).querySelectorAll('.chip')[0];b.addEventListener('click',function(){state[key]=!state[key];b.classList.toggle('on');afterChange();});}
+
+function afterChange(){
+ var showPanel=(state.comorbid.indexOf('nasalPolyp')>=0||state.comorbid.indexOf('smellLoss')>=0)&&state.comorbid.indexOf('asthma')>=0;
+ $('asthmaPanel').classList[showPanel?'add':'remove']('show');
+ renderSim();
+}
+
+singleSelect('freq','freq');singleSelect('sev','severity');multiSelect('comorbid');
+toggleSelect('refractory','refractory');toggleSelect('sIgE','sIgE');toggleSelect('uncontrolledAsthma','uncontrolledAsthma');
+$('age').addEventListener('input',function(){var v=parseInt(this.value,10);state.age=isNaN(v)?null:v;$('agegroup').textContent=(state.age!=null&&state.age<19)?'소아':'성인';afterChange();});
+$('decong').addEventListener('input',function(){var v=parseInt(this.value,10);state.decongestantDays=isNaN(v)?0:v;afterChange();});
+$('eos').addEventListener('input',function(){var v=parseInt(this.value,10);state.asthmaProfile.eos=isNaN(v)?0:v;afterChange();});
+$('feno').addEventListener('input',function(){var v=parseInt(this.value,10);state.asthmaProfile.feno=isNaN(v)?0:v;afterChange();});
+$('exac').addEventListener('input',function(){var v=parseInt(this.value,10);state.asthmaProfile.exac=isNaN(v)?0:v;afterChange();});
+$('ocsDep').addEventListener('click',function(){var on=this.getAttribute('data-on')==='1';this.setAttribute('data-on',on?'0':'1');this.classList.toggle('on');state.asthmaProfile.ocsDependent=!on;afterChange();});
+
+/* ===== 평가 도우미 ===== */
+var assessBtns=document.querySelectorAll('.assess-btn');
+for(var ai=0;ai<assessBtns.length;ai++){(function(b){b.addEventListener('click',function(){var p=$('assess-'+b.getAttribute('data-assess'));p.classList.toggle('on');b.textContent=p.classList.contains('on')?'평가 ▴':'평가 ▾';});})(assessBtns[ai]);}
+
+/* 빈도 평가 → 자동 분류 */
+function evalFreq(){var days=parseInt($('fq-days').value,10)||0;var weeks=parseInt($('fq-weeks').value,10)||0;
+ if(days===0&&weeks===0)return;
+ var persistent=(days>=4&&weeks>=4);var v=persistent?'persistent':'intermittent';
+ setSingle('freq','freq',v);
+ $('fq-out').innerHTML='판정: <b>'+(persistent?'지속성':'간헐성')+'</b> (≥4일/주 그리고 ≥4주 = 지속)';afterChange();}
+$('fq-days').addEventListener('input',evalFreq);$('fq-weeks').addEventListener('input',evalFreq);
+
+/* 중증도 평가 → VAS 단독 자동분류 (TNSS는 참고용, 자동분류 미사용) */
+$('vas').addEventListener('input',function(){$('vas-val').textContent=this.value;evalSev();});
+var tnss={rhino:0,cong:0,itch:0,sneeze:0};
+var tsel=document.querySelectorAll('.tnss');
+for(var tj=0;tj<tsel.length;tj++){(function(s){s.addEventListener('change',function(){tnss[s.getAttribute('data-k')]=parseInt(s.value,10)||0;$('tnss-sum').textContent=(tnss.rhino+tnss.cong+tnss.itch+tnss.sneeze);});})(tsel[tj]);}
+function evalSev(){var vas=parseInt($('vas').value,10)||0;var mod=(vas>=5);var v=mod?'modsevere':'mild';setSingle('sev','severity',v);
+ $('sev-out2').innerHTML='VAS '+vas+'/10 → 판정: <b>'+(mod?'중등-중증':'경증')+'</b>'+(vas>=5?' (≥5)':'');afterChange();}
+
+renderSim();
+
+</script>
+</body>
+</html>
