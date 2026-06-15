@@ -4,7 +4,8 @@
     "subtitle": "한국 가이드라인 · 심평원 급여 기준 · 임상 계산 — 조언자 도구",
     "owner": "화성유일병원 내과센터",
     "version": "portal-1.1",
-    "note": "각 도구는 독립 실행. 본 포털은 읽기 전용 허브이며 도구 내부 로직을 수정하지 않는다."
+    "note": "각 도구는 독립 실행. 본 포털은 읽기 전용 허브이며 도구 내부 로직을 수정하지 않는다.",
+    "feedbackEndpoint": "https://formspree.io/f/mzdqylkl"
   },
   "guides": [
     {

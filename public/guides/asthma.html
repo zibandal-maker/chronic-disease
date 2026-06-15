@@ -48,16 +48,29 @@
   .cat-clin .cat-dot{background:var(--clin)} .cat-clin .cat-label{color:var(--clin)}
   .cat-care .cat-dot{background:var(--care)} .cat-care .cat-label{color:var(--care)}
   .cat-pay .cat-dot{background:var(--pay)} .cat-pay .cat-label{color:var(--pay)}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:10px}
   .topic-card{appearance:none;text-align:left;font-family:inherit;cursor:pointer;
-    background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;
-    touch-action:manipulation;border-left:3px solid var(--line)}
+    background:var(--card);border:1px solid var(--line);border-radius:13px;padding:13px 14px;
+    touch-action:manipulation;border-left:3px solid var(--line);transition:transform .1s}
+  .topic-card:active{transform:scale(.98)}
   .topic-card.clin{border-left-color:var(--clin)}
   .topic-card.care{border-left-color:var(--care)}
   .topic-card.pay{border-left-color:var(--pay)}
-  .tc-num{font-size:11px;color:var(--muted);font-weight:700}
-  .tc-title{font-size:16px;font-weight:700;margin-top:3px;line-height:1.3}
-  .tc-star{font-size:11px;color:var(--pay);font-weight:700;margin-top:5px}
+  .tc-head{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+  .tc-ico{font-size:20px;line-height:1}
+  .tc-num{font-size:11px;color:var(--muted);font-weight:700;margin-left:auto;
+    background:var(--bg);width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .tc-badge{font-size:10px;color:var(--pay);font-weight:800;margin-left:auto;
+    background:var(--pay-bg);padding:2px 7px;border-radius:5px}
+  .tc-title{font-size:15px;font-weight:700;line-height:1.3}
+  .tc-sub{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4}
+  .intro-card{appearance:none;width:100%;text-align:left;font-family:inherit;cursor:pointer;
+    background:linear-gradient(135deg,var(--accent),#15527f);color:#fff;border:none;border-radius:14px;
+    padding:16px 18px;margin:4px 0 6px;touch-action:manipulation;transition:transform .1s}
+  .intro-card:active{transform:scale(.99)}
+  .intro-t{font-size:16px;font-weight:800;margin-bottom:3px}
+  .intro-d{font-size:12.5px;opacity:.92;line-height:1.45}
+  .topic-sub{color:var(--muted);font-size:13px;margin:0 0 14px;line-height:1.5}
 
   /* 토픽 상세 */
   .back-btn{appearance:none;border:none;background:none;font-family:inherit;font-size:15px;
@@ -352,17 +365,17 @@ window.ASTHMA_DATA = window.ASTHMA_DATA || {};
 
 // 토픽 정의 (cat별 분류 — 번호는 화면 표시 순서)
 ASTHMA_DATA.TOPICS = [
-  {id:"assess",  cat:"clin", num:1,  title:"조절 평가"},
-  {id:"tracks",  cat:"clin", num:2,  title:"치료 단계"},
-  {id:"inhaler", cat:"clin", num:3,  title:"흡입제"},
-  {id:"pheno",   cat:"clin", num:4,  title:"표현형"},
-  {id:"exac",    cat:"clin", num:5,  title:"악화·OCS"},
-  {id:"device",  cat:"care", num:6,  title:"디바이스·술기"},
-  {id:"monitor", cat:"care", num:7,  title:"검사"},
-  {id:"ait",     cat:"care", num:8,  title:"면역치료"},
-  {id:"comorbid",cat:"care", num:9,  title:"동반질환"},
-  {id:"biologic",cat:"pay",  num:10, title:"생물학제제", star:"★ R-CHECK 급여검증"},
-  {id:"kcd",     cat:"pay",  num:11, title:"질병코드", star:"KCD 상병코드·청구"}
+  {id:"assess",  cat:"clin", num:1,  title:"조절 평가", icon:"📊", sub:"GINA 4문항 · ACT/ACQ · 조절↔위험 2축"},
+  {id:"tracks",  cat:"clin", num:2,  title:"치료 단계", icon:"🪜", sub:"GINA 2-track · MART · ICS 용량 · 경구 add-on"},
+  {id:"inhaler", cat:"clin", num:3,  title:"흡입제", icon:"💨", sub:"제품·함량·용량등급 · 천식/COPD·MART 구분"},
+  {id:"pheno",   cat:"clin", num:4,  title:"표현형", icon:"🧬", sub:"T2 vs 비T2 · 내재형 · 생물학제제 연결"},
+  {id:"exac",    cat:"clin", num:5,  title:"악화·OCS", icon:"🚨", sub:"급성 프로토콜 · 약물무기 · OCS 감량"},
+  {id:"device",  cat:"care", num:6,  title:"디바이스·술기", icon:"🎯", sub:"pMDI/DPI/SMI 술기 · 흔한 오류 · 순응도"},
+  {id:"monitor", cat:"care", num:7,  title:"검사", icon:"🔬", sub:"가역성·메타콜린·FeNO·호산구 · 급여여부"},
+  {id:"ait",     cat:"care", num:8,  title:"면역치료", icon:"🌿", sub:"SCIT/SLIT · 적응·금기 · 스케줄"},
+  {id:"comorbid",cat:"care", num:9,  title:"동반질환", icon:"🔗", sub:"treatable traits · 비염·GERD·비만·NERD"},
+  {id:"biologic",cat:"pay",  num:10, title:"생물학제제", icon:"💉", sub:"5종 급여 R-CHECK · 100/100 · 교체규칙", star:"★ R-CHECK"},
+  {id:"kcd",     cat:"pay",  num:11, title:"질병코드", icon:"🔖", sub:"J45·J46 · 동반 상병코드 · 청구 팁"}
 ];
 ASTHMA_DATA.CAT_INFO = {
   clin:{label:"임상", key:"clin"},
@@ -1035,8 +1048,12 @@ function switchTab(t){
 
 /* ---------- 도서관 ---------- */
 function renderLibraryGrid(){
-  var cats=["clin","care","pay"];
   var html="";
+  // 시뮬 진입 인트로 카드
+  html += '<button type="button" class="intro-card" onclick="switchTab(\'sim\')">'+
+    '<div class="intro-t">🧭 시뮬레이터 — 상황별 길잡이</div>'+
+    '<div class="intro-d">신규·미조절·급성악화·생물학제제 — 상황을 고르면 진료 흐름과 약제를 안내합니다</div></button>';
+  var cats=["clin","care","pay"];
   for(var ci=0;ci<cats.length;ci++){
     var cat=cats[ci];
     var info=ASTHMA_DATA.CAT_INFO[cat];
@@ -1047,8 +1064,10 @@ function renderLibraryGrid(){
       if(ts[i].cat!==cat) continue;
       var t=ts[i];
       html += '<button type="button" class="topic-card '+cat+'" onclick="openTopic(\''+t.id+'\')">'+
-        '<div class="tc-num">'+t.num+'</div><div class="tc-title">'+esc(t.title)+'</div>'+
-        (t.star?'<div class="tc-star">'+esc(t.star)+'</div>':'')+'</button>';
+        '<div class="tc-head"><span class="tc-ico">'+(t.icon||"📄")+'</span>'+
+        (t.star?'<span class="tc-badge">'+esc(t.star)+'</span>':'<span class="tc-num">'+t.num+'</span>')+'</div>'+
+        '<div class="tc-title">'+esc(t.title)+'</div>'+
+        (t.sub?'<div class="tc-sub">'+esc(t.sub)+'</div>':'')+'</button>';
     }
     html += '</div>';
   }
@@ -1063,7 +1082,8 @@ function closeTopic(){ APP.topic=null; render(true); }
 function renderTopicDetail(id){
   var t=findTopic(id);
   var html='<button type="button" class="back-btn" onclick="closeTopic()">← 도서관</button>';
-  html += '<h2 class="topic-h">'+t.num+'. '+esc(t.title)+'</h2>';
+  html += '<h2 class="topic-h">'+(t.icon?t.icon+' ':'')+t.num+'. '+esc(t.title)+'</h2>';
+  if(t.sub) html += '<p class="topic-sub">'+esc(t.sub)+'</p>';
   var R={ biologic:renderBiologicTopic, assess:renderAssess, tracks:renderTracks,
     inhaler:renderInhaler, device:renderDevice, monitor:renderMonitor,
     pheno:renderPheno, exac:renderExac, ait:renderAit, comorbid:renderComorbid, kcd:renderKcd };

@@ -92,9 +92,89 @@
   @media (prefers-reduced-motion:reduce){
     *{animation:none !important;transition:none !important;}
   }
+
+  /* ── 우상단 작성자 + 피드백 ── */
+  .topright{position:fixed;top:max(10px,env(safe-area-inset-top));right:14px;z-index:500;
+    display:flex;align-items:center;gap:8px;}
+  .author{font-size:11.5px;font-weight:600;color:var(--ink-faint);
+    background:rgba(255,255,255,.7);backdrop-filter:blur(6px);
+    padding:5px 10px;border-radius:999px;border:1px solid var(--line);white-space:nowrap;}
+  .author b{color:var(--ink-dim);font-weight:700;}
+  .fb-btn{display:inline-flex;align-items:center;gap:5px;cursor:pointer;
+    font-size:12px;font-weight:700;color:var(--accent);
+    background:var(--panel);border:1px solid #cfe1f1;padding:6px 11px;border-radius:999px;
+    box-shadow:var(--shadow);transition:.15s;}
+  .fb-btn:hover{background:var(--accent-bg);border-color:#a9cdec;}
+  .fb-btn:active{transform:scale(.96);}
+  .fb-btn svg{width:14px;height:14px;}
+
+  /* ── 피드백 모달 ── */
+  .fb-overlay{position:fixed;inset:0;z-index:1000;display:none;
+    background:rgba(16,28,40,.42);backdrop-filter:blur(2px);
+    align-items:flex-end;justify-content:center;padding:0;}
+  .fb-overlay.on{display:flex;}
+  .fb-modal{width:100%;max-width:440px;background:var(--panel);
+    border-radius:18px 18px 0 0;padding:20px 18px max(20px,env(safe-area-inset-bottom));
+    box-shadow:0 -8px 40px rgba(16,28,40,.25);
+    animation:slideup .26s cubic-bezier(.2,.8,.3,1);}
+  @media (min-width:520px){.fb-overlay{align-items:center;}.fb-modal{border-radius:18px;}}
+  @keyframes slideup{from{transform:translateY(40px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+  .fb-modal h3{margin:0 0 4px;font-size:17px;font-weight:800;color:#101c28;}
+  .fb-modal .fb-sub{margin:0 0 14px;font-size:12.5px;color:var(--ink-faint);line-height:1.5;}
+  .fb-modal label{display:block;font-size:12px;font-weight:700;color:var(--ink-dim);margin:10px 0 5px;}
+  .fb-modal select,.fb-modal textarea,.fb-modal input{width:100%;box-sizing:border-box;
+    font-family:var(--sans);font-size:14px;color:var(--ink);
+    background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
+  .fb-modal textarea{min-height:96px;resize:vertical;}
+  .fb-modal select:focus,.fb-modal textarea:focus,.fb-modal input:focus{
+    outline:none;border-color:var(--accent);background:#fff;}
+  .fb-actions{display:flex;gap:9px;margin-top:16px;}
+  .fb-actions button{flex:1;font-family:var(--sans);font-size:14px;font-weight:700;
+    padding:11px;border-radius:11px;cursor:pointer;border:1px solid var(--line);transition:.15s;}
+  .fb-cancel{background:var(--panel);color:var(--ink-dim);}
+  .fb-cancel:hover{background:var(--panel2);}
+  .fb-send{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .fb-send:hover{filter:brightness(1.06);}
+  .fb-send:disabled{opacity:.55;cursor:default;}
+  .fb-status{font-size:12.5px;font-weight:600;margin-top:10px;text-align:center;min-height:18px;}
+  .fb-status.ok{color:var(--care);}
+  .fb-status.err{color:#c43838;}
+  @media (max-width:360px){.author{display:none;}}
 </style>
 </head>
 <body>
+<div class="topright">
+  <span class="author">작성 <b>박형도</b></span>
+  <button class="fb-btn" id="fbOpen" aria-label="피드백 보내기">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    피드백
+  </button>
+</div>
+
+<div class="fb-overlay" id="fbOverlay" aria-hidden="true">
+  <div class="fb-modal" role="dialog" aria-modal="true" aria-labelledby="fbTitle">
+    <h3 id="fbTitle">피드백 보내기</h3>
+    <p class="fb-sub">오류·누락·개선 요청을 남겨주세요. 어떤 도구에 대한 것인지 적어주시면 반영이 빠릅니다.</p>
+    <label for="fbTool">대상 도구</label>
+    <select id="fbTool"></select>
+    <label for="fbType">유형</label>
+    <select id="fbType">
+      <option value="오류·삭감위험">오류·삭감위험</option>
+      <option value="내용 누락">내용 누락</option>
+      <option value="급여기준 갱신">급여기준 갱신</option>
+      <option value="UI·사용성">UI·사용성</option>
+      <option value="기타">기타</option>
+    </select>
+    <label for="fbMsg">내용</label>
+    <textarea id="fbMsg" placeholder="구체적으로 적어주세요 (예: 통풍 ULT 알로푸리놀 급여 1차 조건…)"></textarea>
+    <div class="fb-status" id="fbStatus"></div>
+    <div class="fb-actions">
+      <button class="fb-cancel" id="fbCancel">취소</button>
+      <button class="fb-send" id="fbSend">보내기</button>
+    </div>
+  </div>
+</div>
+
 <div class="wrap">
   <header class="hero">
     <span class="eyebrow"><span class="pulse"></span>임상 의사결정 지원 · 조언자 도구</span>
@@ -121,7 +201,7 @@
 
 <script>
   // REGISTRY/BUILD_DATE 는 빌드 시 registry.json 으로 치환됨
-  const REGISTRY = {"meta":{"title":"진료지원 시스템","subtitle":"한국 가이드라인 · 심평원 급여 기준 · 임상 계산 — 조언자 도구","owner":"화성유일병원 내과센터","version":"portal-1.1","note":"각 도구는 독립 실행. 본 포털은 읽기 전용 허브이며 도구 내부 로직을 수정하지 않는다."},"guides":[{"id":"htn","title":"고혈압","emoji":"🩺","src":"htn_prescribing_guide__7_.html","out":"htn.html","guideline":"대한고혈압학회 진료지침 2026 (제6판) · ESC 2024 · AHA/ACC 2025","group":"B","accent":"#1a73e8","tag":"순환기"},{"id":"dm","title":"당뇨병","emoji":"🍬","src":"dm_guide__5_.html","out":"dm.html","guideline":"대한당뇨병학회 2025 진료지침 (9판) · 심평원 당뇨병용제 고시","group":"A","accent":"#2c6fb0","tag":"내분비"},{"id":"dyslipidemia","title":"이상지질혈증","emoji":"🫀","src":"dyslipidemia_guide.html","out":"dyslipidemia.html","guideline":"한국지질·동맥경화학회 진료지침 (5판) · 심평원 급여","group":"A","accent":"#c0392b","tag":"내분비"},{"id":"asthma","title":"천식","emoji":"🫁","src":"asthma_totalcare_app__2_.html","out":"asthma.html","guideline":"대한천식알레르기학회 · GINA — Total Care","group":"B","accent":"#1f6fb2","tag":"호흡기"},{"id":"copd","title":"COPD","emoji":"💨","src":"copd_guide__2_.html","out":"copd.html","guideline":"대한결핵및호흡기학회 2024 · GOLD 2025 · 심평원 급여","group":"A","accent":"#2c6fb0","tag":"호흡기"},{"id":"ar","title":"알레르기 비염","emoji":"🤧","src":"ar_guide__2_.html","out":"ar.html","guideline":"KAAACI 2023/2024 · ARIA · 심평원 급여","group":"B","accent":"#0a82c4","tag":"알레르기"},{"id":"skin","title":"피부질환","emoji":"🧴","src":"skin_guide__1_.html","out":"skin.html","guideline":"대한피부과학회 · 아토피/만성두드러기 — 통합 가이드","group":"A","accent":"#d8632a","tag":"피부"},{"id":"ibd","title":"염증성 장질환","emoji":"🔥","src":"ibd_guide__1_.html","out":"ibd.html","guideline":"대한장연구학회 · UC/크론병 — 통합 가이드","group":"A","accent":"#2c6fb0","tag":"소화기"},{"id":"rheum","title":"류마티스·자가면역","emoji":"🦴","src":"rheum_guide.html","out":"rheum.html","guideline":"대한류마티스학회 · 초기 감별 가이드","group":"A","accent":"#1a8a72","tag":"류마티스"},{"id":"gout","title":"통풍","emoji":"🦶","src":"gout_guide.html","out":"gout.html","guideline":"대한류마티스학회 통풍 진료지침 · ACR 2020 · 심평원 급여","group":"A","accent":"#8a6d3b","tag":"류마티스"},{"id":"antimicrobial","title":"감염·항생제","emoji":"🦠","src":"antimicrobial_app_v1__6_.html","out":"antimicrobial.html","guideline":"감염 임상결정 지원 · 경험적 항생제 선택 · 심평원 급여","group":"A","accent":"#7a4fb0","tag":"감염"},{"id":"icu_calc","title":"ICU 약물 계산기","emoji":"💉","src":"icu_drug_calculator.html","out":"icu_calc.html","guideline":"중환자 약물 용량·주입속도 계산 · 멀티 환자 세션","group":"A","accent":"#c0392b","tag":"중환자"}]};
+  const REGISTRY = {"meta":{"title":"진료지원 시스템","subtitle":"한국 가이드라인 · 심평원 급여 기준 · 임상 계산 — 조언자 도구","owner":"화성유일병원 내과센터","version":"portal-1.1","note":"각 도구는 독립 실행. 본 포털은 읽기 전용 허브이며 도구 내부 로직을 수정하지 않는다.","feedbackEndpoint":"https://formspree.io/f/mzdqylkl"},"guides":[{"id":"htn","title":"고혈압","emoji":"🩺","src":"htn_prescribing_guide__7_.html","out":"htn.html","guideline":"대한고혈압학회 진료지침 2026 (제6판) · ESC 2024 · AHA/ACC 2025","group":"B","accent":"#1a73e8","tag":"순환기"},{"id":"dm","title":"당뇨병","emoji":"🍬","src":"dm_guide__5_.html","out":"dm.html","guideline":"대한당뇨병학회 2025 진료지침 (9판) · 심평원 당뇨병용제 고시","group":"A","accent":"#2c6fb0","tag":"내분비"},{"id":"dyslipidemia","title":"이상지질혈증","emoji":"🫀","src":"dyslipidemia_guide.html","out":"dyslipidemia.html","guideline":"한국지질·동맥경화학회 진료지침 (5판) · 심평원 급여","group":"A","accent":"#c0392b","tag":"내분비"},{"id":"asthma","title":"천식","emoji":"🫁","src":"asthma_totalcare_app__2_.html","out":"asthma.html","guideline":"대한천식알레르기학회 · GINA — Total Care","group":"B","accent":"#1f6fb2","tag":"호흡기"},{"id":"copd","title":"COPD","emoji":"💨","src":"copd_guide__2_.html","out":"copd.html","guideline":"대한결핵및호흡기학회 2024 · GOLD 2025 · 심평원 급여","group":"A","accent":"#2c6fb0","tag":"호흡기"},{"id":"ar","title":"알레르기 비염","emoji":"🤧","src":"ar_guide__2_.html","out":"ar.html","guideline":"KAAACI 2023/2024 · ARIA · 심평원 급여","group":"B","accent":"#0a82c4","tag":"알레르기"},{"id":"skin","title":"피부질환","emoji":"🧴","src":"skin_guide__1_.html","out":"skin.html","guideline":"대한피부과학회 · 아토피/만성두드러기 — 통합 가이드","group":"A","accent":"#d8632a","tag":"피부"},{"id":"ibd","title":"염증성 장질환","emoji":"🔥","src":"ibd_guide__1_.html","out":"ibd.html","guideline":"대한장연구학회 · UC/크론병 — 통합 가이드","group":"A","accent":"#2c6fb0","tag":"소화기"},{"id":"rheum","title":"류마티스·자가면역","emoji":"🦴","src":"rheum_guide.html","out":"rheum.html","guideline":"대한류마티스학회 · 초기 감별 가이드","group":"A","accent":"#1a8a72","tag":"류마티스"},{"id":"gout","title":"통풍","emoji":"🦶","src":"gout_guide.html","out":"gout.html","guideline":"대한류마티스학회 통풍 진료지침 · ACR 2020 · 심평원 급여","group":"A","accent":"#8a6d3b","tag":"류마티스"},{"id":"antimicrobial","title":"감염·항생제","emoji":"🦠","src":"antimicrobial_app_v1__6_.html","out":"antimicrobial.html","guideline":"감염 임상결정 지원 · 경험적 항생제 선택 · 심평원 급여","group":"A","accent":"#7a4fb0","tag":"감염"},{"id":"icu_calc","title":"ICU 약물 계산기","emoji":"💉","src":"icu_drug_calculator.html","out":"icu_calc.html","guideline":"중환자 약물 용량·주입속도 계산 · 멀티 환자 세션","group":"A","accent":"#c0392b","tag":"중환자"}]};
   const BUILD_DATE = "2026-06-15";
 
   const guides = REGISTRY.guides;
@@ -172,6 +252,58 @@
     });
   }
   render();
+
+  // ── 피드백 ──
+  const FB_ENDPOINT = (REGISTRY.meta && REGISTRY.meta.feedbackEndpoint) || "";
+  const fbOverlay = document.getElementById('fbOverlay');
+  const fbStatus = document.getElementById('fbStatus');
+  const fbSend = document.getElementById('fbSend');
+  const fbMsg = document.getElementById('fbMsg');
+
+  // 대상 도구 셀렉트 채우기
+  const fbTool = document.getElementById('fbTool');
+  fbTool.innerHTML = '<option value="포털 전체">포털 전체 / 대시보드</option>' +
+    guides.map(g => `<option value="${g.title}">${g.emoji} ${g.title}</option>`).join('');
+
+  function openFb(){ fbOverlay.classList.add('on'); fbOverlay.setAttribute('aria-hidden','false');
+    fbStatus.textContent=''; fbStatus.className='fb-status'; setTimeout(()=>fbMsg.focus(),200); }
+  function closeFb(){ fbOverlay.classList.remove('on'); fbOverlay.setAttribute('aria-hidden','true'); }
+
+  document.getElementById('fbOpen').onclick = openFb;
+  document.getElementById('fbCancel').onclick = closeFb;
+  fbOverlay.onclick = e => { if (e.target === fbOverlay) closeFb(); };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && fbOverlay.classList.contains('on')) closeFb(); });
+
+  fbSend.onclick = async () => {
+    const msg = fbMsg.value.trim();
+    if (!msg){ fbStatus.textContent='내용을 입력해주세요.'; fbStatus.className='fb-status err'; fbMsg.focus(); return; }
+    if (!FB_ENDPOINT){ fbStatus.textContent='피드백 엔드포인트가 설정되지 않았습니다.'; fbStatus.className='fb-status err'; return; }
+    fbSend.disabled = true; fbStatus.textContent='전송 중…'; fbStatus.className='fb-status';
+    try {
+      const res = await fetch(FB_ENDPOINT, {
+        method:'POST',
+        headers:{'Accept':'application/json','Content-Type':'application/json'},
+        body: JSON.stringify({
+          도구: fbTool.value,
+          유형: document.getElementById('fbType').value,
+          내용: msg,
+          빌드: BUILD_DATE,
+          _subject: `[진료지원시스템 피드백] ${fbTool.value} · ${document.getElementById('fbType').value}`
+        })
+      });
+      if (res.ok){
+        fbStatus.textContent='보냈습니다. 감사합니다.'; fbStatus.className='fb-status ok';
+        fbMsg.value='';
+        setTimeout(closeFb, 1100);
+      } else {
+        fbStatus.textContent='전송 실패. 잠시 후 다시 시도해주세요.'; fbStatus.className='fb-status err';
+      }
+    } catch(err){
+      fbStatus.textContent='네트워크 오류. 연결을 확인해주세요.'; fbStatus.className='fb-status err';
+    } finally {
+      fbSend.disabled = false;
+    }
+  };
 </script>
 </body>
 </html>

@@ -64,13 +64,20 @@ body{padding-bottom:84px;}
 
 /* 토픽 그리드 */
 .topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
-.topic-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
-  padding:13px 13px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow);}
-.topic-card:active{transform:scale(.98);}
-.topic-card .tnum{font-size:11px;font-weight:700;color:var(--ink-faint);}
-.topic-card .ttitle{font-size:14px;font-weight:750;margin:3px 0 5px;letter-spacing:-.2px;}
+@media(max-width:520px){.topic-grid{grid-template-columns:1fr;}}
+.topic-card{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--line);
+  border-radius:var(--radius);padding:13px 14px;cursor:pointer;transition:transform .1s,box-shadow .12s;
+  box-shadow:var(--shadow);text-align:left;}
+.topic-card:active{transform:scale(.99);}
+.topic-card.clin{border-left-color:var(--clin);}
+.topic-card.care{border-left-color:var(--care);}
+.topic-card.pay{border-left-color:var(--pay);}
+.topic-card .th{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.topic-card .tico{font-size:19px;line-height:1;}
+.topic-card .tnum{font-size:10px;font-weight:700;color:var(--ink-faint);letter-spacing:.04em;}
+.topic-card .tcat{font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;margin-left:auto;}
+.topic-card .ttitle{font-size:14px;font-weight:750;margin:0 0 4px;letter-spacing:-.2px;line-height:1.3;}
 .topic-card .tdesc{font-size:11.5px;color:var(--ink-dim);line-height:1.45;}
-.topic-card .tcat{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;margin-top:7px;}
 
 /* 검색 */
 .searchbar{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);
@@ -81,6 +88,17 @@ body{padding-bottom:84px;}
 .banner{background:linear-gradient(135deg,var(--accent-bg),var(--care-bg));border:1px solid var(--line);
   border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--ink-dim);line-height:1.5;}
 .banner b{color:var(--ink);}
+
+/* 인트로 강조 카드 (그라데이션) */
+.intro-card{background:linear-gradient(135deg,var(--accent),#9a2820);color:#fff;border-radius:var(--radius);
+  padding:15px 16px;margin-bottom:14px;cursor:pointer;box-shadow:0 2px 10px rgba(192,57,43,.18);}
+.intro-card:active{transform:scale(.99);}
+.intro-card .ic-t{font-size:15px;font-weight:800;margin-bottom:3px;display:flex;align-items:center;gap:7px;}
+.intro-card .ic-d{font-size:12.5px;opacity:.93;line-height:1.5;}
+/* 섹션 카테고리 헤더 (도서관 그룹) */
+.lib-grouphead{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-faint);margin:16px 2px 8px;display:flex;align-items:center;gap:6px;}
+.lib-grouphead .gh-line{flex:1;height:1px;background:var(--line);}
 
 /* 펼침 */
 .detail{margin-top:10px;padding-top:11px;border-top:1px dashed var(--line);}
@@ -1344,7 +1362,7 @@ if (typeof module !== "undefined" && module.exports) {
 
 var LIBRARY = [
   /* ===== 1. 위험군 분류·LDL 목표 ===== */
-  { id:"lipid:topic:risk", cat:"care", num:1, title:"위험군 분류 · LDL 목표",
+  { id:"lipid:topic:risk", icon:"🎯", cat:"care", num:1, title:"위험군 분류 · LDL 목표",
     desc:"5위험군 자동판정 + LDL/non-HDL 목표 + 위험인자 카운트",
     sections:[
       { type:"keypoints", title:"핵심", items:[
@@ -1361,7 +1379,7 @@ var LIBRARY = [
     ]},
 
   /* ===== 2. 스타틴 — 강도·선택 ===== */
-  { id:"lipid:topic:statin", cat:"clin", num:2, title:"스타틴 — 강도 · 선택",
+  { id:"lipid:topic:statin", icon:"💊", cat:"clin", num:2, title:"스타틴 — 강도 · 선택",
     desc:"이중레이어(한국인%/intensity), 성분별 카드, 상호작용",
     sections:[
       { type:"keypoints", title:"핵심", items:[
@@ -1378,7 +1396,7 @@ var LIBRARY = [
     ]},
 
   /* ===== 3. 병용·사다리 ===== */
-  { id:"lipid:topic:combo", cat:"clin", num:3, title:"병용 · 치료 사다리",
+  { id:"lipid:topic:combo", icon:"🪜", cat:"clin", num:3, title:"병용 · 치료 사다리",
     desc:"에제티미브, 복합제, 사다리 전략, Ez-PAVE 근거",
     sections:[
       { type:"keypoints", title:"핵심", items:[
@@ -1393,7 +1411,7 @@ var LIBRARY = [
     ]},
 
   /* ===== 4. PCSK9i·인클리시란 게이트 ===== */
-  { id:"lipid:topic:pcsk9", cat:"pay", num:4, title:"PCSK9i · 인클리시란 급여 게이트",
+  { id:"lipid:topic:pcsk9", icon:"🚪", cat:"pay", num:4, title:"PCSK9i · 인클리시란 급여 게이트",
     desc:"급여 게이트 3갈래(HoFH/HeFH/ASCVD), 인클리시란 현황",
     sections:[
       { type:"keypoints", title:"핵심", items:[
@@ -1409,7 +1427,7 @@ var LIBRARY = [
     ]},
 
   /* ===== 5. 가족성 고콜레스테롤혈증 ===== */
-  { id:"lipid:topic:fh", cat:"clin", num:5, title:"가족성 고콜레스테롤혈증(FH)",
+  { id:"lipid:topic:fh", icon:"🧬", cat:"clin", num:5, title:"가족성 고콜레스테롤혈증(FH)",
     desc:"DLCN·Simon-Broome 점수계산, 진단, 급여 연결",
     sections:[
       { type:"keypoints", title:"핵심", items:[
@@ -1425,7 +1443,7 @@ var LIBRARY = [
     ]},
 
   /* ===== 6. 고중성지방·혼합형 ===== */
-  { id:"lipid:topic:tg", cat:"clin", num:6, title:"고중성지방 · 혼합형",
+  { id:"lipid:topic:tg", icon:"🩸", cat:"clin", num:6, title:"고중성지방 · 혼합형",
     desc:"TG 200/500 기준, 피브레이트·오메가3, 췌장염",
     sections:[
       { type:"keypoints", title:"핵심", items:[
@@ -1440,7 +1458,7 @@ var LIBRARY = [
     ]},
 
   /* ===== 7. 이차성·안전성·모니터링 ===== */
-  { id:"lipid:topic:secondary", cat:"care", num:7, title:"이차성 · 안전성 · 모니터링",
+  { id:"lipid:topic:secondary", icon:"🔍", cat:"care", num:7, title:"이차성 · 안전성 · 모니터링",
     desc:"이차성 원인, 스타틴 불내성·부작용, 추적검사",
     sections:[
       { type:"keypoints", title:"핵심", items:[
@@ -1457,7 +1475,7 @@ var LIBRARY = [
     ]},
 
   /* ===== 8. 급여 ↔ 지침 간극 ===== */
-  { id:"lipid:topic:reimb_gap", cat:"pay", num:8, title:"급여 ↔ 지침 간극 (균형정보)",
+  { id:"lipid:topic:reimb_gap", icon:"⚖️", cat:"pay", num:8, title:"급여 ↔ 지침 간극 (균형정보)",
     desc:"학회 강화 권고 vs 급여 동결 — 균형 정보 전용",
     sections:[
       { type:"keypoints", title:"핵심", items:[
@@ -1471,7 +1489,7 @@ var LIBRARY = [
     ]},
 
   /* ===== 9. 진단코드(KCD) ===== */
-  { id:"lipid:topic:kcd", cat:"pay", num:9, title:"진단코드 (KCD · E78)",
+  { id:"lipid:topic:kcd", icon:"🏷️", cat:"pay", num:9, title:"진단코드 (KCD · E78)",
     desc:"E78 지질코드 + PCSK9i 연결 ASCVD 동반상병",
     sections:[
       { type:"keypoints", title:"핵심", items:[
@@ -1484,7 +1502,7 @@ var LIBRARY = [
     ]},
 
   /* ===== 10. 스타틴 부작용 대응 (독립 — 실전) ===== */
-  { id:"lipid:topic:myths", cat:"clin", num:10, title:"🛡️ 스타틴 부작용 대응",
+  { id:"lipid:topic:myths", icon:"🛡️", cat:"clin", num:10, title:"스타틴 부작용 대응",
     desc:"환자·유튜브發 '카더라' 근거로 받아치기 — 신화 깨기",
     sections:[
       { type:"keypoints", title:"핵심", items:[
@@ -1498,7 +1516,7 @@ var LIBRARY = [
     ]},
 
   /* ===== 11. 2026 ACC/AHA (국제 참조) ===== */
-  { id:"lipid:topic:accaha2026", cat:"clin", num:11, title:"2026 ACC/AHA (국제 참조)",
+  { id:"lipid:topic:accaha2026", icon:"🌎", cat:"clin", num:11, title:"2026 ACC/AHA (국제 참조)",
     desc:"미국 최신 가이드라인 — PREVENT·apoB·Lp(a)·한국 5판 비교",
     sections:[
       { type:"keypoints", title:"핵심", items:[
@@ -1663,22 +1681,42 @@ function renderLibrary(){
   if(STATE.openTopic){ v.innerHTML=renderTopicDetail(STATE.openTopic); return; }
   var h='';
   h+='<div class="banner"><b>이상지질혈증 처방 가이드</b> · 2022 진료지침 5판 + 심평원 급여기준(asOf 2026-06). '
-    +'조언 보조 도구이며 최종 결정·청구는 처방의 책임. 급여 기준은 갱신될 수 있어 최신 고시 확인 권장.</div>';
+    +'조언 보조 도구이며 최종 결정·청구는 처방의 책임.</div>';
   h+='<div class="searchbar"><span>🔍</span><input id="searchInp" placeholder="약물·상황 검색 (예: 로수바, PCSK9, TG)" oninput="doSearch(this.value)"></div>';
   h+='<div id="searchRes"></div>';
-  h+='<div class="topic-grid">';
-  for(var i=0;i<LIBRARY.length;i++){
-    var t=LIBRARY[i];
-    var cb=t.cat==="pay"?"b-pay":(t.cat==="clin"?"b-clin":"b-care");
-    var cl=t.cat==="pay"?"급여":(t.cat==="clin"?"임상":"위험·목표");
-    h+='<div class="topic-card" onclick="openTopic(\''+t.id+'\')">'
-      +'<div class="tnum">TOPIC '+t.num+'</div>'
-      +'<div class="ttitle">'+esc(t.title)+'</div>'
-      +'<div class="tdesc">'+esc(t.desc)+'</div>'
-      +'<span class="tcat '+cb+'">'+cl+'</span></div>';
+  /* 인트로 강조 카드 — 플로우 유도 */
+  h+='<div class="intro-card" onclick="switchTab(\'flow\')">'
+    +'<div class="ic-t">⚡ 환자 앞에서 바로 — 플로우</div>'
+    +'<div class="ic-d">위험군 자동판정 · LDL 목표 게이지 · PCSK9i 급여 게이트 · PREVENT. 수치만 넣으면 카드로 펼쳐집니다.</div></div>';
+  /* 카테고리 그룹 순서 + 라벨 */
+  var groups=[
+    { cat:"care", icon:"🎯", label:"위험·목표" },
+    { cat:"clin", icon:"💊", label:"임상" },
+    { cat:"pay",  icon:"💰", label:"급여·코드" }
+  ];
+  var catLabel={ care:"위험·목표", clin:"임상", pay:"급여" };
+  for(var g=0;g<groups.length;g++){
+    var grp=groups[g];
+    var items=[];
+    for(var i=0;i<LIBRARY.length;i++){ if(LIBRARY[i].cat===grp.cat) items.push(LIBRARY[i]); }
+    if(!items.length) continue;
+    h+='<div class="lib-grouphead">'+grp.icon+' '+esc(grp.label)+' <span class="gh-line"></span></div>';
+    h+='<div class="topic-grid">';
+    for(var k=0;k<items.length;k++){
+      var t=items[k];
+      var cb=t.cat==="pay"?"b-pay":(t.cat==="clin"?"b-clin":"b-care");
+      h+='<div class="topic-card '+t.cat+'" onclick="openTopic(\''+t.id+'\')">'
+        +'<div class="th"><span class="tico">'+(t.icon||"📄")+'</span>'
+        +'<span class="tnum">TOPIC '+t.num+'</span>'
+        +'<span class="tcat '+cb+'">'+esc(catLabel[t.cat])+'</span></div>'
+        +'<div class="ttitle">'+esc(t.title)+'</div>'
+        +'<div class="tdesc">'+esc(t.desc)+'</div></div>';
+    }
+    h+='</div>';
   }
-  h+='</div>';
-  h+='<div class="card" style="margin-top:4px"><div style="font-size:12px;font-weight:800;color:var(--ink-faint);margin-bottom:8px">출처 · 링크</div>';
+  /* 출처 */
+  h+='<div class="lib-grouphead">🔗 출처 · 링크 <span class="gh-line"></span></div>';
+  h+='<div class="card">';
   for(var si=0;si<SOURCES.length;si++){
     var L=SOURCES[si];
     h+='<a href="'+L.url+'" target="_blank" rel="noopener" style="display:block;text-decoration:none;padding:7px 0;border-bottom:1px dashed var(--line)">'
@@ -1698,7 +1736,7 @@ function renderTopicDetail(id){
   var cb=t.cat==="pay"?"b-pay":(t.cat==="clin"?"b-clin":"b-care");
   var cl=t.cat==="pay"?"급여":(t.cat==="clin"?"임상":"위험·목표");
   var h='<button class="btn sec" onclick="closeTopic()">← 도서관</button>';
-  h+='<div class="card"><h3>'+esc(t.title)+' <span class="badge '+cb+'">'+cl+'</span></h3>';
+  h+='<div class="card"><h3><span style="font-size:20px">'+(t.icon||"📄")+'</span> '+esc(t.title)+' <span class="badge '+cb+'">'+cl+'</span></h3>';
   for(var s=0;s<t.sections.length;s++) h+=renderSection(t.sections[s]);
   h+='</div>';
   return h;
