@@ -464,6 +464,129 @@ input[type=range]::-moz-range-thumb{
 .mix-custom-result{font-size:13px;font-weight:700;color:var(--accent);padding:6px 12px;background:var(--accent-lt);border-radius:8px;border:1px solid #bfdbfe;text-align:center;}
 .mix-ftab-custom{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface2);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;touch-action:manipulation;font-family:var(--sans);transition:all .12s;-webkit-appearance:none;}
 .mix-ftab-custom.active{background:#f0fdf4;border-color:#16a34a;color:#16a34a;}
+
+/* ══════════════════════════════
+   💧 수액·IO 모듈 CSS
+   ══════════════════════════════ */
+.fluid-setting-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  padding:10px 14px;background:var(--surface2);border-radius:10px;
+  border:1px solid var(--border);margin-bottom:12px;}
+.fset-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.fset-label{font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+.fset-btn{padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);
+  background:var(--surface);font-size:12px;font-weight:600;color:var(--muted);
+  cursor:pointer;font-family:var(--sans);transition:all .12s;white-space:nowrap;}
+.fset-btn.active{background:var(--accent-lt);border-color:var(--accent);color:var(--accent);}
+
+.fluid-top-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
+@media(max-width:640px){.fluid-top-grid{grid-template-columns:1fr;}}
+
+.fluid-card{background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:14px;box-shadow:var(--sh);margin-bottom:0;}
+.fluid-card-hdr{font-size:14px;font-weight:700;color:var(--text);
+  margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+
+.fluid-row-hdr{font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;
+  display:flex;align-items:center;gap:6px;}
+.fluid-add-btn{padding:3px 9px;border-radius:20px;border:1.5px dashed var(--border2);
+  font-size:11px;font-weight:600;color:var(--muted);background:none;
+  cursor:pointer;font-family:var(--sans);}
+.fluid-add-btn:active{background:var(--accent-lt);border-color:var(--accent);color:var(--accent);}
+
+.fluid-auto-list{background:var(--surface2);border-radius:8px;
+  padding:8px 10px;margin-bottom:6px;min-height:32px;font-size:13px;}
+.fluid-auto-item{display:flex;justify-content:space-between;align-items:center;
+  padding:3px 0;border-bottom:.5px solid var(--border);}
+.fluid-auto-item:last-child{border-bottom:none;}
+.fluid-row-total{display:flex;justify-content:space-between;align-items:center;
+  padding:5px 10px;background:var(--surface2);border-radius:6px;
+  font-size:12px;font-weight:700;color:var(--text);}
+
+.fluid-item-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.fluid-select{padding:5px 8px;border:1.5px solid var(--border);border-radius:7px;
+  background:var(--surface2);color:var(--text);font-size:12px;font-family:var(--sans);outline:none;}
+.fluid-num-inp{padding:5px 8px;border:1.5px solid var(--border);border-radius:7px;
+  background:var(--surface2);color:var(--text);font-size:13px;font-family:var(--mono);
+  font-weight:700;text-align:right;outline:none;
+  -webkit-appearance:textfield;-moz-appearance:textfield;appearance:textfield;}
+.fluid-num-inp::-webkit-outer-spin-button,.fluid-num-inp::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.fluid-unit{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap;}
+.fluid-del-btn{padding:2px 7px;border-radius:6px;border:1px solid var(--border);
+  background:none;color:var(--muted2);cursor:pointer;font-size:13px;line-height:1;}
+.fluid-del-btn:active{background:var(--red-bg);color:var(--red);}
+
+.fluid-result-box{background:var(--surface2);border-radius:8px;
+  padding:10px 12px;margin-top:10px;border:1px solid var(--border);}
+.fluid-result-row{display:flex;justify-content:space-between;align-items:center;
+  padding:4px 0;font-size:13px;}
+.fluid-result-highlight{font-weight:700;color:var(--text);margin-top:2px;}
+.fluid-mono{font-family:var(--mono);font-weight:700;font-size:14px;}
+.plan-val{color:var(--accent);}
+.bal-pos{color:var(--orange);}
+.bal-neg{color:#2563eb;}
+.bal-ok{color:var(--green);}
+
+/* 분포 계산 테이블 */
+.dist-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px;}
+.dist-tbl th{padding:5px 8px;background:var(--surface2);border-bottom:1.5px solid var(--border);
+  font-size:11px;font-weight:700;color:var(--muted);text-align:left;text-transform:uppercase;}
+.dist-tbl td{padding:6px 8px;border-bottom:.5px solid var(--border);font-size:12px;}
+.dist-val{font-family:var(--mono);font-weight:800;color:var(--accent);text-align:right;}
+.dist-total-row td{padding:7px 8px;font-size:13px;background:var(--accent-lt);
+  border-top:1.5px solid var(--accent);}
+.dist-total-row .dist-val{font-size:14px;color:var(--accent);}
+
+/* 면책 + 출처 */
+.fluid-disclaimer{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;
+  padding:10px 12px;margin-bottom:10px;font-size:11px;color:#92400e;line-height:1.6;}
+.fluid-disclaimer-title{font-weight:700;font-size:12px;margin-bottom:4px;}
+.fluid-refs{padding:8px 10px;background:var(--surface2);border-radius:8px;
+  border:1px solid var(--border);}
+.fluid-refs-title{font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;margin-bottom:5px;}
+.fluid-ref-link{display:block;font-size:11px;color:var(--accent);
+  text-decoration:none;padding:2px 0;}
+.fluid-ref-link:hover{text-decoration:underline;}
+
+/* I/O 듀티 카드 */
+.duty-card{background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;margin-bottom:8px;overflow:hidden;}
+.duty-card-hdr{display:flex;align-items:center;justify-content:space-between;
+  padding:9px 14px;background:var(--surface2);border-bottom:1px solid var(--border);
+  font-size:13px;font-weight:700;color:var(--text);}
+.duty-body{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+@media(max-width:500px){.duty-body{grid-template-columns:1fr;}}
+.duty-col{padding:12px 14px;}
+.duty-col-hdr{font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.duty-io-row{display:flex;align-items:center;justify-content:space-between;
+  padding:3px 0;font-size:12px;border-bottom:.5px solid var(--border);}
+.duty-io-row:last-child{border-bottom:none;}
+.duty-io-label{color:var(--text2);}
+.duty-io-val{display:flex;align-items:center;gap:4px;}
+.duty-io-inp{width:70px;padding:3px 6px;border:1.5px solid var(--border);
+  border-radius:6px;background:var(--surface2);font-family:var(--mono);
+  font-size:12px;font-weight:700;text-align:right;color:var(--text);outline:none;
+  -webkit-appearance:textfield;-moz-appearance:textfield;appearance:textfield;}
+.duty-io-inp::-webkit-outer-spin-button,.duty-io-inp::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.duty-io-inp:focus{border-color:var(--accent);}
+.duty-auto-val{font-family:var(--mono);font-weight:700;color:var(--muted);}
+.duty-col-sep{border-left:1px solid var(--border);}
+.duty-balance-bar{display:flex;align-items:center;justify-content:space-between;
+  padding:8px 14px;border-top:1px solid var(--border);background:var(--surface2);}
+.duty-bal-lbl{font-size:12px;font-weight:700;color:var(--text);}
+.duty-bal-val{font-family:var(--mono);font-size:16px;font-weight:800;}
+.duty-bal-target{font-size:11px;color:var(--muted);}
+
+.out-chk-label{display:flex;align-items:center;gap:4px;font-size:12px;
+  color:var(--text2);cursor:pointer;padding:3px 8px;border-radius:6px;
+  border:1px solid var(--border);background:var(--surface);}
+.out-chk-label:has(input:checked){background:var(--accent-lt);
+  border-color:var(--accent);color:var(--accent);}
+
+.fluid-inp-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
 </style>
 </head>
 <body>
@@ -512,6 +635,7 @@ input[type=range]::-moz-range-thumb{
     <button class="tab" type="button" onclick="switchTab('ot',this)">💙 이외 약물</button>
     <button class="tab" type="button" onclick="switchTab('ibw',this)">📐 IBW · 환기</button>
     <button class="tab" type="button" onclick="switchTab('emg',this)">🚨 응급약물</button>
+    <button class="tab" type="button" onclick="switchTab('fluid',this)">💧 수액·IO</button>
     <button class="tab" type="button" id="tab-active-btn" onclick="switchTab('active',this)">✅ 현재 약물</button>
   </div>
 </div><!-- /sticky-bar -->
@@ -725,6 +849,158 @@ input[type=range]::-moz-range-thumb{
 
 </div>
 
+<div id="tab-fluid" style="display:none;">
+
+  <!-- ── 설정 바 ── -->
+  <div class="fluid-setting-bar">
+    <div class="fset-group">
+      <span class="fset-label">듀티</span>
+      <button class="fset-btn active" id="duty-btn-12" type="button" onclick="setDutyMode('12hr',this)">12hr (2교대)</button>
+      <button class="fset-btn" id="duty-btn-8" type="button" onclick="setDutyMode('8hr',this)">8hr (3교대)</button>
+    </div>
+    <div class="fset-group">
+      <span class="fset-label">Output</span>
+      <button class="fset-btn active" id="out-btn-simple" type="button" onclick="setOutputMode('simple',this)">간단</button>
+      <button class="fset-btn" id="out-btn-detail" type="button" onclick="setOutputMode('detail',this)">상세</button>
+    </div>
+    <div class="fset-group">
+      <span class="fset-label">체온</span>
+      <input type="number" id="fluid-temp" value="37.0" min="35" max="42" step="0.1" style="width:58px;font-family:var(--mono);font-size:13px;padding:4px 6px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);text-align:center;" oninput="updateFluidCalc()"> <span style="font-size:12px;color:var(--muted);">°C</span>
+    </div>
+    <div class="fset-group">
+      <span class="fset-label">기계환기</span>
+      <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:13px;">
+        <input type="checkbox" id="fluid-vent" checked onchange="onVentChange()" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer;">
+        <span style="color:var(--text2);">기계환기 중</span>
+      </label>
+    </div>
+    <div class="fset-group" id="vent-detail-group">
+      <span class="fset-label">가습기</span>
+      <select id="fluid-humid" class="fluid-select" onchange="updateFluidCalc()" style="font-size:12px;padding:4px 7px;">
+        <option value="hme">HME (인공코)</option>
+        <option value="heated">Heated Humidifier</option>
+        <option value="none">가습 없음</option>
+      </select>
+    </div>
+    <div class="fset-group" id="vent-tv-group">
+      <span class="fset-label">TV</span>
+      <input type="number" id="fluid-tv" value="450" min="100" max="900" step="50"
+        style="width:58px;font-family:var(--mono);font-size:13px;padding:4px 6px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);text-align:center;"
+        oninput="updateFluidCalc()"> <span style="font-size:12px;color:var(--muted);">mL</span>
+      <span style="font-size:12px;color:var(--muted);margin:0 4px;">RR</span>
+      <input type="number" id="fluid-rr" value="14" min="6" max="35" step="1"
+        style="width:44px;font-family:var(--mono);font-size:13px;padding:4px 6px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);text-align:center;"
+        oninput="updateFluidCalc()"> <span style="font-size:12px;color:var(--muted);">/min</span>
+    </div>
+    <div class="fset-group">
+      <span class="fset-label">목표 Balance</span>
+      <input type="number" id="fluid-target" value="0" min="-2000" max="2000" step="100" style="width:75px;font-family:var(--mono);font-size:13px;padding:4px 6px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);text-align:center;" oninput="updateFluidCalc()"> <span style="font-size:12px;color:var(--muted);">mL</span>
+    </div>
+  </div>
+
+  <!-- ── 상단 2열: 수액 계획 + 분포 계산 ── -->
+  <div class="fluid-top-grid">
+
+    <!-- 수액 계획 패널 -->
+    <div class="fluid-card" id="fluid-plan-card">
+      <div class="fluid-card-hdr">📋 수액 계획 <span style="font-size:11px;color:var(--muted);font-weight:400;">목표 Balance 기반</span></div>
+
+      <!-- 승압제 자동 -->
+      <div class="fluid-row-hdr">승압제 (자동)</div>
+      <div id="vp-auto-list" class="fluid-auto-list">
+        <span style="color:var(--muted2);font-size:12px;">현재 약물 탭에서 승압제 토글 ON 시 자동 계산</span>
+      </div>
+      <div class="fluid-row-total"><span>승압제 합계</span><span id="vp-total" class="fluid-mono">— mL</span></div>
+
+      <!-- 일반 수액 -->
+      <div class="fluid-row-hdr" style="margin-top:10px;">일반 수액 <button class="fluid-add-btn" type="button" onclick="addFluidRow()">＋ 추가</button></div>
+      <div id="fluid-rows"></div>
+
+      <!-- 혈액제제 -->
+      <div class="fluid-row-hdr" style="margin-top:10px;">혈액제제 <button class="fluid-add-btn" type="button" onclick="addBloodRow()">＋ 추가</button></div>
+      <div id="blood-rows"></div>
+
+      <!-- 기타 -->
+      <div class="fluid-row-hdr" style="margin-top:10px;">기타 Input <span style="font-size:11px;color:var(--muted);">(TPN, 항생제 등)</span></div>
+      <div class="fluid-inp-row">
+        <input type="number" id="fluid-other-input" value="0" min="0" step="10" inputmode="decimal" style="width:80px;" class="fluid-num-inp" oninput="updateFluidCalc()">
+        <span class="fluid-unit">mL</span>
+      </div>
+
+      <!-- 결과 -->
+      <div class="fluid-result-box" id="fluid-plan-result">
+        <div class="fluid-result-row"><span>예상 Total Input</span><span id="plan-total-in" class="fluid-mono plan-val">— mL</span></div>
+        <div class="fluid-result-row"><span>예상 Total Output</span><span id="plan-total-out" class="fluid-mono">— mL</span></div>
+        <div id="plan-insens-detail" style="font-size:11px;color:var(--muted);padding:2px 0 4px;line-height:1.5;"></div>
+        <div class="fluid-result-row fluid-result-highlight"><span>예상 Net Balance</span><span id="plan-net" class="fluid-mono">— mL</span></div>
+        <div class="fluid-result-row" style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;"><span>💡 권고 유지수액</span><span id="plan-suggest" class="fluid-mono" style="color:var(--accent);font-weight:800;">— mL/hr</span></div>
+      </div>
+    </div>
+
+    <!-- 분포 계산 패널 -->
+    <div class="fluid-card" id="fluid-dist-card">
+      <div class="fluid-card-hdr">🧮 수액 분포 계산 <span style="font-size:11px;color:var(--muted);font-weight:400;">이론적 예측</span></div>
+      <div id="fluid-dist-list">
+        <table class="dist-tbl">
+          <thead><tr>
+            <th>수액</th><th>투여량</th><th>IVR</th><th>혈관내 예상</th>
+          </tr></thead>
+          <tbody id="dist-tbody"></tbody>
+          <tfoot>
+            <tr class="dist-total-row">
+              <td colspan="3"><b>혈관내 증가량 합계</b></td>
+              <td id="dist-total" class="dist-val"><b>— mL</b></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- 면책 -->
+      <div class="fluid-disclaimer">
+        <div class="fluid-disclaimer-title">⚠️ 면책 사항</div>
+        이 계산은 <b>정상 혈관 투과성</b>을 가정한 이론적 예측입니다.
+        패혈증·모세혈관 누출·저알부민혈증 상태에서는 실제 혈관내 잔류량이
+        현저히 낮을 수 있습니다. 수액 처방은 반드시 담당 의사의
+        임상 판단에 따르십시오.
+      </div>
+
+      <!-- 출처 -->
+      <div class="fluid-refs">
+        <div class="fluid-refs-title">📚 근거 출처</div>
+        <a href="https://doi.org/10.1177/0091270009354994" target="_blank" class="fluid-ref-link">Norberg 2010 (Crystalloid IVR)</a>
+        <a href="https://doi.org/10.1097/ALN.0b013e3181862373" target="_blank" class="fluid-ref-link">Chappell 2008 (Revised Starling)</a>
+        <a href="https://doi.org/10.1056/NEJMoa1305727" target="_blank" class="fluid-ref-link">Caironi 2014 ALBIOS (Albumin)</a>
+        <a href="https://doi.org/10.1186/s13613-014-0018-6" target="_blank" class="fluid-ref-link">Malbrain 2014 (Insensible Loss)</a>
+        <a href="https://kdigo.org/guidelines/acute-kidney-injury/" target="_blank" class="fluid-ref-link">KDIGO AKI 2012</a>
+        <a href="https://doi.org/10.1007/s00134-021-06506-y" target="_blank" class="fluid-ref-link">SSC 2021</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── I/O 추적 (듀티별) ── -->
+  <div class="fluid-card" style="margin-top:10px;">
+    <div class="fluid-card-hdr">📊 I/O 추적 <span style="font-size:11px;color:var(--muted);font-weight:400;">듀티별</span>
+      <button class="fluid-add-btn" type="button" onclick="addDutyCard()" style="margin-left:auto;">＋ 듀티 추가</button>
+    </div>
+
+    <!-- Output 상세 항목 선택 (detail 모드에서만 표시) -->
+    <div id="output-detail-opts" style="display:none;padding:8px 12px;background:var(--surface2);border-radius:8px;margin-bottom:10px;border:1px solid var(--border);">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;">포함할 Output 항목 선택</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <label class="out-chk-label"><input type="checkbox" class="out-chk" value="urine" checked onchange="updateFluidCalc()"> 소변</label>
+        <label class="out-chk-label"><input type="checkbox" class="out-chk" value="insensible" checked onchange="updateFluidCalc()"> Insensible Loss (자동)</label>
+        <label class="out-chk-label"><input type="checkbox" class="out-chk" value="drain" onchange="updateFluidCalc()"> Drain</label>
+        <label class="out-chk-label"><input type="checkbox" class="out-chk" value="ng" onchange="updateFluidCalc()"> NG/OG Tube</label>
+        <label class="out-chk-label"><input type="checkbox" class="out-chk" value="stoma" onchange="updateFluidCalc()"> Stoma/Wound</label>
+        <label class="out-chk-label"><input type="checkbox" class="out-chk" value="other_out" onchange="updateFluidCalc()"> 기타</label>
+      </div>
+    </div>
+
+    <div id="duty-cards-container"></div>
+  </div>
+
+</div>
+
 <div id="tab-active" style="display:none;">
   <div id="active-drugs-list"></div>
 </div>
@@ -739,6 +1015,488 @@ input[type=range]::-moz-range-thumb{
 
 
 <script>
+// ══════════════════════════════════════════════
+//  💧 수액·IO 모듈 v1.0
+//  화성유일병원 내과중환자실
+// ══════════════════════════════════════════════
+
+// ── 상수 ──
+var IVR_TABLE = {
+  'NS':   {ivr:0.25, label:'0.9% NS (Normal Saline)'},
+  'LR':   {ivr:0.25, label:'Hartmann (Lactated Ringer)'},
+  'D5W':  {ivr:0.08, label:'5% Dextrose'},
+  'D10W': {ivr:0.08, label:'10% Dextrose'},
+  'D5NS': {ivr:0.17, label:'D5 0.9%NS'},
+  'HTS':  {ivr:0.50, label:'3% NaCl (고장식염수)'},
+  'Alb5': {ivr:0.50, label:'5% Albumin'},
+  'Alb20':{ivr:4.00, label:'20% Albumin (oncotic pull)'},
+  'pRBC': {ivr:1.00, label:'pRBC'},
+  'FFP':  {ivr:0.75, label:'FFP'},
+  'PLT':  {ivr:0.90, label:'PLT (Platelet)'},
+  'Cryo': {ivr:0.75, label:'Cryoprecipitate'},
+  'Other':{ivr:0.25, label:'기타 (NS 기준)'},
+};
+
+var VASOPRESSOR_IDS = ['c-norepi','c-vaso','c-epi','c-phe','c-dobu','c-dopa','c-esmo'];
+
+var fluidDutyMode   = '12hr';
+var fluidOutputMode = 'simple';
+var fluidRowCount   = 0;
+var bloodRowCount   = 0;
+var dutyCardCount   = 0;
+
+// ── 설정 함수 ──
+function setDutyMode(mode, btn){
+  fluidDutyMode = mode;
+  document.querySelectorAll('[id^="duty-btn-"]').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  updateFluidCalc();
+}
+
+function setOutputMode(mode, btn){
+  fluidOutputMode = mode;
+  document.querySelectorAll('[id^="out-btn-"]').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  var detailOpts = document.getElementById('output-detail-opts');
+  if(detailOpts) detailOpts.style.display = mode==='detail' ? 'block' : 'none';
+  updateFluidCalc();
+}
+
+// ── 승압제 자동 계산 ──
+function calcVasopressorInput(dutyHr){
+  var s = activeSess(); if(!s) return {total:0, items:[]};
+  var act = s.active || [];
+  var items = [];
+  var total = 0;
+
+  VASOPRESSOR_IDS.forEach(function(cid){
+    if(act.indexOf(cid) < 0) return;
+    // 현재 mL/hr 읽기 - res-big-num에서
+    var card = document.getElementById(cid);
+    if(!card) return;
+    var numEl = card.querySelector('.res-big-num');
+    if(!numEl) return;
+    var rate = parseFloat(numEl.textContent);
+    if(!rate || isNaN(rate)) return;
+    var vol = Math.round(rate * dutyHr);
+    var nameEl = card.querySelector('.dc-name');
+    var name = nameEl ? nameEl.textContent.split(' ')[0] : cid;
+    items.push({name:name, rate:rate, vol:vol});
+    total += vol;
+  });
+  return {total:total, items:items};
+}
+
+// ── Insensible Loss 계산 ──
+// 출처: Malbrain 2014 AAC; Oh's ICU Manual 8th ed.
+// 기계환기 호흡 손실: Williams 1996, Lellouche 2009, Hammarqvist 2001
+function calcInsensibleLoss(dutyHr){
+  var tempC = parseFloat((document.getElementById('fluid-temp')||{}).value) || 37.0;
+  var vent  = (document.getElementById('fluid-vent')||{}).checked !== false;
+  var skin  = 500;  // mL/day 피부증발 (정상)
+  var fever = Math.max(0, tempC - 37) * 150;  // mL/day per °C
+
+  var resp;
+  if(!vent){
+    // 자발호흡: TV기반 정밀계산
+    resp = 300;  // mL/day 기본값
+  } else {
+    // 기계환기: TV × RR × (44 - 흡기습도) × 60min × 24hr / 1000
+    var tv   = parseFloat((document.getElementById('fluid-tv')||{}).value) || 450;  // mL
+    var rr   = parseFloat((document.getElementById('fluid-rr')||{}).value) || 14;
+    var humid = (document.getElementById('fluid-humid')||{}).value || 'hme';
+    // 흡기 가습도 (mgH2O/L): HME=30, Heated=44(완전가습=손실0), 없음=실내공기약11
+    var inhHumid = {hme: 30, heated: 44, none: 11}[humid] || 30;
+    var exhaleHumid = 44;  // 호기는 체온 기준 포화 (37°C = 44 mgH2O/L)
+    // 손실 = (호기습도 - 흡기습도) × TV(L) × RR × 1440min / 1000
+    var tvL = tv / 1000;
+    resp = Math.max(0, (exhaleHumid - inhHumid) * tvL * rr * 1440 / 1000);
+    // Heated humidifier: 회로 응결수 손실 약 100mL/day 추가
+    if(humid === 'heated') resp += 100;
+  }
+
+  var total = skin + resp + fever;
+  return {
+    total: Math.round(total * dutyHr / 24),
+    breakdown: {
+      skin:  Math.round(skin * dutyHr / 24),
+      resp:  Math.round(resp * dutyHr / 24),
+      fever: Math.round(fever * dutyHr / 24),
+      perDay: Math.round(total)
+    }
+  };
+}
+
+function onVentChange(){
+  var vent = document.getElementById('fluid-vent');
+  var show = vent && vent.checked;
+  var dg = document.getElementById('vent-detail-group');
+  var tg = document.getElementById('vent-tv-group');
+  if(dg) dg.style.display = show ? '' : 'none';
+  if(tg) tg.style.display = show ? '' : 'none';
+  updateFluidCalc();
+}
+
+// ── 수액 행 추가 ──
+function addFluidRow(){
+  fluidRowCount++;
+  var id = 'fl-' + fluidRowCount;
+  var opts = Object.keys(IVR_TABLE).filter(function(k){return k!=='pRBC'&&k!=='FFP'&&k!=='PLT'&&k!=='Cryo';});
+  var selHtml = '<select class="fluid-select" id="'+id+'-type" onchange="updateFluidCalc()">';
+  opts.forEach(function(k){ selHtml += '<option value="'+k+'">'+IVR_TABLE[k].label+'</option>'; });
+  selHtml += '</select>';
+
+  var row = document.createElement('div');
+  row.className = 'fluid-item-row';
+  row.id = id;
+  row.innerHTML = selHtml
+    + '<input type="number" id="'+id+'-rate" class="fluid-num-inp" style="width:60px;" value="50" min="0" step="10" inputmode="decimal" oninput="updateFluidCalc()">'
+    + '<span class="fluid-unit">mL/hr</span>'
+    + '<span class="fluid-unit">×</span>'
+    + '<span id="'+id+'-dur" class="fluid-unit duty-auto-hr">'+fluidDutyMode.replace('hr','')+'hr</span>'
+    + '<span class="fluid-unit">=</span>'
+    + '<span id="'+id+'-vol" class="fluid-mono" style="font-size:13px;min-width:50px;">—</span>'
+    + '<button class="fluid-del-btn" type="button" onclick="delRow(\''+id+'\')">×</button>';
+  document.getElementById('fluid-rows').appendChild(row);
+  updateFluidCalc();
+}
+
+// ── 혈액제제 행 추가 ──
+function addBloodRow(){
+  bloodRowCount++;
+  var id = 'bl-' + bloodRowCount;
+  var btypes = ['pRBC','FFP','PLT','Cryo'];
+  var bvols  = {pRBC:250, FFP:250, PLT:250, Cryo:50};
+  var selHtml = '<select class="fluid-select" id="'+id+'-type" onchange="setBloodVol(\''+id+'\')">';
+  btypes.forEach(function(k){ selHtml += '<option value="'+k+'">'+IVR_TABLE[k].label+'</option>'; });
+  selHtml += '</select>';
+
+  var row = document.createElement('div');
+  row.className = 'fluid-item-row';
+  row.id = id;
+  row.innerHTML = selHtml
+    + '<input type="number" id="'+id+'-units" class="fluid-num-inp" style="width:45px;" value="1" min="0" step="1" inputmode="decimal" oninput="updateFluidCalc()"> <span class="fluid-unit">단위</span>'
+    + '<span class="fluid-unit">×</span>'
+    + '<input type="number" id="'+id+'-vol" class="fluid-num-inp" style="width:55px;" value="250" min="0" step="10" inputmode="decimal" oninput="updateFluidCalc()"> <span class="fluid-unit">mL</span>'
+    + '<span class="fluid-unit">=</span>'
+    + '<span id="'+id+'-total" class="fluid-mono" style="font-size:13px;min-width:50px;">250 mL</span>'
+    + '<button class="fluid-del-btn" type="button" onclick="delRow(\''+id+'\')">×</button>';
+  document.getElementById('blood-rows').appendChild(row);
+  updateFluidCalc();
+}
+
+function setBloodVol(id){
+  var type = (document.getElementById(id+'-type')||{}).value;
+  var vols = {pRBC:250,FFP:250,PLT:250,Cryo:50};
+  var el = document.getElementById(id+'-vol');
+  if(el && vols[type]) el.value = vols[type];
+  updateFluidCalc();
+}
+
+function delRow(id){
+  var el = document.getElementById(id);
+  if(el) el.parentNode.removeChild(el);
+  updateFluidCalc();
+}
+
+// ── 듀티 카드 추가 ──
+function addDutyCard(){
+  dutyCardCount++;
+  var dc = dutyCardCount;
+  var dutyHr = fluidDutyMode === '12hr' ? 12 : 8;
+  var startHr = ((dc-1) * dutyHr) % 24;
+  var endHr   = startHr + dutyHr;
+  var fmtHr = function(h){ return String(h%24).padStart(2,'0')+':00'; };
+  var title = dc+'교대 ('+fmtHr(startHr)+'–'+fmtHr(endHr)+')';
+
+  var vpData = calcVasopressorInput(dutyHr);
+  var insensData = calcInsensibleLoss(dutyHr);
+  var insens = insensData.total;
+  var minUO  = Math.round(bwt() * 0.5 * dutyHr);
+
+  var detailInputs = '';
+  var showDetail = fluidOutputMode === 'detail';
+  var activeOuts = getActiveOutputs();
+
+  // Output 행 HTML
+  var outRows = '<div class="duty-io-row"><span class="duty-io-label">소변 (UO)</span><div class="duty-io-val"><input type="number" id="dc'+dc+'-urine" class="duty-io-inp" value="'+minUO+'" min="0" step="10" inputmode="decimal" oninput="calcDutyBalance('+dc+')"><span class="fluid-unit">mL</span></div></div>';
+  if(showDetail && activeOuts.indexOf('insensible')>=0){
+    outRows += '<div class="duty-io-row"><span class="duty-io-label">Insensible <span style="font-size:10px;color:var(--muted);">(자동)</span></span><div class="duty-io-val"><span class="duty-auto-val" id="dc'+dc+'-insens">'+insens+' mL</span></div></div>';
+  }
+  if(showDetail && activeOuts.indexOf('drain')>=0){
+    outRows += '<div class="duty-io-row"><span class="duty-io-label">Drain</span><div class="duty-io-val"><input type="number" id="dc'+dc+'-drain" class="duty-io-inp" value="0" min="0" step="10" inputmode="decimal" oninput="calcDutyBalance('+dc+')"><span class="fluid-unit">mL</span></div></div>';
+  }
+  if(showDetail && activeOuts.indexOf('ng')>=0){
+    outRows += '<div class="duty-io-row"><span class="duty-io-label">NG/OG Tube</span><div class="duty-io-val"><input type="number" id="dc'+dc+'-ng" class="duty-io-inp" value="0" min="0" step="10" inputmode="decimal" oninput="calcDutyBalance('+dc+')"><span class="fluid-unit">mL</span></div></div>';
+  }
+  if(showDetail && activeOuts.indexOf('stoma')>=0){
+    outRows += '<div class="duty-io-row"><span class="duty-io-label">Stoma/Wound</span><div class="duty-io-val"><input type="number" id="dc'+dc+'-stoma" class="duty-io-inp" value="0" min="0" step="10" inputmode="decimal" oninput="calcDutyBalance('+dc+')"><span class="fluid-unit">mL</span></div></div>';
+  }
+  if(showDetail && activeOuts.indexOf('other_out')>=0){
+    outRows += '<div class="duty-io-row"><span class="duty-io-label">기타 Output</span><div class="duty-io-val"><input type="number" id="dc'+dc+'-otherout" class="duty-io-inp" value="0" min="0" step="10" inputmode="decimal" oninput="calcDutyBalance('+dc+')"><span class="fluid-unit">mL</span></div></div>';
+  }
+
+  var card = document.createElement('div');
+  card.className = 'duty-card';
+  card.id = 'duty-card-'+dc;
+  card.innerHTML =
+    '<div class="duty-card-hdr">'
+    +'<span>'+title+'</span>'
+    +'<span style="font-size:11px;color:var(--muted);font-weight:400;">목표 UO: '+minUO+' mL (0.5 mL/kg/hr × '+dutyHr+'hr)</span>'
+    +'<button class="fluid-del-btn" type="button" onclick="delDutyCard('+dc+')">×</button>'
+    +'</div>'
+    +'<div class="duty-body">'
+    // Input 열
+    +'<div class="duty-col">'
+    +'<div class="duty-col-hdr">📥 Input</div>'
+    +'<div class="duty-io-row"><span class="duty-io-label">승압제 (자동)</span><div class="duty-io-val"><span class="duty-auto-val" id="dc'+dc+'-vp">'+vpData.total+' mL</span></div></div>'
+    +'<div class="duty-io-row"><span class="duty-io-label">유지수액</span><div class="duty-io-val"><input type="number" id="dc'+dc+'-fluid" class="duty-io-inp" value="0" min="0" step="50" inputmode="decimal" oninput="calcDutyBalance('+dc+')"><span class="fluid-unit">mL</span></div></div>'
+    +'<div class="duty-io-row"><span class="duty-io-label">혈액제제</span><div class="duty-io-val"><input type="number" id="dc'+dc+'-blood" class="duty-io-inp" value="0" min="0" step="50" inputmode="decimal" oninput="calcDutyBalance('+dc+')"><span class="fluid-unit">mL</span></div></div>'
+    +'<div class="duty-io-row"><span class="duty-io-label">기타</span><div class="duty-io-val"><input type="number" id="dc'+dc+'-otherin" class="duty-io-inp" value="0" min="0" step="10" inputmode="decimal" oninput="calcDutyBalance('+dc+')"><span class="fluid-unit">mL</span></div></div>'
+    +'<div class="duty-io-row" style="margin-top:4px;border-top:1.5px solid var(--border);padding-top:4px;font-weight:700;"><span class="duty-io-label">Total In</span><div class="duty-io-val"><span class="duty-auto-val" id="dc'+dc+'-totalin" style="color:var(--accent);">—</span></div></div>'
+    +'</div>'
+    // Output 열
+    +'<div class="duty-col duty-col-sep">'
+    +'<div class="duty-col-hdr">📤 Output</div>'
+    + outRows
+    +'<div class="duty-io-row" style="margin-top:4px;border-top:1.5px solid var(--border);padding-top:4px;font-weight:700;"><span class="duty-io-label">Total Out</span><div class="duty-io-val"><span class="duty-auto-val" id="dc'+dc+'-totalout" style="color:var(--red);">—</span></div></div>'
+    +'</div>'
+    +'</div>'
+    // Balance 바
+    +'<div class="duty-balance-bar">'
+    +'<span class="duty-bal-lbl">Net Balance</span>'
+    +'<span class="duty-bal-val" id="dc'+dc+'-net">—</span>'
+    +'<span class="duty-bal-target" id="dc'+dc+'-target-lbl">목표: '+document.getElementById('fluid-target').value+' mL</span>'
+    +'</div>';
+
+  document.getElementById('duty-cards-container').appendChild(card);
+  calcDutyBalance(dc);
+}
+
+function delDutyCard(dc){
+  var el = document.getElementById('duty-card-'+dc);
+  if(el) el.parentNode.removeChild(el);
+}
+
+function getActiveOutputs(){
+  if(fluidOutputMode === 'simple') return ['urine'];
+  var chks = document.querySelectorAll('.out-chk');
+  var active = ['urine'];
+  chks.forEach(function(c){ if(c.checked) active.push(c.value); });
+  return active;
+}
+
+function calcDutyBalance(dc){
+  var g = function(id){ return parseFloat((document.getElementById(id)||{}).value)||0; };
+  var t = function(id){ return parseFloat(((document.getElementById(id)||{}).textContent||'').replace(/[^0-9.-]/g,''))||0; };
+
+  var dutyHr = fluidDutyMode==='12hr' ? 12 : 8;
+  var vp     = t('dc'+dc+'-vp');
+  var fluid  = g('dc'+dc+'-fluid');
+  var blood  = g('dc'+dc+'-blood');
+  var otherIn = g('dc'+dc+'-otherin');
+  var totalIn = vp + fluid + blood + otherIn;
+
+  var urine   = g('dc'+dc+'-urine');
+  var insensData = calcInsensibleLoss(dutyHr);
+  var insens = insensData.total;
+  var drain   = g('dc'+dc+'-drain');
+  var ng      = g('dc'+dc+'-ng');
+  var stoma   = g('dc'+dc+'-stoma');
+  var otherOut = g('dc'+dc+'-otherout');
+
+  var activeOuts = getActiveOutputs();
+  var totalOut = urine;
+  if(fluidOutputMode==='detail'){
+    if(activeOuts.indexOf('insensible')>=0) totalOut += insens;
+    if(activeOuts.indexOf('drain')>=0) totalOut += drain;
+    if(activeOuts.indexOf('ng')>=0) totalOut += ng;
+    if(activeOuts.indexOf('stoma')>=0) totalOut += stoma;
+    if(activeOuts.indexOf('other_out')>=0) totalOut += otherOut;
+    var insEl = document.getElementById('dc'+dc+'-insens');
+    if(insEl){
+      var bd = insensData.breakdown;
+      insEl.innerHTML = insens + ' mL'
+        + '<span style="display:block;font-size:10px;color:var(--muted);margin-top:1px;">'
+        + '피부 '+bd.skin+'·호흡 '+bd.resp+(bd.fever>0?'·발열 +'+bd.fever:'')+'</span>';
+    }
+  }
+
+  var net = totalIn - totalOut;
+  var target = parseFloat((document.getElementById('fluid-target')||{}).value)||0;
+
+  var setEl = function(id, val){ var el=document.getElementById(id); if(el) el.textContent=val; };
+  setEl('dc'+dc+'-totalin',  Math.round(totalIn)  + ' mL');
+  setEl('dc'+dc+'-totalout', Math.round(totalOut) + ' mL');
+
+  var netEl = document.getElementById('dc'+dc+'-net');
+  if(netEl){
+    netEl.textContent = (net>=0?'+':'')+Math.round(net)+' mL';
+    var diff = Math.abs(net - target);
+    netEl.className = 'duty-bal-val ' + (diff<=200?'bal-ok':(net>target?'bal-pos':'bal-neg'));
+  }
+  var tgtLbl = document.getElementById('dc'+dc+'-target-lbl');
+  if(tgtLbl) tgtLbl.textContent = '목표: '+(target>=0?'+':'')+target+' mL';
+}
+
+// ── 전체 수액 계획 계산 ──
+function updateFluidCalc(){
+  if(!document.getElementById('tab-fluid') ||
+     document.getElementById('tab-fluid').style.display==='none') return;
+
+  var dutyHr = fluidDutyMode==='12hr' ? 12 : 8;
+
+  // 1. 승압제 자동
+  var vpData = calcVasopressorInput(dutyHr);
+  var vpList = document.getElementById('vp-auto-list');
+  if(vpList){
+    if(vpData.items.length===0){
+      vpList.innerHTML='<span style="color:var(--muted2);font-size:12px;">현재 약물 탭에서 승압제 토글 ON 시 자동 계산</span>';
+    } else {
+      vpList.innerHTML = vpData.items.map(function(it){
+        return '<div class="fluid-auto-item"><span>'+it.name+'</span><span class="fluid-mono" style="font-size:12px;">'+it.rate.toFixed(1)+' mL/hr × '+dutyHr+'hr = <b>'+it.vol+'</b> mL</span></div>';
+      }).join('');
+    }
+  }
+  var vpTotalEl = document.getElementById('vp-total');
+  if(vpTotalEl) vpTotalEl.textContent = vpData.total + ' mL';
+
+  // 2. 수액 행 업데이트
+  var fluidTotal = 0;
+  document.querySelectorAll('[id^="fl-"]').forEach(function(row){
+    if(!row.id.match(/^fl-\d+$/)) return;
+    var id = row.id;
+    var rate = parseFloat((document.getElementById(id+'-rate')||{}).value)||0;
+    var vol  = Math.round(rate * dutyHr);
+    var volEl = document.getElementById(id+'-vol');
+    if(volEl) volEl.textContent = vol + ' mL';
+    var durEl = document.getElementById(id+'-dur');
+    if(durEl) durEl.textContent = dutyHr + 'hr';
+    fluidTotal += vol;
+  });
+
+  // 3. 혈액제제 행
+  var bloodTotal = 0;
+  document.querySelectorAll('[id^="bl-"]').forEach(function(row){
+    if(!row.id.match(/^bl-\d+$/)) return;
+    var id = row.id;
+    var units = parseFloat((document.getElementById(id+'-units')||{}).value)||0;
+    var vol   = parseFloat((document.getElementById(id+'-vol')||{}).value)||0;
+    var total = Math.round(units * vol);
+    var totEl = document.getElementById(id+'-total');
+    if(totEl) totEl.textContent = total + ' mL';
+    bloodTotal += total;
+  });
+
+  // 4. 기타
+  var otherIn = parseFloat((document.getElementById('fluid-other-input')||{}).value)||0;
+
+  // 5. 총 Input
+  var totalIn = vpData.total + fluidTotal + bloodTotal + otherIn;
+
+  // 6. 예상 Output
+  var insensData = calcInsensibleLoss(dutyHr);
+  var insens = insensData.total;
+  var minUO   = Math.round(bwt() * 0.5 * dutyHr);
+  var estOut  = minUO + (fluidOutputMode==='detail' ? insens : 0);
+
+  // 7. Net & 권고 수액
+  var target  = parseFloat((document.getElementById('fluid-target')||{}).value)||0;
+  var net     = totalIn - estOut;
+  var sugRate = Math.max(0, Math.round((target - totalIn + estOut) / dutyHr));
+
+  var setEl = function(id, val, cls){
+    var el=document.getElementById(id);
+    if(!el) return;
+    el.textContent=val;
+    if(cls) el.className='fluid-mono '+(cls||'');
+  };
+  setEl('plan-total-in',  Math.round(totalIn)+' mL', 'plan-val');
+  setEl('plan-total-out', Math.round(estOut)+' mL');
+  // Insensible breakdown 표시
+  var insBreakEl = document.getElementById('plan-insens-detail');
+  if(insBreakEl){
+    var bd2 = insensData.breakdown;
+    var vent2 = (document.getElementById('fluid-vent')||{}).checked;
+    var humid2 = (document.getElementById('fluid-humid')||{}).value || 'hme';
+    var humidLabel = {hme:'HME',heated:'Heated HMF',none:'가습없음'}[humid2]||'';
+    insBreakEl.textContent = 'Insensible: 피부 '+bd2.skin+'mL'
+      + (vent2 ? ' + 호흡('+humidLabel+') '+bd2.resp+'mL' : ' + 호흡 '+bd2.resp+'mL')
+      + (bd2.fever>0 ? ' + 발열 +'+bd2.fever+'mL' : '')
+      + ' = '+insens+'mL';
+  }
+  var diff = net - target;
+  setEl('plan-net', (net>=0?'+':'')+Math.round(net)+' mL',
+    Math.abs(diff)<=200?'bal-ok':net>target?'bal-pos':'bal-neg');
+  setEl('plan-suggest', sugRate+' mL/hr');
+
+  // 8. 분포 계산 테이블
+  updateDistTable(vpData.total, fluidTotal, bloodTotal, dutyHr);
+
+  // 9. 듀티 카드 승압제 업데이트
+  for(var i=1; i<=dutyCardCount; i++){
+    var vpEl = document.getElementById('dc'+i+'-vp');
+    if(vpEl) vpEl.textContent = vpData.total + ' mL';
+    calcDutyBalance(i);
+  }
+}
+
+function updateDistTable(vpMl, fluidMl, bloodMl, dutyHr){
+  var tbody = document.getElementById('dist-tbody');
+  if(!tbody) return;
+  tbody.innerHTML='';
+  var totalIV = 0;
+  var rows = [];
+
+  // 승압제 (NS 기준)
+  if(vpMl > 0) rows.push({type:'NS', vol:vpMl, label:'승압제 carrier (NS 기준)'});
+
+  // 수액 행
+  document.querySelectorAll('[id^="fl-"]').forEach(function(row){
+    if(!row.id.match(/^fl-\d+$/)) return;
+    var id=row.id;
+    var type = (document.getElementById(id+'-type')||{}).value||'NS';
+    var rate = parseFloat((document.getElementById(id+'-rate')||{}).value)||0;
+    var vol  = Math.round(rate*dutyHr);
+    if(vol>0) rows.push({type:type, vol:vol, label:(IVR_TABLE[type]||{}).label||type});
+  });
+
+  // 혈액제제
+  document.querySelectorAll('[id^="bl-"]').forEach(function(row){
+    if(!row.id.match(/^bl-\d+$/)) return;
+    var id=row.id;
+    var type  = (document.getElementById(id+'-type')||{}).value||'pRBC';
+    var units = parseFloat((document.getElementById(id+'-units')||{}).value)||0;
+    var vol   = parseFloat((document.getElementById(id+'-vol')||{}).value)||0;
+    var total = Math.round(units*vol);
+    if(total>0) rows.push({type:type, vol:total, label:(IVR_TABLE[type]||{}).label||type});
+  });
+
+  rows.forEach(function(r){
+    var entry = IVR_TABLE[r.type]||{ivr:0.25};
+    var ivVol = Math.round(r.vol * entry.ivr);
+    totalIV += ivVol;
+    var tr = '<tr><td>'+r.label+'</td><td class="fluid-mono" style="text-align:right;">'+r.vol+' mL</td><td style="text-align:center;color:var(--muted);font-size:11px;">'+(entry.ivr*100).toFixed(0)+'%</td><td class="dist-val">'+ivVol+' mL</td></tr>';
+    tbody.innerHTML += tr;
+  });
+
+  var totEl = document.getElementById('dist-total');
+  if(totEl) totEl.innerHTML = '<b>'+totalIV+' mL</b>';
+}
+
+// ── switchTab 'fluid' 처리 ──
+// updateAll 호출 시 fluid 모듈도 갱신
+var _origUpdateAll = null;
+function initFluidModule(){
+  // switchTab 'fluid' 시 updateFluidCalc 호출됨 (아래 패치)
+  // 기본 듀티 카드 1개 추가
+  if(document.getElementById('duty-cards-container') &&
+     document.getElementById('duty-cards-container').children.length === 0){
+    addDutyCard();
+  }
+}
+
+
 // ── OC 카드 커스텀 농도 재계산 ──
 function toggleCustomMixVaso(btn){
   var wrap=document.getElementById('mix-custom-vaso');if(!wrap)return;
@@ -2049,10 +2807,11 @@ function switchTab(name,btn){
   var tabs=document.querySelectorAll('.tab');
   for(var i=0;i<tabs.length;i++) tabs[i].classList.remove('active');
   btn.classList.add('active');
-  var names=['vp','sd','ot','ibw','emg','active'];
+  var names=['vp','sd','ot','ibw','emg','fluid','active'];
   for(var i=0;i<names.length;i++) document.getElementById('tab-'+names[i]).style.display=names[i]===name?'block':'none';
   if(name==='ibw'){var hsl=document.getElementById('ibw-height-sl');var hi=document.getElementById('ibw-height');if(hsl&&hi)hsl.value=hi.value;cIBW();}
   if(name==='active'){renderActiveDrugs();updateAll();}
+  if(name==='fluid'){initFluidModule();updateFluidCalc();}
 }
 // ══════════════════════════════
 //  RENDER ENGINE
