@@ -1868,6 +1868,7 @@ function renderLibrary(){
     +'조언 보조 도구이며 최종 결정·청구는 처방의 책임.</div>';
   h+='<div class="searchbar"><span>🔍</span><input id="searchInp" placeholder="약물·상황 검색 (예: 로수바, PCSK9, TG)" oninput="doSearch(this.value)"></div>';
   h+='<div id="searchRes"></div>';
+  h+='<div id="libBody">';
   /* 인트로 강조 카드 — 플로우 유도 */
   h+='<div class="intro-card" onclick="switchTab(\'flow\')">'
     +'<div class="ic-t">⚡ 환자 앞에서 바로 — 플로우</div>'
@@ -1909,7 +1910,10 @@ function renderLibrary(){
   }
   h+='<div class="src" style="margin-top:8px">★급여기준·약제 정보는 갱신될 수 있으므로 처방·청구 시 최신 고시(심평원)·허가사항 확인 권장. 임상 판단 보조 도구이며 최종 결정·청구는 처방의 책임. 진료지침 그림은 한국지질·동맥경화학회 저작물(개인 진료 참고용).</div>';
   h+='</div>';
+  h+='</div>';/* libBody 닫기 */
   v.innerHTML=h;
+  /* 검색 상태 복원 (재렌더 시) */
+  if(STATE.searchQ){ var si2=$("searchInp"); if(si2){ si2.value=STATE.searchQ; doSearch(STATE.searchQ); } }
 }
 function openTopic(id){ STATE.openTopic=id; window.scrollTo(0,0); renderLibrary(); }
 function closeTopic(){ STATE.openTopic=null; renderLibrary(); }
@@ -2305,23 +2309,112 @@ function openRef(id){
 function closeRefModal(e){ if(e&&e.target.id!=="refModal"&&e.type==="click") return; $("refModal").hidden=true; }
 
 /* ---- 검색 ---- */
-function doSearch(q){
-  var res=$("searchRes"); if(!q||q.length<1){ res.innerHTML=''; return; }
-  q=q.toLowerCase(); var hits=[];
+/* 약물 ID → 그 약물이 등장하는 토픽 ID 매핑 (검색 결과 클릭 연결용) */
+function drugToTopic(drugId){
   for(var i=0;i<LIBRARY.length;i++){
-    var t=LIBRARY[i];
-    if((t.title+t.desc).toLowerCase().indexOf(q)>=0) hits.push({type:"topic",t:t});
+    var secs=LIBRARY[i].sections||[];
+    for(var s=0;s<secs.length;s++){
+      if(secs[s].type==="drugcards" && secs[s].ids){
+        for(var j=0;j<secs[s].ids.length;j++) if(secs[s].ids[j]===drugId) return LIBRARY[i].id;
+      }
+    }
   }
+  return null;
+}
+
+/* 토픽 본문 텍스트를 평탄화(키포인트·섹션 검색용) */
+function topicSearchText(t){
+  var parts=[t.title, t.desc];
+  var secs=t.sections||[];
+  for(var s=0;s<secs.length;s++){
+    var sec=secs[s];
+    if(sec.title) parts.push(sec.title);
+    if(sec.items){ for(var i=0;i<sec.items.length;i++){ parts.push(sec.items[i].t||""); parts.push(sec.items[i].b||""); } }
+    if(sec.type) parts.push(sec.type);
+    /* 약물카드 토픽은 약물명도 포함 */
+    if(sec.type==="drugcards" && sec.ids){
+      for(var d=0;d<sec.ids.length;d++){ var dd=DRUG_DB[sec.ids[d]]; if(dd) parts.push(dd.name+" "+(dd.brand||"")+" "+(dd.en||"")); }
+    }
+  }
+  return parts.join(" ").toLowerCase();
+}
+
+/* 토픽 본문 텍스트를 평탄화(키포인트 검색용) — type(섹션코드)은 제외 */
+function topicBodyText(t){
+  var parts=[];
+  var secs=t.sections||[];
+  for(var s=0;s<secs.length;s++){
+    var sec=secs[s];
+    if(sec.title) parts.push(sec.title);
+    if(sec.items){ for(var i=0;i<sec.items.length;i++){ parts.push(sec.items[i].t||""); parts.push(sec.items[i].b||""); } }
+  }
+  /* HTML 태그 제거 */
+  return parts.join(" ").replace(/<[^>]+>/g," ").toLowerCase();
+}
+
+function doSearch(q){
+  var res=$("searchRes");
+  var body=$("libBody");
+  q=(q||"").trim();
+  STATE.searchQ=q;
+  if(q.length<1){ res.innerHTML=''; if(body) body.style.display=''; return; }
+  /* 한글 자모만(조합 중)이면 무시 */
+  if(/^[ㄱ-ㅎㅏ-ㅣ]+$/.test(q)){ res.innerHTML=''; if(body) body.style.display=''; return; }
+  if(body) body.style.display='none';  /* 검색 중엔 그리드 숨김 */
+  var ql=q.toLowerCase();
+  var scored=[];
+
+  /* 1) 약물 — 약물명/브랜드/영문 매칭 (최우선) */
   for(var d in DRUG_DB){
     var dd=DRUG_DB[d];
-    if((dd.name+(dd.brand||'')+(dd.en||'')).toLowerCase().indexOf(q)>=0) hits.push({type:"drug",id:d,d:dd});
+    var nm=(dd.name+" "+(dd.brand||"")+" "+(dd.en||"")).toLowerCase();
+    var sc=0;
+    if(dd.name.toLowerCase()===ql) sc=100;
+    else if(nm.indexOf(ql)>=0) sc=80;
+    else if((dd.moa||"").toLowerCase().indexOf(ql)>=0) sc=30;
+    if(sc>0) scored.push({ kind:"drug", id:d, d:dd, topicId:drugToTopic(d), score:sc });
   }
-  var h='';
-  for(var k=0;k<hits.length && k<8;k++){
-    if(hits[k].type==="topic") h+='<div class="topic-card" style="margin-bottom:8px" onclick="openTopic(\''+hits[k].t.id+'\')"><div class="ttitle">📚 '+esc(hits[k].t.title)+'</div><div class="tdesc">'+esc(hits[k].t.desc)+'</div></div>';
-    else h+='<div class="topic-card" style="margin-bottom:8px"><div class="ttitle">💊 '+esc(hits[k].d.name)+'</div><div class="tdesc">'+esc(hits[k].d.moa||'')+'</div></div>';
+
+  /* 2) 토픽 — 제목>설명>본문 가중 */
+  for(var i=0;i<LIBRARY.length;i++){
+    var t=LIBRARY[i];
+    var title=t.title.toLowerCase(), desc=(t.desc||"").toLowerCase();
+    var sc2=0, where="";
+    if(title.indexOf(ql)>=0){ sc2=90; where="제목"; }
+    else if(desc.indexOf(ql)>=0){ sc2=60; where="설명"; }
+    else if(topicBodyText(t).indexOf(ql)>=0){ sc2=25; where="본문"; }
+    if(sc2>0) scored.push({ kind:"topic", t:t, score:sc2, where:where });
   }
-  res.innerHTML=h||'<div class="note">검색 결과 없음</div>';
+
+  /* 점수순 정렬 */
+  scored.sort(function(a,b){ return b.score-a.score; });
+
+  if(!scored.length){ res.innerHTML='<div class="note">검색 결과 없음 — 다른 키워드를 시도해보세요 (예: 스타틴, PCSK9, FH, 게이트, Lp(a)) <span style="color:var(--clin);cursor:pointer;font-weight:700" onclick="clearSearch()">✕ 지우기</span></div>'; return; }
+
+  var h='<div style="display:flex;align-items:center;margin:0 0 7px"><span style="font-size:11px;font-weight:700;color:var(--ink-faint)">검색 결과 '+scored.length+'건</span>'
+    +'<span style="margin-left:auto;font-size:11px;color:var(--clin);cursor:pointer;font-weight:700" onclick="clearSearch()">✕ 지우기</span></div>';
+  for(var k=0;k<scored.length && k<15;k++){
+    var hit=scored[k];
+    if(hit.kind==="drug"){
+      var click=hit.topicId?(' onclick="openTopic(\''+hit.topicId+'\')" style="margin-bottom:8px;cursor:pointer"'):' style="margin-bottom:8px"';
+      h+='<div class="topic-card clin"'+click+'>'
+        +'<div class="th"><span class="tico">💊</span><span class="ttitle" style="margin:0">'+esc(hit.d.name)+(hit.d.brand&&hit.d.brand!=="-"?' <span style="font-weight:400;color:var(--ink-faint)">('+esc(hit.d.brand)+')</span>':'')+'</span><span class="tcat b-clin" style="margin-left:auto">약물</span></div>'
+        +'<div class="tdesc">'+esc((hit.d.moa||hit.d.dose||"").substring(0,60))+(hit.topicId?' · 탭하여 토픽':'')+'</div></div>';
+    } else {
+      var t2=hit.t, cb=t2.cat==="pay"?"b-pay":(t2.cat==="clin"?"b-clin":"b-care");
+      h+='<div class="topic-card '+t2.cat+'" style="margin-bottom:8px" onclick="openTopic(\''+t2.id+'\')">'
+        +'<div class="th"><span class="tico">'+(t2.icon||"📄")+'</span><span class="ttitle" style="margin:0">'+esc(t2.title)+'</span><span class="tcat '+cb+'" style="margin-left:auto">'+esc(hit.where)+'</span></div>'
+        +'<div class="tdesc">'+esc(t2.desc)+'</div></div>';
+    }
+  }
+  if(scored.length>15) h+='<div class="src">상위 15건 표시 (총 '+scored.length+'건) — 검색어를 더 구체적으로</div>';
+  res.innerHTML=h;
+}
+function clearSearch(){
+  STATE.searchQ='';
+  var si=$("searchInp"); if(si) si.value='';
+  var res=$("searchRes"); if(res) res.innerHTML='';
+  var body=$("libBody"); if(body) body.style.display='';
 }
 
 /* ===== 시뮬레이션 ===== */

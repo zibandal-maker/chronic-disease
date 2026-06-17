@@ -849,20 +849,34 @@ function buildAcrCalc(container, onScore, opts){
    CONTENT LAYER — 도서관 토픽
    ════════════════════════════════════════════════════════════ */
 const LIBRARY=[
-  {id:"dx",cat:"clin",ic:"🔬",n:"진단 · ACR/EULAR 자동채점",d:"분류기준·확진(MSU)·DECT/US",render:"renderDx"},
-  {id:"stage",cat:"clin",ic:"📈",n:"병기 · 자연경과",d:"4병기·전이·합병증",render:"renderStage"},
-  {id:"asymptomatic",cat:"clin",ic:"🤔",n:"무증상 고요산혈증",d:"3층 구조·한미일 비교·RCT·예외",render:"renderAhu"},
-  {id:"acute",cat:"clin",ic:"🔥",n:"급성 발작 치료",d:"3약물 세부분기·위험도차등·용량",render:"renderAcute"},
-  {id:"ult",cat:"clin",ic:"📉",n:"요산저하요법(ULT)",d:"적응증·목표·반발성발작 예방",render:"renderUlt"},
-  {id:"drugclass",cat:"clin",ic:"💊",n:"약제 종류별 설명",d:"계열·성분별 기전·용량·중단·상호작용",render:"renderDrugClass"},
-  {id:"safety",cat:"clin",ic:"🛡️",n:"안전성 · 신기능 용량표",d:"eGFR별 전약물·HLA·CV·간독성",render:"renderSafety"},
-  {id:"special",cat:"clin",ic:"🪨",n:"특수: 요로결석·종양용해",d:"알칼리화·라스부리카제·투석",render:"renderSpecial"},
-  {id:"emerging",cat:"clin",ic:"🧬",n:"신흥 · 개발 약물",d:"도티누라드·페그로티케이스·국산",render:"renderEmerging"},
-  {id:"purine",cat:"edu",ic:"🧪",n:"퓨린대사 · 요산생성",d:"대사경로·배설·포화·온도",render:"renderPurine"},
-  {id:"diet",cat:"edu",ic:"🍽️",n:"식이 · 음주 · 과당",d:"퓨린 정량DB·기전·채소 예외",render:"renderDiet"},
-  {id:"comorbid",cat:"edu",ic:"🔗",n:"동반질환 · 요산상승 약물",d:"HTN/DM/CKD·이뇨제·아스피린",render:"renderComorbid"},
-  {id:"reimb",cat:"pay",ic:"💰",n:"급여기준",d:"알로푸리놀1차/페북2차·HLA검사",render:"renderReimb"},
-  {id:"kcd",cat:"pay",ic:"🔖",n:"급여코드(KCD)",d:"M10 통풍·E79 고요산·N20 결석·검색",render:"renderKcd"}
+  {id:"dx",cat:"clin",ic:"🔬",n:"진단 · ACR/EULAR 자동채점",d:"분류기준·확진(MSU)·DECT/US",render:"renderDx",
+   kw:"진단 분류기준 ACR EULAR 채점 점수 MSU 결정 편광현미경 활액 DECT 초음파 DCS 가성통풍 감별 1st MTP 8점"},
+  {id:"stage",cat:"clin",ic:"📈",n:"병기 · 자연경과",d:"4병기·전이·합병증",render:"renderStage",
+   kw:"병기 무증상 급성 간헐기 만성 결절성 tophus 토푸스 자연경과 합병증 신석 1st MTP 발작 온도 포화"},
+  {id:"asymptomatic",cat:"clin",ic:"🤔",n:"무증상 고요산혈증",d:"3층 구조·한미일 비교·RCT·예외",render:"renderAhu",
+   kw:"무증상 고요산혈증 E79 추적관찰 FEATHER CKD-FIX PERL 일본 ACR KDIGO 컷오프 8 9 종양용해 워크업 workup"},
+  {id:"acute",cat:"clin",ic:"🔥",n:"급성 발작 치료",d:"3약물 세부분기·위험도차등·용량",render:"renderAcute",
+   kw:"급성 발작 콜키신 NSAID 나프록센 이부프로펜 스테로이드 프레드니솔론 글루코코르티코이드 관절강내 트리암시놀론 병용 CYP3A4 P-gp 상호작용 스타틴 48시간 위험도"},
+  {id:"ult",cat:"clin",ic:"📉",n:"요산저하요법(ULT)",d:"적응증·목표·반발성발작 예방",render:"renderUlt",
+   kw:"ULT 요산저하 알로푸리놀 페북소스타트 적응증 결절 재발 목표 sUA 6 5 반발성 발작 예방 mobilization flare 콜키신 예방 지속 중단"},
+  {id:"drugclass",cat:"clin",ic:"💊",n:"약제 종류별 설명",d:"계열·성분별 기전·용량·중단·상호작용",render:"renderDrugClass",
+   kw:"약제 약물 계열 성분 알로푸리놀 자이로릭 페북소스타트 페브릭 벤즈브로마론 유니논 프로베네시드 콜키신 콜킨 나프록센 프레드니솔론 XOI 배설촉진 기전 용량 상품명 중단 상호작용 부작용 금기 급여"},
+  {id:"safety",cat:"clin",ic:"🛡️",n:"안전성 · 신기능 용량표",d:"eGFR별 전약물·HLA·CV·간독성",render:"renderSafety",
+   kw:"안전성 신기능 eGFR 용량표 신장 CKD HLA-B 5801 AHS SJS TEN DRESS 중증피부반응 심혈관 CARES FAST 간독성 콜키신 감량 투석"},
+  {id:"special",cat:"clin",ic:"🪨",n:"특수: 요로결석·종양용해",d:"알칼리화·라스부리카제·투석",render:"renderSpecial",
+   kw:"특수 요로결석 결석 N20 요산결석 알칼리화 소변 pH 종양용해 라스부리카제 신병증 투석 화학요법"},
+  {id:"emerging",cat:"clin",ic:"🧬",n:"신흥 · 개발 약물",d:"도티누라드·페그로티케이스·국산",render:"renderEmerging",
+   kw:"신흥 개발 신약 도티누라드 dotinurad URAT1 페그로티케이스 pegloticase uricase 카나키누맙 canakinumab IL-1 티굴릭소스타트 tigulixostat LG화학 국산 레시뉴라드 토피록소스타트"},
+  {id:"purine",cat:"edu",ic:"🧪",n:"퓨린대사 · 요산생성",d:"대사경로·배설·포화·온도",render:"renderPurine",
+   kw:"퓨린 대사 요산 생성 경로 잔틴 xanthine hypoxanthine XO IMP 배설 신장 URAT1 포화 온도 결정 MSU 배출저하 과다생성"},
+  {id:"diet",cat:"edu",ic:"🍽️",n:"식이 · 음주 · 과당",d:"퓨린 정량DB·기전·채소 예외",render:"renderDiet",
+   kw:"식이 식단 음식 음주 술 맥주 막걸리 와인 과당 fructose 퓨린 멸치 내장 간 등푸른생선 고등어 채소 시금치 유제품 우유 커피 체리 다이어트 체중 퓨린함량"},
+  {id:"comorbid",cat:"edu",ic:"🔗",n:"동반질환 · 요산상승 약물",d:"HTN/DM/CKD·이뇨제·아스피린",render:"renderComorbid",
+   kw:"동반질환 고혈압 당뇨 CKD 비만 이상지질혈증 대사증후군 심혈관 요산상승 약물 이뇨제 thiazide loop 아스피린 cyclosporine pyrazinamide"},
+  {id:"reimb",cat:"pay",ic:"💰",n:"급여기준",d:"알로푸리놀1차/페북2차·HLA검사",render:"renderReimb",
+   kw:"급여 비급여 인정 삭감 알로푸리놀 1차 페북소스타트 2차 벤즈브로마론 프로베네시드 HLA 검사 무증상 첨부서류 심평원 고시"},
+  {id:"kcd",cat:"pay",ic:"🔖",n:"급여코드(KCD)",d:"M10 통풍·E79 고요산·N20 결석·검색",render:"renderKcd",
+   kw:"급여코드 KCD 상병 M10 통풍 특발성 M10.0 약물유발 신장 E79 고요산혈증 N20 요로결석 청구 부위 코드"}
 ];
 const CAT_LB={clin:"임상",pay:"급여",edu:"교육"};
 const CAT_ORDER=["clin","edu","pay"];
@@ -952,7 +966,7 @@ function renderLibSections(q){
   const ql=q.toLowerCase();
   let total=0;
   CAT_ORDER.forEach(cat=>{
-    const items=LIBRARY.filter(t=>t.cat===cat && (!ql||(t.n+t.d+t.cat+(CAT_LB[t.cat]||"")).toLowerCase().includes(ql)));
+    const items=LIBRARY.filter(t=>t.cat===cat && (!ql||(t.n+" "+t.d+" "+t.cat+" "+(CAT_LB[t.cat]||"")+" "+(t.kw||"")).toLowerCase().includes(ql)));
     if(!items.length)return;
     total+=items.length;
     const sec=CAT_SECTION[cat];

@@ -463,6 +463,14 @@ details.ref .rc{font-size:11px;color:var(--ink-faint);padding:6px 0 0;line-heigh
 .srcard .srs{font-size:11px;color:var(--ink-faint)}
 .srcard mark{background:var(--care-bg);color:var(--care);padding:0 2px;border-radius:3px}
 
+/* 검색 진입 시 매칭 섹션 하이라이트 */
+.sec-hl{animation:secHl 1.8s ease}
+@keyframes secHl{
+  0%{box-shadow:0 0 0 0 var(--care);background:var(--care-bg)}
+  30%{box-shadow:0 0 0 3px var(--care);background:var(--care-bg)}
+  100%{box-shadow:0 0 0 0 transparent;background:transparent}
+}
+
 /* ══ 시뮬레이션 ══ */
 .simwrap{max-width:620px;margin:0 auto;padding:14px}
 .simnode{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
@@ -2189,6 +2197,196 @@ function computeLdlTarget(input){
 }
 
 
+// ════════════════════════════════════════════════════════════════════
+//  ★ 정문 함수 recommend(patient) — 만성질환 통합 단일 진입점
+// ════════════════════════════════════════════════════════════════════
+//  계약: recommend(patient) → { drugs[], targets[], flags[] }
+//  - patient 스키마는 플로우 collect()와 동일 (a1c·targetA1c·egfr·uacr·
+//    potassium·bmi·ldl·sbp·dbp·diabetesDuration·comorbidities[]·
+//    hypercatabolic·currentDrugs[{class,member?}]·onACEiARB·onSGLT2i·
+//    hasHF·hasNeuropathyPain·complicationsDone{})
+//  - 기존 엔진(reimb/clinical/care/addon)을 ★읽기전용 호출만 하고,
+//    결과를 표준 3필드로 정규화. 엔진 내부 로직 무손상·가산.
+//  - 약물은 전역 ID(drug:/class:) 동반 → 통합 시 교차참조·중복처방 방지.
+//  - 통합엔진은 이 정문 하나만 호출하면 됨. (HTN 가이드와 동일 계약)
+// ════════════════════════════════════════════════════════════════════
+function recommend(patient){
+  var p = patient || {};
+  // reimbEngine은 input.drugs를 요구 → currentDrugs로 보강(읽기전용)
+  var inp = {};
+  for (var k in p) if (Object.prototype.hasOwnProperty.call(p,k)) inp[k] = p[k];
+  if (!inp.drugs) inp.drugs = inp.currentDrugs || [];
+  if (inp.targetA1c == null) inp.targetA1c = 6.5;
+
+  var out = { drugs:[], targets:[], flags:[], _engine:"dm" };
+
+  // 전역 ID 매핑 헬퍼 (없으면 null 반환, 안전)
+  var toGClass = (typeof dmToGlobalClass==="function") ? dmToGlobalClass : function(){return null;};
+  var toGDrug  = (typeof dmToGlobalDrug ==="function") ? dmToGlobalDrug  : function(){return null;};
+  var isShared = (typeof dmIsShared    ==="function") ? dmIsShared      : function(){return false;};
+  // 계열 대표성분 로컬키(전역 성분 ID 추정용) — 미지정 시 대표성분
+  function memberLocalKey(d){
+    if (d.class==="sglt2i")  return "sglt2i_"+(d.member||"dapa");
+    if (d.class==="dpp4i")   return d.member ? ("dpp4i_"+d.member) : "dpp4i_sita";
+    if (d.class==="glp1ra")  return d.member || "dulaglutide";
+    if (d.class==="insulin") return "insulin";
+    return d.class; // metformin/su/meglitinide/tzd/agi 등은 계열=성분급
+  }
+  function globalDrugId(d){
+    return toGDrug(memberLocalKey(d)) || toGDrug(d.member) || null;
+  }
+
+  // ── (A) 급여 판정 (MAIN) → drugs[] + flags[] ──────────────────────
+  var reimb = (inp.drugs && inp.drugs.length) ? reimbEngine(inp) : null;
+  if (reimb){
+    reimb.perDrug.forEach(function(pd){
+      if (!pd || !pd.drug) return;
+      var gd = globalDrugId(pd.drug);
+      out.drugs.push({
+        source:"current",
+        class: pd.drug.class,
+        member: pd.drug.member || null,
+        globalClass: toGClass(pd.drug.class),
+        globalId: gd,
+        shared: gd ? isShared(gd) : false,   // ★HTN 공유약(다파·엠파·피네레논)
+        badge: pd.badge,                     // 급여 / 100·100 / 처방불가
+        reason: pd.reason || null
+      });
+    });
+    (reimb.flags||[]).forEach(function(f){
+      out.flags.push({
+        kind:"reimb", level:f.level,
+        msg:f.msg || (f.drug? (f.drug.class+" "+(f.level||"")):""),
+        drugClass: f.drug ? f.drug.class : null
+      });
+    });
+    (reimb.docs||[]).forEach(function(doc){
+      out.flags.push({ kind:"doc", level:"info", msg:doc });
+    });
+  }
+
+  // ── (B) 임상 권고 (AUDITOR) → drugs[](제안) + 충돌 flags[] ─────────
+  var clin = clinicalEngine(inp);
+  (clin.recommended||[]).forEach(function(cl){
+    // 이미 현재약에 있는 계열이면 제안 중복 표시 안 함
+    var already = out.drugs.some(function(x){ return x.class===cl && x.source==="current"; });
+    if (already) return;
+    out.drugs.push({
+      source:"clinical",
+      class: cl,
+      globalClass: toGClass(cl),
+      badge: null,
+      axis: clin.axis,
+      rationale:"지침 권고 (axis="+(clin.axis||"glycemic")+")"
+    });
+  });
+  // 급여↔지침 충돌 감지 (검증된 reimbCheck 콜백 패턴 사용)
+  if (typeof conflictDetector === "function"){
+    var reimbCheckFn = function(drugClass){
+      if (drugClass==="glp1ra")
+        return { badge:"100/100", blocked:false, severity:"high",
+          note:"GLP-1RA 주사제 병용 급여 제약. 성분별 BMI·전환조건 상이. 세마=인정외 처방불가" };
+      if (drugClass==="basal_insulin" || drugClass==="insulin")
+        return { badge:"급여", blocked:false, severity:"low", note:"인슐린 일반원칙 인정" };
+      return { badge:"급여", blocked:false, severity:"low", note:"" };
+    };
+    var conf = conflictDetector(clin, reimbCheckFn);
+    (conf.conflicts||[]).forEach(function(c){
+      out.flags.push({
+        kind:"conflict",
+        level: c.level==="hard" ? "block" : "warn",
+        msg: c.message,
+        clinicalSays: c.clinicalSays, reimbSays: c.reimbSays,
+        suggestion: c.suggestion, drugClass: c.drug
+      });
+    });
+  }
+  (clin.rationale||[]).forEach(function(r){
+    out.flags.push({ kind:"rationale", level:"info", msg:"권고"+(r.rec||"")+": "+(r.text||"") });
+  });
+
+  // ── (C) 추가 가능 옵션 → drugs[](우선순위 차등) ───────────────────
+  if (typeof addOnOptions === "function"){
+    var renalCheck = (typeof renalDrugStatus==="function")
+      ? function(key,egfr){ return renalDrugStatus(key,egfr); } : null;
+    // reimbCheckAddon 계약: (계열문자열 cls) → {badge, reason}
+    //   현재약(base)에 후보 1종을 붙여 급여 재판정 (플로우 검증 콜백과 동일)
+    var base = inp.drugs || [];
+    var addonReimb = function(cls){
+      var cand;
+      if (cls==="su")       cand={class:"su",member:"glimepiride"};
+      else if (cls==="tzd") cand={class:"tzd",member:"pioglitazone"};
+      else if (cls==="insulin") cand={class:"insulin",member:"basal"};
+      else if (cls==="sglt2i")  cand={class:"sglt2i",member:"dapa"};
+      else cand={class:cls};
+      var r = reimbEngine({drugs:base.concat([cand]), bmi:inp.bmi});
+      var added = r.perDrug[r.perDrug.length-1] || {};
+      return {badge:added.badge, reason:added.reason};
+    };
+    var opts = [];
+    try { opts = addOnOptions(inp, addonReimb, renalCheck) || []; } catch(e){ opts = []; }
+    opts.forEach(function(o){
+      var cls = o.drug;            // addOnOptions는 계열을 .drug로 반환
+      out.drugs.push({
+        source:"addon",
+        class: cls,
+        name: o.name || null,
+        globalClass: toGClass(cls),
+        badge: o.badge || null,    // 급여 / 100·100 등
+        reimbReason: o.reimbReason || null,
+        priority: o.priority!=null ? o.priority : null,  // 낮을수록 우선
+        blocked: !!o.blocked,
+        renalDose: o.renalDose || null,
+        why: o.why || [],          // 우선순위 근거
+        cautions: o.cautions || [],
+        benefit: o.note || null
+      });
+    });
+  }
+
+  // ── (D) 종합관리 → targets[] + flags[] ────────────────────────────
+  var care = comprehensiveCare(inp);
+  // 목표치 (전역 lab/comorbid ID 부착)
+  if (inp.a1c!=null || inp.targetA1c!=null){
+    out.targets.push({ kind:"a1c", lab:"lab:hba1c",
+      target:(inp.targetA1c!=null?("<"+inp.targetA1c+"%"):"개별화"),
+      current: inp.a1c!=null ? inp.a1c : null });
+  }
+  if (care.bpTarget){
+    out.targets.push({ kind:"bp", comorbid:"comorbid:htn",
+      target: care.bpTarget.target, note: care.bpTarget.note,
+      current: inp.sbp!=null ? (inp.sbp+"/"+(inp.dbp||"-")) : null });
+  }
+  if (care.lipidTarget){
+    out.targets.push({ kind:"ldl", lab:"lab:ldl",
+      target: care.lipidTarget.target, tier: care.lipidTarget.tier,
+      current: inp.ldl!=null ? inp.ldl : null });
+  }
+  if (care.ckdStage && care.ckdStage.stage!=null){
+    out.targets.push({ kind:"ckd", comorbid:"comorbid:ckd", lab:"lab:egfr",
+      stage: care.ckdStage.stage, sub: care.ckdStage.sub,
+      albuminuria: care.ckdStage.albuminuria, referral: care.ckdStage.referral });
+  }
+  // 관리 환기 → flags[]
+  (care.monitoring||[]).forEach(function(m){ out.flags.push({kind:"monitor", level:"info", msg:m}); });
+  (care.renalReminders||[]).forEach(function(m){
+    var lvl = /피네레논/.test(m) ? "renal_protect" : "info";
+    out.flags.push({kind:"renal", level:lvl, msg:m});
+  });
+  (care.complicationReminders||[]).forEach(function(m){ out.flags.push({kind:"complication", level:"info", msg:m}); });
+  if (care.neuropathyPlan){
+    out.flags.push({ kind:"neuropathy", level:"info",
+      msg:"신경병증 통증약: "+(care.neuropathyPlan.firstLine||[]).join("/")+" (기저 치옥타시드 고려)",
+      detail: care.neuropathyPlan });
+  }
+
+  out.careLoad = care.careLoad || "low";
+  return out;
+}
+// 통합엔진/외부 접근용 노출
+if (typeof window !== "undefined") window.recommend = recommend;
+
+
 // ── exports ─────────────────────────────────────────────────────────
 
 // ════════════════════════════════════════════════════════════════════
@@ -3845,7 +4043,7 @@ function switchTab(t){
   }
 
   // ── 토픽 상세 렌더 ──
-  function openTopic(id){
+  function openTopic(id, scrollToSec){
     var t = LIBRARY.filter(function(x){return x.id===id;})[0];
     if(!t) return;
     var d = $("libDetail");
@@ -3856,11 +4054,26 @@ function switchTab(t){
     d.appendChild(back);
     d.appendChild(el("div","dhead",
       '<span class="di">'+t.icon+'</span><div><div class="dt">'+t.title+'</div><div class="ds">'+t.sub+'</div></div>'));
-    t.sections.forEach(function(s){ d.appendChild(renderSection(s, t.cat)); });
+    var secNodes = [];
+    t.sections.forEach(function(s){
+      var node = renderSection(s, t.cat);
+      secNodes.push(node);
+      d.appendChild(node);
+    });
 
     $("libHome").style.display="none";
     d.style.display="block";
     window.scrollTo(0,0);
+
+    // 검색에서 진입 시 매칭 섹션으로 스크롤 + 잠깐 하이라이트
+    if(scrollToSec!=null && secNodes[scrollToSec]){
+      var target = secNodes[scrollToSec];
+      setTimeout(function(){
+        target.scrollIntoView({behavior:"smooth", block:"center"});
+        target.classList.add("sec-hl");
+        setTimeout(function(){ target.classList.remove("sec-hl"); }, 1800);
+      }, 80);
+    }
   }
   function closeTopic(){
     $("libDetail").style.display="none";
@@ -4239,25 +4452,149 @@ function switchTab(t){
   }
 
   // ── 검색 ──
+  // 섹션 객체 전체를 텍스트로 평탄화 (type별 필드 열거 없이 모든 문자열 수집)
+  function flattenText(v, acc){
+    if(v==null) return;
+    var t = typeof v;
+    if(t==="string"){ acc.push(v); return; }
+    if(t==="number"){ acc.push(String(v)); return; }
+    if(Array.isArray(v)){ v.forEach(function(x){ flattenText(x, acc); }); return; }
+    if(t==="object"){
+      for(var k in v){
+        if(!Object.prototype.hasOwnProperty.call(v,k)) continue;
+        if(k==="img"||k==="type") continue; // 이미지 키·타입은 검색 제외
+        flattenText(v[k], acc);
+      }
+    }
+  }
+  // ── 토큰 매칭 헬퍼 ──────────────────────────────────────────────
+  // 순수 숫자 토큰은 단어 경계로 매칭 (예: "30"이 "300"·"130"·"30mg"에 묻히지 않게).
+  // 비숫자(한글·영문)는 부분문자열 매칭 유지 ("dpp4i"가 "dpp-4i" 등 변형 흡수).
+  function isNumeric(tk){ return /^[0-9]+$/.test(tk); }
+  function escapeRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+  // hay에서 토큰 등장 횟수 (숫자는 경계, 그 외는 부분문자열)
+  function countTok(hay, tk){
+    if(!tk) return 0;
+    if(isNumeric(tk)){
+      // 숫자 양옆이 숫자가 아닌 경우만 (단어경계 대용 — \b는 한글에서 불안정)
+      var re = new RegExp("(^|[^0-9])"+escapeRe(tk)+"([^0-9]|$)", "g");
+      var n=0; while(re.exec(hay)!==null) n++; return n;
+    }
+    var n2=0, idx=0;
+    while((idx=hay.indexOf(tk, idx))>=0){ n2++; idx+=tk.length; }
+    return n2;
+  }
+  function hasTok(hay, tk){ return countTok(hay, tk)>0; }
+
+  // 토픽별 검색 인덱스 1회 빌드 (제목·부제·태그 + 섹션 본문 + 섹션별 텍스트)
+  var SEARCH_INDEX = LIBRARY.map(function(t){
+    var headHay = (t.title+" "+t.sub+" "+t.tags.join(" ")).toLowerCase();
+    var tagHay  = t.tags.join(" ").toLowerCase();
+    var titleHay = t.title.toLowerCase();
+    var secEntries = (t.sections||[]).map(function(s,si){
+      var acc=[]; flattenText(s, acc);
+      var label = s.title || s.caption || (s.type+" 섹션");
+      return { idx:si, label:label, text:acc.join(" ").toLowerCase() };
+    });
+    var bodyHay = secEntries.map(function(e){return e.text;}).join(" ");
+    // 섹션 제목/캡션만 모은 hay — 토큰이 여기 있으면 "그 주제를 본격 다룸" 강한 신호
+    var labelHay = secEntries.map(function(e){return e.label.toLowerCase();}).join(" ");
+    return { topic:t, headHay:headHay, tagHay:tagHay, titleHay:titleHay,
+             labelHay:labelHay, bodyHay:bodyHay, secs:secEntries };
+  });
+  // 쿼리를 공백 토큰으로 분리, 모든 토큰이 hay에 있으면 매칭(AND)
+  function tokensOf(q){
+    return q.trim().toLowerCase().split(/\s+/).filter(function(x){return x.length>0;});
+  }
+  // ── IDF(변별력) — 토큰이 등장하는 토픽 수가 적을수록 가중치↑ ──────
+  //   흔한 단어("급여"=거의 모든 토픽)는 낮게, 희소 단어("피네레논")는 높게.
+  //   인덱스가 고정이므로 호출 시마다 토픽 빈도를 세어 idf 산출.
+  var TOTAL_TOPICS = SEARCH_INDEX.length;
+  function idf(tk){
+    var df=0;
+    for(var i=0;i<SEARCH_INDEX.length;i++){
+      var ix=SEARCH_INDEX[i];
+      if(hasTok(ix.headHay+" "+ix.bodyHay, tk)) df++;
+    }
+    if(df===0) return 0;
+    // log 기반 IDF (1~). 1개 토픽에만 있으면 최대, 전부에 있으면 ~0.
+    return Math.log((TOTAL_TOPICS+1)/df) + 0.3;
+  }
+
   function doSearch(q){
-    q = q.trim().toLowerCase();
+    var raw = q.trim();
     var g = $("libGrid");
-    if(!q){ renderGrid(); $("libClr").style.display="none"; return; }
+    if(!raw){ renderGrid(); $("libClr").style.display="none"; return; }
     $("libClr").style.display="block";
     g.innerHTML = "";
+    var toks = tokensOf(raw);
     var wrap = el("div","sresult");
-    var hits = LIBRARY.filter(function(t){
-      var hay = (t.title+" "+t.sub+" "+t.tags.join(" ")).toLowerCase();
-      return hay.indexOf(q)>=0 || t.tags.some(function(tag){return tag.toLowerCase().indexOf(q)>=0;});
-    });
+    // 토큰별 변별력(IDF) 1회 산출
+    var idfMap = {};
+    toks.forEach(function(tk){ idfMap[tk] = idf(tk); });
+
+    var hits = SEARCH_INDEX.map(function(ix){
+      var fullHay = ix.headHay+" "+ix.bodyHay;
+      // 모든 토큰이 (제목+본문 합쳐서) 들어있어야 매칭 (AND, 경계인식)
+      var allMatch = toks.every(function(tk){ return hasTok(fullHay, tk); });
+      if(!allMatch) return null;
+
+      // ── 종합 관련도 점수 ──
+      //   제목 정확매칭(×6) > 태그매칭(×3) > 본문 등장횟수, 모두 IDF 가중.
+      //   → "급여"처럼 흔한 토큰은 IDF가 낮아 영향 작고,
+      //     "피네레논"처럼 희소 토큰이 제목/본문에 있으면 점수가 크게 오름.
+      var score = 0;
+      toks.forEach(function(tk){
+        var w = idfMap[tk] || 0.3;
+        if(hasTok(ix.titleHay, tk)) score += 6*w;
+        if(hasTok(ix.tagHay,   tk)) score += 3*w;
+        // 섹션 제목/캡션 등장 — 그 주제를 본격적으로 다루는 토픽 신호.
+        //   변별력(w) 한 번 더 곱해 희소 토큰(피네레논)의 라벨 매칭을 결정적으로 만듦.
+        //   → 흔한 토큰("급여")이 본문에 많아도 핵심어의 주제 매칭을 못 뒤집게.
+        var lc = countTok(ix.labelHay, tk);
+        if(lc>0) score += Math.min(lc, 3) * 4 * w * Math.max(w, 0.6);
+        var bc = countTok(ix.bodyHay, tk);
+        if(bc>0) score += Math.min(bc, 3) * w;   // 본문 등장(상한 3 — 흔한 토큰 누적 억제)
+      });
+      // 모든 토큰이 제목/태그(head)에 다 있으면 보너스 (정확한 주제 매칭)
+      if(toks.every(function(tk){ return hasTok(ix.headHay, tk); })) score += 4;
+
+      // 어느 섹션에서 토큰이 걸렸는지 (모든 토큰을 포함하는 섹션 우선, 없으면 일부)
+      var matchedSec = null;
+      for(var i=0;i<ix.secs.length;i++){
+        var se = ix.secs[i];
+        if(toks.every(function(tk){return hasTok(se.text, tk);})){ matchedSec = se; break; }
+      }
+      if(!matchedSec){
+        for(var j=0;j<ix.secs.length;j++){
+          var se2 = ix.secs[j];
+          if(toks.some(function(tk){return hasTok(se2.text, tk);})){ matchedSec = se2; break; }
+        }
+      }
+      // 태그 중 토큰과 겹치는 것 (부제 대체 표시용)
+      var matchedTags = ix.topic.tags.filter(function(tag){
+        var lt = tag.toLowerCase();
+        return toks.some(function(tk){ return hasTok(lt, tk); });
+      }).slice(0,4);
+      return { topic:ix.topic, score:score, matchedSec:matchedSec, matchedTags:matchedTags };
+    }).filter(function(x){return x!=null;});
+
+    // 관련도 점수 높은 순 정렬
+    hits.sort(function(a,b){ return b.score - a.score; });
+
     wrap.appendChild(el("div","srt", hits.length+"개 주제"));
-    hits.forEach(function(t){
-      var matched = t.tags.filter(function(tag){return tag.toLowerCase().indexOf(q)>=0;}).slice(0,4);
+    hits.forEach(function(h){
+      var t = h.topic;
+      var sub;
+      if(h.matchedTags.length) sub = h.matchedTags.join(" · ");
+      else if(h.matchedSec) sub = "▸ "+h.matchedSec.label;
+      else sub = t.sub;
       var b = el("button","srcard");
       b.type="button";
       b.innerHTML = '<span class="sri">'+t.icon+'</span><div><div class="srh">'+t.title+'</div>'+
-        '<div class="srs">'+(matched.length?matched.join(" · "):t.sub)+'</div></div>';
-      b.onclick = function(){ openTopic(t.id); };
+        '<div class="srs">'+sub+'</div></div>';
+      var secIdx = h.matchedSec ? h.matchedSec.idx : null;
+      b.onclick = function(){ openTopic(t.id, secIdx); };
       wrap.appendChild(b);
     });
     if(!hits.length) wrap.appendChild(el("div","empty","검색 결과 없음. 다른 키워드를 시도하세요."));
