@@ -130,6 +130,17 @@
       "tag": "감염"
     },
     {
+      "id": "isolation",
+      "title": "법정감염병·격리",
+      "emoji": "🚷",
+      "src": "isolation_guide.html",
+      "out": "isolation.html",
+      "guideline": "법정감염병 분류·격리 기준 · 질병관리청 신고 지침",
+      "group": "A",
+      "accent": "#b8521f",
+      "tag": "감염"
+    },
+    {
       "id": "icu_calc",
       "title": "ICU 약물 계산기",
       "emoji": "💉",

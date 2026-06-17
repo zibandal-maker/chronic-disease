@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>법정감염병 격리 가이드</title>
+<style>
+:root{
+  --bg:#eef2f5; --panel:#ffffff; --panel2:#f5f8fa; --line:#d9e0e6;
+  --ink:#16212c; --ink-dim:#46586a; --ink-faint:#7c8c9a;
+  --air:#c23636; --air-bg:#fae5e5;
+  --drop:#d8632a; --drop-bg:#fbeadd;
+  --contact:#b6820f; --contact-bg:#fbf2d6;
+  --std:#5f6f7e; --std-bg:#e9eef2;
+  --none:#1c9a5f; --none-bg:#d9f1e5;
+  --grade1:#a3263a; --grade2:#c2622a; --grade3:#2d77ad; --grade4:#5f6f7e;
+  --shadow:0 1px 3px rgba(20,33,44,.07),0 4px 14px rgba(20,33,44,.05);
+  --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.55;font-size:15px}
+.app{max-width:780px;margin:0 auto;min-height:100vh;padding-bottom:40px}
+
+.top{position:sticky;top:0;z-index:50;background:rgba(238,242,245,.93);
+  backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);
+  border-bottom:1px solid var(--line);padding:12px 16px 11px}
+.top-row{display:flex;align-items:center;gap:10px}
+.back{background:var(--panel);width:32px;height:32px;border-radius:9px;font-size:17px;
+  color:var(--ink-dim);cursor:pointer;display:none;align-items:center;justify-content:center;
+  border:1px solid var(--line);flex:0 0 auto}
+.back.on{display:flex}
+.top h1{font-size:16.5px;font-weight:760;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.top h1 .dot{width:8px;height:8px;border-radius:50%;background:var(--air);box-shadow:0 0 0 4px var(--air-bg);flex:0 0 auto}
+.top h1 .txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.searchwrap{margin-top:10px;position:relative}
+.searchwrap input{width:100%;border:1.5px solid var(--line);background:var(--panel);
+  border-radius:11px;padding:10px 38px;font-size:15px;color:var(--ink);outline:none;
+  transition:border-color .15s,box-shadow .15s}
+.searchwrap input:focus{border-color:#9db4c6;box-shadow:0 0 0 3px rgba(45,119,173,.12)}
+.searchwrap .ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-faint);pointer-events:none}
+.searchwrap .clr{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:24px;height:24px;
+  border:none;background:var(--panel2);border-radius:50%;color:var(--ink-dim);font-size:13px;cursor:pointer;display:none}
+.searchwrap .clr.on{display:block}
+
+.view{display:none;padding:16px}
+.view.on{display:block}
+
+.hub-lead{font-size:12.5px;color:var(--ink-faint);margin:2px 2px 14px;line-height:1.5}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.cat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:15px 14px;cursor:pointer;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  transition:transform .12s;border-top-width:4px;min-height:120px;display:flex;flex-direction:column}
+.cat:active{transform:scale(.975)}
+.cat.c-air{border-top-color:var(--air)} .cat.c-contact{border-top-color:var(--contact)}
+.cat.c-drop{border-top-color:var(--drop)} .cat.c-none{border-top-color:var(--none)}
+.cat .ci{font-size:21px;line-height:1}
+.cat .cnt{position:absolute;top:13px;right:13px;font-size:12px;font-weight:750;color:var(--ink-faint);background:var(--panel2);border-radius:20px;padding:2px 9px}
+.cat .cn{font-size:15px;font-weight:740;margin-top:9px;letter-spacing:-.02em}
+.cat .cd{font-size:11.5px;color:var(--ink-dim);margin-top:3px;line-height:1.4}
+.cat .ch{font-size:10.5px;color:var(--ink-faint);margin-top:auto;padding-top:7px;line-height:1.4}
+.hub-all{margin-top:12px;width:100%;background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:13px 15px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow)}
+.hub-all:active{transform:scale(.985)}
+.hub-all .l{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.hub-all .r{font-size:12px;color:var(--ink-faint);font-weight:600}
+
+.list-head{display:flex;align-items:center;justify-content:space-between;margin:0 2px 12px}
+.list-title{font-size:15px;font-weight:740;display:flex;align-items:center;gap:7px}
+.list-title .badge{font-size:11px;font-weight:700;color:var(--ink-faint);background:var(--panel2);padding:2px 9px;border-radius:20px}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px}
+.filt-lbl{font-size:10px;font-weight:750;color:var(--ink-faint);letter-spacing:.03em;align-self:center;margin-right:1px}
+.chip{font-size:11.5px;font-weight:650;padding:4px 10px;border-radius:20px;border:1.5px solid var(--line);
+  background:var(--panel);color:var(--ink-dim);cursor:pointer;user-select:none;transition:all .12s}
+.chip:active{transform:scale(.94)}
+.chip.on{color:#fff;border-color:transparent}
+.chip.on.f-g1{background:var(--grade1)} .chip.on.f-g2{background:var(--grade2)}
+.chip.on.f-g3{background:var(--grade3)} .chip.on.f-g4{background:var(--grade4)}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 12px 11px;
+  cursor:pointer;box-shadow:var(--shadow);border-left-width:4px;transition:transform .1s;
+  display:flex;flex-direction:column;min-height:106px}
+.gc:active{transform:scale(.97)}
+.gc.l-air{border-left-color:var(--air)} .gc.l-drop{border-left-color:var(--drop)}
+.gc.l-contact{border-left-color:var(--contact)} .gc.l-std{border-left-color:var(--std)}
+.gc.l-none{border-left-color:var(--none)}
+.gc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:6px}
+.gc-name{font-size:14px;font-weight:730;letter-spacing:-.02em;line-height:1.3}
+.gc-g{font-size:9.5px;font-weight:750;padding:1px 6px;border-radius:5px;color:#fff;flex:0 0 auto;margin-top:1px}
+.gc-g.g1{background:var(--grade1)} .gc-g.g2{background:var(--grade2)} .gc-g.g3{background:var(--grade3)} .gc-g.g4{background:var(--grade4)}
+.gc-lvls{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.gc-lvl{font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px}
+.gc-lvl.air{background:var(--air-bg);color:var(--air)} .gc-lvl.drop{background:var(--drop-bg);color:var(--drop)}
+.gc-lvl.contact{background:var(--contact-bg);color:var(--contact)} .gc-lvl.std{background:var(--std-bg);color:var(--std)}
+.gc-lvl.none{background:var(--none-bg);color:var(--none)}
+.gc-room{font-size:10.5px;color:var(--ink-dim);margin-top:auto;padding-top:8px;font-weight:600;display:flex;align-items:center;gap:3px;line-height:1.3}
+.gc-neg{display:inline-block;font-size:9px;font-weight:800;color:#7d3a9e;background:#f0e3f7;border-radius:4px;padding:1px 5px;margin-left:3px}
+
+.sheet-bg{position:fixed;inset:0;background:rgba(20,33,44,.42);z-index:90;display:none;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.sheet-bg.on{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:91;background:var(--panel);border-radius:20px 20px 0 0;
+  max-height:90vh;overflow-y:auto;transform:translateY(100%);transition:transform .26s cubic-bezier(.32,.72,0,1);
+  max-width:780px;margin:0 auto;-webkit-overflow-scrolling:touch}
+.sheet.on{transform:translateY(0)}
+.sheet-grip{position:sticky;top:0;background:var(--panel);padding:9px 0 5px;text-align:center;z-index:2}
+.sheet-grip::before{content:"";display:inline-block;width:38px;height:4px;border-radius:3px;background:var(--line)}
+.sheet-x{position:absolute;right:14px;top:11px;width:30px;height:30px;border:none;background:var(--panel2);border-radius:50%;font-size:15px;color:var(--ink-dim);cursor:pointer;z-index:3}
+.sheet-in{padding:4px 18px 28px}
+.sh-name{font-size:20px;font-weight:780;letter-spacing:-.02em}
+.sh-en{font-size:12.5px;color:var(--ink-faint);font-weight:500;margin-top:1px}
+.sh-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
+.sh-b{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px}
+.sh-b.air{background:var(--air-bg);color:var(--air)} .sh-b.drop{background:var(--drop-bg);color:var(--drop)}
+.sh-b.contact{background:var(--contact-bg);color:var(--contact)} .sh-b.std{background:var(--std-bg);color:var(--std)}
+.sh-b.none{background:var(--none-bg);color:var(--none)} .sh-b.neg{background:#f0e3f7;color:#7d3a9e}
+.sh-b.mand{background:#fde8e8;color:#b3261e} .sh-b.g{color:#fff}
+.sh-b.g.g1{background:var(--grade1)} .sh-b.g.g2{background:var(--grade2)} .sh-b.g.g3{background:var(--grade3)} .sh-b.g.g4{background:var(--grade4)}
+.sect{margin-top:18px}
+.sect-t{font-size:11px;font-weight:780;color:var(--ink-faint);letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.sect-t::before{content:"";width:3px;height:13px;border-radius:2px;background:var(--line)}
+.sect.s-rel .sect-t::before{background:var(--air)} .sect.s-iso .sect-t::before{background:var(--drop)}
+.sect.s-extra .sect-t::before{background:var(--contact)} .sect.s-src .sect-t::before{background:var(--std)}
+.big-room{background:linear-gradient(135deg,var(--panel2),#fff);border:1px solid var(--line);border-radius:12px;padding:13px 15px;display:flex;align-items:center;gap:12px;margin-top:2px}
+.big-room .ic{font-size:24px}
+.big-room .t{font-size:16px;font-weight:740}
+.big-room .s{font-size:11.5px;color:var(--ink-faint);margin-top:1px}
+.rel-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+.rel-list li{font-size:13.5px;line-height:1.55;padding:10px 12px;background:var(--panel2);border-radius:10px;border:1px solid var(--line);position:relative;padding-left:32px}
+.rel-list li::before{content:"✓";position:absolute;left:12px;top:10px;color:var(--none);font-weight:800;font-size:12px}
+.rel-list li.star{background:#fff6e8;border-color:#f0d9a8}
+.rel-list li.star::before{content:"★";color:var(--contact)}
+.rel-note{font-size:12.5px;color:var(--ink-dim);margin-top:8px;padding:9px 12px;background:#eef5fb;border-radius:10px;border:1px solid #d4e4f0;line-height:1.5}
+.kv{display:flex;gap:10px;font-size:13.5px;padding:7px 0;border-bottom:1px solid var(--panel2)}
+.kv:last-child{border-bottom:none}
+.kv .k{flex:0 0 78px;color:var(--ink-faint);font-weight:650;font-size:12px;padding-top:1px}
+.kv .v{flex:1;color:var(--ink-dim);line-height:1.5}
+.kv .v.warn{color:#b3261e;font-weight:600}
+.ppe{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.ppe span{font-size:11px;font-weight:600;padding:2px 9px;border-radius:6px;background:var(--panel2);border:1px solid var(--line);color:var(--ink-dim)}
+.dur-pill{display:inline-block;background:var(--air-bg);color:var(--air);font-weight:750;font-size:12px;padding:4px 11px;border-radius:8px;margin-top:9px}
+.src{font-size:12px;line-height:1.5;padding:9px 12px;background:var(--panel2);border-radius:10px;border:1px solid var(--line);margin-bottom:7px}
+.src .sg{font-weight:700;color:var(--ink)} .src .sv{color:var(--ink-faint);font-size:11px}
+.src a{color:#2d77ad;text-decoration:none;font-weight:600;font-size:11.5px}
+.src .sver{font-size:10.5px;color:var(--ink-faint);margin-top:2px}
+.reclass{font-size:11.5px;color:#8a5a14;background:#fdf4e3;border:1px solid #f0dcb0;border-radius:8px;padding:7px 10px;margin-top:7px;line-height:1.45}
+.cat-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:11px}
+.cat-tags span{font-size:10.5px;font-weight:650;padding:3px 9px;border-radius:7px;background:var(--panel2);border:1px solid var(--line);color:var(--ink-dim)}
+.empty{text-align:center;padding:46px 20px;color:var(--ink-faint)}
+.empty .big{font-size:30px;margin-bottom:8px}
+.empty p{font-size:13.5px;line-height:1.6}
+.foot{padding:18px 16px 6px;font-size:10.5px;color:var(--ink-faint);line-height:1.6;border-top:1px solid var(--line);margin-top:22px}
+.foot b{color:var(--ink-dim)}
+.foot .disc{margin-top:8px;padding:9px 11px;background:#fdf4e3;border:1px solid #f0dcb0;border-radius:8px;color:#8a5a14}
+@media(max-width:360px){ .gc-name{font-size:13px} .cat .cn{font-size:14px} }
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="top">
+  <div class="top-row">
+    <button class="back" id="back">‹</button>
+    <h1><span class="dot"></span><span class="txt" id="title">법정감염병 격리 가이드</span></h1>
+  </div>
+  <div class="searchwrap">
+    <span class="ico">🔍</span>
+    <input id="q" type="search" placeholder="질환명·약어 검색 (결핵, TB, MERS, CRE…)" autocomplete="off">
+    <button class="clr" id="clr" aria-label="지우기">✕</button>
+  </div>
+</header>
+
+<div class="view on" id="v-hub">
+  <div class="hub-lead">격리가 필요한 상황으로 먼저 들어가세요. 한 질환은 여러 분류에 함께 나타납니다.</div>
+  <div class="cat-grid" id="catGrid"></div>
+  <button class="hub-all" id="goAll">
+    <span class="l">📋 전체 질환 조회</span>
+    <span class="r" id="allCnt"></span>
+  </button>
+</div>
+
+<div class="view" id="v-list">
+  <div class="list-head"><div class="list-title" id="listTitle"></div></div>
+  <div class="filters" id="gradeFilters">
+    <span class="filt-lbl">등급</span>
+    <button class="chip f-g1" data-grade="급1">1급</button>
+    <button class="chip f-g2" data-grade="급2">2급</button>
+    <button class="chip f-g3" data-grade="급3">3급</button>
+    <button class="chip f-g4" data-grade="급4">4급</button>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none"><div class="big">🔍</div><p>결과가 없습니다.</p></div>
+</div>
+
+<div class="foot">
+  <b>출처</b> · 감염병예방법·시행령 별표2 · 질병관리청 감염병포털 및 질환별 대응지침 · 의료관련감염 표준예방지침(2017)
+  <div class="disc">⚠️ 격리 기준은 지침 개정으로 수시 변경됩니다. 실제 결정 시 최신 지침·감염관리실 확인 권장. 색인·판단 보조용이며 최종 결정은 의료진·감염관리실 책임입니다.</div>
+</div>
+</div>
+
+<div class="sheet-bg" id="sheetBg"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-grip"></div>
+  <button class="sheet-x" id="sheetX">✕</button>
+  <div class="sheet-in" id="sheetIn"></div>
+</div>
+
+<script>
+/* ============================================================
+   isolation_levels.js  —  격리 레벨 / 병실 / 공유 해제기준 정의
+   전역 ID 체계. 읽기전용·가산만. 기존 ID 변경 금지.
+   ============================================================ */
+
+/* 격리 유형 (전파경로 — 감염관리 근거). 위험 우선순위: 공기>비말>접촉>표준 */
+var ISO_LEVELS = {
+  "class:iso_airborne": { ko:"공기주의", short:"공기", rank:4, color:"air",
+    ppe:["N95 호흡기", "음압격리"], desc:"5μm 이하 비말핵·에어로졸 공기 전파" },
+  "class:iso_droplet":  { ko:"비말주의", short:"비말", rank:3, color:"drop",
+    ppe:["수술용 마스크", "눈 보호구(상황별)"], desc:"5μm 초과 비말 1m 내 전파" },
+  "class:iso_contact":  { ko:"접촉주의", short:"접촉", rank:2, color:"contact",
+    ppe:["장갑", "가운"], desc:"직접·간접(환경·기구) 접촉 전파" },
+  "class:iso_standard": { ko:"표준주의", short:"표준", rank:1, color:"std",
+    ppe:["손위생", "상황별 보호구"], desc:"모든 환자 기본 적용" }
+};
+
+/* 병실 배치 (간호진 즉답용) */
+var ROOM_TYPES = {
+  "room:negative_pressure": { ko:"음압 1인실", rank:4, color:"air" },
+  "room:single":            { ko:"1인실",      rank:3, color:"contact" },
+  "room:cohort":            { ko:"1인실/코호트", rank:2, color:"contact",
+    note:"동일 균주끼리 코호트 격리 가능" },
+  "room:general":           { ko:"일반 병실",   rank:1, color:"none" }
+};
+
+/* 공유 해제기준 — ID 참조로 중복 제거 (값 복제 금지)
+   다제내성균 6종(CRE·VRSA·MRSA·VRE·MRPA·MRAB)이 참조 */
+var RELEASE_COMMON = {
+  "release:mdro_common": [
+    "원래 분리되었던 부위(임상검체) + 보균검사(대변·직장도말)에서 3일~1주 간격 검사",
+    "연속 3회 이상 음성 시 격리 해제 고려",
+    "★명확히 정해진 기준 없으며 재양전 가능 → 의료기관 감염관리실 자체 판단"
+  ]
+};
+/* ============================================================
+   disease_registry.js  —  법정감염병 90종 격리 마스터
+   전역 ID: disease:<영문표준명>. 같은 병원체=같은 ID.
+   각 카드: 등급·격리레벨·병실·해제기준·출처(버전·확인일)
+   ★격리해제는 분기엔진 아님 — 조건 문구 배열. UI는 나열만.
+   ============================================================ */
+
+/* 카테고리 (메인 허브 — 중복 허용, 실무 격리 단위) */
+var CATEGORIES = [
+  { id:"cat:negative",  ko:"음압 격리",      icon:"🔴", color:"air",
+    desc:"공기매개 — 음압 1인실 필요", hint:"결핵·홍역·수두·MERS·두창" },
+  { id:"cat:contact",   ko:"병원 접촉 격리",  icon:"🟡", color:"contact",
+    desc:"다제내성균 등 — 격리실/코호트", hint:"CRE·VRSA·MRSA·VRE" },
+  { id:"cat:droplet",   ko:"비말 격리",      icon:"🟠", color:"drop",
+    desc:"1m 이내 비말 — 1인실", hint:"백일해·수막구균·디프테리아" },
+  { id:"cat:enteric",   ko:"장관 격리",      icon:"🟤", color:"contact",
+    desc:"분변·접촉 — 배양 음성까지", hint:"콜레라·장티푸스·이질·EHEC" },
+  { id:"cat:imported",  ko:"해외 감염병·검역", icon:"✈️", color:"drop",
+    desc:"해외 유입·검역 대상", hint:"에볼라·뎅기·지카·말라리아" },
+  { id:"cat:noiso",     ko:"격리 불요",      icon:"🟢", color:"none",
+    desc:"표준주의 — 격리 불필요", hint:"매개체·인수공통 다수" }
+];
+
+
+var VERIFIED = "2026-06-17";  // 일괄 확인일
+var PORTAL = "https://dportal.kdca.go.kr/pot/ii/sttyInftnsds/sttyInftnsds.do"; // 감염병포털 베이스
+
+/* 수인성·식품매개감염병 업무제한 대상 '고위험 직군' 정의 (식품위생법·관리지침 근거)
+   = ①식품취급자(채취·제조·가공·조리·운반·판매) ②집단급식소·식품접객업소
+     ③보육시설 ④요양시설 ⑤의료기관·간병 종사자 */
+var HIRISK_OCCUP = "고위험 직군(식품취급자·집단급식·식품접객·보육·요양·의료·간병 종사자)";
+
+var DISEASES = [
+
+/* ===== 제1급 (18종) — 음압격리 원칙 ===== */
+
+{ id:"disease:ebola", name_ko:"에볼라바이러스병", name_en:"Ebola virus disease",
+  aliases:["에볼라","EVD"], grade:"급1", kcd:"A98.4", tags:["출혈열","바이러스성출혈열","VHF"],
+  isolation:{ types:["class:iso_standard","class:iso_contact","class:iso_droplet"], negative_pressure:true, mandatory:true },
+  room:{ primary:"room:negative_pressure", label:"국가지정 입원치료병상(음압 또는 1인실)" },
+  release:["증상 호전 + 발병 후 72시간 이상 경과", "혈액검체 real-time RT-PCR 24시간 이상 간격 2회 연속 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"노출도별 접촉자 21일 감시(능동/수동)", work_restriction:null, special_precaution:"고위험병원체, 국가지정격리병상 이송", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병 바이러스성출혈열 대응지침", version:"2026.1", url:"https://www.kdca.go.kr/bbs/kdca/55/304625/download.do", verified:VERIFIED }] },
+
+{ id:"disease:marburg", name_ko:"마버그열", name_en:"Marburg virus disease",
+  aliases:["마르부르크","마버그"], grade:"급1", kcd:"A98.3", tags:["출혈열","VHF"],
+  isolation:{ types:["class:iso_standard","class:iso_contact","class:iso_droplet"], negative_pressure:true, mandatory:true },
+  room:{ primary:"room:negative_pressure", label:"국가지정 입원치료병상(음압 또는 1인실)" },
+  release:["증상 호전 + 발병 후 72시간 이상 경과", "혈액검체 real-time RT-PCR 24시간 이상 간격 2회 연속 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"노출도별 접촉자 21일 감시", work_restriction:null, special_precaution:"고위험병원체", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병 바이러스성출혈열 대응지침", version:"2026.1", url:"https://www.kdca.go.kr/bbs/kdca/55/304625/download.do", verified:VERIFIED }] },
+
+{ id:"disease:lassa", name_ko:"라싸열", name_en:"Lassa fever",
+  aliases:["라싸","라사열"], grade:"급1", kcd:"A96.2", tags:["출혈열","VHF"],
+  isolation:{ types:["class:iso_standard","class:iso_contact","class:iso_droplet"], negative_pressure:true, mandatory:true },
+  room:{ primary:"room:negative_pressure", label:"국가지정 입원치료병상(음압 또는 1인실)" },
+  release:["증상 호전 + 발병 후 72시간 이상 경과", "혈액검체 real-time RT-PCR 24시간 이상 간격 2회 연속 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"노출도별 접촉자 21일 감시", work_restriction:null, special_precaution:"고위험병원체", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병 바이러스성출혈열 대응지침", version:"2026.1", url:"https://www.kdca.go.kr/bbs/kdca/55/304625/download.do", verified:VERIFIED }] },
+
+{ id:"disease:cchf", name_ko:"크리미안콩고출혈열", name_en:"Crimean-Congo hemorrhagic fever",
+  aliases:["CCHF","크리미안콩고"], grade:"급1", kcd:"A98.0", tags:["출혈열","VHF","진드기"],
+  isolation:{ types:["class:iso_standard","class:iso_contact","class:iso_droplet"], negative_pressure:true, mandatory:true },
+  room:{ primary:"room:negative_pressure", label:"국가지정 입원치료병상(음압 또는 1인실)" },
+  release:["증상 호전 + 발병 후 72시간 이상 경과", "혈액검체 real-time RT-PCR 24시간 이상 간격 2회 연속 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"노출도별 접촉자 감시", work_restriction:null, special_precaution:"고위험병원체", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병 바이러스성출혈열 대응지침", version:"2026.1", url:"https://www.kdca.go.kr/bbs/kdca/55/304625/download.do", verified:VERIFIED }] },
+
+{ id:"disease:samhf", name_ko:"남아메리카출혈열", name_en:"South American hemorrhagic fever",
+  aliases:["남미출혈열"], grade:"급1", kcd:"A96.0", tags:["출혈열","VHF"],
+  isolation:{ types:["class:iso_standard","class:iso_contact","class:iso_droplet"], negative_pressure:true, mandatory:true },
+  room:{ primary:"room:negative_pressure", label:"국가지정 입원치료병상(음압 또는 1인실)" },
+  release:["증상 호전 + 발병 후 72시간 이상 경과", "혈액검체 real-time RT-PCR 24시간 이상 간격 2회 연속 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"노출도별 접촉자 감시", work_restriction:null, special_precaution:"고위험병원체", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병 바이러스성출혈열 대응지침", version:"2026.1", url:"https://www.kdca.go.kr/bbs/kdca/55/304625/download.do", verified:VERIFIED }] },
+
+{ id:"disease:smallpox", name_ko:"두창", name_en:"Smallpox",
+  aliases:["천연두","마마"], grade:"급1", kcd:"B03", tags:["생물테러","발진","수포","가피"],
+  isolation:{ types:["class:iso_standard","class:iso_contact","class:iso_airborne"], negative_pressure:true, mandatory:true },
+  room:{ primary:"room:negative_pressure", label:"국가지정 입원치료병상(음압격리)" },
+  release:["환부의 모든 가피가 탈락된 후 48시간 경과", "검체(혈액·피부병변조직·병변액·가피) PCR 24시간 간격 2회 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"밀접/일상/2차 접촉자 구분, 예방접종·능동감시·활동제한", work_restriction:null, special_precaution:"생물테러 대비, 백신 대응", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병(두창·페스트·탄저·보툴리눔독소증·야토병) 대응지침", version:"2025.12", url:"https://www.kdca.go.kr/bbs/kdca/55/304624/download.do", verified:VERIFIED }] },
+
+{ id:"disease:plague", name_ko:"페스트", name_en:"Plague",
+  aliases:["흑사병","폐페스트","선페스트"], grade:"급1", kcd:"A20", tags:["생물테러","세균","비말"],
+  isolation:{ types:["class:iso_standard","class:iso_contact","class:iso_droplet"], negative_pressure:true, mandatory:true, note:"폐페스트는 비말, 선페스트는 표준+접촉" },
+  room:{ primary:"room:negative_pressure", label:"국가지정 입원치료병상(음압 또는 1인실)" },
+  release:["효과적인 페스트 항생제 치료 48시간 후 의료기관 의료진 판단"],
+  duration:null,
+  extra:{ contact_monitoring:"밀접접촉자 예방적 항생제·7일 감시", work_restriction:null, special_precaution:"생물테러 대비", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병(두창·페스트·탄저·보툴리눔독소증·야토병) 대응지침", version:"2025.12", url:"https://www.kdca.go.kr/bbs/kdca/55/304624/download.do", verified:VERIFIED }] },
+
+{ id:"disease:anthrax", name_ko:"탄저", name_en:"Anthrax",
+  aliases:["탄저병","앤트랙스"], grade:"급1", kcd:"A22", tags:["생물테러","세균","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false, note:"피부탄저는 접촉주의 병행" },
+  room:{ primary:"room:general", label:"일반 병실(격리 불필요, 사람 간 전파 없음)" },
+  release:["격리 불필요 — 사람 간 전파 가능성 거의 없음. 적절한 치료 시행"],
+  duration:null,
+  extra:{ contact_monitoring:"공동노출자 예방적 항생제·예방접종", work_restriction:null, special_precaution:"생물테러 대비, 포자 노출관리", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병(두창·페스트·탄저·보툴리눔독소증·야토병) 대응지침", version:"2025.12", url:"https://www.kdca.go.kr/bbs/kdca/55/304624/download.do", verified:VERIFIED }] },
+
+{ id:"disease:botulism", name_ko:"보툴리눔독소증", name_en:"Botulism",
+  aliases:["보툴리누스","보툴리즘"], grade:"급1", kcd:"A05.1", tags:["생물테러","독소","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false },
+  room:{ primary:"room:general", label:"일반 병실(격리 불필요, 사람 간 전파 없음)" },
+  release:["격리 불필요 — 사람 간 전파되지 않음. 항독소 치료"],
+  duration:null,
+  extra:{ contact_monitoring:"공동노출자 증상 감시", work_restriction:null, special_precaution:"생물테러 대비, 항독소", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병(두창·페스트·탄저·보툴리눔독소증·야토병) 대응지침", version:"2025.12", url:"https://www.kdca.go.kr/bbs/kdca/55/304624/download.do", verified:VERIFIED }] },
+
+{ id:"disease:tularemia", name_ko:"야토병", name_en:"Tularemia",
+  aliases:["툴라레미아"], grade:"급1", kcd:"A21", tags:["생물테러","세균","격리불요","인수공통"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false },
+  room:{ primary:"room:general", label:"일반 병실(격리 불필요, 사람 간 전파 없음)" },
+  release:["격리 불필요 — 사람 간 전파되지 않음. 적절한 항생제 치료"],
+  duration:null,
+  extra:{ contact_monitoring:"공동노출자 예방적 항생제 고려", work_restriction:null, special_precaution:"생물테러 대비", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병(두창·페스트·탄저·보툴리눔독소증·야토병) 대응지침", version:"2025.12", url:"https://www.kdca.go.kr/bbs/kdca/55/304624/download.do", verified:VERIFIED }] },
+
+{ id:"disease:rvf", name_ko:"리프트밸리열", name_en:"Rift Valley fever",
+  aliases:["리프트계곡열"], grade:"급1", kcd:"A92.4", tags:["출혈열","모기","인수공통","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false },
+  room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 사람 간 직접 전파 드묾. 적절한 치료"],
+  duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:null, notify:"즉시", cost_support:true },
+  reclassified:[{ change:"격리기준 변경(격리 폐지)", date:"2025.1", note:"대응지침 개정으로 격리 불요화" }],
+  sources:[{ guideline:"제1급감염병 바이러스성출혈열 대응지침", version:"2026.1", url:"https://www.kdca.go.kr/bbs/kdca/55/304625/download.do", verified:VERIFIED }] },
+
+{ id:"disease:sars", name_ko:"중증급성호흡기증후군", name_en:"SARS",
+  aliases:["사스","SARS"], grade:"급1", kcd:"U04.9", tags:["호흡기","공기매개","코로나바이러스"],
+  isolation:{ types:["class:iso_standard","class:iso_contact","class:iso_droplet","class:iso_airborne"], negative_pressure:true, mandatory:true },
+  room:{ primary:"room:negative_pressure", label:"국가지정 입원치료병상(음압격리)" },
+  release:["증상이 모두 사라진 후 48시간 경과", "호흡기검체 PCR 24시간 간격 2회 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"접촉자 노출 후 10일 감시", work_restriction:null, special_precaution:null, notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병(SARS·MERS) 대응지침", version:"2024", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:mers", name_ko:"중동호흡기증후군", name_en:"MERS",
+  aliases:["메르스","MERS","중동호흡기"], grade:"급1", kcd:"B34.2", tags:["호흡기","공기매개","코로나바이러스"],
+  isolation:{ types:["class:iso_standard","class:iso_contact","class:iso_droplet","class:iso_airborne"], negative_pressure:true, mandatory:true },
+  room:{ primary:"room:negative_pressure", label:"국가지정 입원치료병상(음압격리)" },
+  release:["증상이 모두 사라진 후 48시간 경과", "호흡기검체 PCR 24시간 간격 2회 음성", "(참고) 임상기준: 발병 후 10일+72h 무발열·호전 / 검사기준: 발병 후 7일+PCR 24h간격 2회 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"밀접접촉자 능동감시·활동제한(격리·출국금지), 일상접촉자 수동감시, 잠복기 14일", work_restriction:null, special_precaution:null, notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병(SARS·MERS) 대응지침", version:"2024", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:zoonotic_influenza", name_ko:"동물인플루엔자 인체감염증", name_en:"Zoonotic influenza",
+  aliases:["조류인플루엔자","AI","동물인플루엔자"], grade:"급1", kcd:"J09", tags:["호흡기","공기매개","인수공통","인플루엔자"],
+  isolation:{ types:["class:iso_standard","class:iso_contact","class:iso_droplet","class:iso_airborne"], negative_pressure:true, mandatory:true },
+  room:{ primary:"room:negative_pressure", label:"국가지정 입원치료병상(음압격리)" },
+  release:["항바이러스제 투약 종료 후", "호흡기검체 PCR 24시간 간격 2회 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"노출자 항바이러스제 예방투여·10일 감시", work_restriction:null, special_precaution:null, notify:"즉시", cost_support:true },
+  sources:[{ guideline:"제1급감염병 동물인플루엔자 인체감염증 대응지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:nipah", name_ko:"니파바이러스감염증", name_en:"Nipah virus infection",
+  aliases:["니파","니파바이러스"], grade:"급1", kcd:"B33.8", tags:["인수공통","뇌염","신규지정"],
+  isolation:{ types:["class:iso_standard","class:iso_contact","class:iso_droplet"], negative_pressure:true, mandatory:true },
+  room:{ primary:"room:negative_pressure", label:"국가지정 입원치료병상(음압 또는 1인실)" },
+  release:["증상 완화", "3가지 검체(인후도말·소변·혈액) 모두 real-time RT-PCR 5일 이상 간격 2회 연속 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"접촉자 21일 감시", work_restriction:null, special_precaution:"고위험병원체", notify:"즉시", cost_support:true },
+  reclassified:[{ change:"제1급 신규 지정", date:"2025.9.8", note:"신규 법정감염병 추가" }],
+  sources:[{ guideline:"제1급감염병 바이러스성출혈열 대응지침", version:"2026.1", url:"https://www.kdca.go.kr/bbs/kdca/55/304625/download.do", verified:VERIFIED }] },
+
+{ id:"disease:diphtheria", name_ko:"디프테리아", name_en:"Diphtheria",
+  aliases:["디프테리아"], grade:"급1", kcd:"A36", tags:["호흡기","비말","세균","백신예방"],
+  isolation:{ types:["class:iso_standard","class:iso_droplet","class:iso_contact"], negative_pressure:false, mandatory:true },
+  room:{ primary:"room:single", label:"1인실 격리" },
+  release:["항생제 투여 중지 후, 코와 목에서 24시간 이상 간격으로 2회 세균배양 연속 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"밀접접촉자 예방적 항생제·예방접종·7일 감시", work_restriction:null, special_precaution:"항독소 치료", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"질병관리청 감염병포털/국가건강정보포털 디프테리아", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:novel_influenza", name_ko:"신종인플루엔자", name_en:"Novel influenza",
+  aliases:["신종플루","신종인플루엔자"], grade:"급1", kcd:"J09", tags:["호흡기","비말","공기매개","대유행"],
+  isolation:{ types:["class:iso_standard","class:iso_droplet","class:iso_airborne"], negative_pressure:true, mandatory:true, note:"유행 시 별도 관리지침에 따름" },
+  room:{ primary:"room:negative_pressure", label:"유행 시 별도 관리지침(음압 권고)" },
+  release:["유행 시 별도 관리지침에 따라 적용(통상 항바이러스제 치료 + 증상 호전 + 전파력 소실 기준)"],
+  duration:null,
+  extra:{ contact_monitoring:"유행 단계별 지침 적용", work_restriction:null, special_precaution:"대유행 대비", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"인플루엔자 대유행 대비·대응 계획", version:"유행시 별도", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:novel_syndrome", name_ko:"신종감염병증후군", name_en:"Novel infectious disease syndrome",
+  aliases:["신종감염병"], grade:"급1", kcd:"U50", tags:["신종","미지병원체"],
+  isolation:{ types:["class:iso_standard","class:iso_contact","class:iso_droplet","class:iso_airborne"], negative_pressure:true, mandatory:true, note:"미지 병원체, 최대 수준 선제 적용 후 유행시 별도지침" },
+  room:{ primary:"room:negative_pressure", label:"유행 시 별도 관리지침(음압 선제 권고)" },
+  release:["유행 시 별도 관리지침에 따라 적용"],
+  duration:null,
+  extra:{ contact_monitoring:"유행 단계별 지침 적용", work_restriction:null, special_precaution:"미지 병원체 선제대응", notify:"즉시", cost_support:true },
+  sources:[{ guideline:"신종감염병 대응지침(유행시)", version:"유행시 별도", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+/* ===== 제2급 (21종) ===== */
+
+{ id:"disease:tuberculosis", name_ko:"결핵", name_en:"Tuberculosis",
+  aliases:["TB","폐결핵","활동성결핵","항산균"], grade:"급2", kcd:"A15-A19", tags:["호흡기","공기매개","항산균","AFB","객담"],
+  isolation:{ types:["class:iso_airborne","class:iso_standard"], negative_pressure:true, mandatory:true, note:"활동성 폐결핵·후두결핵" },
+  room:{ primary:"room:negative_pressure", label:"음압 1인실" },
+  release:[
+    "도말음성: 항결핵치료 1주 이상 + 임상 호전",
+    "도말양성: 치료 2주 이상 + 임상 호전 + 추구 객담도말 연속 3회 음성",
+    "리팜핀내성/다제내성/광범위약제내성: 치료 2주 이상 + 1주 간격 도말 연속 3회 음성 (배양 1회 이상 음성 확인 권고)"
+  ],
+  release_note:"재택격리 조건: 전담간호사 연계 외래치료 가능 + 동거 6세 미만 소아·면역억제자 없음 + 환기되는 독립공간 확보",
+  duration:null,
+  extra:{ contact_monitoring:"접촉자 검진(TST/IGRA·흉부X선), 잠복결핵 평가", work_restriction:"전염성 결핵은 격리해제까지 집단시설 제한", special_precaution:null, notify:"24h", cost_support:true },
+  sources:[
+    { guideline:"결핵 진료지침", version:"5판(2024)", url:"https://www.kdca.go.kr/", verified:VERIFIED },
+    { guideline:"국가결핵관리지침", version:"2026", url:"https://www.kdca.go.kr/", verified:VERIFIED }
+  ] },
+
+{ id:"disease:measles", name_ko:"홍역", name_en:"Measles",
+  aliases:["마진","measles"], grade:"급2", kcd:"B05", tags:["호흡기","공기매개","발진","백신예방","MMR"],
+  isolation:{ types:["class:iso_airborne"], negative_pressure:true, mandatory:true },
+  room:{ primary:"room:negative_pressure", label:"음압 1인실" },
+  release:["발진 시작 후 4일까지 격리(면역저하자는 전 발진 기간)"],
+  duration:"발진 후 4일",
+  extra:{ contact_monitoring:"감수성자 노출 후 예방접종(72h내)·면역글로불린(6일내), 노출 후 21일 감시", work_restriction:"면역 없는 의료종사자 진료 배제", special_precaution:null, notify:"24h", cost_support:false },
+  sources:[{ guideline:"예방접종대상 감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:varicella", name_ko:"수두", name_en:"Varicella",
+  aliases:["수두","chickenpox","VZV"], grade:"급2", kcd:"B01", tags:["발진","수포","공기매개","접촉","백신예방"],
+  isolation:{ types:["class:iso_airborne","class:iso_contact"], negative_pressure:true, mandatory:true },
+  room:{ primary:"room:negative_pressure", label:"음압 1인실(불가 시 1인실)" },
+  release:["모든 피부병변에 가피가 형성될 때까지(발진 발생 후 최소 5일)"],
+  duration:"발진 후 최소 5일",
+  extra:{ contact_monitoring:"감수성자 노출 후 예방접종(3~5일내)·VZIG, 노출 후 8~21일 감시", work_restriction:"면역 없는 의료종사자 진료 배제", special_precaution:null, notify:"24h", cost_support:false },
+  sources:[{ guideline:"예방접종대상 감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:pertussis", name_ko:"백일해", name_en:"Pertussis",
+  aliases:["백일해","whooping cough","Bordetella"], grade:"급2", kcd:"A37", tags:["호흡기","비말","세균","백신예방","기침"],
+  isolation:{ types:["class:iso_droplet","class:iso_standard"], negative_pressure:false, mandatory:true },
+  room:{ primary:"room:single", label:"1인실 격리" },
+  release:["적절한 항생제(azithromycin/clarithromycin) 치료 시작 후 5일까지", "치료하지 않은 경우 기침(증상) 시작 후 3주까지"],
+  duration:null,
+  extra:{ contact_monitoring:"가족·동거인·고위험군(영아) 예방적 항생제, 노출 후 21일 감시", work_restriction:"치료 5일 전까지 집단시설 제한", special_precaution:null, notify:"24h", cost_support:false },
+  sources:[{ guideline:"예방접종대상 감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:mumps", name_ko:"유행성이하선염", name_en:"Mumps",
+  aliases:["볼거리","mumps","이하선염"], grade:"급2", kcd:"B26", tags:["비말","부종","백신예방","MMR"],
+  isolation:{ types:["class:iso_droplet","class:iso_standard"], negative_pressure:false, mandatory:true },
+  room:{ primary:"room:single", label:"1인실 격리" },
+  release:["이하선 부종(종창) 발생 후 5일까지"],
+  duration:"부종 후 5일",
+  extra:{ contact_monitoring:"감수성자 노출 후 예방접종, 노출 후 25일 감시", work_restriction:"면역 없는 의료종사자 진료 배제", special_precaution:null, notify:"24h", cost_support:false },
+  sources:[{ guideline:"예방접종대상 감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:rubella", name_ko:"풍진", name_en:"Rubella",
+  aliases:["풍진","rubella","German measles"], grade:"급2", kcd:"B06", tags:["비말","발진","백신예방","MMR","선천성풍진"],
+  isolation:{ types:["class:iso_droplet","class:iso_standard"], negative_pressure:false, mandatory:true },
+  room:{ primary:"room:single", label:"1인실 격리" },
+  release:["발진 발생 후 7일간 격리(선천성풍진은 1세까지 또는 검체 음성 시까지)"],
+  duration:"발진 후 7일",
+  extra:{ contact_monitoring:"임신부 노출 주의(선천성풍진 위험), 감수성자 예방접종", work_restriction:"면역 없는·임신 의료종사자 진료 배제", special_precaution:"임신부 접촉 차단", notify:"24h", cost_support:false },
+  sources:[{ guideline:"예방접종대상 감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:meningococcal", name_ko:"수막구균 감염증", name_en:"Meningococcal infection",
+  aliases:["수막구균","meningococcus","뇌수막염"], grade:"급2", kcd:"A39", tags:["비말","세균","뇌수막염","침습성"],
+  isolation:{ types:["class:iso_droplet","class:iso_standard"], negative_pressure:false, mandatory:true },
+  room:{ primary:"room:single", label:"1인실 격리" },
+  release:["효과적인 항생제 치료 시작 후 24시간까지"],
+  duration:"치료 후 24시간",
+  extra:{ contact_monitoring:"밀접접촉자 예방적 항생제(rifampin/ciprofloxacin/ceftriaxone), 마지막 노출 후 10일 감시", work_restriction:null, special_precaution:null, notify:"24h", cost_support:false },
+  sources:[{ guideline:"질병관리청 수막구균 감염증 관리지침/감염병포털", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:scarlet_fever", name_ko:"성홍열", name_en:"Scarlet fever",
+  aliases:["성홍열","scarlet fever","A군연쇄상구균"], grade:"급2", kcd:"A38", tags:["비말","세균","발진","연쇄구균"],
+  isolation:{ types:["class:iso_droplet","class:iso_standard"], negative_pressure:false, mandatory:true },
+  room:{ primary:"room:single", label:"1인실 격리" },
+  release:["항생제 치료 시작 후 최소 24시간까지"],
+  duration:"치료 후 24시간",
+  extra:{ contact_monitoring:"증상 있는 접촉자 검사·치료", work_restriction:"치료 24h 전까지 집단시설 제한", special_precaution:null, notify:"24h", cost_support:false },
+  sources:[{ guideline:"질병관리청 감염병포털/국가건강정보포털 성홍열", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:hib", name_ko:"b형헤모필루스인플루엔자", name_en:"Haemophilus influenzae type b",
+  aliases:["Hib","헤모필루스","b형헤모필루스"], grade:"급2", kcd:"A41.3", tags:["비말","세균","침습성","백신예방"],
+  isolation:{ types:["class:iso_droplet","class:iso_standard"], negative_pressure:false, mandatory:true, note:"침습성 질환" },
+  room:{ primary:"room:single", label:"1인실 격리" },
+  release:["효과적인 항생제 치료 시작 후 24시간까지"],
+  duration:"치료 후 24시간",
+  extra:{ contact_monitoring:"밀접접촉자(미접종 영유아) 예방적 항생제(rifampin)", work_restriction:null, special_precaution:null, notify:"24h", cost_support:false },
+  sources:[{ guideline:"예방접종대상 감염병 관리지침/감염병포털", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:pneumococcal", name_ko:"폐렴구균 감염증", name_en:"Pneumococcal infection",
+  aliases:["폐렴구균","pneumococcus","Streptococcus pneumoniae"], grade:"급2", kcd:"A40.3", tags:["호흡기","세균","침습성","백신예방"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false, note:"다제내성(MDRP)인 경우 비말주의 추가" },
+  room:{ primary:"room:general", label:"일반 병실(일반적 격리 불요, 침습성 질환 중심)" },
+  release:["일반적으로 격리 불필요(사람 간 직접 전파 위험 낮음)", "다제내성 폐렴구균은 비말주의 적용"],
+  duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:null, notify:"24h", cost_support:false },
+  sources:[{ guideline:"예방접종대상 감염병 관리지침/의료관련감염 표준예방지침", version:"2025/2017", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:cholera", name_ko:"콜레라", name_en:"Cholera",
+  aliases:["콜레라","cholera","Vibrio cholerae"], grade:"급2", kcd:"A00", tags:["수인성","식품매개","세균","설사","대변배양"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:true, note:"장내배설물 격리" },
+  room:{ primary:"room:single", label:"1인실 격리(장내배설물 관리)" },
+  release:["병원체 확인 후 48시간 경과(항생제 투여 시 치료완료 후 48시간 경과 시 검사)", "24시간 간격 대변배양검사 연속 2회 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"마지막 노출 후 발병 감시, "+HIRISK_OCCUP+"은 대변배양 음성 확인까지 업무제한", work_restriction:"격리 해제까지 "+HIRISK_OCCUP+"은 업무제한(식품 취급·조리·간호·간병·보육 금지), 설사 소실 후 2주 수영 금지", special_precaution:null, notify:"24h", cost_support:false },
+  sources:[{ guideline:"수인성 및 식품매개감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:typhoid", name_ko:"장티푸스", name_en:"Typhoid fever",
+  aliases:["장티푸스","typhoid","Salmonella Typhi"], grade:"급2", kcd:"A01.0", tags:["수인성","식품매개","세균","대변배양","보균자"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:true, note:"장내배설물 격리" },
+  room:{ primary:"room:single", label:"1인실 격리(장내배설물 관리)" },
+  release:["증상 없음(무증상)", "항생제 치료 완료 48시간 이후부터", "24시간 간격 대변균배양검사 연속 3회 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"마지막 노출 후 발병 감시, 만성보균자 관리, "+HIRISK_OCCUP+"은 대변음성 확인까지 업무제한", work_restriction:HIRISK_OCCUP+"은 대변배양 음성 확인까지 업무제한(식품 취급·조리·보육·간호 금지)", special_precaution:"만성보균(담낭) 가능성 주의", notify:"24h", cost_support:false },
+  sources:[{ guideline:"수인성 및 식품매개감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:paratyphoid", name_ko:"파라티푸스", name_en:"Paratyphoid fever",
+  aliases:["파라티푸스","paratyphoid","Salmonella Paratyphi"], grade:"급2", kcd:"A01.1", tags:["수인성","식품매개","세균","대변배양"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:true, note:"장내배설물 격리" },
+  room:{ primary:"room:single", label:"1인실 격리(장내배설물 관리)" },
+  release:["증상 없음(무증상)", "항생제 치료 완료 48시간 이후부터", "24시간 간격 대변균배양검사 연속 3회 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"장티푸스에 준함, "+HIRISK_OCCUP+"은 대변음성 확인까지 업무제한", work_restriction:HIRISK_OCCUP+"은 대변배양 음성 확인까지 업무제한(식품 취급·조리·보육·간호 금지)", special_precaution:null, notify:"24h", cost_support:false },
+  sources:[{ guideline:"수인성 및 식품매개감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:shigellosis", name_ko:"세균성이질", name_en:"Shigellosis",
+  aliases:["세균성이질","shigella","이질"], grade:"급2", kcd:"A03", tags:["수인성","식품매개","세균","대변배양","설사"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:true, note:"장내배설물 격리" },
+  room:{ primary:"room:single", label:"1인실 격리(장내배설물 관리)" },
+  release:["설사가 멈추고 항생제 투여 중지 후 48시간 경과", "최소 24시간 간격 대변·직장 검체 연속 2회 이상 음성"],
+  duration:null,
+  extra:{ contact_monitoring:"마지막 노출 후 약 8일 감시, "+HIRISK_OCCUP+"은 대변음성 확인까지 업무제한", work_restriction:HIRISK_OCCUP+"은 대변배양 음성 확인까지 업무제한(식품 취급·조리·보육·간호 금지)", special_precaution:"낮은 감염량(전염력 강함)", notify:"24h", cost_support:false },
+  sources:[{ guideline:"수인성 및 식품매개감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:ehec", name_ko:"장출혈성대장균감염증", name_en:"EHEC infection",
+  aliases:["EHEC","장출혈성대장균","O157","STEC"], grade:"급2", kcd:"A04.3", tags:["수인성","식품매개","세균","대변배양","HUS"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:true, note:"장내배설물 격리" },
+  room:{ primary:"room:single", label:"1인실 격리(장내배설물 관리)" },
+  release:["항생제 치료 종료 48시간 후부터 24시간 간격 대변배양검사 2회 음성", "★항생제는 용혈성요독증후군(HUS) 위험으로 일반적으로 권장되지 않음 — 미사용 시 증상 소실·배양 음성 기준 적용"],
+  duration:null,
+  extra:{ contact_monitoring:"마지막 노출 후 감시, "+HIRISK_OCCUP+"은 대변음성 확인까지 업무제한", work_restriction:HIRISK_OCCUP+"은 대변배양 음성 확인까지 업무제한(식품 취급·조리·보육·간호 금지)", special_precaution:"HUS 발생 감시(소아·고령), 지사제·항생제 주의", notify:"24h", cost_support:false },
+  sources:[{ guideline:"수인성 및 식품매개감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:hep_a", name_ko:"A형간염", name_en:"Hepatitis A",
+  aliases:["A형간염","hepatitis A","HAV"], grade:"급2", kcd:"B15", tags:["수인성","식품매개","간염","바이러스","황달"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:false, note:"입원 시 표준주의, 격리는 조건부" },
+  room:{ primary:"room:single", label:"표준주의(조건부 1인실)" },
+  release:["입원 시 표준주의 적용", "위생 자가관리 불가 환자(영유아·장애인·고령자·중증질환자)는 황달 발생 후 7일간 격리", "고위험 직군 종사자(①식품 채취·제조·가공·조리·운반·판매 등 식품취급자 ②집단급식소·식품접객업소 ③보육시설 ④요양시설 ⑤의료기관 종사자)는 황달 발생 후 7일간 업무제한", "무증상 감염자(병원체보유자)는 대변 real-time RT-PCR 1회 음성 확인 후 업무 복귀"],
+  duration:null,
+  extra:{ contact_monitoring:"노출 후 예방접종(2주내)·면역글로불린, 가족·접촉자 관리", work_restriction:HIRISK_OCCUP+"은 황달 발생 후 7일간 업무제한", special_precaution:null, notify:"24h", cost_support:false },
+  sources:[
+    { guideline:"수인성 및 식품매개감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED },
+    { guideline:"바이러스 간염(A·B·C·E형) 관리지침", version:"2024~2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }
+  ] },
+
+{ id:"disease:hep_e", name_ko:"E형간염", name_en:"Hepatitis E",
+  aliases:["E형간염","hepatitis E","HEV"], grade:"급2", kcd:"B17.2", tags:["수인성","식품매개","간염","바이러스","황달","신규지정"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:false, note:"표준주의, 격리는 조건부" },
+  room:{ primary:"room:single", label:"표준주의(조건부 1인실)" },
+  release:["표준주의 적용", "증상 발생 후 14일까지 다른 사람과의 접촉 회피(일상생활 가능, 개인위생 철저)", "황달·간수치 상승 등 증상 시 즉시 의료기관 진료"],
+  duration:"증상 후 14일 접촉회피",
+  extra:{ contact_monitoring:"오염 음용수·식품(덜익은 돼지·멧돼지·사슴고기) 노출력 조사", work_restriction:"임신부 중증화 위험 주의", special_precaution:"임신부 감염 시 중증(전격간염) 위험", notify:"24h", cost_support:false },
+  reclassified:[{ change:"제2급 신규 지정", date:"2020.7.1", note:"법정감염병 신규 편입" }],
+  sources:[
+    { guideline:"수인성 및 식품매개감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED },
+    { guideline:"바이러스 간염(A·B·C·E형) 관리지침", version:"2024~2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }
+  ] },
+
+{ id:"disease:vrsa", name_ko:"반코마이신내성황색포도알균(VRSA) 감염증", name_en:"VRSA infection",
+  aliases:["VRSA","반코마이신내성황색포도알균","반코내성포도상구균"], grade:"급2", kcd:"A49.0", tags:["의료관련감염","다제내성균","MDRO","접촉","전수감시"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:true, note:"의료기관 내 접촉주의" },
+  room:{ primary:"room:cohort", label:"1인실 우선(부족 시 코호트 격리)" },
+  release:"release:mdro_common",
+  duration:null,
+  extra:{ contact_monitoring:"의료기관 내 보균 감시·환경관리", work_restriction:null, special_precaution:"손위생·전용기구·환경소독 강화", notify:"24h(전수감시)", cost_support:false },
+  sources:[{ guideline:"의료관련감염병(VRSA/CRE) 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:cre", name_ko:"카바페넴내성장내세균목(CRE) 감염증", name_en:"CRE infection",
+  aliases:["CRE","카바페넴내성장내세균","카바페넴내성"], grade:"급2", kcd:"U82.1", tags:["의료관련감염","다제내성균","MDRO","접촉","전수감시"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:true, note:"의료기관 내 접촉주의" },
+  room:{ primary:"room:cohort", label:"1인실 우선(부족 시 코호트 격리)" },
+  release:"release:mdro_common",
+  duration:null,
+  extra:{ contact_monitoring:"의료기관 내 보균 감시(직장도말)·환경관리, 감염 vs 보균 구분 관리", work_restriction:null, special_precaution:"손위생·전용기구·환경소독 강화, CPE 여부 확인", notify:"24h(전수감시)", cost_support:false },
+  sources:[{ guideline:"의료관련감염병(VRSA/CRE) 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:leprosy", name_ko:"한센병", name_en:"Leprosy",
+  aliases:["한센병","나병","leprosy","Hansen"], grade:"급2", kcd:"A30", tags:["세균","만성","격리불요","나균"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false },
+  room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 전염성 매우 약함. 리팜피신 1회 복용으로 99.9% 균 사멸하여 전염력 소실", "일상적 접촉(악수·동거)으로 감염되지 않음"],
+  duration:null,
+  extra:{ contact_monitoring:"가족접촉자 검진(잠복기 길어 장기), 다제병용요법(MDT) 관리", work_restriction:null, special_precaution:"사회적 낙인 방지, 차별 금지", notify:"24h", cost_support:true },
+  sources:[{ guideline:"한센병 사업 관리지침/질병관리청 한센병 정보", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:polio", name_ko:"폴리오", name_en:"Poliomyelitis",
+  aliases:["폴리오","소아마비","급성회백수염","polio"], grade:"급2", kcd:"A80", tags:["수인성","분변경구","바이러스","백신예방","마비"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:true, note:"장내배설물(분변) 격리" },
+  room:{ primary:"room:single", label:"1인실 격리(분변 관리)" },
+  release:["입원격리(분변 관리). 국내 1983년 이후 환자 미발생", "발생 시 질병관리청 지침에 따른 격리·검체 관리"],
+  duration:null,
+  extra:{ contact_monitoring:"접촉자 검체·예방접종 확인, 급성이완마비(AFP) 감시체계", work_restriction:null, special_precaution:"WHO 박멸 대상, 야생주/백신유래주 구분", notify:"24h", cost_support:true },
+  sources:[{ guideline:"예방접종대상 감염병 관리지침/급성이완마비 감시", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+/* ===== 제3급 (의무격리 없음 — 엠폭스만 권고 격리) ===== */
+
+{ id:"disease:mpox", name_ko:"엠폭스", name_en:"Mpox",
+  aliases:["엠폭스","원숭이두창","monkeypox","mpox"], grade:"급3", kcd:"B04", tags:["발진","수포","가피","접촉","성매개"],
+  isolation:{ types:["class:iso_contact","class:iso_droplet"], negative_pressure:false, mandatory:false, note:"의무격리 아님(권고). 의료기관 내 접촉주의" },
+  room:{ primary:"room:single", label:"1인실 권고(의무 아님)" },
+  release:["모든 피부병변에 가피가 탈락하고 새 피부(표피)가 형성될 때까지(전파력 소실)", "2024.1.1 3급 전환으로 법정 의무격리 해제 — 일반 의료체계 내 외래 검사·치료 가능"],
+  duration:null,
+  extra:{ contact_monitoring:"노출자 21일 증상감시, 고위험군 예방접종(백신)", work_restriction:"병변 가피 탈락 전까지 밀접접촉 주의", special_precaution:"병변 진행: 반점→구진→수포→농포→가피. 린넨·의복 접촉 주의", notify:"24h" , cost_support:false },
+  reclassified:[{ change:"제2급→제3급", date:"2024.1.1", note:"의무격리→일반의료체계 전환" },{ change:"제2급 신규 지정", date:"2022.6.8", note:"국내 첫 지정" }],
+  sources:[{ guideline:"엠폭스 관리지침", version:"2024.6", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:cjd", name_ko:"크로이츠펠트-야콥병(CJD/vCJD)", name_en:"CJD / vCJD",
+  aliases:["CJD","vCJD","크로이츠펠트야콥","프리온","변종CJD"], grade:"급3", kcd:"A81.0", tags:["프리온","신경퇴행","격리불요","특수멸균"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false },
+  room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 사람 간 일상 전파 없음(표준주의)", "★수술·침습기구는 프리온 특수멸균 또는 일회용·폐기 필요"],
+  duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"프리온 멸균: 고압증기 134℃ 연장(또는 NaOH/NaOCl 처리), 고위험조직(뇌·척수·안구) 접촉기구 폐기 권고", notify:"24h", cost_support:false },
+  sources:[{ guideline:"크로이츠펠트-야콥병 관리지침/감염병포털", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+/* --- 3급 혈액·체액 매개 (표준주의, 격리불요) --- */
+{ id:"disease:aids", name_ko:"후천성면역결핍증(AIDS)", name_en:"AIDS / HIV",
+  aliases:["AIDS","HIV","에이즈","후천성면역결핍"], grade:"급3", kcd:"B20-B24", tags:["혈액","체액","성매개","바이러스","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false },
+  room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 일상 접촉 전파 없음(표준주의). 혈액·체액 노출 주의"],
+  duration:null,
+  extra:{ contact_monitoring:"노출자 검사·예방요법(PEP/PrEP), 파트너 통지", work_restriction:null, special_precaution:"의료진 혈액·체액 노출 시 PEP, 비밀보장", notify:"24h", cost_support:true },
+  sources:[{ guideline:"HIV/AIDS 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:hep_b", name_ko:"B형간염(급성)", name_en:"Hepatitis B (acute)",
+  aliases:["B형간염","hepatitis B","HBV"], grade:"급3", kcd:"B16", tags:["혈액","체액","간염","바이러스","격리불요","백신예방"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false },
+  room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요(표준주의). 혈액·체액 노출 주의"],
+  duration:null,
+  extra:{ contact_monitoring:"노출자 예방접종·면역글로불린(HBIG), 신생아 수직감염 예방", work_restriction:null, special_precaution:"의료진 노출 시 HBIG+백신", notify:"24h", cost_support:false },
+  sources:[{ guideline:"바이러스 간염 관리지침/예방접종 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:hep_c", name_ko:"C형간염", name_en:"Hepatitis C",
+  aliases:["C형간염","hepatitis C","HCV"], grade:"급3", kcd:"B17.1", tags:["혈액","간염","바이러스","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false },
+  room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요(표준주의). 혈액 노출 주의"],
+  duration:null,
+  extra:{ contact_monitoring:"노출자 검사, 항바이러스(DAA) 치료 연계", work_restriction:null, special_precaution:"의료진 혈액 노출 주의(백신 없음)", notify:"24h", cost_support:false },
+  sources:[{ guideline:"바이러스 간염 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:syphilis", name_ko:"매독", name_en:"Syphilis",
+  aliases:["매독","syphilis","Treponema"], grade:"급3", kcd:"A50-A53", tags:["성매개","세균","격리불요","선천매독"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false, note:"1·2기 병변 직접접촉만 주의" },
+  room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요(표준주의). 1·2기 개방병변 직접 접촉 시 장갑 등 주의"],
+  duration:null,
+  extra:{ contact_monitoring:"파트너 추적·검사·치료, 임신부 선천매독 예방", work_restriction:null, special_precaution:"신고 시 병기(1기·2기·3기·선천성·잠복) 구분", notify:"24h", cost_support:false },
+  reclassified:[{ change:"제4급→제3급", date:"2024.1.1", note:"전수감시 전환" }],
+  sources:[{ guideline:"성매개감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+/* --- 3급 매개체·인수공통 (표준주의, 격리불요) — 묶음 처리 --- */
+{ id:"disease:je", name_ko:"일본뇌염", name_en:"Japanese encephalitis", aliases:["일본뇌염","JE"], grade:"급3", kcd:"A83.0", tags:["모기","매개체","뇌염","격리불요","백신예방"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 모기 매개, 사람 간 전파 없음(표준주의)"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"모기 방제·예방접종", notify:"24h", cost_support:false },
+  sources:[{ guideline:"예방접종대상 감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:malaria", name_ko:"말라리아", name_en:"Malaria", aliases:["말라리아","malaria","삼일열"], grade:"급3", kcd:"B50-B54", tags:["모기","매개체","원충","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 모기 매개, 사람 간 직접 전파 없음(표준주의). 헌혈 제한"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:"치료 후 헌혈 제한", special_precaution:"수혈·주사기 공유 시 전파 가능", notify:"24h", cost_support:false },
+  sources:[{ guideline:"말라리아 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:dengue", name_ko:"뎅기열", name_en:"Dengue fever", aliases:["뎅기","dengue","댕기열"], grade:"급3", kcd:"A90", tags:["모기","매개체","바이러스","해외유입","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 모기 매개, 사람 간 직접 전파 없음(표준주의)"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"바이러스혈증기 모기 차단(매개모기 서식 지역)", notify:"24h", cost_support:false },
+  sources:[{ guideline:"해외유입 모기매개감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:yellow_fever", name_ko:"황열", name_en:"Yellow fever", aliases:["황열","yellow fever"], grade:"급3", kcd:"A95", tags:["모기","매개체","바이러스","격리불요","백신예방"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 모기 매개(표준주의). 바이러스혈증기 모기 차단"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"입국 시 예방접종증명서(검역), 모기 차단", notify:"24h", cost_support:false },
+  sources:[{ guideline:"검역감염병/모기매개감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:wnv", name_ko:"웨스트나일열", name_en:"West Nile fever", aliases:["웨스트나일","WNV"], grade:"급3", kcd:"A92.3", tags:["모기","매개체","바이러스","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 모기 매개(표준주의). 수혈·장기이식 전파 가능"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:"치료 후 헌혈 제한", special_precaution:"수혈·이식 전파 주의", notify:"24h", cost_support:false },
+  sources:[{ guideline:"모기매개감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:zika", name_ko:"지카바이러스감염증", name_en:"Zika virus infection", aliases:["지카","zika"], grade:"급3", kcd:"A92.5", tags:["모기","매개체","바이러스","성매개","임신주의","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 모기 매개(표준주의). 성·수직 전파 가능"], duration:null,
+  extra:{ contact_monitoring:"임신부 노출 주의(소두증), 성접촉 차단 권고기간", work_restriction:"치료 후 헌혈 제한", special_precaution:"임신부·가임기 주의(태아 소두증)", notify:"24h", cost_support:false },
+  sources:[{ guideline:"지카바이러스감염증 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:chikungunya", name_ko:"치쿤구니야열", name_en:"Chikungunya", aliases:["치쿤구니야","chikungunya"], grade:"급3", kcd:"A92.0", tags:["모기","매개체","바이러스","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 모기 매개(표준주의)"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"바이러스혈증기 모기 차단", notify:"24h", cost_support:false },
+  sources:[{ guideline:"모기매개감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:sfts", name_ko:"중증열성혈소판감소증후군(SFTS)", name_en:"SFTS", aliases:["SFTS","중증열성혈소판","진드기"], grade:"급3", kcd:"A93.8", tags:["진드기","매개체","바이러스","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false, note:"중증 환자 혈액·체액 접촉 시 주의(2차감염 보고 사례)" }, room:{ primary:"room:general", label:"일반 병실(표준주의, 혈액·체액 접촉주의)" },
+  release:["격리 불필요 — 진드기 매개(표준주의)", "중증 환자 혈액·체액 직접 접촉 시 보호구 착용(드문 2차감염 보고)"], duration:null,
+  extra:{ contact_monitoring:"중증 환자 처치 의료진 혈액·체액 노출 주의", work_restriction:null, special_precaution:"진드기 물림 예방, 치명률 높음", notify:"24h", cost_support:false },
+  sources:[{ guideline:"진드기매개감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:scrub_typhus", name_ko:"쯔쯔가무시증", name_en:"Scrub typhus", aliases:["쯔쯔가무시","털진드기","scrub typhus"], grade:"급3", kcd:"A75.3", tags:["진드기","매개체","리케차","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 털진드기 매개, 사람 간 전파 없음(표준주의)"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"가을철 야외활동 예방, 가피(eschar) 확인", notify:"24h", cost_support:false },
+  sources:[{ guideline:"진드기매개감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:tick_be", name_ko:"진드기매개뇌염", name_en:"Tick-borne encephalitis", aliases:["진드기매개뇌염","TBE"], grade:"급3", kcd:"A84", tags:["진드기","매개체","바이러스","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 진드기 매개(표준주의)"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"진드기 물림 예방, 생유 섭취 주의", notify:"24h", cost_support:false },
+  sources:[{ guideline:"진드기매개감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:lyme", name_ko:"라임병", name_en:"Lyme disease", aliases:["라임병","Lyme","Borrelia"], grade:"급3", kcd:"A69.2", tags:["진드기","매개체","세균","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 진드기 매개(표준주의)"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"이동홍반(EM) 확인, 진드기 물림 예방", notify:"24h", cost_support:false },
+  sources:[{ guideline:"진드기매개감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:q_fever", name_ko:"큐열", name_en:"Q fever", aliases:["큐열","Q fever","Coxiella"], grade:"급3", kcd:"A78", tags:["인수공통","리케차","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 사람 간 전파 드묾(표준주의). 가축·축산물 매개"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"축산·도축 종사자 노출 주의, 에어로졸 흡입", notify:"24h", cost_support:false },
+  sources:[{ guideline:"인수공통감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:typhus_exanthematicus", name_ko:"발진티푸스", name_en:"Epidemic typhus", aliases:["발진티푸스","epidemic typhus","이"], grade:"급3", kcd:"A75.0", tags:["이","매개체","리케차","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false, note:"이(louse) 구제 후 표준주의" }, room:{ primary:"room:general", label:"일반 병실(이 구제 후 격리 불요)" },
+  release:["격리 불필요 — 몸니 매개(표준주의). 이(louse) 구제 시행"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"이 구제(살충), 의복·침구 소독", notify:"24h", cost_support:false },
+  sources:[{ guideline:"리케차감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:murine_typhus", name_ko:"발진열", name_en:"Murine typhus", aliases:["발진열","murine typhus","벼룩"], grade:"급3", kcd:"A75.2", tags:["벼룩","매개체","리케차","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 벼룩 매개, 사람 간 전파 없음(표준주의)"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"쥐·벼룩 방제", notify:"24h", cost_support:false },
+  sources:[{ guideline:"리케차감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:leptospirosis", name_ko:"렙토스피라증", name_en:"Leptospirosis", aliases:["렙토스피라","leptospirosis"], grade:"급3", kcd:"A27", tags:["인수공통","세균","수인성","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 사람 간 전파 거의 없음(표준주의). 오염수·동물뇨 매개"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"농업·홍수 노출, 상처 통한 감염", notify:"24h", cost_support:false },
+  sources:[{ guideline:"인수공통감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:brucellosis", name_ko:"브루셀라증", name_en:"Brucellosis", aliases:["브루셀라","brucellosis"], grade:"급3", kcd:"A23", tags:["인수공통","세균","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 사람 간 전파 드묾(표준주의). 가축·유제품 매개"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"축산·수의 종사자, 살균 안된 유제품 주의(실험실 감염 위험)", notify:"24h", cost_support:false },
+  sources:[{ guideline:"인수공통감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:hfrs", name_ko:"신증후군출혈열", name_en:"HFRS (Hantavirus)", aliases:["신증후군출혈열","유행성출혈열","한타바이러스","HFRS"], grade:"급3", kcd:"A98.5", tags:["설치류","바이러스","출혈열","격리불요","백신예방"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 설치류 배설물 매개, 사람 간 전파 없음(표준주의)"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"들쥐 배설물 에어로졸, 야외활동·군인 예방접종", notify:"24h", cost_support:false },
+  sources:[{ guideline:"신증후군출혈열 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:legionellosis", name_ko:"레지오넬라증", name_en:"Legionellosis", aliases:["레지오넬라","legionella"], grade:"급3", kcd:"A48.1", tags:["환경","세균","수계","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 사람 간 전파 없음(표준주의). 오염 수계 에어로졸 매개"], duration:null,
+  extra:{ contact_monitoring:"공동노출원(냉각탑·급수) 환경조사", work_restriction:null, special_precaution:"냉각탑·수계 관리, 병원 급수 오염 주의", notify:"24h", cost_support:false },
+  sources:[{ guideline:"레지오넬라증 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:vibrio_vulnificus", name_ko:"비브리오패혈증", name_en:"Vibrio vulnificus sepsis", aliases:["비브리오패혈증","vibrio vulnificus"], grade:"급3", kcd:"A41.5", tags:["수인성","세균","해산물","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 사람 간 전파 없음(표준주의). 어패류·해수 노출 매개"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"간질환·면역저하자 생굴·해산물 주의, 상처 해수 노출", notify:"24h", cost_support:false },
+  sources:[{ guideline:"수인성 및 식품매개감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:melioidosis", name_ko:"멜리오이드증(유비저)", name_en:"Melioidosis", aliases:["유비저","멜리오이드","melioidosis","Burkholderia"], grade:"급3", kcd:"A24", tags:["환경","세균","인수공통","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 사람 간 전파 드묾(표준주의). 오염 토양·물 매개"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"열대지역 토양·물 노출, 당뇨 등 기저질환 주의", notify:"24h", cost_support:false },
+  sources:[{ guideline:"인수공통감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:rabies", name_ko:"공수병", name_en:"Rabies", aliases:["공수병","광견병","rabies"], grade:"급3", kcd:"A82", tags:["인수공통","바이러스","교상","격리불요"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false, note:"환자 타액 접촉 주의(사람 간 전파 극히 드묾)" }, room:{ primary:"room:general", label:"일반 병실(표준주의, 타액 접촉주의)" },
+  release:["격리 불필요 — 사람 간 전파 거의 없음(표준주의). 환자 타액·신경조직 접촉 시 보호구"], duration:null,
+  extra:{ contact_monitoring:"교상 후 노출 시 즉시 상처처치+백신+면역글로불린(PEP)", work_restriction:null, special_precaution:"발병 시 치명률 거의 100%, 교상 후 신속 PEP가 핵심", notify:"24h", cost_support:false },
+  sources:[{ guideline:"공수병(광견병) 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:tetanus", name_ko:"파상풍", name_en:"Tetanus", aliases:["파상풍","tetanus","Clostridium tetani"], grade:"급3", kcd:"A33-A35", tags:["세균","독소","비전파","격리불요","백신예방"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요 — 사람 간 전파 없음(표준주의). 상처 통한 환경 감염"], duration:null,
+  extra:{ contact_monitoring:"상처 시 예방접종력 확인·Tdap·면역글로불린", work_restriction:null, special_precaution:"외상 후 예방접종, 신생아파상풍 별도", notify:"24h", cost_support:false },
+  sources:[{ guideline:"예방접종대상 감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+/* ===== 제4급 (표본감시 — 의무격리 없음, MDRO만 접촉주의 권고) ===== */
+
+{ id:"disease:mrsa", name_ko:"메티실린내성황색포도알균(MRSA) 감염증", name_en:"MRSA infection",
+  aliases:["MRSA","메티실린내성","엠알에스에이"], grade:"급4", kcd:"...", tags:["의료관련감염","다제내성균","MDRO","접촉","표본감시"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:false, note:"의료기관 내 접촉주의 권고(법정 의무 아님)" },
+  room:{ primary:"room:cohort", label:"1인실 우선(부족 시 코호트)" },
+  release:"release:mdro_common", duration:null,
+  extra:{ contact_monitoring:"의료기관 내 보균 감시·환경관리", work_restriction:null, special_precaution:"손위생·전용기구·환경소독", notify:"표본감시(7일)", cost_support:false },
+  sources:[{ guideline:"의료관련감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:vre", name_ko:"반코마이신내성장알균(VRE) 감염증", name_en:"VRE infection",
+  aliases:["VRE","반코마이신내성장알균","반코내성장구균"], grade:"급4", kcd:"...", tags:["의료관련감염","다제내성균","MDRO","접촉","표본감시"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:false, note:"의료기관 내 접촉주의 권고" },
+  room:{ primary:"room:cohort", label:"1인실 우선(부족 시 코호트)" },
+  release:"release:mdro_common", duration:null,
+  extra:{ contact_monitoring:"의료기관 내 보균 감시(직장도말)·환경관리", work_restriction:null, special_precaution:"손위생·전용기구·환경소독", notify:"표본감시(7일)", cost_support:false },
+  sources:[{ guideline:"의료관련감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:mrpa", name_ko:"다제내성녹농균(MRPA) 감염증", name_en:"MRPA infection",
+  aliases:["MRPA","다제내성녹농균","녹농균"], grade:"급4", kcd:"...", tags:["의료관련감염","다제내성균","MDRO","접촉","표본감시"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:false, note:"의료기관 내 접촉주의 권고" },
+  room:{ primary:"room:cohort", label:"1인실 우선(부족 시 코호트)" },
+  release:"release:mdro_common", duration:null,
+  extra:{ contact_monitoring:"의료기관 내 보균 감시·환경관리", work_restriction:null, special_precaution:"손위생·전용기구·환경소독, 인공호흡기 관련 주의", notify:"표본감시(7일)", cost_support:false },
+  sources:[{ guideline:"의료관련감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:mrab", name_ko:"다제내성아시네토박터바우마니(MRAB) 감염증", name_en:"MRAB infection",
+  aliases:["MRAB","다제내성아시네토박터","아시네토박터","CRAB"], grade:"급4", kcd:"...", tags:["의료관련감염","다제내성균","MDRO","접촉","표본감시"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:false, note:"의료기관 내 접촉주의 권고. 환경 생존력 강함" },
+  room:{ primary:"room:cohort", label:"1인실 우선(부족 시 코호트)" },
+  release:"release:mdro_common", duration:null,
+  extra:{ contact_monitoring:"의료기관 내 보균 감시·환경관리(중환자실 집단발생 주의)", work_restriction:null, special_precaution:"환경 표면 장기 생존, 환경소독 특히 강화", notify:"표본감시(7일)", cost_support:false },
+  sources:[{ guideline:"의료관련감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+{ id:"disease:candida_auris", name_ko:"칸디다 오리스 감염증", name_en:"Candida auris infection",
+  aliases:["칸디다오리스","C. auris","칸디다아우리스"], grade:"급4", kcd:"...", tags:["의료관련감염","다제내성","진균","접촉","신규지정"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:false, note:"의료기관 내 접촉주의 권고. 환경 잔존 강함" },
+  room:{ primary:"room:single", label:"1인실 권고(부족 시 코호트)" },
+  release:["명확한 격리해제 기준 없음 — 보균 지속 경향, 의료기관 감염관리실 판단", "보균검사 음성 반복 확인 후 고려"], duration:null,
+  extra:{ contact_monitoring:"보균 감시(액와·서혜·비강), 환경 철저 소독", work_restriction:null, special_precaution:"다제내성 진균, 환경 생존 강함, 일반 소독제 저항 — 전용 소독제", notify:"표본감시(7일)", cost_support:false },
+  reclassified:[{ change:"제4급 신규 지정", date:"2026.3.29", note:"신규 법정감염병 추가" }],
+  sources:[{ guideline:"의료관련감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
+
+/* --- 4급 표본감시 (격리 무관, 표준주의) — 대표 묶음 --- */
+{ id:"disease:influenza", name_ko:"인플루엔자", name_en:"Influenza", aliases:["인플루엔자","독감","flu"], grade:"급4", kcd:"J09-J11", tags:["호흡기","비말","표본감시","백신예방"],
+  isolation:{ types:["class:iso_droplet","class:iso_standard"], negative_pressure:false, mandatory:false, note:"의료기관 내 비말주의 권고(법정 의무격리 아님)" }, room:{ primary:"room:general", label:"일반 병실(유증상기 비말주의 권고)" },
+  release:["법정 의무격리 아님(표본감시). 의료기관 내 발열·기침 동안 비말주의 권고", "통상 해열 후 24시간 또는 발병 후 5~7일 등교·출근 제한 권고"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:"집단시설 유증상기 제한 권고", special_precaution:"고위험군 항바이러스제, 예방접종", notify:"표본감시(7일)", cost_support:false },
+  sources:[{ guideline:"인플루엔자 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:covid19", name_ko:"코로나바이러스감염증-19", name_en:"COVID-19", aliases:["코로나","COVID","코로나19","SARS-CoV-2"], grade:"급4", kcd:"U07.1", tags:["호흡기","비말","표본감시","팬데믹"],
+  isolation:{ types:["class:iso_droplet","class:iso_standard"], negative_pressure:false, mandatory:false, note:"2024.5 4급 전환·의무격리 해제. 의료기관 내 비말주의 권고" }, room:{ primary:"room:general", label:"일반 병실(의료기관 내 비말주의 권고)" },
+  release:["법정 의무격리 아님(표본감시 전환). 권고 수준 관리", "기존 권고: 증상 시작 후 5일 경과 + 해열·호전(의료기관·고위험시설은 강화 가능)"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:"의료·요양시설 등 자체 기준 적용", special_precaution:"고위험군 항바이러스제, 예방접종", notify:"표본감시(7일)", cost_support:false },
+  reclassified:[{ change:"제2급→제4급", date:"2024.5", note:"의무격리 해제·표본감시 전환" }],
+  sources:[{ guideline:"코로나바이러스감염증-19 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:hfmd", name_ko:"수족구병", name_en:"Hand-foot-mouth disease", aliases:["수족구","HFMD","수족구병"], grade:"급4", kcd:"B08.4", tags:["접촉","비말","바이러스","소아","표본감시"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:false, note:"법정 의무격리 아님(표본감시)" }, room:{ primary:"room:general", label:"일반 병실(접촉주의 권고)" },
+  release:["법정 의무격리 아님. 통상 발열 없고 입안 물집 호전·수포 가피화 시까지 등원 제한 권고", "★합병증(뇌수막염 등) 동반 EV-A71은 별도 주의"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:"어린이집·유치원 증상기 등원 제한 권고", special_precaution:"손위생, 분변·수포액 전파", notify:"표본감시(7일)", cost_support:false },
+  sources:[{ guideline:"수족구병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:acute_resp", name_ko:"급성호흡기감염증", name_en:"Acute respiratory infection", aliases:["급성호흡기","ARI","RSV","아데노"], grade:"급4", kcd:"J00-J22", tags:["호흡기","비말","표본감시","묶음"],
+  isolation:{ types:["class:iso_droplet","class:iso_standard"], negative_pressure:false, mandatory:false, note:"원인 병원체별 비말/접촉주의 권고" }, room:{ primary:"room:general", label:"일반 병실(병원체별 비말주의 권고)" },
+  release:["법정 의무격리 아님(표본감시군: 아데노·RSV·파라인플루엔자·메타뉴모·라이노·보카·사람코로나 등)", "원인 병원체·증상에 따라 의료기관 내 비말/접촉주의 권고"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"영유아·고령자 중증화 주의, 병원체별 상이", notify:"표본감시(7일)", cost_support:false },
+  sources:[{ guideline:"급성호흡기감염증 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:acute_gastro", name_ko:"장관감염증", name_en:"Acute gastroenteritis", aliases:["장관감염","노로","로타","장염","묶음"], grade:"급4", kcd:"A04-A09", tags:["수인성","식품매개","접촉","표본감시","묶음"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:false, note:"노로 등 유증상기 접촉주의 권고" }, room:{ primary:"room:general", label:"일반 병실(유증상기 접촉주의 권고)" },
+  release:["법정 의무격리 아님(표본감시군: 노로·로타·살모넬라·캄필로박터·황색포도알균·바실루스세레우스·아스트로·장내아데노 등)", "★단, 2급(콜레라·장티푸스·이질·EHEC)은 별도 의무격리 — 해당 카드 참조", "노로 등 유증상기·증상 소실 후 48시간 음식취급 제한 권고"], duration:null,
+  extra:{ contact_monitoring:"집단발생 시 역학조사", work_restriction:HIRISK_OCCUP+"은 유증상기~증상 소실 후 48시간 업무제한 권고(식품 취급·조리·보육)", special_precaution:"노로 환경소독(차아염소산), 손위생", notify:"표본감시(7일)", cost_support:false },
+  sources:[{ guideline:"수인성 및 식품매개감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:sti_4", name_ko:"성매개감염병(임질·클라미디아 등)", name_en:"STIs (gonorrhea, chlamydia, etc.)", aliases:["성매개","임질","클라미디아","연성하감","성기단순포진","첨규콘딜롬","트리코모나스"], grade:"급4", kcd:"A54-A64", tags:["성매개","표본감시","격리불요","묶음"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요(표준주의). 표본감시군: 임질·클라미디아감염증·연성하감·성기단순포진·첨규콘딜롬·사람유두종바이러스 등", "(매독은 3급 전수감시 — 별도 카드)"], duration:null,
+  extra:{ contact_monitoring:"파트너 추적·검사·치료", work_restriction:null, special_precaution:"비밀보장, 동반 STI 검사", notify:"표본감시(7일)", cost_support:false },
+  sources:[{ guideline:"성매개감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:enteric_parasite", name_ko:"장내기생충감염증", name_en:"Intestinal parasitic infection", aliases:["기생충","회충","요충","편충","간흡충","폐흡충","장흡충","묶음"], grade:"급4", kcd:"B65-B83", tags:["기생충","표본감시","격리불요","묶음"],
+  isolation:{ types:["class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(격리 불필요)" },
+  release:["격리 불필요(표준주의). 표본감시군: 회충·편충·요충·간흡충·폐흡충·장흡충 등", "요충은 가족 내 재감염 주의(손위생·침구관리)"], duration:null,
+  extra:{ contact_monitoring:"요충 등 가족 동시 치료", work_restriction:null, special_precaution:"민물고기·민물게 생식 주의(흡충류)", notify:"표본감시(7일)", cost_support:false },
+  sources:[{ guideline:"기생충감염병 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] },
+
+{ id:"disease:enterovirus", name_ko:"엔테로바이러스감염증", name_en:"Enterovirus infection", aliases:["엔테로바이러스","무균성수막염"], grade:"급4", kcd:"B34.1", tags:["접촉","비말","바이러스","표본감시"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:false }, room:{ primary:"room:general", label:"일반 병실(유증상기 접촉주의 권고)" },
+  release:["법정 의무격리 아님(표본감시). 손위생·분변 관리, 유증상기 집단시설 주의"], duration:null,
+  extra:{ contact_monitoring:null, work_restriction:null, special_precaution:"무균성수막염·심근염 등 합병증 주의(EV-A71·콕사키)", notify:"표본감시(7일)", cost_support:false },
+  sources:[{ guideline:"엔테로바이러스감염증 관리지침", version:"2025", url:PORTAL, verified:VERIFIED }] }
+
+];
+
+/* === 카테고리 자동 도출 (규칙 기반 — 하드코딩 회피) ===
+   중복 허용: 한 질환이 여러 카테고리에 속할 수 있음 */
+function deriveCategories(d){
+  var c=[], t=d.isolation.types, tags=d.tags||[];
+  var has=function(x){return t.indexOf(x)>=0;};
+  var tag=function(x){return tags.indexOf(x)>=0;};
+  var noIso=!d.isolation.mandatory && t.length===1 && t[0]==="class:iso_standard";
+
+  if(d.isolation.negative_pressure) c.push("cat:negative");
+  // 병원 접촉격리: 의료관련감염·다제내성균 (코호트 격리)
+  if(tag("의료관련감염")||tag("다제내성균")||tag("MDRO")) c.push("cat:contact");
+  // 비말격리: 비말 mandatory (음압 아닌)
+  if(has("class:iso_droplet") && d.isolation.mandatory && !d.isolation.negative_pressure) c.push("cat:droplet");
+  // 장관격리: 수인성·식품매개·분변 + 접촉 mandatory
+  if((tag("수인성")||tag("식품매개")||tag("분변경구")) && has("class:iso_contact") && d.isolation.mandatory) c.push("cat:enteric");
+  // 해외감염병·검역
+  if(tag("해외유입")||tag("출혈열")||tag("VHF")||tag("모기")||tag("검역")||
+     ["disease:mers","disease:sars","disease:smallpox","disease:plague","disease:diphtheria","disease:nipah","disease:zoonotic_influenza","disease:novel_influenza","disease:malaria"].indexOf(d.id)>=0) c.push("cat:imported");
+  // 격리불요
+  if(noIso) c.push("cat:noiso");
+
+  // 어디에도 안 들어간 mandatory는 접촉격리로 흡수(폴리오 등), 아니면 격리불요
+  if(c.length===0){ c.push(d.isolation.mandatory?"cat:contact":"cat:noiso"); }
+  return c;
+}
+DISEASES.forEach(function(d){ d.categories=deriveCategories(d); });
+
+var ROOM_COLOR={"room:negative_pressure":"air","room:single":"contact","room:cohort":"contact","room:general":"none"};
+function topLevel(d){var r=0,t=null;d.isolation.types.forEach(function(x){var L=ISO_LEVELS[x];if(L&&L.rank>r){r=L.rank;t=x;}});return t;}
+function isNoIso(d){return !d.isolation.mandatory && d.isolation.types.length===1 && d.isolation.types[0]==="class:iso_standard";}
+function levelClass(d){if(isNoIso(d))return "none";var t=topLevel(d);if(t==="class:iso_airborne")return "air";if(t==="class:iso_droplet")return "drop";if(t==="class:iso_contact")return "contact";return "std";}
+function resolveRelease(d){if(typeof d.release==="string")return RELEASE_COMMON[d.release]||[d.release];return d.release;}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function lvlShort(t){return ISO_LEVELS[t]?ISO_LEVELS[t].short:t;}
+function lvlCls(t){return t==="class:iso_airborne"?"air":t==="class:iso_droplet"?"drop":t==="class:iso_contact"?"contact":"std";}
+
+var state={mode:"hub",cat:null,q:"",grades:{}};
+
+function renderHub(){
+  var counts={};
+  DISEASES.forEach(function(d){d.categories.forEach(function(c){counts[c]=(counts[c]||0)+1;});});
+  var html="";
+  CATEGORIES.forEach(function(c){
+    html+='<div class="cat c-'+c.color+'" data-cat="'+c.id+'"><div class="ci">'+c.icon+'</div>';
+    html+='<div class="cnt">'+(counts[c.id]||0)+'</div><div class="cn">'+esc(c.ko)+'</div>';
+    html+='<div class="cd">'+esc(c.desc)+'</div><div class="ch">'+esc(c.hint)+'</div></div>';
+  });
+  document.getElementById("catGrid").innerHTML=html;
+  document.getElementById("allCnt").textContent="전체 "+DISEASES.length+"종";
+  document.querySelectorAll(".cat").forEach(function(el){ el.addEventListener("click",function(){openCat(this.dataset.cat);}); });
+}
+
+function matchList(d){
+  if(state.q){
+    var q=state.q.toLowerCase();
+    var hay=(d.name_ko+" "+d.name_en+" "+(d.aliases||[]).join(" ")+" "+(d.tags||[]).join(" ")).toLowerCase();
+    if(hay.indexOf(q)<0)return false;
+  } else if(state.cat){ if(d.categories.indexOf(state.cat)<0)return false; }
+  var gk=Object.keys(state.grades).filter(function(k){return state.grades[k];});
+  if(gk.length && !state.grades[d.grade])return false;
+  return true;
+}
+function sortKey(d){var lc=levelClass(d);var r={air:5,drop:4,contact:3,std:2,none:1}[lc]||0;if(d.isolation.negative_pressure)r+=.5;return -r;}
+
+function renderList(){
+  var arr=DISEASES.filter(matchList);
+  arr.sort(function(a,b){return sortKey(a)-sortKey(b);});
+  var g=document.getElementById("grid");
+  document.getElementById("empty").style.display=arr.length?"none":"block";
+  var html="";
+  arr.forEach(function(d){
+    var lc=levelClass(d), gn=d.grade.replace("급","");
+    var lvls="";
+    ["class:iso_airborne","class:iso_droplet","class:iso_contact","class:iso_standard"].forEach(function(t){
+      if(d.isolation.types.indexOf(t)>=0) lvls+='<span class="gc-lvl '+lvlCls(t)+'">'+lvlShort(t)+'</span>';
+    });
+    if(isNoIso(d)) lvls='<span class="gc-lvl none">격리불요</span>';
+    var roomShort=(d.room.label||"").replace("국가지정 입원치료병상","국가지정").replace(/\s*\(.*?\)\s*/," ").trim();
+    html+='<div class="gc l-'+lc+'" data-id="'+d.id+'"><div class="gc-top"><span class="gc-name">'+esc(d.name_ko)+'</span><span class="gc-g g'+gn+'">'+gn+'</span></div>';
+    html+='<div class="gc-lvls">'+lvls+'</div>';
+    html+='<div class="gc-room">🏠 '+esc(roomShort||"-")+(d.isolation.negative_pressure?'<span class="gc-neg">음압</span>':'')+'</div></div>';
+  });
+  g.innerHTML=html;
+  g.querySelectorAll(".gc").forEach(function(el){ el.addEventListener("click",function(){openSheet(this.dataset.id);}); });
+}
+
+function openSheet(id){
+  var d=DISEASES.filter(function(x){return x.id===id;})[0]; if(!d)return;
+  var rels=resolveRelease(d), gn=d.grade.replace("급","");
+  var h="";
+  h+='<div class="sh-name">'+esc(d.name_ko)+'</div><div class="sh-en">'+esc(d.name_en)+'</div>';
+  h+='<div class="sh-badges"><span class="sh-b g g'+gn+'">'+gn+'급</span>';
+  ["class:iso_airborne","class:iso_droplet","class:iso_contact","class:iso_standard"].forEach(function(t){
+    if(d.isolation.types.indexOf(t)>=0) h+='<span class="sh-b '+lvlCls(t)+'">'+ISO_LEVELS[t].ko+'</span>';
+  });
+  if(isNoIso(d)) h+='<span class="sh-b none">격리 불요</span>';
+  if(d.isolation.negative_pressure) h+='<span class="sh-b neg">음압</span>';
+  if(d.isolation.mandatory) h+='<span class="sh-b mand">법정 의무</span>';
+  h+='</div>';
+  h+='<div class="sect s-iso"><div class="sect-t">격리 장소</div>';
+  var rl=d.room.label||"", rmain=rl.split("(")[0].trim(), rsub=rl.indexOf("(")>=0?rl.split("(")[1].replace(")",""):"";
+  h+='<div class="big-room"><span class="ic">'+(d.isolation.negative_pressure?"🔴":isNoIso(d)?"🟢":"🏠")+'</span><div><div class="t">'+esc(rmain)+'</div>'+(rsub?('<div class="s">'+esc(rsub)+'</div>'):'')+'</div></div></div>';
+  h+='<div class="sect s-rel"><div class="sect-t">격리해제 기준</div><ul class="rel-list">';
+  rels.forEach(function(r){
+    var star=/★/.test(r)||/명확히 정해진|자체 판단|확인 필요/.test(r);
+    h+='<li'+(star?' class="star"':'')+'>'+esc(r.replace(/^★/,''))+'</li>';
+  });
+  h+='</ul>';
+  if(d.release_note) h+='<div class="rel-note">📋 '+esc(d.release_note)+'</div>';
+  if(d.duration) h+='<div class="dur-pill">⏱ '+esc(d.duration)+'</div>';
+  h+='</div>';
+  h+='<div class="sect s-iso"><div class="sect-t">격리 상세</div>';
+  h+='<div class="kv"><span class="k">전파경로</span><span class="v">'+d.isolation.types.map(function(t){return ISO_LEVELS[t]?ISO_LEVELS[t].ko:t;}).join(" + ")+(d.isolation.note?(' <span style="color:var(--ink-faint)">('+esc(d.isolation.note)+')</span>'):'')+'</span></div>';
+  h+='<div class="kv"><span class="k">법정 의무</span><span class="v'+(d.isolation.mandatory?' warn':'')+'">'+(d.isolation.mandatory?"의무격리 대상":"의무격리 아님(권고/표준주의)")+'</span></div>';
+  var ppe={};d.isolation.types.forEach(function(t){if(ISO_LEVELS[t])ISO_LEVELS[t].ppe.forEach(function(p){ppe[p]=1;});});
+  var pa=Object.keys(ppe);
+  if(pa.length) h+='<div class="kv"><span class="k">개인보호구</span><span class="v"><div class="ppe">'+pa.map(function(p){return '<span>'+esc(p)+'</span>';}).join("")+'</div></span></div>';
+  h+='</div>';
+  var ex=d.extra||{};
+  if(ex.contact_monitoring||ex.work_restriction||ex.special_precaution){
+    h+='<div class="sect s-extra"><div class="sect-t">부가 관리</div>';
+    if(ex.contact_monitoring)h+='<div class="kv"><span class="k">접촉자</span><span class="v">'+esc(ex.contact_monitoring)+'</span></div>';
+    if(ex.work_restriction)h+='<div class="kv"><span class="k">업무제한</span><span class="v">'+esc(ex.work_restriction)+'</span></div>';
+    if(ex.special_precaution)h+='<div class="kv"><span class="k">특수주의</span><span class="v warn">'+esc(ex.special_precaution)+'</span></div>';
+    h+='</div>';
+  }
+  h+='<div class="sect s-extra"><div class="sect-t">신고 · 코드</div>';
+  h+='<div class="kv"><span class="k">신고기한</span><span class="v">'+esc(ex.notify||"-")+'</span></div>';
+  if(d.kcd&&d.kcd!=="...")h+='<div class="kv"><span class="k">KCD</span><span class="v">'+esc(d.kcd)+'</span></div>';
+  if(ex.cost_support)h+='<div class="kv"><span class="k">입원치료비</span><span class="v">지원 대상</span></div>';
+  h+='</div>';
+  if(d.reclassified&&d.reclassified.length){
+    d.reclassified.forEach(function(rc){ h+='<div class="reclass">⟳ '+esc(rc.date)+' · '+esc(rc.change)+(rc.note?(" — "+esc(rc.note)):"")+'</div>'; });
+  }
+  h+='<div class="sect s-src"><div class="sect-t">출처 · 확인일</div>';
+  (d.sources||[]).forEach(function(s){
+    h+='<div class="src"><span class="sg">'+esc(s.guideline)+'</span> <span class="sv">'+esc(s.version||"")+'</span>';
+    if(s.url)h+=' · <a href="'+esc(s.url)+'" target="_blank" rel="noopener">지침 링크 ↗</a>';
+    h+='<div class="sver">확인일 '+esc(s.verified||"")+'</div></div>';
+  });
+  h+='</div>';
+  h+='<div class="cat-tags">';
+  d.categories.forEach(function(cid){var c=CATEGORIES.filter(function(x){return x.id===cid;})[0];if(c)h+='<span>'+c.icon+' '+esc(c.ko)+'</span>';});
+  h+='</div>';
+  document.getElementById("sheetIn").innerHTML=h;
+  document.getElementById("sheetBg").classList.add("on");
+  document.getElementById("sheet").classList.add("on");
+  document.getElementById("sheet").scrollTop=0;
+}
+function closeSheet(){document.getElementById("sheetBg").classList.remove("on");document.getElementById("sheet").classList.remove("on");}
+
+function showHub(){
+  state.mode="hub";state.cat=null;state.grades={};
+  document.querySelectorAll("#gradeFilters .chip").forEach(function(c){c.classList.remove("on");});
+  document.getElementById("v-hub").classList.add("on");
+  document.getElementById("v-list").classList.remove("on");
+  document.getElementById("back").classList.remove("on");
+  document.getElementById("title").textContent="법정감염병 격리 가이드";
+}
+function openCat(cid){
+  state.mode="cat";state.cat=cid;state.q="";state.grades={};
+  document.querySelectorAll("#gradeFilters .chip").forEach(function(c){c.classList.remove("on");});
+  document.getElementById("q").value="";document.getElementById("clr").classList.remove("on");
+  var c=CATEGORIES.filter(function(x){return x.id===cid;})[0];
+  var arr=DISEASES.filter(function(d){return d.categories.indexOf(cid)>=0;});
+  document.getElementById("listTitle").innerHTML=(c?c.icon+" "+esc(c.ko):"")+'<span class="badge">'+arr.length+'종</span>';
+  document.getElementById("v-hub").classList.remove("on");
+  document.getElementById("v-list").classList.add("on");
+  document.getElementById("back").classList.add("on");
+  document.getElementById("title").textContent=c?c.ko:"";
+  renderList();
+}
+function openAll(){
+  state.mode="all";state.cat=null;state.q="";state.grades={};
+  document.querySelectorAll("#gradeFilters .chip").forEach(function(c){c.classList.remove("on");});
+  document.getElementById("q").value="";document.getElementById("clr").classList.remove("on");
+  document.getElementById("listTitle").innerHTML='📋 전체 질환<span class="badge">'+DISEASES.length+'종</span>';
+  document.getElementById("v-hub").classList.remove("on");
+  document.getElementById("v-list").classList.add("on");
+  document.getElementById("back").classList.add("on");
+  document.getElementById("title").textContent="전체 질환 조회";
+  renderList();
+}
+
+document.getElementById("q").addEventListener("input",function(){
+  state.q=this.value.trim();
+  document.getElementById("clr").classList.toggle("on",!!this.value);
+  if(state.q){
+    state.mode="search";state.cat=null;
+    document.getElementById("listTitle").innerHTML='🔍 "'+esc(state.q)+'" 검색';
+    document.getElementById("v-hub").classList.remove("on");
+    document.getElementById("v-list").classList.add("on");
+    document.getElementById("back").classList.add("on");
+    document.getElementById("title").textContent="검색";
+    renderList();
+  } else { showHub(); }
+});
+document.getElementById("clr").addEventListener("click",function(){document.getElementById("q").value="";state.q="";this.classList.remove("on");showHub();});
+document.getElementById("back").addEventListener("click",showHub);
+document.getElementById("goAll").addEventListener("click",openAll);
+document.getElementById("sheetX").addEventListener("click",closeSheet);
+document.getElementById("sheetBg").addEventListener("click",closeSheet);
+document.querySelectorAll("#gradeFilters .chip").forEach(function(c){
+  c.addEventListener("click",function(){this.classList.toggle("on");state.grades[this.dataset.grade]=this.classList.contains("on");renderList();});
+});
+
+renderHub();
+</script>
+</body>
+</html>
