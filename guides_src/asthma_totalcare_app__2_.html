@@ -1965,5 +1965,117 @@ function render(scrollTop){
 }
 render();
 </script>
+
+<!-- ════════════════════════════════════════════════════════════
+     통합 매핑 레이어 (additive · 앱 본문 무손상)
+     천식 앱이 다루는 약물을 전역 ID로 노출. 통합 시 이것만 읽음.
+     ════════════════════════════════════════════════════════════ -->
+<script>
+/* 한글 약물명 → 전역 ID + 계열 (통합 레지스트리 정렬됨) */
+const ASTHMA_DRUG_INDEX = {
+ "부데소니드": {
+  "id": "drug:budesonide",
+  "cls": "class:ics"
+ },
+ "플루티카손": {
+  "id": "drug:fluticasone",
+  "cls": "class:ics"
+ },
+ "베클로메타손": {
+  "id": "drug:beclomethasone",
+  "cls": "class:ics"
+ },
+ "모메타손": {
+  "id": "drug:mometasone",
+  "cls": "class:ics"
+ },
+ "포르모테롤": {
+  "id": "drug:formoterol",
+  "cls": "class:laba"
+ },
+ "살메테롤": {
+  "id": "drug:salmeterol",
+  "cls": "class:laba"
+ },
+ "빌란테롤": {
+  "id": "drug:vilanterol",
+  "cls": "class:laba"
+ },
+ "살부타몰": {
+  "id": "drug:salbutamol",
+  "cls": "class:saba"
+ },
+ "터부탈린": {
+  "id": "drug:terbutaline",
+  "cls": "class:saba"
+ },
+ "티오트로피움": {
+  "id": "drug:tiotropium",
+  "cls": "class:lama"
+ },
+ "이프라트로피움": {
+  "id": "drug:ipratropium",
+  "cls": "class:sama"
+ },
+ "글리코피로늄": {
+  "id": "drug:glycopyrronium",
+  "cls": "class:lama"
+ },
+ "몬테루카스트": {
+  "id": "drug:montelukast",
+  "cls": "class:ltra"
+ },
+ "프란루카스트": {
+  "id": "drug:pranlukast",
+  "cls": "class:ltra"
+ },
+ "자피르루카스트": {
+  "id": "drug:zafirlukast",
+  "cls": "class:ltra"
+ },
+ "테오필린": {
+  "id": "drug:theophylline",
+  "cls": "class:methylxanthine"
+ },
+ "오말리주맙": {
+  "id": "drug:omalizumab",
+  "cls": "class:biologic"
+ },
+ "메폴리주맙": {
+  "id": "drug:mepolizumab",
+  "cls": "class:biologic"
+ },
+ "벤랄리주맙": {
+  "id": "drug:benralizumab",
+  "cls": "class:biologic"
+ },
+ "두필루맙": {
+  "id": "drug:dupilumab",
+  "cls": "class:biologic"
+ },
+ "레슬리주맙": {
+  "id": "drug:reslizumab",
+  "cls": "class:biologic"
+ },
+ "테제펠루맙": {
+  "id": "drug:tezepelumab",
+  "cls": "class:biologic"
+ }
+};
+
+/* 통합 정문: 이 앱이 다루는 전역 약물 ID 목록 */
+function asthmaGlobalDrugs(){
+  return Object.values(ASTHMA_DRUG_INDEX).map(function(d){return d.id;});
+}
+/* 한글명 → 전역 ID 조회 (통합 엔진용) */
+function asthmaResolve(koName){
+  for(var k in ASTHMA_DRUG_INDEX){
+    if(koName.indexOf(k) >= 0) return ASTHMA_DRUG_INDEX[k];
+  }
+  return null;
+}
+if(typeof module!=='undefined') module.exports={ASTHMA_DRUG_INDEX, asthmaGlobalDrugs, asthmaResolve};
+</script>
+
 </body>
 </html>
