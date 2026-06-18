@@ -2499,25 +2499,31 @@ function renderFlow(){
     +todChip("lipid:tod:lvh","좌심실비대")+'</div>';
   h+='</div>';
 
-  /* 결과 */
-  var patient=buildPatient();
-  var out=recommendLipid(patient);
-  h+=renderTargetGauge(out);
-  h+=renderResultCards(out);
-
-  /* 게이트 위젯 */
-  h+=renderGateWidget();
-
-  /* PREVENT 위젯 */
-  h+=renderPreventWidget();
+  /* 결과 — 별도 컨테이너 (입력 시 이 부분만 갱신, input 포커스 유지) */
+  h+='<div id="flowResult">'+renderFlowResult()+'</div>';
 
   v.innerHTML=h;
 }
-function inpF(key,lbl,type,val){
-  return '<div class="inp-field"><label>'+esc(lbl)+'</label><input type="'+type+'" value="'+(val!=null?val:'')+'" oninput="setFlow(\''+key+'\',this.value)"></div>';
+function renderFlowResult(){
+  var patient=buildPatient();
+  var out=recommendLipid(patient);
+  var h='';
+  h+=renderTargetGauge(out);
+  h+=renderResultCards(out);
+  h+=renderGateWidget();
+  h+=renderPreventWidget();
+  return h;
 }
-function setFlow(key,val){ STATE.flow[key]=(val===''?null:parseFloat(val)); renderFlow(); }
-function setFlowStr(key,val){ STATE.flow[key]=(val===''?null:val); renderFlow(); }
+/* 결과만 갱신 (input 재생성 안 함 → 키보드 안 닫힘) */
+function updateFlowResult(){
+  var el=$("flowResult");
+  if(el) el.innerHTML=renderFlowResult();
+}
+function inpF(key,lbl,type,val){
+  return '<div class="inp-field"><label>'+esc(lbl)+'</label><input type="'+type+'" value="'+(val!=null?val:'')+'" inputmode="'+(type==="number"?"decimal":"text")+'" oninput="setFlow(\''+key+'\',this.value)"></div>';
+}
+function setFlow(key,val){ STATE.flow[key]=(val===''?null:parseFloat(val)); updateFlowResult(); }
+function setFlowStr(key,val){ STATE.flow[key]=(val===''?null:val); updateFlowResult(); }
 
 /* ★ PREVENT 위젯 (AHA/ACC 2023, 2026 가이드라인 치료임계) */
 function renderPreventWidget(){
@@ -2582,7 +2588,7 @@ function renderPreventCalc(){
   var f=STATE.pcalc;
   var h='<div class="note" style="border-color:var(--clin)">AHA PREVENT base 방정식(공식 R 패키지 검증). 아래 값을 입력하면 10·30년 위험도와 2026 치료등급이 자동 계산됩니다. 플로우 탭에서도 환자 데이터로 계산 가능.</div>';
   /* 입력 */
-  function pin(key,lbl,val){ return '<div class="inp-field"><label>'+esc(lbl)+'</label><input type="number" value="'+(val!=null?val:'')+'" oninput="setPcalc(\''+key+'\',this.value)"></div>'; }
+  function pin(key,lbl,val){ return '<div class="inp-field"><label>'+esc(lbl)+'</label><input type="number" inputmode="decimal" value="'+(val!=null?val:'')+'" oninput="setPcalc(\''+key+'\',this.value)"></div>'; }
   h+='<div class="inp-row">'+pin("age","나이",f.age)
     +'<div class="inp-field"><label>성별</label><select onchange="setPcalcStr(\'sex\',this.value)">'
     +'<option value="">-</option><option value="female"'+(f.sex==="female"?" selected":"")+'>여</option>'
@@ -2590,29 +2596,34 @@ function renderPreventCalc(){
     +pin("sbp","SBP",f.sbp)+'</div>';
   h+='<div class="inp-row">'+pin("tc","총콜레스테롤",f.tc)+pin("hdl","HDL",f.hdl)
     +pin("egfr","eGFR",f.egfr)+pin("bmi","BMI",f.bmi)+'</div>';
-  h+='<div class="chips" style="margin-bottom:8px">'
-    +pcalcChip("dm","당뇨")+pcalcChip("smoke","현재흡연")
-    +pcalcChip("bptreat","항고혈압제")+pcalcChip("statin","스타틴복용")+'</div>';
-  /* 계산 */
+  h+='<div id="pcalcChips" class="chips" style="margin-bottom:8px">'+pcalcChipsInner()+'</div>';
+  /* 결과 — 별도 컨테이너 */
+  h+='<div id="pcalcResult">'+pcalcResultInner()+'</div>';
+  return h;
+}
+function pcalcChipsInner(){
+  return pcalcChip("dm","당뇨")+pcalcChip("smoke","현재흡연")
+    +pcalcChip("bptreat","항고혈압제")+pcalcChip("statin","스타틴복용");
+}
+function pcalcResultInner(){
+  var f=STATE.pcalc||{};
   var need=[];
   if(f.age==null) need.push("나이"); if(!f.sex) need.push("성별");
   if(f.tc==null) need.push("TC"); if(f.hdl==null) need.push("HDL");
   if(f.sbp==null) need.push("SBP"); if(f.egfr==null) need.push("eGFR");
   if(need.length){
-    h+='<div class="note">입력 필요: <b>'+need.join(" · ")+'</b>'+(f.bmi==null?' (BMI 없으면 심부전 위험만 제외)':'')+'</div>';
-    return h;
+    return '<div class="note">입력 필요: <b>'+need.join(" · ")+'</b>'+(f.bmi==null?' (BMI 없으면 심부전 위험만 제외)':'')+'</div>';
   }
   var p={ age:f.age, sex:f.sex, tc:f.tc, hdl:f.hdl, sbp:f.sbp, egfr:f.egfr,
     bmi:f.bmi, dm:f.dm||false, smoke:f.smoke||false, bptreat:f.bptreat||false, statin:f.statin||false };
-  var res=preventScore(p);
-  h+=preventResultBlock(res);
-  return h;
+  return preventResultBlock(preventScore(p));
 }
-function setPcalc(key,val){ if(!STATE.pcalc)STATE.pcalc={}; STATE.pcalc[key]=(val===''?null:parseFloat(val)); refreshPcalc(); }
-function setPcalcStr(key,val){ if(!STATE.pcalc)STATE.pcalc={}; STATE.pcalc[key]=(val===''?null:val); refreshPcalc(); }
+function setPcalc(key,val){ if(!STATE.pcalc)STATE.pcalc={}; STATE.pcalc[key]=(val===''?null:parseFloat(val)); refreshPcalcResult(); }
+function setPcalcStr(key,val){ if(!STATE.pcalc)STATE.pcalc={}; STATE.pcalc[key]=(val===''?null:val); refreshPcalcResult(); }
 function pcalcChip(key,lbl){ if(!STATE.pcalc)STATE.pcalc={}; var on=STATE.pcalc[key]?'on':''; return '<span class="chip '+on+'" onclick="togglePcalc(\''+key+'\')">'+esc(lbl)+'</span>'; }
-function togglePcalc(key){ if(!STATE.pcalc)STATE.pcalc={}; STATE.pcalc[key]=!STATE.pcalc[key]; refreshPcalc(); }
-function refreshPcalc(){ if(STATE.openTopic==="lipid:topic:prevent") renderLibrary(); }
+function togglePcalc(key){ if(!STATE.pcalc)STATE.pcalc={}; STATE.pcalc[key]=!STATE.pcalc[key]; var c=$("pcalcChips"); if(c)c.innerHTML=pcalcChipsInner(); refreshPcalcResult(); }
+/* 결과만 갱신 (input 포커스 유지) */
+function refreshPcalcResult(){ var el=$("pcalcResult"); if(el) el.innerHTML=pcalcResultInner(); }
 
 function preventAlgoBlock(){
   var h='<details open><summary>2026 ACC/AHA 치료 알고리듬 (10년 ASCVD 기준)</summary><div class="dbody">';
