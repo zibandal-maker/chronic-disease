@@ -674,5 +674,102 @@ function evalSev(){var vas=parseInt($('vas').value,10)||0;var mod=(vas>=5);var v
 renderSim();
 
 </script>
+<script>
+/* === 통합 전역 ID 매핑 레이어 (additive, 앱 로직 무손상) === */
+/* ===== AR 전역 ID 매핑 레이어 (additive, 앱 무손상) ===== */
+/* ar 약어 ID(계열) → 전역 성분 ID들 + 계열 ID. bio: → drug: 연결. */
+var AR_DRUG_INDEX = {
+ "drug:ah2-oral": {
+  "cls": "class:antihistamine_2g",
+  "members": [
+   "drug:cetirizine",
+   "drug:levocetirizine",
+   "drug:fexofenadine",
+   "drug:loratadine",
+   "drug:desloratadine",
+   "drug:bilastine",
+   "drug:ebastine",
+   "drug:rupatadine"
+  ]
+ },
+ "drug:incs": {
+  "cls": "class:incs",
+  "members": [
+   "drug:fluticasone",
+   "drug:mometasone",
+   "drug:budesonide",
+   "drug:beclomethasone",
+   "drug:ciclesonide"
+  ]
+ },
+ "drug:ah-nasal": {
+  "cls": "class:antihistamine_nasal",
+  "members": [
+   "drug:azelastine",
+   "drug:olopatadine"
+  ]
+ },
+ "drug:combo-nasal": {
+  "cls": "class:incs_ah_combo",
+  "members": [
+   "drug:fluticasone",
+   "drug:azelastine"
+  ]
+ },
+ "drug:ltra": {
+  "cls": "class:ltra",
+  "members": [
+   "drug:montelukast",
+   "drug:pranlukast",
+   "drug:zafirlukast"
+  ]
+ },
+ "drug:ocs-short": {
+  "cls": "class:systemic_steroid",
+  "members": [
+   "drug:prednisolone",
+   "drug:methylprednisolone"
+  ]
+ },
+ "drug:decong-nasal": {
+  "cls": "class:decongestant_nasal",
+  "members": [
+   "drug:xylometazoline",
+   "drug:oxymetazoline"
+  ]
+ },
+ "drug:saline": {
+  "cls": "class:saline",
+  "members": []
+ }
+};
+var AR_BIO_INDEX = {
+ "bio:dupilumab": "drug:dupilumab",
+ "bio:omalizumab": "drug:omalizumab",
+ "bio:mepolizumab": "drug:mepolizumab",
+ "bio:tezepelumab": "drug:tezepelumab"
+};
+
+/* ar 약어 → 전역 성분 ID 배열 (계열 1:N) */
+function arResolve(localId){
+  if(AR_DRUG_INDEX[localId]) return AR_DRUG_INDEX[localId].members;
+  if(AR_BIO_INDEX[localId]) return [AR_BIO_INDEX[localId]];
+  return [];
+}
+/* ar 약어 → 계열 ID */
+function arClass(localId){
+  return AR_DRUG_INDEX[localId] ? AR_DRUG_INDEX[localId].cls : null;
+}
+/* ar 앱이 쓰는 전역 약물 ID 전체 (통합 dedup·상호작용용) */
+function arGlobalDrugs(){
+  var out=[], seen={};
+  for(var k in AR_DRUG_INDEX){ if(!AR_DRUG_INDEX.hasOwnProperty(k))continue;
+    var ms=AR_DRUG_INDEX[k].members;
+    for(var i=0;i<ms.length;i++){ if(!seen[ms[i]]){seen[ms[i]]=1;out.push(ms[i]);} } }
+  for(var b in AR_BIO_INDEX){ if(!AR_BIO_INDEX.hasOwnProperty(b))continue;
+    var d=AR_BIO_INDEX[b]; if(!seen[d]){seen[d]=1;out.push(d);} }
+  return out;
+}
+</script>
 </body>
 </html>
