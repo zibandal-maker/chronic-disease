@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>심방세동 처방 가이드 · AF Advisor</title>
+<style>
+:root{
+  --bg:#f6f5f3; --panel:#ffffff; --panel2:#f3f1ee; --line:#e7e3dd;
+  --ink:#2a2622; --ink-dim:#5c564e; --ink-faint:#9a938a;
+  --pay:#c07b1e; --pay-bg:#fbf2df;     /* 급여(앰버) */
+  --clin:#3a7bb8; --clin-bg:#e9f1f9;   /* 지침/임상(블루) */
+  --care:#2a9580; --care-bg:#e0f3ee;   /* 통합관리(틸) */
+  --refer:#8a63bd; --refer-bg:#f0e9f8; /* 의뢰(퍼플) */
+  --ok:#34a866; --warn:#c07b1e; --block:#cf4d4d; --alert:#dd7038;
+  --ok-bg:#e3f4e9; --block-bg:#fbe6e6; --alert-bg:#fcecdf;
+  --radius:18px; --radius-sm:12px;
+  --shadow:0 1px 2px rgba(50,44,38,.04), 0 4px 14px rgba(50,44,38,.05);
+  --shadow-sm:0 1px 3px rgba(50,44,38,.05);
+  --fz:15px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  font-size:var(--fz);line-height:1.66;-webkit-text-size-adjust:100%;letter-spacing:-.005em}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px 90px}
+
+/* 헤더 */
+header.top{position:sticky;top:0;z-index:40;background:rgba(246,245,243,.88);
+  backdrop-filter:saturate(1.5) blur(12px);border-bottom:1px solid var(--line);margin:0 -16px;padding:13px 18px}
+.title{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.title b{font-size:18px;letter-spacing:-.02em}
+.title .en{font-size:11px;color:var(--ink-faint);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.title .ver{margin-left:auto;font-size:10.5px;color:var(--ink-faint);border:1px solid var(--line);
+  border-radius:20px;padding:2px 8px;background:var(--panel)}
+
+/* 탭바 */
+.tabs{display:flex;gap:7px;margin:13px -16px 0;padding:0 16px;position:sticky;top:52px;z-index:39;
+  background:rgba(246,245,243,.88);backdrop-filter:blur(12px);padding-bottom:11px;padding-top:4px}
+.tab{flex:1;text-align:center;padding:11px 4px;border-radius:15px;background:var(--panel);
+  border:1px solid var(--line);font-weight:600;font-size:13px;color:var(--ink-dim);cursor:pointer;
+  transition:transform .15s ease,background .15s ease,color .15s ease;user-select:none;box-shadow:var(--shadow-sm)}
+.tab .ic{display:block;font-size:18px;margin-bottom:2px;line-height:1}
+.tab:active{transform:scale(.97)}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:0 3px 12px rgba(50,44,38,.16)}
+
+section.view{display:none;padding-top:16px}
+section.view.on{display:block;animation:fade .26s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* 공통 카드 */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:17px 18px;margin-bottom:13px;box-shadow:var(--shadow)}
+.card.pad0{padding:0;overflow:hidden}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px}
+h2.sec{font-size:16.5px;margin:2px 0 10px;letter-spacing:-.01em}
+h3.sub{font-size:14.5px;margin:16px 0 8px;color:var(--ink)}
+p.lead{color:var(--ink-dim);margin:3px 0 12px;font-size:13.5px;line-height:1.6}
+.src{font-size:11.5px;color:var(--ink-faint);margin-top:6px;line-height:1.5}
+.muted{color:var(--ink-faint)}
+
+/* 배지 */
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;
+  padding:3px 9px;border-radius:20px;white-space:nowrap;line-height:1.5}
+.b-pay{background:var(--pay-bg);color:var(--pay)}
+.b-clin{background:var(--clin-bg);color:var(--clin)}
+.b-care{background:var(--care-bg);color:var(--care)}
+.b-refer{background:var(--refer-bg);color:var(--refer)}
+.b-ok{background:var(--ok-bg);color:var(--ok)}
+.b-warn{background:var(--pay-bg);color:var(--warn)}
+.b-block{background:var(--block-bg);color:var(--block)}
+.b-alert{background:var(--alert-bg);color:var(--alert)}
+.cor{display:inline-block;min-width:30px;text-align:center;font-weight:800;font-size:11px;
+  padding:2px 7px;border-radius:7px;font-family:ui-monospace,Menlo,monospace}
+.cor-1{background:#dcefe3;color:#1c8049}.cor-2a{background:#e3eefa;color:#2a679f}
+.cor-2b{background:#eef1f4;color:#62707c}.cor-3{background:#f9e3e3;color:#bd3838}
+.loe{font-size:10px;font-weight:700;color:var(--ink-faint);margin-left:3px}
+
+/* 라이브러리 토픽 그리드 */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.topic{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:15px 16px 15px 18px;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;position:relative;box-shadow:var(--shadow)}
+.topic:active{transform:scale(.98)}
+.topic:hover{box-shadow:0 2px 6px rgba(50,44,38,.07),0 8px 22px rgba(50,44,38,.07)}
+.topic .tnum{font-size:12px;font-weight:800;color:var(--ink-faint);font-family:ui-monospace,monospace;display:flex;align-items:center;gap:5px}
+.topic h4{margin:6px 0 4px;font-size:15px;letter-spacing:-.01em}
+.topic p{margin:0;font-size:12px;color:var(--ink-dim);line-height:1.55}
+.topic .strip{position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:4px}
+.s-pay{background:var(--pay)}.s-clin{background:var(--clin)}.s-care{background:var(--care)}.s-refer{background:var(--refer)}
+
+/* 검색 */
+.searchbar{display:flex;align-items:center;gap:9px;background:var(--panel);border:1px solid var(--line);
+  border-radius:16px;padding:12px 16px;margin-bottom:14px;box-shadow:var(--shadow-sm);transition:box-shadow .15s}
+.searchbar:focus-within{box-shadow:0 0 0 3px var(--clin-bg),var(--shadow-sm)}
+.searchbar input{border:0;outline:0;flex:1;font-size:14px;background:transparent;color:var(--ink)}
+.searchbar .mag{color:var(--ink-faint);font-size:15px}
+
+/* 펼침 상세 */
+.detail{display:none;margin-top:10px}
+.detail.on{display:block}
+.backbtn{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--clin);
+  cursor:pointer;margin-bottom:12px;background:var(--clin-bg);border:0;padding:7px 14px;border-radius:20px;transition:transform .12s}
+.backbtn:active{transform:scale(.96)}
+/* 토픽 본문을 하나의 카드로 */
+.topicbody{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 18px 20px;box-shadow:var(--shadow)}
+/* 본문 안에서 이미 카드인 요소는 평평하게(이중 그림자 방지) */
+.topicbody .scroll{box-shadow:none;background:var(--panel2);padding:7px;margin-left:-4px;margin-right:-4px}
+.topicbody .doaccard{box-shadow:none;background:var(--panel2)}
+.topicbody .acc{box-shadow:none}
+
+/* 표 */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;margin:0;
+  border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+.tbl tr:last-child th,.tbl tr:last-child td{border-bottom:0}
+.tbl th:last-child,.tbl td:last-child{border-right:0}
+.tbl th{background:var(--panel2);font-weight:700;font-size:11.5px;color:var(--ink-dim)}
+.tbl td.c{text-align:center}
+.tbl .hl{background:var(--clin-bg)}
+/* 표를 카드처럼 감싸기 */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:11px 0;padding:10px;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.scroll .tbl{box-shadow:none}
+
+/* 권고 항목 */
+.rec{border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:9px;background:var(--panel);box-shadow:var(--shadow-sm)}
+.rec .rh{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.rec .rt{font-size:13.5px;line-height:1.6}
+.rec.r-refer{border-left:4px solid var(--refer)}
+.rec.r-mand{border-left:4px solid var(--block);background:var(--block-bg)}
+
+/* 의뢰 배너 */
+.refbanner{border-radius:var(--radius-sm);padding:14px 16px;margin:11px 0;font-size:13.5px;line-height:1.6}
+.refbanner.mand{background:var(--block-bg);border:1px solid #eecaca;color:#9a3434}
+.refbanner.consider{background:var(--refer-bg);border:1px solid #ddd0ee;color:#6a4a96}
+.refbanner b{display:block;margin-bottom:4px;font-size:14px}
+
+/* 알림/플래그 박스 */
+.flag{border-radius:var(--radius-sm);padding:12px 14px;margin:8px 0;font-size:13px;line-height:1.6;border:1px solid transparent}
+.flag.ok{background:var(--ok-bg);border-color:#c8e6d3}
+.flag.warn{background:var(--pay-bg);border-color:#f0deb6}
+.flag.block{background:var(--block-bg);border-color:#eecaca}
+.flag.alert{background:var(--alert-bg);border-color:#f0d3ba}
+.flag.info{background:var(--clin-bg);border-color:#cfe0f2}
+.flag .ft{font-weight:700;margin-bottom:3px;font-size:13px}
+
+/* 간극 비교 박스 */
+.gap{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;margin:10px 0}
+.gap>div{padding:12px 14px}
+.gap .g-guide{background:var(--clin-bg)}
+.gap .g-pay{background:var(--pay-bg);border-left:1px solid var(--line)}
+.gap .gl{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
+.gap .g-guide .gl{color:var(--clin)}.gap .g-pay .gl{color:var(--pay)}
+.gap .gv{font-size:13px;line-height:1.55}
+
+/* 플로우 입력 */
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-dim);margin-bottom:6px}
+.field input,.field select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:13px;
+  font-size:15px;background:var(--panel);color:var(--ink);outline:none;transition:box-shadow .15s,border-color .15s}
+.field input:focus,.field select:focus{border-color:var(--clin);box-shadow:0 0 0 3px var(--clin-bg)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{padding:8px 14px;border:1px solid var(--line);border-radius:20px;font-size:12.5px;font-weight:600;
+  cursor:pointer;background:var(--panel);color:var(--ink-dim);user-select:none;transition:transform .12s,background .12s,color .12s;box-shadow:var(--shadow-sm)}
+.chip:active{transform:scale(.95)}
+.chip.on{background:var(--clin);color:#fff;border-color:var(--clin)}
+.chip.on.pt2{background:var(--alert);border-color:var(--alert)}
+.btn{display:block;width:100%;padding:14px;border:0;border-radius:15px;background:var(--ink);color:#fff;
+  font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;box-shadow:var(--shadow)}
+.btn:active{opacity:.88;transform:scale(.99)}
+
+/* 점수 디스플레이 */
+.scorebox{display:flex;gap:11px;margin:10px 0}
+.scoreitem{flex:1;text-align:center;background:var(--panel2);border-radius:15px;padding:13px 6px}
+.scoreitem .sv{font-size:27px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.scoreitem .sl{font-size:11px;color:var(--ink-dim);margin-top:4px;font-weight:600}
+.scoreitem.risk-hi .sv{color:var(--block)}
+.scoreitem.risk-mid .sv{color:var(--alert)}
+.scoreitem.risk-lo .sv{color:var(--ok)}
+
+/* DOAC 비교 카드 */
+.doaccard{border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;margin-bottom:11px;background:var(--panel);box-shadow:var(--shadow-sm)}
+.doaccard .dh{display:flex;align-items:baseline;gap:8px;margin-bottom:7px;flex-wrap:wrap}
+.doaccard .dn{font-size:15.5px;font-weight:800;letter-spacing:-.01em}
+.doaccard .db{font-size:12px;color:var(--ink-faint)}
+.doaccard .dclass{font-size:11px;background:var(--clin-bg);color:var(--clin);padding:3px 9px;border-radius:20px;font-weight:700}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:12.5px;margin-top:6px}
+.kv .k{color:var(--ink-faint);font-weight:600}
+.kv .v{color:var(--ink)}
+
+/* 확장 토글 */
+.exp{cursor:pointer;user-select:none}
+.exp .more{display:none}
+.exp.open .more{display:block;margin-top:8px}
+.exp .caret{font-size:11px;color:var(--clin);font-weight:700}
+
+/* 아코디언 (접이식 섹션) */
+.acc{border:1px solid var(--line);border-radius:var(--radius-sm);margin:9px 0;overflow:hidden;background:var(--panel);box-shadow:var(--shadow-sm)}
+.acc>.ah{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;user-select:none;transition:background .15s}
+.acc>.ah:active{background:var(--panel2)}
+.acc>.ah .aic{font-size:17px;line-height:1;flex-shrink:0}
+.acc>.ah .at{flex:1;font-weight:700;font-size:14px;letter-spacing:-.01em}
+.acc>.ah .asub{font-size:11.5px;color:var(--ink-faint);font-weight:500}
+.acc>.ah .acaret{font-size:14px;color:var(--ink-faint);transition:transform .25s ease;flex-shrink:0}
+.acc.open>.ah .acaret{transform:rotate(90deg)}
+.acc>.ab{display:none;padding:2px 16px 15px;border-top:1px solid var(--line)}
+.acc.open>.ab{display:block;animation:fade .24s ease}
+.acc.open>.ah{background:var(--panel2)}
+
+/* 칩 토글 그룹 (요약 권고 등) */
+.summary{display:flex;gap:8px;flex-wrap:wrap;margin:11px 0}
+.scount{display:inline-flex;align-items:center;gap:5px;background:var(--panel2);border-radius:20px;
+  padding:6px 12px;font-size:12px;font-weight:600;color:var(--ink-dim)}
+.scount .n{font-weight:800;color:var(--ink)}
+
+footer{margin-top:28px;padding:4px;font-size:13px;color:var(--ink-dim);line-height:1.65}
+footer a{color:var(--clin);text-decoration:none;font-weight:600}
+footer a:active{opacity:.7}
+.srcbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 18px 20px;box-shadow:var(--shadow);margin-bottom:14px}
+.srcbox h3{font-size:15px;margin:0 0 12px;letter-spacing:-.01em;color:var(--ink);display:flex;align-items:center;gap:7px}
+.srclist{display:flex;flex-direction:column;gap:11px}
+.srcitem{display:block;padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius-sm);
+  background:var(--panel2);transition:transform .12s,box-shadow .12s;text-decoration:none;color:inherit}
+.srcitem:active{transform:scale(.985)}
+.srcitem .stt{font-size:13.5px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.srcitem .sdd{font-size:12.5px;color:var(--ink-dim);margin-top:3px;line-height:1.5}
+.srcitem .slink{font-size:12px;color:var(--clin);font-weight:600;margin-top:5px;display:inline-flex;align-items:center;gap:4px}
+.srcitem.nolink{cursor:default}
+.gradekey{font-size:12.5px;color:var(--ink-dim);margin-top:14px;padding-top:13px;border-top:1px solid var(--line);line-height:1.6}
+.discl{background:var(--panel2);border-radius:14px;padding:14px 16px;font-size:12px;color:var(--ink-dim);margin-top:12px;line-height:1.62}
+
+/* 모달 */
+.modal{position:fixed;inset:0;background:rgba(42,38,34,.5);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
+.modal .box{background:var(--panel);border-radius:20px;max-width:560px;width:100%;max-height:84vh;overflow-y:auto;padding:18px 18px 22px}
+.modal .x{float:right;font-size:22px;color:var(--ink-faint);cursor:pointer;line-height:1;border:0;background:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="title">
+    <b>심방세동 처방 가이드</b>
+    <span class="en">AF Advisor</span>
+    <span class="ver">v1.0 · 2024 KHRS</span>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tab on" data-v="lib"><span class="ic">📚</span>도서관</div>
+  <div class="tab" data-v="sim"><span class="ic">🧭</span>시뮬레이션</div>
+  <div class="tab" data-v="flow"><span class="ic">⚡</span>플로우</div>
+</nav>
+
+<!-- ░░░ 도서관 ░░░ -->
+<section class="view on" id="view-lib"></section>
+<!-- ░░░ 시뮬레이션 ░░░ -->
+<section class="view" id="view-sim"></section>
+<!-- ░░░ 플로우 ░░░ -->
+<section class="view" id="view-flow"></section>
+
+<footer id="foot"></footer>
+</div>
+
+<div class="modal" id="modal"><div class="box"><button class="x" onclick="closeModal()">×</button><div id="modalBody"></div></div></div>
+
+<script>
+/* ════════════════ DATA LAYER ════════════════ */
+/* 권고 등급 정의 (전역) */
+var COR={ "I":{t:"추천됨/적응증",c:"cor-1"}, "IIa":{t:"고려되어야 함",c:"cor-2a"},
+  "IIb":{t:"고려될 수 있음",c:"cor-2b"}, "III":{t:"추천되지 않음",c:"cor-3"} };
+var LOE={ "A":"다수 RCT·메타분석", "B":"단일 RCT·대규모 비무작위", "C":"전문가 의견·소규모·후향" };
+
+/* ── DOAC 약제 데이터 (성분 단위 전역 ID) ── */
+var DOAC=[
+ {id:"drug:dabigatran", kr:"다비가트란", brand:"프라닥사", klass:"직접 트롬빈억제제 (IIa)",
+  std:"150 mg 1일 2회", low:"110 mg 1일 2회", lowOnly:"110 mg BID",
+  renalExcr:80, bioavail:"3–7%", prodrug:true, half:"12–17 h", protein:"35%",
+  meta:"글루쿠론산 결합 (CYP 비관여)", food:"H2/PPI 시 −12~30%(임상의미 적음)",
+  reduceRule:"다음 중 하나: CrCl 30–50 · 나이 ≥75 · 베라파밀 병용 · 출혈위험↑",
+  reversal:"이다루시주맙 5 g IV (국내 사용 가능)", reversalOk:true,
+  dialysis:"금기", crclMin:30,
+  tip:"유일한 IIa(트롬빈) 억제제. 전용 역전제 보유가 강점. 신배설 80%로 신기능 의존 가장 큼. 캡슐 습기 주의·소화불량 흔함."},
+ {id:"drug:rivaroxaban", kr:"리바록사반", brand:"자렐토", klass:"제Xa인자 억제제",
+  std:"20 mg 1일 1회", low:"15 mg 1일 1회",
+  renalExcr:35, bioavail:"음식과 100%", prodrug:false, half:"5–9 h(젊은) · 11–13 h(노인)", protein:"95%",
+  meta:"CYP3A4·CYP2J2", food:"★음식과 함께 복용 필수(20mg, +39% 흡수)",
+  reduceRule:"CrCl 15–49",
+  reversal:"안덱사넷 알파 (국내 승인 보류)", reversalOk:false,
+  dialysis:"금기", crclMin:15,
+  tip:"1일 1회 복용 편의. 반드시 식사와 함께(흡수). 드로네다론 병용 금지. 단백결합 95%로 투석 제거 안 됨."},
+ {id:"drug:apixaban", kr:"아픽사반", brand:"엘리퀴스", klass:"제Xa인자 억제제",
+  std:"5 mg 1일 2회", low:"2.5 mg 1일 2회",
+  renalExcr:27, bioavail:"50%", prodrug:false, half:"12 h", protein:"87%",
+  meta:"CYP3A4", food:"영향 없음",
+  reduceRule:"3개 중 2개: 나이 ≥80 · 체중 ≤60kg · 혈청Cr ≥1.5 mg/dL",
+  reversal:"안덱사넷 알파 (국내 승인 보류)", reversalOk:false,
+  dialysis:"2.5 mg BID 신중 사용", crclMin:15,
+  tip:"신배설 27%로 가장 낮음 → 신기능 저하·고령에서 선호. 출혈(특히 위장관) 위험 상대적 낮음. 저체중·고령 선호 약제."},
+ {id:"drug:edoxaban", kr:"에독사반", brand:"릭시아나", klass:"제Xa인자 억제제",
+  std:"60 mg 1일 1회", low:"30 mg 1일 1회", min:"15 mg 1일 1회",
+  renalExcr:50, bioavail:"62%", prodrug:false, half:"10–14 h", protein:"55%",
+  meta:"최소 대사 (CYP3A4 <4%)", food:"6–22% 흡수 증가(최소 영향)",
+  reduceRule:"다음 중 하나: CrCl 15–50 · 체중 ≤60kg · P-gp억제제(드로네다론·사이클로스포린·에리스로마이신·케토코나졸) 병용",
+  reversal:"안덱사넷 알파 (국내 승인 보류)", reversalOk:false,
+  dialysis:"30 mg 1일 1회", crclMin:15,
+  tip:"1일 1회. 저체중·고령 선호. ★CrCl >95에서 효과 감소 경고(라벨). ELDERCARE-AF: 항응고 부적합 80세+ 고위험에 15mg이 위약 대비 뇌졸중 감소.",
+  highCrcl:"CrCl >95 mL/min: 뇌졸중 예방 효과 감소 가능 — 라벨 경고"}
+];
+
+/* ── DOAC 신기능(CrCl)별 용량 매트릭스 (그림 10) ── */
+var DOAC_RENAL=[
+ {band:"≥ 50", dabi:"150 / 110 mg BID", riva:"20 mg QD", apix:"5 / 2.5 mg BID", edox:"60 mg QD"},
+ {band:"30–49", dabi:"감량기준 시 110 BID", riva:"15 mg QD", apix:"5 / 2.5 mg BID", edox:"30 mg QD"},
+ {band:"15–29", dabi:"권고 안 됨(미 75 BID)", riva:"15 mg QD(신중)", apix:"2.5 mg BID", edox:"30 mg QD"},
+ {band:"< 15 / 투석", dabi:"금기", riva:"금기", apix:"신중(데이터 부족)", edox:"데이터 부족"}
+];
+
+/* ── DOAC 약물상호작용 (표 7 요약) ── */
+var DDI=[
+ {drug:"아미오다론", mech:"중등도 P-gp 억제", dabi:"+12~60%", apix:"자료 없음", edox:"+40%", riva:"경미"},
+ {drug:"드로네다론", mech:"P-gp·CYP3A4 억제", dabi:"+70~100%", apix:"주의", edox:"+85% (감량)", riva:"★병용 금지"},
+ {drug:"베라파밀", mech:"P-gp 억제", dabi:"+12~180% (110 BID 권장)", apix:"자료 없음", edox:"+53%", riva:"+40%"},
+ {drug:"딜티아젬", mech:"약한 P-gp/CYP3A4", dabi:"영향 없음", apix:"+40%", edox:"자료 없음", riva:"영향 없음"},
+ {drug:"퀴니딘", mech:"P-gp 경쟁", dabi:"+53%", apix:"자료 없음", edox:"+77%", riva:"상승(조절 불필요)"},
+ {drug:"케토코나졸·이트라코나졸", mech:"강한 P-gp+CYP3A4", dabi:"+140~150%", apix:"+100%", edox:"+87% (감량)", riva:"+160%"},
+ {drug:"클래리·에리스로마이신", mech:"P-gp+CYP3A4 억제", dabi:"+15~19%", apix:"+60%", edox:"+85% (감량)", riva:"+30~50%"},
+ {drug:"리팜피신(유도제)", mech:"P-gp/CYP3A4 유도", dabi:"−66%", apix:"−54%", edox:"−35%", riva:"−50%"},
+ {drug:"HIV 프로테아제억제제", mech:"P-gp+CYP3A4 억제", dabi:"증가/감소 다양", apix:"강한 증가", edox:"자료 없음", riva:"+153%"}
+];
+
+/* ── CHA2DS2-VASc 항목 ── */
+var CHADS=[
+ {id:"C", k:"울혈성 심부전 / 좌심실 기능부전", pt:1},
+ {id:"H", k:"고혈압", pt:1},
+ {id:"A2",k:"나이 ≥ 75세", pt:2},
+ {id:"D", k:"당뇨병", pt:1},
+ {id:"S2",k:"뇌졸중 / TIA / 혈전색전증 기왕력", pt:2},
+ {id:"V", k:"혈관질환 (심근경색·말초동맥·대동맥판)", pt:1},
+ {id:"A", k:"나이 65–74세", pt:1},
+ {id:"Sc",k:"성별 (여성)", pt:1}
+];
+/* ── HAS-BLED 항목 ── */
+var HASBLED=[
+ {id:"H", k:"고혈압 (수축기 >160)", pt:1},
+ {id:"A", k:"신기능 또는 간기능 이상 (각 1점)", pt:1},
+ {id:"S", k:"뇌졸중 기왕력", pt:1},
+ {id:"B", k:"출혈 기왕력 또는 소인", pt:1},
+ {id:"L", k:"불안정한 INR (VKA 사용 시)", pt:1},
+ {id:"E", k:"고령 (>65세)", pt:1},
+ {id:"D", k:"약물(항혈소판·NSAID) 또는 과음 (각 1점)", pt:1}
+];
+
+/* ════════════════ ENGINE LAYER ════════════════ */
+
+/* CHA2DS2-VASc 점수 — 성별 분기 포함 */
+function cha2ds2(sel, isFemale){
+  var s=0; for(var i=0;i<CHADS.length;i++){ if(sel[CHADS[i].id]) s+=CHADS[i].pt; }
+  return s;
+}
+/* 항응고 적응증 판정: 지침 vs 급여 간극 */
+function anticoagDecision(score, isFemale){
+  // 지침: 남 ≥2 / 여 ≥3 추천(I), 남1/여2 고려(IIa), 남0/여1 비투여(I-III)
+  // 급여: ≥2 일괄
+  var nonSexScore = score - (isFemale?1:0); // 성별 제외 실질 위험점수
+  var guide, gradeG, payOk, gap=null;
+  if(nonSexScore>=2){ guide="추천 (항응고제 투여)"; gradeG="I"; }
+  else if(nonSexScore===1){ guide="고려 (개별화 결정)"; gradeG="IIa"; }
+  else { guide="투여하지 않음 (저위험)"; gradeG="III"; }
+  payOk = score>=2;
+  // 간극 케이스
+  if(isFemale && score===2 && nonSexScore===1){
+    gap={type:"female2", msg:"여성 성별점수(1점)만으로 VASc 2점 — 성별 제외 시 VA 1점(저~중등도)이다. 급여는 되나 추가 위험인자가 없으면 항응고 이득이 작다. 2024 ESC는 이런 모호함 때문에 성별을 뺀 CHA₂DS₂-VA로 전환했다. 다른 위험인자 동반 여부로 판단."};
+  } else if(!isFemale && score===1 && nonSexScore===1){
+    gap={type:"male1", msg:"남성 1점 — 지침은 개별화 고려(IIa) 권장하나 현행 급여기준(≥2점)으로는 비급여. 비급여 부담 또는 미투여 선택."};
+  }
+  return {guide:guide, gradeG:gradeG, payOk:payOk, score:score, nonSex:nonSexScore, gap:gap};
+}
+/* Cockcroft-Gault CrCl */
+function crcl(age, wt, scr, isFemale){
+  if(!age||!wt||!scr) return null;
+  var v=((140-age)*wt)/(72*scr); if(isFemale) v*=0.85;
+  return Math.round(v);
+}
+/* DOAC 신기능 밴드 */
+function doacRenalBand(cr){
+  if(cr==null) return null;
+  if(cr>=50) return 0; if(cr>=30) return 1; if(cr>=15) return 2; return 3;
+}
+/* HAS-BLED */
+function hasbled(sel){ var s=0; for(var i=0;i<HASBLED.length;i++){ if(sel[HASBLED[i].id]) s+=HASBLED[i].pt; } return s; }
+
+/* ════════════════ UI: 탭 ════════════════ */
+function switchTab(v){
+  var tabs=document.querySelectorAll('.tab'), views=document.querySelectorAll('.view');
+  for(var i=0;i<tabs.length;i++) tabs[i].classList.toggle('on', tabs[i].getAttribute('data-v')===v);
+  for(var j=0;j<views.length;j++) views[j].classList.toggle('on', views[j].id==='view-'+v);
+  window.scrollTo(0,0);
+}
+function bindTabs(){
+  var tabs=document.querySelectorAll('.tab');
+  for(var i=0;i<tabs.length;i++){ (function(t){ t.onclick=function(){switchTab(t.getAttribute('data-v'));}; })(tabs[i]); }
+}
+/* 모달 */
+function openModal(html){ document.getElementById('modalBody').innerHTML=html; document.getElementById('modal').classList.add('on'); }
+function closeModal(){ document.getElementById('modal').classList.remove('on'); }
+document.getElementById('modal').onclick=function(e){ if(e.target===this) closeModal(); };
+
+/* 아코디언: 제목+부제+본문 → 접이식 */
+var _accId=0;
+function acc(icon, title, sub, body, openDefault){
+  _accId++;
+  return '<div class="acc'+(openDefault?' open':'')+'" id="acc'+_accId+'">'+
+    '<div class="ah" onclick="toggleAcc(this)"><span class="aic">'+icon+'</span>'+
+    '<span class="at">'+title+(sub?' <span class="asub">· '+sub+'</span>':'')+'</span>'+
+    '<span class="acaret">›</span></div><div class="ab">'+body+'</div></div>';
+}
+function toggleAcc(el){ el.parentNode.classList.toggle('open'); }
+
+/* 권고 묶음 → 등급 요약 칩 + 접이식 전체 */
+function recsAccordion(cat, label){
+  var list=[]; for(var i=0;i<AF_RECS.length;i++){ if(AF_RECS[i].cat===cat) list.push(AF_RECS[i]); }
+  if(!list.length) return '';
+  var cnt={I:0,IIa:0,IIb:0,III:0};
+  for(var j=0;j<list.length;j++) cnt[list[j].cor]=(cnt[list[j].cor]||0)+1;
+  var chips='<div class="summary">';
+  var order=["I","IIa","IIb","III"];
+  for(var k=0;k<order.length;k++){ if(cnt[order[k]]) chips+='<span class="scount"><span class="cor '+COR[order[k]].c+'">'+order[k]+'</span><span class="n">'+cnt[order[k]]+'</span></span>'; }
+  chips+='</div>';
+  var body=chips;
+  for(var m=0;m<list.length;m++) body+=recHtml(list[m]);
+  return acc("📋", (label||"권고 사항"), list.length+"개 · 탭하여 펼치기", body, false);
+}
+
+/* 권고 항목 HTML */
+function recHtml(r){
+  var refMap={mandatory:'b-block',consider:'b-refer',comanage:'b-care',direct:'',avoid_note:'b-warn'};
+  var refTxt={mandatory:'⛔ 전문의 의뢰',consider:'전문의 검토',comanage:'협진 관리',avoid_note:'비권고'};
+  var cls=r.ref==='mandatory'?'rec r-mand':(r.ref==='consider'||r.ref==='comanage'?'rec r-refer':'rec');
+  var corObj=COR[r.cor]||{c:''};
+  var refBadge = (r.ref&&r.ref!=='direct') ? '<span class="badge '+refMap[r.ref]+'">'+refTxt[r.ref]+'</span>' : '';
+  return '<div class="'+cls+'"><div class="rh"><span class="cor '+corObj.c+'">'+r.cor+'</span>'+
+    '<span class="loe">LOE '+r.loe+'</span>'+refBadge+'</div><div class="rt">'+r.t+'</div></div>';
+}
+
+/* ════════════════ CONTENT: 도서관 ════════════════ */
+var TOPICS=[
+ {id:"doac", cat:"clin", n:"01", e:"💊", h:"DOAC 약제군 상세 비교", d:"4종 약동학·신기능 감량·고령 출혈·상호작용·역전제 — 선택의 근거",
+  kw:"doac noac 다비가트란 프라닥사 리바록사반 자렐토 아픽사반 엘리퀴스 에독사반 릭시아나 항응고 신기능 crcl 감량 고령 출혈 상호작용 역전제 이다루시주맙 안덱사넷 와파린 트롬빈 xa 반감기 투석 eldercare 드로네다론 p-gp cyp3a4"},
+ {id:"anticoag", cat:"clin", n:"02", e:"🩸", h:"항응고 의사결정", d:"CHA₂DS₂-VASc·HAS-BLED, NOAC>VKA, 좌심방이 폐색술",
+  kw:"항응고 cha2ds2 vasc va has-bled hasbled 뇌졸중 출혈 위험 점수 좌심방이 폐색술 noac vka 와파린 inr ttr 성별"},
+ {id:"reimb", cat:"pay", n:"03", e:"💰", h:"급여 기준 · 지침과의 간극", d:"DOAC ≥2점 일괄, 남1·여2 회색지대, 드로네다론 금기",
+  kw:"급여 보험 심평원 고시 회색지대 남성 여성 비급여 드로네다론 멀택 금기 비판막성 기계판막"},
+ {id:"rate", cat:"clin", n:"04", e:"🫀", h:"심박수 조절", d:"EF 기준 약물 선택, 목표 심박수, 급성기",
+  kw:"심박수 조절 rate 베타차단제 비소프롤롤 카르베딜롤 메토프롤롤 딜티아젬 베라파밀 디곡신 아미오다론 ef 박출률 방실결절 목표 심박동"},
+ {id:"rhythm", cat:"clin", n:"05", e:"〰️", h:"율동 조절", d:"심율동전환, 구조심질환별 항부정맥제, Pill-in-pocket",
+  kw:"율동 조절 rhythm 심율동전환 항부정맥제 플레카이니드 프로파페논 필시카이니드 소타롤 드로네다론 아미오다론 vaughan williams 클래스 ic iii 구조심질환 pill in pocket 전기 약물"},
+ {id:"ablation", cat:"refer", n:"06", e:"🏥", h:"절제술 — 의뢰 시점", d:"약물 실패 후 게이트, 전문의 의뢰 기준",
+  kw:"절제술 카테터 전극도자 폐정맥 격리 의뢰 전문의 약물실패 빈맥유발심근병증 냉각풍선 시술"},
+ {id:"kcd", cat:"pay", n:"07", e:"🏷️", h:"질병코드 (KCD)", d:"I48 심방세동 분류, 청구 연계",
+  kw:"kcd icd 질병코드 상병 i48 i47 i49 i44 발작성 지속성 영구형 심방조동 청구"}
+];
+function buildLibrary(){
+  var v=document.getElementById('view-lib'); var h='';
+  h+='<div class="searchbar"><span class="mag">🔍</span><input id="libSearch" placeholder="약물·상황 검색 (예: 아픽사반, 신기능, 출혈)" oninput="filterLib(this.value)"></div>';
+  h+='<div class="grid" id="libGrid">';
+  for(var i=0;i<TOPICS.length;i++){ var t=TOPICS[i];
+    h+='<div class="topic" data-id="'+t.id+'" data-kw="'+(t.kw||'')+'" onclick="openTopic(\''+t.id+'\')"><span class="strip s-'+t.cat+'"></span>'+
+       '<span class="tnum">'+t.e+' '+t.n+'</span><h4>'+t.h+'</h4><p>'+t.d+'</p></div>';
+  }
+  h+='</div>';
+  h+='<div id="libNoResult" style="display:none;text-align:center;padding:20px 12px;color:var(--ink-faint);font-size:13px"></div>';
+  h+='<div class="detail" id="libDetail"></div>';
+  h+='<div class="discl">임상 판단 보조 도구입니다. 모든 처방·청구·의뢰의 최종 결정과 책임은 의료진에게 있습니다. 시술·기기 적응증은 본 도구가 판정하지 않습니다.</div>';
+  v.innerHTML=h;
+}
+function filterLib(q){
+  q=(q||'').toLowerCase().trim();
+  var topics=document.querySelectorAll('#libGrid .topic');
+  var shown=0;
+  for(var i=0;i<topics.length;i++){
+    var t=topics[i];
+    var hay=(t.textContent+' '+(t.getAttribute('data-kw')||'')).toLowerCase();
+    var match=!q||hay.indexOf(q)>=0;
+    t.style.display=match?'':'none';
+    if(match) shown++;
+  }
+  var nr=document.getElementById('libNoResult');
+  if(q && shown===0){ nr.style.display='block'; nr.innerHTML='"'+q+'" 검색 결과가 없습니다.<br>약물명·증상·기준으로 다시 검색해 보세요.'; }
+  else nr.style.display='none';
+}
+function openTopic(id){
+  var d=document.getElementById('libDetail');
+  document.getElementById('libGrid').style.display='none';
+  if(document.getElementById('libNoResult')) document.getElementById('libNoResult').style.display='none';
+  d.classList.add('on');
+  d.innerHTML='<button class="backbtn" onclick="closeTopic()">‹ 토픽 목록</button>'+
+    '<div class="topicbody">'+TOPIC_BODY[id]()+'</div>';
+  window.scrollTo(0,0);
+}
+function closeTopic(){
+  document.getElementById('libDetail').classList.remove('on');
+  document.getElementById('libGrid').style.display='';
+}
+
+/* 토픽 본문 빌더 */
+var TOPIC_BODY={
+ doac:function(){ return doacTopic(); },
+ anticoag:function(){ return anticoagTopic(); },
+ reimb:function(){ return reimbTopic(); },
+ rate:function(){ return catRecsTopic("심박수","심박수 조절","EF 40% 기준으로 1차 약제가 갈린다."); },
+ rhythm:function(){ return catRecsTopic("율동","율동 조절","구조적 심질환 유무가 항부정맥제 선택을 가른다."); },
+ ablation:function(){ return ablationTopic(); },
+ kcd:function(){ return kcdTopic(); }
+};
+
+/* DOAC 비교 토픽 — 핵심 */
+function doacTopic(){
+  var h='<div class="eyebrow" style="color:var(--clin)">약제 종류별 설명</div><h2 class="sec">DOAC 약제군 상세 비교</h2>';
+  h+='<p class="lead">DOAC(직접 경구 항응고제, 과거 NOAC). 4종은 효능은 대등하나 약동학·상호작용·역전제가 달라 환자별 선택이 갈린다.</p>';
+
+  // 메인: 한눈 비교표 (항상 보임)
+  h+='<div class="scroll"><table class="tbl"><tr><th>항목</th>';
+  for(var i=0;i<DOAC.length;i++) h+='<th>'+DOAC[i].kr+'<br><span class="muted" style="font-weight:400">'+DOAC[i].brand+'</span></th>';
+  h+='</tr>';
+  var rows=[
+   ["계열", function(d){return d.klass.indexOf('IIa')>=0?'직접 트롬빈<br>억제 (IIa)':'Xa 억제';}],
+   ["표준 용량", function(d){return d.std;}],
+   ["감량 용량", function(d){return d.low;}],
+   ["복용 횟수", function(d){return d.std.indexOf('2회')>=0?'1일 2회':'1일 1회';}],
+   ["신장 배설", function(d){return d.renalExcr+'%';}],
+   ["반감기", function(d){return d.half;}],
+   ["역전제", function(d){return d.reversalOk?'<b>'+d.reversal.split(' (')[0]+'</b>':d.reversal.split(' (')[0];}]
+  ];
+  for(var r=0;r<rows.length;r++){
+    h+='<tr><th>'+rows[r][0]+'</th>';
+    for(var c=0;c<DOAC.length;c++){ var cls=(rows[r][0]==='신장 배설'||rows[r][0]==='역전제')?' class="hl"':''; h+='<td'+cls+'>'+rows[r][1](DOAC[c])+'</td>'; }
+    h+='</tr>';
+  }
+  h+='</table></div>';
+  h+='<div class="flag info" style="font-size:12px">신배설↑(다비 80%)=신기능 민감 · 단백결합↑(리바·아픽 ≥87%)=투석 제거 안 됨 · 전구약물(다비)=보관 민감.</div>';
+
+  // 아코디언: 약제별 카드 (각 약제 개별)
+  var cardBody='';
+  for(var k=0;k<DOAC.length;k++){ var d=DOAC[k];
+    cardBody+='<div class="doaccard"><div class="dh"><span class="dn">'+d.kr+'</span><span class="db">'+d.brand+'</span><span class="dclass">'+d.klass+'</span></div>';
+    cardBody+='<div class="kv"><span class="k">용량</span><span class="v">'+d.std+' (감량 '+d.low+(d.min?' / 최소 '+d.min:'')+')</span>';
+    cardBody+='<span class="k">감량 기준</span><span class="v">'+d.reduceRule+'</span>';
+    cardBody+='<span class="k">투석</span><span class="v">'+d.dialysis+'</span></div>';
+    cardBody+='<div class="flag '+(d.reversalOk?'ok':'info')+'" style="margin-top:8px"><b>특징</b> '+d.tip+'</div>';
+    if(d.highCrcl) cardBody+='<div class="flag alert"><div class="ft">⚠ 고기능 신장 주의</div>'+d.highCrcl+'</div>';
+    cardBody+='</div>';
+  }
+  h+=acc("💊","약제별 특성 · 선택 포인트","4종 개별 상세",cardBody,false);
+
+  // 아코디언: 신기능 용량
+  var renalBody='<p class="lead" style="margin-top:4px">신기능은 <b>Cockcroft-Gault CrCl</b>로 평가(eGFR 아님). 고령·저체중에서 eGFR은 과대평가 가능.</p>';
+  renalBody+='<div class="scroll"><table class="tbl"><tr><th>CrCl</th><th>다비</th><th>리바</th><th>아픽</th><th>에독</th></tr>';
+  for(var m=0;m<DOAC_RENAL.length;m++){ var rr=DOAC_RENAL[m]; var danger=m>=2?' class="hl"':'';
+    renalBody+='<tr><th>'+rr.band+'</th><td'+danger+'>'+rr.dabi+'</td><td'+danger+'>'+rr.riva+'</td><td'+danger+'>'+rr.apix+'</td><td'+danger+'>'+rr.edox+'</td></tr>'; }
+  renalBody+='</table></div>';
+  renalBody+='<div class="flag warn"><div class="ft">중증 신질환 (CrCl 15–29)</div>대규모 RCT는 CrCl<30 제외. 2024 KHRS는 Xa 억제제 조심스럽게 사용 가능. 미국: 다비 75mg BID, 유럽: 저용량 Xa.</div>';
+  renalBody+='<div class="flag block"><div class="ft">말기 신질환 (CrCl<15 / 투석)</div>와파린·DOAC 모두 이득 근거 부족. 신장내과 협의 + 공유결정.</div>';
+  h+=acc("🫘","신기능(CrCl)별 용량","그림 10 · 감량 매트릭스",renalBody,false);
+
+  // 아코디언: 고령·출혈
+  var elderBody='<div class="flag info">고령·저체중은 출혈 위험↑ → 감량 고려. <b>아픽사반·에독사반</b>이 60kg 이하 저체중·고령에서 선호. '+
+    '★임의 저용량(off-label) 금물 — 국내 30~50%가 부적절 감량, 뇌졸중 예방 손상 가능. on-label 준수.</div>';
+  elderBody+='<div class="flag ok"><div class="ft">ELDERCARE-AF</div>표준 항응고 부적합한 <b>80세+ 고위험</b>에서 에독사반 15mg이 위약 대비 뇌졸중/전신색전 절대위험 4.4%/년 감소(주요출혈 비유의 1.5%/년↑). "항응고 포기" 대신 초저용량.</div>';
+  h+=acc("👴","고령 · 출혈 고위험 감량","ELDERCARE-AF · off-label 주의",elderBody,false);
+
+  // 아코디언: 상호작용
+  var ddiBody='<p class="lead" style="margin-top:4px">DOAC은 P-gp 기질, 일부 CYP3A4 대사. 강력 억제제와 병용 회피. AF에 흔한 항부정맥제가 상호작용원.</p>';
+  ddiBody+='<div class="scroll"><table class="tbl"><tr><th>병용약</th><th>기전</th><th>다비</th><th>리바</th><th>아픽</th><th>에독</th></tr>';
+  for(var x=0;x<DDI.length;x++){ var dd=DDI[x];
+    var rivaCell=dd.riva.indexOf('금지')>=0?'<b style="color:var(--block)">'+dd.riva+'</b>':dd.riva;
+    ddiBody+='<tr><th>'+dd.drug+'</th><td class="muted" style="font-size:11px">'+dd.mech+'</td><td>'+dd.dabi+'</td><td>'+rivaCell+'</td><td>'+dd.apix+'</td><td>'+dd.edox+'</td></tr>'; }
+  ddiBody+='</table></div>';
+  ddiBody+='<div class="flag block"><div class="ft">⛔ 드로네다론 + 리바록사반</div>병용 금지. 에독사반은 30mg 감량, 다비가트란 +70~100%.</div>';
+  ddiBody+='<div class="flag warn"><div class="ft">강력 억제제 (케토코나졸·이트라코나졸·HIV PI)</div>P-gp+CYP3A4 동시 억제로 농도 급상승 → 병용 회피. 리팜피신(유도제)은 효과 감소.</div>';
+  h+=acc("⚠️","약물 상호작용","P-gp / CYP3A4 · 표 7",ddiBody,false);
+
+  h+='<p class="src">출처: 2024 KHRS PART 3 (NOAC), 표 4·6·7, 그림 10.</p>';
+  return h;
+}
+
+/* 항응고 토픽 */
+function anticoagTopic(){
+  var h='<div class="eyebrow" style="color:var(--clin)">의사결정</div><h2 class="sec">항응고 의사결정</h2>';
+  h+='<p class="lead">ABC pathway의 A. 뇌졸중 위험(CHA₂DS₂-VASc) 평가 후, NOAC을 와파린보다 우선 고려. 출혈 위험(HAS-BLED)은 중단 사유가 아니다.</p>';
+  h+='<div class="flag info" style="font-size:12.5px">점수 계산과 적응증 판정은 <b>플로우 탭</b>에서 환자 입력 시 자동 산출됩니다.</div>';
+  // CHADS 아코디언
+  var ch='<table class="tbl"><tr><th>항목</th><th>내용</th><th class="c">점수</th></tr>';
+  for(var i=0;i<CHADS.length;i++){ var hl=(CHADS[i].id==='Sc')?' class="hl"':''; ch+='<tr'+hl+'><th>'+CHADS[i].id+'</th><td>'+CHADS[i].k+'</td><td class="c">'+CHADS[i].pt+'</td></tr>'; }
+  ch+='</table><div class="flag info" style="font-size:12px">최대 9점.</div>';
+  ch+='<div class="flag warn"><div class="ft">⚠ 국제 동향 — 성별 항목 제외 (CHA₂DS₂-VA)</div>'+
+     '<b>2024 ESC</b>는 성별(Sc, 여성 1점)을 뺀 <b>CHA₂DS₂-VA</b>로 전환했다(근거수준 C). 여성 성별을 독립 위험인자가 아닌 <b>위험 수정자(risk modifier)</b>로 재정의 — 성별 기반 과잉치료를 줄이고, 비이분법·트랜스젠더·성호르몬 치료자를 누락하지 않기 위함. VA ≥2 고위험, =1 고위험 인자.<br>'+
+     '<b>단, 2024 KHRS(국내)는 여전히 CHA₂DS₂-VASc(성별 포함)를 사용</b>한다. 본 도구는 KHRS 기준에 따라 VASc로 계산하되, 성별만으로 2점(여성)인 경우의 해석 차이를 플로우에서 함께 안내한다.</div>';
+  h+=acc("🩸","CHA₂DS₂-VASc","뇌졸중 위험 점수 · VA 전환 안내",ch,false);
+  // HASBLED 아코디언
+  var bl='<table class="tbl"><tr><th>항목</th><th>내용</th><th class="c">점수</th></tr>';
+  for(var j=0;j<HASBLED.length;j++) bl+='<tr><th>'+HASBLED[j].id+'</th><td>'+HASBLED[j].k+'</td><td class="c">'+HASBLED[j].pt+'</td></tr>';
+  bl+='</table><div class="flag warn" style="margin-top:6px"><div class="ft">≥3점 = 출혈 고위험</div>항응고 중단 사유 아님. 교정 가능 위험인자 관리 + 더 자주 추적 (III-A).</div>';
+  h+=acc("🩹","HAS-BLED","출혈 위험 점수",bl,false);
+  // 권고 아코디언
+  h+=recsAccordion("항응고","항응고 권고");
+  h+='<p class="src">출처: 2024 KHRS PART 1, ABC pathway · A.</p>';
+  return h;
+}
+/* 급여 토픽 */
+function reimbTopic(){
+  var h='<div class="eyebrow" style="color:var(--pay)">급여 기준</div><h2 class="sec">급여 기준 · 지침과의 간극</h2>';
+  // 메인: 간극 비교 (핵심)
+  h+='<div class="gap"><div class="g-guide"><div class="gl">지침 (2024 KHRS)</div><div class="gv">≥2점(남)/≥3점(여) 추천 (I-A)<br>1점(남)/2점(여) 개별화 고려 (IIa-B)</div></div>'+
+     '<div class="g-pay"><div class="gl">급여 (심평원)</div><div class="gv">CHA₂DS₂-VASc <b>≥2점 일괄</b><br>(2015.7.1, 비판막성 AF)</div></div></div>';
+  // 회색지대 아코디언
+  var gray='<div class="flag warn"><div class="ft">① 여성 2점</div>성별점수(1점)만으로 2점이면 급여는 되나 지침상 추가 위험인자 없으면 저위험. 다른 위험인자 동반 시에만 항응고 권장.</div>'+
+    '<div class="flag alert"><div class="ft">② 남성 1점</div>지침은 개별화 고려(IIa)하나 급여 안 됨(≥2점 미달). 비급여 부담 또는 미투여. 국내 학계 급여 확대 요구 집단.</div>';
+  h+=acc("⚖️","회색지대 — 급여 안 되는 지침 권고","여성 2점 · 남성 1점",gray,false);
+  // 드로네다론 아코디언
+  var dro='<div class="flag block"><div class="ft">⛔ 금기</div><b>심부전·좌심실 수축기능부전</b> 또는 <b>영구형 AF(I48.21)</b> 투여 금기. PALLAS에서 심혈관 사망·뇌졸중·입원 증가로 조기 중단.</div>'+
+    '<div class="flag info" style="font-size:12px">급여 연혁: 2013.4 등재 → 2016.6 기저 심질환 없는 환자까지 확대. 복용 중 6개월마다 ECG 권장.</div>';
+  h+=acc("💊","항부정맥제 — 드로네다론(멀택)","금기 · 급여 연혁",dro,false);
+  h+='<div class="flag info" style="font-size:12px">DOAC 4종 모두 비판막성 AF 급여. 기계판막·중등도+ 승모판협착은 비판막성 아님 → 와파린 영역.</div>';
+  h+='<p class="src">출처: 약학정보원 DOAC 급여(2015.7.1) · 식약처 멀택 허가 · 메디칼타임즈(2016.6.1).</p>';
+  return h;
+}
+/* 약물 카드 렌더 (심박수/율동 공통) */
+function rateDrugCard(d){
+  var h='<div class="doaccard"><div class="dh"><span class="dn">'+d.kr+'</span><span class="db">'+d.drugs+'</span></div>';
+  h+='<div class="kv"><span class="k">용량</span><span class="v">'+d.dose+'</span>';
+  h+='<span class="k">EF 기준</span><span class="v">'+d.ef+'</span>';
+  h+='<span class="k">주의</span><span class="v">'+d.caution+'</span></div>';
+  h+='<div class="flag info" style="margin-top:8px;font-size:12.5px"><b>포인트</b> '+d.note+'</div></div>';
+  return h;
+}
+function rhythmDrugCard(d){
+  var sCls={contra:'block',caution:'warn',ok:'ok'}[d.struct]||'info';
+  var h='<div class="doaccard"><div class="dh"><span class="dn">'+d.kr+'</span><span class="dclass">'+d.vw+'</span></div>';
+  h+='<div class="kv"><span class="k">용량</span><span class="v">'+d.dose+'</span>';
+  h+='<span class="k">주의</span><span class="v">'+d.caution+'</span></div>';
+  h+='<div class="flag '+sCls+'" style="margin-top:8px;font-size:12.5px">'+d.structTxt+'</div>';
+  h+='<div class="flag info" style="font-size:12.5px"><b>포인트</b> '+d.note+'</div></div>';
+  return h;
+}
+
+/* 카테고리 권고 토픽 (심박수/율동) */
+function catRecsTopic(cat,title,lead){
+  var h='<div class="eyebrow" style="color:var(--clin)">권고</div><h2 class="sec">'+title+'</h2><p class="lead">'+lead+'</p>';
+  if(cat==='심박수'){
+    // 메인: 목표 + EF 기준 선택
+    h+='<div class="flag info"><div class="ft">목표 심박수</div>'+RATE_TARGET.main+'</div>';
+    h+='<div class="gap"><div class="g-guide"><div class="gl">EF ≥ 40%</div><div class="gv">베타차단제 · 디곡신 · 베라파밀 · 딜티아젬</div></div>'+
+       '<div class="g-pay" style="background:var(--block-bg)"><div class="gl" style="color:var(--block)">EF < 40%</div><div class="gv">베타차단제 ± 디곡신<br><b>CCB 회피</b> (음성 수축력)</div></div></div>';
+    // 약물 카드 (메인 노출)
+    h+='<h3 class="sub">약제별 상세</h3>';
+    for(var i=0;i<RATE_DRUGS.length;i++) h+=rateDrugCard(RATE_DRUGS[i]);
+    h+=recsAccordion('심박수','심박수 조절 권고');
+  }
+  if(cat==='율동'){
+    // 메인: 구조심질환 분기
+    h+='<div class="flag info"><div class="ft">선택 원칙 — 구조적 심질환 유무</div><b>없음</b>: Class IC(플레카이니드·프로파페논·필시카이니드), 소타롤, 드로네다론 사용 가능. <b>허혈성·구조심질환·심부전</b>: IC 금기 → 아미오다론(유일하게 모두 허용).</div>';
+    // 약물 카드 (VW 순)
+    h+='<h3 class="sub">항부정맥제 상세 (Vaughan-Williams)</h3>';
+    for(var j=0;j<RHYTHM_DRUGS.length;j++) h+=rhythmDrugCard(RHYTHM_DRUGS[j]);
+    h+='<div class="flag warn" style="font-size:12.5px"><div class="ft">Pill-in-the-pocket</div>병원에서 안전성 확인 후, 구조심질환 없는 환자는 플레카이니드 200–300 mg 또는 프로파페논 450–600 mg을 발작 시 자가 복용 가능.</div>';
+    h+=recsAccordion('율동','율동 조절 권고');
+  }
+  h+='<p class="src">출처: 2024 KHRS PART 1 · 2018 EKJM 심박수/율동 시리즈. 용량·금기는 지침 표 기준.</p>';
+  return h;
+}
+/* 절제술 의뢰 토픽 */
+function ablationTopic(){
+  var h='<div class="eyebrow" style="color:var(--refer)">의뢰 시점</div><h2 class="sec">절제술 — 의뢰 시점</h2>';
+  h+='<p class="lead">카테터 절제술의 적응증·전략·기법은 부정맥 중재시술 전문의의 영역이다. 본 도구는 적응증을 판정하지 않으며, 언제 의뢰할지를 돕는다.</p>';
+  // 핵심 근거 한 줄
+  h+='<div class="flag info"><div class="ft">핵심 근거</div>약물 실패 후 절제술은 항부정맥제 대비 <b>부정맥 재발·증상·삶의 질에서 우월</b>(다수 RCT). 일반적으로 <b>Class I/III 항부정맥제 실패·불내성 시 이차 치료</b>로 권고된다.</div>';
+  // 의뢰 배너
+  h+='<div class="refbanner mand"><b>⛔ 반드시 의뢰 (Class I)</b>증상성 AF에서 Class I/III 항부정맥제 실패·불내성, 빈맥유발심근병증 강하게 의심 시 — 전문의 의뢰.</div>';
+  h+='<div class="refbanner consider"><b>전문의 검토 권유</b>베타차단제 실패 후 율동조절, 재발성 AF 등에서 절제술 적응증 검토. 전문의 상담 고려.</div>';
+  h+='<div class="flag info" style="font-size:12.5px"><div class="ft">시술 전후 항응고 (협진)</div>절제술 후 경구항응고제 최소 2개월 유지. 이후 지속은 율동 상태가 아니라 CHA₂DS₂-VASc 위험으로 결정.</div>';
+  // 나머지 근거 → 아코디언
+  var recBody='';
+  for(var k=0;k<AF_RECS.length;k++){ if(AF_RECS[k].cat==='율동'&&(AF_RECS[k].ref==='mandatory'||AF_RECS[k].ref==='consider')) recBody+=recHtml(AF_RECS[k]); }
+  if(recBody) h+=acc("📋","절제술 관련 권고 (상세)","근거 등급별 · 탭하여 펼치기",recBody,false);
+  h+='<p class="src">출처: 2024 KHRS PART 2 (절제술), PART 1.</p>';
+  return h;
+}
+/* KCD 토픽 */
+function kcdTopic(){
+  var rows=[
+   ["I48.0","발작성 심방세동","paroxysmal"],["I48.11","장기지속성 심방세동","longstanding"],
+   ["I48.19","기타 지속성 심방세동","persistent"],["I48.20","만성 심방세동, 상세불명","chronic"],
+   ["I48.21","영구형 심방세동","permanent ★드로네다론 금기"],["I48.3","전형적 심방조동","flutter"],
+   ["I48.4","비전형 심방조동","flutter"],["I48.91","상세불명 심방세동","unspec"]
+  ];
+  var h='<div class="eyebrow" style="color:var(--pay)">질병코드</div><h2 class="sec">질병코드 (KCD) · 심방세동</h2>';
+  h+='<p class="lead">AF 유형이 코드와 1:1로 매핑된다. 3자리 표제어(I48)는 주상병 불가 → 세분코드로 청구.</p>';
+  h+='<div class="scroll"><table class="tbl"><tr><th>코드</th><th>명칭</th><th>연계</th></tr>';
+  for(var i=0;i<rows.length;i++){ var hl=rows[i][0]==='I48.21'?' class="hl"':''; h+='<tr><th'+hl+'>'+rows[i][0]+'</th><td>'+rows[i][1]+'</td><td class="muted" style="font-size:11px">'+rows[i][2]+'</td></tr>'; }
+  h+='</table></div>';
+  h+='<div class="flag info"><div class="ft">연계 코드</div>I47.1 상심실성빈맥 · I47.2 심실빈맥 · I49.5 동기능부전 · I44 방실차단 · R55 실신 · I63 뇌경색(합병증) · Z79.01 장기 항응고제 사용.</div>';
+  h+='<p class="src">기준: ICD-10 / KCD. 실제 청구 가능 여부는 심평원 상병마스터로 확인.</p>';
+  return h;
+}
+
+/* ════════════════ CONTENT: 시뮬레이션 ════════════════ */
+function buildSim(){
+  var v=document.getElementById('view-sim'); var h='';
+  h+='<div class="card"><div class="eyebrow">단계 점검</div><h2 class="sec">심방세동 통합 점검 (ABC)</h2>'+
+     '<p class="lead">A 항응고 → B 증상조절(심박수·율동) → C 위험인자. 각 단계를 체크하며 챙길 항목을 누적합니다.</p></div>';
+  var steps=[
+   {t:"A · 뇌졸중 위험 평가", items:["CHA₂DS₂-VASc 점수 계산했다","HAS-BLED 출혈위험 평가했다","교정 가능한 출혈 위험인자 확인했다"]},
+   {t:"A · 항응고제 선택", items:["DOAC을 와파린보다 우선 고려했다","신기능(CrCl, Cockcroft-Gault) 확인했다","고령·저체중 시 감량 기준 검토했다","병용약(P-gp/CYP3A4 상호작용) 확인했다"]},
+   {t:"B · 심박수 조절", items:["목표 심박수 설정했다 (안정시 <110)","EF 기준 1차 약제 선택했다"]},
+   {t:"B · 율동 조절", items:["증상 기반 율동조절 필요성 평가했다","구조적 심질환 유무로 항부정맥제 선택했다","절제술 의뢰 필요성 검토했다"]},
+   {t:"C · 위험인자 관리", items:["고혈압·당뇨·비만·음주 등 동반질환 관리했다","상병코드 확인했다 (영구형이면 드로네다론 금기)"]}
+  ];
+  for(var s=0;s<steps.length;s++){
+    h+='<div class="card"><h3 class="sub" style="margin-top:0">'+steps[s].t+'</h3>';
+    for(var i=0;i<steps[s].items.length;i++){
+      var id='ck'+s+'_'+i;
+      h+='<label style="display:flex;gap:9px;align-items:flex-start;padding:6px 0;cursor:pointer;font-size:13.5px">'+
+         '<input type="checkbox" id="'+id+'" onchange="simUpdate()" style="margin-top:3px;width:17px;height:17px;flex-shrink:0"><span>'+steps[s].items[i]+'</span></label>';
+    }
+    h+='</div>';
+  }
+  h+='<div class="card" id="simSummary" style="position:sticky;bottom:12px"><div class="eyebrow">진행</div><div id="simBar">0개 항목 점검</div></div>';
+  v.innerHTML=h;
+}
+function simUpdate(){
+  var boxes=document.querySelectorAll('#view-sim input[type=checkbox]');
+  var done=0; for(var i=0;i<boxes.length;i++) if(boxes[i].checked) done++;
+  var pct=Math.round(done/boxes.length*100);
+  document.getElementById('simBar').innerHTML='<b>'+done+'/'+boxes.length+'</b> 항목 점검 · '+pct+'%'+
+    (pct===100?' <span class="badge b-ok">완료</span>':'');
+}
+
+/* ════════════════ CONTENT: 플로우 ════════════════ */
+function buildFlow(){
+  var v=document.getElementById('view-flow'); var h='';
+  h+='<div class="card"><div class="eyebrow">실시간 입력</div><h2 class="sec">환자 입력 → 권고</h2>'+
+     '<p class="lead">환자 정보를 입력하면 항응고 적응증(지침·급여 간극 포함), DOAC 신기능 용량, 의뢰 필요성을 산출합니다.</p>';
+  h+='<div class="field"><label>성별</label><div class="chips"><span class="chip on" id="sexM" onclick="setSex(0)">남성</span><span class="chip" id="sexF" onclick="setSex(1)">여성</span></div></div>';
+  h+='<div class="row3"><div class="field"><label>나이</label><input type="number" id="fAge" inputmode="numeric" placeholder="세" oninput="flowRun()"></div>'+
+     '<div class="field"><label>체중</label><input type="number" id="fWt" inputmode="decimal" placeholder="kg" oninput="flowRun()"></div>'+
+     '<div class="field"><label>혈청 Cr</label><input type="number" id="fScr" inputmode="decimal" placeholder="mg/dL" step="0.1" oninput="flowRun()"></div></div>';
+  h+='<div class="field"><label>CHA₂DS₂-VASc 위험인자 (나이·성별 자동 반영)</label><div class="chips" id="chadsChips"></div></div>';
+  h+='<div class="field"><label>HAS-BLED 출혈 위험인자</label><div class="chips" id="bledChips"></div></div>';
+  h+='<div class="field"><label>현재 상태 / 동반</label><div class="chips" id="condChips"></div></div>';
+  h+='</div>';
+  h+='<div id="flowOut"></div>';
+  v.innerHTML=h;
+  // 칩 렌더
+  var cc='';
+  for(var i=0;i<CHADS.length;i++){ if(CHADS[i].id==='A2'||CHADS[i].id==='A'||CHADS[i].id==='Sc') continue; // 나이·성별 자동
+    cc+='<span class="chip" data-ch="'+CHADS[i].id+'" onclick="toggleChip(this);flowRun()">'+CHADS[i].k.split(' (')[0]+'</span>'; }
+  document.getElementById('chadsChips').innerHTML=cc;
+  var bc='';
+  for(var j=0;j<HASBLED.length;j++){ bc+='<span class="chip" data-bl="'+HASBLED[j].id+'" onclick="toggleChip(this);flowRun()">'+HASBLED[j].k.split(' (')[0]+'</span>'; }
+  document.getElementById('bledChips').innerHTML=bc;
+  var conds=[["permanent","영구형 AF"],["hf","심부전"],["structural","구조적 심질환"],["mech_valve","기계판막/승모판협착"]];
+  var ccc='';
+  for(var k=0;k<conds.length;k++) ccc+='<span class="chip pt2" data-cond="'+conds[k][0]+'" onclick="toggleChip(this);flowRun()">'+conds[k][1]+'</span>';
+  document.getElementById('condChips').innerHTML=ccc;
+  flowRun();
+}
+var FLOW={sex:0};
+function setSex(s){ FLOW.sex=s; document.getElementById('sexM').classList.toggle('on',s===0); document.getElementById('sexF').classList.toggle('on',s===1); flowRun(); }
+function toggleChip(el){ el.classList.toggle('on'); }
+function chipSet(attr){ var o={}; var els=document.querySelectorAll('['+attr+']'); for(var i=0;i<els.length;i++){ if(els[i].classList.contains('on')) o[els[i].getAttribute(attr)]=true; } return o; }
+
+function flowRun(){
+  var age=parseFloat(document.getElementById('fAge').value)||0;
+  var wt=parseFloat(document.getElementById('fWt').value)||0;
+  var scr=parseFloat(document.getElementById('fScr').value)||0;
+  var isF=FLOW.sex===1;
+  var chSel=chipSet('data-ch'); var blSel=chipSet('data-bl'); var cond=chipSet('data-cond');
+  // 나이·성별 자동 반영
+  if(age>=75) chSel['A2']=true; else if(age>=65) chSel['A']=true;
+  if(isF) chSel['Sc']=true;
+  var score=cha2ds2(chSel,isF);
+  var bled=hasbled(blSel);
+  var dec=anticoagDecision(score,isF);
+  var cr=crcl(age,wt,scr,isF);
+  var band=doacRenalBand(cr);
+
+  var h='';
+  // 점수
+  h+='<div class="card"><div class="scorebox">';
+  var riskCls=score>=2?'risk-hi':(score===1?'risk-mid':'risk-lo');
+  h+='<div class="scoreitem '+riskCls+'"><div class="sv">'+score+'</div><div class="sl">CHA₂DS₂-VASc</div></div>';
+  h+='<div class="scoreitem"><div class="sv">'+dec.nonSex+'</div><div class="sl">VA (성별 제외)</div></div>';
+  h+='<div class="scoreitem '+(bled>=3?'risk-hi':'risk-lo')+'"><div class="sv">'+bled+'</div><div class="sl">HAS-BLED</div></div>';
+  h+='</div>';
+  if(cr!=null) h+='<div class="flag info" style="font-size:12px;margin-top:0">CrCl '+cr+' mL/min (Cockcroft-Gault)</div>';
+  // 항응고 판정 + 간극
+  h+='<h3 class="sub">항응고 적응증</h3>';
+  h+='<div class="gap"><div class="g-guide"><div class="gl">지침</div><div class="gv"><span class="cor '+(COR[dec.gradeG]?COR[dec.gradeG].c:'')+'">'+dec.gradeG+'</span> '+dec.guide+'</div></div>'+
+     '<div class="g-pay"><div class="gl">급여</div><div class="gv">'+(dec.payOk?'<span class="badge b-pay">급여 인정 (≥2점)</span>':'<span class="badge b-block">비급여 (≥2점 미달)</span>')+'</div></div></div>';
+  if(dec.gap){
+    var fc=dec.gap.type==='female2'?'warn':'alert';
+    h+='<div class="flag '+fc+'"><div class="ft">⚠ 지침–급여 간극</div>'+dec.gap.msg+'</div>';
+  }
+  if(score>=2||dec.gradeG==='I'){
+    h+='<div class="flag info">DOAC을 와파린보다 우선 고려 (I-A). 신기능·병용약·고령 반영하여 약제·용량 선택.</div>';
+  }
+  if(bled>=3) h+='<div class="flag warn"><div class="ft">출혈 고위험 (HAS-BLED '+bled+')</div>항응고 중단 사유 아님. 교정 가능 위험인자 관리 + 더 자주 추적.</div>';
+  h+='</div>';
+
+  // DOAC 신기능 용량
+  if(cr!=null){
+    h+='<div class="card"><h3 class="sub" style="margin-top:0">DOAC 신기능 용량 (CrCl '+cr+')</h3>';
+    if(band===3){
+      h+='<div class="flag block"><div class="ft">말기 신질환 / 투석 영역</div>다비가트란·리바록사반 금기. 아픽사반/에독사반도 데이터 부족 → 신장내과 협의·공유결정.</div>';
+    } else {
+      var rr=DOAC_RENAL[band];
+      h+='<div class="scroll"><table class="tbl"><tr><th>다비가트란</th><th>리바록사반</th><th>아픽사반</th><th>에독사반</th></tr>'+
+         '<tr><td>'+rr.dabi+'</td><td>'+rr.riva+'</td><td>'+rr.apix+'</td><td>'+rr.edox+'</td></tr></table></div>';
+      if(band>=1) h+='<div class="flag warn">신기능 저하 — 감량 기준 충족 여부를 약제별로 확인하십시오. 저체중·고령 동반 시 아픽사반/에독사반 선호.</div>';
+      if(cr>95) h+='<div class="flag alert"><div class="ft">CrCl >95</div>에독사반은 고기능 신장에서 뇌졸중 예방 효과 감소 경고(라벨) — 다른 약제 고려.</div>';
+    }
+    h+='<div class="flag info" style="font-size:12px">CrCl은 Cockcroft-Gault 추정값. 임상 확인 필수.</div></div>';
+  }
+
+  // 금기/플래그
+  var flags=[];
+  if(cond['mech_valve']) flags.push(['block','기계판막 / 중등도+ 승모판협착','비판막성 AF 아님 → DOAC 금기. 와파린(INR 목표 판막 기준) 영역.']);
+  if(cond['permanent']||cond['hf']) flags.push(['block','드로네다론 금기','영구형 AF 또는 심부전 — 드로네다론 투여 금기 (PALLAS).']);
+  if(cond['structural']) flags.push(['warn','구조적 심질환','율동조절 시 Class IC(플레카이니드·프로파페논) 금기 → 아미오다론 고려.']);
+  for(var f=0;f<flags.length;f++) h+='<div class="flag '+flags[f][0]+'"><div class="ft">'+flags[f][1]+'</div>'+flags[f][2]+'</div>';
+
+  // 의뢰
+  h+='<div class="card"><h3 class="sub" style="margin-top:0">의뢰 / 다음 단계</h3>'+
+     '<div class="flag info">증상성 AF에서 항부정맥제 실패·불내성 시 절제술 적응증 검토 → 부정맥 전문의 의뢰. 절제술 적응증은 본 도구가 판정하지 않습니다.</div></div>';
+
+  document.getElementById('flowOut').innerHTML=h;
+}
+
+/* ════════════════ 푸터 + 초기화 ════════════════ */
+function buildFooter(){
+  var srcs=[
+   {t:"대한부정맥학회 《2024 부정맥 진료지침》", d:"PART 1 심방세동 일반 치료 · PART 2 시술적 치료 · PART 3 NOAC 치료", url:"https://k-hrs.org/expert/guide/atrial", link:"k-hrs.org 진료지침 다운로드"},
+   {t:"2024 심방세동 일반 치료 진료지침 (PART 1) PDF", d:"심박수·율동 조절, 항응고 ABC pathway, CHA₂DS₂-VASc 권고", url:"https://k-hrs.org/assets/file/01_2024_Korean_Arrhythmia_Society_General_Guidelines.pdf", link:"PDF 원문 열기"},
+   {t:"대한부정맥학회 보험정보", d:"부정맥 약제·시술 급여기준 안내", url:"https://k-hrs.org/expert/insurance", link:"보험정보 페이지"},
+   {t:"약학정보원 — 경구용 항응고제(DOAC)", d:"DOAC 급여기준(CHA₂DS₂-VASc ≥2점, 2015.7.1)·약동학·상호작용", url:"https://www.health.kr", link:"health.kr"},
+   {t:"식품의약품안전처 의약품통합정보시스템", d:"멀택(드로네다론) 등 허가사항·금기 — 영구형 AF·심부전 금기", url:"https://nedrug.mfds.go.kr", link:"nedrug.mfds.go.kr"},
+   {t:"건강보험심사평가원 (HIRA)", d:"약제 급여기준 고시·상병마스터(KCD 청구코드)", url:"https://www.hira.or.kr", link:"hira.or.kr"}
+  ];
+  var h='<div class="srcbox"><h3>📚 출처 및 근거</h3><div class="srclist">';
+  for(var i=0;i<srcs.length;i++){ var s=srcs[i];
+    h+='<a class="srcitem" href="'+s.url+'" target="_blank" rel="noopener">'+
+       '<div class="stt">'+s.t+'</div><div class="sdd">'+s.d+'</div>'+
+       '<span class="slink">'+s.link+' ↗</span></a>';
+  }
+  h+='</div>';
+  h+='<div class="gradekey"><b>권고 등급(COR)</b> Class Ⅰ 추천 · Ⅱa 고려되어야 함 · Ⅱb 고려될 수 있음 · Ⅲ 비권고<br>'+
+     '<b>근거수준(LOE)</b> A 다수 RCT·메타분석 · B 단일 RCT·대규모 비무작위 · C 전문가 의견·소규모</div>';
+  h+='</div>';
+  h+='<div class="discl">본 도구는 임상 판단 보조용입니다. 급여기준·허가사항은 수시 개정되므로 처방·청구·의뢰 시 최신 심평원 고시와 허가사항을 확인하십시오. 시술·기기 적응증은 본 도구가 판정하지 않으며, 절대적 적응증(Class I)에 해당할 수 있으면 반드시 부정맥 전문의에게 의뢰하십시오. 최종 결정과 책임은 처방의에게 있습니다.</div>';
+  document.getElementById('foot').innerHTML=h;
+}
+function init(){ bindTabs(); buildLibrary(); buildSim(); buildFlow(); buildFooter(); }
+
+/* ── 심박수 조절 약물 (rate control) ── */
+var RATE_DRUGS=[
+ {id:"class:bblocker", kr:"베타차단제", drugs:"비소프롤롤·카르베딜롤·메토프롤롤·네비볼롤·아테놀롤",
+  dose:"비소프롤롤 2.5–10 mg QD, 카르베딜롤 3.125–25 mg BID, 메토프롤롤 서방형 25–200 mg QD",
+  ef:"EF 무관 1차 (HFrEF에서 예후 개선)", caution:"서맥·방실차단·천식 주의, 급성 비대상성 심부전 회피",
+  note:"가장 많이 쓰는 1차 약제. HFrEF 동반 시 예후 개선 효과로 선호."},
+ {id:"drug:diltiazem", kr:"딜티아젬", drugs:"non-DHP CCB",
+  dose:"60 mg TID ~ 360 mg/일 (서방형 120–360 mg QD)",
+  ef:"EF ≥40%만 (★EF<40% 금기)", caution:"음성 수축력 — 수축기 심부전 금기, 서맥·저혈압",
+  note:"베타차단제 대안/병용. 심박수 즉효성."},
+ {id:"drug:verapamil", kr:"베라파밀", drugs:"non-DHP CCB",
+  dose:"40–120 mg TID (서방형 180–480 mg/일)",
+  ef:"EF ≥40%만 (★EF<40% 금기)", caution:"음성 수축력 — 수축기 심부전 금기, 변비·서맥, 디곡신 농도↑",
+  note:"딜티아젬과 유사. DOAC(다비) 상호작용 주의."},
+ {id:"drug:digoxin", kr:"디곡신", drugs:"강심배당체",
+  dose:"0.125–0.25 mg QD (목표 혈중농도 0.5–0.9 ng/mL 저용량)",
+  ef:"EF 무관 (특히 좌업위 환자·심부전 병용)", caution:"신기능 저하 시 축적, 좁은 치료역, 고농도 시 사망률↑ 보고",
+  note:"단독 효과 약함 — 활동 시 심박수 조절 부족. 베타차단제/CCB와 병용, 또는 좌업위 환자."}
+];
+
+/* ── 율동 조절 항부정맥제 (rhythm, Vaughan-Williams) ── */
+var RHYTHM_DRUGS=[
+ {id:"drug:flecainide", kr:"플레카이니드", vw:"Class IC", 
+  dose:"율동전환 200–300 mg 1회 (경구) · 유지 50–150 mg BID",
+  struct:"contra", structTxt:"⛔ 허혈성 심질환·구조적 심질환 금기",
+  caution:"1:1 방실전도 동반 심방조동(빠른 심실반응) → β차단제·CCB 병용. 심실 proarrhythmia.",
+  note:"구조심질환 없는 환자의 율동전환·유지 1차. Pill-in-the-pocket 가능."},
+ {id:"drug:propafenone", kr:"프로파페논", vw:"Class IC",
+  dose:"율동전환 450–600 mg 1회 (경구) · 유지 150–300 mg TID",
+  struct:"contra", structTxt:"⛔ 허혈성 심질환·구조적 심질환 금기",
+  caution:"플레카이니드와 동일 (1:1 조동, 심실 proarrhythmia). β차단 효과 일부 보유, CYP2D6 기질.",
+  note:"플레카이니드 대안. Pill-in-the-pocket 가능."},
+ {id:"drug:pilsicainide", kr:"필시카이니드", vw:"Class IC",
+  dose:"유지 50 mg TID (경구)", struct:"contra", structTxt:"⛔ 구조적 심질환 주의",
+  caution:"일본 개발 IC. 신배설 — 신기능 저하 시 감량.",
+  note:"국내 사용 가능. 순수 Na 채널 차단."},
+ {id:"drug:sotalol", kr:"소타롤", vw:"Class III (+β차단)",
+  dose:"80–160 mg BID (신기능 따라 조절)",
+  struct:"caution", structTxt:"허혈성 심질환 사용 가능 (구조심질환 일부 허용)",
+  caution:"★QT 연장·torsades — 시작 시 입원 모니터 권장, 신기능 저하·저칼륨 주의. 서맥.",
+  note:"β차단 효과 겸비. 효과는 아미오다론보다 약함. QT 모니터 필수."},
+ {id:"drug:dronedarone", kr:"드로네다론", vw:"Class III",
+  dose:"400 mg BID",
+  struct:"contra", structTxt:"⛔ 심부전(NYHA III–IV)·영구형 AF 금기",
+  caution:"PALLAS: 영구형 AF·심부전서 사망·뇌졸중·입원↑. QT 연장. 리바록사반 병용 금지. 6개월마다 ECG.",
+  note:"아미오다론 유사구조·요오드 없음(갑상선 독성 적음). 효과는 아미오다론보다 약함."},
+ {id:"drug:amiodarone", kr:"아미오다론", vw:"Class III (다채널)",
+  dose:"부하 600–800 mg/일 분복 (총 10 g까지) → 유지 200 mg QD (가능한 ≤200 mg)",
+  struct:"ok", structTxt:"✓ 구조심질환·심부전에도 사용 가능 (유일)",
+  caution:"★장기 다장기 독성: 폐섬유증·갑상선(기능저하/항진)·간·각막·피부·서맥. QT 연장(torsades 드묾). INR↑.",
+  note:"가장 효과적·가장 광범위. 구조심질환·심부전 동반 시 사실상 유일 선택. 독성 때문에 2차로도. 정기 폐·갑상선·간 검사."}
+];
+
+/* ── 심박수 조절 권고 (요약) ── */
+var RATE_TARGET={
+ main:"안정시 심박수 < 110 bpm (관대한 조절) 우선. 증상 지속·빈맥유발심근병증 시 엄격 조절(<80).",
+ ef_hi:"EF ≥ 40%: 베타차단제·디곡신·베라파밀·딜티아젬 (I-B)",
+ ef_lo:"EF < 40%: 베타차단제 ± 디곡신 (I-B) · 베라파밀·딜티아젬 회피(음성 수축력)"
+};
+
+/* ── AF 권고 (2024 KHRS, 자동추출) ── */
+var AF_RECS=[
+ {cat:"항응고",cor:"I",loe:"A",ref:"direct",t:"항응고제 사용 적응증이 되는 심방세동 환자에서 뇌졸중 예방을 위해 VKA보다 NOAC이 추천된다."},
+ {cat:"항응고",cor:"I",loe:"A",ref:"direct",t:"뇌졸중 위험도를 임상 위험인자를 종합한 CHA2DS2-VASc 점수로 평가 하고, 뇌졸중 저위험군 (CHA2DS2-VASc 점수 0점 (남자), 1점 (여자))를 감별하고, 항혈전제를 투여하지 말아야 한다."},
+ {cat:"항응고",cor:"I",loe:"A",ref:"direct",t:"점수 ≥ 2점 (남자), ≥ 3점 (여자) 인 심방세동 환자의 경우, 뇌졸중 예방을 위해 항응고제 투여가 추천된다."},
+ {cat:"항응고",cor:"IIa",loe:"B",ref:"direct",t:"점수 1점 (남자), 2점 (여자)인 심방세동 환자의 경우, 뇌졸중 예방을 위해 항응고제 투여를 고려해야 한다. 치료는 임상적 득실과 환자 선호도에 따라 개별화되어야 한다."},
+ {cat:"항응고",cor:"I",loe:"B",ref:"direct",t:"출혈위험도 평가를 위해 규격화되어 있는 출혈 위험인자를 검토하여 교정 불가능 출혈 위험인자를 확인하고, 교정 가능한 출혈 위험인자를 모든 심방세동 환자에서 언급한다. 출혈 고위험군인 심방세동 환자는 일찍 그리고 더 자주 추적관찰이 요구된다."},
+ {cat:"항응고",cor:"IIa",loe:"B",ref:"direct",t:"규격화되어 있는 출혈 위험도 평가는 HAS-BLED 점수로 계산하고, 교정 가능한 출혈 위험인자는 모든 심방세동 환자에서 언급하고, 출혈 고위험군 심방세동 환자 (HAS-BLED ≥ 3점)는 일찍 그리고 더 자주 추적관찰이 요구된다."},
+ {cat:"항응고",cor:"I",loe:"B",ref:"direct",t:"주기적인 뇌졸중 및 출혈 위험도 평가는 치료 결정 (예; 더 이상 뇌졸중 저위험군이 아닌 환자에서 항응고제 시작)을 위해 추천되고, 교정 가능한 출혈 위험인자를 언급해야 한다."},
+ {cat:"항응고",cor:"I",loe:"B",ref:"direct",t:"를 사용하는 경우 목표 INR은 2.0-3.0 로 조정하고, TTR ≥ 70 % 이상으로 유지하기를 추천한다."},
+ {cat:"항응고",cor:"I",loe:"B",ref:"direct",t:"를 사용하는 환자에서 INR 목표 치료 범위에 도달하지 못하는 경우 (예, TTR < 70 %) 아래 두 가지 방법이 추천된다. NOAC으로 전환을 고려할 수 있으나, 반드시 높은 치료 순응도를 유지해야 한다."},
+ {cat:"항응고",cor:"III",loe:"A",ref:"direct",t:"항응고제 사용 절대적 금기증이 없는 경우 평가된 출혈위험도는 뇌졸중 예방을 위한 항응고제 사용 결정에 사용되서는 안 된다."},
+ {cat:"항응고",cor:"III",loe:"B",ref:"direct",t:"심방세동의 임상 양상 (첫번째 발생, 발작성, 지속성, 장기간 지속성, 영구형) 이 뇌졸중 예방을 위한 항응고요법의 조건이 되어서는 안 된다."},
+ {cat:"항응고",cor:"IIb",loe:"B",ref:"comanage",t:"좌심방이 폐색술은 장기간 항응고제 사용의 금기증 (예, 교정가능한 원인이 없는 뇌출혈)이 있는 심방세동 환자에서 뇌졸중 예방을 위해 고려할 수 있다."},
+ {cat:"항응고",cor:"IIb",loe:"C",ref:"consider",t:"수술적 좌심방이 폐색술/배제술은 심장수술을 시행하는 뇌졸중 고위험군 심방세동 환자에서 뇌졸중 예방을 위해 고려할 수 있다."},
+ {cat:"심박수",cor:"I",loe:"B",ref:"direct",t:"좌심실 박출률 40 % 이상인 환자의 심박수 조절을 위한 1차 선택으로 베타차 단제, 디곡신, 베라파밀 및 딜티아젬이 추천된다."},
+ {cat:"심박수",cor:"I",loe:"B",ref:"direct",t:"좌심실 박출률 40 % 미만인 환자의 심박수 조절을 위해 베타차단제 그리고, 또는 디곡신이 추천된다."},
+ {cat:"심박수",cor:"IIa",loe:"B",ref:"direct",t:"한가지 약제로 심박수 조절이 되지 않을 경우 다른 약제와 조합으로 심박수 조절을 고려해야 한다."},
+ {cat:"심박수",cor:"IIa",loe:"B",ref:"direct",t:"초기 안정시 심박동수를 110 회/분 이하로 관대하게 심박수를 유지할 것을 추천한다."},
+ {cat:"심박수",cor:"IIa",loe:"B",ref:"consider",t:"집중적인 심박수 및 율동 조절 치료에 반응하지 않거나 약물 치료를 잘 견디지 못하는 환자들에서 박동조율기에 의존을 받아들일 경우 방실 결절 절제술을 고려할 수 있다."},
+ {cat:"심박수",cor:"IIb",loe:"B",ref:"direct",t:"혈역학적으로 불안정하거나 심한 좌심실기능저하를 보일 경우 심박수 조절을 위해 아미오다론을 사용할 수 있다."},
+ {cat:"율동",cor:"I",loe:"A",ref:"direct",t:"최근 발병한 심방세동의 약물적 심율동 전환 (심방세동을 정상 심장 율동으로 되돌리 는 치료)을 위해서는 i.v. 베르나칼란트 (최근 급성 관상동맥 증후군 또는 심장 부전증 환자 제외) 또는 플레카이나이드 또는 프로파페논 (심장 구조에 심각한 문제가 있는 환자 제외)를 권장한다."},
+ {cat:"율동",cor:"I",loe:"B",ref:"direct",t:"심방세동 환자에게 권장되며, 이것은 율동 조절 치료의 일환으로 고려되어야 한다."},
+ {cat:"율동",cor:"I",loe:"B",ref:"direct",t:"혈전색전증 위험을 고려한 뒤, 혈역학적으로 안정화된 심방세동에서만 약물적 심율동 전환을 추천한다."},
+ {cat:"율동",cor:"IIa",loe:"B",ref:"direct",t:"성공적인 전기적 심율동 전환을 위해서 아미오다론, 플레카나이드, 프로파레논을 예방적으로 투여한다."},
+ {cat:"율동",cor:"III",loe:"C",ref:"direct",t:"동기능 부전 증후군, 방실 결절 전도 장애 및 QT 연장을 가지고 있는 심방세동에서는 약물적 심율동 전환 전에 부정맥 및 서맥 발생 위험을 고려해야 한다."},
+ {cat:"율동",cor:"I",loe:"B",ref:"comanage",t:"일반적 권고 심방세동 카테터 절제술을 결정할 때 시술의 위험과 시술 후 심방세동 재발의 주요 위험 요인들을 고려하여 환자와 상의할 것을 권고한다."},
+ {cat:"율동",cor:"IIa",loe:"B",ref:"consider",t:"첫번째 폐정맥 격리술 후 환자의 증상이 개선되었다면 심방세동이 재발한 환자에서 폐정맥 격리술을 재시행하는 것을 고려해야 한다."},
+ {cat:"율동",cor:"IIa",loe:"C",ref:"consider",t:"폐정맥 격리술인 심방세동 카테터 절제술은 임상적 상황을 고려하여 심방세동 관련 서맥 또는 심방세동의 율동전환 후 유증상의 동정지가 있는 환자들에서 박동조율기 삽입을 피하기 위한 전략으로 고려해야 한다."},
+ {cat:"율동",cor:"IIa",loe:"B",ref:"consider",t:"베타-차단제 치료에 실패하거나 불내성을 보일 경우 율동 조절을 위해 폐정맥 격리술인 심방세동 카테터 절제술이 고려되어야 한다."},
+ {cat:"율동",cor:"I",loe:"B",ref:"mandatory",t:"기능부전을 역전시키기 위해 카테터 절제술을 권고한다."},
+ {cat:"율동",cor:"I",loe:"A",ref:"mandatory",t:"좌심실 박출률이 저하된 심부전이 동반된 심방세동 환자의 일부에서 증상과 삶의 질을 개선하고 심실 기능의 회복과 심혈관계 결과 호전을 (생존율 향상 및 심부전 입원 감소) 위해 카테터 절제술을 권고한다."},
+ {cat:"율동",cor:"IIa",loe:"B",ref:"consider",t:"심방조동이 심방세동 카테터 절제술 중 유도된다면 하대정맥 삼첨판 협부를 절제하는 것을 고려해야 한다."},
+ {cat:"율동",cor:"IIb",loe:"B",ref:"consider",t:"폐정맥 고립술 외 추가적인 병변 형성(저전압 부위, 선형 병변, 분할 전기도, 이소성 병변, 로터 등)은 고려될 수 있으나 잘 정립되어 있지는 않다."},
+ {cat:"율동",cor:"IIa",loe:"A",ref:"consider",t:"다른 심장 수술을 진행할 때, 함께 심방세동 수술적 치료를 하는 것을 고려해야 한다. 다만 율동 조절의 이익과 심방 부정맥 재발의 위험성을 따져보아야 한다."},
+ {cat:"율동",cor:"IIa",loe:"B",ref:"consider",t:"하이브리드 시술을 포함하여 흉강경을 이용한 심방세동 시술은 이전 경피적 심방세동 시술이 실패하였거나 혹은 실패할 확률이 높고, 항부정맥 약제에 불응하는 유증상 발작성, 지속성 심방세동 환자에게 장기간의 율동 조절을 목적으로 고려되어야 한다. 그리고 시술은 부정맥 전문의와 외과의사로 구성된 경험있는 협의체를 통해 결정되어야 한다."},
+ {cat:"율동",cor:"IIb",loe:"C",ref:"consider",t:"하이브리드 시술을 포함하여 흉강경을 이용한 심방세동 수술적 치료는 항부정맥제 약물치료에 불응하는 재발의 위험성의 높은 유증상 지속성 심방세동 환자에서 율동 조절을 선호하는 경우 고려될 수 있다."},
+ {cat:"항응고",cor:"I",loe:"C",ref:"comanage",t:"뇌졸중 위험 인자가 있는 심방세동 환자에서 절제술 전 경구항응고제를 복용하지 않는 경우 시술 전 뇌졸중 위험 관리로서 항응고치료 시작 및 다음 사항을 권고한다."},
+ {cat:"항응고",cor:"I",loe:"A",ref:"mandatory",t:"반, 아픽사반 또는 에독사반으로 항응고치료를 받고 있었을 경우 경구항응고제 중단 없이 절제술을 진행하는 것을 권고한다."},
+ {cat:"항응고",cor:"I",loe:"C",ref:"mandatory",t:"심방세동 카테터 절제술 후 다음 사항을 권고한다. ▪ 절제술 후 적어도 2 개월 동안 비타민 K 길항제나 NOAC으로 전신 항응고치료를 유지한다. ▪ 절제술 후 2 개월이 지난 후 전신 항응고치료의 장기적 유지는 절제술의 확실한 성공 또는 실패가 아니라 환자의 뇌졸중 위험 요소를 기반으로 한다."},
+ {cat:"항응고",cor:"IIa",loe:"B",ref:"direct",t:"음주는 심방세동을 예방하고 특히 항응고제 치료를 계획한 심방세동 환자에서 제한이 고려되어야 한다."},
+ {cat:"항응고",cor:"IIb",loe:"B",ref:"direct",t:"고려할 수 있다.684-686) 11.2 처음 진단된 심방세동 처음 진단된 심방세동은 심방세동의 기왕력이 없는 환자에서 심방세동의 정확한 분류 가 되기 전에 사용되는 진단이다. 이전 레지스트리 연구에서는 처음 진단된 심방세동 환 자의 임상 양상이나 경과가 영구형 심방세동과 유사하며, 발작성 심방세동보다 예후가 더 불량함에도 불구하고,687)688) 항응고제 처방률은 가장 낮았다.689) 따라서 처음 진단된 심방 세동에서도 ABC pathway를 바탕으로 치료하여야 한다."},
+ {cat:"항응고",cor:"IIa",loe:"B",ref:"direct",t:"비타민 K 길항제의 용량이 목표 INR 2.0-2.5 면서 TTR > 70 %로 조절되어야 한다.708-711) 급성 관동맥 증후군이 있는 심방세동 환자에서의 치료 지침 사항 복잡하지 않은 경피적 스텐트 삽입술을 시행 받은 급성 관동맥 증후군을 동반한 심방세동 환자에서 스텐트 혈전증의 위험이 낮거나 스텐트 혈전증의 위험보다"},
+ {cat:"항응고",cor:"IIa",loe:"C",ref:"direct",t:"혈전증의 위험이 출혈 위험보다 높은 경우 최대 1 개월 이내로 고려해야 있다."},
+ {cat:"항응고",cor:"IIa",loe:"C",ref:"direct",t:"혈전증의 위험이 출혈 위험보다 높은 경우 최대 1 개월 이내로 고려해야 있다."},
+ {cat:"항응고",cor:"III",loe:"B",ref:"direct",t:"헤파린, 비분획 헤파린, 비타민 K 항응고제는 적용되지 않는다.733) 뇌내 출혈 후 심방세동 환자에서 뇌졸중 예방 지침 사항 허혈성 뇌졸중 위험이 높은 심방세동 환자는 다음의 경우 비타민 K 항응고제보다는 NOAC을 적용하여야 한다. 이때는 출혈의 위험성에 대한 위험편익이 고려되어야 한다."},
+ {cat:"항응고",cor:"IIa",loe:"C",ref:"comanage",t:"외상성 뇌내 출혈 급성 자발성 뇌출혈 (경막하, 지주막하 또는 뇌내 출혈) 11.5 항응고치료 중 출혈 : 관리 및 역전제 항응고제를 사용하는 동안 출혈이 발생하는 환자의 관리는 그림 16에 제시하였다. 출혈 부위 감지, 출혈의 중증도, 마지막으로 항응고제를 복용한 시점에 대한 평가가 일반적인 평가에 포함되어야 한다. 동시에 복용중인 다른 항혈전제와 출혈의 위험에 영향을 미치는 다른 요인들 (알코올 남용, 신장기능)에 대해 조사해야 한다. 비타민 K 길항제를 사용하는 경우 INR과 같은 혈액 검사가 유용하다. NOAC에 대한 보다 구체적인 검사로는 다비 가트란에 대해서는 희석된 트롬빈 시간, 리바록사반, 아픽사반, 에독사반에 대해서는 anti-factor Xa 분석이 있다.734) 그러나 이런 검사나 NOAC의 혈장 수준 측정은 실제로는 쉽게 사용할 수 있는 것이 아니며, 출혈 관리 시 반드시 필요한 것은 아니다.735) 무엇보다도 적절한 임상적 결정을 내리기 위해서는 신장 기능, 헤모글로빈, 헤마토크리 트 그리고 혈소판 수의 평가와 마지막 약제 섭취 시간을 아는 것이 중요하다. 경미한 출혈 은 지혈을 위해서 물리적 압박이나 간단한 수술로 치료한다. 비타민 K 길항제는 중단하더 라도 즉각적인 효과 감소를 기대하기 힘든 반면 NOAC은 반감기가 짧아 투여 중단 후 12-24 시간이면 지혈이 이루어질 수 있다."},
+ {cat:"항응고",cor:"I",loe:"C",ref:"direct",t:"중증 출혈이 발생한 심방세동 환자에서는 다음이 권고된다. 심각한 출혈이 멈추고 출혈의 원인이 확인될 때까지 항응고제를 중단한다. 출혈의 원인을 확인하고 관리하기 위한 진단 및 치료 개입이 즉시 시행되어야 한다."},
+ {cat:"항응고",cor:"IIa",loe:"C",ref:"direct",t:"중증 출혈 합병증이 발생한 비타민 K 길항제 복용 환자에서는 프로트롬빈 복합 농축액 사용을 고려한다."},
+ {cat:"율동",cor:"IIa",loe:"C",ref:"consider",t:"심방세동에 대한 수술은 다음과 같은 환자에게 고려되어야 한다. • 심방중격 결손증의 수술적 폐쇄가 필요하고 증상이 있는 심방 부정맥의 기왕력이 있는 환자 (심방절제술은 심방중격 결손증 폐쇄술 시 고려해야 한다).891-893) • Cox-Maze 수술은 다음과 같은 경우에 고려한다."},
+ {cat:"율동",cor:"IIb",loe:"C",ref:"direct",t:"함께 고려할 수 있다.895)896) 11.16 유전성 심근병증과 일차성 부정맥 증후군에서 심방세동 유전성 심근병증 및 원발성 부정맥 증후군 환자에서 심방세동의 발생률과 유병률은 더 높다.895-929) 때로는 심방세동이 나타나거나 임상적으로 명백한 특징인 경우도 있지 만,930-934) 종종 임상적으로 나쁜 예후와 관련이 있다.132)895)910)912)918)919)921)935-939) 다음과 같은 중요한 의미가 있다: ∙ 항부정맥제를 사용하는 것이 어려울 수 있다. 선천성 긴 QT 증후군에서는 QT간격 연 장과 염전성 심실빈맥 위험 증가로 많은 약물이 금기다. (http://www.crediblemeds.org) 브루가다 증후군에서는 class I 항부정맥제가 금기다. (http://www.brugadadrugs.org/). 장 기간 사용의 부작용으로 인해 이와 같은 젊은 환자군에서 아미오다론을 만성적으로 사 용하는 것은 문제가 된다."},
+ {cat:"항응고",cor:"IIa",loe:"C",ref:"direct",t:"베타차단제가 실패할 경우 심박수 조절을 위해 디곡신e이나 베라파밀e을 고려한다. 심방세동의 심율동 전환은 일반적으로 항응고 치료보다 먼저 시행되어야 한다."},
+ {cat:"항응고",cor:"I",loe:"B",ref:"comanage",t:"장기간의 강렬한 스포츠 활동이 심방세동을 촉진할 수 있음을 전문 운동선수에게 상담하는 것이 권장되며, 심방세동 예방을 위해서는 적당한 신체 활동이 권장된다.615)968)972)979-982) 11.19 수술 후 심방세동 수술 전후 (Peri-operative) 심방세동은 진행 중인 수술, 시술 중 부정맥이 시작된 것을 지칭한다. 이는 심장 수술을 받는 환자에게 가장 의미가 있다. 수술 전후 심방세동을 줄이 기 위해 전처리 또는 급성 약물 치료를 통해 수술 전후 AF 발생률을 줄이기 위한 여러 전략이 시도되었지만 대규모 무작위 대조 연구의 증거는 부족하다. 아미오다론은 수술 전 후 심방세동 예방을 위해 가장 자주 사용되는 약물이다.983) 수술 후 바로 발생하는 심방세동으로 정의되는 수술 후 심방세동은 임상적으로 주요한 문제이며,984)985) 심장 수술 후 환자의 20~50 %,986)987) 비심장 흉부 수술 후 10~30 %,988) 혈관 또는 대형 대장 수술 후 5~10 %에서 발생하며989) 수술 후 2~4일 사이에 발생률이 1부 심방세동 일반 치료 진료지침 99 후 변화는 다음과 같은 심방 취약성을 증가시킬 수 있다. 많은 수술 후 심방세동은 스스로 종료되거나 일부는 증상이 없지만 수술 후 심방세동은 향후 5 년 내에 심방세동 재발 위 험이 4~5 배로 높았다.991)992) 이는 또한 수술 후 심방세동이 없는 환자에 비해 뇌졸중, 심근경색 및 사망의 위험 인자인 것으로 나타났다.993)994) 수술 후 심방세동의 다른 결과로는 혈역학적 불안정성, 입원 기간 연장, 감염, 신장 합 병증, 출혈, 병원 내 사망 증가, 의료 비용 증가 등이 있다.985)995)996) 수술 후 심방세동의 관리 방법은 다음과 같다. (그림 17) 수술 후 수술 전 심방세동 ∙ 혈액동학적 안정 ∙ 전해질 불균형 교정 (마그네슘 포함) ∙ 수술 후 심방세동의 위험성이 높은 환자 규명 혈역학적 Yes 응급 안정성? 심율동전환 약리학적 수술 후 심방세동 예방 : ∙ 베타 차단제 지속/시작과 함께/또는 아미오다론 고려 ∙ 금기라면 정맥내 마그네슘 주입 ∙ 선택적으로 다른 항부정맥 약제 사용 전신 항응고치료 만약 약물 예방이 금기인 경우에는 적응증이 되지 않음"},
+];
+
+
+/* 모든 데이터·함수 정의 후 초기화 */
+init();
+</script>
+</body>
+</html>

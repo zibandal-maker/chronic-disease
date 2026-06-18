@@ -20,6 +20,17 @@
       "tag": "순환기"
     },
     {
+      "id": "af",
+      "title": "심방세동",
+      "emoji": "💓",
+      "src": "af_guide.html",
+      "out": "af.html",
+      "guideline": "심방세동 진료지침 · ESC 2024 · 항응고·율동조절 · 심평원 급여",
+      "group": "A",
+      "accent": "#1a73e8",
+      "tag": "순환기"
+    },
+    {
       "id": "dm",
       "title": "당뇨병",
       "emoji": "🍬",
