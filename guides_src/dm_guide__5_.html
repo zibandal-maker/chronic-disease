@@ -677,21 +677,8 @@ const DM_ID_MAP = {
     // Biguanide
     "metformin":        "drug:metformin",
     "메트포민":          "drug:metformin",
-    // SGLT2i (RENAL_DRUG_TABLE 키 + 한글명)
-    "sglt2i_dapa":      "drug:dapagliflozin",   "다파글리플로진":  "drug:dapagliflozin",
-    "sglt2i_empa":      "drug:empagliflozin",   "엠파글리플로진":  "drug:empagliflozin",
-    "sglt2i_ertu":      "drug:ertugliflozin",   "에르투글리플로진":"drug:ertugliflozin",
-    "sglt2i_ipra":      "drug:ipragliflozin",   "이프라글리플로진":"drug:ipragliflozin",
-    "sglt2i_enavo":     "drug:enavogliflozin",  "에나보글리플로진":"drug:enavogliflozin",
-    // DPP4i
-    "dpp4i_sita":       "drug:sitagliptin",     "시타글립틴":      "drug:sitagliptin",
-    "dpp4i_lina":       "drug:linagliptin",     "리나글립틴":      "drug:linagliptin",
-    "dpp4i_teneli":     "drug:teneligliptin",   "테네리글립틴":    "drug:teneligliptin",
-    "dpp4i_gemi":       "drug:gemigliptin",     "제미글립틴":      "drug:gemigliptin",
-    "dpp4i_vilda":      "drug:vildagliptin",    "빌다글립틴":      "drug:vildagliptin",
-    "dpp4i_saxa":       "drug:saxagliptin",     "삭사글립틴":      "drug:saxagliptin",
-    "dpp4i_alo":        "drug:alogliptin",      "알로글립틴":      "drug:alogliptin",
-    "dpp4i_evo":        "drug:evogliptin",      "에보글립틴":      "drug:evogliptin",
+    // SGLT2i (RENAL_DRUG_TABLE 키 + 한글명)   "다파글리플로진":  "drug:dapagliflozin",   "엠파글리플로진":  "drug:empagliflozin",   "에르투글리플로진":"drug:ertugliflozin",   "이프라글리플로진":"drug:ipragliflozin",  "에나보글리플로진":"drug:enavogliflozin",
+    // DPP4i     "시타글립틴":      "drug:sitagliptin",     "리나글립틴":      "drug:linagliptin",   "테네리글립틴":    "drug:teneligliptin",     "제미글립틴":      "drug:gemigliptin",    "빌다글립틴":      "drug:vildagliptin",     "삭사글립틴":      "drug:saxagliptin",      "알로글립틴":      "drug:alogliptin",      "에보글립틴":      "drug:evogliptin",
     // GLP-1RA
     "둘라글루티드":      "drug:dulaglutide",
     "세마글루티드":      "drug:semaglutide",
@@ -1696,7 +1683,7 @@ function addOnOptions(input, reimbCheckAddon, renalCheck){
     let renal = null;
     if (renalCheck){
       const keyMap = { metformin:"metformin", su:"su", meglitinide:"meglitinide",
-        tzd:"tzd", agi:"agi", dpp4i:"dpp4i_sita", sglt2i:"sglt2i_dapa",
+        tzd:"tzd", agi:"agi", dpp4i:"drug:sitagliptin", sglt2i:"drug:dapagliflozin",
         glp1ra:"glp1ra", insulin:"insulin" };
       renal = renalCheck(keyMap[cls]||cls, egfr);
     }
@@ -1967,20 +1954,20 @@ const RENAL_DRUG_TABLE = {
     bands:["ok","ok","ok","stop","stop"],
     note:"아카보즈 eGFR<30 금지. 미글리톨 <25 금지" },
   // DPP4i 성분별
-  dpp4i_sita:  { name:"시타글립틴", bands:["dose:100mg","dose:50mg","dose:50mg","dose:25mg","dose:25mg"], note:"신기능 따라 단계 감량" },
-  dpp4i_vilda: { name:"빌다글립틴", bands:["dose:100mg","dose:50mg","dose:50mg","dose:50mg","dose:50mg"], note:"중등도↓ 50mg" },
-  dpp4i_saxa:  { name:"삭사글립틴", bands:["dose:5mg","dose:2.5mg","dose:2.5mg","dose:2.5mg","dose:2.5mg"], note:"<45 절반(2.5mg)" },
-  dpp4i_lina:  { name:"리나글립틴", bands:["ok","ok","ok","ok","ok"], note:"★신기능 무관 — 용량조절 불필요" },
-  dpp4i_gemi:  { name:"제미글립틴", bands:["dose:50mg","dose:50mg","dose:50mg","dose:50mg","dose:50mg"], note:"용량조절 불필요" },
-  dpp4i_teneli:{ name:"테네리글립틴", bands:["ok","ok","ok","ok","ok"], note:"★신기능 무관 — 용량조절 불필요" },
-  dpp4i_alo:   { name:"알로글립틴", bands:["dose:25mg","dose:12.5mg","dose:12.5mg","dose:6.25mg","dose:6.25mg"], note:"단계 감량" },
-  dpp4i_evo:   { name:"에보글립틴", bands:["ok","ok","ok","caution","caution"], note:"중증신장애 자료제한" },
+  "drug:sitagliptin":  { name:"시타글립틴", bands:["dose:100mg","dose:50mg","dose:50mg","dose:25mg","dose:25mg"], note:"신기능 따라 단계 감량" },
+  "drug:vildagliptin": { name:"빌다글립틴", bands:["dose:100mg","dose:50mg","dose:50mg","dose:50mg","dose:50mg"], note:"중등도↓ 50mg" },
+  "drug:saxagliptin":  { name:"삭사글립틴", bands:["dose:5mg","dose:2.5mg","dose:2.5mg","dose:2.5mg","dose:2.5mg"], note:"<45 절반(2.5mg)" },
+  "drug:linagliptin":  { name:"리나글립틴", bands:["ok","ok","ok","ok","ok"], note:"★신기능 무관 — 용량조절 불필요" },
+  "drug:gemigliptin":  { name:"제미글립틴", bands:["dose:50mg","dose:50mg","dose:50mg","dose:50mg","dose:50mg"], note:"용량조절 불필요" },
+  "drug:teneligliptin":{ name:"테네리글립틴", bands:["ok","ok","ok","ok","ok"], note:"★신기능 무관 — 용량조절 불필요" },
+  "drug:alogliptin":   { name:"알로글립틴", bands:["dose:25mg","dose:12.5mg","dose:12.5mg","dose:6.25mg","dose:6.25mg"], note:"단계 감량" },
+  "drug:evogliptin":   { name:"에보글립틴", bands:["ok","ok","ok","caution","caution"], note:"중증신장애 자료제한" },
   // SGLT2i 성분별 — 혈당효과는 낮은 GFR서 제한적, 심신장 이득은 별도
-  sglt2i_dapa: { name:"다파글리플로진", bands:["dose:10mg","dose:10mg","심신장(≥25)·혈당효과제한","심신장(≥25)·신규는≥25","no_new"], note:"당뇨혈당: <45 효과제한. 심부전·신장이득 eGFR≥25서 유지(신규≥25)" },
-  sglt2i_empa: { name:"엠파글리플로진", bands:["dose:10/25mg","dose:10/25mg","심신장(≥20)·혈당효과제한","심신장(≥20)","심신장(≥20)·ESKD전까지"], note:"심부전·신장이득 eGFR≥20 유지" },
-  sglt2i_ertu: { name:"에르투글리플로진", bands:["dose:5mg","caution","no_new","no_new","stop"], note:"신장이득 근거 약함. <45 신규X" },
-  sglt2i_ipra: { name:"이프라글리플로진", bands:["ok","caution","no_new","no_new","stop"], note:"신장 근거 부족. 인슐린 병용 급여X" },
-  sglt2i_enavo:{ name:"에나보글리플로진", bands:["ok","caution","no_new","no_new","stop"], note:"대규모 근거 부재. 인슐린 병용 급여X" },
+  "drug:dapagliflozin": { name:"다파글리플로진", bands:["dose:10mg","dose:10mg","심신장(≥25)·혈당효과제한","심신장(≥25)·신규는≥25","no_new"], note:"당뇨혈당: <45 효과제한. 심부전·신장이득 eGFR≥25서 유지(신규≥25)" },
+  "drug:empagliflozin": { name:"엠파글리플로진", bands:["dose:10/25mg","dose:10/25mg","심신장(≥20)·혈당효과제한","심신장(≥20)","심신장(≥20)·ESKD전까지"], note:"심부전·신장이득 eGFR≥20 유지" },
+  "drug:ertugliflozin": { name:"에르투글리플로진", bands:["dose:5mg","caution","no_new","no_new","stop"], note:"신장이득 근거 약함. <45 신규X" },
+  "drug:ipragliflozin": { name:"이프라글리플로진", bands:["ok","caution","no_new","no_new","stop"], note:"신장 근거 부족. 인슐린 병용 급여X" },
+  "drug:enavogliflozin":{ name:"에나보글리플로진", bands:["ok","caution","no_new","no_new","stop"], note:"대규모 근거 부재. 인슐린 병용 급여X" },
   // GLP-1RA
   glp1ra: { name:"GLP-1RA(둘라/리라글루티드)", bands:["ok","ok","ok","ok","caution"], note:"신기능 무관 대부분 사용. ESKD 자료제한. 신장보호 이익" },
   // 인슐린
@@ -2017,7 +2004,7 @@ function renalDrugStatus(drugKey, egfr){
 // 계열 → 대표 성분키 매핑 (성분 미지정 시)
 const CLASS_TO_RENALKEY = {
   metformin:"metformin", su:"su", meglitinide:"meglitinide", tzd:"tzd", agi:"agi",
-  dpp4i:"dpp4i_sita", sglt2i:"sglt2i_dapa", glp1ra:"glp1ra", insulin:"insulin"
+  dpp4i:"drug:sitagliptin", sglt2i:"drug:dapagliflozin", glp1ra:"glp1ra", insulin:"insulin"
 };
 
 // ── 2-4. 신경병증 협진/검사 (약물 무반응 시) ───────────────────────
@@ -2227,7 +2214,7 @@ function recommend(patient){
   // 계열 대표성분 로컬키(전역 성분 ID 추정용) — 미지정 시 대표성분
   function memberLocalKey(d){
     if (d.class==="sglt2i")  return "sglt2i_"+(d.member||"dapa");
-    if (d.class==="dpp4i")   return d.member ? ("dpp4i_"+d.member) : "dpp4i_sita";
+    if (d.class==="dpp4i")   return d.member ? ("dpp4i_"+d.member) : "drug:sitagliptin";
     if (d.class==="glp1ra")  return d.member || "dulaglutide";
     if (d.class==="insulin") return "insulin";
     return d.class; // metformin/su/meglitinide/tzd/agi 등은 계열=성분급
@@ -3652,7 +3639,7 @@ var SIMFLOW = {
         // ★ 신기능 경고 (현재 처방 약물이 eGFR상 문제면)
         if(inp.egfr!=null){
           var keyMap={metformin:"metformin",su:"su",meglitinide:"meglitinide",tzd:"tzd",
-            agi:"agi",dpp4i:"dpp4i_sita",glp1ra:"glp1ra",insulin:"insulin"};
+            agi:"agi",dpp4i:"drug:sitagliptin",glp1ra:"glp1ra",insulin:"insulin"};
           var rk = keyMap[pd.drug.class];
           // SGLT2i는 성분별
           if(pd.drug.class==="sglt2i") rk = "sglt2i_"+(pd.drug.member||"dapa");
