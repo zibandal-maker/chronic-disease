@@ -20,12 +20,12 @@
       "tag": "순환기"
     },
     {
-      "id": "af",
-      "title": "심방세동",
+      "id": "arrhythmia",
+      "title": "부정맥",
       "emoji": "💓",
-      "src": "af_guide.html",
-      "out": "af.html",
-      "guideline": "심방세동 진료지침 · ESC 2024 · 항응고·율동조절 · 심평원 급여",
+      "src": "arrhythmia_guide.html",
+      "out": "arrhythmia.html",
+      "guideline": "부정맥 진료 가이드 · 심방세동·항응고·율동조절 · ESC 2024 · 심평원 급여",
       "group": "A",
       "accent": "#1a73e8",
       "tag": "순환기"
@@ -128,6 +128,17 @@
       "group": "A",
       "accent": "#8a6d3b",
       "tag": "류마티스"
+    },
+    {
+      "id": "osteoporosis",
+      "title": "골다공증",
+      "emoji": "🩻",
+      "src": "osteoporosis_guide.html",
+      "out": "osteoporosis.html",
+      "guideline": "골다공증 진료지침 · 대한골대사학회 · T-score·FRAX · 심평원 급여",
+      "group": "A",
+      "accent": "#5b7a9a",
+      "tag": "내분비"
     },
     {
       "id": "antimicrobial",

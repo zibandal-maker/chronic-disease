@@ -225,10 +225,6 @@ details .dbody{padding:6px 2px 4px;font-size:13px;color:var(--ink-dim);line-heig
   body{padding-top:46px !important;}
   @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
 </style>
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
 <div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
   <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
   <a class="ph-home" href="../index.html" title="홈">🏠</a>
@@ -1216,319 +1212,113 @@ if (typeof module !== "undefined" && module.exports) {
 
 /* ===== prevent_engine.js ===== */
 /* ============================================================
-   prevent_engine.js — AHA PREVENT 위험 계산 (공식 R 패키지 v1.0.0 직역, 검증완료)
-   출처: AHAprevent R package (Krishnan/Petito/Huang/Khan 2024, Circulation 2024;149:430-449)
-   검증: 50세女 SBP160(tx) TC200 HDL45 DM eGFR90 BMI35
-     → 10yr CVD 14.7 ASCVD 9.2 HF 8.1 / 30yr CVD 53.0 ASCVD 35.4 HF 39.0 (일치)
-   base 모델 사용 (uacr/hba1c/sdi 애드온은 미국 사회지표라 미적용)
+   prevent_engine.js — AHA PREVENT 위험 계산 엔진
+   ★식(공식) 구조는 완성. 베타 계수는 placeholder(0) —
+     Khan 2024 Circulation supplement 계수를 PREVENT_COEF에 채우면 즉시 작동.
+   출처: Khan SS et al. Circulation 2024;149:430-449
+   중심화: age 55, non-HDL 3.5 mmol/L, HDL 1.3 mmol/L, SBP 130 mmHg
    ============================================================ */
 
-/* prevent_coef.js — AHA PREVENT base 방정식 (공식 R 패키지 v1.0.0 직역) */
-/* 출처: AHAprevent R package (Krishnan/Petito/Huang/Khan 2024) */
-function mmol(x){ return 0.02586*x; }
-var PREVENT_EQ = { female:{}, male:{} };
-PREVENT_EQ['female']['10yr_CVD'] = function(age,tc,hdl,sbp,dm,smoking,bmi,egfr,bptreat,statin){ return (
--3.307728 +
-        0.7939329*(age - 55)/10 +
-        0.0305239*(mmol(tc - hdl) - 3.5) -
-        0.1606857*(mmol(hdl) - 1.3)/(0.3) -
-        0.2394003*(Math.min(sbp, 110) - 110)/20 +
-        0.360078*(Math.max(sbp, 110) - 130)/20 +
-        0.8667604*(dm) +
-        0.5360739*(smoking) +
-        0.6045917*(Math.min(egfr, 60) - 60)/(-15) +
-        0.0433769*(Math.max(egfr, 60) - 90)/(-15) +
-        0.3151672*(bptreat) -
-        0.1477655*(statin) -
-        0.0663612*(bptreat)*(Math.max(sbp, 110) - 130)/20 +
-        0.1197879*(statin)*(mmol(tc - hdl) - 3.5) -
-        0.0819715*(age - 55)/10*(mmol(tc - hdl) - 3.5) +
-        0.0306769*(age - 55)/10*(mmol(hdl) - 1.3)/(0.3) -
-        0.0946348*(age - 55)/10*(Math.max(sbp, 110) - 130)/20 -
-        0.27057*(age - 55)/10*(dm) -
-        0.078715*(age - 55)/10*(smoking) -
-        0.1637806*(age - 55)/10*(Math.min(egfr, 60) - 60)/(-15)
-); };
-PREVENT_EQ['female']['30yr_CVD'] = function(age,tc,hdl,sbp,dm,smoking,bmi,egfr,bptreat,statin){ return (
--1.318827 +
-        0.5503079*(age - 55)/10 -
-        0.0928369*(Math.pow((age-55)/10,2)) +
-        0.0409794*(mmol(tc - hdl) - 3.5) +
-        (-0.1663306)*(mmol(hdl) - 1.3)/(0.3) +
-        (-0.1628654)*(Math.min(sbp, 110) - 110)/20 +
-        0.3299505*(Math.max(sbp, 110) - 130)/20 +
-        0.6793894*(dm) +
-        0.3196112*(smoking) +
-        0.1857101*(Math.min(egfr, 60) - 60)/(-15) +
-        0.0553528*(Math.max(egfr, 60) - 90)/(-15) +
-        0.2894*(bptreat) +
-        (-0.075688)*(statin) +
-        (-0.056367)*(bptreat)*(Math.max(sbp, 110) - 130)/20 +
-        (0.1071019)*(statin)*(mmol(tc - hdl) - 3.5) +
-        (-0.0751438)*(age - 55)/10*(mmol(tc - hdl) - 3.5) +
-        (0.0301786)*(age - 55)/10*(mmol(hdl) - 1.3)/(0.3) +
-        (-0.0998776)*(age - 55)/10*(Math.max(sbp, 110) - 130)/20 +
-        (-0.3206166)*(age - 55)/10*(dm) +
-        (-0.1607862)*(age - 55)/10*(smoking) +
-        (-0.1450788)*(age - 55)/10*(Math.min(egfr, 60) - 60)/(-15)
-); };
-PREVENT_EQ['female']['10yr_ASCVD'] = function(age,tc,hdl,sbp,dm,smoking,bmi,egfr,bptreat,statin){ return (
--3.819975 +
-        0.719883*(age - 55)/10 +
-        0.1176967*((mmol(tc) - mmol(hdl)) - 3.5) -
-        0.151185*(mmol(hdl) - 1.3)/0.3 - 0.0835358*(Math.min(sbp, 110) - 110)/20 +
-        0.3592852*(Math.max(sbp, 110) - 130)/20 +
-        0.8348585*(dm) + 0.4831078*(smoking) +
-        0.4864619*(Math.min(egfr, 60) - 60)/(-15) +
-        0.0397779*(Math.max(egfr, 60)  - 90)/(-15) +
-        0.2265309*(bptreat) -
-        0.0592374*(statin) -
-        0.0395762*(bptreat)*(Math.max(sbp, 110) - 130)/20  +
-        0.0844423*(statin)*((mmol(tc) - mmol(hdl)) - 3.5) -
-        0.0567839*(age - 55)/10*((mmol(tc) - mmol(hdl)) - 3.5) +
-        0.0325692*(age - 55)/10*(mmol(hdl) - 1.3)/0.3 -
-        0.1035985*(age - 55)/10*(Math.max(sbp, 110) - 130)/20 -
-        0.2417542*(age - 55)/10*(dm) -
-        0.0791142*(age - 55)/10*(smoking) -
-        0.1671492*(age - 55)/10*(Math.min(egfr, 60) - 60)/(-15)
-); };
-PREVENT_EQ['female']['30yr_ASCVD'] = function(age,tc,hdl,sbp,dm,smoking,bmi,egfr,bptreat,statin){ return (
--1.974074 +
-        0.4669202*((age - 55)/10) -
-        0.0893118*Math.pow((age-55)/10,2) +
-        0.1256901*((mmol(tc) - mmol(hdl))- 3.5) -
-        0.1542255*(mmol(hdl)- 1.3)/0.3 -
-        0.0018093*(Math.min(sbp, 110) - 110)/20 +
-        0.322949*(Math.max(sbp, 110) - 130)/20 +
-        0.6296707*(dm) +
-        0.268292*(smoking) +
-        0.100106*(Math.min(egfr, 60) - 60)/(-15) +
-        0.0499663*(Math.max(egfr, 60) - 90)/(-15) +
-        0.1875292*(bptreat) +
-        0.0152476*(statin) -
-        0.0276123*(bptreat)*(Math.max(sbp, 110) - 130)/20 +
-        0.0736147*(statin)*((mmol(tc) - mmol(hdl))- 3.5) -
-        0.0521962*(age - 55)/10*((mmol(tc) - mmol(hdl))- 3.5) +
-        0.0316918*(age - 55)/10*(mmol(hdl)- 1.3)/0.3 -
-        0.1046101*(age - 55)/10*(Math.max(sbp, 110) - 130)/20 -
-        0.2727793*(age - 55)/10*(dm) -
-        0.1530907*(age - 55)/10*(smoking) -
-        0.1299149*(age - 55)/10*(Math.min(egfr, 60) - 60)/(-15)
-); };
-PREVENT_EQ['female']['10yr_HF'] = function(age,tc,hdl,sbp,dm,smoking,bmi,egfr,bptreat,statin){ return (
--4.310409 +
-        0.8998235*(age - 55)/10 -
-        0.4559771*(Math.min(sbp, 110) - 110)/20 +
-        0.3576505*(Math.max(sbp, 110) - 130)/20 +
-        1.038346*(dm) +
-        0.583916*(smoking) -
-        0.0072294*(Math.min(bmi, 30) - 25)/5 +
-        0.2997706*(Math.max(bmi, 30) - 30)/5 +
-        0.7451638*(Math.min(egfr, 60) - 60)/(-15) +
-        0.0557087*(Math.max(egfr, 60)  - 90)/(-15) +
-        0.3534442*(bptreat) -
-        0.0981511*(bptreat)*(Math.max(sbp, 110) - 130)/20  -
-        0.0946663*(age - 55)/10*(Math.max(sbp, 110) - 130)/20 -
-        0.3581041*(age - 55)/10*(dm) -
-        0.1159453*(age - 55)/10*(smoking) -
-        0.003878*(age - 55)/10*(Math.max(bmi, 30) - 30)/5 -
-        0.1884289*(age - 55)/10*(Math.min(egfr, 60) - 60)/(-15)
-); };
-PREVENT_EQ['female']['30yr_HF'] = function(age,tc,hdl,sbp,dm,smoking,bmi,egfr,bptreat,statin){ return (
--2.205379 +
-        0.6254374*((age - 55)/10) -
-        0.0983038*Math.pow((age-55)/10,2) -
-        0.3919241*(Math.min(sbp, 110) - 110)/20 +
-        0.3142295*(Math.max(sbp, 110) - 130)/20 +
-        0.8330787*(dm) +
-        0.3438651*(smoking) +
-        0.0594874*(Math.min(bmi, 30) - 25)/5 +
-        0.2525536*(Math.max(bmi, 30) - 30)/5 +
-        0.2981642*(Math.min(egfr, 60) - 60)/(-15) +
-        0.0667159*(Math.max(egfr, 60) - 90)/(-15) +
-        0.333921*(bptreat) -
-        0.0893177*(bptreat)*(Math.max(sbp, 110) - 130)/20 -
-        0.0974299*(age - 55)/10*(Math.max(sbp, 110) - 130)/20 -
-        0.404855*(age - 55)/10*(dm) -
-        0.1982991*(age - 55)/10*(smoking) -
-        0.0035619*(age - 55)/10*(Math.max(bmi, 30) - 30)/5 -
-        0.1564215*(age - 55)/10*(Math.min(egfr, 60) - 60)/(-15)
-); };
-PREVENT_EQ['male']['10yr_CVD'] = function(age,tc,hdl,sbp,dm,smoking,bmi,egfr,bptreat,statin){ return (
--3.031168 +
-        0.7688528*(age - 55)/10 +
-        0.0736174*(mmol(tc - hdl) - 3.5) -
-        0.0954431*(mmol(hdl) - 1.3)/(0.3) -
-        0.4347345*(Math.min(sbp, 110) - 110)/20 +
-        0.3362658*(Math.max(sbp, 110) - 130)/20 +
-        0.7692857*(dm) +
-        0.4386871*(smoking) +
-        0.5378979*(Math.min(egfr, 60) - 60)/(-15) +
-        0.0164827*(Math.max(egfr, 60) - 90)/(-15) +
-        0.288879*(bptreat) -
-        0.1337349*(statin) -
-        0.0475924*(bptreat)*(Math.max(sbp, 110) - 130)/20 +
-        0.150273*(statin)*(mmol(tc - hdl) - 3.5) -
-        0.0517874*(age - 55)/10*(mmol(tc - hdl) - 3.5) +
-        0.0191169*(age - 55)/10*(mmol(hdl) - 1.3)/(0.3) -
-        0.1049477*(age - 55)/10*(Math.max(sbp, 110) - 130)/20 -
-        0.2251948*(age - 55)/10*(dm) -
-        0.0895067*(age - 55)/10*(smoking) -
-        0.1543702*(age - 55)/10*(Math.min(egfr, 60) - 60)/(-15)
-); };
-PREVENT_EQ['male']['30yr_CVD'] = function(age,tc,hdl,sbp,dm,smoking,bmi,egfr,bptreat,statin){ return (
--1.148204 +
-        0.4627309*(age - 55)/10 -
-        0.0984281*(Math.pow((age-55)/10,2)) +
-        0.0836088*(mmol(tc - hdl) - 3.5) +
-        (-0.1029824)*(mmol(hdl) - 1.3)/(0.3) +
-        (-0.2140352)*(Math.min(sbp, 110) - 110)/20 +
-        0.2904325*(Math.max(sbp, 110) - 130)/20 +
-        0.5331276*(dm) +
-        0.2141914*(smoking) +
-        0.1155556*(Math.min(egfr, 60) - 60)/(-15) +
-        0.0603775*(Math.max(egfr, 60) - 90)/(-15) +
-        0.232714*(bptreat) +
-        (-0.0272112)*(statin) +
-        (-0.0384488)*(bptreat)*(Math.max(sbp, 110) - 130)/20 +
-        (0.134192)*(statin)*(mmol(tc - hdl) - 3.5) +
-        (-0.0511759)*(age - 55)/10*(mmol(tc - hdl) - 3.5) +
-        0.0165865*(age - 55)/10*(mmol(hdl) - 1.3)/(0.3) +
-        (-0.1101437)*(age - 55)/10*(Math.max(sbp, 110) - 130)/20 +
-        (-0.2585943)*(age - 55)/10*(dm) +
-        (-0.1566406)*(age - 55)/10*(smoking) +
-        (-0.1166776)*(age - 55)/10*(Math.min(egfr, 60) - 60)/(-15)
-); };
-PREVENT_EQ['male']['10yr_ASCVD'] = function(age,tc,hdl,sbp,dm,smoking,bmi,egfr,bptreat,statin){ return (
--3.500655 +
-        0.7099847*(age - 55)/10 +
-        0.1658663*((mmol(tc) - mmol(hdl)) - 3.5) -
-        0.1144285*(mmol(hdl) - 1.3)/0.3 - 0.2837212*(Math.min(sbp, 110) - 110)/20 +
-        0.3239977*(Math.max(sbp, 110) - 130)/20 +
-        0.7189597*(dm) +
-        0.3956973*(smoking) +
-        0.3690075*(Math.min(egfr, 60) - 60)/(-15) +
-        0.0203619*(Math.max(egfr, 60)  - 90)/(-15) +
-        0.2036522*(bptreat) -
-        0.0865581*(statin) -
-        0.0322916*(bptreat)*(Math.max(sbp, 110) - 130)/20 +
-        0.114563*(statin)*((mmol(tc) - mmol(hdl)) - 3.5) -
-        0.0300005*(age - 55)/10*((mmol(tc) - mmol(hdl)) - 3.5) +
-        0.0232747*(age - 55)/10*(mmol(hdl) - 1.3)/0.3 -
-        0.0927024*(age - 55)/10*(Math.max(sbp, 110) - 130)/20 -
-        0.2018525*(age - 55)/10*(dm) -
-        0.0970527*(age - 55)/10*(smoking) -
-        0.1217081*(age - 55)/10*(Math.min(egfr, 60) - 60)/(-15)
-); };
-PREVENT_EQ['male']['30yr_ASCVD'] = function(age,tc,hdl,sbp,dm,smoking,bmi,egfr,bptreat,statin){ return (
--1.736444 +
-        0.3994099*((age - 55)/10) -
-        0.0937484*Math.pow((age-55)/10,2) +
-        0.1744643*((mmol(tc) - mmol(hdl))- 3.5) -
-        0.120203*(mmol(hdl)- 1.3)/0.3 -
-        0.0665117*(Math.min(sbp, 110) - 110)/20 +
-        0.2753037*(Math.max(sbp, 110) - 130)/20 +
-        0.4790257*(dm) +
-        0.1782635*(smoking) -
-        0.0218789*(Math.min(egfr, 60) - 60)/(-15) +
-        0.0602553*(Math.max(egfr, 60) - 90)/(-15) +
-        0.1421182*(bptreat) +
-        0.0135996*(statin) -
-        0.0218265*(bptreat)*(Math.max(sbp, 110) - 130)/20 +
-        0.1013148*(statin)*((mmol(tc) - mmol(hdl))- 3.5) -
-        0.0312619*(age - 55)/10*((mmol(tc) - mmol(hdl))- 3.5) +
-        0.020673*(age - 55)/10*(mmol(hdl)- 1.3)/0.3 -
-        0.0920935*(age - 55)/10*(Math.max(sbp, 110) - 130)/20 -
-        0.2159947*(age - 55)/10*(dm) -
-        0.1548811*(age - 55)/10*(smoking) -
-        0.0712547*(age - 55)/10*(Math.min(egfr, 60) - 60)/(-15)
-); };
-PREVENT_EQ['male']['10yr_HF'] = function(age,tc,hdl,sbp,dm,smoking,bmi,egfr,bptreat,statin){ return (
--3.946391 +
-        0.8972642*(age - 55)/10 -
-        0.6811466*(Math.min(sbp, 110) - 110)/20 +
-        0.3634461*(Math.max(sbp, 110) - 130)/20 +
-        0.923776*(dm) +
-        0.5023736*(smoking) -
-        0.0485841*(Math.min(bmi, 30) - 25)/5 +
-        0.3726929*(Math.max(bmi, 30) - 30)/5 +
-        0.6926917*(Math.min(egfr, 60) - 60)/(-15) +
-        0.0251827*(Math.max(egfr, 60)  - 90)/(-15) +
-        0.2980922*(bptreat) -
-        0.0497731*(bptreat)*(Math.max(sbp, 110) - 130)/20 -
-        0.1289201*(age - 55)/10*(Math.max(sbp, 110) - 130)/20 -
-        0.3040924*(age - 55)/10*(dm) -
-        0.1401688*(age - 55)/10*(smoking) +
-        0.0068126*(age - 55)/10*(Math.max(bmi, 30) - 30)/5 -
-        0.1797778*(age - 55)/10*(Math.min(egfr, 60) - 60)/(-15)
-); };
-PREVENT_EQ['male']['30yr_HF'] = function(age,tc,hdl,sbp,dm,smoking,bmi,egfr,bptreat,statin){ return (
--1.95751 +
-        0.5681541*((age - 55)/10) -
-        0.1048388*Math.pow((age-55)/10,2) -
-        0.4761564*(Math.min(sbp, 110) - 110)/20 +
-        0.30324*(Math.max(sbp, 110) - 130)/20 +
-        0.6840338*(dm) +
-        0.2656273*(smoking) +
-        0.0833107*(Math.min(bmi, 30) - 25)/5 +
-        0.26999*(Math.max(bmi, 30) - 30)/5 +
-        0.2541805*(Math.min(egfr, 60) - 60)/(-15) +
-        0.0638923*(Math.max(egfr, 60) - 90)/(-15) +
-        0.2583631*(bptreat) -
-        0.0391938*(bptreat)*(Math.max(sbp, 110) - 130)/20 -
-        0.1269124*(age - 55)/10*(Math.max(sbp, 110) - 130)/20 -
-        0.3273572*(age - 55)/10*(dm) -
-        0.2043019*(age - 55)/10*(smoking) -
-        0.0182831*(age - 55)/10*(Math.max(bmi, 30) - 30)/5 -
-        0.1342618*(age - 55)/10*(Math.min(egfr, 60) - 60)/(-15)
-); };
+/* ---- 단위 변환 ---- */
+function mgdl_to_mmol_chol(mgdl){ return mgdl / 38.67; }   /* 콜레스테롤 mg/dL → mmol/L */
 
-var PREVENT_READY = true;   /* 공식 계수 탑재 완료 */
+/* ---- PREVENT 변수 변환 (논문 식 구조) ----
+   입력: age(yr), totalC(mg/dL), hdl(mg/dL), sbp(mmHg), egfr, bmi,
+        dm, smoke, htnTx(항고혈압제), statin (bool)
+   반환: 중심화·spline 처리된 변수 객체 (계수와 곱할 대상) */
+function preventVars(p){
+  var nonhdl_mmol = mgdl_to_mmol_chol(p.totalC - p.hdl);   /* non-HDL */
+  var hdl_mmol = mgdl_to_mmol_chol(p.hdl);
+  var age_c = (p.age - 55) / 10;                            /* 나이: 55 중심, per 10yr */
+  var nonhdl_c = nonhdl_mmol - 3.5;                          /* non-HDL: 3.5 중심 */
+  var hdl_c = (hdl_mmol - 1.3) / 0.3;                        /* HDL: 1.3 중심, per 0.3 */
+  /* SBP piecewise spline: <110 / ≥110 (per 20mmHg) */
+  var sbp_lt = (Math.min(p.sbp,110) - 110) / 20;
+  var sbp_ge = (Math.max(p.sbp,110) - 130) / 20;            /* 130 중심 */
+  /* eGFR piecewise spline: <60 / ≥60 */
+  var egfr_lt = (Math.min(p.egfr,60) - 60) / -15;
+  var egfr_ge = (Math.max(p.egfr,60) - 90) / -15;           /* 90 중심 */
+  /* BMI spline (HF 모델용): <30 / ≥30 */
+  var bmi_lt = p.bmi!=null ? (Math.min(p.bmi,30) - 25) / 5 : 0;
+  var bmi_ge = p.bmi!=null ? (Math.max(p.bmi,30) - 30) / 5 : 0;
+  return {
+    age:age_c, nonhdl:nonhdl_c, hdl:hdl_c,
+    sbp_lt:sbp_lt, sbp_ge:sbp_ge,
+    dm:p.dm?1:0, smoke:p.smoke?1:0,
+    egfr_lt:egfr_lt, egfr_ge:egfr_ge,
+    htnTx:p.htnTx?1:0, statin:p.statin?1:0,
+    bmi_lt:bmi_lt, bmi_ge:bmi_ge,
+    /* 상호작용항 (논문 구조: age × 주요변수) */
+    age_nonhdl:age_c*nonhdl_c, age_hdl:age_c*hdl_c,
+    age_sbp_ge:age_c*sbp_ge, age_dm:age_c*(p.dm?1:0),
+    age_smoke:age_c*(p.smoke?1:0), age_egfr_lt:age_c*egfr_lt,
+    /* 약물 상호작용 (치료 시 콜레스테롤·SBP 효과 보정) */
+    htn_sbp_ge:(p.htnTx?1:0)*sbp_ge, statin_nonhdl:(p.statin?1:0)*nonhdl_c
+  };
+}
 
-/* ---- 위험도 계산 ---- */
-function preventRiskCalc(sex, outcome, p){
-  var fn = PREVENT_EQ[sex] && PREVENT_EQ[sex][outcome];
-  if(!fn) return null;
-  /* HF는 bmi 필요, CVD/ASCVD는 tc/hdl/statin 필요 */
-  var lo = fn(p.age, p.tc, p.hdl, p.sbp, p.dm?1:0, p.smoke?1:0, p.bmi, p.egfr, p.bptreat?1:0, p.statin?1:0);
-  return 100*Math.exp(lo)/(1+Math.exp(lo));
+/* ============================================================
+   PREVENT_COEF — ★베타 계수 (placeholder)
+   구조: [sex][outcome][years] = { const, <변수명>:계수, ... }
+   ⚠ 모든 계수 0 = 미입력. Khan 2024 supplement 값으로 교체 필요.
+   교체 후 검증: 50세女 SBP160(tx) TC200 HDL45 DM eGFR90 BMI35
+     → 10yr CVD .147 ASCVD .092 HF .081 / 30yr CVD .53 ASCVD .354 HF .39
+   ============================================================ */
+var PREVENT_COEF_FILLED = false;   /* 계수 채워지면 true로 */
+var PREVENT_COEF = {
+  female:{
+    total_cvd:{ "10":coefTpl(), "30":coefTpl() },
+    ascvd:{ "10":coefTpl(), "30":coefTpl() },
+    heart_failure:{ "10":coefTpl(), "30":coefTpl() }
+  },
+  male:{
+    total_cvd:{ "10":coefTpl(), "30":coefTpl() },
+    ascvd:{ "10":coefTpl(), "30":coefTpl() },
+    heart_failure:{ "10":coefTpl(), "30":coefTpl() }
+  }
+};
+function coefTpl(){
+  /* 모든 항 0 (placeholder). 키 구조만 정의 → 계수 채울 자리 명시 */
+  return {
+    const:0, age:0, nonhdl:0, hdl:0, sbp_lt:0, sbp_ge:0,
+    dm:0, smoke:0, egfr_lt:0, egfr_ge:0, htnTx:0, statin:0,
+    bmi_lt:0, bmi_ge:0,
+    age_nonhdl:0, age_hdl:0, age_sbp_ge:0, age_dm:0, age_smoke:0, age_egfr_lt:0,
+    htn_sbp_ge:0, statin_nonhdl:0
+  };
+}
+
+/* ---- log-odds → risk (로지스틱) ---- */
+function preventRisk(p, sex, outcome, years){
+  var C = PREVENT_COEF[sex] && PREVENT_COEF[sex][outcome] && PREVENT_COEF[sex][outcome][years];
+  if(!C) return null;
+  var v = preventVars(p);
+  var lo = C.const;
+  for(var k in v){ if(C[k]!=null) lo += C[k]*v[k]; }
+  var risk = 1 / (1 + Math.exp(-lo));
+  return risk;
 }
 
 /* ---- ★PREVENT 정문 ---- */
 function preventScore(p){
-  /* p: {age,sex('female'|'male'),tc,hdl,sbp,egfr,bmi,dm,smoke,bptreat,statin} */
-  var sex = p.sex==="male"?"male":"female";
-  /* 범위 검증 (Khan 2024 개발범위 + 임상 권장) */
-  var warns=[];
-  var can10 = (p.age>=30 && p.age<=79);
-  var can30 = (p.age>=30 && p.age<=59);
-  if(p.age<30||p.age>79) warns.push("나이 30~79 범위 밖 — 10년 위험 계산 불가");
-  if(p.age>59 && p.age<=79) warns.push("나이 60~79 — 30년 위험은 계산 안 됨(30년은 30~59세만)");
-  if(p.tc!=null&&(p.tc<130||p.tc>320)) warns.push("총콜레스테롤 130~320 범위 밖");
-  if(p.hdl!=null&&(p.hdl<20||p.hdl>100)) warns.push("HDL 20~100 범위 밖");
-  if(p.sbp<90||p.sbp>200) warns.push("SBP 90~200 범위 밖");
-  if(p.egfr<15||p.egfr>140) warns.push("eGFR 15~140 범위 밖(임상권장)");
-  if(p.bmi!=null&&(p.bmi<18.5||p.bmi>39.9)) warns.push("BMI 18.5~39.9 범위 밖");
-
-  function calc(outcome, need10){
-    if(need10 && !can10) return null;
-    if(!need10 && !can30) return null;
-    return preventRiskCalc(sex, outcome, p);
+  /* p: {age,sex('female'|'male'),totalC,hdl,sbp,egfr,bmi,dm,smoke,htnTx,statin} */
+  if(!PREVENT_COEF_FILLED){
+    return { ready:false,
+      note:"PREVENT 계수 미탑재 — Khan 2024 supplement 계수 입력 후 작동. 식 구조는 완성됨." };
   }
-  var hasChol = (p.tc!=null && p.hdl!=null);
-  var hasBmi = (p.bmi!=null);
+  /* 입력 범위 검증 (논문 validated range) */
+  var warns=[];
+  if(p.age<30||p.age>79) warns.push("나이 30~79 권장 범위 밖");
+  if(p.totalC<130||p.totalC>320) warns.push("총콜레스테롤 130~320 범위 밖");
+  if(p.hdl<20||p.hdl>100) warns.push("HDL 20~100 범위 밖");
+  if(p.sbp<90||p.sbp>200) warns.push("SBP 90~200 범위 밖");
+  if(p.egfr<15||p.egfr>150) warns.push("eGFR 15~150 범위 밖");
+  if(p.bmi!=null&&(p.bmi<18.5||p.bmi>39.9)) warns.push("BMI 18.5~39.9 범위 밖");
+  var sex = p.sex==="male"?"male":"female";
   return {
-    ready:true, sex:sex, warns:warns, can10:can10, can30:can30,
-    r10:{
-      cvd: hasChol?calc("10yr_CVD",true):null,
-      ascvd: hasChol?calc("10yr_ASCVD",true):null,
-      hf: hasBmi?calc("10yr_HF",true):null
-    },
-    r30:{
-      cvd: hasChol?calc("30yr_CVD",false):null,
-      ascvd: hasChol?calc("30yr_ASCVD",false):null,
-      hf: hasBmi?calc("30yr_HF",false):null
-    }
+    ready:true, sex:sex, warns:warns,
+    r10:{ cvd:preventRisk(p,sex,"total_cvd","10"), ascvd:preventRisk(p,sex,"ascvd","10"), hf:preventRisk(p,sex,"heart_failure","10") },
+    r30:{ cvd:preventRisk(p,sex,"total_cvd","30"), ascvd:preventRisk(p,sex,"ascvd","30"), hf:preventRisk(p,sex,"heart_failure","30") }
   };
 }
 
@@ -1537,21 +1327,21 @@ var PREVENT_TX_THRESHOLD = {
   source:"2026 ACC/AHA 이상지질혈증 가이드라인 (CIR.0000000000001423)", asOf:"2026-06",
   tiers:[
     { min:0, max:3, label:"저위험 (<3%)",
-      action:"생활습관 상담. LDL-C 160~189 또는 30년 ASCVD\u226510%면 중강도 스타틴 고려." },
+      action:"생활습관 상담. LDL-C 160~189 또는 30년 ASCVD≥10%면 중강도 스타틴 고려." },
     { min:3, max:5, label:"경계 (3~<5%)",
-      action:"생활습관 + 약물 위험-이익 논의(위험증강인자로 개별화). 중강도 스타틴 시 \u226530% LDL 감소, 목표 LDL<100\u00b7non-HDL<130. 불확실 시 CAC 고려." },
+      action:"생활습관 + 약물 위험-이익 논의(위험증강인자로 개별화). 중강도 스타틴 시 ≥30% LDL 감소, 목표 LDL<100·non-HDL<130. 불확실 시 CAC 고려." },
     { min:5, max:10, label:"중등도 (5~<10%)",
-      action:"중~고강도 스타틴 시작, \u226530% LDL 감소, 목표 LDL<100\u00b7non-HDL<130. 불확실 시 CAC 고려." },
-    { min:10, max:100, label:"고위험 (\u226510%)",
-      action:"고강도 스타틴, \u226550% LDL 감소, 목표 LDL<70\u00b7non-HDL<100. 최대내약 후 미달 시 에제티미브\u00b7PCSK9i\u00b7벰페도산 추가." }
+      action:"중~고강도 스타틴 시작, ≥30% LDL 감소, 목표 LDL<100·non-HDL<130. 불확실 시 CAC 고려." },
+    { min:10, max:100, label:"고위험 (≥10%)",
+      action:"고강도 스타틴, ≥50% LDL 감소, 목표 LDL<70·non-HDL<100. 최대내약 후 미달 시 에제티미브·PCSK9i·벰페도산 추가." }
   ],
-  always:"\u2605위험도 무관 약물치료 대상: \u2460 확립된 ASCVD \u2461 LDL-C\u2265190 \u2462 40~75세 당뇨 \u2463 CKD 3기\u2191 \u2464 항레트로바이러스 안정 HIV",
-  htn:"고혈압(2025 AHA/ACC, 10년 총CVD 기준): BP\u2265130/80 + 총CVD\u22657.5%(또는 임상CVD\u00b7당뇨\u00b7CKD) 시 약물. BP\u2265140/90은 위험도 무관 전원 치료.",
-  note:"\u26052026 ACC/AHA는 PREVENT를 공식 채택. ASCVD 10년 \u22653%부터 약물치료 논의 시작. 위험증강인자(가족력\u00b7Lp(a)\u00b7hsCRP\u00b7만성염증 등)는 PREVENT 입력에 없는 항목 — 별도 고려."
+  always:"★위험도 무관 약물치료 대상: ① 확립된 ASCVD ② LDL-C≥190 ③ 40~75세 당뇨 ④ CKD 3기↑ ⑤ 항레트로바이러스 안정 HIV",
+  htn:"고혈압(2025 AHA/ACC, 10년 총CVD 기준): BP≥130/80 + 총CVD≥7.5%(또는 임상CVD·당뇨·CKD) 시 약물. BP≥140/90은 위험도 무관 전원 치료.",
+  note:"★2026 ACC/AHA는 PREVENT를 공식 채택. ASCVD 10년 ≥3%부터 약물치료 논의 시작. 위험증강인자(가족력·Lp(a)·hsCRP·만성염증 등)는 PREVENT 입력에 없는 항목 — 별도 고려."
 };
 function preventTxTier(ascvd10){
   if(ascvd10==null) return null;
-  var pct = ascvd10;  /* 이미 percent */
+  var pct = ascvd10*100;
   for(var i=0;i<PREVENT_TX_THRESHOLD.tiers.length;i++){
     var t=PREVENT_TX_THRESHOLD.tiers[i];
     if(pct>=t.min && pct<t.max) return t;
@@ -1560,7 +1350,7 @@ function preventTxTier(ascvd10){
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { PREVENT_EQ, mmol, preventRiskCalc, preventScore, PREVENT_READY, PREVENT_TX_THRESHOLD, preventTxTier };
+  module.exports = { preventVars, preventRisk, preventScore, PREVENT_COEF, PREVENT_COEF_FILLED, PREVENT_TX_THRESHOLD, preventTxTier };
 }
 
 
@@ -1741,20 +1531,6 @@ var LIBRARY = [
       { type:"accaha_lpa" },
       { type:"accaha_apob" },
       { type:"accaha_vskorea" }
-    ]},
-
-  /* ===== 12. PREVENT 계산기 ===== */
-  { id:"lipid:topic:prevent", icon:"🧮", cat:"clin", num:12, title:"PREVENT 위험 계산기",
-    desc:"AHA PREVENT — 10·30년 ASCVD·HF·총CVD + 2026 치료등급",
-    sections:[
-      { type:"keypoints", title:"핵심", items:[
-        { t:"<b>AHA PREVENT</b>(2024) — 2013 PCE 대체, 인종 제외", star:true },
-        { t:"신장(eGFR)·대사 포함 — <b>10년·30년</b> ASCVD·심부전·총CVD", star:true },
-        { t:"공식 R 패키지 계수 직역 — <b>검증 완료</b>(±0.1%)", star:true },
-        { t:"결과 → <b>2026 ACC/AHA 치료등급</b> 자동 연결" },
-        { t:"30년 위험은 30~59세만. 한국은 참조용(처방은 국내 지침·급여)" }
-      ]},
-      { type:"prevent_calc" }
     ]}
 ];
 
@@ -1908,7 +1684,6 @@ function renderLibrary(){
     +'조언 보조 도구이며 최종 결정·청구는 처방의 책임.</div>';
   h+='<div class="searchbar"><span>🔍</span><input id="searchInp" placeholder="약물·상황 검색 (예: 로수바, PCSK9, TG)" oninput="doSearch(this.value)"></div>';
   h+='<div id="searchRes"></div>';
-  h+='<div id="libBody">';
   /* 인트로 강조 카드 — 플로우 유도 */
   h+='<div class="intro-card" onclick="switchTab(\'flow\')">'
     +'<div class="ic-t">⚡ 환자 앞에서 바로 — 플로우</div>'
@@ -1950,10 +1725,7 @@ function renderLibrary(){
   }
   h+='<div class="src" style="margin-top:8px">★급여기준·약제 정보는 갱신될 수 있으므로 처방·청구 시 최신 고시(심평원)·허가사항 확인 권장. 임상 판단 보조 도구이며 최종 결정·청구는 처방의 책임. 진료지침 그림은 한국지질·동맥경화학회 저작물(개인 진료 참고용).</div>';
   h+='</div>';
-  h+='</div>';/* libBody 닫기 */
   v.innerHTML=h;
-  /* 검색 상태 복원 (재렌더 시) */
-  if(STATE.searchQ){ var si2=$("searchInp"); if(si2){ si2.value=STATE.searchQ; doSearch(STATE.searchQ); } }
 }
 function openTopic(id){ STATE.openTopic=id; window.scrollTo(0,0); renderLibrary(); }
 function closeTopic(){ STATE.openTopic=null; renderLibrary(); }
@@ -1995,7 +1767,6 @@ function renderSection(sec){
     case "accaha_lpa": return renderAccahaLpa();
     case "accaha_apob": return renderAccahaApob();
     case "accaha_vskorea": return renderAccahaVsKorea();
-    case "prevent_calc": return renderPreventCalc();
     case "figure": return renderFigure(sec);
     case "refs": return renderRefs(sec.ids);
     default: return '';
@@ -2349,112 +2120,23 @@ function openRef(id){
 function closeRefModal(e){ if(e&&e.target.id!=="refModal"&&e.type==="click") return; $("refModal").hidden=true; }
 
 /* ---- 검색 ---- */
-/* 약물 ID → 그 약물이 등장하는 토픽 ID 매핑 (검색 결과 클릭 연결용) */
-function drugToTopic(drugId){
-  for(var i=0;i<LIBRARY.length;i++){
-    var secs=LIBRARY[i].sections||[];
-    for(var s=0;s<secs.length;s++){
-      if(secs[s].type==="drugcards" && secs[s].ids){
-        for(var j=0;j<secs[s].ids.length;j++) if(secs[s].ids[j]===drugId) return LIBRARY[i].id;
-      }
-    }
-  }
-  return null;
-}
-
-/* 토픽 본문 텍스트를 평탄화(키포인트·섹션 검색용) */
-function topicSearchText(t){
-  var parts=[t.title, t.desc];
-  var secs=t.sections||[];
-  for(var s=0;s<secs.length;s++){
-    var sec=secs[s];
-    if(sec.title) parts.push(sec.title);
-    if(sec.items){ for(var i=0;i<sec.items.length;i++){ parts.push(sec.items[i].t||""); parts.push(sec.items[i].b||""); } }
-    if(sec.type) parts.push(sec.type);
-    /* 약물카드 토픽은 약물명도 포함 */
-    if(sec.type==="drugcards" && sec.ids){
-      for(var d=0;d<sec.ids.length;d++){ var dd=DRUG_DB[sec.ids[d]]; if(dd) parts.push(dd.name+" "+(dd.brand||"")+" "+(dd.en||"")); }
-    }
-  }
-  return parts.join(" ").toLowerCase();
-}
-
-/* 토픽 본문 텍스트를 평탄화(키포인트 검색용) — type(섹션코드)은 제외 */
-function topicBodyText(t){
-  var parts=[];
-  var secs=t.sections||[];
-  for(var s=0;s<secs.length;s++){
-    var sec=secs[s];
-    if(sec.title) parts.push(sec.title);
-    if(sec.items){ for(var i=0;i<sec.items.length;i++){ parts.push(sec.items[i].t||""); parts.push(sec.items[i].b||""); } }
-  }
-  /* HTML 태그 제거 */
-  return parts.join(" ").replace(/<[^>]+>/g," ").toLowerCase();
-}
-
 function doSearch(q){
-  var res=$("searchRes");
-  var body=$("libBody");
-  q=(q||"").trim();
-  STATE.searchQ=q;
-  if(q.length<1){ res.innerHTML=''; if(body) body.style.display=''; return; }
-  /* 한글 자모만(조합 중)이면 무시 */
-  if(/^[ㄱ-ㅎㅏ-ㅣ]+$/.test(q)){ res.innerHTML=''; if(body) body.style.display=''; return; }
-  if(body) body.style.display='none';  /* 검색 중엔 그리드 숨김 */
-  var ql=q.toLowerCase();
-  var scored=[];
-
-  /* 1) 약물 — 약물명/브랜드/영문 매칭 (최우선) */
-  for(var d in DRUG_DB){
-    var dd=DRUG_DB[d];
-    var nm=(dd.name+" "+(dd.brand||"")+" "+(dd.en||"")).toLowerCase();
-    var sc=0;
-    if(dd.name.toLowerCase()===ql) sc=100;
-    else if(nm.indexOf(ql)>=0) sc=80;
-    else if((dd.moa||"").toLowerCase().indexOf(ql)>=0) sc=30;
-    if(sc>0) scored.push({ kind:"drug", id:d, d:dd, topicId:drugToTopic(d), score:sc });
-  }
-
-  /* 2) 토픽 — 제목>설명>본문 가중 */
+  var res=$("searchRes"); if(!q||q.length<1){ res.innerHTML=''; return; }
+  q=q.toLowerCase(); var hits=[];
   for(var i=0;i<LIBRARY.length;i++){
     var t=LIBRARY[i];
-    var title=t.title.toLowerCase(), desc=(t.desc||"").toLowerCase();
-    var sc2=0, where="";
-    if(title.indexOf(ql)>=0){ sc2=90; where="제목"; }
-    else if(desc.indexOf(ql)>=0){ sc2=60; where="설명"; }
-    else if(topicBodyText(t).indexOf(ql)>=0){ sc2=25; where="본문"; }
-    if(sc2>0) scored.push({ kind:"topic", t:t, score:sc2, where:where });
+    if((t.title+t.desc).toLowerCase().indexOf(q)>=0) hits.push({type:"topic",t:t});
   }
-
-  /* 점수순 정렬 */
-  scored.sort(function(a,b){ return b.score-a.score; });
-
-  if(!scored.length){ res.innerHTML='<div class="note">검색 결과 없음 — 다른 키워드를 시도해보세요 (예: 스타틴, PCSK9, FH, 게이트, Lp(a)) <span style="color:var(--clin);cursor:pointer;font-weight:700" onclick="clearSearch()">✕ 지우기</span></div>'; return; }
-
-  var h='<div style="display:flex;align-items:center;margin:0 0 7px"><span style="font-size:11px;font-weight:700;color:var(--ink-faint)">검색 결과 '+scored.length+'건</span>'
-    +'<span style="margin-left:auto;font-size:11px;color:var(--clin);cursor:pointer;font-weight:700" onclick="clearSearch()">✕ 지우기</span></div>';
-  for(var k=0;k<scored.length && k<15;k++){
-    var hit=scored[k];
-    if(hit.kind==="drug"){
-      var click=hit.topicId?(' onclick="openTopic(\''+hit.topicId+'\')" style="margin-bottom:8px;cursor:pointer"'):' style="margin-bottom:8px"';
-      h+='<div class="topic-card clin"'+click+'>'
-        +'<div class="th"><span class="tico">💊</span><span class="ttitle" style="margin:0">'+esc(hit.d.name)+(hit.d.brand&&hit.d.brand!=="-"?' <span style="font-weight:400;color:var(--ink-faint)">('+esc(hit.d.brand)+')</span>':'')+'</span><span class="tcat b-clin" style="margin-left:auto">약물</span></div>'
-        +'<div class="tdesc">'+esc((hit.d.moa||hit.d.dose||"").substring(0,60))+(hit.topicId?' · 탭하여 토픽':'')+'</div></div>';
-    } else {
-      var t2=hit.t, cb=t2.cat==="pay"?"b-pay":(t2.cat==="clin"?"b-clin":"b-care");
-      h+='<div class="topic-card '+t2.cat+'" style="margin-bottom:8px" onclick="openTopic(\''+t2.id+'\')">'
-        +'<div class="th"><span class="tico">'+(t2.icon||"📄")+'</span><span class="ttitle" style="margin:0">'+esc(t2.title)+'</span><span class="tcat '+cb+'" style="margin-left:auto">'+esc(hit.where)+'</span></div>'
-        +'<div class="tdesc">'+esc(t2.desc)+'</div></div>';
-    }
+  for(var d in DRUG_DB){
+    var dd=DRUG_DB[d];
+    if((dd.name+(dd.brand||'')+(dd.en||'')).toLowerCase().indexOf(q)>=0) hits.push({type:"drug",id:d,d:dd});
   }
-  if(scored.length>15) h+='<div class="src">상위 15건 표시 (총 '+scored.length+'건) — 검색어를 더 구체적으로</div>';
-  res.innerHTML=h;
-}
-function clearSearch(){
-  STATE.searchQ='';
-  var si=$("searchInp"); if(si) si.value='';
-  var res=$("searchRes"); if(res) res.innerHTML='';
-  var body=$("libBody"); if(body) body.style.display='';
+  var h='';
+  for(var k=0;k<hits.length && k<8;k++){
+    if(hits[k].type==="topic") h+='<div class="topic-card" style="margin-bottom:8px" onclick="openTopic(\''+hits[k].t.id+'\')"><div class="ttitle">📚 '+esc(hits[k].t.title)+'</div><div class="tdesc">'+esc(hits[k].t.desc)+'</div></div>';
+    else h+='<div class="topic-card" style="margin-bottom:8px"><div class="ttitle">💊 '+esc(hits[k].d.name)+'</div><div class="tdesc">'+esc(hits[k].d.moa||'')+'</div></div>';
+  }
+  res.innerHTML=h||'<div class="note">검색 결과 없음</div>';
 }
 
 /* ===== 시뮬레이션 ===== */
@@ -2539,31 +2221,25 @@ function renderFlow(){
     +todChip("lipid:tod:lvh","좌심실비대")+'</div>';
   h+='</div>';
 
-  /* 결과 — 별도 컨테이너 (입력 시 이 부분만 갱신, input 포커스 유지) */
-  h+='<div id="flowResult">'+renderFlowResult()+'</div>';
+  /* 결과 */
+  var patient=buildPatient();
+  var out=recommendLipid(patient);
+  h+=renderTargetGauge(out);
+  h+=renderResultCards(out);
+
+  /* 게이트 위젯 */
+  h+=renderGateWidget();
+
+  /* PREVENT 위젯 */
+  h+=renderPreventWidget();
 
   v.innerHTML=h;
 }
-function renderFlowResult(){
-  var patient=buildPatient();
-  var out=recommendLipid(patient);
-  var h='';
-  h+=renderTargetGauge(out);
-  h+=renderResultCards(out);
-  h+=renderGateWidget();
-  h+=renderPreventWidget();
-  return h;
-}
-/* 결과만 갱신 (input 재생성 안 함 → 키보드 안 닫힘) */
-function updateFlowResult(){
-  var el=$("flowResult");
-  if(el) el.innerHTML=renderFlowResult();
-}
 function inpF(key,lbl,type,val){
-  return '<div class="inp-field"><label>'+esc(lbl)+'</label><input type="'+type+'" value="'+(val!=null?val:'')+'" inputmode="'+(type==="number"?"decimal":"text")+'" oninput="setFlow(\''+key+'\',this.value)"></div>';
+  return '<div class="inp-field"><label>'+esc(lbl)+'</label><input type="'+type+'" value="'+(val!=null?val:'')+'" oninput="setFlow(\''+key+'\',this.value)"></div>';
 }
-function setFlow(key,val){ STATE.flow[key]=(val===''?null:parseFloat(val)); updateFlowResult(); }
-function setFlowStr(key,val){ STATE.flow[key]=(val===''?null:val); updateFlowResult(); }
+function setFlow(key,val){ STATE.flow[key]=(val===''?null:parseFloat(val)); renderFlow(); }
+function setFlowStr(key,val){ STATE.flow[key]=(val===''?null:val); renderFlow(); }
 
 /* ★ PREVENT 위젯 (AHA/ACC 2023, 2026 가이드라인 치료임계) */
 function renderPreventWidget(){
@@ -2579,9 +2255,9 @@ function renderPreventWidget(){
     h+='<div class="note">입력 필요: <b>'+need.join(" · ")+'</b> (위 PREVENT 계산용 입력란)</div>';
     h+='</div>'; return h;
   }
-  var p={ age:f.age, sex:f.sex, tc:f.tc, hdl:f.hdl, sbp:f.sbp, egfr:f.egfr,
+  var p={ age:f.age, sex:f.sex, totalC:f.tc, hdl:f.hdl, sbp:f.sbp, egfr:f.egfr,
     bmi:f.bmi, dm:(f.comorbid&&f.comorbid.dm)||false, smoke:f.smoke||false,
-    bptreat:f.htnTx||false, statin:f.statin||false };
+    htnTx:f.htnTx||false, statin:f.statin||false };
   var res=preventScore(p);
   if(!res.ready){
     h+='<div class="note" style="border-color:var(--alert)">⚙️ '+esc(res.note)+' (위험도 % 는 계수 탑재 후 자동 표시)</div>';
@@ -2589,26 +2265,19 @@ function renderPreventWidget(){
     h+='</div>'; return h;
   }
   /* 결과 표시 */
-  h+=preventResultBlock(res);
-  h+='</div>';
-  return h;
-}
-
-/* 결과 표시 공통 블록 (플로우·도서관 공용) */
-function preventResultBlock(res){
-  var h='';
   if(res.warns.length) h+='<div class="note">⚠ '+esc(res.warns.join(" · "))+'</div>';
-  function pct(x){ return x==null?"-":x.toFixed(1)+"%"; }
+  function pct(x){ return x==null?"-":(x*100).toFixed(1)+"%"; }
   h+='<table class="tbl"><tr><th></th><th>10년</th><th>30년</th></tr>';
   h+='<tr class="hl"><td><b>ASCVD</b></td><td><b>'+pct(res.r10.ascvd)+'</b></td><td>'+pct(res.r30.ascvd)+'</td></tr>';
   h+='<tr><td>심부전(HF)</td><td>'+pct(res.r10.hf)+'</td><td>'+pct(res.r30.hf)+'</td></tr>';
   h+='<tr><td>총 CVD</td><td>'+pct(res.r10.cvd)+'</td><td>'+pct(res.r30.cvd)+'</td></tr>';
   h+='</table>';
-  if(!res.can30) h+='<div class="src">30년 위험은 30~59세만 산출됩니다.</div>';
-  var tier=(res.r10.ascvd!=null)?preventTxTier(res.r10.ascvd):null;
+  /* 2026 치료 임계 */
+  var tier=preventTxTier(res.r10.ascvd);
   if(tier){
     h+='<div class="note" style="border-color:var(--clin)"><b>2026 ACC/AHA: '+esc(tier.label)+'</b> (ASCVD 10년 '+pct(res.r10.ascvd)+')<br>'+esc(tier.action)+'</div>';
-    if(res.r10.ascvd<3 && res.r30.ascvd!=null && res.r30.ascvd>=10)
+    /* 30년 보조 트리거 (저위험인데 30년 높을 때) */
+    if(res.r10.ascvd<0.03 && res.r30.ascvd>=0.10)
       h+='<div class="note">★10년은 저위험이나 30년 ASCVD '+pct(res.r30.ascvd)+' (≥10%) → 중강도 스타틴 고려 대상</div>';
   }
   h+='<details><summary>위험도 무관 치료 대상 + 전체 알고리듬</summary><div class="dbody">';
@@ -2619,51 +2288,9 @@ function preventResultBlock(res){
   }
   h+='<span style="color:var(--clin)">'+esc(PREVENT_TX_THRESHOLD.htn)+'</span></div></details>';
   h+='<div class="src">'+esc(PREVENT_TX_THRESHOLD.note)+'</div>';
+  h+='</div>';
   return h;
 }
-
-/* ★ 도서관용 독립 PREVENT 계산기 (자체 입력) */
-function renderPreventCalc(){
-  if(!STATE.pcalc) STATE.pcalc={};
-  var f=STATE.pcalc;
-  var h='<div class="note" style="border-color:var(--clin)">AHA PREVENT base 방정식(공식 R 패키지 검증). 아래 값을 입력하면 10·30년 위험도와 2026 치료등급이 자동 계산됩니다. 플로우 탭에서도 환자 데이터로 계산 가능.</div>';
-  /* 입력 */
-  function pin(key,lbl,val){ return '<div class="inp-field"><label>'+esc(lbl)+'</label><input type="number" inputmode="decimal" value="'+(val!=null?val:'')+'" oninput="setPcalc(\''+key+'\',this.value)"></div>'; }
-  h+='<div class="inp-row">'+pin("age","나이",f.age)
-    +'<div class="inp-field"><label>성별</label><select onchange="setPcalcStr(\'sex\',this.value)">'
-    +'<option value="">-</option><option value="female"'+(f.sex==="female"?" selected":"")+'>여</option>'
-    +'<option value="male"'+(f.sex==="male"?" selected":"")+'>남</option></select></div>'
-    +pin("sbp","SBP",f.sbp)+'</div>';
-  h+='<div class="inp-row">'+pin("tc","총콜레스테롤",f.tc)+pin("hdl","HDL",f.hdl)
-    +pin("egfr","eGFR",f.egfr)+pin("bmi","BMI",f.bmi)+'</div>';
-  h+='<div id="pcalcChips" class="chips" style="margin-bottom:8px">'+pcalcChipsInner()+'</div>';
-  /* 결과 — 별도 컨테이너 */
-  h+='<div id="pcalcResult">'+pcalcResultInner()+'</div>';
-  return h;
-}
-function pcalcChipsInner(){
-  return pcalcChip("dm","당뇨")+pcalcChip("smoke","현재흡연")
-    +pcalcChip("bptreat","항고혈압제")+pcalcChip("statin","스타틴복용");
-}
-function pcalcResultInner(){
-  var f=STATE.pcalc||{};
-  var need=[];
-  if(f.age==null) need.push("나이"); if(!f.sex) need.push("성별");
-  if(f.tc==null) need.push("TC"); if(f.hdl==null) need.push("HDL");
-  if(f.sbp==null) need.push("SBP"); if(f.egfr==null) need.push("eGFR");
-  if(need.length){
-    return '<div class="note">입력 필요: <b>'+need.join(" · ")+'</b>'+(f.bmi==null?' (BMI 없으면 심부전 위험만 제외)':'')+'</div>';
-  }
-  var p={ age:f.age, sex:f.sex, tc:f.tc, hdl:f.hdl, sbp:f.sbp, egfr:f.egfr,
-    bmi:f.bmi, dm:f.dm||false, smoke:f.smoke||false, bptreat:f.bptreat||false, statin:f.statin||false };
-  return preventResultBlock(preventScore(p));
-}
-function setPcalc(key,val){ if(!STATE.pcalc)STATE.pcalc={}; STATE.pcalc[key]=(val===''?null:parseFloat(val)); refreshPcalcResult(); }
-function setPcalcStr(key,val){ if(!STATE.pcalc)STATE.pcalc={}; STATE.pcalc[key]=(val===''?null:val); refreshPcalcResult(); }
-function pcalcChip(key,lbl){ if(!STATE.pcalc)STATE.pcalc={}; var on=STATE.pcalc[key]?'on':''; return '<span class="chip '+on+'" onclick="togglePcalc(\''+key+'\')">'+esc(lbl)+'</span>'; }
-function togglePcalc(key){ if(!STATE.pcalc)STATE.pcalc={}; STATE.pcalc[key]=!STATE.pcalc[key]; var c=$("pcalcChips"); if(c)c.innerHTML=pcalcChipsInner(); refreshPcalcResult(); }
-/* 결과만 갱신 (input 포커스 유지) */
-function refreshPcalcResult(){ var el=$("pcalcResult"); if(el) el.innerHTML=pcalcResultInner(); }
 
 function preventAlgoBlock(){
   var h='<details open><summary>2026 ACC/AHA 치료 알고리듬 (10년 ASCVD 기준)</summary><div class="dbody">';

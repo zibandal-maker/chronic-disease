@@ -261,10 +261,6 @@ body{padding-bottom:60px;}
   body{padding-top:46px !important;}
   @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
 </style>
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
 <div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
   <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
   <a class="ph-home" href="../index.html" title="홈">🏠</a>
@@ -854,10 +850,7 @@ var REFS = {
   "r_cd_fistula":   { grade:"A", txt:"누공형 CD: anti-TNF 1차(±항생제·외과) — 별도 트랙", src:"KASID CD · 급여 고시", detail:"활동성 항문주위 누공 동반 CD는 anti-TNF(인플릭시맙/아달리무맙)가 점막+누공 치유에 1차. 급여상 관강형 CDAI≥220 요건과 별개의 누공형 트랙 — 단, 누공이 보편치료(항생제·면역억제제·배농)에 반응 없을 것을 요함. 항생제·외과 배농 병행." },
   "r_vedo_safety":  { grade:"B", txt:"vedolizumab 장선택성 — 고령·감염위험 안전성 우수", src:"KASID · GEMINI 등", detail:"α4β7 장선택적 기전으로 전신 면역억제·결핵재활성 위험이 낮아 고령·감염력·악성종양력 환자에 선호. 단 발현 느려 급성 중증 단독엔 불리." },
   "r_jak_risk":     { grade:"B", txt:"JAK 계열: 대상포진·혈전·MACE 경고, 고위험군 신중", src:"허가·안전성 정보", detail:"JAK억제제(tofa·upa·filgo)는 빠른 경구 옵션이나 대상포진·VTE·MACE·악성종양 위험. 65세↑·심혈관/혈전 위험군 신중, 대상포진백신 고려, 지질 모니터." },
-  "r_t2t":          { grade:"A", txt:"STRIDE-II: 내시경 치유를 치료목표로", src:"STRIDE-II · 2026 KASID", detail:"증상관해를 넘어 내시경 치유(UC MES≤1, CD 궤양소실)·생화학 정상화를 목표로 단계적 상향(treat-to-target). CRP·분변칼프로텍틴·주기적 내시경으로 추적." },
-  "r_early_advanced":{ grade:"A", txt:"5-ASA 실패 시 시퀀싱 고정보다 환자맞춤 조기 advanced", src:"AGA 2024 · KASID 2023", detail:"중등도-중증에서 5-ASA 실패 후 단계적 step-up을 고집하기보다, 내시경·중증도·치료이력·동반을 종합해 면역조절제/advanced therapy로 조기 진입을 권고. 1·2차를 미리 고정하는 시퀀싱은 현실적 의미가 제한적 — 환자 특성별 선택이 표준." },
-  "r_varsity":      { grade:"A", txt:"UC: vedolizumab이 adalimumab 대비 관해 우월(VARSITY)", src:"VARSITY (head-to-head RCT)", detail:"중등도-중증 UC 직접비교에서 vedolizumab이 adalimumab보다 52주 임상관해·내시경 개선 우월. 장선택적 안전성과 함께 UC 1차 advanced로서 강한 근거. 단 발현은 anti-TNF보다 느려 급성 중증엔 보완 필요." },
-  "r_sequence":     { grade:"A", txt:"CD: risankizumab이 ustekinumab 대비 우월(SEQUENCE)", src:"SEQUENCE (head-to-head RCT)", detail:"anti-TNF 실패 중등도-중증 CD 직접비교에서 risankizumab(IL-23 p19)이 ustekinumab 대비 내시경 관해 우월, 스테로이드 절약 효과. ustekinumab은 지속률(retention)·장기 안전성 강점으로 고령·감염위험군에 선호." }
+  "r_t2t":          { grade:"A", txt:"STRIDE-II: 내시경 치유를 치료목표로", src:"STRIDE-II · 2026 KASID", detail:"증상관해를 넘어 내시경 치유(UC MES≤1, CD 궤양소실)·생화학 정상화를 목표로 단계적 상향(treat-to-target). CRP·분변칼프로텍틴·주기적 내시경으로 추적." }
 };
 
 /* ====================== 산정특례·교체 등은 위 공유 객체 사용 ====================== */
@@ -1251,98 +1244,6 @@ var CD_SIM = [
 var SIM_REGISTRY = { uc:UC_SIM, cd:CD_SIM };
 var LIBRARY_REGISTRY = { uc:UC_LIBRARY, cd:CD_LIBRARY };
 
-/* ============================================================
-   NEXT-STEP 엔진 데이터 (조언 강화: 다음 약물·다음 행동)
-   - 환자축(axis) → advanced 약물 우선순위
-   - 게이트 미충족 시 '지금 할 것 / 채울 것'
-   ============================================================ */
-var FLOW_AXIS = {
-  uc:[
-    { k:"fast",   label:"빠른 효과/중증·스테로이드 난치" },
-    { k:"safe",   label:"안전성 우선(고령·감염·악성력)" },
-    { k:"oral",   label:"경구 선호" },
-    { k:"joint",  label:"장외 증상(관절 등)" },
-    { k:"preg",   label:"임신/가임 고려" },
-    { k:"asuc",   label:"ASUC 병력/급성중증" }
-  ],
-  cd:[
-    { k:"fistula",label:"누공형(항문주위)" },
-    { k:"fast",   label:"빠른 효과/중증·스테로이드 의존" },
-    { k:"safe",   label:"안전성 우선(고령·감염·악성력)" },
-    { k:"oral",   label:"경구 선호" },
-    { k:"joint",  label:"장외 증상(관절 등)" },
-    { k:"preg",   label:"임신/가임 고려" }
-  ]
-};
-/* line: 표시용 기전, tags: 강점 환자축, avoid: 회피 축, ref: 근거 */
-var ADVANCED_OPTIONS = {
-  uc:[
-    { drug:"drug:infliximab",  line:"anti-TNF(IV)", tags:["fast","asuc","joint","preg"], avoid:["safe"],
-      note:"강력·빠름. ASUC 정주 구제 1차, 장외(관절) 동반 이점. 면역원성→티오퓨린 병용. 임신 중 비교적 사용 경험 많음.", ref:"r_uc_advanced" },
-    { drug:"drug:adalimumab",  line:"anti-TNF(SC)", tags:["fast","joint","preg"], avoid:["safe"],
-      note:"SC 자가주사. 관절 동반·빠른 효과. ASUC 구제엔 IV(IFX) 우선.", ref:"r_uc_advanced" },
-    { drug:"drug:vedolizumab", line:"항-인테그린", tags:["safe","preg"], avoid:["fast","asuc"],
-      note:"★장선택적=안전(고령·감염·악성력·임신). VARSITY서 adalimumab 대비 관해 우월. 단 발현 느려 급성중증 단독 부적합.", ref:"r_varsity" },
-    { drug:"drug:ustekinumab", line:"IL-12/23", tags:["safe","durable"], avoid:[],
-      note:"안전·지속률 우수. 건선 동반 이점. 발현 중간.", ref:"r_uc_advanced" },
-    { drug:"drug:mirikizumab", line:"IL-23 p19", tags:["safe"], avoid:[],
-      note:"UC IL-23 선택 옵션. 안전성 양호.", ref:"r_uc_advanced" },
-    { drug:"drug:upadacitinib",line:"JAK1(경구)", tags:["oral","fast"], avoid:["safe","preg"],
-      note:"경구·빠른 발현·강력. ★JAK 계열경고(대상포진·혈전·MACE)—고령·심혈관 신중, 임신 금기.", ref:"r_jak_risk" },
-    { drug:"drug:tofacitinib", line:"JAK1/3(경구)",tags:["oral","fast"], avoid:["safe","preg"],
-      note:"경구·빠름. JAK 계열경고 동일. 대상포진 위험 두드러짐.", ref:"r_jak_risk" },
-    { drug:"drug:filgotinib",  line:"JAK1(경구)", tags:["oral"], avoid:["safe","preg"],
-      note:"경구 JAK1 선택. 계열경고 적용.", ref:"r_jak_risk" },
-    { drug:"drug:ozanimod",    line:"S1P(경구)",  tags:["oral"], avoid:["preg"],
-      note:"경구 S1P. ★baseline 심전도·안과(황반)·간 모니터, 서맥 점증. 임신 금기.", ref:"r_uc_advanced" }
-  ],
-  cd:[
-    { drug:"drug:infliximab",  line:"anti-TNF(IV)", tags:["fistula","fast","joint","preg"], avoid:["safe"],
-      note:"★누공형 1차(점막+누공 치유). 강력·빠름. ±항생제·외과 배농(seton)·TDM. 티오퓨린 병용 권장.", ref:"r_cd_fistula" },
-    { drug:"drug:adalimumab",  line:"anti-TNF(SC)", tags:["fistula","fast","joint","preg"], avoid:["safe"],
-      note:"★누공형 사용. SC 편의. 빠른 효과·관절 동반.", ref:"r_cd_fistula" },
-    { drug:"drug:risankizumab",line:"IL-23 p19", tags:["fast","durable"], avoid:[],
-      note:"★강력(SEQUENCE: anti-TNF 실패서 ustekinumab 대비 우월·스테로이드 절약). 스테로이드 의존에 유리. 누공 근거는 anti-TNF가 우선.", ref:"r_sequence" },
-    { drug:"drug:ustekinumab", line:"IL-12/23", tags:["safe","durable"], avoid:[],
-      note:"지속률 최고·안전. anti-TNF 노출/불응군 우수. 고령·감염위험 선호.", ref:"r_sequence" },
-    { drug:"drug:vedolizumab", line:"항-인테그린", tags:["safe","preg"], avoid:["fast","fistula"],
-      note:"장선택적=안전(고령·감염·악성·임신). 발현 느림→급성중증·누공 단독 부적합.", ref:"r_vedo_safety" },
-    { drug:"drug:upadacitinib",line:"JAK1(경구)", tags:["oral","fast"], avoid:["safe","preg"],
-      note:"경구·빠름·강력(CD 급여 2024.4). ★JAK 계열경고—고령·심혈관 신중, 임신 금기.", ref:"r_jak_risk" }
-  ]
-};
-var PENDING_ACTION = {
-  uc:{
-    nowDoing:[
-      "경구+국소 5-ASA 최적화 — 좌측·직장형은 국소(좌약/관장) 병용 필수, 경구는 4.8g까지 증량",
-      "반응 불충분 → 경구 prednisolone 0.5~1mg/kg/일 유도(8주 내 점감)",
-      "직장염은 국소 스테로이드/5-ASA로도 관해 가능",
-      "★ASUC(Truelove-Witts 충족)면 즉시 입원·IV스테로이드 3일·CMV/C.difficile 점검 → 무반응 시 구제(IFX 또는 CSA)"
-    ],
-    toOpenGate:[
-      "A: 스테로이드 충분용량·기간 후 불응/의존 문서화",
-      "B: 티오퓨린 ≥3개월 무효 — 또는 C: NUDT15 C/C 등 금기(B 면제)",
-      "활성도: Mayo/내시경 중등도-중증 근거",
-      "결핵(IGRA/CXR)·HBV 사전검사"
-    ]
-  },
-  cd:{
-    nowDoing:[
-      "회맹부형: budesonide 9mg 유도 / 광범위·중증·전신증상: 전신 prednisolone",
-      "조기 면역조절제 시작 — 티오퓨린(NUDT15 사전) 또는 MTX",
-      "★고위험(젊은발병·광범위·깊은궤양·항문병변·누공·협착)은 조기 top-down(생물학제제) 논의",
-      "누공형: 항생제(metronidazole±cipro)+외과 배농(seton)+면역억제 진행(=누공형 게이트 사전치료이기도)"
-    ],
-    toOpenGate:[
-      "① 스테로이드 불응/의존 문서화",
-      "② 면역억제제(티오퓨린/MTX) ≥3개월 무효",
-      "③ CDAI ≥220 (계산기 산출)",
-      "누공형이면: 누공 보편치료(항생제·배농·면역억제 中 2) 실패 서류 — ★자동통과 아님",
-      "결핵·HBV 사전검사"
-    ]
-  }
-};
-
 </script>
 <script>
 /* ============================================================
@@ -1639,16 +1540,7 @@ function renderSimStream(){
   for(var i=0;i<SIM.path.length;i++){
     var n=simNode(SIM.path[i]); if(!n) continue;
     if(n.finale){ h+=renderSimFinale(); continue; }
-    if(n.info){
-      h+='<div class="simnode"><div class="simnext">ℹ️ '+boldStar(n.info)+'</div></div>';
-      if(n.id && n.id.indexOf("pending")>=0){
-        h+=renderPendingCard(STATE.disease);
-        h+=renderAdvancedCard(STATE.disease, [], false, true, ["위 게이트 항목(사전치료·활성도·서류) 충족"]);
-      } else if(n.id==="cd_fistula_pre"){
-        h+=renderAdvancedCard("cd", ["fistula"], true, true, ["누공 보편치료(항생제·배농·면역억제 中 2) 실패 서류"]);
-      }
-      continue;
-    }
+    if(n.info){ h+='<div class="simnode"><div class="simnext">ℹ️ '+boldStar(n.info)+'</div></div>'; continue; }
     h+='<div class="simnode"><div class="sq">'+boldStar(n.q)+'</div>';
     if(n.hint){ h+='<div class="simhint">'+boldStar(n.hint)+'</div>'; }
     if(n.calc){ h+='<button class="calc-launch" style="margin-bottom:10px" onclick="openCalc(\''+n.calc+'\')">🧮 '+n.calc.toUpperCase()+' 점수 계산기 열기</button>'; }
@@ -1682,17 +1574,18 @@ function recomputeCollect(){
 }
 function renderSimFinale(){
   var d=STATE.disease;
-  var fistula=(d==="cd" && SIM.answers["q_fistula"]==="yes");
-  var axes=fistula?["fistula"]:[];
-  var h='<div class="simnode" style="border-color:var(--accent)"><div class="sq">🎯 진입 게이트 충족 — 다음 약물·단계</div>';
-  h+='<div class="simhint">아래는 가이드라인 기본 우선순위입니다. 환자 특성에 맞춘 정밀 정렬은 <b>플로우 탭</b>에서 환자축을 선택해 확인하세요.</div></div>';
-  h+=renderAdvancedCard(d, axes, fistula);
-  var h2='<div class="rescard care"><div class="rh"><span class="ricon">🔬</span>투여 전·유지</div><div class="rb">';
-  h2+='<ul class="kp"><li>투여 전: 결핵(IGRA/CXR)·HBV·CBC·간 / 산정특례 '+(d==="uc"?"K51":"K50")+' 등록(본인부담 10%)</li>';
-  h2+=(d==="uc"?'<li>유지: 8~14주 Mayo/내시경 반응평가 → 점막치유(MES≤1) 목표</li>':'<li>유지(고시): 누공없음=2주 내 CDAI 70↓/25%↓ · 누공형=3회 후 누공 50%↓</li>');
-  h2+='<li>anti-TNF는 티오퓨린 병용·TDM으로 효과소실 관리 / 무반응 시 타 기전 교체</li></ul>';
-  h2+='<div class="note"><i>조언자 안내 — 최종 처방·비용 결정은 환자와 함께.</i></div></div></div>';
-  return h+h2;
+  var h='<div class="simnode" style="border-color:var(--accent)"><div class="sq">🎯 진입 게이트 충족 — 다음 단계 안내</div><div class="simnext">';
+  if(d==="uc"){
+    h+='<b>생물학제제·소분자 선택 가이드</b><br>· 빠른 효과/경구 선호 → JAK·S1P(계열경고·심전도/안과)<br>· 안전성 우선(고령·감염위험) → vedolizumab·ustekinumab<br>· 강력·누공·ASUC력 → anti-TNF<br><br>'+
+       '<b>투여 전</b> 결핵(IGRA/CXR)·HBV·CBC·간 / 산정특례 K51 등록(10%).<br>'+
+       '<b>유지</b> 8~14주 반응평가(Mayo/내시경) → 점막치유(MES≤1) 목표.';
+  } else {
+    h+='<b>생물학제제·소분자 선택 가이드</b><br>· 누공형 → anti-TNF 1차(±항생제·외과 배농, TDM)<br>· 안전성 우선 → vedolizumab·ustekinumab<br>· 강력(최신 IL-23) → risankizumab<br>· 경구 → upadacitinib(계열경고)<br><br>'+
+       '<b>투여 전</b> 결핵·HBV·CBC·간 / 산정특례 K50 등록(10%).<br>'+
+       '<b>유지(고시)</b> 누공없음=2주 내 CDAI 70↓ or 25%↓ / 누공형=3회 후 누공 50%↓.';
+  }
+  h+='<br><br><i>조언자 안내입니다 — 최종 처방·비용 결정은 환자와 함께.</i></div></div>';
+  return h;
 }
 function renderSimCollect(){
   var box=qs("simCollect");
@@ -1727,24 +1620,21 @@ function renderUCFlow(){
   h+='<div class="chiplabel">사전검사·동반</div>';
   h+='<div class="chips" id="uf_pre" style="margin-bottom:11px">'+
      chk("tb","결핵 선별 완료")+chk("hbv","HBV 선별 완료")+chk("elderly","고령/감염위험")+'</div>';
-  h+='<div class="chiplabel">환자 특성 (약물 우선순위에 반영)</div>';
-  h+='<div class="chips" id="uf_axis" style="margin-bottom:11px">'+axisChips("uc")+'</div>';
   h+='<button class="runbtn" onclick="runUCFlow()">분석 →</button><div id="uf_result"></div>';
   h+=renderFoot();
   qs("view-flow").innerHTML=h;
 }
 function runUCFlow(){
-  var g=chipsOn("uf_gate"), pre=chipsOn("uf_pre"), axes=chipsOn("uf_axis");
+  var g=chipsOn("uf_gate"), pre=chipsOn("uf_pre");
   var has=function(arr,x){ for(var i=0;i<arr.length;i++) if(arr[i]===x) return true; return false; };
   var mayo=valNum("uf_mayo");
   var sevMet=(mayo!=null && mayo>=6);
-  if(has(axes,"asuc")) sevMet=true;
   var c={ a_dose:has(g,"a_all"), a_dur:has(g,"a_all"), a_fail:has(g,"a_all"),
           b_dur:has(g,"b_fail"), b_fail:has(g,"b_fail"),
           c_nudt15:has(g,"c_contra") };
   var ev=ucGateEval(c, sevMet);
   var rows=[
-    {ok:sevMet,label:"중등도-중증 활성 (Mayo≥6 또는 ASUC)",val:mayo!=null?("Mayo "+mayo):(has(axes,"asuc")?"ASUC":"입력")},
+    {ok:sevMet,label:"중등도-중증 활성 (Mayo≥6)",val:mayo!=null?("Mayo "+mayo):"입력"},
     {ok:ev.A,label:"A트랙: 스테로이드 불응/의존",val:ev.A?"✅":"⬜"},
     {ok:ev.B,label:"B트랙: 티오퓨린 ≥3개월 실패",val:ev.B?"✅":"⬜"},
     {ok:ev.C,label:"C트랙: 금기(NUDT15 등)·내약불가",val:ev.C?"✅":"⬜"}
@@ -1754,7 +1644,7 @@ function runUCFlow(){
   if(!ev.A) reasons.push("A트랙(스테로이드 불응/의존) 필요");
   if(!(ev.B||ev.C)) reasons.push("B(티오퓨린 실패) 또는 C(금기) 필요");
   if(ev.C && !ev.B) reasons.push("✔ 금기로 티오퓨린 사전치료 면제 적용");
-  drawFlowResult("uf_result", ev.ok, rows, reasons, pre, "uc", axes, false);
+  drawFlowResult("uf_result", ev.ok, rows, reasons, pre, "uc");
 }
 
 function renderCDFlow(){
@@ -1774,20 +1664,16 @@ function renderCDFlow(){
   h+='<div class="chiplabel">사전검사·위험</div>';
   h+='<div class="chips" id="cf_pre" style="margin-bottom:11px">'+
      chk("tb","결핵 선별")+chk("hbv","HBV 선별")+chk("highrisk","고위험(top-down 고려)")+'</div>';
-  h+='<div class="chiplabel">환자 특성 (약물 우선순위에 반영)</div>';
-  h+='<div class="chips" id="cf_axis" style="margin-bottom:11px">'+axisChips("cd")+'</div>';
   h+='<button class="runbtn" onclick="runCDFlow()">분석 →</button><div id="cf_result"></div>';
   h+=renderFoot();
   qs("view-flow").innerHTML=h;
 }
 function runCDFlow(){
-  var form=chipsOn("cf_form"), lum=chipsOn("cf_lum"), fis=chipsOn("cf_fis"), pre=chipsOn("cf_pre"), axes=chipsOn("cf_axis");
+  var form=chipsOn("cf_form"), lum=chipsOn("cf_lum"), fis=chipsOn("cf_fis"), pre=chipsOn("cf_pre");
   var has=function(arr,x){ for(var i=0;i<arr.length;i++) if(arr[i]===x) return true; return false; };
   var cdai=valNum("cf_cdai");
-  var fistula=has(form,"fistula");
-  if(fistula && !has(axes,"fistula")) axes=axes.concat(["fistula"]);
-  var c={ l_steroid:has(lum,"s_fail"), l_immuno:has(lum,"i_fail"),
-          f_active:fistula, f_conv:has(fis,"f_conv") };
+  var c={ s_fail:has(lum,"s_fail"), i_fail:has(lum,"i_fail"),
+          f_active:has(form,"fistula"), f_conv:has(fis,"f_conv") };
   var ev=cdGateEval(c, cdai);
   var rows=[];
   if(ev.fistula || c.f_active){
@@ -1806,101 +1692,24 @@ function runCDFlow(){
     if(!ev.cdaiMet) reasons.push("CDAI ≥220 필요");
   }
   if(ev.luminal) reasons.push("✔ 관강형 게이트 ①②③ 충족");
-  drawFlowResult("cf_result", ev.ok, rows, reasons, pre, "cd", axes, fistula);
+  drawFlowResult("cf_result", ev.ok, rows, reasons, pre, "cd");
 }
 
-function axisChips(disease){
-  var ax=FLOW_AXIS[disease], h="";
-  for(var i=0;i<ax.length;i++){ h+=chk(ax[i].k, ax[i].label); }
-  return h;
-}
-function reimbBadge(id, disease){
-  var d=DRUG_DB[id]; var use=(disease==="uc")?d.useUC:d.useCD;
-  var map={ primary:["1차급","b-ok"], option:["급여옵션","b-ok"], minor:["제한","b-warn"], no:["비적응","b-block"] };
-  var m=map[use]||map.no;
-  return '<span class="badge '+m[1]+'">'+m[0]+'</span>';
-}
-function recommendAdvanced(disease, axes, fistula){
-  var opts=ADVANCED_OPTIONS[disease], scored=[];
-  for(var i=0;i<opts.length;i++){
-    var o=opts[i], score=0, hits=[];
-    for(var a=0;a<axes.length;a++){
-      var ax=axes[a];
-      if(o.tags && o.tags.indexOf(ax)>=0){ score+=2; hits.push(ax); }
-      if(o.avoid && o.avoid.indexOf(ax)>=0){ score-=3; }
-    }
-    if(disease==="cd" && fistula && o.tags.indexOf("fistula")>=0) score+=6;
-    scored.push({o:o, score:score, hits:hits, order:i});
-  }
-  scored.sort(function(x,y){ return (y.score-x.score)||(x.order-y.order); });
-  return scored;
-}
-function axisLabel(disease, k){ var ax=FLOW_AXIS[disease]; for(var i=0;i<ax.length;i++){ if(ax[i].k===k) return ax[i].label; } return k; }
-
-function renderAdvancedCard(disease, axes, fistula, locked, pendingReasons){
-  var rec=recommendAdvanced(disease, axes, fistula);
-  var h='<div class="rescard clin"><div class="rh"><span class="ricon">'+(locked?'🔓':'💉')+'</span>'+(locked?'게이트 열면 가능한 생물학제제 · 미리보기':'다음 약물 — 우선순위 추천')+'</div><div class="rb">';
-  if(locked){
-    h+='<div class="note" style="border-left-color:var(--warn);margin-top:0"><b>아래 후보는 게이트 충족 시 급여로 열립니다</b> — 정보·우선순위는 지금 미리 확인하세요.';
-    if(pendingReasons && pendingReasons.length){ var ps=[]; for(var z=0;z<pendingReasons.length;z++) ps.push(esc(pendingReasons[z])); h+='<br>🔑 지금 채울 것: <b>'+ps.join(' · ')+'</b>'; }
-    h+='</div>';
-  } else {
-    h+='<div class="calcreg-d" style="margin-bottom:8px">'+(axes.length?'선택한 환자 특성('+axes.length+')에 맞춰 정렬':'환자 특성을 선택하면 우선순위가 재정렬됩니다 — 현재는 가이드라인 기본순')+'. 시퀀싱 고정보다 환자맞춤(내시경·중증도·이력·동반)이 표준.</div>';
-  }
-  for(var i=0;i<rec.length;i++){
-    var o=rec[i].o, dd=DRUG_DB[o.drug];
-    var hl=(i===0 && (axes.length||fistula));
-    h+='<div class="optrow" style="align-items:flex-start'+(hl?';background:var(--clin-bg);margin:0 -8px;padding:9px 8px;border-radius:8px':'')+(locked?';opacity:.94':'')+'">';
-    h+='<span class="prio">'+(i+1)+'</span>';
-    h+='<div style="flex:1;min-width:0">';
-    h+='<div><span class="on">'+esc(dd.name)+'</span> <span class="od">'+esc(o.line)+' · '+esc(dd.brand)+'</span> '+reimbBadge(o.drug, disease)+(locked?' <span class="badge b-warn">게이트 필요</span>':'')+'</div>';
-    h+='<div style="font-size:12px;color:var(--ink-dim);margin-top:3px;line-height:1.45">'+boldStar(o.note)+'</div>';
-    if(rec[i].hits.length){ var tg=""; for(var t=0;t<rec[i].hits.length;t++){ tg+='<span style="font-size:10.5px;background:var(--clin-bg);color:var(--clin);padding:1px 7px;border-radius:10px;margin-right:3px">'+esc(axisLabel(disease,rec[i].hits[t]))+'</span>'; } h+='<div style="margin-top:5px">'+tg+'</div>'; }
-    h+='<div style="font-size:11px;color:var(--clin);margin-top:4px">근거: '+esc(REFS[o.ref]?REFS[o.ref].src:o.ref)+'</div>';
-    h+='</div></div>';
-  }
-  h+='<div class="note" style="margin-top:9px">'+(locked?'게이트(사전치료·활성도·서류)를 채우면 위 후보가 급여로 진입합니다. 그 전에도 임상적으로 필요하면 후보를 미리 검토·준비하세요.':'병용·유지: anti-TNF는 면역원성 관리 위해 티오퓨린 병용·TDM 고려. 유지 도달 후 STRIDE-II(내시경 치유) 목표로 재평가.')+' <b>최종 선택·비용 동의는 환자와 함께.</b></div>';
-  h+='</div></div>';
-  return h;
-}
-function renderPendingCard(disease){
-  var p=PENDING_ACTION[disease];
-  var h='<div class="rescard clin"><div class="rh"><span class="ricon">🧭</span>지금 무엇을 — 다음 행동</div><div class="rb">';
-  h+='<div class="sec-t" style="margin-bottom:6px">지금 할 치료 (게이트 충족 전)</div><ul class="kp">';
-  for(var i=0;i<p.nowDoing.length;i++){ h+='<li>'+boldStar(p.nowDoing[i])+'</li>'; }
-  h+='</ul>';
-  h+='<div class="sec-t" style="margin:11px 0 6px">게이트를 열려면 채울 항목</div><ul class="kp">';
-  for(var j=0;j<p.toOpenGate.length;j++){ h+='<li>'+boldStar(p.toOpenGate[j])+'</li>'; }
-  h+='</ul>';
-  h+='<div class="note" style="margin-top:9px">위 사전치료를 진행하는 것 자체가 곧 게이트 서류가 됩니다 — <b>치료하면서 근거를 남기면 다음 문이 열립니다.</b></div>';
-  h+='</div></div>';
-  return h;
-}
-
-function drawFlowResult(targetId, ok, rows, reasons, pre, disease, axes, fistula){
-  axes=axes||[];
+function drawFlowResult(targetId, ok, rows, reasons, pre, disease){
   var has=function(arr,x){ for(var i=0;i<arr.length;i++) if(arr[i]===x) return true; return false; };
   var h='';
   /* 급여 카드 */
   h+='<div class="rescard pay"><div class="rh"><span class="ricon">💳</span>급여 게이트 · R-CHECK</div><div class="rb">';
   for(var i=0;i<rows.length;i++){ h+='<div class="gaterow"><span class="gi">'+(rows[i].ok?"✅":"⬜")+'</span><div class="gl">'+boldStar(rows[i].label)+'</div><span class="gv">'+esc(rows[i].val)+'</span></div>'; }
   h+='<div class="note" style="margin-top:9px;border-left-color:'+(ok?"var(--ok)":"var(--warn)")+'">'+
-     (ok?'<b>게이트 충족</b> → 생물학제제·소분자 급여 가능 (산정특례 '+(disease==="uc"?"K51":"K50")+', 본인부담 10%).':'<b>게이트 미충족 항목 있음</b> — 아래 "다음 행동"으로 진행 (조언자: 강제 아님).')+'</div>';
+     (ok?'<b>게이트 충족</b> → 생물학제제·소분자 급여 가능 (산정특례 '+(disease==="uc"?"K51":"K50")+', 본인부담 10%).':'<b>게이트 미충족 항목 있음</b> — 보완 필요 (조언자: 강제 아님).')+'</div>';
   if(reasons.length){ h+='<ul class="kp" style="margin-top:6px">'; for(var r=0;r<reasons.length;r++){ h+='<li>'+boldStar(reasons[r])+'</li>'; } h+='</ul>'; }
   h+='</div></div>';
-  /* 충족 → 약물 우선순위(급여 가능) / 미충족 → 다음 행동 + 생물학제제 미리보기(잠금) */
-  if(ok){ h+=renderAdvancedCard(disease, axes, fistula, false); }
-  else {
-    h+=renderPendingCard(disease);
-    var pr=[]; for(var pi=0;pi<rows.length;pi++){ if(!rows[pi].ok) pr.push(rows[pi].label); }
-    h+=renderAdvancedCard(disease, axes, fistula, true, pr);
-  }
   /* 관리 카드 */
   h+='<div class="rescard care"><div class="rh"><span class="ricon">🔬</span>투여 전 점검 · 관리</div><div class="rb">';
   h+='<div class="gaterow"><span class="gi">'+(has(pre,"tb")?"✅":"⬜")+'</span><div class="gl">결핵(IGRA/CXR) — ★anti-TNF 전 필수</div></div>';
   h+='<div class="gaterow"><span class="gi">'+(has(pre,"hbv")?"✅":"⬜")+'</span><div class="gl">HBV 선별·재활성 예방</div></div>';
-  if(has(pre,"elderly")||has(pre,"highrisk")||has(axes,"safe")) h+='<div class="note">안전성 우선 — JAK 신중(대상포진·혈전·MACE), vedolizumab/ustekinumab 선호'+(disease==="cd"&&has(pre,"highrisk")?". 고위험 CD는 조기 top-down 고려":"")+'</div>';
-  if(has(axes,"preg")) h+='<div class="note" style="border-left-color:var(--block)">임신/가임 — ★JAK·S1P·MTX 금기. vedolizumab·anti-TNF가 상대적 안전(약제별 시기·중단 프로토콜 확인).</div>';
+  if(has(pre,"elderly")||has(pre,"highrisk")) h+='<div class="note">고위험/고령 — JAK 신중(대상포진·혈전), 안전성 우선 시 vedolizumab/ustekinumab 고려'+(disease==="cd"&&has(pre,"highrisk")?", 고위험 CD는 조기 top-down 고려":"")+'</div>';
   h+='<div class="note"><div class="nt">반응 평가</div>'+(disease==="uc"?"8~14주 Mayo/내시경 → 점막치유(MES≤1) 목표.":"누공없음=2주 내 CDAI 70↓/25%↓, 누공형=3회 후 누공 50%↓ (고시 유지 인정).")+'</div>';
   h+='</div></div>';
   qs(targetId).innerHTML=h;

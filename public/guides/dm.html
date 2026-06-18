@@ -83,32 +83,6 @@ body{padding-bottom:60px}
   padding-left:1px;margin-top:-2px}
 .drugrow{flex-wrap:wrap}
 
-/* 조합 인사이트 박스 */
-.insightbox{margin:10px 0 6px;padding:10px 12px;background:var(--clin-bg);
-  border:1px solid var(--clin);border-radius:10px}
-.ins-h{font-size:12px;font-weight:700;color:var(--clin);margin-bottom:7px}
-.ins-row{display:flex;gap:8px;padding:3px 0;font-size:11.5px;line-height:1.45}
-.ins-k{flex-shrink:0;width:30px;font-weight:700;font-size:10px;padding-top:1px}
-.ins-good .ins-k{color:var(--ok)} .ins-warn .ins-k{color:var(--block)}
-.ins-tip .ins-k{color:var(--clin)}
-.ins-v{color:var(--ink-dim)}
-
-/* 개별 약제 장단점 */
-.drugpc{margin:5px 0;border:1px solid var(--line);border-radius:9px;overflow:hidden}
-.pc-head{display:flex;align-items:center;gap:8px;padding:8px 11px;cursor:pointer;
-  background:var(--panel2)}
-.pc-head:active{opacity:0.7}
-.pc-nm{font-size:12.5px;font-weight:700;color:var(--ink);flex-shrink:0}
-.pc-tags{font-size:10px;color:var(--ink-faint);flex:1}
-.pc-more{font-size:14px;font-weight:700;color:var(--clin);width:18px;text-align:center}
-.pc-body{padding:9px 11px;animation:rise .18s ease}
-.pc-key{font-size:11.5px;color:var(--ink);background:var(--clin-bg);
-  padding:6px 9px;border-radius:7px;margin-bottom:8px;line-height:1.45}
-.pc-pros,.pc-cons{margin-bottom:7px}
-.pc-lbl-good{font-size:10px;font-weight:800;color:var(--ok);margin-bottom:3px}
-.pc-lbl-bad{font-size:10px;font-weight:800;color:var(--block);margin-bottom:3px}
-.pc-li{font-size:11.5px;color:var(--ink-dim);line-height:1.5;padding:1px 0 1px 2px}
-
 /* ── 알림/노트 라인 ── */
 .line{display:flex;gap:8px;padding:7px 0;font-size:13px;color:var(--ink-dim);
   border-bottom:1px solid rgba(42,55,68,0.5);align-items:flex-start}
@@ -306,10 +280,6 @@ details.ref .rc{font-size:11px;color:var(--ink-faint);padding:6px 0 0;line-heigh
   body{padding-top:46px !important;}
   @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
 </style>
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
 <div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
   <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
   <a class="ph-home" href="../index.html" title="홈">🏠</a>
@@ -380,54 +350,6 @@ details.ref .rc{font-size:11px;color:var(--ink-faint);padding:6px 0 0;line-heigh
 .simcard .st{font-size:15px;font-weight:700;color:var(--ink)}
 .simcard .ss{font-size:11.5px;color:var(--care);margin-top:2px}
 .simcard .sgo{margin-left:auto;font-size:20px;color:var(--care)}
-/* 평가기 진입 카드 (앰버) */
-.evalcard{background:linear-gradient(135deg,var(--pay-bg),var(--panel));border-color:var(--pay)}
-.evalcard .st{color:var(--ink)}
-.evalcard .ss{color:var(--pay)}
-.evalcard .sgo{color:var(--pay)}
-/* 평가기 화면 */
-.eval-intro{font-size:12px;color:var(--ink-dim);line-height:1.5;margin-bottom:12px;
-  background:var(--panel2);padding:10px 12px;border-radius:9px}
-.eval-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
-.echip{background:var(--panel);border:1px solid var(--line);color:var(--ink-dim);
-  border-radius:18px;padding:8px 14px;font-size:12.5px;cursor:pointer;font-family:inherit;
-  touch-action:manipulation;transition:all .12s}
-.echip:active{transform:scale(0.96)}
-.echip.on{background:var(--pay-bg);border-color:var(--pay);color:var(--pay);font-weight:700}
-.eval-bmi{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-.eval-bmi label{font-size:12px;font-weight:600;color:var(--ink-dim)}
-.eval-bmi-in{width:80px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;
-  font-size:13px;font-family:inherit;background:var(--panel);color:var(--ink)}
-.eval-bmi-note{font-size:10.5px;color:var(--ink-faint)}
-.eval-empty{font-size:12.5px;color:var(--ink-faint);text-align:center;padding:24px;
-  background:var(--panel2);border-radius:10px}
-.eval-box{background:var(--panel);border:1px solid var(--line);border-radius:11px;
-  padding:13px;margin-bottom:11px}
-.eval-h{font-size:12.5px;font-weight:700;margin-bottom:10px}
-.eval-h.pay{color:var(--pay)} .eval-h.clin{color:var(--clin)}
-.eval-drugrow{display:flex;align-items:center;gap:8px;padding:6px 0;flex-wrap:wrap;
-  border-bottom:1px solid var(--line)}
-.eval-drugrow:last-of-type{border-bottom:none}
-.ed-nm{font-size:13px;font-weight:600;color:var(--ink)}
-.ed-badge{margin-left:auto;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:11px}
-.ed-badge.ok{background:#dcf0e4;color:var(--ok)}
-.ed-badge.warn{background:var(--pay-bg);color:var(--pay)}
-.ed-badge.block{background:#f8dede;color:var(--block)}
-.ed-rs{flex-basis:100%;font-size:10.5px;color:var(--ink-faint);line-height:1.4}
-.eval-summary{margin-top:10px;padding:9px 11px;border-radius:8px;font-size:12px;font-weight:600}
-.eval-summary.ok{background:#dcf0e4;color:var(--ok)}
-.eval-summary.warn{background:var(--pay-bg);color:var(--pay)}
-.eval-summary.block{background:#f8dede;color:var(--block)}
-.eval-note{margin-top:9px;font-size:11px;color:var(--ink-dim);line-height:1.5;
-  background:var(--clin-bg);padding:9px 11px;border-radius:8px}
-.eval-ins{font-size:11.5px;color:var(--ink-dim);line-height:1.5;padding:4px 0}
-.eval-ins b{font-size:10px;margin-right:6px}
-.ins-good b{color:var(--ok)} .ins-warn b{color:var(--block)} .ins-tip b{color:var(--clin)}
-.eval-pc{padding:7px 0;border-bottom:1px solid var(--line)}
-.eval-pc:last-child{border-bottom:none}
-.epc-nm{font-size:12px;font-weight:700;color:var(--ink);margin-right:8px}
-.epc-tag{font-size:10px;color:var(--ink-faint)}
-.epc-key{display:block;font-size:11px;color:var(--ink-dim);margin-top:3px;line-height:1.4}
 
 /* ══ 토픽 상세 ══ */
 .detail{max-width:620px;margin:0 auto;padding:14px}
@@ -503,14 +425,6 @@ details.ref .rc{font-size:11px;color:var(--ink-faint);padding:6px 0 0;line-heigh
 .srcard .srs{font-size:11px;color:var(--ink-faint)}
 .srcard mark{background:var(--care-bg);color:var(--care);padding:0 2px;border-radius:3px}
 
-/* 검색 진입 시 매칭 섹션 하이라이트 */
-.sec-hl{animation:secHl 1.8s ease}
-@keyframes secHl{
-  0%{box-shadow:0 0 0 0 var(--care);background:var(--care-bg)}
-  30%{box-shadow:0 0 0 3px var(--care);background:var(--care-bg)}
-  100%{box-shadow:0 0 0 0 transparent;background:transparent}
-}
-
 /* ══ 시뮬레이션 ══ */
 .simwrap{max-width:620px;margin:0 auto;padding:14px}
 .simnode{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
@@ -532,19 +446,6 @@ details.ref .rc{font-size:11px;color:var(--ink-faint);padding:6px 0 0;line-heigh
 .simcheck.on .box{background:var(--care);border-color:var(--care);color:#fff}
 .simcheck .lbl{color:var(--ink-dim)}
 .simcheck.on .lbl{color:var(--ink)}
-.sqsub{font-size:11px;color:var(--ink-faint);margin:-4px 0 8px 2px;line-height:1.4}
-.simchoice{display:flex;align-items:center;gap:10px;padding:11px 12px;margin-bottom:7px;
-  width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);
-  border-radius:10px;cursor:pointer;font-family:inherit;font-size:13px;
-  touch-action:manipulation;transition:all .12s}
-.simchoice:active{transform:scale(0.99)}
-.simchoice .ch-radio{width:18px;flex-shrink:0;color:var(--ink-faint);font-size:15px;text-align:center}
-.simchoice .lbl{color:var(--ink-dim)}
-.simchoice.on{border-color:var(--clin);background:var(--clin-bg)}
-.simchoice.on .ch-radio{color:var(--clin)}
-.simchoice.on .lbl{color:var(--ink);font-weight:600}
-.simchoice.hot.on{border-color:var(--alert);background:#fdf0e8}
-.simchoice.hot.on .ch-radio{color:var(--alert)}
 
 /* 챙길 항목 패널 (쌓임) */
 .checklist{position:sticky;bottom:0;background:var(--panel);border-top:2px solid var(--care);
@@ -717,8 +618,21 @@ const DM_ID_MAP = {
     // Biguanide
     "metformin":        "drug:metformin",
     "메트포민":          "drug:metformin",
-    // SGLT2i (RENAL_DRUG_TABLE 키 + 한글명)   "다파글리플로진":  "drug:dapagliflozin",   "엠파글리플로진":  "drug:empagliflozin",   "에르투글리플로진":"drug:ertugliflozin",   "이프라글리플로진":"drug:ipragliflozin",  "에나보글리플로진":"drug:enavogliflozin",
-    // DPP4i     "시타글립틴":      "drug:sitagliptin",     "리나글립틴":      "drug:linagliptin",   "테네리글립틴":    "drug:teneligliptin",     "제미글립틴":      "drug:gemigliptin",    "빌다글립틴":      "drug:vildagliptin",     "삭사글립틴":      "drug:saxagliptin",      "알로글립틴":      "drug:alogliptin",      "에보글립틴":      "drug:evogliptin",
+    // SGLT2i (RENAL_DRUG_TABLE 키 + 한글명)
+    "sglt2i_dapa":      "drug:dapagliflozin",   "다파글리플로진":  "drug:dapagliflozin",
+    "sglt2i_empa":      "drug:empagliflozin",   "엠파글리플로진":  "drug:empagliflozin",
+    "sglt2i_ertu":      "drug:ertugliflozin",   "에르투글리플로진":"drug:ertugliflozin",
+    "sglt2i_ipra":      "drug:ipragliflozin",   "이프라글리플로진":"drug:ipragliflozin",
+    "sglt2i_enavo":     "drug:enavogliflozin",  "에나보글리플로진":"drug:enavogliflozin",
+    // DPP4i
+    "dpp4i_sita":       "drug:sitagliptin",     "시타글립틴":      "drug:sitagliptin",
+    "dpp4i_lina":       "drug:linagliptin",     "리나글립틴":      "drug:linagliptin",
+    "dpp4i_teneli":     "drug:teneligliptin",   "테네리글립틴":    "drug:teneligliptin",
+    "dpp4i_gemi":       "drug:gemigliptin",     "제미글립틴":      "drug:gemigliptin",
+    "dpp4i_vilda":      "drug:vildagliptin",    "빌다글립틴":      "drug:vildagliptin",
+    "dpp4i_saxa":       "drug:saxagliptin",     "삭사글립틴":      "drug:saxagliptin",
+    "dpp4i_alo":        "drug:alogliptin",      "알로글립틴":      "drug:alogliptin",
+    "dpp4i_evo":        "drug:evogliptin",      "에보글립틴":      "drug:evogliptin",
     // GLP-1RA
     "둘라글루티드":      "drug:dulaglutide",
     "세마글루티드":      "drug:semaglutide",
@@ -1055,37 +969,15 @@ function can2drug(drugA, drugB){
 // 3제 인정조합 판정 (sglt2i 성분예외 포함)
 function isAccepted3drug(drugs){
   const classes = drugs.map(d=>d.class).sort();
-  // (1) 명시 인정 3제 우선 (확실한 급여 — 경제성평가 완료 조합)
   for (const t of REIMB_3DRUG.accepted){
     if (t.classes.slice().sort().join() !== classes.join()) continue;
+    // sglt2i 성분예외 검사
     const sglt = drugs.find(d=>d.class==="sglt2i");
     if (sglt && t.sglt2iExclude.includes(sglt.member))
-      return { ok:false, reason:`${sglt.member}는 이 3제 조합서 제외`, tier:"explicit" };
-    return { ok:true, tier:"explicit", note:"명시 인정 3제 (경제성평가 완료)" };
+      return { ok:false, reason:`${sglt.member}는 이 3제 조합서 제외` };
+    return { ok:true };
   }
-  // (2) 2제 짝 기반 — 3약 모든 쌍이 can2drug 인정되면 급여
-  //     고시 원리: "2제요법에 다른 기전 1종 추가". 메트포민 포함이면 더 견고.
-  const pairsOk = [];
-  let allPairOk = true;
-  for (let i=0;i<drugs.length;i++)
-    for (let j=i+1;j<drugs.length;j++){
-      const r = can2drug(drugs[i], drugs[j]);
-      pairsOk.push({ a:drugs[i].class, b:drugs[j].class, ok:r.ok, reason:r.reason });
-      if (!r.ok) allPairOk = false;
-    }
-  if (allPairOk){
-    const hasMet = classes.includes("metformin");
-    return {
-      ok:true,
-      tier: hasMet ? "pairwise_met" : "pairwise",
-      note: hasMet
-        ? "2제 짝 모두 인정 (메트포민 기반 3제) — 삭감 가능성 낮음"
-        : "2제 짝 모두 인정 (메트포민 없는 3제) — 삭감 가능성 있어 주의"
-    };
-  }
-  // (3) 일부 짝 비급여 → 그 약 1종 100/100
-  const badPair = pairsOk.find(p=>!p.ok);
-  return { ok:false, reason: badPair ? `${badPair.a}+${badPair.b} 2제 비급여 — 1종 100/100` : "2제 짝 일부 비급여", tier:"overage" };
+  return { ok:false, reason:"명시 인정 3제 아님" };
 }
 
 // 복합제 → 성분 분해
@@ -1125,9 +1017,7 @@ function reimbEngine(input){
   // ★ 인슐린은 별도 축 — 경구제 N제 카운트에서 분리
   //   급여규칙: 인슐린+경구 2종까지 병용 인정 (경구 2제 비급여 조합·제외성분 불가)
   const insulins = judgeable.filter(d=>d.class==="insulin");
-  // ★ GLP-1RA도 별도 축 — BMI·선행조건 기반 GLP1_COMBOS 판정
-  const glp1s    = judgeable.filter(d=>d.class==="glp1ra");
-  const orals    = judgeable.filter(d=>d.class!=="insulin" && d.class!=="glp1ra");
+  const orals    = judgeable.filter(d=>d.class!=="insulin");
   const hasInsulin = insulins.length > 0;
 
   // (2) 경구제만으로 배지 판정
@@ -1175,123 +1065,11 @@ function reimbEngine(input){
     }
   }
 
-  // (2c) ★GLP-1RA 별도 축 — GLP1_COMBOS로 BMI·조합 판정
-  if (glp1s.length > 0){
-    glp1s.forEach(function(g){
-      const combo = GLP1_COMBOS[g.member];
-      if (!combo){
-        judged.push({drug:g, badge:"급여", reason:"GLP-1RA"});
-        return;
-      }
-      // blocked (세마글루티드)
-      if (combo.nonReimbBehavior === "blocked"){
-        judged.push({drug:g, badge:"처방불가",
-          reason:`${combo.name} 인정 외 처방불가 (위고비 동일성분)`});
-        return;
-      }
-      // 현재 조합 분석 (MET/SU/기저인슐린 등) — ★인슐린은 여러 개여도 1개로
-      const otherClasses = Array.from(new Set(drugs.filter(d=>d!==g).map(d=>
-        d.class==="insulin" ? "basal_insulin" :
-        d.class==="metformin" ? "met" :
-        d.class==="su" ? "su" :
-        d.class==="sglt2i" ? "sglt2i" :
-        d.class==="tzd" ? "pio" : d.class
-      ))).sort();
-      // reimbCombos 중 정확히 매칭되는지 (인정 조합)
-      const comboMatch = combo.reimbCombos.some(rc=>{
-        const rcs = rc.slice().filter(x=>x!==g.member).sort();
-        return rcs.join() === otherClasses.join();
-      });
-      // ★인슐린 병용 경로인지 (기저인슐린 포함 인정 조합) — BMI 게이트 우회
-      //   고시상 인슐린+GLP-1RA 병용은 인슐린 병용요법(A1c≥7%)으로 인정, BMI≥25 조건 별도
-      const insulinRoute = comboMatch && otherClasses.indexOf("basal_insulin") >= 0;
-
-      // DPP4i 병용은 기전 중복 — 우선 차단
-      const hasDpp4 = drugs.some(d=>d.class==="dpp4i");
-      if (hasDpp4){
-        judged.push({drug:g, badge:"100/100",
-          reason:`${combo.name} + DPP4i 병용 불가 (기전 중복)`});
-        return;
-      }
-
-      // BMI 조건 — 인슐린 병용 경로가 아니고, 미충족이면 100/100
-      const bmiOk = (input.bmi != null && input.bmi >= combo.bmiMin);
-      const insulinImpossible = !!input.insulinImpossible;
-      if (!insulinRoute && !bmiOk && !insulinImpossible){
-        judged.push({drug:g, badge:"100/100",
-          reason:`${combo.name} 급여조건 미충족 (BMI≥${combo.bmiMin} 또는 인슐린불가) — 100/100`});
-        out.flags.push({ drug:g, level:"info",
-          msg:`${combo.name}: MET+SU 병용 실패 + BMI≥${combo.bmiMin}(또는 인슐린불가)면 급여. 인슐린 병용 시는 BMI 무관 인정.` });
-        return;
-      }
-
-      // 급여 판정 (조합 매칭 or 인슐린 경로)
-      if (comboMatch || otherClasses.length === 0){
-        judged.push({drug:g, badge:"급여",
-          reason: insulinRoute
-            ? `${combo.name} (인슐린 병용 — BMI 무관 인정)`
-            : `${combo.name} (BMI≥${combo.bmiMin} 충족, 인정 조합)`});
-      } else {
-        // 인정 조합 밖 (예: MET+SU+인슐린+GLP1 4제 동시) → 100/100
-        const comboList = combo.reimbCombos.map(rc=>
-          rc.filter(x=>x!==g.member).map(x=>({met:"MET",su:"SU",basal_insulin:"기저인슐린",sglt2i:"SGLT2i",pio:"TZD"}[x]||x)).join("+") || "단독"
-        ).join(" / ");
-        judged.push({drug:g, badge:"100/100",
-          reason:`${combo.name} 인정 조합 외 (인정: ${comboList}) — 100/100`});
-      }
-    });
-  }
-
   // blocked 약물은 "처방불가" 배지로 합류 (원래 순서 보존)
   out.perDrug = drugs.map(d=>{
     if (blockedSet.has(d)) return {drug:d, badge:"처방불가", reason:"인정 외 100/100 불가"};
     return judged.find(j=>j.drug===d);
   });
-
-  // ★★ 대원칙: 급여 조합은 최대 3성분 ★★
-  //   세부 규칙과 무관하게 4성분 이상이면 초과분을 100/100으로.
-  //   ★성분은 "고유 약물 종류(class)" 기준 — 인슐린은 여러 개여도(기저+초속효) 1성분.
-  //   ★복합제(줄토피·솔리쿠아) = 기저인슐린 + GLP-1RA → 인슐린 1 + GLP-1RA 1로 분해.
-  //   예) MET + 인슐린 + 복합제(인슐린+GLP1) = {metformin, insulin, glp1ra} = 3성분 → 급여.
-  const activeRows = out.perDrug.filter(pd=>pd && pd.badge!=="처방불가");
-  // 각 행이 기여하는 성분 class 집합
-  function rowComponents(d){
-    if (d.isCombo || d.member==="glargine+lixisenatide" || d.member==="degludec+liraglutide")
-      return ["insulin","glp1ra"];  // 복합제 = 인슐린 + GLP-1RA
-    return [d.class];
-  }
-  // 전체 고유 성분 집합 (인슐린·GLP1 중복 자동 제거)
-  const compSet = new Set();
-  activeRows.forEach(pd=>{ rowComponents(pd.drug).forEach(c=>compSet.add(c)); });
-  const compCount = compSet.size;
-
-  if (compCount > 3){
-    // 급여 행들의 고유 성분 집합
-    function paidCompSet(){
-      const s = new Set();
-      activeRows.forEach(pd=>{ if(pd.badge==="급여") rowComponents(pd.drug).forEach(c=>s.add(c)); });
-      return s;
-    }
-    if (paidCompSet().size > 3){
-      // 100/100으로 뺄 우선순위 (낮을수록 먼저) — backbone 메트포민·인슐린·복합제는 마지막
-      const dropOrder = { su:1, meglitinide:2, agi:3, tzd:4, glp1ra:5, dpp4i:6, sglt2i:7, metformin:9, insulin:9 };
-      // 복합제·인슐린은 빼지 않도록 우선순위 최하(9)로
-      function rowDrop(d){
-        if (d.isCombo || d.class==="insulin") return 9;
-        return dropOrder[d.class] || 8;
-      }
-      const paidRows = activeRows.filter(pd=>pd.badge==="급여")
-        .slice().sort((a,b)=> rowDrop(a.drug) - rowDrop(b.drug));
-      for (const pd of paidRows){
-        if (paidCompSet().size <= 3) break;
-        // 이 약을 빼도 고유 성분이 줄어드는 경우에만 100/100 (인슐린 중복분은 빼도 성분 안 줄어듦)
-        pd.badge = "100/100";
-        pd.reason = "★3성분 초과 — 급여는 최대 3성분, 1종 전액본인부담 (대원칙)";
-      }
-      out.flags.push({ level:"overage",
-        msg:`총 ${compCount}성분 — 급여는 최대 3성분. 초과분 100/100 (인슐린은 여러 개여도 1성분, 복합제는 인슐린+GLP-1RA).` });
-    }
-  }
 
   // (3) 용량상한 검사
   for (const d of drugs){
@@ -1382,93 +1160,18 @@ function classifyMulti(drugs, input){
 // ── 1-1. 약제 특성 (표 6-2.1) ───────────────────────────────────────
 //   id는 급여엔진 DRUGS와 공유. 특성은 여기 단독 소유(복제 금지).
 const DRUG_PROPS = {
-  metformin: { a1cDrop:[1.0,2.0], weight:"감소~중립", hypo:"없음", egfrStop:30,
-    cost:"저렴", inject:false,
-    pros:["저혈당 거의 없음·체중 중립", "심혈관 안전·오랜 경험", "값 저렴", "대부분 조합의 기반(backbone)"],
-    cons:["위장장애(설사·복부불편) — 서방형으로 완화", "eGFR<30 금기·30-44 감량(유산산증)", "장기복용 시 B12 결핍", "조영제·수술·탈수 시 일시중단"],
-    key:"1차 backbone. 금기·부작용 없으면 거의 항상 포함" },
-  su: { a1cDrop:[1.0,2.0], weight:"증가", hypo:"있음", cost:"저렴", inject:false,
-    pros:["강력한 혈당강하·빠른 효과", "값 저렴", "오랜 경험"],
-    cons:["★저혈당 위험(특히 고령·신기능저하·식사불규칙)", "★체중 증가", "효과 시간경과로 감소(secondary failure)", "글리부리드는 저혈당 최대 — 회피"],
-    key:"저혈당·체중이 약점. CKD·고령은 글리클라지드 저용량 선호" },
-  meglitinide: { a1cDrop:[0.5,1.5], weight:"증가", hypo:"있음", cost:"중간", inject:false,
-    pros:["식후혈당 집중·빠른 작용", "식사 거르면 생략(유연)", "레파글리니드는 CKD서 비교적 안전(담즙배설)"],
-    cons:["★저혈당(SU보다 덜하나 있음)", "체중 증가", "매 식전 복용(1일 3회) 번거로움", "SU와 병용 불가(기전 중복)"],
-    key:"불규칙 식사·식후혈당 환자에 유용. SU 대체 옵션" },
-  agi: { a1cDrop:[0.5,1.0], weight:"감소~중립", hypo:"없음", cost:"중간", inject:false,
-    pros:["식후혈당 집중·저혈당 없음", "체중 중립", "전신흡수 적음"],
-    cons:["★위장관 부작용 큼(방귀·복부팽만·설사)", "효과 상대적 약함", "매 식사 첫 술과 복용", "저혈당 시 반드시 포도당(설탕 분해 안 됨)"],
-    key:"위장관 부작용으로 순응도 낮음. 식후혈당 보조" },
-  tzd: { a1cDrop:[0.5,1.4], weight:"증가", hypo:"없음", cost:"중간", inject:false,
-    pros:["저혈당 없음·인슐린 저항성 개선", "효과 지속적(내구성)", "신기능 무관(신배설 적음)", "피오글리타존 ASCVD·뇌졸중 일부 이익(IRIS)"],
-    cons:["★체액저류·부종 → 심부전 악화(NYHA III~IV 금기)", "★체중 증가", "골절 위험↑(특히 폐경 여성)", "방광암 논란(피오글리타존)"],
-    key:"심부전 금기. 부종·체중·골절 주의하나 내구성·저혈당없음 장점" },
-  dpp4i: { a1cDrop:[0.5,1.0], weight:"중립", hypo:"없음", cost:"중간", inject:false,
-    pros:["저혈당 없음·체중 중립", "내약성 우수·안전", "리나·테네리는 신기능 무관(CKD 편리)", "1일 1회"],
-    cons:["효과 중등도", "★GLP-1RA와 병용 불가(기전 중복)", "삭사글립틴 심부전 입원↑(SAVOR)", "드물게 관절통·췌장염·수포성 유사천포창"],
-    key:"안전·중립의 무난한 선택. CKD는 리나/테네리" },
-  sglt2i: { a1cDrop:[0.5,1.0], weight:"감소(2~5%)", hypo:"없음", cost:"비쌈", inject:false,
-    pros:["★심부전·CKD·ASCVD 보호(A1c 무관)", "체중·혈압 감소", "저혈당 없음", "신장 진행 억제"],
-    cons:["★생식기 감염(진균)·요로감염", "★정상혈당 DKA(수술·금식 시 중단)", "혈량저하·탈수(고령·이뇨제)", "eGFR 낮으면 혈당효과↓", "드물게 푸르니에 괴저"],
-    key:"심신장 동반질환 1순위. 수술 전 중단(다파·엠파 3일·에르투 4일)" },
-  glp1ra: { a1cDrop:[0.8,1.7], weight:"감소(2~10%)", hypo:"없음", cost:"비쌈", inject:true,
-    pros:["★강력한 체중감소·심혈관 보호", "저혈당 거의 없음", "강력한 A1c 강하", "주1회(둘라·세마) 편의"],
-    cons:["★위장관(오심·구토·설사) — 초기, 저용량 점증으로 완화", "주사제(경구 세마=리벨서스 예외)", "★비용·급여 제약(BMI≥25)", "췌장염 병력 주의·갑상수질암 가족력 금기", "DPP4i와 병용 불가"],
-    key:"체중·심혈관 강점. 주사·비용이 한국 현실 장벽" },
-  insulin: { a1cDrop:[null,null], weight:"증가", hypo:"있음", strongest:true, cost:"중간", inject:true,
-    pros:["★가장 강력한 혈당강하(상한 없음)", "과이화·심한고혈당·신부전서 필수", "용량 자유조절", "임신 사용 가능"],
-    cons:["★저혈당 위험(강화할수록↑)", "★체중 증가", "주사·자가혈당측정 부담", "신기능저하 시 청소율↓로 저혈당↑", "용량적정 교육 필요"],
-    key:"가장 강력하나 저혈당·체중이 대가. 과이화·경구실패 시" }
+  metformin:   { a1cDrop:[1.0,2.0], weight:"감소~중립", hypo:"없음", egfrStop:30 },
+  su:          { a1cDrop:[1.0,2.0], weight:"증가",      hypo:"있음" },
+  meglitinide: { a1cDrop:[0.5,1.5], weight:"증가",      hypo:"있음" },
+  agi:         { a1cDrop:[0.5,1.0], weight:"감소~중립", hypo:"없음" },
+  tzd:         { a1cDrop:[0.5,1.4], weight:"증가",      hypo:"없음" },
+  dpp4i:       { a1cDrop:[0.5,1.0], weight:"중립",      hypo:"없음" },
+  sglt2i:      { a1cDrop:[0.5,1.0], weight:"감소(2~5%)", hypo:"없음" },
+  glp1ra:      { a1cDrop:[0.8,1.7], weight:"감소(2~10%)", hypo:"없음" },
+  insulin:     { a1cDrop:[null,null], weight:"증가",     hypo:"있음", strongest:true }
 };
 
-// ── 1-1b. ★약제 조합별 임상 인사이트 (이득·주의) ───────────────────
-//   흔한 조합의 시너지/충돌 — 전문가 의사결정 보조
-const COMBO_INSIGHTS = {
-  "metformin+su": {
-    benefit:"저렴·강력한 혈당강하. 가장 오래된 표준 2제",
-    caution:"★SU 저혈당·체중증가. 고령·신기능저하·식사불규칙 시 저혈당 주의",
-    tip:"경제적이나 체중·저혈당 고려 시 DPP4i·SGLT2i가 대안" },
-  "metformin+dpp4i": {
-    benefit:"저혈당 없음·체중 중립·내약성 우수. 무난한 2제",
-    caution:"효과 중등도. GLP-1RA와 병용 불가(추후 전환 시)",
-    tip:"안전 위주. 복합제(자누메트 등) 많아 순응도↑" },
-  "metformin+sglt2i": {
-    benefit:"★심신장 보호+체중·혈압 감소+저혈당 없음. 현대적 선호 2제",
-    caution:"생식기 감염·DKA(수술 중단). eGFR 낮으면 혈당효과↓",
-    tip:"심부전·CKD·ASCVD 있으면 1순위 조합" },
-  "metformin+tzd": {
-    benefit:"저혈당 없음·인슐린저항성 개선·내구성",
-    caution:"★체액저류·부종·체중증가·골절. 심부전 금기",
-    tip:"심부전 없고 인슐린저항성 큰 환자에 고려" },
-  "su+dpp4i": {
-    benefit:"저렴+안전 보완. 경구 2제",
-    caution:"★SU 저혈당 여전. DPP4i가 저혈당 줄이진 않음",
-    tip:"SU 단독보다 나으나 SGLT2i/GLP1 우선 고려" },
-  "metformin+su+dpp4i": {
-    benefit:"경구 3제로 강화. 2제 짝 모두 인정",
-    caution:"★SU 저혈당. 추가 강하 효과는 점감",
-    tip:"흔한 3제. 다음 단계는 주사제(GLP1·인슐린) 고려" },
-  "metformin+su+sglt2i": {
-    benefit:"경구 3제+심신장 보호+체중상쇄(SGLT2i가 SU 체중↑ 일부 상쇄)",
-    caution:"SU 저혈당. SGLT2i 감염·DKA",
-    tip:"SU 체중증가를 SGLT2i가 보완. 합리적 3제" },
-  "metformin+su+glp1ra": {
-    benefit:"★강력한 강하+체중감소. SU 체중↑를 GLP1이 상쇄",
-    caution:"SU 저혈당(GLP1 추가 시 SU 감량 고려). GLP1 위장관·비용",
-    tip:"★트루리시티 등 — BMI≥25 급여. SU 감량으로 저혈당 예방" },
-  "insulin+metformin": {
-    benefit:"인슐린 강력 강하+메트포민이 인슐린 요구량·체중증가 완화",
-    caution:"인슐린 저혈당·체중증가",
-    tip:"인슐린 시작 시 메트포민 유지 권장" },
-  "insulin+sglt2i": {
-    benefit:"인슐린 체중증가·용량을 SGLT2i가 완화+심신장 보호",
-    caution:"★DKA 위험↑(인슐린 감량 시 특히). 감염",
-    tip:"인슐린+SGLT2i는 체중·혈당 이점이나 DKA 경계" },
-  "basal_insulin+glp1ra": {
-    benefit:"★기저인슐린 공복+GLP1 식후·체중. 저혈당·체중증가 완화",
-    caution:"위장관 부작용. 비용",
-    tip:"복합제(솔리쿠아·줄토피)로 편의. 강력+체중친화 조합" }
-};
+// ── 1-2. 심·신장 축 (A1c 무관 우선, 권고 8·9·10) ───────────────────
 //   ★ 알고리듬 우하 박스. 동반질환 → 약물계열 우선순위.
 const CARDIORENAL_AXIS = {
   hf:     { drugs:["sglt2i"],            rec:8,  note:"심부전이익 SGLT2i, A1c무관 우선·유지" },
@@ -1723,7 +1426,7 @@ function addOnOptions(input, reimbCheckAddon, renalCheck){
     let renal = null;
     if (renalCheck){
       const keyMap = { metformin:"metformin", su:"su", meglitinide:"meglitinide",
-        tzd:"tzd", agi:"agi", dpp4i:"drug:sitagliptin", sglt2i:"drug:dapagliflozin",
+        tzd:"tzd", agi:"agi", dpp4i:"dpp4i_sita", sglt2i:"sglt2i_dapa",
         glp1ra:"glp1ra", insulin:"insulin" };
       renal = renalCheck(keyMap[cls]||cls, egfr);
     }
@@ -1767,25 +1470,6 @@ function addOnOptions(input, reimbCheckAddon, renalCheck){
 
   opts.sort((a,b)=> a.priority - b.priority);
   return opts;
-}
-
-
-// ── 약제 조합 인사이트 조회 (정렬 무관 매칭) ──────────────────────
-function comboInsight(classes){
-  // 입력 정규화 + 정렬
-  const want = classes.map(c=> c==="insulin" ? "insulin" : c).slice().sort().join("+");
-  const wantBasal = classes.map(c=> c==="insulin" ? "basal_insulin" : c).slice().sort().join("+");
-  // 저장된 키도 정렬해서 비교
-  for (const k in COMBO_INSIGHTS){
-    const ks = k.split("+").slice().sort().join("+");
-    if (ks === want || ks === wantBasal) return COMBO_INSIGHTS[k];
-  }
-  return null;
-}
-// 단일 약제 장단점 조회
-function drugProsCons(cls){
-  const p = DRUG_PROPS[cls];
-  return p ? { pros:p.pros||[], cons:p.cons||[], key:p.key||"", weight:p.weight, hypo:p.hypo, cost:p.cost, inject:p.inject } : null;
 }
 
 
@@ -1994,20 +1678,20 @@ const RENAL_DRUG_TABLE = {
     bands:["ok","ok","ok","stop","stop"],
     note:"아카보즈 eGFR<30 금지. 미글리톨 <25 금지" },
   // DPP4i 성분별
-  "drug:sitagliptin":  { name:"시타글립틴", bands:["dose:100mg","dose:50mg","dose:50mg","dose:25mg","dose:25mg"], note:"신기능 따라 단계 감량" },
-  "drug:vildagliptin": { name:"빌다글립틴", bands:["dose:100mg","dose:50mg","dose:50mg","dose:50mg","dose:50mg"], note:"중등도↓ 50mg" },
-  "drug:saxagliptin":  { name:"삭사글립틴", bands:["dose:5mg","dose:2.5mg","dose:2.5mg","dose:2.5mg","dose:2.5mg"], note:"<45 절반(2.5mg)" },
-  "drug:linagliptin":  { name:"리나글립틴", bands:["ok","ok","ok","ok","ok"], note:"★신기능 무관 — 용량조절 불필요" },
-  "drug:gemigliptin":  { name:"제미글립틴", bands:["dose:50mg","dose:50mg","dose:50mg","dose:50mg","dose:50mg"], note:"용량조절 불필요" },
-  "drug:teneligliptin":{ name:"테네리글립틴", bands:["ok","ok","ok","ok","ok"], note:"★신기능 무관 — 용량조절 불필요" },
-  "drug:alogliptin":   { name:"알로글립틴", bands:["dose:25mg","dose:12.5mg","dose:12.5mg","dose:6.25mg","dose:6.25mg"], note:"단계 감량" },
-  "drug:evogliptin":   { name:"에보글립틴", bands:["ok","ok","ok","caution","caution"], note:"중증신장애 자료제한" },
+  dpp4i_sita:  { name:"시타글립틴", bands:["dose:100mg","dose:50mg","dose:50mg","dose:25mg","dose:25mg"], note:"신기능 따라 단계 감량" },
+  dpp4i_vilda: { name:"빌다글립틴", bands:["dose:100mg","dose:50mg","dose:50mg","dose:50mg","dose:50mg"], note:"중등도↓ 50mg" },
+  dpp4i_saxa:  { name:"삭사글립틴", bands:["dose:5mg","dose:2.5mg","dose:2.5mg","dose:2.5mg","dose:2.5mg"], note:"<45 절반(2.5mg)" },
+  dpp4i_lina:  { name:"리나글립틴", bands:["ok","ok","ok","ok","ok"], note:"★신기능 무관 — 용량조절 불필요" },
+  dpp4i_gemi:  { name:"제미글립틴", bands:["dose:50mg","dose:50mg","dose:50mg","dose:50mg","dose:50mg"], note:"용량조절 불필요" },
+  dpp4i_teneli:{ name:"테네리글립틴", bands:["ok","ok","ok","ok","ok"], note:"★신기능 무관 — 용량조절 불필요" },
+  dpp4i_alo:   { name:"알로글립틴", bands:["dose:25mg","dose:12.5mg","dose:12.5mg","dose:6.25mg","dose:6.25mg"], note:"단계 감량" },
+  dpp4i_evo:   { name:"에보글립틴", bands:["ok","ok","ok","caution","caution"], note:"중증신장애 자료제한" },
   // SGLT2i 성분별 — 혈당효과는 낮은 GFR서 제한적, 심신장 이득은 별도
-  "drug:dapagliflozin": { name:"다파글리플로진", bands:["dose:10mg","dose:10mg","심신장(≥25)·혈당효과제한","심신장(≥25)·신규는≥25","no_new"], note:"당뇨혈당: <45 효과제한. 심부전·신장이득 eGFR≥25서 유지(신규≥25)" },
-  "drug:empagliflozin": { name:"엠파글리플로진", bands:["dose:10/25mg","dose:10/25mg","심신장(≥20)·혈당효과제한","심신장(≥20)","심신장(≥20)·ESKD전까지"], note:"심부전·신장이득 eGFR≥20 유지" },
-  "drug:ertugliflozin": { name:"에르투글리플로진", bands:["dose:5mg","caution","no_new","no_new","stop"], note:"신장이득 근거 약함. <45 신규X" },
-  "drug:ipragliflozin": { name:"이프라글리플로진", bands:["ok","caution","no_new","no_new","stop"], note:"신장 근거 부족. 인슐린 병용 급여X" },
-  "drug:enavogliflozin":{ name:"에나보글리플로진", bands:["ok","caution","no_new","no_new","stop"], note:"대규모 근거 부재. 인슐린 병용 급여X" },
+  sglt2i_dapa: { name:"다파글리플로진", bands:["dose:10mg","dose:10mg","심신장(≥25)·혈당효과제한","심신장(≥25)·신규는≥25","no_new"], note:"당뇨혈당: <45 효과제한. 심부전·신장이득 eGFR≥25서 유지(신규≥25)" },
+  sglt2i_empa: { name:"엠파글리플로진", bands:["dose:10/25mg","dose:10/25mg","심신장(≥20)·혈당효과제한","심신장(≥20)","심신장(≥20)·ESKD전까지"], note:"심부전·신장이득 eGFR≥20 유지" },
+  sglt2i_ertu: { name:"에르투글리플로진", bands:["dose:5mg","caution","no_new","no_new","stop"], note:"신장이득 근거 약함. <45 신규X" },
+  sglt2i_ipra: { name:"이프라글리플로진", bands:["ok","caution","no_new","no_new","stop"], note:"신장 근거 부족. 인슐린 병용 급여X" },
+  sglt2i_enavo:{ name:"에나보글리플로진", bands:["ok","caution","no_new","no_new","stop"], note:"대규모 근거 부재. 인슐린 병용 급여X" },
   // GLP-1RA
   glp1ra: { name:"GLP-1RA(둘라/리라글루티드)", bands:["ok","ok","ok","ok","caution"], note:"신기능 무관 대부분 사용. ESKD 자료제한. 신장보호 이익" },
   // 인슐린
@@ -2044,7 +1728,7 @@ function renalDrugStatus(drugKey, egfr){
 // 계열 → 대표 성분키 매핑 (성분 미지정 시)
 const CLASS_TO_RENALKEY = {
   metformin:"metformin", su:"su", meglitinide:"meglitinide", tzd:"tzd", agi:"agi",
-  dpp4i:"drug:sitagliptin", sglt2i:"drug:dapagliflozin", glp1ra:"glp1ra", insulin:"insulin"
+  dpp4i:"dpp4i_sita", sglt2i:"sglt2i_dapa", glp1ra:"glp1ra", insulin:"insulin"
 };
 
 // ── 2-4. 신경병증 협진/검사 (약물 무반응 시) ───────────────────────
@@ -2224,196 +1908,6 @@ function computeLdlTarget(input){
 }
 
 
-// ════════════════════════════════════════════════════════════════════
-//  ★ 정문 함수 recommend(patient) — 만성질환 통합 단일 진입점
-// ════════════════════════════════════════════════════════════════════
-//  계약: recommend(patient) → { drugs[], targets[], flags[] }
-//  - patient 스키마는 플로우 collect()와 동일 (a1c·targetA1c·egfr·uacr·
-//    potassium·bmi·ldl·sbp·dbp·diabetesDuration·comorbidities[]·
-//    hypercatabolic·currentDrugs[{class,member?}]·onACEiARB·onSGLT2i·
-//    hasHF·hasNeuropathyPain·complicationsDone{})
-//  - 기존 엔진(reimb/clinical/care/addon)을 ★읽기전용 호출만 하고,
-//    결과를 표준 3필드로 정규화. 엔진 내부 로직 무손상·가산.
-//  - 약물은 전역 ID(drug:/class:) 동반 → 통합 시 교차참조·중복처방 방지.
-//  - 통합엔진은 이 정문 하나만 호출하면 됨. (HTN 가이드와 동일 계약)
-// ════════════════════════════════════════════════════════════════════
-function recommend(patient){
-  var p = patient || {};
-  // reimbEngine은 input.drugs를 요구 → currentDrugs로 보강(읽기전용)
-  var inp = {};
-  for (var k in p) if (Object.prototype.hasOwnProperty.call(p,k)) inp[k] = p[k];
-  if (!inp.drugs) inp.drugs = inp.currentDrugs || [];
-  if (inp.targetA1c == null) inp.targetA1c = 6.5;
-
-  var out = { drugs:[], targets:[], flags:[], _engine:"dm" };
-
-  // 전역 ID 매핑 헬퍼 (없으면 null 반환, 안전)
-  var toGClass = (typeof dmToGlobalClass==="function") ? dmToGlobalClass : function(){return null;};
-  var toGDrug  = (typeof dmToGlobalDrug ==="function") ? dmToGlobalDrug  : function(){return null;};
-  var isShared = (typeof dmIsShared    ==="function") ? dmIsShared      : function(){return false;};
-  // 계열 대표성분 로컬키(전역 성분 ID 추정용) — 미지정 시 대표성분
-  function memberLocalKey(d){
-    if (d.class==="sglt2i")  return "sglt2i_"+(d.member||"dapa");
-    if (d.class==="dpp4i")   return d.member ? ("dpp4i_"+d.member) : "drug:sitagliptin";
-    if (d.class==="glp1ra")  return d.member || "dulaglutide";
-    if (d.class==="insulin") return "insulin";
-    return d.class; // metformin/su/meglitinide/tzd/agi 등은 계열=성분급
-  }
-  function globalDrugId(d){
-    return toGDrug(memberLocalKey(d)) || toGDrug(d.member) || null;
-  }
-
-  // ── (A) 급여 판정 (MAIN) → drugs[] + flags[] ──────────────────────
-  var reimb = (inp.drugs && inp.drugs.length) ? reimbEngine(inp) : null;
-  if (reimb){
-    reimb.perDrug.forEach(function(pd){
-      if (!pd || !pd.drug) return;
-      var gd = globalDrugId(pd.drug);
-      out.drugs.push({
-        source:"current",
-        class: pd.drug.class,
-        member: pd.drug.member || null,
-        globalClass: toGClass(pd.drug.class),
-        globalId: gd,
-        shared: gd ? isShared(gd) : false,   // ★HTN 공유약(다파·엠파·피네레논)
-        badge: pd.badge,                     // 급여 / 100·100 / 처방불가
-        reason: pd.reason || null
-      });
-    });
-    (reimb.flags||[]).forEach(function(f){
-      out.flags.push({
-        kind:"reimb", level:f.level,
-        msg:f.msg || (f.drug? (f.drug.class+" "+(f.level||"")):""),
-        drugClass: f.drug ? f.drug.class : null
-      });
-    });
-    (reimb.docs||[]).forEach(function(doc){
-      out.flags.push({ kind:"doc", level:"info", msg:doc });
-    });
-  }
-
-  // ── (B) 임상 권고 (AUDITOR) → drugs[](제안) + 충돌 flags[] ─────────
-  var clin = clinicalEngine(inp);
-  (clin.recommended||[]).forEach(function(cl){
-    // 이미 현재약에 있는 계열이면 제안 중복 표시 안 함
-    var already = out.drugs.some(function(x){ return x.class===cl && x.source==="current"; });
-    if (already) return;
-    out.drugs.push({
-      source:"clinical",
-      class: cl,
-      globalClass: toGClass(cl),
-      badge: null,
-      axis: clin.axis,
-      rationale:"지침 권고 (axis="+(clin.axis||"glycemic")+")"
-    });
-  });
-  // 급여↔지침 충돌 감지 (검증된 reimbCheck 콜백 패턴 사용)
-  if (typeof conflictDetector === "function"){
-    var reimbCheckFn = function(drugClass){
-      if (drugClass==="glp1ra")
-        return { badge:"100/100", blocked:false, severity:"high",
-          note:"GLP-1RA 주사제 병용 급여 제약. 성분별 BMI·전환조건 상이. 세마=인정외 처방불가" };
-      if (drugClass==="basal_insulin" || drugClass==="insulin")
-        return { badge:"급여", blocked:false, severity:"low", note:"인슐린 일반원칙 인정" };
-      return { badge:"급여", blocked:false, severity:"low", note:"" };
-    };
-    var conf = conflictDetector(clin, reimbCheckFn);
-    (conf.conflicts||[]).forEach(function(c){
-      out.flags.push({
-        kind:"conflict",
-        level: c.level==="hard" ? "block" : "warn",
-        msg: c.message,
-        clinicalSays: c.clinicalSays, reimbSays: c.reimbSays,
-        suggestion: c.suggestion, drugClass: c.drug
-      });
-    });
-  }
-  (clin.rationale||[]).forEach(function(r){
-    out.flags.push({ kind:"rationale", level:"info", msg:"권고"+(r.rec||"")+": "+(r.text||"") });
-  });
-
-  // ── (C) 추가 가능 옵션 → drugs[](우선순위 차등) ───────────────────
-  if (typeof addOnOptions === "function"){
-    var renalCheck = (typeof renalDrugStatus==="function")
-      ? function(key,egfr){ return renalDrugStatus(key,egfr); } : null;
-    // reimbCheckAddon 계약: (계열문자열 cls) → {badge, reason}
-    //   현재약(base)에 후보 1종을 붙여 급여 재판정 (플로우 검증 콜백과 동일)
-    var base = inp.drugs || [];
-    var addonReimb = function(cls){
-      var cand;
-      if (cls==="su")       cand={class:"su",member:"glimepiride"};
-      else if (cls==="tzd") cand={class:"tzd",member:"pioglitazone"};
-      else if (cls==="insulin") cand={class:"insulin",member:"basal"};
-      else if (cls==="sglt2i")  cand={class:"sglt2i",member:"dapa"};
-      else cand={class:cls};
-      var r = reimbEngine({drugs:base.concat([cand]), bmi:inp.bmi});
-      var added = r.perDrug[r.perDrug.length-1] || {};
-      return {badge:added.badge, reason:added.reason};
-    };
-    var opts = [];
-    try { opts = addOnOptions(inp, addonReimb, renalCheck) || []; } catch(e){ opts = []; }
-    opts.forEach(function(o){
-      var cls = o.drug;            // addOnOptions는 계열을 .drug로 반환
-      out.drugs.push({
-        source:"addon",
-        class: cls,
-        name: o.name || null,
-        globalClass: toGClass(cls),
-        badge: o.badge || null,    // 급여 / 100·100 등
-        reimbReason: o.reimbReason || null,
-        priority: o.priority!=null ? o.priority : null,  // 낮을수록 우선
-        blocked: !!o.blocked,
-        renalDose: o.renalDose || null,
-        why: o.why || [],          // 우선순위 근거
-        cautions: o.cautions || [],
-        benefit: o.note || null
-      });
-    });
-  }
-
-  // ── (D) 종합관리 → targets[] + flags[] ────────────────────────────
-  var care = comprehensiveCare(inp);
-  // 목표치 (전역 lab/comorbid ID 부착)
-  if (inp.a1c!=null || inp.targetA1c!=null){
-    out.targets.push({ kind:"a1c", lab:"lab:hba1c",
-      target:(inp.targetA1c!=null?("<"+inp.targetA1c+"%"):"개별화"),
-      current: inp.a1c!=null ? inp.a1c : null });
-  }
-  if (care.bpTarget){
-    out.targets.push({ kind:"bp", comorbid:"comorbid:htn",
-      target: care.bpTarget.target, note: care.bpTarget.note,
-      current: inp.sbp!=null ? (inp.sbp+"/"+(inp.dbp||"-")) : null });
-  }
-  if (care.lipidTarget){
-    out.targets.push({ kind:"ldl", lab:"lab:ldl",
-      target: care.lipidTarget.target, tier: care.lipidTarget.tier,
-      current: inp.ldl!=null ? inp.ldl : null });
-  }
-  if (care.ckdStage && care.ckdStage.stage!=null){
-    out.targets.push({ kind:"ckd", comorbid:"comorbid:ckd", lab:"lab:egfr",
-      stage: care.ckdStage.stage, sub: care.ckdStage.sub,
-      albuminuria: care.ckdStage.albuminuria, referral: care.ckdStage.referral });
-  }
-  // 관리 환기 → flags[]
-  (care.monitoring||[]).forEach(function(m){ out.flags.push({kind:"monitor", level:"info", msg:m}); });
-  (care.renalReminders||[]).forEach(function(m){
-    var lvl = /피네레논/.test(m) ? "renal_protect" : "info";
-    out.flags.push({kind:"renal", level:lvl, msg:m});
-  });
-  (care.complicationReminders||[]).forEach(function(m){ out.flags.push({kind:"complication", level:"info", msg:m}); });
-  if (care.neuropathyPlan){
-    out.flags.push({ kind:"neuropathy", level:"info",
-      msg:"신경병증 통증약: "+(care.neuropathyPlan.firstLine||[]).join("/")+" (기저 치옥타시드 고려)",
-      detail: care.neuropathyPlan });
-  }
-
-  out.careLoad = care.careLoad || "low";
-  return out;
-}
-// 통합엔진/외부 접근용 노출
-if (typeof window !== "undefined") window.recommend = recommend;
-
-
 // ── exports ─────────────────────────────────────────────────────────
 
 // ════════════════════════════════════════════════════════════════════
@@ -2465,36 +1959,11 @@ var LIBRARY = [
         "★대부분 조합이 메트포민 기반 — MET 없이는 인정 조합이 크게 제한",
         "GLP-1RA: MET+SU 병용 실패 + BMI≥25(또는 인슐린 불가) → 3제(MET+SU+GLP1)"
       ]},
-    { type:"keypoints", title:"3제 ① 명시 인정 (경제성평가 완료·가장 확실)",
+    { type:"keypoints", title:"3제 인정조합 (2제 2~4개월+A1c≥7%)",
       items:[
         "MET + SGLT2i + DPP4i",
         "MET + SGLT2i(에르투·에나보 제외) + TZD",
-        "★이 2개는 심평원이 3제로 직접 경제성평가한 조합 — 삭감 위험 최소"
-      ]},
-    { type:"keypoints", title:"3제 ② 2제 짝 기반 인정 (메트포민 기반)",
-      items:[
-        "고시 원리: 2제요법 2~4개월에도 A1c≥7%면 '다른 기전 1종 추가' 인정. 명시 2개는 예시('등')",
-        "★3약의 모든 2제 짝이 인정되면 3제 급여 — 메트포민 기반이면 견고",
-        "MET + SU + DPP4i / MET + SU + TZD / MET + SU + SGLT2i(에나보 제외)",
-        "MET + SU + α-GI / MET + SU + 메글 / MET + 메글 + α-GI",
-        "MET + 메글 + TZD / MET + TZD + DPP4i",
-        "★심평원 Q&A: 'SU+DPP4i 또는 SU+SGLT2i 2제에 1종 추가'도 허가범위 내 인정 맥락"
-      ]},
-    { type:"keypoints", title:"3제 ③ 1종 100/100 (짝 비급여 포함)",
-      items:[
-        "3약 중 비급여 짝(DPP4i+SGLT2i, DPP4i+α-GI 등) 포함 시 → 그 1종만 전액본인부담",
-        "예: MET+SGLT2i+DPP4i+SU(4제) → SU만 100/100 (앞 3제 급여)",
-        "예: 메트포민 없는 3제(SU+DPP4i+SGLT2i) → 급여 2제 + 1종 100/100",
-        "★메트포민 빠지거나 비급여 짝 있으면 삭감 가능성 — 100/100로 안전하게",
-        "100/100도 허가사항(적응증·병용) 범위 내여야 함"
-      ]},
-    { type:"keypoints", title:"3제 처방 주의 (삭감 방어)",
-      items:[
-        "선행 2제를 2~4개월 이상 + A1c≥7%(또는 FPG≥130·PP≥180) 확인 — 단계 근거",
-        "★메트포민 기반 3제가 가장 안전 (대부분 짝 인정)",
-        "에나보글리플로진은 MET하고만 2제 → 3제 들어가면 주의",
-        "SU+메글리티나이드는 동일 인슐린분비촉진 → 실제 병용 안 함(중복)",
-        "메트포민 없는 3제·비급여 짝 포함은 삭감 위험 — 100/100 처리 권장"
+        "★위 3제만 '인정 3제'. 이 외 3제 조합은 비급여 약 포함 시 100/100 발생"
       ]},
     { type:"keypoints", title:"100/100 (전액본인부담) 원칙 — 4제·간헐 사용",
       items:[
@@ -2513,27 +1982,6 @@ var LIBRARY = [
         { h:"세마글루티드(오젬픽)", b:"BMI≥25 · ★인정외 처방불가(blocked) · 위고비 동일성분", danger:true },
         { h:"릭시세나티드(솔리쿠아)", b:"BMI≥25 · 단독/MET까지만 급여" },
         { h:"엑세나티드(바이에타)", b:"★BMI≥30 (유일) · MET+SU+엑세나, 저렴한 경구 1종 100/100" }
-      ]},
-    { type:"keypoints", title:"💉 GLP-1RA 포함 조합 — 급여 (★트루리시티)",
-      items:[
-        "공통 선행조건: MET+SU 병용에도 A1c≥7% + (BMI≥25 또는 인슐린 불가)",
-        "★MET + SU + 둘라글루티드(트루리시티) = 급여 (BMI≥25) — 흔한 3제",
-        "MET + 둘라글루티드 = 급여 / 둘라글루티드 단독 = 급여(조건 충족)",
-        "기저인슐린 + 둘라글루티드(±MET) = 급여 (인슐린 병용)",
-        "릭시세나티드: 단독·MET까지 급여 (솔리쿠아 복합제 성분)",
-        "엑세나티드: ★BMI≥30, MET+SU+엑세나티드",
-        "★세마글루티드(오젬픽)는 인정외 처방불가(blocked) — 위고비 동일성분",
-        "GLP-1RA + DPP4i 병용은 불가 (기전 중복)"
-      ]},
-    { type:"keypoints", title:"💉 인슐린 포함 조합 — 급여",
-      items:[
-        "인슐린 단독 = 급여 (2형당뇨 진단기준 충족, 단계 무관)",
-        "★인슐린 + 경구제 2종까지 = 급여 (A1c≥7%). 예: 기저인슐린+MET+DPP4i",
-        "단 경구 2제에서 비급여인 조합은 인슐린 병용도 불가",
-        "★병용 제외 성분: 이프라글리플로진·에나보글리플로진·로지글리타존 (인슐린 병용 급여X)",
-        "인슐린 + GLP-1RA: 기저인슐린+둘라글루티드 등 가능 (또는 복합제)",
-        "복합제 솔리쿠아(글라진+릭시): 단독/MET 병용. 줄토피(데글루덱+리라): ★MET 병용 시만",
-        "초과분(경구 3종↑)은 1종 100/100"
       ]},
     { type:"keypoints", title:"개별고시 우선 (일반원칙보다 우선)",
       items:[
@@ -3331,201 +2779,370 @@ var LIBRARY = [
 //  깊게 갈수록 챙길 게 쌓이는 구조. 각 노드 = 질문 + 체크 시 펼쳐지는 항목.
 
 var SIMFLOW = {
-  start: "q_setting",
-  // ── 노드: type "choice"(수치/범주 선택) 또는 "check"(다중 체크) ──
+  start: "s_base",
   nodes: {
-
-    // STEP 1. 진료 상황
-    q_setting: {
-      type:"choice", q:"STEP 1 — 진료 상황은?",
-      sub:"환자 유형에 따라 경로가 갈립니다",
-      options:[
-        { val:"new",   label:"신규 진단 (약물 시작 전)", set:{setting:"new"}, next:"q_a1c" },
-        { val:"ontx",  label:"치료 중 (조합·강화 점검)", set:{setting:"ontx"}, next:"q_a1c" },
-        { val:"hyper", label:"과이화 (체중감소+다음다뇨+심한고혈당)", set:{setting:"hyper"}, next:"r_hypercat_end", hot:true }
-      ]
-    },
-
-    // STEP 2. A1c 구간
-    q_a1c: {
-      type:"choice", q:"STEP 2 — A1c는 몇 점대?",
-      sub:"강화 강도·인슐린 필요성 결정",
-      options:[
-        { val:"lt7",   label:"< 7.0% (목표 도달)", set:{a1c:"lt7"}, next:"q_comorb" },
-        { val:"7to8",  label:"7.0 ~ 7.9% (경도 초과)", set:{a1c:"7to8"}, next:"q_comorb" },
-        { val:"8to9",  label:"8.0 ~ 8.9% (중등도)", set:{a1c:"8to9"}, next:"q_comorb" },
-        { val:"9to10", label:"9.0 ~ 9.9% (고도)", set:{a1c:"9to10"}, next:"q_comorb", hot:true },
-        { val:"ge10",  label:"≥ 10% (매우 높음)", set:{a1c:"ge10"}, next:"q_comorb", hot:true }
-      ]
-    },
-
-    // STEP 3. 동반질환 (다중 — A1c 무관 우선약물 결정)
-    q_comorb: {
-      type:"check", q:"STEP 3 — 동반질환 (해당 모두)",
-      sub:"★A1c 무관 우선약물(SGLT2i·GLP-1RA)을 결정하는 핵심 단계",
+    s_base: {
+      q:"기본 — 어떤 환자인가요?",
       checks:[
-        { label:"심부전(HF)", reveal:"r_c_hf" },
-        { label:"죽상경화심혈관질환(ASCVD)", reveal:"r_c_ascvd" },
-        { label:"뇌졸중", reveal:"r_c_stroke" },
-        { label:"비만(BMI≥25)", reveal:"r_c_obesity" },
-        { label:"해당 없음", reveal:"r_c_none" }
+        { label:"신규 당뇨 (약물 시작 전)", reveal:"r_newdx", next:"s_comorb" },
+        { label:"이미 약물 치료 중 (조합 점검)", reveal:"r_ontx", next:"s_comorb" },
+        { label:"과이화 증상 (체중감소+다음다뇨+심한고혈당)", reveal:"r_hypercat", next:"s_insulin" },
+        { label:"경구 최대에도 목표 미달 (주사 고려)", reveal:"r_oralfail", next:"s_insulin" },
+        { label:"A1c ≥ 9% (초기 강화 고려)", reveal:"r_higha1c", next:"s_insulin" }
+      ]
+    },
+    s_insulin: {
+      q:"인슐린 / 주사제 — 시작 점검",
+      checks:[
+        { label:"GLP-1RA 먼저 고려 (과이화·금기 아니면 우선)", reveal:"r_glp1first" },
+        { label:"기저인슐린 시작/사용 중", reveal:"r_basal", next:"s_insulin_step" },
+        { label:"경구제 병용 중 (급여 점검)", reveal:"r_ins_oral" },
+        { label:"인슐린 제제 선택 고민 (상품별 차이)", reveal:"r_ins_product" }
+      ]
+    },
+    s_insulin_step: {
+      q:"인슐린 강화 단계 — 현재/다음",
+      checks:[
+        { label:"기저만으로 공복 OK, 식후 높음", reveal:"r_basalplus" },
+        { label:"기저+식사 모두 조절 필요 (basal-bolus)", reveal:"r_basalbolus" },
+        { label:"혼합형(노보믹스 등) 전환·분복 고려", reveal:"r_premixed" },
+        { label:"저혈당 반복 (강화 중 조정)", reveal:"r_ins_hypo", hot:true }
+      ]
+    },
+    s_comorb: {
+      q:"동반질환 — 해당하는 것 모두 (A1c 무관 우선약물 결정)",
+      checks:[
+        { label:"심부전(HF)", reveal:"r_hf" },
+        { label:"죽상경화심혈관질환(ASCVD)", reveal:"r_ascvd" },
+        { label:"뇌졸중", reveal:"r_stroke" },
+        { label:"비만 (BMI≥25, 체중감량 목표)", reveal:"r_obesity" },
+        { label:"만성신장병(CKD)/알부민뇨", reveal:"r_ckd", next:"s_ckd" }
       ],
-      next:"q_egfr"
+      next:"s_complication"
     },
-
-    // STEP 4. eGFR 구간 → CKD 여부·약제 제한
-    q_egfr: {
-      type:"choice", q:"STEP 4 — eGFR (신기능)은?",
-      sub:"CKD 단계·약제 금기/감량·신장보호 결정",
-      options:[
-        { val:"ge60", label:"≥ 60 (정상~경도, G1-2)", set:{egfr:"ge60"}, next:"q_uacr" },
-        { val:"45to59", label:"45 ~ 59 (G3a)", set:{egfr:"45to59"}, next:"q_uacr" },
-        { val:"30to44", label:"30 ~ 44 (G3b)", set:{egfr:"30to44"}, next:"q_uacr", hot:true },
-        { val:"15to29", label:"15 ~ 29 (G4)", set:{egfr:"15to29"}, next:"q_uacr", hot:true },
-        { val:"lt15", label:"< 15 / 투석 (G5)", set:{egfr:"lt15"}, next:"q_uacr", hot:true }
-      ]
-    },
-
-    // STEP 5. 알부민뇨 (uACR) → 신장보호·피네레논
-    q_uacr: {
-      type:"choice", q:"STEP 5 — 알부민뇨 (uACR)는?",
-      sub:"신장보호 강도·피네레논 트리거",
-      options:[
-        { val:"a1", label:"< 30 (정상, A1)", set:{uacr:"a1"}, next:"q_k" },
-        { val:"a2", label:"30 ~ 299 (microalbuminuria, A2)", set:{uacr:"a2"}, next:"q_k", hot:true },
-        { val:"a3", label:"≥ 300 (macroalbuminuria, A3)", set:{uacr:"a3"}, next:"q_k", hot:true },
-        { val:"unknown", label:"미확인 (검사 필요)", set:{uacr:"unknown"}, next:"q_k" }
-      ]
-    },
-
-    // STEP 6. K (피네레논 안전조건)
-    q_k: {
-      type:"choice", q:"STEP 6 — 혈청 칼륨(K)은?",
-      sub:"피네레논·ACEi/ARB 안전성",
-      options:[
-        { val:"ok", label:"≤ 5.0 (정상)", set:{k:"ok"}, next:"q_ras" },
-        { val:"high", label:"> 5.0 (상승)", set:{k:"high"}, next:"q_ras", hot:true },
-        { val:"unknown", label:"미확인", set:{k:"unknown"}, next:"q_ras" }
-      ]
-    },
-
-    // STEP 7. ACEi/ARB·SGLT2i 사용 여부 (신장보호 4기둥)
-    q_ras: {
-      type:"check", q:"STEP 7 — 신장보호제 현재 사용 (해당 모두)",
-      sub:"피네레논 도달 점검 (4기둥)",
+    s_ckd: {
+      q:"CKD — 신장 상태 점검 (챙길 게 늘어남)",
       checks:[
-        { label:"ACEi/ARB 사용 중 (1기둥)", reveal:"r_has_ras" },
-        { label:"SGLT2i 사용 중 (2기둥)", reveal:"r_has_sglt" },
-        { label:"둘 다 아직 안 씀", reveal:"r_no_renal" }
+        { label:"알부민뇨 있음 (uACR≥30)", reveal:"r_albumin", next:"s_renal_prot" },
+        { label:"eGFR 45-59 (stage 3a)", reveal:"r_egfr3a", next:"s_renal_drug" },
+        { label:"eGFR 30-44 (stage 3b)", reveal:"r_egfr3b", next:"s_renal_drug" },
+        { label:"eGFR 15-29 (stage 4)", reveal:"r_egfr4", next:"s_renal_drug" },
+        { label:"eGFR < 15 / 투석 (ESKD)", reveal:"r_eskd", next:"s_renal_drug" }
+      ]
+    },
+    s_renal_drug: {
+      q:"신기능별 약물 — 현재 처방 점검 (금기·감량)",
+      checks:[
+        { label:"메트포민 쓰고 있음", reveal:"r_rd_met", hot:true },
+        { label:"SGLT2i 쓰고 있음", reveal:"r_rd_sglt" },
+        { label:"DPP4i 쓰고 있음", reveal:"r_rd_dpp4" },
+        { label:"SU 쓰고 있음", reveal:"r_rd_su" }
+      ]
+    },
+    s_renal_prot: {
+      q:"신장보호 4기둥 — 현재 어디까지 (피네레논 도달 점검)",
+      checks:[
+        { label:"ACEi/ARB 쓰고 있음 (1기둥)", reveal:"r_has_ras" },
+        { label:"SGLT2i 쓰고 있음 (2기둥)", reveal:"r_has_sglt" },
+        { label:"K 정상 (≤5.0)", reveal:"r_k_ok" },
+        { label:"uACR>300 또는 요시험지봉 1+ (급여조건)", reveal:"r_macro" }
       ],
-      next:"q_ldl"
+      finale:"f_finerenone"
     },
-
-    // STEP 8. LDL → 지질 목표
-    q_ldl: {
-      type:"choice", q:"STEP 8 — LDL 콜레스테롤은?",
-      sub:"위험군별 목표·스타틴 강도",
-      options:[
-        { val:"lt55", label:"< 55 mg/dL", set:{ldl:"lt55"}, next:"q_done" },
-        { val:"55to70", label:"55 ~ 69", set:{ldl:"55to70"}, next:"q_done" },
-        { val:"70to100", label:"70 ~ 99", set:{ldl:"70to100"}, next:"q_done" },
-        { val:"ge100", label:"≥ 100", set:{ldl:"ge100"}, next:"q_done", hot:true },
-        { val:"unknown", label:"미확인", set:{ldl:"unknown"}, next:"q_done" }
+    s_complication: {
+      q:"합병증 점검 — 올해 안 한 것 (챙겨야 할 검사)",
+      checks:[
+        { label:"망막(안저) 미시행", reveal:"r_retino" },
+        { label:"신경병증 선별 미시행", reveal:"r_neuro" },
+        { label:"발 평가 미시행", reveal:"r_foot" },
+        { label:"신경병증 통증 있음", reveal:"r_np_pain", next:"s_neuro_tx" },
+        { label:"지질·혈압 목표 점검 필요", reveal:"r_goals" }
       ]
     },
-
-    // STEP 9. 합병증 선별 점검
-    q_done: {
-      type:"check", q:"STEP 9 — 올해 안 한 합병증 검사 (해당 모두)",
-      sub:"잊기 쉬운 연간 선별",
+    s_neuro_tx: {
+      q:"신경병증 통증 — 약제 선택 (신기능 고려)",
       checks:[
-        { label:"안저(망막) 미시행", reveal:"r_scr_retino" },
-        { label:"신경병증 선별 미시행", reveal:"r_scr_neuro" },
-        { label:"발 평가 미시행", reveal:"r_scr_foot" },
-        { label:"신경병증 통증 있음", reveal:"r_scr_nppain", hot:true }
+        { label:"1차 약제 선택 (가바펜티노이드/SNRI/TCA)", reveal:"r_nt_first" },
+        { label:"치옥타시드 병용 고려", reveal:"r_nt_thioctic" },
+        { label:"eGFR<30 — 약제 제한 점검", reveal:"r_nt_renal", hot:true },
+        { label:"1차 무반응 (협진·EMG)", reveal:"r_nt_refer", hot:true }
       ]
     }
   },
-
-  // ── 입력값(simVals) 기반 동적 결론 생성 규칙 ──
-  // computeResults(vals, checks) 가 dm_guide.html 에서 이 규칙을 해석
-  resultRules: true,
-
-  // ── 고정 reveal (체크 항목 detail) ──
   reveals: {
-    r_c_hf:{ icon:"⭐", text:"심부전 → SGLT2i 우선(A1c 무관, 권고8).",
+    r_newdx:{ icon:"○", text:"신규 — 메트포민 default 아님(2025 철회). 동반질환 분기 먼저.",
       detail:[
-        {h:"근거", b:"다파(DAPA-HF)·엠파(EMPEROR) — HFrEF·HFpEF 입원·사망 감소. A1c 무관 1순위"},
-        {h:"주의", b:"★TZD(피오/로베글리타존)는 체액저류 — 심부전 악화, 회피"},
-        {h:"신기능", b:"엠파 eGFR≥20, 다파 ≥25까지 심부전 이득 유지"}
+        {h:"진단 확정", b:"A1c≥6.5% 또는 FPG≥126 또는 2hPG≥200 또는 증상+무작위≥200. 무증상은 다른 날 재확인."},
+        {h:"첫 약제 결정 순서", b:"① 동반질환(HF/ASCVD/CKD) 있으면 A1c 무관 SGLT2i/GLP-1RA 우선 → ② 없으면 메트포민 포함 시작 고려"},
+        {h:"단독 급여", b:"메트포민만 단독 인정(진단기준 충족). 그 외 계열은 단독 급여 불가 → 병용 필요"},
+        {h:"동반 교육", b:"진단 즉시 자기관리교육(DSME)·생활습관. A1c·합병증 기저 검사(안저·신장·지질·발)"}
       ]},
-    r_c_ascvd:{ icon:"⭐", text:"ASCVD → GLP-1RA 또는 SGLT2i 우선(권고10).",
+    r_ontx:{ icon:"○", text:"치료 중 — 현재 조합 급여·신기능 점검.",
       detail:[
-        {h:"근거", b:"GLP-1RA(LEADER·REWIND) 동맥경화 사건↓. SGLT2i도 이익"},
-        {h:"LDL", b:"★ASCVD = LDL<55 + 기저 50%↓. 고강도 statin 1차"}
+        {h:"급여 점검", b:"현재 조합이 인정 매트릭스에 맞는지 — 도서관 '급여' 탭 대조. 비급여 조합이면 100/100 또는 재구성"},
+        {h:"신기능 점검", b:"eGFR 변화로 금기·감량 대상 생겼는지 (메트포민 <30, SGLT2i 혈당효과 등) 재평가"},
+        {h:"목표 재평가", b:"A1c 목표 도달? 개별화(고령·합병증은 완화). 미달 시 강화 단계 검토"}
       ]},
-    r_c_stroke:{ icon:"⭐", text:"뇌졸중 → GLP-1RA 또는 피오글리타존.",
+    r_hypercat:{ icon:"💉", text:"과이화 → 인슐린 직행(권고3). 총량 0.5~0.8 IU/kg/day.", hot:true,
       detail:[
-        {h:"피오글리타존", b:"IRIS — 인슐린저항성 동반 허혈성 뇌졸중·TIA 재발↓. 단 부종·골절·심부전 주의"},
-        {h:"제외", b:"출혈성 뇌졸중 제외. 허혈성·TIA 대상"}
+        {h:"왜 인슐린 직행", b:"과이화(이화작용 항진)=인슐린 결핍 상태. 경구제로 시간 끌면 위험 → 즉시 인슐린"},
+        {h:"시작 용량", b:"총량 0.5~0.8 IU/kg/day. 기저 50% + 식사 50%(3등분) 또는 기저부터 시작 후 강화"},
+        {h:"해소 후", b:"고혈당 독성 풀리고 안정되면 경구제로 전환(de-intensification) 검토 — 인슐린 평생 아님"},
+        {h:"감별", b:"1형·LADA·췌장성 당뇨 감별 (C-peptide, 자가항체). 케톤 확인(DKA 배제)"}
       ]},
-    r_c_obesity:{ icon:"⚖️", text:"비만 → GLP-1RA·SGLT2i(체중감소) 우선.",
+    r_oralfail:{ icon:"💉", text:"경구 최대 미달 → 주사제. ★GLP-1RA 우선(권고7-1).",
       detail:[
-        {h:"약제", b:"체중감소: GLP-1RA(大)·SGLT2i(中). 체중증가 피함: SU·TZD·인슐린 신중"},
-        {h:"급여", b:"GLP-1RA BMI≥25(둘라·세마·릭시), ≥30(엑세나티드). 세마=처방불가"},
-        {h:"목표", b:"5%↑ 감량으로 혈당·혈압·지질 개선"}
+        {h:"주사제 우선순위", b:"기저인슐린보다 GLP-1RA 먼저 고려(권고7-1) — 저혈당·체중 이점. 단 과이화·금기 시 인슐린"},
+        {h:"한국 현실", b:"GLP-1RA 급여 제약(BMI·병용 조건)·비용 → 경제력 안 되면 기저인슐린이 현실적"},
+        {h:"기저 시작", b:"0.1~0.2 U/kg 또는 10U 야간. 공복 보며 2~3일마다 2-4U 적정"},
+        {h:"병용 유지", b:"기존 경구제 유지하며 주사 추가. 단 SU는 저혈당 위험 — 감량/중단 고려"}
       ]},
-    r_c_none:{ icon:"○", text:"동반질환 없음 — 혈당·체중·저혈당·비용 기준 선택.",
+    r_higha1c:{ icon:"💉", text:"A1c≥9% — 증상 있으면 초기 인슐린/2제 병용 시작.",
       detail:[
-        {h:"선택 기준", b:"동반질환 없으면 A1c 강하폭·체중·저혈당 위험·비용으로 결정"},
-        {h:"무난", b:"메트포민 기반 + (DPP4i 안전 / SGLT2i 체중·보호 / SU 저렴)"}
+        {h:"증상 동반", b:"고혈당 증상(다뇨·체중감소) 있으면 인슐린 고려. 없으면 2제 병용 시작 가능"},
+        {h:"초기 2제", b:"A1c 매우 높으면 단일제로 부족 → 처음부터 병용(메트포민+다른 계열) 시작"},
+        {h:"재평가", b:"고혈당 독성 풀리면 인슐린 감량·경구 전환 가능. 3개월 후 A1c 재확인"}
+      ]},
+    r_glp1first:{ icon:"⭐", text:"주사 시작 시 GLP-1RA 우선(권고7-1). 단 급여 제약.",
+      detail:[
+        {h:"이점", b:"저혈당 거의 없음·체중감소·심혈관 보호. 주사이지만 인슐린보다 부담 적음"},
+        {h:"급여 조건", b:"둘라/세마/릭시 BMI≥25, 엑세나티드 BMI≥30. 세마(오젬픽)=인정외 처방불가. 인슐린 병용은 둘라 등 일부만"},
+        {h:"비용 현실", b:"급여 안 되면 자비 부담 큼 → 경제력 안 되는 환자는 기저인슐린이 현실적 대안"},
+        {h:"부작용 관리", b:"오심·구토(초기) → 저용량 시작 점증. 췌장염 병력 주의"}
+      ]},
+    r_basal:{ icon:"💉", text:"기저 0.1~0.2 U/kg(또는 10U). 공복 보며 적정.",
+      detail:[
+        {h:"시작", b:"0.1~0.2 U/kg/day 또는 야간 10U. 경구제 유지 가능"},
+        {h:"적정(titration)", b:"공복혈당 목표(80-130) 보며 2~3일마다 2-4U 증량. 저혈당 시 감량"},
+        {h:"제제 선택", b:"데글루덱(트레시바)·글라진U300(투제오)이 야간저혈당 적고 안정적. NPH는 저렴하나 peak 주의"},
+        {h:"한계 신호", b:"기저만으로 공복 잡혔는데 식후·A1c 높으면 → basal-plus 또는 basal-bolus"}
+      ]},
+    r_ins_oral:{ icon:"💊", text:"인슐린+경구: A1c≥7%면 급여. 경구 2종까지.",
+      detail:[
+        {h:"급여 조건", b:"인슐린 단독 또는 경구제에도 A1c≥7%. 경구 2종까지 병용 인정(초과분 100/100)"},
+        {h:"병용 제외 성분", b:"★이프라글리플로진·로지글리타존·에나보글리플로진은 인슐린 병용 급여 제외"},
+        {h:"권장 병용", b:"메트포민은 유지(인슐린 요구량↓). SGLT2i 병용은 체중·혈당 이점(단 DKA 주의)"}
+      ]},
+    r_ins_product:{ icon:"💉", text:"인슐린 제제 — 상품마다 작용시간 다름.",
+      detail:[
+        {h:"지속형 비교", b:"란투스(글라진U100) ~24h / 투제오(U300) 24h↑·±3h유연 / 트레시바(데글루덱) 42h↑·변동최소 / 레버미어(디터머) 용량의존"},
+        {h:"식사 인슐린", b:"노보래피드·휴마로그·애피드라 10-15분 발현. 룸제브·피아스프는 더 빠름(초초속효)"},
+        {h:"혼합형", b:"노보믹스30·휴마로그믹스 — 기저+식사 한 펜. 식사 규칙성 필요"},
+        {h:"임신", b:"NPH·디터머 ✅ / 글라진 △(유지 고려) / 글루리신 ✕(미승인). 식사인슐린은 아스파트·리스프로 ✅"}
+      ]},
+    r_basalplus:{ icon:"💉", text:"Basal-plus: 기저 + 주 식사 속효 1회.",
+      detail:[
+        {h:"적응", b:"기저로 공복 잡혔는데 특정 식후(보통 가장 큰 식사) 높을 때"},
+        {h:"용량", b:"가장 큰 식사에 초속효 4U(또는 0.1U/kg) 추가 → 식후혈당 보며 적정"},
+        {h:"진행", b:"한 끼로 부족하면 둘째·셋째 끼로 확대 → basal-bolus로 자연 이행"}
+      ]},
+    r_basalbolus:{ icon:"💉", text:"Basal-bolus: 총량 절반 기저+절반 매식전 3등분.",
+      detail:[
+        {h:"TDD 산정", b:"기존 사용량 또는 0.5 U/kg/day로 총량(TDD) 추정"},
+        {h:"분배", b:"기저=TDD 50%(1일1회 지속형). 식사=나머지 50%를 3등분 매식전 초속효. 예) 60kg TDD 30U → 기저15U+매식전5U"},
+        {h:"조정", b:"식전·식후 측정으로 해당 시간대 조정. 식후 높으면 그 끼 bolus↑. 식사 거르면 그 bolus 생략·기저 유지"},
+        {h:"가장 유연·강력", b:"생활 불규칙한 환자에 적합하나 주사 횟수·저혈당 부담. 환자 교육 필수"}
+      ]},
+    r_premixed:{ icon:"💉", text:"혼합형 전환·분복 — 기존 총량 기준.",
+      detail:[
+        {h:"전환", b:"기저+식사 총량을 혼합형으로 → 기존 TDD 유지 또는 약간 감량(저혈당 주의)"},
+        {h:"분복(1일 2회)", b:"총량의 2/3 아침 + 1/3 저녁(식사 직전). 예) TDD 30U → 아침20U·저녁10U"},
+        {h:"한계", b:"peak 있어 식사·간식 규칙성 필요. 점심 고혈당은 2회 혼합형으로 조절 한계 → basal-bolus 고려"}
+      ]},
+    r_ins_hypo:{ icon:"⚠️", text:"인슐린 강화 중 저혈당 반복 — 조정 필요.", hot:true,
+      detail:[
+        {h:"원인 점검", b:"용량 과다·식사 거름·신기능 저하(청소율↓)·음주·운동. 어느 시간대 저혈당인지 패턴 확인"},
+        {h:"조정", b:"해당 시간대 작용 인슐린 감량. 야간 저혈당은 기저↓ 또는 데글루덱/U300으로 전환"},
+        {h:"신기능", b:"eGFR<30이면 인슐린 청소율↓ → 저혈당 위험↑, 감량. SU 병용 중이면 SU부터 줄이기"},
+        {h:"교육", b:"15-15 규칙(15g 탄수→15분 재측정). 저혈당 무감지(hypoglycemia unawareness) 평가"}
+      ]},
+    r_hf:{ icon:"⭐", text:"심부전 — SGLT2i 우선(A1c 무관, 권고8).",
+      detail:[
+        {h:"근거", b:"다파(DAPA-HF)·엠파(EMPEROR) — HFrEF·HFpEF 모두 입원·사망 감소. A1c 무관 1순위"},
+        {h:"급여", b:"비당뇨 심부전도 급여(다파·엠파). 당뇨 동반이면 더 명확"},
+        {h:"주의", b:"TZD(피오/로베글리타존)는 체액저류 — ★심부전 악화, 회피. 시작 시 이뇨제 조정"},
+        {h:"신기능", b:"엠파 eGFR≥20, 다파 ≥25까지 심부전 이득 유지(혈당효과는 제한적이어도)"}
+      ]},
+    r_ascvd:{ icon:"⭐", text:"ASCVD — GLP-1RA 또는 SGLT2i 우선(권고10).",
+      detail:[
+        {h:"근거", b:"GLP-1RA(LEADER·REWIND) 동맥경화 사건↓. SGLT2i도 심혈관 이익. 둘 중 또는 병용"},
+        {h:"LDL 목표", b:"★ASCVD 동반 = LDL <55 + 기저 50%↓. statin 고강도 1차, 부족 시 ezetimibe·PCSK9i"},
+        {h:"혈압", b:"<130/80. ACEi/ARB 우선(신장보호 겸)"},
+        {h:"항혈소판", b:"2차예방 아스피린. 1차예방은 출혈위험 따라 개별화"}
+      ]},
+    r_stroke:{ icon:"⭐", text:"뇌졸중 — GLP-1RA 또는 TZD(피오글리타존).",
+      detail:[
+        {h:"GLP-1RA", b:"뇌졸중 포함 심혈관 사건 감소 근거"},
+        {h:"피오글리타존", b:"IRIS 연구 — 인슐린저항성 동반 허혈성 뇌졸중·TIA에서 재발↓. 단 부종·골절·심부전 주의"},
+        {h:"제외", b:"출혈성 뇌졸중은 해당 안 됨. 허혈성·TIA 대상"}
+      ]},
+    r_obesity:{ icon:"⚖️", text:"비만 — 체중감소 약제 우선 + 5%↑ 감량 목표.",
+      detail:[
+        {h:"약제 선택", b:"체중감소: GLP-1RA(大)·SGLT2i(중). 체중증가 피함: SU·TZD·인슐린은 신중"},
+        {h:"GLP-1RA 급여", b:"BMI≥25(둘라/세마/릭시), ≥30(엑세나티드). 세마=인정외 처방불가(위고비 동일성분)"},
+        {h:"목표", b:"체중 5%↑ 감량으로 혈당·혈압·지질 개선. 7-10%면 더 큰 이익"},
+        {h:"비약물", b:"필요 시 항비만제·대사수술 고려(2025 강조). 생활습관 병행 필수"}
+      ]},
+    r_ckd:{ icon:"🫘", text:"CKD 진입 — 검사·합병증·신장보호 챙길 것 증가.",
+      detail:[
+        {h:"병기 설정", b:"eGFR(G1~5) × 알부민뇨(A1~3) 교차로 위험도. 한국식 stage 3은 3a/3b 부기"},
+        {h:"무게중심 이동", b:"약물선택 < 신장보호·검사·합병증. eGFR 낮을수록 약제 선택권↓·챙길 것↑"},
+        {h:"핵심 약제", b:"SGLT2i(신장보호)·ACEi/ARB(알부민뇨)·피네레논(잔여위험). 메트포민은 eGFR 따라 감량/중단"}
+      ]},
+    r_albumin:{ icon:"🔔", text:"알부민뇨 = 신장보호 핵심 트리거.", hot:true,
+      detail:[
+        {h:"의미", b:"uACR≥30=신장 손상 신호·심혈관 위험↑. A2(30-299)·A3(≥300) 구분"},
+        {h:"신장보호 순서", b:"① ACEi/ARB 최대내약 → ② SGLT2i → ③ 피네레논(잔여 알부민뇨) → ④ GLP-1RA"},
+        {h:"피네레논 간극", b:"지침은 micro(≥30)부터 권고하나 급여는 macro(>300)부터. micro는 자비 또는 macro까지 모니터"},
+        {h:"확인", b:"일시적 상승(감염·운동·발열) 배제 위해 3개월 내 2-3회 중 2회 양성으로 확진"}
+      ]},
+    r_egfr3a:{ icon:"📋", text:"eGFR 45-59 (3a) — 합병증 검사 시작.",
+      detail:[
+        {h:"검사", b:"CKD 합병증 검사 시작 — 전해질·빈혈(Hb)·생화학. 6-12개월 주기"},
+        {h:"약물", b:"대부분 약물 사용 가능하나 용량 점검 시작. 시타글립틴 50mg, 삭사 2.5mg 등 감량 시작점"},
+        {h:"메트포민", b:"45-59는 사용 가능, eGFR 모니터링 강화"}
+      ]},
+    r_egfr3b:{ icon:"📋", text:"eGFR 30-44 (3b) — 약제 제한 본격화.",
+      detail:[
+        {h:"메트포민", b:"★최대 1000mg/일로 감량 + 새로 시작 안 함. 조영제·탈수 시 중단"},
+        {h:"DPP4i", b:"시타 50mg, 삭사 2.5mg, 알로 12.5mg. ★리나·테네리·제미는 조절 불필요"},
+        {h:"SGLT2i", b:"혈당효과 제한적이나 심부전·신장보호 목적 유지(다파≥25·엠파≥20)"},
+        {h:"검사", b:"생화학 6-12개월. 빈혈·골대사(K/P/PTH/VitD) 점검"}
+      ]},
+    r_egfr4:{ icon:"🔔", text:"eGFR 15-29 (4) — 신장내과 의뢰·약제 대폭 제한.", hot:true,
+      detail:[
+        {h:"의뢰", b:"신장내과 의뢰 고려. 신대체요법(투석·이식) 준비 교육 시작"},
+        {h:"금기 약물", b:"★메트포민 금지. 아카보즈<30 금지. SGLT2i 신규 시작 안 함"},
+        {h:"사용 가능", b:"리나·테네리(DPP4i)·레파글리니드·인슐린(감량)·일부 GLP-1RA"},
+        {h:"검사", b:"생화학 3-5개월. 빈혈(ESA·철분)·골대사·산증(HCO3) 적극 관리"}
+      ]},
+    r_eskd:{ icon:"🔔", text:"eGFR<15 / 투석 (ESKD) — 약제 극히 제한.", hot:true,
+      detail:[
+        {h:"주력 약물", b:"인슐린(감량, 청소율↓로 저혈당 주의)·리나글립틴·테네리글립틴. DPP4i 일부만"},
+        {h:"금기", b:"메트포민·SU(글리부리드)·아카보즈·SGLT2i(혈당목적) 금기"},
+        {h:"혈당 목표", b:"저혈당 위험 커 목표 완화. A1c는 빈혈로 부정확 → CGM/SMBG 병행"},
+        {h:"투석 환자", b:"투석일 인슐린 조정. 투석 중 저혈당 주의"}
+      ]},
+    r_rd_met:{ icon:"💊", text:"메트포민 — eGFR 따라 감량·중단 필수.", hot:true,
+      detail:[
+        {h:"구간별", b:"≥45 정상 / 30-44 최대1000mg·신규X / <30 ⛔금지"},
+        {h:"일시 중단", b:"요오드조영제(eGFR<60 시술 전~48h후)·탈수·패혈증·수술 — 유산산증 위험"},
+        {h:"재개", b:"신기능 회복·안정 확인 후 재개. B12 결핍 장기 모니터"}
+      ]},
+    r_rd_sglt:{ icon:"💊", text:"SGLT2i — 성분별 하한·중단 시점 다름.",
+      detail:[
+        {h:"성분별 하한", b:"다파 신규 ≥25 / 엠파 ≥20 / 에르투·이프라·에나보 <45 신규X"},
+        {h:"수술 전 중단", b:"★다파·엠파 3일 전, 에르투 4일 전 중단 (정상혈당 DKA 예방)"},
+        {h:"금식·급성질환", b:"일시 중단. 투석 시작 시 중단"}
+      ]},
+    r_rd_dpp4:{ icon:"💊", text:"DPP4i — 성분별 용량 천차만별.",
+      detail:[
+        {h:"감량 필요", b:"시타 100→50→25 / 삭사 5→2.5 / 알로 25→12.5→6.25 / 빌다 100→50"},
+        {h:"★조절 불필요", b:"리나글립틴(담즙배설)·테네리글립틴·제미글립틴 — 전구간 동일. CKD 1순위"},
+        {h:"전환 팁", b:"감량 번거롭거나 신기능 변동 크면 리나·테네리로 전환 고려"}
+      ]},
+    r_rd_su:{ icon:"💊", text:"SU — 저혈당 위험, CKD서 신중.",
+      detail:[
+        {h:"회피", b:"★글리부리드(글리벤클라미드) eGFR<60·노인 회피 — 활성대사체 축적, 저혈당 최대"},
+        {h:"상대 선호", b:"글리클라지드(디아미크롱)가 SU 중 CKD서 비교적 안전. 글리메피리드는 저용량"},
+        {h:"대안", b:"CKD 심하면 레파글리니드(담즙배설)·DPP4i(리나)로 전환 고려"}
       ]},
     r_has_ras:{ icon:"✓", text:"ACEi/ARB 사용 중 — 피네레논 선행조건 충족.",
       detail:[
-        {h:"역할", b:"신장보호 1기둥. 최대내약용량까지 증량. 피네레논 급여는 4주↑ 선행 필요"},
-        {h:"주의", b:"시작·증량 시 K·Cr 모니터"}
+        {h:"역할", b:"신장보호 1기둥. 알부민뇨 감소·신기능 보호. 최대내약용량까지 증량"},
+        {h:"피네레논 선행", b:"피네레논 급여는 ACEi/ARB 최대내약 4주↑ 선행 필요"},
+        {h:"주의", b:"시작 후 K·Cr 모니터. K 상승·급성 Cr 상승 시 조정"}
       ]},
     r_has_sglt:{ icon:"✓", text:"SGLT2i 사용 중 — 신장보호 2기둥 가동.",
       detail:[
-        {h:"역할", b:"eGFR 감소 둔화·알부민뇨↓. 피네레논과 병용 가능(상호보완)"},
-        {h:"초기 dip", b:"시작 후 일시적 eGFR 하강은 정상(가역적). 중단 말 것"}
+        {h:"역할", b:"신장보호 2기둥. eGFR 감소 둔화·알부민뇨↓·심부전 예방"},
+        {h:"피네레논 병용", b:"SGLT2i + 피네레논 병용 가능(상호보완). 함께 쓰면 잔여위험 더 감소"},
+        {h:"초기 eGFR dip", b:"시작 후 일시적 eGFR 하강은 정상(가역적). 놀라서 중단 말 것"}
       ]},
-    r_no_renal:{ icon:"🔔", text:"신장보호제 미사용 — 알부민뇨·CKD면 시작 검토.", hot:true,
+    r_k_ok:{ icon:"✓", text:"K 정상(≤5.0) — 피네레논 안전조건 충족.",
       detail:[
-        {h:"순서", b:"① ACEi/ARB(알부민뇨) → ② SGLT2i(신장보호) → ③ 피네레논(잔여위험)"},
-        {h:"우선", b:"알부민뇨·eGFR 저하 있으면 신장보호제 시작이 약물선택보다 우선"}
+        {h:"기준", b:"피네레논 시작은 K≤5.0(일부 ≤4.8). 시작 후 4주·4개월 K 모니터"},
+        {h:"K 상승 시", b:"5.5 초과면 감량·중단. ACEi/ARB·칼륨보존이뇨제 병용 시 더 주의"},
+        {h:"식이", b:"고칼륨혈증 위험 환자는 칼륨 식이 교육 병행"}
       ]},
-    r_scr_retino:{ icon:"👁", text:"안저검사 연1회 — 미시행 시 의뢰.",
+    r_macro:{ icon:"💊", text:"uACR>300 또는 요시험지봉 1+ — 피네레논 급여조건.",
       detail:[
-        {h:"주기", b:"2형은 진단 시부터 연1회. 조절 양호·정상이면 1-2년 연장 가능"},
-        {h:"코드", b:"E11.3·E11.31+H36.0*"}
+        {h:"급여 기준치", b:"★uACR>300mg/g 또는 요시험지봉 양성(1+이상). micro(30-299)는 급여 안 됨"},
+        {h:"지침 vs 급여", b:"지침은 micro부터 임상 권고. 급여는 macro부터 — 이 간극이 핵심"},
+        {h:"micro 환자", b:"임상적으론 고려 대상이나 급여 안 되니 자비 부담 설명 또는 macro 진행까지 모니터"}
       ]},
-    r_scr_neuro:{ icon:"🦶", text:"신경병증 선별 — 10g 모노필라멘트+1개 이상.",
+    r_retino:{ icon:"👁", text:"안저검사 연1회 (2형 진단 시부터).",
       detail:[
-        {h:"검사", b:"모노필라멘트 + (진동 128Hz/발목반사/핀프릭/온도) 1개↑ 연1회"},
-        {h:"의의", b:"감각소실=족부궤양·절단 위험 → 발 보호 교육"}
+        {h:"주기", b:"2형은 진단 시부터 연1회. 정상이고 조절 양호하면 1-2년으로 연장 가능"},
+        {h:"의뢰", b:"안과 산동 안저 또는 안저카메라. 증식성·황반부종은 즉시 안과"},
+        {h:"코드", b:"E11.3(안 합병증)·E11.31+H36.0*(망막병증)"}
       ]},
-    r_scr_foot:{ icon:"🦶", text:"포괄 발평가 연1회 + 매방문 발관찰.",
+    r_neuro:{ icon:"🦶", text:"신경병증 선별 — 모노필라멘트+1개 이상.",
       detail:[
-        {h:"평가", b:"감각·혈관(맥박·ABI)·피부·변형·궤양력. 고위험은 족부 의뢰"}
+        {h:"검사", b:"10g 모노필라멘트 + (진동 128Hz / 발목반사 / 핀프릭 / 온도) 중 1개 이상 연1회"},
+        {h:"진단", b:"말초 대칭성 다발신경병증이 가장 흔함. 비전형적이면 타원인 감별"},
+        {h:"의의", b:"감각 소실=족부궤양·절단 위험 → 발 보호 교육 연계"}
       ]},
-    r_scr_nppain:{ icon:"🧠", text:"신경병증 통증 — 약제+치옥타시드.", hot:true,
+    r_foot:{ icon:"🦶", text:"포괄 발평가 연1회 + 매방문 발관찰.",
       detail:[
-        {h:"1차", b:"가바펜티노이드(프레가발린)·SNRI(둘록세틴)·TCA — 저용량 점증"},
-        {h:"치옥타시드", b:"α-lipoic 600mg 공복 — 신경손상 개선. 통증약 병용 급여(2024)"},
-        {h:"신기능", b:"★eGFR<30 둘록세틴 회피. 가바펜티노이드 감량"},
-        {h:"급여", b:"E11.4 상병 필수 — 단순 통증코드만으론 삭감 위험"}
+        {h:"포괄 평가", b:"연1회 — 감각(모노필라멘트)·혈관(맥박·ABI)·피부·변형·궤양력. 매방문 발 관찰"},
+        {h:"ABI", b:"50세↑ 또는 위험인자 시 ABI로 말초동맥질환 선별"},
+        {h:"고위험", b:"감각소실·궤양력·변형 = 고위험 → 족부 전문 의뢰·맞춤 신발·자주 추적"}
       ]},
-    r_hypercat_end:{ icon:"💉", text:"과이화 → 인슐린 직행(권고3). 총량 0.5~0.8 IU/kg/day.", hot:true,
+    r_np_pain:{ icon:"🧠", text:"신경병증 통증 — 약제 + 치옥타시드. 아래 분기.",
       detail:[
-        {h:"왜", b:"과이화=인슐린 결핍 상태. 경구로 시간끌면 위험 → 즉시 인슐린"},
-        {h:"시작", b:"총량 0.5~0.8 IU/kg/day. 기저 50%+식사 50%(3등분)"},
-        {h:"감별", b:"1형·LADA·췌장성 감별(C-peptide·자가항체). 케톤 확인(DKA)"},
-        {h:"해소 후", b:"안정되면 경구 전환 검토 — 인슐린 평생 아님"}
+        {h:"1차 약제", b:"가바펜티노이드(프레가발린)·SNRI(둘록세틴)·TCA — 저용량 시작 점증"},
+        {h:"치옥타시드", b:"α-lipoic acid 600mg 공복 — 신경손상 개선. 통증약과 병용 급여(2024)"},
+        {h:"급여 코드", b:"E11.4(신경병증) 상병 필수 — 단순 통증코드만으론 삭감 위험"}
+      ]},
+    r_nt_first:{ icon:"💊", text:"1차 약제 — 기전·용량·특징.",
+      detail:[
+        {h:"프레가발린(리리카)", b:"75mg bid 시작→최대 300mg bid. 신기능별 감량. 어지럼·부종·체중"},
+        {h:"둘록세틴(심발타)", b:"30→60mg/일. ★eGFR<30 회피. 우울·불안 동반 시 이점. 정신과 코드와 구분"},
+        {h:"가바펜틴", b:"300mg/일 점증→최대 3600mg. 신배설 — eGFR별 감량"},
+        {h:"TCA(아미트리프틸린)", b:"저용량 10-25mg 취침 전. 항콜린·심장(QT) — 노인 신중"}
+      ]},
+    r_nt_thioctic:{ icon:"💊", text:"치옥타시드 — 신경손상 개선 기저치료.",
+      detail:[
+        {h:"용량", b:"α-lipoic acid 600mg/일 공복(식전 30분). 정맥주사 후 경구 전환도"},
+        {h:"기전", b:"항산화 — 통증 조절이 아니라 신경 손상 자체 개선. 통증약과 역할 다름"},
+        {h:"급여·병용", b:"E11.4 상병 급여. ★프레가발린 등 통증약과 병용해도 급여(2024 확대)"},
+        {h:"주의", b:"금주 권고. 철·마그네슘·우유(금속)와 동시복용 회피(흡수 저하)"}
+      ]},
+    r_nt_renal:{ icon:"⚠️", text:"eGFR<30 — 신경병증약 제한.", hot:true,
+      detail:[
+        {h:"둘록세틴", b:"★eGFR<30 회피 — 활성대사체 축적"},
+        {h:"가바펜티노이드", b:"프레가발린·가바펜틴 대폭 감량(신배설). 어지럼·부종 모니터"},
+        {h:"상대 안전", b:"TCA는 신배설 영향 적으나 심장·항콜린 주의. 치옥타시드는 신기능 영향 적음"}
+      ]},
+    r_nt_refer:{ icon:"🔔", text:"1차 무반응 — 신경과 협진·EMG/NCS.", hot:true,
+      detail:[
+        {h:"교체·병용", b:"기전 다른 1차약으로 교체 또는 병용(가바펜티노이드+SNRI)"},
+        {h:"협진", b:"무반응·비전형적(비대칭·운동우세·급속진행) → 신경과 협진"},
+        {h:"검사", b:"근전도(EMG)/신경전도(NCS) — 타원인(압박·염증·대사) 감별, 배제진단"}
+      ]},
+    r_goals:{ icon:"🎯", text:"목표 — LDL 위험군별 · BP<130/80.",
+      detail:[
+        {h:"LDL 위험군", b:"ASCVD<55(+50%↓) / 표적장기손상·위험인자≥3<55 / 유병10년↑<70 / 저위험<100"},
+        {h:"statin", b:"1차 고강도 statin. 부족 시 ezetimibe 추가 → PCSK9i. 목표 미달 흔함 — 강화"},
+        {h:"혈압", b:"<130/80(당뇨 특화). ACEi/ARB 우선(신장보호 겸). 약제는 고혈압 가이드 연계"},
+        {h:"기타", b:"금연 필수. 아스피린은 2차예방(1차는 개별화)"}
       ]}
   },
-
-  finales: {}
+  finales: {
+    f_finerenone:{
+      icon:"🔔★", title:"피네레논 추가 검토",
+      text:"알부민뇨+ACEi/ARB+SGLT2i+K정상 충족 — DKD 잔여위험 억제 위해 피네레논(케렌디아) 적극 고려. 자주 놓치는 약.",
+      cond:["r_albumin","r_has_ras","r_k_ok"],
+      detail:[
+        {h:"급여 기준 (2024.2.1~)", b:"2형당뇨+CKD · ACEi/ARB 최대내약 4주↑ · ★uACR>300 또는 요시험지봉 1+ · ★eGFR 25-75"},
+        {h:"병용", b:"ACEi/ARB와 병용 급여. SGLT2i와도 병용 가능(상호보완 — 잔여위험 더 감소)"},
+        {h:"용량·모니터", b:"시작 10-20mg/일. K·eGFR 보며 적정. 시작 후 4주·4개월 K 확인. K>5.5 시 감량·중단"},
+        {h:"지침 vs 급여 간극", b:"★지침은 micro(uACR≥30)부터 권고하나 급여는 macro(>300)부터. micro 환자는 자비 또는 모니터"},
+        {h:"중단", b:"eGFR<15 중단. 고칼륨혈증 반복 시 재평가"}
+      ]
+    }
+  }
 };
 
 
@@ -3592,7 +3209,7 @@ var SIMFLOW = {
       if(!sel.drug[k]) return;
       if(k==="acei_arb") return; // 신장보호는 별도 플래그
       if(k==="basal_insulin"){ onBasalInsulin = true; curDrugs.push({class:"insulin",member:"basal"}); return; }
-      if(k==="glp1ra") curDrugs.push({class:"glp1ra",member:"dulaglutide"});
+      if(k==="glp1ra") curDrugs.push({class:"glp1ra"});
       else if(k==="sglt2i") curDrugs.push({class:"sglt2i",member:"dapa"});
       else curDrugs.push({class:k});
     });
@@ -3679,7 +3296,7 @@ var SIMFLOW = {
         // ★ 신기능 경고 (현재 처방 약물이 eGFR상 문제면)
         if(inp.egfr!=null){
           var keyMap={metformin:"metformin",su:"su",meglitinide:"meglitinide",tzd:"tzd",
-            agi:"agi",dpp4i:"drug:sitagliptin",glp1ra:"glp1ra",insulin:"insulin"};
+            agi:"agi",dpp4i:"dpp4i_sita",glp1ra:"glp1ra",insulin:"insulin"};
           var rk = keyMap[pd.drug.class];
           // SGLT2i는 성분별
           if(pd.drug.class==="sglt2i") rk = "sglt2i_"+(pd.drug.member||"dapa");
@@ -3698,52 +3315,6 @@ var SIMFLOW = {
           }
         }
       });
-      // ★ 약제 조합 인사이트 (이득·주의·팁)
-      var curClasses = inp.currentDrugs.map(function(d){return d.class;});
-      var ci = (typeof comboInsight==="function") ? comboInsight(curClasses) : null;
-      if(ci){
-        var cbox = el("div","insightbox");
-        cbox.appendChild(el("div","ins-h","💡 이 조합 — 이득·주의"));
-        cbox.appendChild(el("div","ins-row ins-good",'<span class="ins-k">이득</span><span class="ins-v">'+ci.benefit+'</span>'));
-        cbox.appendChild(el("div","ins-row ins-warn",'<span class="ins-k">주의</span><span class="ins-v">'+ci.caution+'</span>'));
-        if(ci.tip) cbox.appendChild(el("div","ins-row ins-tip",'<span class="ins-k">팁</span><span class="ins-v">'+ci.tip+'</span>'));
-        cb.appendChild(cbox);
-      }
-      // ★ 개별 약제 장단점 (펼침)
-      if(typeof drugProsCons==="function"){
-        var uniqClasses = curClasses.filter(function(c,i){return curClasses.indexOf(c)===i;});
-        uniqClasses.forEach(function(cls){
-          var pc = drugProsCons(cls);
-          if(!pc || (!pc.pros.length && !pc.cons.length)) return;
-          var dbox = el("div","drugpc expandable");
-          var nm = ({metformin:"메트포민",su:"SU(설포닐유레아)",meglitinide:"메글리티나이드",
-            agi:"α-GI",tzd:"TZD",dpp4i:"DPP4i",sglt2i:"SGLT2i",glp1ra:"GLP-1RA",insulin:"인슐린"})[cls]||cls;
-          var head = el("div","pc-head",
-            '<span class="pc-nm">'+nm+'</span>'+
-            '<span class="pc-tags">'+(pc.weight?'체중 '+pc.weight:'')+(pc.hypo?' · 저혈당 '+pc.hypo:'')+(pc.cost?' · '+pc.cost:'')+'</span>'+
-            '<span class="pc-more">＋</span>');
-          dbox.appendChild(head);
-          var body = el("div","pc-body"); body.style.display="none";
-          if(pc.key) body.appendChild(el("div","pc-key","🎯 "+pc.key));
-          var prosWrap = el("div","pc-pros");
-          prosWrap.appendChild(el("div","pc-lbl-good","이득"));
-          pc.pros.forEach(function(x){ prosWrap.appendChild(el("div","pc-li","+ "+x)); });
-          body.appendChild(prosWrap);
-          var consWrap = el("div","pc-cons");
-          consWrap.appendChild(el("div","pc-lbl-bad","주의·단점"));
-          pc.cons.forEach(function(x){ consWrap.appendChild(el("div","pc-li","− "+x)); });
-          body.appendChild(consWrap);
-          dbox.appendChild(body);
-          head.style.cursor="pointer";
-          head.onclick=function(){
-            var open=body.style.display!=="none";
-            body.style.display=open?"none":"block";
-            head.querySelector(".pc-more").textContent=open?"＋":"－";
-            dbox.classList.toggle("open",!open);
-          };
-          cb.appendChild(dbox);
-        });
-      }
       // 플래그
       r.flags.forEach(function(f){
         if(f.level==="blocked") cb.appendChild(el("div","conflict hard",
@@ -4037,21 +3608,12 @@ function switchTab(t){
     var grid = el("div","grid");
 
     // 시뮬 진입 (강조, 맨 위)
-    var sim = el("div","simcard-row");
-    var simb = el("button","simcard");
-    simb.type="button";
-    simb.innerHTML = '<span class="sic">🧭</span><div><div class="st">시뮬레이션 점검</div>'+
-      '<div class="ss">A1c·eGFR·알부민뇨 단계별 입력 → 맞춤 의사결정</div></div><span class="sgo">›</span>';
-    simb.onclick = function(){ switchTab("sim"); };
-    grid.appendChild(simb);
-
-    // ★조합 평가기 진입 (급여·100/100·장단점 즉석 확인)
-    var evb = el("button","simcard evalcard");
-    evb.type="button";
-    evb.innerHTML = '<span class="sic">⚖️</span><div><div class="st">약제 조합 평가기</div>'+
-      '<div class="ss">현재 쓰는 약을 골라 급여·100/100·장단점 즉석 확인</div></div><span class="sgo">›</span>';
-    evb.onclick = function(){ openEvaluator(); };
-    grid.appendChild(evb);
+    var sim = el("button","simcard");
+    sim.type="button";
+    sim.innerHTML = '<span class="sic">🧭</span><div><div class="st">시뮬레이션 점검</div>'+
+      '<div class="ss">체크만 하면 챙길 항목이 단계별로 펼쳐집니다</div></div><span class="sgo">›</span>';
+    sim.onclick = function(){ switchTab("sim"); };
+    grid.appendChild(sim);
 
     // 토픽 카드
     LIBRARY.forEach(function(t, i){
@@ -4070,7 +3632,7 @@ function switchTab(t){
   }
 
   // ── 토픽 상세 렌더 ──
-  function openTopic(id, scrollToSec){
+  function openTopic(id){
     var t = LIBRARY.filter(function(x){return x.id===id;})[0];
     if(!t) return;
     var d = $("libDetail");
@@ -4081,217 +3643,16 @@ function switchTab(t){
     d.appendChild(back);
     d.appendChild(el("div","dhead",
       '<span class="di">'+t.icon+'</span><div><div class="dt">'+t.title+'</div><div class="ds">'+t.sub+'</div></div>'));
-    var secNodes = [];
-    t.sections.forEach(function(s){
-      var node = renderSection(s, t.cat);
-      secNodes.push(node);
-      d.appendChild(node);
-    });
+    t.sections.forEach(function(s){ d.appendChild(renderSection(s, t.cat)); });
 
     $("libHome").style.display="none";
     d.style.display="block";
     window.scrollTo(0,0);
-
-    // 검색에서 진입 시 매칭 섹션으로 스크롤 + 잠깐 하이라이트
-    if(scrollToSec!=null && secNodes[scrollToSec]){
-      var target = secNodes[scrollToSec];
-      setTimeout(function(){
-        target.scrollIntoView({behavior:"smooth", block:"center"});
-        target.classList.add("sec-hl");
-        setTimeout(function(){ target.classList.remove("sec-hl"); }, 1800);
-      }, 80);
-    }
   }
   function closeTopic(){
     $("libDetail").style.display="none";
     $("libHome").style.display="block";
     window.scrollTo(0,0);
-  }
-
-  // ── ★조합 평가기 (급여·100/100·장단점 즉석 판정) ──
-  var evalSel = {};  // 선택된 약제 class → member
-  var EVAL_DRUGS = [
-    {id:"metformin",  label:"메트포민"},
-    {id:"su",         label:"SU"},
-    {id:"dpp4i",      label:"DPP4i"},
-    {id:"sglt2i",     label:"SGLT2i"},
-    {id:"tzd",        label:"TZD"},
-    {id:"meglitinide",label:"메글"},
-    {id:"agi",        label:"α-GI"},
-    {id:"glp1ra",     label:"GLP-1RA"},
-    {id:"insulin",    label:"인슐린"},
-    {id:"ins_glp1",   label:"인슐린+GLP-1RA 복합제"}
-  ];
-
-  function openEvaluator(){
-    var d = $("libDetail");
-    d.innerHTML = "";
-    var back = el("button","dback","‹ 도서관");
-    back.type="button"; back.onclick = closeTopic;
-    d.appendChild(back);
-    d.appendChild(el("div","dhead",
-      '<span class="di">⚖️</span><div><div class="dt">약제 조합 평가기</div>'+
-      '<div class="ds">현재 약을 골라 급여·100/100·장단점 확인</div></div>'));
-
-    // 안내
-    d.appendChild(el("div","eval-intro",
-      '쓰고 있는(또는 검토 중인) 약제를 모두 선택하세요. BMI는 GLP-1RA 급여 판정에 쓰입니다.'));
-
-    // 약제 칩
-    var chipWrap = el("div","eval-chips");
-    EVAL_DRUGS.forEach(function(dr){
-      var b = el("button","echip"+(evalSel[dr.id]?" on":""));
-      b.type="button";
-      b.textContent = dr.label;
-      b.onclick = function(){
-        if(evalSel[dr.id]) delete evalSel[dr.id];
-        else evalSel[dr.id] = true;
-        renderEvaluator();
-      };
-      chipWrap.appendChild(b);
-    });
-    d.appendChild(chipWrap);
-
-    // BMI 입력 (GLP-1RA용)
-    var bmiRow = el("div","eval-bmi");
-    bmiRow.innerHTML = '<label>BMI</label>';
-    var bmiInput = el("input","eval-bmi-in");
-    bmiInput.type="number"; bmiInput.id="evalBmi"; bmiInput.placeholder="예: 27";
-    bmiInput.value = evalSel._bmi || "";
-    bmiInput.oninput = function(){ evalSel._bmi = this.value; renderEvalResult(); };
-    bmiRow.appendChild(bmiInput);
-    bmiRow.appendChild(el("span","eval-bmi-note","GLP-1RA는 BMI≥25 급여"));
-    d.appendChild(bmiRow);
-
-    // 결과 영역
-    var res = el("div"); res.id="evalResult";
-    d.appendChild(res);
-
-    $("libHome").style.display="none";
-    d.style.display="block";
-    window.scrollTo(0,0);
-    renderEvalResult();
-  }
-
-  function renderEvaluator(){
-    // 칩 다시 그리기 위해 전체 재렌더
-    openEvaluator();
-  }
-
-  function renderEvalResult(){
-    var res = $("evalResult");
-    if(!res) return;
-    res.innerHTML = "";
-
-    var classes = Object.keys(evalSel).filter(function(k){return k!=="_bmi" && evalSel[k];});
-    if(classes.length===0){
-      res.appendChild(el("div","eval-empty","약제를 선택하면 급여·장단점이 여기 나옵니다."));
-      return;
-    }
-
-    // currentDrugs 구성 (성분 기본값)
-    var drugs = classes.map(function(c){
-      if(c==="insulin") return {class:"insulin",member:"basal"};
-      if(c==="sglt2i") return {class:"sglt2i",member:"dapa"};
-      if(c==="glp1ra") return {class:"glp1ra",member:"dulaglutide"};
-      if(c==="ins_glp1") return {class:"insulin",member:"degludec+liraglutide",isCombo:true};
-      return {class:c};
-    });
-    var bmi = parseFloat(evalSel._bmi)||null;
-
-    // ── 급여 판정 ──
-    var r = reimbEngine({drugs:drugs, bmi:bmi});
-    var box = el("div","eval-box");
-    box.appendChild(el("div","eval-h pay","💰 급여 판정"));
-
-    var payCount=0, overageCount=0, blockCount=0;
-    r.perDrug.forEach(function(pd){
-      var row = el("div","eval-drugrow");
-      var nm = comboDrugKo(pd.drug);
-      var bc = pd.badge==="급여"?"ok":(pd.badge==="처방불가"?"block":"warn");
-      if(pd.badge==="급여")payCount++; else if(pd.badge==="처방불가")blockCount++; else overageCount++;
-      row.appendChild(el("span","ed-nm",nm));
-      row.appendChild(el("span","ed-badge "+bc,pd.badge));
-      if(pd.reason) row.appendChild(el("span","ed-rs",pd.reason));
-      box.appendChild(row);
-    });
-
-    // 요약 한 줄
-    var summary = "";
-    if(blockCount>0) summary = "⛔ 처방불가 약 포함 — 조합 재구성 필요";
-    else if(overageCount>0) summary = "⚠️ "+overageCount+"종은 100/100(전액본인부담). 나머지 급여";
-    else summary = "✅ 전부 급여 가능";
-    box.appendChild(el("div","eval-summary"+(blockCount?" block":(overageCount?" warn":" ok")),summary));
-
-    // ★성분 수 계산 — 고유 약물종류 기준 (인슐린은 여러 개여도 1성분, 복합제는 인슐린+GLP1로 분해)
-    var compSet2 = {};
-    drugs.forEach(function(d){
-      if(d.isCombo || d.member==="degludec+liraglutide" || d.member==="glargine+lixisenatide"){
-        compSet2["insulin"]=1; compSet2["glp1ra"]=1;
-      } else {
-        compSet2[d.class]=1;
-      }
-    });
-    var compCount = Object.keys(compSet2).length;
-    var hasCombo = drugs.some(function(d){return d.isCombo;});
-    var hasMultiIns = drugs.filter(function(d){return d.class==="insulin";}).length > 1;
-    box.appendChild(el("div","eval-note",
-      '🧮 총 <b>'+compCount+'성분</b>'+
-      (compCount>3 ? ' — ★급여는 최대 3성분이 대원칙. 초과분은 100/100으로 빠집니다.' : ' (3성분 이내 — 대원칙 충족)')+
-      (hasCombo ? '<br>복합제(줄토피·솔리쿠아)는 인슐린+GLP-1RA로 분해 계산.' : '')+
-      (hasMultiIns||hasCombo ? '<br>★인슐린은 여러 개여도(기저+초속효, 복합제 인슐린) 1성분으로 계산.' : '')));
-    res.appendChild(box);
-
-    // ── 조합 장단점 ──
-    // 복합제(ins_glp1)는 insulin+glp1ra로 풀어서 인사이트 매칭
-    var ciClasses = [];
-    classes.forEach(function(c){
-      if(c==="ins_glp1"){ ciClasses.push("insulin"); ciClasses.push("glp1ra"); }
-      else ciClasses.push(c);
-    });
-    var ci = comboInsight(ciClasses);
-    if(ci){
-      var ibox = el("div","eval-box");
-      ibox.appendChild(el("div","eval-h clin","💡 이 조합 — 이득·주의"));
-      ibox.appendChild(el("div","eval-ins ins-good",'<b>이득</b> '+ci.benefit));
-      ibox.appendChild(el("div","eval-ins ins-warn",'<b>주의</b> '+ci.caution));
-      if(ci.tip) ibox.appendChild(el("div","eval-ins ins-tip",'<b>팁</b> '+ci.tip));
-      res.appendChild(ibox);
-    }
-
-    // ── 개별 약제 장단점 (요약) ──
-    var pbox = el("div","eval-box");
-    pbox.appendChild(el("div","eval-h clin","💊 약제별 핵심 (체중·저혈당)"));
-    // 복합제는 인슐린·GLP1 둘 다 표시
-    var pcClasses = [];
-    classes.forEach(function(c){
-      if(c==="ins_glp1"){ pcClasses.push("insulin"); pcClasses.push("glp1ra"); }
-      else pcClasses.push(c);
-    });
-    // 중복 제거
-    pcClasses = pcClasses.filter(function(c,i){return pcClasses.indexOf(c)===i;});
-    pcClasses.forEach(function(cls){
-      var pc = drugProsCons(cls);
-      if(!pc) return;
-      var row = el("div","eval-pc");
-      row.innerHTML = '<span class="epc-nm">'+drugClassKo(cls)+'</span>'+
-        '<span class="epc-tag">체중 '+(pc.weight||'-')+' · 저혈당 '+(pc.hypo||'-')+'</span>'+
-        '<span class="epc-key">'+(pc.key||'')+'</span>';
-      pbox.appendChild(row);
-    });
-    res.appendChild(pbox);
-  }
-
-  function drugClassKo(c){
-    return ({metformin:"메트포민",su:"SU",dpp4i:"DPP4i",sglt2i:"SGLT2i",tzd:"TZD",
-      meglitinide:"메글리티나이드",agi:"α-GI",glp1ra:"GLP-1RA",insulin:"인슐린"})[c]||c;
-  }
-  function comboDrugKo(d){
-    if(d.member==="degludec+liraglutide" || d.member==="glargine+lixisenatide")
-      return "인슐린+GLP-1RA 복합제 (줄토피·솔리쿠아)";
-    if(d.member==="dulaglutide") return "GLP-1RA";
-    if(d.class==="insulin") return "인슐린";
-    return drugClassKo(d.class);
   }
 
   // ── 섹션 렌더러 (type별) ──
@@ -4479,149 +3840,25 @@ function switchTab(t){
   }
 
   // ── 검색 ──
-  // 섹션 객체 전체를 텍스트로 평탄화 (type별 필드 열거 없이 모든 문자열 수집)
-  function flattenText(v, acc){
-    if(v==null) return;
-    var t = typeof v;
-    if(t==="string"){ acc.push(v); return; }
-    if(t==="number"){ acc.push(String(v)); return; }
-    if(Array.isArray(v)){ v.forEach(function(x){ flattenText(x, acc); }); return; }
-    if(t==="object"){
-      for(var k in v){
-        if(!Object.prototype.hasOwnProperty.call(v,k)) continue;
-        if(k==="img"||k==="type") continue; // 이미지 키·타입은 검색 제외
-        flattenText(v[k], acc);
-      }
-    }
-  }
-  // ── 토큰 매칭 헬퍼 ──────────────────────────────────────────────
-  // 순수 숫자 토큰은 단어 경계로 매칭 (예: "30"이 "300"·"130"·"30mg"에 묻히지 않게).
-  // 비숫자(한글·영문)는 부분문자열 매칭 유지 ("dpp4i"가 "dpp-4i" 등 변형 흡수).
-  function isNumeric(tk){ return /^[0-9]+$/.test(tk); }
-  function escapeRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
-  // hay에서 토큰 등장 횟수 (숫자는 경계, 그 외는 부분문자열)
-  function countTok(hay, tk){
-    if(!tk) return 0;
-    if(isNumeric(tk)){
-      // 숫자 양옆이 숫자가 아닌 경우만 (단어경계 대용 — \b는 한글에서 불안정)
-      var re = new RegExp("(^|[^0-9])"+escapeRe(tk)+"([^0-9]|$)", "g");
-      var n=0; while(re.exec(hay)!==null) n++; return n;
-    }
-    var n2=0, idx=0;
-    while((idx=hay.indexOf(tk, idx))>=0){ n2++; idx+=tk.length; }
-    return n2;
-  }
-  function hasTok(hay, tk){ return countTok(hay, tk)>0; }
-
-  // 토픽별 검색 인덱스 1회 빌드 (제목·부제·태그 + 섹션 본문 + 섹션별 텍스트)
-  var SEARCH_INDEX = LIBRARY.map(function(t){
-    var headHay = (t.title+" "+t.sub+" "+t.tags.join(" ")).toLowerCase();
-    var tagHay  = t.tags.join(" ").toLowerCase();
-    var titleHay = t.title.toLowerCase();
-    var secEntries = (t.sections||[]).map(function(s,si){
-      var acc=[]; flattenText(s, acc);
-      var label = s.title || s.caption || (s.type+" 섹션");
-      return { idx:si, label:label, text:acc.join(" ").toLowerCase() };
-    });
-    var bodyHay = secEntries.map(function(e){return e.text;}).join(" ");
-    // 섹션 제목/캡션만 모은 hay — 토큰이 여기 있으면 "그 주제를 본격 다룸" 강한 신호
-    var labelHay = secEntries.map(function(e){return e.label.toLowerCase();}).join(" ");
-    return { topic:t, headHay:headHay, tagHay:tagHay, titleHay:titleHay,
-             labelHay:labelHay, bodyHay:bodyHay, secs:secEntries };
-  });
-  // 쿼리를 공백 토큰으로 분리, 모든 토큰이 hay에 있으면 매칭(AND)
-  function tokensOf(q){
-    return q.trim().toLowerCase().split(/\s+/).filter(function(x){return x.length>0;});
-  }
-  // ── IDF(변별력) — 토큰이 등장하는 토픽 수가 적을수록 가중치↑ ──────
-  //   흔한 단어("급여"=거의 모든 토픽)는 낮게, 희소 단어("피네레논")는 높게.
-  //   인덱스가 고정이므로 호출 시마다 토픽 빈도를 세어 idf 산출.
-  var TOTAL_TOPICS = SEARCH_INDEX.length;
-  function idf(tk){
-    var df=0;
-    for(var i=0;i<SEARCH_INDEX.length;i++){
-      var ix=SEARCH_INDEX[i];
-      if(hasTok(ix.headHay+" "+ix.bodyHay, tk)) df++;
-    }
-    if(df===0) return 0;
-    // log 기반 IDF (1~). 1개 토픽에만 있으면 최대, 전부에 있으면 ~0.
-    return Math.log((TOTAL_TOPICS+1)/df) + 0.3;
-  }
-
   function doSearch(q){
-    var raw = q.trim();
+    q = q.trim().toLowerCase();
     var g = $("libGrid");
-    if(!raw){ renderGrid(); $("libClr").style.display="none"; return; }
+    if(!q){ renderGrid(); $("libClr").style.display="none"; return; }
     $("libClr").style.display="block";
     g.innerHTML = "";
-    var toks = tokensOf(raw);
     var wrap = el("div","sresult");
-    // 토큰별 변별력(IDF) 1회 산출
-    var idfMap = {};
-    toks.forEach(function(tk){ idfMap[tk] = idf(tk); });
-
-    var hits = SEARCH_INDEX.map(function(ix){
-      var fullHay = ix.headHay+" "+ix.bodyHay;
-      // 모든 토큰이 (제목+본문 합쳐서) 들어있어야 매칭 (AND, 경계인식)
-      var allMatch = toks.every(function(tk){ return hasTok(fullHay, tk); });
-      if(!allMatch) return null;
-
-      // ── 종합 관련도 점수 ──
-      //   제목 정확매칭(×6) > 태그매칭(×3) > 본문 등장횟수, 모두 IDF 가중.
-      //   → "급여"처럼 흔한 토큰은 IDF가 낮아 영향 작고,
-      //     "피네레논"처럼 희소 토큰이 제목/본문에 있으면 점수가 크게 오름.
-      var score = 0;
-      toks.forEach(function(tk){
-        var w = idfMap[tk] || 0.3;
-        if(hasTok(ix.titleHay, tk)) score += 6*w;
-        if(hasTok(ix.tagHay,   tk)) score += 3*w;
-        // 섹션 제목/캡션 등장 — 그 주제를 본격적으로 다루는 토픽 신호.
-        //   변별력(w) 한 번 더 곱해 희소 토큰(피네레논)의 라벨 매칭을 결정적으로 만듦.
-        //   → 흔한 토큰("급여")이 본문에 많아도 핵심어의 주제 매칭을 못 뒤집게.
-        var lc = countTok(ix.labelHay, tk);
-        if(lc>0) score += Math.min(lc, 3) * 4 * w * Math.max(w, 0.6);
-        var bc = countTok(ix.bodyHay, tk);
-        if(bc>0) score += Math.min(bc, 3) * w;   // 본문 등장(상한 3 — 흔한 토큰 누적 억제)
-      });
-      // 모든 토큰이 제목/태그(head)에 다 있으면 보너스 (정확한 주제 매칭)
-      if(toks.every(function(tk){ return hasTok(ix.headHay, tk); })) score += 4;
-
-      // 어느 섹션에서 토큰이 걸렸는지 (모든 토큰을 포함하는 섹션 우선, 없으면 일부)
-      var matchedSec = null;
-      for(var i=0;i<ix.secs.length;i++){
-        var se = ix.secs[i];
-        if(toks.every(function(tk){return hasTok(se.text, tk);})){ matchedSec = se; break; }
-      }
-      if(!matchedSec){
-        for(var j=0;j<ix.secs.length;j++){
-          var se2 = ix.secs[j];
-          if(toks.some(function(tk){return hasTok(se2.text, tk);})){ matchedSec = se2; break; }
-        }
-      }
-      // 태그 중 토큰과 겹치는 것 (부제 대체 표시용)
-      var matchedTags = ix.topic.tags.filter(function(tag){
-        var lt = tag.toLowerCase();
-        return toks.some(function(tk){ return hasTok(lt, tk); });
-      }).slice(0,4);
-      return { topic:ix.topic, score:score, matchedSec:matchedSec, matchedTags:matchedTags };
-    }).filter(function(x){return x!=null;});
-
-    // 관련도 점수 높은 순 정렬
-    hits.sort(function(a,b){ return b.score - a.score; });
-
+    var hits = LIBRARY.filter(function(t){
+      var hay = (t.title+" "+t.sub+" "+t.tags.join(" ")).toLowerCase();
+      return hay.indexOf(q)>=0 || t.tags.some(function(tag){return tag.toLowerCase().indexOf(q)>=0;});
+    });
     wrap.appendChild(el("div","srt", hits.length+"개 주제"));
-    hits.forEach(function(h){
-      var t = h.topic;
-      var sub;
-      if(h.matchedTags.length) sub = h.matchedTags.join(" · ");
-      else if(h.matchedSec) sub = "▸ "+h.matchedSec.label;
-      else sub = t.sub;
+    hits.forEach(function(t){
+      var matched = t.tags.filter(function(tag){return tag.toLowerCase().indexOf(q)>=0;}).slice(0,4);
       var b = el("button","srcard");
       b.type="button";
       b.innerHTML = '<span class="sri">'+t.icon+'</span><div><div class="srh">'+t.title+'</div>'+
-        '<div class="srs">'+sub+'</div></div>';
-      var secIdx = h.matchedSec ? h.matchedSec.idx : null;
-      b.onclick = function(){ openTopic(t.id, secIdx); };
+        '<div class="srs">'+(matched.length?matched.join(" · "):t.sub)+'</div></div>';
+      b.onclick = function(){ openTopic(t.id); };
       wrap.appendChild(b);
     });
     if(!hits.length) wrap.appendChild(el("div","empty","검색 결과 없음. 다른 키워드를 시도하세요."));
@@ -4641,9 +3878,8 @@ function switchTab(t){
   var $ = function(id){ return document.getElementById(id); };
   var el = function(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;};
 
-  var checked = {};       // reveal id → true (check 타입)
-  var simVals = {};       // 변수명 → 선택값 (choice 타입)
-  var visitedNodes = ["q_setting"];  // 펼쳐진 노드 순서
+  var checked = {};       // reveal id → true
+  var visitedNodes = ["s_base"];  // 펼쳐진 노드 순서
 
   function renderSim(){
     var w = $("simWrap");
@@ -4655,221 +3891,111 @@ function switchTab(t){
       qn++;
       var nd = el("div","simnode");
       nd.appendChild(el("div","sq",'<span class="qn">'+qn+'</span>'+node.q));
-      if(node.sub) nd.appendChild(el("div","sqsub",node.sub));
-
-      if(node.type==="choice"){
-        node.options.forEach(function(opt){
-          // 이 노드의 변수명 = opt.set의 키
-          var varKey = Object.keys(opt.set)[0];
-          var on = (simVals[varKey]===opt.val);
-          var b = el("button","simchoice"+(on?" on":"")+(opt.hot?" hot":""));
-          b.type="button";
-          b.innerHTML = '<span class="ch-radio">'+(on?"●":"○")+'</span><span class="lbl">'+opt.label+'</span>';
-          b.onclick = function(){ chooseOption(node, opt); };
-          nd.appendChild(b);
-        });
-      } else {
-        // check 타입 (다중)
-        node.checks.forEach(function(chk){
-          var on = !!checked[chk.reveal];
-          var b = el("button","simcheck"+(on?" on":""));
-          b.type="button";
-          b.innerHTML = '<span class="box">'+(on?"✓":"")+'</span><span class="lbl">'+chk.label+'</span>';
-          b.onclick = function(){ toggleCheck(node, chk); };
-          nd.appendChild(b);
-        });
-      }
+      node.checks.forEach(function(chk){
+        var on = !!checked[chk.reveal];
+        var b = el("button","simcheck"+(on?" on":""));
+        b.type="button";
+        b.innerHTML = '<span class="box">'+(on?"✓":"")+'</span><span class="lbl">'+chk.label+'</span>';
+        b.onclick = function(){ toggleCheck(chk); };
+        nd.appendChild(b);
+      });
       w.appendChild(nd);
     });
-    w.appendChild(buildResults());
+
+    // 챙길 항목 패널 (sticky 하단)
+    w.appendChild(buildChecklist());
   }
 
-  function chooseOption(node, opt){
-    var varKey = Object.keys(opt.set)[0];
-    // 이미 같은 값이면 해제 안 함(선택형은 항상 하나)
-    simVals[varKey] = opt.val;
-    // 이 노드 다음의 모든 노드 제거 후 새 next 추가 (경로 재설정)
-    var idx = visitedNodes.indexOf(node.q ? findNodeId(node) : null);
-    var nodeId = findNodeId(node);
-    var pos = visitedNodes.indexOf(nodeId);
-    if(pos>=0) visitedNodes = visitedNodes.slice(0, pos+1);
-    if(opt.next && SIMFLOW.nodes[opt.next] && visitedNodes.indexOf(opt.next)<0){
-      visitedNodes.push(opt.next);
-    }
-    renderSim();
-  }
-
-  function findNodeId(node){
-    var found=null;
-    Object.keys(SIMFLOW.nodes).forEach(function(k){ if(SIMFLOW.nodes[k]===node) found=k; });
-    return found;
-  }
-
-  function toggleCheck(node, chk){
+  function toggleCheck(chk){
     checked[chk.reveal] = !checked[chk.reveal];
-    var nodeId = findNodeId(node);
-    if(node.next && visitedNodes.indexOf(node.next)<0){
-      visitedNodes.push(node.next);
+    // 체크 시 next 노드 펼침
+    if(checked[chk.reveal] && chk.next && visitedNodes.indexOf(chk.next)<0){
+      visitedNodes.push(chk.next);
     }
     renderSim();
   }
 
-  // ── 입력값 기반 동적 결론 생성 ──
-  function buildResults(){
+  function buildChecklist(){
     var cl = el("div","checklist");
-    var V = simVals;
-    var recs = [];   // 약제·관리 권고 {icon,title,body,hot,detail}
-
-    // ── 과이화 즉시 종료 ──
-    if(V.setting==="hyper"){
-      recs.push({ icon:"💉", hot:true, title:"인슐린 직행 (과이화)",
-        body:"경구 우회 없이 인슐린. 총량 0.5~0.8 IU/kg/day. 1형·LADA 감별.",
-        detail:SIMFLOW.reveals.r_hypercat_end.detail });
-    }
-
-    // ── 동반질환 기반 우선약물 (A1c 무관) ──
-    var comorbRecs = [];
-    if(checked.r_c_hf)    comorbRecs.push({d:"심부전",drug:"SGLT2i",note:"A1c 무관 1순위. TZD 회피"});
-    if(checked.r_c_ascvd) comorbRecs.push({d:"ASCVD",drug:"GLP-1RA 또는 SGLT2i",note:"+LDL<55 목표"});
-    if(checked.r_c_stroke)comorbRecs.push({d:"뇌졸중",drug:"GLP-1RA 또는 피오글리타존",note:"허혈성"});
-    if(checked.r_c_obesity)comorbRecs.push({d:"비만",drug:"GLP-1RA·SGLT2i",note:"체중감소"});
-    if(comorbRecs.length){
-      var body = comorbRecs.map(function(c){return c.d+" → <b>"+c.drug+"</b> ("+c.note+")";}).join("<br>");
-      recs.push({ icon:"⭐", hot:true, title:"동반질환 우선약물 (A1c 무관)",
-        body:body,
-        detail:[{h:"원칙",b:"동반질환 있으면 혈당 목표와 무관하게 SGLT2i·GLP-1RA를 우선 배치(2025 권고 8·9·10)"},
-                {h:"급여",b:"심부전·CKD는 SGLT2i 비당뇨도 급여. GLP-1RA는 BMI≥25 조건"}] });
-    }
-
-    // ── A1c 구간 기반 강화 강도 ──
-    if(V.a1c){
-      var a1cMap = {
-        lt7:  {t:"A1c<7% 목표 도달 — 유지·de-intensification 검토",b:"저혈당 약(SU·인슐린) 있으면 감량 고려. 고령은 목표 완화(7.5~8%)",hot:false},
-        "7to8":{t:"A1c 7~8% — 2제 강화 고려",b:"단독이면 2제로. 동반질환 따라 SGLT2i·GLP-1RA 우선",hot:false},
-        "8to9":{t:"A1c 8~9% — 적극 2~3제",b:"병용 강화. 생활습관 재점검. 3개월 후 재평가",hot:false},
-        "9to10":{t:"A1c 9~10% — 초기 2제 병용 또는 주사 고려",b:"증상 있으면 인슐린 고려. 무증상이면 강력 2제 병용 시작",hot:true},
-        ge10: {t:"A1c≥10% — 인슐린 포함 적극 치료",b:"증상 동반 흔함 → 인슐린. 고혈당 독성 풀리면 경구 전환 가능",hot:true}
-      };
-      var a = a1cMap[V.a1c];
-      recs.push({ icon:"🎯", hot:a.hot, title:a.t, body:a.b,
-        detail:[{h:"목표 개별화",b:"일반 <6.5~7%. 고령·합병증·기대여명 짧으면 7.5~8%로 완화. 저혈당 위험 클수록 완화"}] });
-    }
-
-    // ── eGFR 기반 약제 제한 ──
-    if(V.egfr){
-      var egfrMap = {
-        ge60:null,
-        "45to59":{t:"eGFR 45~59 (G3a) — 용량 점검 시작",b:"대부분 사용 가능. 시타글립틴 50mg·삭사 2.5mg 감량 시작점. 합병증 검사 시작",hot:false},
-        "30to44":{t:"eGFR 30~44 (G3b) — 약제 제한 본격화",b:"★메트포민 최대1000mg·신규X. DPP4i 감량(리나·테네리는 무관). SGLT2i 심신장 목적만",hot:true},
-        "15to29":{t:"eGFR 15~29 (G4) — 신장내과 의뢰",b:"★메트포민·아카보즈 금지. SGLT2i 신규X. 리나·테네리·인슐린(감량) 위주",hot:true},
-        lt15:{t:"eGFR<15 / 투석 (G5) — 약제 극히 제한",b:"인슐린(감량)·리나·테네리 위주. 메트포민·SU·SGLT2i 금기. 목표 완화",hot:true}
-      };
-      var e = egfrMap[V.egfr];
-      if(e) recs.push({ icon:(e.hot?"🔔":"📋"), hot:e.hot, title:e.t, body:e.b,
-        detail:[{h:"신기능별 상세",b:"도서관 'eGFR별 약물조절' 색깔표 참조. 현재 처방약 전부 재점검"},
-                {h:"메트포민",b:"≥45 정상 / 30-44 최대1000·신규X / <30 금지"},
-                {h:"DPP4i CKD 친화",b:"리나글립틴·테네리글립틴은 전구간 용량 무관 — CKD 1순위"}] });
-    }
-
-    // ── 알부민뇨 + 신장보호 → 피네레논 판정 ──
-    if(V.uacr==="a2" || V.uacr==="a3"){
-      var hasRas = checked.r_has_ras;
-      var kOk = (V.k==="ok");
-      var egfrOk = (V.egfr==="45to59"||V.egfr==="30to44"||V.egfr==="ge60"); // 25-75 근사 (G5·G4 일부 제외)
-      var fineEligible = (V.uacr==="a3") && hasRas && kOk && (V.egfr!=="lt15");
-      var fineDetail = [
-        {h:"급여 기준 (2024.2.1~)",b:"2형당뇨+CKD · ACEi/ARB 최대내약 4주↑ · ★uACR>300 또는 요시험지봉 1+ · ★eGFR 25-75"},
-        {h:"병용",b:"ACEi/ARB·SGLT2i와 병용 가능(상호보완)"},
-        {h:"모니터",b:"시작 10-20mg/일. K·eGFR 보며 적정. 4주·4개월 K 확인. K>5.5 감량·중단"},
-        {h:"지침 vs 급여",b:"★지침은 micro(≥30)부터, 급여는 macro(>300)부터. micro는 자비 또는 모니터"}
-      ];
-      if(fineEligible){
-        recs.push({ icon:"🔔★", hot:true, title:"피네레논 추가 — 급여조건 충족",
-          body:"macroalbuminuria+ACEi/ARB+K정상+eGFR 25-75 → 케렌디아 적극 고려. 자주 놓치는 약.",
-          detail:fineDetail });
-      } else {
-        // 무엇이 부족한지 안내
-        var lack=[];
-        if(V.uacr==="a2") lack.push("uACR가 micro(30-299) — 급여는 macro(>300)부터");
-        if(!hasRas) lack.push("ACEi/ARB 선행(최대내약 4주↑) 필요");
-        if(!kOk) lack.push("K≤5.0 확인 필요");
-        if(V.egfr==="lt15") lack.push("eGFR<15는 피네레논 중단 대상");
-        recs.push({ icon:"🔔", hot:true, title:"피네레논 — 조건 점검 필요",
-          body:"알부민뇨 있음. 부족 조건: "+lack.join(" / "),
-          detail:fineDetail });
-      }
-      // 신장보호 순서 안내
-      if(!hasRas || !checked.r_has_sglt){
-        recs.push({ icon:"🫘", title:"신장보호 4기둥 점검",
-          body:"① ACEi/ARB"+(hasRas?"✓":"(시작)")+" → ② SGLT2i"+(checked.r_has_sglt?"✓":"(시작)")+" → ③ 피네레논 → ④ GLP-1RA",
-          detail:[{h:"순서",b:"알부민뇨 시 ACEi/ARB 최대내약 → SGLT2i → 잔여위험에 피네레논 → GLP-1RA"}] });
-      }
-    }
-
-    // ── K 상승 경고 ──
-    if(V.k==="high"){
-      recs.push({ icon:"⚠️", hot:true, title:"고칼륨혈증 — 피네레논·RAS 주의",
-        body:"K>5.0 → 피네레논 시작 보류. ACEi/ARB·칼륨보존이뇨제 재점검. 식이 교육.",
-        detail:[{h:"조치",b:"K 원인 교정 후 재평가. 피네레논은 K≤5.0(일부 4.8)서 시작"}] });
-    }
-
-    // ── LDL 기반 지질 목표 ──
-    if(V.ldl){
-      var hasAscvd = checked.r_c_ascvd;
-      var target = hasAscvd ? 55 : 70;  // ASCVD<55, 그 외 당뇨 대부분 <70 (위험인자 따라)
-      var ldlVal = {lt55:"<55",55:"55-69","55to70":"55-69","70to100":"70-99",ge100:"≥100",unknown:"미확인"}[V.ldl];
-      var atGoal = (V.ldl==="lt55") || (!hasAscvd && (V.ldl==="lt55"||V.ldl==="55to70"));
-      recs.push({ icon:"🎯", hot:(V.ldl==="ge100"), title:"LDL 목표 "+(hasAscvd?"<55":"<70")+" (현재 "+ldlVal+")",
-        body: atGoal ? "목표 도달 — statin 유지" : "목표 미달 → 고강도 statin, 부족 시 ezetimibe→PCSK9i",
-        detail:[{h:"위험군별 목표",b:"ASCVD<55(+50%↓) / 표적장기손상·위험인자≥3<55 / 유병10년↑<70 / 저위험<100"},
-                {h:"강화",b:"고강도 statin 1차. 미달 흔함 — ezetimibe 추가, 그래도 미달 시 PCSK9i"}] });
-    }
-
-    // ── 합병증 선별 (체크된 것) ──
-    ["r_scr_retino","r_scr_neuro","r_scr_foot","r_scr_nppain"].forEach(function(rk){
-      if(checked[rk] && SIMFLOW.reveals[rk]){
-        var r=SIMFLOW.reveals[rk];
-        recs.push({ icon:r.icon, hot:r.hot, title:r.text, body:"", detail:r.detail });
-      }
+    var items = [];
+    // reveal된 항목 수집
+    visitedNodes.forEach(function(nodeId){
+      var node = SIMFLOW.nodes[nodeId];
+      node.checks.forEach(function(chk){
+        if(checked[chk.reveal] && SIMFLOW.reveals[chk.reveal])
+          items.push(SIMFLOW.reveals[chk.reveal]);
+      });
     });
 
-    // ── 렌더 ──
-    var head = el("div","clh",'🧭 의사결정 결과<span class="cnt">'+recs.length+'</span>');
+    var head = el("div","clh",'📋 챙길 항목<span class="cnt">'+items.length+'</span>');
     cl.appendChild(head);
 
-    if(!recs.length){
-      cl.appendChild(el("div","empty-cl","위 단계를 진행하면 환자 맞춤 권고가 여기 쌓입니다."));
+    if(!items.length){
+      cl.appendChild(el("div","empty-cl","위 항목을 체크하면 챙길 것이 여기 쌓입니다."));
+      return cl;
     }
-
-    recs.forEach(function(it){
+    items.forEach(function(it){
       var hasDetail = it.detail && it.detail.length;
       var wrap = el("div","clitem"+(it.hot?" hot":"")+(hasDetail?" expandable":""));
-      var inner = '<span class="cli">'+it.icon+'</span><div'+(it.hot?' class="clx"':'')+'>'+
-        '<b>'+it.title+'</b>'+(it.body?'<br><span style="font-size:11.5px;color:var(--ink-dim)">'+it.body+'</span>':'')+'</div>'+
-        (hasDetail?'<span class="cli-more">＋</span>':'');
-      var head2 = el("div","cli-head",inner);
-      wrap.appendChild(head2);
+      var head = el("div","cli-head",
+        '<span class="cli">'+it.icon+'</span>'+
+        '<div'+(it.hot?' class="clx"':'')+'>'+it.text+'</div>'+
+        (hasDetail?'<span class="cli-more">＋</span>':''));
+      wrap.appendChild(head);
       if(hasDetail){
-        var body = el("div","cli-detail"); body.style.display="none";
+        var body = el("div","cli-detail");
+        body.style.display = "none";
         it.detail.forEach(function(d){
-          if(typeof d==="string") body.appendChild(el("div","cli-d-line",d));
-          else if(d.h) body.appendChild(el("div","cli-d-sub",'<span class="cli-d-h">'+d.h+'</span>'+(d.b?'<span class="cli-d-b">'+d.b+'</span>':'')));
+          if(typeof d === "string"){
+            body.appendChild(el("div","cli-d-line", d));
+          } else if(d.h){
+            // 소제목+내용 구조
+            body.appendChild(el("div","cli-d-sub",
+              '<span class="cli-d-h">'+d.h+'</span>'+(d.b?'<span class="cli-d-b">'+d.b+'</span>':'')));
+          }
         });
         wrap.appendChild(body);
-        head2.style.cursor="pointer";
-        head2.onclick=function(){
-          var open=body.style.display!=="none";
-          body.style.display=open?"none":"block";
-          head2.querySelector(".cli-more").textContent=open?"＋":"－";
-          wrap.classList.toggle("open",!open);
+        head.style.cursor = "pointer";
+        head.onclick = function(){
+          var open = body.style.display!=="none";
+          body.style.display = open?"none":"block";
+          head.querySelector(".cli-more").textContent = open?"＋":"－";
+          wrap.classList.toggle("open", !open);
         };
       }
       cl.appendChild(wrap);
     });
 
+    // finale 체크 (피네레논 등)
+    Object.keys(SIMFLOW.finales).forEach(function(fid){
+      var f = SIMFLOW.finales[fid];
+      var met = f.cond.every(function(c){ return checked[c]; });
+      if(met){
+        var fin = el("div","simfinale");
+        fin.innerHTML = '<div class="sfh">'+f.icon+' '+f.title+'</div><div class="sfb">'+f.text+'</div>';
+        if(f.detail && f.detail.length){
+          var fb = el("div","cli-detail sf-detail");
+          fb.style.display="none";
+          f.detail.forEach(function(d){
+            if(typeof d==="string") fb.appendChild(el("div","cli-d-line",d));
+            else if(d.h) fb.appendChild(el("div","cli-d-sub",'<span class="cli-d-h">'+d.h+'</span>'+(d.b?'<span class="cli-d-b">'+d.b+'</span>':'')));
+          });
+          var ft = el("button","sf-toggle","세부 보기 ＋");
+          ft.type="button";
+          ft.onclick = function(){
+            var open = fb.style.display!=="none";
+            fb.style.display = open?"none":"block";
+            ft.textContent = open?"세부 보기 ＋":"접기 －";
+          };
+          fin.appendChild(ft); fin.appendChild(fb);
+        }
+        cl.appendChild(fin);
+      }
+    });
+
     var reset = el("button","simreset","↺ 처음부터");
     reset.type="button";
-    reset.onclick = function(){ checked={}; simVals={}; visitedNodes=["q_setting"]; renderSim(); };
+    reset.onclick = function(){ checked={}; visitedNodes=["s_base"]; renderSim(); };
     cl.appendChild(reset);
     return cl;
   }

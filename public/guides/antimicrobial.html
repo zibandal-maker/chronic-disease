@@ -37,7 +37,6 @@ button{font-family:inherit;cursor:pointer;}
 .sr-item:active{background:var(--surface-2);}
 .sr-item .nm{flex:1;font-size:14px;}
 .sr-item .sub{font-size:11px;color:var(--ink-faint);font-family:var(--mono);}
-.sr-why{font-size:10px;color:var(--accent);background:var(--accent-soft,#eef4fb);border:1px solid var(--line);border-radius:5px;padding:1px 5px;white-space:nowrap;}
 .sr-empty{padding:18px 13px;color:var(--ink-faint);font-size:13px;}
 #disclaimer{background:var(--caut-bg);border-bottom:1px solid var(--caut-line);color:#8a6400;font-size:12px;line-height:1.45;padding:10px 16px;display:flex;gap:9px;align-items:flex-start;}
 #disclaimer button{margin-left:auto;background:var(--surface);border:1px solid var(--caut-line);color:#8a6400;border-radius:7px;padding:4px 11px;font-size:11px;flex:none;}
@@ -215,10 +214,6 @@ textarea.ce:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px v
   body{padding-top:46px !important;}
   @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
 </style>
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
 <div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
   <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
   <a class="ph-home" href="../index.html" title="홈">🏠</a>
@@ -2821,46 +2816,15 @@ function doSearch(q){
   var box=document.getElementById('searchResults');
   if(!q){box.style.display='none';document.getElementById('searchClear').style.display='none';return;}
   document.getElementById('searchClear').style.display='block';
-  function hay(s){return (s||'').toString().toLowerCase();}
-  // rank: 2 = name/abbr/id 매칭(가장 관련), 1 = alias 매칭, 0.5 = 내용(메모·적응증·교차참조) 매칭
-  function scoreDrug(d){
-    if(hay(d.name+' '+d.abbr).indexOf(q)!==-1)return 2;
-    if((d.aliases||[]).some(function(a){return hay(a).indexOf(q)!==-1;}))return 1;
-    var content=[d.krBrand,(d.cautions||[]).join(' '),(d.adverse||[]).join(' '),(d.classId||'')].join(' ');
-    if(hay(content).indexOf(q)!==-1)return 0.5;
-    return 0;
-  }
-  function scoreBug(b){
-    if(hay(b.name).indexOf(q)!==-1)return 2;
-    if((b.aliases||[]).some(function(a){return hay(a).indexOf(q)!==-1;}))return 1;
-    var content=[b.notes,(b.mechanisms||[]).join(' '),(b.taxonomy?(b.taxonomy.family+' '+b.taxonomy.gram):'')].join(' ');
-    if(hay(content).indexOf(q)!==-1)return 0.5;
-    return 0;
-  }
-  function scoreSyn(s){
-    if(hay(s.name+' '+s.id).indexOf(q)!==-1)return 2;
-    // 원인균 이름으로도 매칭(증후군→균 역방향)
-    var bugNames=(s.likelyBugs||[]).map(function(bid){var b=BUG_MAP[bid];return b?(b.name+' '+(b.aliases||[]).join(' ')):'';}).join(' ');
-    if(hay(bugNames).indexOf(q)!==-1)return 1;
-    var content=[s.note,s.group,s.site].join(' ');
-    if(hay(content).indexOf(q)!==-1)return 0.5;
-    return 0;
-  }
-  function topN(arr,scorer,n){
-    var scored=[];
-    arr.forEach(function(x){var sc=scorer(x);if(sc>0)scored.push({x:x,sc:sc});});
-    scored.sort(function(a,b){return b.sc-a.sc;});
-    return scored.slice(0,n);
-  }
-  var drugs=topN(ABX,scoreDrug,15);
-  var bugs=topN(BUG,scoreBug,15);
-  var syns=topN(SYN,scoreSyn,15);
-  var tag=function(sc){return sc===0.5?'<span class="sr-why">내용</span>':(sc===1?'<span class="sr-why">관련</span>':'');};
+  function match(name,aliases){if(name.toLowerCase().indexOf(q)!==-1)return true;return (aliases||[]).some(function(a){return a.toLowerCase().indexOf(q)!==-1;});}
+  var drugs=ABX.filter(function(d){return match(d.name+' '+d.abbr,d.aliases);}).slice(0,6);
+  var bugs=BUG.filter(function(b){return match(b.name,b.aliases);}).slice(0,6);
+  var syns=SYN.filter(function(s){return match(s.name+' '+s.id,[]);}).slice(0,6);
   var h='';
-  if(drugs.length)h+='<div class="sr-group-label">약제 ('+drugs.length+')</div>'+drugs.map(function(o){var d=o.x;return '<div class="sr-item" onclick="searchGo(\'abx\',\''+d.id+'\')"><span class="c-tag">'+esc(d.abbr)+'</span><span class="nm">'+esc(d.name)+'</span>'+tag(o.sc)+'<span class="sub">약</span></div>';}).join('');
-  if(bugs.length)h+='<div class="sr-group-label">병원체 ('+bugs.length+')</div>'+bugs.map(function(o){var b=o.x;return '<div class="sr-item" onclick="searchGo(\'bug\',\''+b.id+'\')"><span class="nm">'+esc(b.name)+'</span>'+tag(o.sc)+'<span class="sub">균</span></div>';}).join('');
-  if(syns.length)h+='<div class="sr-group-label">증후군 ('+syns.length+')</div>'+syns.map(function(o){var s=o.x;return '<div class="sr-item" onclick="searchGo(\'syn\',\''+s.id+'\')"><span class="nm">'+esc(s.name)+'</span>'+tag(o.sc)+'<span class="sub">증후군</span></div>';}).join('');
-  box.innerHTML=h||'<div class="sr-empty">"'+esc(q)+'" 결과 없음 — 다른 키워드로 시도하세요.</div>';
+  if(drugs.length)h+='<div class="sr-group-label">약제</div>'+drugs.map(function(d){return '<div class="sr-item" onclick="searchGo(\'abx\',\''+d.id+'\')"><span class="c-tag">'+esc(d.abbr)+'</span><span class="nm">'+esc(d.name)+'</span><span class="sub">약</span></div>';}).join('');
+  if(bugs.length)h+='<div class="sr-group-label">병원체</div>'+bugs.map(function(b){return '<div class="sr-item" onclick="searchGo(\'bug\',\''+b.id+'\')"><span class="nm">'+esc(b.name)+'</span><span class="sub">균</span></div>';}).join('');
+  if(syns.length)h+='<div class="sr-group-label">증후군</div>'+syns.map(function(s){return '<div class="sr-item" onclick="searchGo(\'syn\',\''+s.id+'\')"><span class="nm">'+esc(s.name)+'</span><span class="sub">증후군</span></div>';}).join('');
+  box.innerHTML=h||'<div class="sr-empty">결과 없음 — v1 골격엔 핵심 항목만 있습니다.</div>';
   box.style.display='block';
 }
 function searchGo(type,id){

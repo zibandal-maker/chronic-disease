@@ -295,10 +295,6 @@ ul.kp li{margin-bottom:5px;font-size:13px;color:var(--ink-dim);line-height:1.5;}
   body{padding-top:46px !important;}
   @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
 </style>
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
 <div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
   <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
   <a class="ph-home" href="../index.html" title="홈">🏠</a>
@@ -373,7 +369,7 @@ CD.DRUGS = {
   "drug:azithromycin": {name:"아지스로마이신", en:"Azithromycin", cls:"class:macrolide"},
   "drug:erythromycin": {name:"에리스로마이신", en:"Erythromycin", cls:"class:macrolide"},
   "drug:theophylline": {name:"테오필린", en:"Theophylline", cls:"class:methylxanthine"},
-  "drug:acetylcysteine":          {name:"N-아세틸시스테인", en:"N-acetylcysteine", cls:"class:mucolytic"},
+  "drug:nac":          {name:"N-아세틸시스테인", en:"N-acetylcysteine", cls:"class:mucolytic"},
   "drug:erdosteine":   {name:"에르도스테인", en:"Erdosteine", cls:"class:mucolytic"},
   "drug:carbocisteine":{name:"카르보시스테인", en:"Carbocisteine", cls:"class:mucolytic"},
   // 생물학제제
@@ -1131,26 +1127,16 @@ function el(){return document.getElementById("app");}
 
 /* ── 토픽 정의 ── */
 var TOPICS = [
-  {id:"diagnosis", cat:"clin", icon:"🩺", num:1, title:"진단·분류", star:"국내 고/저위험 ↔ GOLD A/B/E · CAT·mMRC",
-   kw:"진단 분류 폐활량 spirometry FEV1 FVC 위험군 고위험 저위험 GOLD ABE CAT mMRC 증상 PRISm pre-copd ACO 조기"},
-  {id:"inhaler",   cat:"clin", icon:"💨", num:2, title:"흡입제 치료", star:"★알고리즘 그림 + 제품·디바이스",
-   kw:"흡입제 치료 약물 LABA LAMA ICS 기관지확장제 알고리즘 그림3-3 그림3-4 트렐리지 아노로 조터나 바헬바 스피리바 인크루즈 온브리즈 렐바 심비코트 듀어클리어 트림보우 브레즈트리 DPI pMDI SMI 제품 디바이스 PDE4i 로플루밀라스트 마크로라이드 아지스로마이신 천식병력"},
-  {id:"eos",       cat:"clin", icon:"🔬", num:3, title:"호산구·표현형", star:"100/300 cut-off · 제2형 염증",
-   kw:"호산구 eosinophil 표현형 제2형 염증 T2 100 300 cut-off ICS 바이오마커 객담 혈중"},
-  {id:"biologic",  cat:"pay",  icon:"🧬", num:4, title:"생물학제제", star:"★R-CHECK · 급여 절벽(100/100)",
-   kw:"생물학제제 biologic 듀피젠트 두필루맙 dupilumab 메폴리주맙 누칼라 mepolizumab anti-IL-4 anti-IL-5 IL4 IL5 R-CHECK 급여 100/100 미등재 BOREAS NOTUS MATINEE 벤랄리주맙 이테페키맙 아스테골리맙"},
-  {id:"exac",      cat:"clin", icon:"🔥", num:5, title:"급성악화", star:"중증도·치료·예방",
-   kw:"급성악화 exacerbation 악화 중증도 로마 ROMA 스테로이드 항생제 산소 NIV 비침습 기계환기 입원 응급 예측인자 비타민D VAS ABGA CRP"},
-  {id:"device_care",cat:"care",icon:"🫁", num:6, title:"디바이스·비약물", star:"술기·금연·재활·산소",
-   kw:"디바이스 흡입기 술기 PIFR 흡기유속 DPI pMDI SMI 네뷸라이저 스페이서 금연 호흡재활 재활 영양 단백질 산소 장기산소요법 완화 모르핀 점액용해제 NAC 비타민D 추적관찰"},
-  {id:"comorbid_vacc",cat:"care",icon:"💉",num:7,title:"동반질환·백신", star:"심혈관·폐암선별·백신7종",
-   kw:"동반질환 comorbidity 심부전 허혈성 관상동맥 부정맥 심방세동 고혈압 말초동맥 골다공증 불안 우울 폐암 저선량CT 기관지확장증 위식도역류 수면무호흡 OSA 영양실조 베타차단제 백신 vaccine 인플루엔자 폐렴구균 PCV13 PPSV23 COVID RSV 대상포진 Tdap"},
-  {id:"reimb",     cat:"pay",  icon:"💰", num:8, title:"급여 기준", star:"지침 ↔ 급여 괴리",
-   kw:"급여 비급여 reimbursement 심평원 고시 트렐리지 FEV1 60 악화 로플루밀라스트 아지스로마이신 삭감 100/100 트리플 3제 ICS/LABA"},
-  {id:"kcd",       cat:"pay",  icon:"🔖", num:9, title:"질병코드", star:"J44 · 청구 팁",
-   kw:"질병코드 KCD J44 J43 J41 J42 J96 상병 청구 폐기종 만성기관지염 호흡부전 급성악화"},
-  {id:"pft",       cat:"clin", icon:"📈", num:10, title:"PFT 해석 (부록)", star:"★곡선 그림·약어·신뢰성 기준",
-   kw:"PFT 폐기능 폐활량 spirometry 곡선 유량용적 flow-volume 용적시간 FVC FEV1 DLCO LLN BDR 가역성 TLC RV PEF 폐쇄성 제한성 신뢰성 품질 허용성 재현성 등급 ATS ERS scooped"}
+  {id:"diagnosis", cat:"clin", icon:"🩺", num:1, title:"진단·분류", star:"국내 고/저위험 ↔ GOLD A/B/E · CAT·mMRC"},
+  {id:"inhaler",   cat:"clin", icon:"💨", num:2, title:"흡입제 치료", star:"★알고리즘 그림 + 제품·디바이스"},
+  {id:"eos",       cat:"clin", icon:"🔬", num:3, title:"호산구·표현형", star:"100/300 cut-off · 제2형 염증"},
+  {id:"biologic",  cat:"pay",  icon:"🧬", num:4, title:"생물학제제", star:"★R-CHECK · 급여 절벽(100/100)"},
+  {id:"exac",      cat:"clin", icon:"🔥", num:5, title:"급성악화", star:"중증도·치료·예방"},
+  {id:"device_care",cat:"care",icon:"🫁", num:6, title:"디바이스·비약물", star:"술기·금연·재활·산소"},
+  {id:"comorbid_vacc",cat:"care",icon:"💉",num:7,title:"동반질환·백신", star:"심혈관·폐암선별·백신7종"},
+  {id:"reimb",     cat:"pay",  icon:"💰", num:8, title:"급여 기준", star:"지침 ↔ 급여 괴리"},
+  {id:"kcd",       cat:"pay",  icon:"🔖", num:9, title:"질병코드", star:"J44 · 청구 팁"},
+  {id:"pft",       cat:"clin", icon:"📈", num:10, title:"PFT 해석 (부록)", star:"★곡선 그림·약어·신뢰성 기준"}
 ];
 var CAT_LABEL={clin:"임상",care:"관리",pay:"급여"};
 
@@ -1437,18 +1423,11 @@ function figBox(key,cap){
 function renderLibGrid(){
   var h='<div class="banner">📖 <b>도서관</b> — 환자 없이 깊게 검색·열람. 겉은 핵심, 클릭하면 근거가 펼쳐집니다. '
     +'<b>조언자 도구</b>이며 처방을 강제하지 않습니다.</div>';
-  // 검색바 (돋보기 아이콘) — 이 input은 재생성하지 않음 (한글 IME 보존)
-  h+='<div class="searchbar"><span class="si">🔍</span><input id="libsearch" type="text" '
+  // 검색바 (돋보기 아이콘)
+  h+='<div class="searchbar"><span class="si">🔍</span><input type="text" '
     +'placeholder="약물·상황·코드 검색 (예: 호산구, 듀피젠트, J44)" '
-    +'value="'+esc(APP.q||"")+'"></div>';
-  // 결과/기본 화면은 별도 컨테이너 — 검색 시 이 부분만 갱신
-  h+='<div id="libresult">'+renderLibBody()+'</div>';
-  return h;
-}
-/* 검색어 유무에 따라 결과 또는 기본 화면 */
-function renderLibBody(){
-  if(APP.q) return renderSearch();
-  var h='';
+    +'oninput="doSearch(this.value)" value="'+esc(APP.q||"")+'"></div>';
+  if(APP.q){h+=renderSearch();return h;}
   // 시뮬·플로우 유도 인트로 카드
   h+='<button type="button" class="intro-card" onclick="switchTab(\'sim\')">'
     +'<div class="t">🧭 시뮬레이션 열기</div>'
@@ -1470,77 +1449,31 @@ function renderLibBody(){
     +'<span style="color:var(--ink-faint)">급여기준은 갱신될 수 있어 청구 시 최신 고시 확인 권장. 임상 판단 보조 도구이며 최종 결정은 처방의 책임.</span></div>';
   return h;
 }
-/* 검색: 입력칸은 그대로 두고 결과 영역만 부분 갱신 (한글 조합·포커스 보존) */
-function doSearch(v){
-  APP.q=(v||"").trim();
-  var box=document.getElementById("libresult");
-  if(box) box.innerHTML=renderLibBody();
-}
-/* 검색바 input에 이벤트 바인딩 (oninput 속성 대신 addEventListener — IME 안전) */
-function bindSearchInput(){
-  var inp=document.getElementById("libsearch");
-  if(!inp||inp._bound) return;
-  inp._bound=true;
-  inp.addEventListener("input", function(){ doSearch(this.value); });
-}
+function doSearch(v){APP.q=v.trim();render();}
 function renderSearch(){
   var q=APP.q.toLowerCase(),hits=[];
-  // 토픽: 제목·부제·키워드 검색
   TOPICS.forEach(function(t){
-    var hay=(t.title+" "+t.star+" "+(t.kw||"")).toLowerCase();
-    if(hay.indexOf(q)>=0) hits.push(t);
+    if(t.title.toLowerCase().indexOf(q)>=0||t.star.toLowerCase().indexOf(q)>=0)hits.push(t);
   });
-  // 약물 검색 (성분명·영문·브랜드) → 어느 토픽에서 다루는지 매핑
+  // 약물 검색
   var drugHits=[];
   Object.keys(CD.DRUGS).forEach(function(did){
     var d=CD.DRUGS[did];
-    var hay=(d.name+" "+(d.en||"")+" "+(d.brand||"")).toLowerCase();
-    if(hay.indexOf(q)>=0) drugHits.push(d);
+    if(d.name.toLowerCase().indexOf(q)>=0||(d.en||"").toLowerCase().indexOf(q)>=0||(d.brand||"").indexOf(q)>=0)
+      drugHits.push(d);
   });
-  // 제품(흡입제 브랜드·조합·성분) 검색
-  var prodHits=[];
-  CD.INHALER_PRODUCTS.forEach(function(p){
-    var ingNames=p.ingredients.map(function(did){return CD.DRUGS[did]?CD.DRUGS[did].name:"";}).join(" ");
-    var hay=(p.brand+" "+p.combo+" "+p.device+" "+ingNames).toLowerCase();
-    if(hay.indexOf(q)>=0) prodHits.push(p);
-  });
-  // KCD 코드 검색
-  var kcdHits=[];
-  CD.KCD.forEach(function(c){
-    if((c.code+" "+c.label).toLowerCase().indexOf(q)>=0) kcdHits.push(c);
-  });
-
   var h='';
-  // 토픽 카드
-  if(hits.length){h+='<div class="sec-title">토픽 ('+hits.length+')</div><div class="grid">';
+  if(hits.length){h+='<div class="sec-title">토픽</div><div class="grid">';
     hits.forEach(function(t){h+='<button type="button" class="topic '+t.cat+'" onclick="openTopic(\''+t.id+'\')">'
       +'<div class="th"><span class="ico">'+t.icon+'</span><span class="cat '+t.cat+'">'+CAT_LABEL[t.cat]+'</span></div>'
       +'<div class="tt">'+esc(t.title)+'</div><div class="ts">'+esc(t.star)+'</div></button>';});
     h+='</div>';}
-  // 약물
-  if(drugHits.length){h+='<div class="card clin" style="margin-top:10px"><div class="sec-title">약물 ('+drugHits.length+')</div>';
-    drugHits.forEach(function(d){
-      var cls=CD.CLASSES[d.cls];
-      h+='<div style="font-size:13px;margin-bottom:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">'
-        +'<b>'+esc(d.name)+'</b> <span style="color:var(--ink-faint);font-size:11px">'+esc(d.en||"")+'</span> '
-        +(d.brand?'<span class="badge bio">'+esc(d.brand)+'</span>':'')
-        +'<span class="badge clin">'+esc(cls.label)+'</span></div>';});
-    h+='<div style="font-size:11px;color:var(--ink-faint);margin-top:4px">상세 설명은 💨흡입제 치료 토픽의 계열별 카드 참고.</div></div>';}
-  // 제품
-  if(prodHits.length){h+='<div class="card clin" style="margin-top:10px"><div class="sec-title">흡입제 제품 ('+prodHits.length+')</div>';
-    prodHits.forEach(function(p){
-      h+='<div style="font-size:13px;margin-bottom:5px"><b>'+esc(p.brand)+'</b> '
-        +comboBadge(p.combo)+' <span style="color:var(--ink-faint);font-size:11px">'+esc(p.device)+'·'+esc(p.freq)+'</span></div>';});
+  if(drugHits.length){h+='<div class="card clin" style="margin-top:10px"><div class="sec-title">약물</div>';
+    drugHits.forEach(function(d){h+='<div style="font-size:13px;margin-bottom:4px"><b>'+esc(d.name)+'</b> '
+      +(d.brand?'<span class="badge bio">'+esc(d.brand)+'</span> ':'')
+      +'<span class="badge clin">'+esc(CD.CLASSES[d.cls].label)+'</span></div>';});
     h+='</div>';}
-  // KCD
-  if(kcdHits.length){h+='<div class="card pay" style="margin-top:10px"><div class="sec-title">질병코드 ('+kcdHits.length+')</div>';
-    kcdHits.forEach(function(c){
-      h+='<div style="font-size:13px;margin-bottom:4px"><b>'+esc(c.code)+'</b> '+esc(c.label)
-        +(c.note?' <span style="color:var(--ink-faint);font-size:11px">'+esc(c.note)+'</span>':'')+'</div>';});
-    h+='</div>';}
-
-  if(!hits.length&&!drugHits.length&&!prodHits.length&&!kcdHits.length)
-    h+='<div class="card" style="text-align:center;color:var(--ink-faint)">검색 결과가 없습니다.<br>약물명·계열(LABA)·증상·코드(J44)·키워드로 검색해 보세요.</div>';
+  if(!hits.length&&!drugHits.length)h+='<div class="card">검색 결과 없음. 토픽을 직접 열어보세요.</div>';
   return h;
 }
 
@@ -2224,12 +2157,10 @@ function rcToggle(bid,cid){
 
 /* ════════════════ 메인 렌더 ════════════════ */
 function render(scrollTop){
-  // 현재 포커스된 입력의 커서 위치 저장 (id 있는 input, 단 검색칸 제외)
+  // 현재 포커스된 입력의 커서 위치 저장
   var active = document.activeElement;
-  var isInput = active && active.id && (active.tagName==="INPUT") && active.id!=="libsearch";
-  var saveId = isInput ? active.id : null;
-  var saveStart = null;
-  if(saveId){ try{ saveStart = active.selectionStart; }catch(e){} }
+  var saveId = (active && active.id && active.id.indexOf("simf_")===0) ? active.id : null;
+  var saveStart = saveId ? active.selectionStart : null;
 
   var h='';
   if(APP.tab==="lib"){
@@ -2242,7 +2173,7 @@ function render(scrollTop){
   el().innerHTML='<div class="wrap">'+h+'</div>';
   if(scrollTop)window.scrollTo(0,0);
 
-  // 포커스·커서 복원 (입력 중 render로 인한 포커스 손실 방지)
+  // 포커스·커서 복원 (숫자 입력 중 render로 인한 포커스 손실 방지)
   if(saveId){
     var elInput=document.getElementById(saveId);
     if(elInput){
@@ -2251,8 +2182,6 @@ function render(scrollTop){
            elInput.setSelectionRange(pos,pos); }catch(e){}
     }
   }
-  // 도서관 검색 입력 바인딩 (IME 안전 — addEventListener)
-  if(APP.tab==="lib" && !APP.topic) bindSearchInput();
 }
 render(true);
 

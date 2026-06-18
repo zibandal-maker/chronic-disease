@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>골다공증 처방가이드</title>
+<style>
+:root{
+  --amber:#C9852A; --amber-d:#A66A1E; --amber-l:#F3E2C7;
+  --bone:#6E6354; --bone-l:#EFEAE0;
+  --bg:#F5F4F1; --card:#FFFFFF; --ink:#241F18; --muted:#6E665B;
+  --line:#E2DCD0;
+  --ok:#1E8449; --ok-bg:#E5F3EB; --ok-bd:#BFE3CC;
+  --warn:#B7791F; --warn-bg:#FBF0DA; --warn-bd:#ECD49A;
+  --danger:#C0392B; --danger-bg:#FBE9E7; --danger-bd:#F0C2BC;
+  --info:#2E6DA4; --info-bg:#E8F1F9; --info-bd:#C2DBF0;
+  --radius:14px;
+  --shadow:0 1px 3px rgba(40,30,10,.07),0 1px 2px rgba(40,30,10,.05);
+  --shadow-h:0 6px 18px rgba(40,30,10,.12);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:18px 16px 90px}
+.hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:6px}
+.hd h1{font-size:24px;font-weight:800;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+.hd .dot{width:11px;height:11px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 3px var(--amber-l)}
+.hd .asof{font-size:13px;color:var(--info);font-weight:700}
+.tabs{display:flex;border-bottom:1px solid var(--line);margin:12px 0 18px}
+.tab{flex:1;text-align:center;padding:14px 6px;cursor:pointer;font-weight:700;color:var(--muted);position:relative;font-size:16.5px;display:flex;align-items:center;justify-content:center;gap:6px;background:none;border:none;font-family:inherit}
+.tab.active{color:var(--amber-d)}
+.tab.active::after{content:"";position:absolute;left:8%;right:8%;bottom:-1px;height:3px;background:var(--amber);border-radius:3px 3px 0 0}
+.note{background:var(--ok-bg);border:1px solid var(--ok-bd);border-radius:11px;padding:13px 16px;font-size:15px;color:#27623f;margin-bottom:14px}
+.note b{color:#1c4a30}
+.search{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 17px;margin-bottom:16px;box-shadow:var(--shadow)}
+.search .si{font-size:19px}
+.search input{border:none;outline:none;flex:1;font-size:16.5px;background:none;font-family:inherit;color:var(--ink)}
+.search input::placeholder{color:#ABA499}
+.flowbar{background:linear-gradient(135deg,#B23A2E,#8E2A20);color:#fff;border-radius:13px;padding:16px 18px;margin-bottom:20px;cursor:pointer;box-shadow:var(--shadow-h)}
+.flowbar h3{font-size:18px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.flowbar p{font-size:14.5px;opacity:.95}
+.seclabel{display:flex;align-items:center;gap:9px;margin:22px 2px 11px;font-size:15px;font-weight:800;color:var(--bone)}
+.seclabel .line{flex:1;height:1px;background:var(--line)}
+.srchsub{font-size:13.5px;font-weight:800;color:var(--amber-d);margin:14px 2px 8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+@media(max-width:680px){.grid{grid-template-columns:1fr}.hd h1{font-size:20px}body{font-size:16px}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 17px 14px;cursor:pointer;box-shadow:var(--shadow);border-top:3px solid var(--amber);transition:transform .12s,box-shadow .12s;position:relative}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-h)}
+.card:hover .cardgo{opacity:1}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.card .tno{font-size:12.5px;font-weight:800;color:var(--muted);display:flex;align-items:center;gap:6px}
+.card .tno .emo{font-size:19px}
+.card .pill{font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.pill.clin{background:var(--amber-l);color:var(--amber-d)}
+.pill.risk{background:var(--ok-bg);color:var(--ok)}
+.pill.reimb{background:var(--warn-bg);color:var(--warn)}
+.pill.intl{background:var(--info-bg);color:var(--info)}
+.pill.code{background:var(--bone-l);color:var(--bone)}
+.card h4{font-size:18px;font-weight:800;letter-spacing:-.2px;margin-bottom:5px}
+.card .desc{font-size:14px;color:var(--muted);line-height:1.5}
+.card .cardgo{font-size:13px;font-weight:800;color:var(--amber-d);margin-top:9px;opacity:.55;transition:opacity .12s}
+.card.b-risk{border-top-color:var(--ok)} .card.b-reimb{border-top-color:var(--warn)}
+.card.b-intl{border-top-color:var(--info)} .card.b-code{border-top-color:var(--bone)}
+.detailbar{display:flex;align-items:center;gap:12px;margin-bottom:16px;position:sticky;top:0;background:var(--bg);padding:8px 0 12px;z-index:10;border-bottom:1px solid var(--line)}
+.backbtn{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 15px;font-weight:800;cursor:pointer;font-size:15px;color:var(--amber-d);font-family:inherit;box-shadow:var(--shadow);flex-shrink:0}
+.backbtn:hover{background:var(--amber-l)}
+.detailbar h2{font-size:20px;font-weight:800}
+.cbox{background:var(--card);border:1px solid var(--line);border-radius:13px;margin-bottom:14px;overflow:hidden;box-shadow:var(--shadow);border-left:5px solid var(--amber)}
+.cbox.info{border-left-color:var(--info)} .cbox.ok{border-left-color:var(--ok)}
+.cbox.warn{border-left-color:var(--warn)} .cbox.danger{border-left-color:var(--danger)}
+.cbox-h{font-size:16.5px;font-weight:800;padding:13px 17px;background:var(--bone-l);color:var(--ink)}
+.cbox.info .cbox-h{background:var(--info-bg);color:#235176}
+.cbox.ok .cbox-h{background:var(--ok-bg);color:#1c5a36}
+.cbox.warn .cbox-h{background:var(--warn-bg);color:#7a5512}
+.cbox.danger .cbox-h{background:var(--danger-bg);color:#8a2a20}
+.cbox-b{padding:14px 17px}
+.sub{font-size:13.5px;font-weight:800;color:var(--bone);margin:14px 0 7px;padding-left:9px;border-left:3px solid var(--amber-l)}
+.row{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:15px}
+.row:last-child{border-bottom:none}
+.row .k{font-weight:800;color:var(--bone);font-size:13.5px;min-width:90px;flex-shrink:0}
+.row .v{flex:1}
+.note-line{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.55}
+.muted-line{font-size:14px;color:var(--muted);margin-bottom:10px}
+ul.li{margin:7px 0 7px 2px;padding-left:20px}
+ul.li li{margin:6px 0;font-size:15px;line-height:1.6}
+.redx{color:var(--danger);font-weight:900;font-size:1.05em;margin-right:2px}
+.bigwarn{background:var(--danger-bg);border:1px solid var(--danger-bd);border-radius:9px;padding:12px 14px;font-size:15px;color:#8a2a20;font-weight:600;line-height:1.5}
+.hl{border-radius:9px;padding:11px 14px;margin:10px 0;font-size:14.5px;line-height:1.55}
+.hl.ok{background:var(--ok-bg);border:1px solid var(--ok-bd);color:#1c5a36}
+.hl.warn{background:var(--warn-bg);border:1px solid var(--warn-bd);color:#7a5512}
+.hl.danger{background:var(--danger-bg);border:1px solid var(--danger-bd);color:#8a2a20}
+.hl.info{background:var(--info-bg);border:1px solid var(--info-bd);color:#235176}
+.tag{display:inline-block;font-size:12.5px;font-weight:800;padding:3px 10px;border-radius:7px;margin-right:5px;white-space:nowrap}
+.t-ok{background:var(--ok-bg);color:var(--ok)} .t-warn{background:var(--warn-bg);color:var(--warn)}
+.t-danger{background:var(--danger-bg);color:var(--danger)} .t-info{background:var(--info-bg);color:var(--info)}
+.toggle{display:flex;gap:8px;margin:0 0 16px;background:var(--bone-l);padding:6px;border-radius:11px}
+.toggle button{flex:1;padding:11px;border:none;background:none;border-radius:8px;font-weight:800;font-size:15px;cursor:pointer;color:var(--muted);font-family:inherit}
+.toggle button.on{background:var(--card);color:var(--amber-d);box-shadow:var(--shadow)}
+.drugcard{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;box-shadow:var(--shadow)}
+.drugcard .dh{padding:14px 16px;background:var(--card);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.drugcard.open .dh{background:var(--amber-l)}
+.drugcard .dn{font-weight:800;font-size:16.5px}
+.drugcard .db{font-size:13px;color:var(--muted);margin-top:2px}
+.drugcard .dhr{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.drugcard .dbody{padding:14px 16px;display:none;border-top:1px solid var(--line)}
+.drugcard.open .dbody{display:block}
+.drugcard .chev{color:var(--muted);font-size:14px;transition:transform .15s}
+.drugcard.open .chev{transform:rotate(180deg)}
+.simbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:13.5px;font-weight:800;color:var(--bone);margin-bottom:5px}
+.field input,.field select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:16px;font-family:inherit;background:var(--bg)}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.chkrow{display:flex;flex-wrap:wrap;gap:8px 16px;margin:6px 0 14px}
+.chk{display:flex;align-items:center;gap:7px;font-size:14.5px;cursor:pointer}
+.chk input{width:17px;height:17px}
+.btn{background:var(--amber);color:#fff;border:none;padding:13px 18px;border-radius:10px;font-weight:800;cursor:pointer;font-size:15.5px;font-family:inherit;width:100%;margin-top:4px}
+.btn:hover{background:var(--amber-d)}
+.btn.link{display:block;text-align:center;text-decoration:none;margin:8px 0}
+.reslabel{font-size:16px;font-weight:800;color:var(--bone);margin:20px 2px 11px}
+.resultcard{border-radius:14px;padding:16px 18px;margin-bottom:13px;border:1px solid;box-shadow:var(--shadow)}
+.resultcard.rc-danger{background:var(--danger-bg);border-color:var(--danger-bd)}
+.resultcard.rc-warn{background:var(--warn-bg);border-color:var(--warn-bd)}
+.resultcard.rc-info{background:var(--info-bg);border-color:var(--info-bd)}
+.resultcard.rc-ok{background:var(--ok-bg);border-color:var(--ok-bd)}
+.resultcard .rc-badge{font-size:19px;font-weight:800;margin-bottom:5px}
+.resultcard.rc-danger .rc-badge{color:#a3271b} .resultcard.rc-warn .rc-badge{color:#7a5512}
+.resultcard.rc-info .rc-badge{color:#235176} .resultcard.rc-ok .rc-badge{color:#1c5a36}
+.resultcard .rc-sub{font-size:15px;line-height:1.6;color:var(--ink)}
+.resultcard.flagcard{padding:14px 16px}
+.resultcard.rc-ok ul.li{margin-top:8px}
+.rxgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:680px){.rxgrid{grid-template-columns:1fr}}
+.rxcard{background:var(--card);border-radius:13px;padding:14px 15px;border:2px solid var(--line);box-shadow:var(--shadow)}
+.rxcard.rx-good{border-color:var(--ok-bd)}
+.rxcard.rx-bad{border-color:var(--danger-bd)}
+.rxhead{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.rxrank{background:var(--amber);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.rxname{font-size:17px;font-weight:800;flex:1}
+.rxgrade{font-size:13.5px;color:var(--muted);margin-bottom:6px}
+.rxnote{font-size:13.5px;color:var(--ink);background:var(--bg);border-radius:8px;padding:8px 10px;line-height:1.5}
+.sources{margin-top:26px;padding:16px 18px;background:var(--card);border:1px solid var(--line);border-radius:13px;font-size:13.5px}
+.sources h4{font-size:14px;color:var(--bone);margin-bottom:9px;display:flex;align-items:center;gap:6px}
+.sources a{color:var(--info);text-decoration:none;word-break:break-all}
+.sources li{margin:4px 0;list-style:none;color:var(--muted)}
+table.cmp{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0}
+table.cmp th,table.cmp td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+table.cmp th{background:var(--bone-l);font-weight:800;color:var(--bone)}
+.muted{color:var(--muted);font-size:13.5px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<!--PORTAL_HEADER_V1-->
+<style>
+  #portal-hdr{position:fixed;top:0;left:0;right:0;height:46px;z-index:99999;
+    display:flex;align-items:center;gap:10px;padding:0 12px;box-sizing:border-box;
+    background:rgba(248,250,252,.94);backdrop-filter:saturate(1.4) blur(10px);
+    -webkit-backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid rgba(20,40,60,.10);
+    font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;}
+  #portal-hdr a.ph-back,#portal-hdr a.ph-home{display:inline-flex;align-items:center;justify-content:center;
+    height:30px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;
+    color:#1a2530;background:#fff;border:1px solid rgba(20,40,60,.14);transition:.15s;}
+  #portal-hdr a.ph-back{padding:0 11px 0 8px;gap:3px;}
+  #portal-hdr a.ph-home{width:32px;font-size:15px;}
+  #portal-hdr a.ph-back:active,#portal-hdr a.ph-home:active{transform:scale(.96);background:#eef1f4;}
+  #portal-hdr .ph-emoji{font-size:17px;line-height:1;}
+  #portal-hdr .ph-title{font-size:14.5px;font-weight:700;color:#16202b;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;}
+  #portal-hdr .ph-tag{font-size:11px;font-weight:600;color:#5a6a78;background:#eef1f4;
+    padding:2px 7px;border-radius:999px;white-space:nowrap;}
+  #portal-hdr .ph-accent{width:3px;height:18px;border-radius:2px;background:#5b7a9a;flex:0 0 auto;}
+  #portal-hdr .ph-spacer{flex:1 1 auto;min-width:0;}
+  body{padding-top:46px !important;}
+  @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
+</style>
+<div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
+  <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
+  <a class="ph-home" href="../index.html" title="홈">🏠</a>
+  <span class="ph-accent"></span>
+  <span class="ph-emoji">🩻</span>
+  <span class="ph-title">골다공증</span>
+  <span class="ph-spacer"></span>
+  <span class="ph-tag">내분비</span>
+</div>
+
+<!--/PORTAL_HEADER_V1-->
+
+<div class="wrap">
+  <div class="hd">
+    <h1><span class="dot"></span><span id="hdTitle">골다공증 처방가이드</span></h1>
+    <span class="asof" id="hdAsof"></span>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-tab="lib">📚 도서관</button>
+    <button class="tab" data-tab="sim">🧭 시뮬레이션</button>
+    <button class="tab" data-tab="flow">⚡ 플로우</button>
+  </div>
+  <div id="lib" class="tabpane">
+    <div class="note" id="disclaimer"></div>
+    <div class="search"><span class="si">🔍</span><input id="q" placeholder="약물·상황 검색 (예: 프롤리아, 이베니티, T-score, 골표지자, 근감소증)"></div>
+    <div class="flowbar" onclick="goTab('flow')">
+      <h3>⚡ 환자 앞에서 바로 — 플로우</h3>
+      <p>위험군 자동판정 · BMD 평균값 게이트 · 골형성촉진제 2차 게이트 · FRAX. 수치만 넣으면 카드로 펼쳐집니다.</p>
+    </div>
+    <div id="searchResult" class="hidden"></div>
+    <div id="cardHost"></div>
+  </div>
+  <div id="detail" class="tabpane hidden">
+    <div class="detailbar">
+      <button class="backbtn" onclick="backToLib()">← 도서관</button>
+      <h2 id="detailTitle"></h2>
+    </div>
+    <div id="detailBody"></div>
+  </div>
+  <div id="sim" class="tabpane hidden">
+    <div class="note">골다공증 — T-score·골절력·연령 입력 → 위험군 자동분류 + 권고약제(등급순) + 급여 게이트 동시 표기.</div>
+    <div class="simbox" id="simForm"></div>
+    <div id="simResult"></div>
+  </div>
+  <div id="flow" class="tabpane hidden">
+    <div class="flowbar" style="cursor:default"><h3>⚡ 환자 앞에서 바로</h3><p>수치 입력 → 위험군·약제 게이트·전환·급여 경고가 카드로 펼쳐집니다.</p></div>
+    <div class="simbox" id="flowForm"></div>
+    <div id="flowResult"></div>
+  </div>
+  <div class="sources" id="sources"></div>
+</div>
+<script>/* ============================================================
+   골다공증 처방가이드 — DATA 레이어 (op_data.js)
+   spec v1.0 / asOf 2026-06
+   모든 임상 수치·기준·고시조건은 이 파일에만 존재 (엔진·UI 하드코딩 금지)
+   ID 규칙: 전역 drug:/class:/comorbid:/lab:/notice: , 질환한정 op:
+   ============================================================ */
+var OP_DATA = (function () {
+  'use strict';
+
+  /* ---------- 메타 ---------- */
+  var META = {
+    guideId: 'osteoporosis',
+    title: '골다공증 처방가이드',
+    asOf: '2026-06',
+    guidelineLabel: '골대사학회 2024 · 급여 asOf 2026-06',
+    disclaimer: '골대사학회 골다공증 진료지침 2024 + 심평원 급여기준(asOf 2026-06). 조언 보조 도구이며 최종 결정·청구는 처방의 책임.'
+  };
+
+  /* ---------- 권고등급 ruleset ---------- */
+  var RULESETS = {
+    'GL-osteoporosis-2024': { id: 'GL-osteoporosis-2024', title: '대한골대사학회 골다공증 진료지침 2024(11판)', year: 2024, active: true },
+    'GL-osteoporosis-fracture-2024': { id: 'GL-osteoporosis-fracture-2024', title: '대한골다공증학회 2024 골다공증·근감소증 진료가이드', year: 2024, active: true },
+    'GL-AACE-2020': { id: 'GL-AACE-2020', title: 'AACE/ACE 2020 (국제참조)', year: 2020, active: true },
+    'GL-EndoSoc-2020': { id: 'GL-EndoSoc-2020', title: 'Endocrine Society 2020 (국제참조)', year: 2020, active: true }
+  };
+
+  /* ---------- 약물 계열 class ---------- */
+  var CLASSES = {
+    'class:bisphosphonate': { id: 'class:bisphosphonate', ko: '비스포스포네이트(BP)', group: 'antiresorptive' },
+    'class:rankl_inhibitor': { id: 'class:rankl_inhibitor', ko: 'RANKL 억제제', group: 'antiresorptive' },
+    'class:serm': { id: 'class:serm', ko: 'SERM(선택적 에스트로겐 수용체 조절제)', group: 'antiresorptive' },
+    'class:calcitonin': { id: 'class:calcitonin', ko: '칼시토닌', group: 'antiresorptive' },
+    'class:sclerostin_inhibitor': { id: 'class:sclerostin_inhibitor', ko: '스클레로스틴 억제제', group: 'anabolic' },
+    'class:pth_analog': { id: 'class:pth_analog', ko: 'PTH 유사체', group: 'anabolic' },
+    'class:active_vitd': { id: 'class:active_vitd', ko: '활성형 비타민 D', group: 'adjunct' },
+    'class:hrt': { id: 'class:hrt', ko: '호르몬대체요법(HRT)', group: 'adjunct' },
+    'class:calcium': { id: 'class:calcium', ko: '칼슘', group: 'adjunct' }
+  };
+
+  /* ---------- 약물 (성분 단위, 전역 ID) ----------
+     각 약물에 급여(reimb)·안전성(safety)을 인라인 (C 결정) */
+  var DRUGS = {
+    /* === 골흡수억제제 antiresorptive === */
+    'drug:alendronate': {
+      id: 'drug:alendronate', classId: 'class:bisphosphonate', ko: '알렌드로네이트',
+      brands: ['포사맥스', '마빌'], route: '경구',
+      dose: '70mg 주 1회 (또는 +cholecalciferol 복합)',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '1차', note: '고위험군 1차 약제' },
+      mechanism: '파골세포 골흡수 억제(파이로인산 유사체, 골 친화).',
+      contraindications: ['식도 이상(협착·아칼라지아)', '30분 좌위 불가', 'eGFR<35', '저칼슘혈증(교정 전)'],
+      reimb: { noticeId: 'notice:고시2024-72', summary: '일반원칙 대상약제. T≤-2.5 등에서 급여.', covered: true },
+      safety: ['MRONJ(빈도 낮음, 침습적 치과시술 전 평가)', '비정형 대퇴골골절(장기 사용 시, 대퇴·서혜부 통증 시 영상)', '식도자극', '저칼슘혈증(투여 전 칼슘·VitD·신기능 확인)'],
+      holiday: '경구 3~5년 후 골절위험 재평가 → 저위험이면 약물휴일(drug holiday) 고려. 휴일=치료중단 아님(잔여효과).',
+      monitoring: 'BMD 1~2년, 골표지자(CTX/P1NP) 3~6개월 반응평가'
+    },
+    'drug:risedronate': {
+      id: 'drug:risedronate', classId: 'class:bisphosphonate', ko: '리세드로네이트',
+      brands: ['악토넬'], route: '경구',
+      dose: '35mg 주 1회 / 150mg 월 1회',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '1차', note: '고위험군 1차, GIO 대상약제' },
+      mechanism: '파골세포 골흡수 억제(BP).',
+      contraindications: ['식도 이상', '30분 좌위 불가', 'eGFR<30', '저칼슘혈증'],
+      reimb: { noticeId: 'notice:고시2024-72', summary: '일반원칙 대상약제 + GIO 대상약제(단일/+cholecalciferol).', covered: true },
+      safety: ['MRONJ', '비정형 대퇴골골절', '식도자극', '저칼슘혈증'],
+      holiday: '경구 3~5년 후 재평가.',
+      monitoring: 'BMD 1~2년, 골표지자 3~6개월'
+    },
+    'drug:ibandronate': {
+      id: 'drug:ibandronate', classId: 'class:bisphosphonate', ko: '이반드로네이트',
+      brands: ['본비바'], route: '경구/정맥',
+      dose: '150mg 월 1회 경구 / 3mg 3개월마다 IV',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '1차', note: '척추골절 위주(비척추 근거 약함)' },
+      mechanism: '파골세포 골흡수 억제(BP).',
+      contraindications: ['식도 이상(경구)', 'eGFR<30', '저칼슘혈증'],
+      reimb: { noticeId: 'notice:고시2024-72', summary: '일반원칙 대상약제.', covered: true },
+      safety: ['MRONJ', '비정형 대퇴골골절', '급성기 반응(IV, 첫 투여 발열·근육통)', '저칼슘혈증'],
+      holiday: '재평가 후 고려.',
+      monitoring: 'BMD 1~2년'
+    },
+    'drug:zoledronate': {
+      id: 'drug:zoledronate', classId: 'class:bisphosphonate', ko: '졸레드론산',
+      brands: ['대웅졸레드론산', '아클라스타'], route: '정맥',
+      dose: '5mg 연 1회 IV(15분 이상 주입)',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '1차', note: '순응도 좋음(연1회), 강력' },
+      mechanism: '파골세포 골흡수 억제(BP, 정맥).',
+      contraindications: ['eGFR<35', '저칼슘혈증(교정 전)', '탈수'],
+      reimb: { noticeId: 'notice:zoledronate-급여', summary: 'denosumab과 동일 대상, 연1회. -2.5<T≤-2.0 확대 동일.', covered: true },
+      safety: ['급성기 반응(첫 투여 후 발열·근육통, 흔함 → 수분·해열제)', 'MRONJ', '저칼슘혈증(투여 전 보정 필수)', '신기능 악화(탈수·신독성 약물 주의)'],
+      holiday: 'IV 3년 후 재평가 가능.',
+      monitoring: '투여 전 eGFR·칼슘·VitD 확인, BMD 추적'
+    },
+    'drug:denosumab': {
+      id: 'drug:denosumab', classId: 'class:rankl_inhibitor', ko: '데노수맙',
+      brands: ['프롤리아'], route: '피하주사',
+      dose: '60mg SC 6개월마다',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '1차', note: '고위험군 1차, 신기능 제한 적음' },
+      mechanism: 'RANKL 차단 → 파골세포 형성·기능·생존 억제.',
+      contraindications: ['저칼슘혈증(교정 전 금기)', '임신'],
+      reimb: { noticeId: 'notice:denosumab-급여', summary: 'T≤-2.5/QCT≤80→1년(2회), 골절확인→3년(6회). 추적 -2.5<T≤-2.0→1년 추가 반복, 총 6회.', covered: true,
+               gate: 'denosumab 2차 별도게이트: T≤-2.5 + (①BP 1년↑ 투여에도 새 골절/골밀도 감소 ②BP 금기)도 별도 경로 존재' },
+      safety: ['★중단/지연 시 리바운드 골절(다발성 척추골절) — 절대 임의중단 금지', '중단 필요 시 반드시 BP로 전환', 'MRONJ', '저칼슘혈증(투여 전 보정)', '비정형 대퇴골골절'],
+      rebound: '6개월 주기 엄수. 중단/장기지연 시 골교체율 급반등 → 다발성 척추골절. 종료 시 BP(경구/IV) 연결 필수.',
+      monitoring: '6개월 주기 엄수, 투여 전 칼슘 확인, BMD 추적'
+    },
+    'drug:raloxifene': {
+      id: 'drug:raloxifene', classId: 'class:serm', ko: '랄록시펜',
+      brands: ['에비스타'], route: '경구',
+      dose: '60mg 1일 1회',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '선택', note: '척추골절↓(비척추·고관절 근거 약함). 폐경초기·유방암위험 고려 시' },
+      mechanism: '뼈에 에스트로겐 작용(골흡수 억제), 유방·자궁엔 항에스트로겐.',
+      contraindications: ['정맥혈전색전증 병력/위험', '장기 부동', '임신/가임기'],
+      reimb: { noticeId: 'notice:고시2024-72', summary: '일반원칙 대상약제(SERM). T≤-2.5에서 급여.', covered: true,
+               gate: '★전환 주의: 골흡수 억제력 약해 추적 시 골밀도 감소 흔함. denosumab/골형성촉진제 게이트는 "BP 실패" 명시 → SERM 실패는 미해당, 직행 시 급여 다툼. 권장: SERM 실패→BP 전환' },
+      safety: ['정맥혈전색전증(VTE) 위험↑', '안면홍조', '하지경련', '뇌졸중 사망위험(고위험군)'],
+      monitoring: 'BMD 추적, VTE 증상 교육'
+    },
+    'drug:bazedoxifene': {
+      id: 'drug:bazedoxifene', classId: 'class:serm', ko: '바제독시펜',
+      brands: ['비비안트', '+cholecalciferol 복합'], route: '경구',
+      dose: '20mg 1일 1회',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '선택', note: 'raloxifene 유사, 척추골절 위주' },
+      mechanism: 'SERM. 뼈 골흡수 억제.',
+      contraindications: ['정맥혈전색전증 병력/위험', '장기 부동', '임신/가임기'],
+      reimb: { noticeId: 'notice:고시2024-72', summary: '일반원칙 대상약제(SERM). VitD 복합 병용급여 인정.', covered: true,
+               gate: '★SERM 전환 주의(raloxifene와 동일)' },
+      safety: ['VTE 위험', '안면홍조', '근육경련'],
+      monitoring: 'BMD 추적'
+    },
+    'drug:calcitonin': {
+      id: 'drug:calcitonin', classId: 'class:calcitonin', ko: '칼시토닌(엘카토닌/연어)',
+      brands: [], route: '비강/주사',
+      dose: '제제별 상이',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '제한', note: '권고 낮음(장기 사용 악성종양 신호). 급성 골절통 단기 정도' },
+      mechanism: '파골세포 직접 억제(약함).',
+      contraindications: ['과민반응'],
+      reimb: { noticeId: 'notice:고시2024-72', summary: '일반원칙 대상약제(elcatonin)이나 임상 권고 낮음.', covered: true },
+      safety: ['장기 사용 시 악성종양 위험 신호(EMA)', '비염(비강제)', '오심'],
+      monitoring: '단기 사용 권장'
+    },
+
+    /* === 골형성촉진제 anabolic === */
+    'drug:romosozumab': {
+      id: 'drug:romosozumab', classId: 'class:sclerostin_inhibitor', ko: '로모소주맙',
+      brands: ['이베니티'], route: '피하주사',
+      dose: '210mg SC 월 1회, 12개월 한정',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '초고위험 우선', note: '이중작용(골형성↑+골흡수↓). 12개월 후 골흡수억제제 전환 필수' },
+      mechanism: '스클레로스틴 차단 → 골형성↑ 동시에 골흡수↓.',
+      contraindications: ['최근 1년내 심근경색/뇌졸중', '저칼슘혈증'],
+      reimb: { noticeId: 'notice:romosozumab-급여', summary: '★2차·까다로움. 모두 만족: BP≥1종 실패/금기 + 65세↑ 폐경후여성 + T≤-2.5 + 골다공증 골절 ≥2개(자료첨부). 12개월 한정. 종료 후 alendronate경구/denosumab 전환(1개월내, 최대 12개월).', covered: '조건부',
+               conflict: '가이드라인은 초고위험 1차 권고, 급여는 2차만 → anabolic-first 시 100/100 또는 삭감 위험' },
+      safety: ['★심혈관 위험(MI/뇌졸중) — 심혈관질환 병력 회피', 'MRONJ', '저칼슘혈증', '주사부위 반응'],
+      sequence: '12개월 종료 후 antiresorptive(denosumab/BP) 전환 필수(효과 유지).',
+      monitoring: '심혈관 위험 평가, 투여 전 칼슘, BMD'
+    },
+    'drug:teriparatide': {
+      id: 'drug:teriparatide', classId: 'class:pth_analog', ko: '테리파라타이드',
+      brands: ['포스테오'], route: '피하주사',
+      dose: '20µg SC 매일, 최대 24개월(평생)',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '초고위험 우선', note: '골형성촉진. 24개월 후 골흡수억제제 전환' },
+      mechanism: '간헐적 PTH 자극 → 조골세포 활성, 골형성↑.',
+      contraindications: ['골육종 위험(파제트병·골단판 미폐쇄·골 방사선치료력)', '고칼슘혈증', '원인불명 ALP 상승'],
+      reimb: { noticeId: 'notice:teriparatide-급여', summary: '★2차·까다로움. 기존 골흡수억제제 ≥1종 실패/금기 + 65세↑ + T≤-2.5 + 골다공증 골절 ≥2개. 최대 24개월.', covered: '조건부',
+               conflict: '가이드라인 초고위험 1차 권고 vs 급여 2차만 → 상충' },
+      safety: ['기립성 저혈압(초기)', '고칼슘혈증', '오심·두통', '골육종(동물, 인체 드묾)'],
+      sequence: '24개월 종료 후 antiresorptive 전환 필수(미전환 시 골밀도 소실).',
+      monitoring: '혈청 칼슘, BMD'
+    },
+    'drug:abaloparatide': {
+      id: 'drug:abaloparatide', classId: 'class:pth_analog', ko: '아발로파라타이드',
+      brands: [], route: '피하주사',
+      dose: '(국내 미도입)',
+      grade: { ruleset: 'GL-AACE-2020', cls: '참고', note: '국내 미도입 — 표시만' },
+      mechanism: 'PTHrP 유사체, 골형성촉진(teriparatide 유사).',
+      contraindications: ['(국내 미도입)'],
+      reimb: { noticeId: null, summary: '국내 미출시·미급여.', covered: false },
+      safety: ['(국내 미도입)'],
+      notImported: true,
+      monitoring: '-'
+    },
+
+    /* === 보조 adjunct === */
+    'drug:calcitriol': {
+      id: 'drug:calcitriol', classId: 'class:active_vitd', ko: '칼시트리올(활성형 VitD3)',
+      brands: ['본키'], route: '경구',
+      dose: '0.25~0.5µg/일',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '보조', note: '병용(BP단일+활성VitD단일 병용급여 인정)' },
+      mechanism: '활성형 비타민D, 칼슘 흡수↑.',
+      contraindications: ['고칼슘혈증'],
+      reimb: { noticeId: 'notice:고시2024-72', summary: '활성형 VitD3 대상약제. 병용급여 조합 인정.', covered: true },
+      safety: ['고칼슘혈증', '고칼슘뇨증(모니터링)'],
+      monitoring: '혈청·요 칼슘'
+    },
+    'drug:cholecalciferol': {
+      id: 'drug:cholecalciferol', classId: 'class:active_vitd', ko: '콜레칼시페롤(VitD3)',
+      brands: [], route: '경구',
+      dose: '800~1000 IU/일(목표 25(OH)D ≥30 ng/mL)',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '보조', note: 'BP·SERM 복합제 성분' },
+      mechanism: '비타민D 보충.',
+      contraindications: ['고칼슘혈증'],
+      reimb: { noticeId: 'notice:고시2024-72', summary: '복합제 성분으로 급여. 검사(25-OH-D)는 적응증 제한.', covered: true },
+      safety: ['과량 시 고칼슘혈증'],
+      monitoring: '25(OH)D'
+    },
+    'class:calcium': {
+      id: 'class:calcium', classId: 'class:calcium', ko: '칼슘',
+      brands: [], route: '경구', isClass: true,
+      dose: '식이 우선, 부족 시 보충(원소칼슘 500~600mg/회)',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '보조', note: 'T≤-1.0에서 칼슘·에스트로겐 급여' },
+      mechanism: '골 기질 무기질.',
+      contraindications: ['고칼슘혈증', '신결석(주의)'],
+      reimb: { noticeId: 'notice:고시2024-72', summary: '칼슘제: T≤-1.0. 단순 예방목적 단독은 비급여.', covered: true },
+      safety: ['변비', '신결석(과량)', '심혈관 논란(과량 보충)'],
+      monitoring: '식이 칼슘 우선 평가'
+    },
+    'drug:estradiol': {
+      id: 'drug:estradiol', classId: 'class:hrt', ko: '에스트라디올(HRT)',
+      brands: [], route: '경구/경피',
+      dose: '폐경증상 동반 시 개별화',
+      grade: { ruleset: 'GL-osteoporosis-2024', cls: '선택', note: '폐경증상 동반 폐경초기 여성. 단독 골다공증 목적은 제한' },
+      mechanism: '에스트로겐 보충 → 골흡수 억제.',
+      contraindications: ['유방암/에스트로겐 의존성 암', 'VTE 병력', '원인불명 질출혈'],
+      reimb: { noticeId: 'notice:고시2024-72', summary: 'estrogen제제: T≤-1.0. 칼슘+HRT 병용급여 인정.', covered: true },
+      safety: ['유방암 위험(장기)', 'VTE', '심혈관(개시 연령 의존)'],
+      monitoring: '유방·자궁 평가'
+    }
+  };
+
+  /* ---------- 위험군 분류 (가이드라인, 급여 아님) ---------- */
+  var RISK = {
+    high: {
+      id: 'op:risk:high', ko: '고위험',
+      criteria: ['골다공증 진단(T≤-2.5)', '골다공증 골절 병력'],
+      firstLine: ['drug:alendronate', 'drug:risedronate', 'drug:zoledronate', 'drug:denosumab'],
+      note: 'BP·denosumab 1차 권고'
+    },
+    veryhigh: {
+      id: 'op:risk:veryhigh', ko: '초고위험',
+      criteria: ['골다공증 골절 ≥2개(다발)', '최근 12~24개월 내 골절', 'T-score < -3.0', '골다공증 약물치료 중 골절', 'FRAX 주요골절 ≥30%(참조)'],
+      firstLine: ['drug:romosozumab', 'drug:teriparatide'],
+      note: '골형성촉진제 우선 → 일정기간 후 골흡수억제제 전환(가이드라인). ※급여는 2차만 — 상충 주의'
+    }
+  };
+
+  /* ---------- 진단 ---------- */
+  var DIAGNOSIS = {
+    tscoreBands: [
+      { label: '정상', cond: 'T ≥ -1.0' },
+      { label: '골감소증', cond: '-2.5 < T < -1.0' },
+      { label: '골다공증', cond: 'T ≤ -2.5' }
+    ],
+    notes: [
+      '폐경후여성·50세이상남성: T-score 적용',
+      '폐경전여성·50세미만남성: Z-score 적용',
+      '골다공증성 골절 있으면 BMD 무관 골다공증 진단',
+      'QCT < 80 mg/cm³ = 골다공증 등가(110↑ 정상, 80~110 골감소증)'
+    ],
+    /* ★ BMD 평균값 판정 규칙 (삭감 핵심) */
+    bmdAverage: {
+      lumbar: [
+        'L1~L4 전면촬영(PA) 4부위 평균 T-score가 기준',
+        '결과지에 개별값 + 4부위평균 + 2·3부위 조합평균 동시 표시',
+        '배제는 명확한 사유(주변 부위와 T 1.0 이상 차이)가 있는 부위만 (4→3→2부위)',
+        '남은 부위 반드시 평가 포함, 최소 2부위 이상',
+        '✗ 임의로 낮은 2부위만 골라 평균 — 불인정',
+        '✗ L1~L4 중 가장 낮은 단일값 적용 — 불인정',
+        '측면촬영(lateral): 추적 가능, 진단 불가'
+      ],
+      hip: [
+        'total hip 또는 femur neck 중 낮은 부위 기준',
+        '✗ 전자부(trochanter) 단독 — 진단 불가',
+        'Ward\u0027s triangle 제외'
+      ],
+      qct: ['L1~L3 중 2개 이상 평균 < 80 mg/cm³', '✗ QCT 기기상 T/Z-score는 통계 유의성 없어 불인정'],
+      example: 'L1 -1.7 / L2 -2.5 / L3 -1.1 / L4 -2.7 → L3 배제(주변과 1↑ 차이) → L1·L2·L4 평균 -2.2 = 골감소증 → denosumab 불인정(실삭감 사례)'
+    }
+  };
+
+  /* ---------- 약제 급여 (심평원, 별도 레이어) ---------- */
+  var REIMB_GENERAL = {
+    noticeId: 'notice:고시2024-72',
+    title: '골다공증 치료제 급여 일반원칙 (고시 제2024-72호, 2024.5.1 시행)',
+    target: 'elcatonin·raloxifene·bazedoxifene·활성형 VitD3·bisphosphonate 등',
+    indications: [
+      '가) 중심골 DXA T ≤ -2.5',
+      '나) QCT ≤ 80 mg/cm³',
+      '다) 그 외 부위 T ≤ -3.0',
+      '라) 영상상 골다공증성 골절(대퇴·척추·요골·상완·골반·천골·발목)'
+    ],
+    period: [
+      '다) → 6개월 이내',
+      '가)·나) → 1년 이내 / 라) → 3년 이내',
+      '추적 T ≤ -2.5(QCT≤80) 계속 필요 시 급여'
+    ],
+    expand2024: '★급여 확대(2024.5.1): 치료 중 T가 -2.5 초과 ~ -2.0 이하 호전 시 1년 추가, 반복 시 연속 2년까지. 이 구간 SERM·BP성분·denosumab 교체투여 가능, 총 6회까지.',
+    calciumEstrogen: '칼슘·estrogen제제: T ≤ -1.0',
+    nonCovered: '특정소견 없이 단순 예방목적 단독투여: 비급여',
+    combos: [
+      '칼슘 + HRT',
+      '칼슘 + 비호르몬요법',
+      'BP + VitD 복합경구제(alendronate+cholecalciferol 등)',
+      'BP 단일 + 활성형 VitD3 단일',
+      'SERM + VitD 복합경구제(bazedoxifene/raloxifene + cholecalciferol)'
+    ]
+  };
+
+  var REIMB_ANABOLIC = {
+    romosozumab: {
+      noticeId: 'notice:romosozumab-급여', title: 'romosozumab(이베니티) 급여 — 2차·까다로움',
+      all: ['기존 BP ≥1종 효과없음/사용불가', '65세 이상 폐경후 여성', '중심골 DXA T ≤ -2.5', '골다공증 골절 ≥2개(과거골절 자료첨부)'],
+      period: '12개월 한정. 종료 후 alendronate 경구/denosumab 전환(1개월내 시작, 최대 12개월).'
+    },
+    teriparatide: {
+      noticeId: 'notice:teriparatide-급여', title: 'teriparatide(포스테오) 급여 — 2차·까다로움',
+      all: ['기존 골흡수억제제 ≥1종 효과없음/사용불가', '65세 이상', '중심골 DXA T ≤ -2.5', '골다공증 골절 ≥2개'],
+      period: '최대 24개월.'
+    },
+    conflict: '★가이드라인 ↔ 급여 상충: 초고위험군 골형성촉진제 1차 권고(가이드라인) vs 급여는 2차(BP 실패 후)만. anabolic-first 처방 시 비급여(100/100) 또는 삭감 위험. 양쪽 명시, 처방의 판단. (2026.01 기준 1차 급여확대 미반영, 학회 건의 중)'
+  };
+
+  /* ---------- 검사 급여 (별도) ---------- */
+  var TEST_REIMB = {
+    bmd: {
+      noticeId: 'notice:bmd-검사급여', title: '골밀도(BMD) 검사 급여 (다334, 2019.3.1)',
+      indications: ['65세↑여성/70세↑남성', '고위험요소 1개↑ 65세 미만 폐경후여성(BMI<18.5 / 비외상성 골절 과거·가족력 / 수술·40세전 폐경)', '1년↑무월경 폐경전여성', '비외상성 골절', '골다공증 유발 질환·약물', '골다공증 유발 약물 장기(3개월↑) 투여 예정', '임신연관 골다공증 골절 의심'],
+      counts: ['진단 시 1회(말단골 결과 추가필요시 1회 중심골 추가)', '추적 간격 1년 이상(정상골밀도면 2년)', '간격 미충족도 4주 범위 먼저 시행 시 인정', '치료효과 추적은 반드시 중심골(spine/hip)'],
+      steroidException: '스테로이드 3개월↑/부갑상선기능항진증: 정상(T≥-1) 첫1년 1회→이후 2년1회 / T≤-3: 첫1년 6개월마다→이후 연1회',
+      minor: '10~18세 미만: 본인부담 80%'
+    },
+    marker: {
+      noticeId: 'notice:골표지자-급여', title: '생화학적 골표지자 급여',
+      detail: ['골흡수표지자(CTX) + 골형성표지자(P1NP) 각 1종씩', '약물치료 시작 전 1회 + 치료 후 효과판정', '연 2회 이내(과거 1회→2회 확대)'],
+      meaning: 'BMD는 1~2년 걸리지만 골표지자는 3~6개월에 반응 → 순응도·반응 조기판정'
+    },
+    vitd: {
+      noticeId: 'notice:vitd-검사급여', title: '비타민 D(25-OH-D) 검사 급여 (최근 삭감 엄격)',
+      indications: ['VitD 흡수장애 위장질환', '특정약물(항경련제·결핵약·항레트로바이러스·ketoconazole·cholestyramine)', '간부전/간경변', '만성신장병', '악성종양', '구루병', '골다공증 진단 후(이차성 원인감별 포함)', '골연화증', '체표40%↑ 화상'],
+      warn: '✗ 단순 스크리닝·예방 목적 비급여. 최근 삭감 경향 강함.'
+    }
+  };
+
+  /* ---------- GIO ---------- */
+  var GIO = {
+    title: '글루코코르티코이드 유발 골다공증(GIO)',
+    drugs: 'alendronate·risedronate 단일 + cholecalciferol 복합(급여 대상약제)',
+    gate: {
+      precond: '6개월내 prednisolone 누적 ≥450mg & ≥90일 초과 투여',
+      postmenoOrM50: '폐경후여성·50세이상남성: T < -1.5',
+      premenoOrUnder50: '폐경전여성·50세미만남성: Z < -3.0',
+      period: '투여기간 1년, 추적 지속 가능'
+    },
+    note: '스테로이드는 첫 3개월 골밀도 감소 전에도 골절위험↑ → 조기 예방 필요'
+  };
+
+  /* ---------- 순차·전환 ---------- */
+  var SEQUENCE = {
+    principle: '초고위험: anabolic(romo/teri) → antiresorptive(denosumab/BP) 순차가 antiresorptive-first보다 우월(골밀도 개선·골절감소).',
+    transitions: [
+      'romosozumab(12개월) → alendronate 경구 또는 denosumab (급여: 종료 1개월내, 최대 12개월)',
+      'teriparatide(24개월) → denosumab/BP',
+      'denosumab → (중단 시) BP 전환으로 리바운드 차단 필수',
+      'SERM → (실패 시) BP 전환 권장 (denosumab 직행은 게이트 불일치 주의)'
+    ],
+    sermBranch: {
+      why: 'SERM은 골흡수 억제력 약해 추적 시 골밀도 감소 흔함. denosumab/골형성촉진제 게이트 문구가 "BP 실패" 명시 → SERM 실패는 미해당 → 직행 시 급여 다툼.',
+      flow: [
+        'SERM 1년 후 추적',
+        '├ T≤-2.5 유지/악화 → BP 전환(직선 급여) ✅ 권장 / denosumab 직행 ⚠️ 게이트 불일치 삭감위험',
+        '├ -2.5<T≤-2.0 호전 → SERM·BP·denosumab 교체투여 가능(확대구간 총6회) ✅',
+        '└ 신규 골절 → 골절경로(3년 급여) 합류'
+      ]
+    },
+    denosumabRebound: 'denosumab 6개월 주기 엄수. 중단/장기지연 시 골교체율 급반등 → 다발성 척추골절. 종료 시 BP 연결 필수.'
+  };
+
+  /* ---------- 안전성 (공통 참조) ---------- */
+  var SAFETY = {
+    mronj: { title: 'MRONJ(약제관련 턱뼈괴사)', detail: '빈도 낮음(5~100/10만). 침습적 치과시술 전 평가. denosumab·BP·일부 항암제 공통. 약물 주저 불필요.' },
+    aff: { title: '비정형 대퇴골골절(AFF)', detail: 'BP 장기 사용 연관, 빈도 매우 낮음. 대퇴·서혜부 통증 시 영상 확인.' },
+    hypocalcemia: { title: '저칼슘혈증', detail: 'denosumab/zoledronate 투여 전 칼슘·VitD·신기능 확인·보정 필수.' },
+    rebound: { title: 'denosumab 중단 리바운드', detail: '중단 시 다발성 척추골절 위험 → 반드시 BP 전환.' },
+    followup: { title: '추적 DXA', detail: '1~2년 간격(급여 규정 §검사급여 참조).' }
+  };
+
+  /* ---------- 칼슘·VitD·생활습관 + 근감소증 ---------- */
+  var ADJUNCT = {
+    vitd: '25(OH)D: 예방 ≥20 ng/mL, 치료/낙상예방 ≥30 ng/mL',
+    calcium: '식이 칼슘 우선, 부족 시 보충(원소칼슘 500~600mg/회). 과량 보충 신결석·심혈관 논란',
+    lifestyle: ['저항·체중부하 운동', '낙상예방(주거환경·시력·약물 검토)', '금연', '절주', '단백질 적정 섭취'],
+    sarcopenia: {
+      title: '근감소증(Sarcopenia)',
+      epi: '골다공증과 동반↑(osteosarcopenia), 낙상·골절 위험 가중. 골다공증 진료지침 2024 단원 신설.',
+      dx: {
+        ruleset: 'AWGS 2019(아시아)',
+        screen: '종아리둘레(남<34cm, 여<33cm) / SARC-F ≥4 / SARC-CalF',
+        strength: '악력 남<28kg, 여<18kg',
+        performance: '5회 의자 일어서기 ≥12초 / 보행속도 <1.0 m/s / SPPB ≤9',
+        mass: 'BIA 또는 DXA 사지근육량지수(ASM/신장²)',
+        judge: '근력↓ + 근육량↓ = 근감소증 / + 수행능력↓ = 중증'
+      },
+      mgmt: ['저항운동(핵심)', '단백질 1.0~1.2 g/kg/일(고령·질환 시 ↑)', '비타민 D', '골다공증 약물치료 병행(낙상예방으로 골절 추가감소)'],
+      reimb: '근감소증 자체 약물 국내 허가·급여 없음(운동·영양 중심)'
+    }
+  };
+
+  /* ---------- FRAX (모드 A: 입력보조+임계값, 자체 % 계산 안 함) ---------- */
+  var FRAX = {
+    factors: ['연령', '성별', '체중', '키', '부모 고관절 골절', '글루코코르티코이드', '이전 골절', '현재 흡연', '알코올 3단위↑/일', '이차성 골다공증', '대퇴경부 T-score(선택)'],
+    output: '10년 주요 골다공증 골절(MOF)% + 고관절 골절%',
+    officialUrl: 'https://frax.shef.ac.uk/FRAX/tool.aspx?lang=ko&country=Korea',
+    note: '★FRAX 계수는 Sheffield(WHO) 비공개 모델 → 자체 % 계산 불가(저작권). 본 도구는 입력보조 + 공식툴 연계 + 임계값 비교만.',
+    thresholds: [
+      { set: 'NOF(미국)', mof: 20, hip: 3 },
+      { set: '일본', mof: 15, hip: null },
+      { set: '영국 NOGG', mof: null, hip: null, note: '연령별 가변' }
+    ],
+    koreaNote: '국내 공식 고정 치료개입 임계값 미확정. 참조용 토글.',
+    clinical: 'FRAX는 골감소증(T -1.0~-2.5) 치료판단 애매할 때 보조. 골다공증 확정·기존골절 시 불필요. 척추·다발골절은 과소평가 주의.'
+  };
+
+  /* ---------- KCD 코드 ---------- */
+  var KCD = [
+    { code: 'M80', ko: '병적 골절 동반 골다공증', note: '골다공증성 골절 시 — 급여 골절경로(3년) 연결' },
+    { code: 'M80.0', ko: '폐경후 골다공증, 병적골절 동반' },
+    { code: 'M81', ko: '병적 골절 없는 골다공증', note: '일반 진단·치료' },
+    { code: 'M81.0', ko: '폐경후 골다공증' },
+    { code: 'M81.5', ko: '특발성 골다공증' },
+    { code: 'M81.8', ko: '기타 골다공증(약물유발 등 — GIO 관련)' },
+    { code: 'M82*', ko: '달리 분류된 질환에서의 골다공증(이차성)' }
+  ];
+
+  /* ---------- 출처 ---------- */
+  var SOURCES = [
+    { label: '대한골대사학회 골다공증 진료지침 2024', url: 'https://www.ksbmr.org/bbs/?code=guideline' },
+    { label: '대한골다공증학회 2024 골다공증·근감소증 진료가이드', url: 'https://www.koreanosteoporosis.or.kr' },
+    { label: '심평원 약제 급여기준 일반원칙(고시 제2024-72호)', url: 'https://www.hira.or.kr' },
+    { label: '심평원 골밀도검사 급여기준(다334)', url: 'https://www.hira.or.kr' },
+    { label: '심평원 생화학적 골표지자 급여기준', url: 'https://www.hira.or.kr' },
+    { label: 'FRAX® 한국 모델(Sheffield, 자체구현 금지)', url: 'https://frax.shef.ac.uk/FRAX/tool.aspx?lang=ko&country=Korea' },
+    { label: 'AACE/ACE 2020, Endocrine Society 2020', url: '' },
+    { label: 'AWGS 2019(근감소증 진단)', url: '' }
+  ];
+
+  return {
+    META: META, RULESETS: RULESETS, CLASSES: CLASSES, DRUGS: DRUGS,
+    RISK: RISK, DIAGNOSIS: DIAGNOSIS, REIMB_GENERAL: REIMB_GENERAL,
+    REIMB_ANABOLIC: REIMB_ANABOLIC, TEST_REIMB: TEST_REIMB, GIO: GIO,
+    SEQUENCE: SEQUENCE, SAFETY: SAFETY, ADJUNCT: ADJUNCT, FRAX: FRAX,
+    KCD: KCD, SOURCES: SOURCES
+  };
+})();
+if (typeof module !== 'undefined' && module.exports) { module.exports = OP_DATA; }
+</script>
+<script>/* ============================================================
+   골다공증 처방가이드 — ENGINE 레이어 (op_engine.js)
+   DATA를 ID로만 참조. 임상 리터럴 하드코딩 금지.
+   정문: recommend(patient) -> { drugs[], targets[], flags[] }
+   ============================================================ */
+var OP_ENGINE = (function (DATA) {
+  'use strict';
+
+  /* ---- BMD 평균값 판정 (op:rule:bmd_average) ---- */
+  function bmdAverage(input) {
+    // input: { lumbar:[L1,L2,L3,L4 (T)], hipTotal, femurNeck }
+    var flags = [];
+    var lumbarT = null;
+    if (input.lumbar && input.lumbar.length) {
+      var vals = input.lumbar.slice();
+      // 배제 사유: 주변과 1.0 이상 차이 (자동 후보 탐지 — 경고만, 강제 배제 X)
+      var mean = avg(vals);
+      var outliers = [];
+      for (var i = 0; i < vals.length; i++) {
+        // 다른 부위 평균과 1.0 이상 차이나면 배제 후보
+        var others = vals.filter(function (_, j) { return j !== i; });
+        if (others.length && Math.abs(vals[i] - avg(others)) >= 1.0) outliers.push(i + 1);
+      }
+      if (outliers.length) {
+        flags.push({ id: 'op:rule:bmd_average', severity: 'info',
+          msg: 'L' + outliers.join(',L') + ' 부위가 주변과 1.0 이상 차이 — 배제 검토 대상(명확한 사유 필요). 임의 저값 선택 금지.' });
+      }
+      if (vals.length < 2) {
+        flags.push({ id: 'op:rule:bmd_average', severity: 'warn', msg: '평가부위 2개 미만 — 진단 불인정 위험.' });
+      }
+      lumbarT = mean;
+    }
+    var hipT = null;
+    if (input.hipTotal != null || input.femurNeck != null) {
+      var cand = [];
+      if (input.hipTotal != null) cand.push(input.hipTotal);
+      if (input.femurNeck != null) cand.push(input.femurNeck);
+      hipT = Math.min.apply(null, cand); // 낮은 부위
+    }
+    var dxT = minDefined([lumbarT, hipT]); // 진단 T = 둘 중 낮은 값
+    flags.push({ id: 'op:rule:bmd_average', severity: 'info',
+      msg: '진단 T-score = 요추 4부위 평균(' + fmt(lumbarT) + ') / hip 최저(' + fmt(hipT) + ') 중 낮은 값 = ' + fmt(dxT) });
+    return { lumbarT: lumbarT, hipT: hipT, diagnosticT: dxT, flags: flags };
+  }
+
+  /* ---- 위험군 분류 (op:rule:classifyRisk) ---- */
+  function classifyRisk(p) {
+    var t = (p.tscore != null) ? p.tscore : null;
+    var fx = p.fractureHistory || [];
+    var vh = [];
+    if (fx.length >= 2) vh.push('골절 ≥2개(다발)');
+    if (p.recentFractureMonths != null && p.recentFractureMonths <= 24) vh.push('최근 ' + p.recentFractureMonths + '개월 골절');
+    if (t != null && t < -3.0) vh.push('T < -3.0');
+    if (p.fractureOnTreatment) vh.push('치료 중 골절');
+    if (p.fraxMof != null && p.fraxMof >= 30) vh.push('FRAX MOF ≥30%');
+    if (vh.length) return { level: 'veryhigh', label: '초고위험', reasons: vh, data: DATA.RISK.veryhigh };
+    var hi = [];
+    if (t != null && t <= -2.5) hi.push('골다공증(T≤-2.5)');
+    if (fx.length) hi.push('골다공증 골절 병력');
+    if (hi.length) return { level: 'high', label: '고위험', reasons: hi, data: DATA.RISK.high };
+    return { level: 'normal', label: '치료대상 아님/골감소증', reasons: [], data: null };
+  }
+
+  /* ---- 약제 급여 게이트 (op:rule:gateReimbursement) ---- */
+  function gateReimbursement(drugId, p) {
+    var d = DATA.DRUGS[drugId];
+    if (!d) return { covered: false, note: '미등록 약물' };
+    var t = (p && p.tscore != null) ? p.tscore : null;
+    var fx = (p && p.fractureHistory) ? p.fractureHistory : [];
+    var r = d.reimb || {};
+    // 골형성촉진제 2차 게이트
+    if (d.classId === 'class:sclerostin_inhibitor' || d.classId === 'class:pth_analog') {
+      if (d.notImported) return { covered: false, basis: null, note: '국내 미도입' };
+      var unmet = [];
+      if (!(p && p.priorBpFailed)) unmet.push('BP≥1종 실패/금기');
+      if (drugId === 'drug:romosozumab' && !(p && p.age >= 65 && p.postmenopausal)) unmet.push('65세↑ 폐경후여성');
+      if (drugId === 'drug:teriparatide' && !(p && p.age >= 65)) unmet.push('65세 이상');
+      if (!(t != null && t <= -2.5)) unmet.push('T≤-2.5');
+      if (!(fx.length >= 2)) unmet.push('골다공증 골절 ≥2개');
+      return {
+        covered: unmet.length ? '조건부(미충족)' : '조건부(충족)',
+        basis: r.noticeId, unmet: unmet,
+        conflict: r.conflict || DATA.REIMB_ANABOLIC.conflict,
+        note: unmet.length ? ('미충족: ' + unmet.join(', ') + ' → 100/100 또는 삭감 위험') : '2차 급여요건 충족'
+      };
+    }
+    // 일반원칙 약물
+    var ok = (t != null && t <= -2.5) || fx.length > 0;
+    return { covered: ok ? true : '미충족', basis: r.noticeId,
+      gate: r.gate || null,
+      note: ok ? '일반원칙 급여요건(T≤-2.5 또는 골절)' : 'T≤-2.5 미달·골절 없음 → 일반원칙 미충족(칼슘/HRT는 T≤-1.0 별도)' };
+  }
+
+  /* ---- 검사 급여 간격 (op:rule:test_reimbursement) ---- */
+  function testInterval(input) {
+    // input: { lastBmdDate, normalBmd, steroidOrPhpt, tscore, markerCountThisYear }
+    var out = [];
+    var bmd = DATA.TEST_REIMB.bmd;
+    var intervalMonths = input.normalBmd ? 24 : 12;
+    if (input.steroidOrPhpt && input.tscore != null && input.tscore <= -3) intervalMonths = 6;
+    out.push({ test: 'BMD', intervalMonths: intervalMonths,
+      next: addMonths(input.lastBmdDate, intervalMonths),
+      note: input.steroidOrPhpt ? '스테로이드/부갑상선항진 예외 적용' : (input.normalBmd ? '정상골밀도 → 2년' : '추적 1년 이상(4주 먼저 시행 가능)') });
+    var mk = (input.markerCountThisYear || 0);
+    out.push({ test: '골표지자(CTX+P1NP)', remaining: Math.max(0, 2 - mk),
+      note: '연 2회 이내. 올해 ' + mk + '회 사용 → 잔여 ' + Math.max(0, 2 - mk) + '회' });
+    return out;
+  }
+
+  /* ---- SERM 분기 (op:rule:serm_pathway) ---- */
+  function sermPathway(p) {
+    // 현재 약이 SERM이고 추적 시
+    var t = (p && p.tscore != null) ? p.tscore : null;
+    var steps = [];
+    if (t != null && t <= -2.5) {
+      steps.push({ branch: 'T≤-2.5 유지/악화', recommend: 'BP 전환(직선 급여) ✅',
+        warn: 'denosumab 직행 ⚠️ — 게이트가 "BP 실패" 명시, SERM 실패는 미해당 → 삭감위험' });
+    } else if (t != null && t > -2.5 && t <= -2.0) {
+      steps.push({ branch: '-2.5<T≤-2.0 호전', recommend: 'SERM·BP·denosumab 교체투여 가능(확대구간, 총6회) ✅', warn: null });
+    }
+    if (p && p.newFracture) steps.push({ branch: '신규 골절', recommend: '골절경로(3년 급여) 합류', warn: null });
+    return { id: 'op:rule:serm_pathway', steps: steps };
+  }
+
+  /* ---- FRAX 임계값 (op:rule:frax_intervention) ---- */
+  function fraxIntervention(mof, hip, set) {
+    set = set || 'NOF(미국)';
+    var th = null, list = DATA.FRAX.thresholds;
+    for (var i = 0; i < list.length; i++) if (list[i].set === set) th = list[i];
+    if (!th) return { exceeds: null, note: '임계값 세트 없음' };
+    var exMof = (th.mof != null && mof != null) ? (mof >= th.mof) : null;
+    var exHip = (th.hip != null && hip != null) ? (hip >= th.hip) : null;
+    var exceeds = (exMof === true) || (exHip === true);
+    return { set: set, exceeds: exceeds, exMof: exMof, exHip: exHip,
+      note: DATA.FRAX.koreaNote + ' / ' + (exceeds ? '임계값 초과 — 치료 고려' : '임계값 미만') };
+  }
+
+  /* ---- 정문: recommend() ---- */
+  function recommend(p) {
+    p = p || {};
+    var flags = [];
+    var risk = classifyRisk(p);
+    var drugs = [];
+    var rank = 1;
+    if (risk.data) {
+      var fl = risk.data.firstLine;
+      for (var i = 0; i < fl.length; i++) {
+        var id = fl[i], d = DATA.DRUGS[id];
+        if (!d) continue;
+        var g = gateReimbursement(id, p);
+        drugs.push({ id: id, classId: d.classId, ko: d.ko, rank: rank++,
+          gradeClass: d.grade ? d.grade.cls : null,
+          gradeRuleset: d.grade ? d.grade.ruleset : null,
+          reimbursed: g.covered, reimbNote: g.note,
+          notes: d.grade ? d.grade.note : '' });
+      }
+    }
+    // 초고위험 상충 플래그
+    if (risk.level === 'veryhigh') {
+      flags.push({ id: 'op:rule:anabolic_conflict', severity: 'warn', msg: DATA.REIMB_ANABOLIC.conflict });
+    }
+    // denosumab 사용 중 리바운드 경고
+    if (p.priorDrugs && p.priorDrugs.indexOf('drug:denosumab') !== -1) {
+      flags.push({ id: 'op:rule:denosumab_rebound', severity: 'warn', msg: DATA.SEQUENCE.denosumabRebound });
+    }
+    // SERM 분기
+    if (p.priorDrugs && (p.priorDrugs.indexOf('drug:raloxifene') !== -1 || p.priorDrugs.indexOf('drug:bazedoxifene') !== -1)) {
+      var sp = sermPathway(p);
+      if (sp.steps.length) flags.push({ id: 'op:rule:serm_pathway', severity: 'info', msg: 'SERM 전환 분기: ' + sp.steps.map(function (s) { return s.branch + '→' + s.recommend; }).join(' / ') });
+    }
+    var targets = [{ id: 'lab:bmd_tscore', goal: '치료 목표 T > -2.0 (급여 확대구간 활용)' },
+                   { id: 'lab:vitd_25oh', goal: '≥30 ng/mL' }];
+    return { risk: risk, drugs: drugs, targets: targets, flags: flags };
+  }
+
+  /* ---- util ---- */
+  function avg(a) { var s = 0, n = 0; for (var i = 0; i < a.length; i++) if (a[i] != null) { s += a[i]; n++; } return n ? s / n : null; }
+  function minDefined(a) { var v = null; for (var i = 0; i < a.length; i++) if (a[i] != null) v = (v == null) ? a[i] : Math.min(v, a[i]); return v; }
+  function fmt(x) { return x == null ? '—' : (Math.round(x * 100) / 100); }
+  function addMonths(dateStr, m) { if (!dateStr) return '(검사일 입력)'; var d = new Date(dateStr); if (isNaN(d)) return '(날짜 형식 오류)'; d.setMonth(d.getMonth() + m); return d.toISOString().slice(0, 10); }
+
+  return {
+    recommend: recommend, classifyRisk: classifyRisk, bmdAverage: bmdAverage,
+    gateReimbursement: gateReimbursement, testInterval: testInterval,
+    sermPathway: sermPathway, fraxIntervention: fraxIntervention
+  };
+})(OP_DATA);
+if (typeof module !== 'undefined' && module.exports) { module.exports = OP_ENGINE; }
+</script>
+<script>/* ============================================================
+   골다공증 처방가이드 — UI 레이어 (op_ui.js) v2
+   - 모달 → 페이지 전환(detail view)
+   - 글씨 확대, 카드 섹션식, 빨간 X, 검색 확장, 결과 카드 배색
+   ============================================================ */
+(function (D, E) {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+
+  var CARDS = [
+    { id: 'dx', emo: '🔍', n: 1, title: '진단·검사·BMD 판정법', desc: 'DXA T-score 평균값 규칙, QCT, 골표지자, 진단 흐름', pill: 'risk', sec: 'a' },
+    { id: 'risk', emo: '🎯', n: 2, title: '치료대상·위험군 분류', desc: '치료시작 기준 + 고위험/초고위험 자동판정', pill: 'risk', sec: 'a' },
+    { id: 'drugs', emo: '💊', n: 3, title: '약제 통합 (흡수억제 ⇄ 형성촉진)', desc: '약제별 기전·용법·금기·급여·안전성 한 곳에', pill: 'clin', sec: 'b' },
+    { id: 'seq', emo: '🪜', n: 4, title: '순차·전환 치료 사다리', desc: 'anabolic→antiresorptive, SERM 분기, 리바운드 게이트', pill: 'clin', sec: 'b' },
+    { id: 'reimb', emo: '📋', n: 5, title: '약제 급여기준 (심평원)', desc: '일반원칙·투여기간·교체·골형성촉진제 2차·100/100', pill: 'reimb', sec: 'c' },
+    { id: 'test', emo: '🔬', n: 6, title: '검사 급여 (BMD·골표지자·VitD)', desc: 'BMD 연1회·골표지자 연2회·VitD 적응증 + 간격계산기', pill: 'reimb', sec: 'c' },
+    { id: 'gio', emo: '💉', n: 7, title: '글루코코르티코이드 유발(GIO)', desc: '별도 급여게이트(prednisolone 누적·T/Z-score)', pill: 'clin', sec: 'b' },
+    { id: 'adj', emo: '🦴', n: 8, title: '칼슘·비타민D·생활습관·근감소증', desc: '25(OH)D 목표, 칼슘, 운동·낙상 + 근감소증(AWGS)', pill: 'clin', sec: 'd' },
+    { id: 'intl', emo: '🌍', n: 9, title: '국제 가이드라인 비교', desc: 'AACE/Endocrine Society/ESCEO vs 한국', pill: 'intl', sec: 'd' },
+    { id: 'frax', emo: '🧮', n: 10, title: 'FRAX 골절위험 계산기', desc: '10년 MOF·hip % + 치료개입 임계값 비교', pill: 'risk', sec: 'a' },
+    { id: 'kcd', emo: '📑', n: 11, title: '골다공증 질병코드집(KCD)', desc: '대표 상병코드 + 약제 급여 연결', pill: 'code', sec: 'd' }
+  ];
+  var SECS = { a: '🎯 위험·진단', b: '💊 임상', c: '📋 급여', d: '📚 보조·참조' };
+
+  function init() {
+    $('hdTitle').textContent = D.META.title;
+    $('hdAsof').textContent = D.META.guidelineLabel;
+    $('disclaimer').innerHTML = '<b>' + D.META.title + '</b> · ' + D.META.disclaimer;
+    renderCards();
+    renderSources();
+    buildSimForm();
+    buildFlowForm();
+    bindTabs();
+    bindSearch();
+  }
+
+  function renderCards() {
+    var host = $('cardHost'); host.innerHTML = '';
+    ['a', 'b', 'c', 'd'].forEach(function (sk) {
+      var items = CARDS.filter(function (c) { return c.sec === sk; });
+      if (!items.length) return;
+      var lab = document.createElement('div'); lab.className = 'seclabel';
+      lab.innerHTML = SECS[sk] + '<span class="line"></span>';
+      host.appendChild(lab);
+      var g = document.createElement('div'); g.className = 'grid';
+      items.forEach(function (c) { g.appendChild(cardEl(c)); });
+      host.appendChild(g);
+    });
+  }
+  function cardEl(c) {
+    var bcls = c.pill === 'risk' ? 'b-risk' : c.pill === 'reimb' ? 'b-reimb' : c.pill === 'intl' ? 'b-intl' : c.pill === 'code' ? 'b-code' : '';
+    var el = document.createElement('div'); el.className = 'card ' + bcls;
+    el.innerHTML = '<div class="top"><span class="tno"><span class="emo">' + c.emo + '</span>TOPIC ' + c.n + '</span>' +
+      '<span class="pill ' + c.pill + '">' + pillLabel(c.pill) + '</span></div>' +
+      '<h4>' + c.title + '</h4><div class="desc">' + c.desc + '</div>' +
+      '<div class="cardgo">열기 →</div>';
+    el.onclick = function () { openPage(c.id); };
+    return el;
+  }
+  function pillLabel(p) { return p === 'risk' ? '위험·진단' : p === 'reimb' ? '급여' : p === 'intl' ? '국제' : p === 'code' ? '코드' : '임상'; }
+
+  /* ---- 페이지 전환 ---- */
+  window.openPage = function (id) {
+    var c = CARDS.filter(function (x) { return x.id === id; })[0];
+    $('detailTitle').innerHTML = (c ? c.emo + ' ' + c.title : '');
+    $('detailBody').innerHTML = RENDER[id] ? RENDER[id]() : '<p>준비 중</p>';
+    if (id === 'drugs') wireDrugToggle();
+    if (id === 'test') wireTestCalc();
+    if (id === 'frax') wireFrax();
+    showView('detail');
+  };
+  window.backToLib = function () { goTab('lib'); };
+
+  function showView(name) {
+    ['lib', 'sim', 'flow', 'detail'].forEach(function (n) {
+      var el = $(n); if (el) el.classList.toggle('hidden', n !== name);
+    });
+    window.scrollTo(0, 0);
+  }
+
+  /* ---- 헬퍼 ---- */
+  function ul(arr) { return '<ul class="li">' + arr.map(function (x) { return '<li>' + hilite(x) + '</li>'; }).join('') + '</ul>'; }
+  function rows(pairs) { return pairs.map(function (p) { return '<div class="row"><span class="k">' + p[0] + '</span><span class="v">' + hilite(p[1]) + '</span></div>'; }).join(''); }
+  function hilite(s) { return String(s).replace(/✗/g, '<span class="redx">✕</span>'); }
+  function box(title, inner, tone) {
+    tone = tone || 'plain';
+    return '<div class="cbox ' + tone + '">' + (title ? '<div class="cbox-h">' + title + '</div>' : '') + '<div class="cbox-b">' + inner + '</div></div>';
+  }
+
+  /* ============ 카드별 콘텐츠 ============ */
+  var RENDER = {
+    dx: function () {
+      var dg = D.DIAGNOSIS;
+      var tb = '<table class="cmp"><tr><th>구분</th><th>기준</th></tr>' +
+        dg.tscoreBands.map(function (b) { return '<tr><td><b>' + b.label + '</b></td><td>' + b.cond + '</td></tr>'; }).join('') + '</table>' + ul(dg.notes);
+      var h = box('🩻 진단 기준 (DXA T-score)', tb, 'info');
+      var avgInner = '<div class="bigwarn"><span class="redx">✕</span> 임의로 낮은 2부위만 골라 평균내거나 단일 최저값으로 진단하면 <b>급여 불인정</b>됩니다.</div>';
+      avgInner += '<div class="sub">요추 (L-spine)</div>' + ul(dg.bmdAverage.lumbar);
+      avgInner += '<div class="sub">대퇴 (hip)</div>' + ul(dg.bmdAverage.hip);
+      avgInner += '<div class="sub">QCT</div>' + ul(dg.bmdAverage.qct);
+      h += box('⚠️ BMD 평균값 판정 규칙 — 삭감 핵심', avgInner, 'danger');
+      h += box('🧾 실삭감 사례', dg.bmdAverage.example, 'warn');
+      return h;
+    },
+
+    risk: function () {
+      var h = '';
+      [D.RISK.high, D.RISK.veryhigh].forEach(function (r) {
+        var vh = r.id.indexOf('very') !== -1;
+        var inner = rows([['기준', r.criteria.join(' · ')], ['1차 권고', r.firstLine.map(function (id) { return (D.DRUGS[id] || {}).ko || id; }).join(', ')]]) +
+          '<div class="note-line">' + r.note + '</div>';
+        h += box((vh ? '🔴 ' : '🟠 ') + r.ko, inner, vh ? 'danger' : 'warn');
+      });
+      h += box('ℹ️ 핵심', '초고위험은 <b>골형성촉진제 우선</b>(가이드라인). 단 급여는 2차만 — 상충은 급여 카드 참조.', 'info');
+      return h;
+    },
+
+    drugs: function () {
+      var h = '<div class="toggle"><button class="on" data-g="antiresorptive">골흡수억제제</button>' +
+        '<button data-g="anabolic">골형성촉진제</button><button data-g="adjunct">보조</button></div>';
+      h += '<div id="drugList"></div>';
+      setTimeout(function () { renderDrugGroup('antiresorptive'); }, 0);
+      return h;
+    },
+
+    seq: function () {
+      var s = D.SEQUENCE;
+      var h = box('🪜 순차치료 원칙', s.principle, 'ok');
+      h += box('🔁 전환 경로', ul(s.transitions), 'plain');
+      h += box('⚠️ SERM 분기 — 코스 애매함 해소', '<div class="note-line">' + s.sermBranch.why + '</div>' + ul(s.sermBranch.flow), 'warn');
+      h += box('🚨 denosumab 중단 리바운드', s.denosumabRebound, 'danger');
+      return h;
+    },
+
+    reimb: function () {
+      var g = D.REIMB_GENERAL, a = D.REIMB_ANABOLIC;
+      var gi = rows([['대상약제', g.target]]);
+      gi += '<div class="sub">투여대상</div>' + ul(g.indications);
+      gi += '<div class="sub">투여기간</div>' + ul(g.period);
+      gi += '<div class="hl ok">' + g.expand2024 + '</div>';
+      gi += '<div class="sub">병용급여 인정 조합</div>' + ul(g.combos);
+      gi += rows([['칼슘·estrogen', g.calciumEstrogen], ['비급여', g.nonCovered]]);
+      var h = box('📋 ' + g.title, gi, 'plain');
+      h += box('💉 ' + a.romosozumab.title, ul(a.romosozumab.all) + '<div class="note-line">' + a.romosozumab.period + '</div>', 'warn');
+      h += box('💉 ' + a.teriparatide.title, ul(a.teriparatide.all) + '<div class="note-line">' + a.teriparatide.period + '</div>', 'warn');
+      h += box('🚨 가이드라인 ↔ 급여 상충', a.conflict, 'danger');
+      return h;
+    },
+
+    test: function () {
+      var t = D.TEST_REIMB;
+      var bi = '<div class="sub">급여 적응증</div>' + ul(t.bmd.indications) +
+        '<div class="sub">산정 횟수·간격</div>' + ul(t.bmd.counts) +
+        '<div class="hl info"><b>예외:</b> ' + t.bmd.steroidException + '</div>' +
+        '<div class="note-line">' + t.bmd.minor + '</div>';
+      var h = box('🔬 ' + t.bmd.title, bi, 'info');
+      h += box('🧪 ' + t.marker.title, ul(t.marker.detail) + '<div class="hl ok">' + t.marker.meaning + '</div>', 'plain');
+      h += box('☀️ ' + t.vitd.title, ul(t.vitd.indications) + '<div class="hl warn">' + hilite(t.vitd.warn) + '</div>', 'warn');
+      var calc = '<div class="field"><label>마지막 BMD 검사일</label><input type="date" id="tc_date"></div>' +
+        '<div class="fr2"><label class="chk"><input type="checkbox" id="tc_normal"> 직전 정상골밀도</label>' +
+        '<label class="chk"><input type="checkbox" id="tc_steroid"> 스테로이드3개월↑/부갑상선항진</label></div>' +
+        '<div class="field"><label>T-score (예외 판정용)</label><input type="number" step="0.1" id="tc_t" placeholder="-3.2"></div>' +
+        '<div class="field"><label>올해 골표지자 사용 횟수</label><input type="number" id="tc_mk" value="0"></div>' +
+        '<button class="btn" id="tc_run">계산</button><div id="tc_out"></div>';
+      h += box('🧮 검사 간격 계산기', calc, 'plain');
+      return h;
+    },
+
+    gio: function () {
+      var g = D.GIO;
+      var inner = rows([['대상약제(급여)', g.drugs]]) + '<div class="sub">급여 게이트</div>' +
+        rows([['전제조건', g.gate.precond], ['폐경후·남50↑', g.gate.postmenoOrM50], ['폐경전·남50미만', g.gate.premenoOrUnder50], ['투여기간', g.gate.period]]);
+      var h = box('💉 ' + g.title, inner, 'plain');
+      h += box('ℹ️ 임상 포인트', g.note, 'info');
+      return h;
+    },
+
+    adj: function () {
+      var a = D.ADJUNCT, s = a.sarcopenia;
+      var h = box('🦴 칼슘·비타민 D', rows([['비타민 D', a.vitd], ['칼슘', a.calcium]]), 'plain');
+      h += box('🏃 생활습관', ul(a.lifestyle), 'ok');
+      var si = '<div class="hl info">' + s.epi + '</div>' +
+        '<div class="sub">진단 (' + s.dx.ruleset + ')</div>' +
+        rows([['선별', s.dx.screen], ['근력', s.dx.strength], ['신체수행', s.dx.performance], ['근육량', s.dx.mass], ['판정', s.dx.judge]]) +
+        '<div class="sub">관리</div>' + ul(s.mgmt) + '<div class="hl warn">' + s.reimb + '</div>';
+      h += box('🦵 ' + s.title + ' (최근 주목)', si, 'warn');
+      return h;
+    },
+
+    intl: function () {
+      var tbl = '<table class="cmp"><tr><th>축</th><th>한국(골대사 2024)</th><th>국제(AACE/EndoSoc)</th></tr>' +
+        '<tr><td>초고위험 1차</td><td>골형성촉진제 권고 / <b>급여는 2차</b></td><td>골형성촉진제 1차 명확</td></tr>' +
+        '<tr><td>FRAX 임계값</td><td>국내 고정기준 미확정</td><td>NOF MOF≥20%·hip≥3%</td></tr>' +
+        '<tr><td>치료중단</td><td>BP drug holiday / denosumab 리바운드 주의</td><td>동일</td></tr>' +
+        '<tr><td>급여확대</td><td>-2.5&lt;T≤-2.0 2년 확대(2024.5)</td><td>치료목표 T&gt;-2.0</td></tr></table>';
+      var h = box('🌍 국제 가이드라인 vs 한국', tbl, 'info');
+      h += box('ℹ️ 핵심', '한국은 급여가 가이드라인보다 보수적 — 본 도구가 양쪽을 분리 표시하는 이유.', 'plain');
+      return h;
+    },
+
+    frax: function () {
+      var f = D.FRAX;
+      var h = box('⚠️ 저작권 안내', f.note, 'warn');
+      var inp = '<div class="muted-line">9개 위험인자: ' + f.factors.join(' · ') + '</div>' +
+        '<a class="btn link" href="' + f.officialUrl + '" target="_blank">🔗 공식 FRAX 한국모델 열기</a>';
+      h += box('📝 입력 (공식툴 연계)', inp, 'plain');
+      var cmp = '<div class="fr2"><div class="field"><label>10년 MOF %</label><input type="number" step="0.1" id="fx_mof" placeholder="25"></div>' +
+        '<div class="field"><label>10년 hip %</label><input type="number" step="0.1" id="fx_hip" placeholder="3"></div></div>' +
+        '<div class="field"><label>임계값 기준</label><select id="fx_set">' +
+        f.thresholds.map(function (t) { return '<option>' + t.set + '</option>'; }).join('') + '</select></div>' +
+        '<button class="btn" id="fx_run">비교</button><div id="fx_out"></div>';
+      h += box('📊 받은 결과 → 임계값 비교', cmp, 'plain');
+      h += box('🩺 임상 위치', f.clinical + '<div class="note-line">' + f.koreaNote + '</div>', 'info');
+      return h;
+    },
+
+    kcd: function () {
+      var tbl = '<table class="cmp"><tr><th>코드</th><th>명칭</th><th>비고</th></tr>' +
+        D.KCD.map(function (k) { return '<tr><td><b>' + k.code + '</b></td><td>' + k.ko + '</td><td class="muted">' + (k.note || '') + '</td></tr>'; }).join('') + '</table>';
+      var h = box('📑 대표 KCD 상병코드', tbl, 'plain');
+      h += box('ℹ️ 연결', 'M80(병적골절 동반)은 급여 골절경로(3년) 연결. M81.8은 약물유발(GIO) 관련.', 'info');
+      return h;
+    }
+  };
+
+  /* ---- 약물 ---- */
+  function renderDrugGroup(group) {
+    var host = $('drugList'); if (!host) return;
+    var ids = Object.keys(D.DRUGS).filter(function (id) {
+      var d = D.DRUGS[id]; var cls = D.CLASSES[d.classId];
+      return cls && cls.group === group;
+    });
+    host.innerHTML = ids.map(function (id) { return drugCardHtml(D.DRUGS[id]); }).join('');
+    Array.prototype.forEach.call(host.querySelectorAll('.drugcard'), function (el) {
+      el.querySelector('.dh').onclick = function () { el.classList.toggle('open'); };
+    });
+  }
+  function drugCardHtml(d) {
+    var g = d.grade || {};
+    var reimbTag = d.reimb && d.reimb.covered === true ? '<span class="tag t-ok">✅ 급여</span>' :
+      (d.reimb && d.reimb.covered === '조건부' ? '<span class="tag t-warn">⚠️ 조건부</span>' :
+      (d.notImported ? '<span class="tag t-info">국내 미도입</span>' : '<span class="tag t-danger">비급여</span>'));
+    var h = '<div class="drugcard"><div class="dh"><div><div class="dn">' + d.ko +
+      ' <span class="muted">(' + (d.route || '') + ')</span></div>' +
+      '<div class="db">' + (d.brands && d.brands.length ? d.brands.join('·') + ' · ' : '') + (g.cls || '') + '</div></div>' +
+      '<div class="dhr">' + reimbTag + ' <span class="chev">▾</span></div></div>';
+    h += '<div class="dbody">';
+    h += rows([['용법', d.dose || '—'], ['기전', d.mechanism || '—'], ['권고', (g.cls || '') + (g.note ? ' — ' + g.note : '')]]);
+    if (d.contraindications) h += '<div class="sub">금기</div>' + ul(d.contraindications);
+    if (d.reimb) {
+      h += '<div class="hl ' + (d.reimb.covered === true ? 'ok' : 'warn') + '"><b>📋 급여:</b> ' + d.reimb.summary + '</div>';
+      if (d.reimb.gate) h += '<div class="hl warn">' + d.reimb.gate + '</div>';
+      if (d.reimb.conflict) h += '<div class="hl danger">' + d.reimb.conflict + '</div>';
+    }
+    if (d.safety) { h += '<div class="sub">🚨 안전성·모니터링</div>' + ul(d.safety); }
+    if (d.rebound) h += '<div class="hl danger"><b>리바운드:</b> ' + d.rebound + '</div>';
+    if (d.holiday) h += '<div class="hl info"><b>약물휴일:</b> ' + d.holiday + '</div>';
+    if (d.sequence) h += '<div class="hl info"><b>순차:</b> ' + d.sequence + '</div>';
+    if (d.monitoring) h += rows([['모니터링', d.monitoring]]);
+    h += '</div></div>';
+    return h;
+  }
+  function wireDrugToggle() {
+    var btns = document.querySelectorAll('.toggle button');
+    Array.prototype.forEach.call(btns, function (b) {
+      b.onclick = function () {
+        Array.prototype.forEach.call(btns, function (x) { x.classList.remove('on'); });
+        b.classList.add('on'); renderDrugGroup(b.getAttribute('data-g'));
+      };
+    });
+  }
+
+  function wireTestCalc() {
+    var run = $('tc_run'); if (!run) return;
+    run.onclick = function () {
+      var res = E.testInterval({
+        lastBmdDate: $('tc_date').value, normalBmd: $('tc_normal').checked,
+        steroidOrPhpt: $('tc_steroid').checked,
+        tscore: $('tc_t').value ? parseFloat($('tc_t').value) : null,
+        markerCountThisYear: parseInt($('tc_mk').value || '0', 10)
+      });
+      $('tc_out').innerHTML = res.map(function (r) {
+        return '<div class="hl ' + (r.test === 'BMD' ? 'info' : 'ok') + '"><b>' + r.test + '</b>: ' +
+          (r.next ? '다음 급여 가능 ' + r.next + ' (' + r.intervalMonths + '개월) — ' : '') +
+          (r.remaining != null ? '잔여 ' + r.remaining + '회 — ' : '') + r.note + '</div>';
+      }).join('');
+    };
+  }
+
+  function wireFrax() {
+    var run = $('fx_run'); if (!run) return;
+    run.onclick = function () {
+      var mof = $('fx_mof').value ? parseFloat($('fx_mof').value) : null;
+      var hip = $('fx_hip').value ? parseFloat($('fx_hip').value) : null;
+      var r = E.fraxIntervention(mof, hip, $('fx_set').value);
+      $('fx_out').innerHTML = '<div class="hl ' + (r.exceeds ? 'danger' : 'ok') + '"><b>' +
+        (r.exceeds ? '⚠️ 임계값 초과 — 치료 고려' : '임계값 미만') + '</b><br>' + r.note + '</div>';
+    };
+  }
+
+  /* ---- 시뮬/플로우 ---- */
+  function buildSimForm() {
+    $('simForm').innerHTML = patientFormHtml('sim') + '<button class="btn" id="simRun">위험군 분류 + 권고 약제</button>';
+    $('simRun').onclick = function () { runRecommend('sim', 'simResult'); };
+  }
+  function buildFlowForm() {
+    $('flowForm').innerHTML = patientFormHtml('flow') + '<button class="btn" id="flowRun">플로우 펼치기</button>';
+    $('flowRun').onclick = function () { runRecommend('flow', 'flowResult'); };
+  }
+  function patientFormHtml(pfx) {
+    return '<div class="fr2">' +
+      '<div class="field"><label>성별</label><select id="' + pfx + '_sex"><option value="F">여성</option><option value="M">남성</option></select></div>' +
+      '<div class="field"><label>연령</label><input type="number" id="' + pfx + '_age" placeholder="72"></div></div>' +
+      '<div class="fr2"><div class="field"><label>T-score (진단값)</label><input type="number" step="0.1" id="' + pfx + '_t" placeholder="-3.2"></div>' +
+      '<div class="field"><label>최근 골절 경과(개월)</label><input type="number" id="' + pfx + '_recent" placeholder="6"></div></div>' +
+      '<div class="field"><label>골다공증 골절 개수</label><input type="number" id="' + pfx + '_fxn" value="0"></div>' +
+      '<div class="chkrow">' +
+      '<label class="chk"><input type="checkbox" id="' + pfx + '_pmp"> 폐경후</label>' +
+      '<label class="chk"><input type="checkbox" id="' + pfx + '_onrx"> 치료 중 골절</label>' +
+      '<label class="chk"><input type="checkbox" id="' + pfx + '_bpfail"> BP 실패/금기</label>' +
+      '<label class="chk"><input type="checkbox" id="' + pfx + '_prevDmab"> 과거 denosumab</label>' +
+      '<label class="chk"><input type="checkbox" id="' + pfx + '_prevSerm"> 과거 SERM</label>' +
+      '</div>';
+  }
+  function readPatient(pfx) {
+    var fxn = parseInt(($(pfx + '_fxn') || {}).value || '0', 10);
+    var fh = []; for (var i = 0; i < fxn; i++) fh.push('fx');
+    var prior = [];
+    if ($(pfx + '_prevDmab').checked) prior.push('drug:denosumab');
+    if ($(pfx + '_prevSerm').checked) prior.push('drug:raloxifene');
+    return {
+      sex: $(pfx + '_sex').value, age: parseInt($(pfx + '_age').value || '0', 10),
+      postmenopausal: $(pfx + '_pmp').checked,
+      tscore: $(pfx + '_t').value ? parseFloat($(pfx + '_t').value) : null,
+      fractureHistory: fh,
+      recentFractureMonths: $(pfx + '_recent').value ? parseInt($(pfx + '_recent').value, 10) : null,
+      fractureOnTreatment: $(pfx + '_onrx').checked,
+      priorBpFailed: $(pfx + '_bpfail').checked,
+      priorDrugs: prior
+    };
+  }
+  function runRecommend(pfx, outId) {
+    var p = readPatient(pfx);
+    var r = E.recommend(p);
+    var lvl = r.risk.level;
+    var h = '';
+    h += '<div class="resultcard ' + (lvl === 'veryhigh' ? 'rc-danger' : lvl === 'high' ? 'rc-warn' : 'rc-info') + '">' +
+      '<div class="rc-badge">' + (lvl === 'veryhigh' ? '🔴 초고위험' : lvl === 'high' ? '🟠 고위험' : '🟢 ' + r.risk.label) + '</div>' +
+      (r.risk.reasons.length ? '<div class="rc-sub">근거: ' + r.risk.reasons.join(' · ') + '</div>' : '') + '</div>';
+
+    if (r.drugs.length) {
+      h += '<div class="reslabel">💊 권고 약제 <span class="muted">(등급순)</span></div>';
+      h += '<div class="rxgrid">' + r.drugs.map(function (d) {
+        var s = String(d.reimbursed);
+        var bad = s.indexOf('미충족') !== -1 || s.indexOf('미달') !== -1;
+        var rt = d.reimbursed === true ? '<span class="tag t-ok">✅급여</span>' :
+          (bad ? '<span class="tag t-danger">⚠️미충족</span>' : (s.indexOf('충족') !== -1 ? '<span class="tag t-ok">✅충족</span>' : '<span class="tag t-warn">' + s + '</span>'));
+        return '<div class="rxcard ' + (bad ? 'rx-bad' : 'rx-good') + '">' +
+          '<div class="rxhead"><span class="rxrank">' + d.rank + '</span><span class="rxname">' + d.ko + '</span>' + rt + '</div>' +
+          '<div class="rxgrade">' + (d.gradeClass || '') + ' · ' + (d.notes || '') + '</div>' +
+          '<div class="rxnote">' + (d.reimbNote || '') + '</div></div>';
+      }).join('') + '</div>';
+    } else {
+      h += '<div class="resultcard rc-info"><div class="rc-sub">치료대상 기준 미충족(골감소증 등). FRAX 보조평가 고려.</div></div>';
+    }
+
+    if (r.flags.length) {
+      h += '<div class="reslabel">⚠️ 플래그 · 주의</div>';
+      h += r.flags.map(function (f) {
+        var cls = f.severity === 'warn' ? 'rc-warn' : f.severity === 'danger' ? 'rc-danger' : 'rc-info';
+        return '<div class="resultcard ' + cls + ' flagcard"><div class="rc-sub">' + f.msg + '</div></div>';
+      }).join('');
+    }
+    h += '<div class="resultcard rc-ok"><div class="rc-badge">🎯 치료 목표</div>' + ul(r.targets.map(function (t) { return t.goal; })) + '</div>';
+    $(outId).innerHTML = h;
+  }
+
+  /* ---- 탭 ---- */
+  function bindTabs() {
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
+      t.onclick = function () { goTab(t.getAttribute('data-tab')); };
+    });
+  }
+  window.goTab = function (name) {
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
+      t.classList.toggle('active', t.getAttribute('data-tab') === name);
+    });
+    showView(name);
+  };
+
+  /* ---- 검색 (확장) ---- */
+  function bindSearch() {
+    var inp = $('q'); if (!inp) return;
+    inp.addEventListener('input', function () { runSearch(this.value.trim()); });
+  }
+  function cardKeywords(c) {
+    var kw = c.title + ' ' + c.desc;
+    if (c.id === 'drugs') kw += ' ' + Object.keys(D.DRUGS).map(function (id) { var d = D.DRUGS[id]; return d.ko + ' ' + id + ' ' + (d.brands || []).join(' '); }).join(' ');
+    if (c.id === 'dx') kw += ' T-score BMD DXA QCT 골표지자 CTX P1NP 평균 삭감 진단';
+    if (c.id === 'test') kw += ' 골밀도 검사 급여 비타민D 25 OH 골표지자 횟수 간격';
+    if (c.id === 'reimb') kw += ' 급여 고시 100/100 일반원칙 프롤리아 이베니티 포스테오 교체';
+    if (c.id === 'frax') kw += ' FRAX 골절위험 10년 임계값';
+    if (c.id === 'adj') kw += ' 근감소증 sarcopenia 칼슘 비타민D 운동 AWGS 낙상';
+    if (c.id === 'gio') kw += ' 스테로이드 글루코코르티코이드 prednisolone GIO';
+    if (c.id === 'seq') kw += ' 순차 전환 리바운드 SERM 사다리';
+    return kw.toLowerCase();
+  }
+  function runSearch(q) {
+    var host = $('searchResult');
+    if (!q) { host.classList.add('hidden'); host.innerHTML = ''; $('cardHost').classList.remove('hidden'); return; }
+    var ql = q.toLowerCase();
+    var hits = CARDS.filter(function (c) { return cardKeywords(c).indexOf(ql) !== -1; });
+    var drugHits = Object.keys(D.DRUGS).filter(function (id) {
+      var d = D.DRUGS[id];
+      return (d.ko + ' ' + id + ' ' + (d.brands || []).join(' ')).toLowerCase().indexOf(ql) !== -1;
+    });
+    var h = '<div class="seclabel">🔎 "' + q + '" 검색결과<span class="line"></span></div>';
+    if (drugHits.length) {
+      h += '<div class="srchsub">약물 (' + drugHits.length + ')</div><div class="grid">';
+      h += drugHits.map(function (id) {
+        var d = D.DRUGS[id];
+        return '<div class="card" onclick="openPage(\'drugs\')"><div class="top"><span class="tno"><span class="emo">💊</span>약물</span></div>' +
+          '<h4>' + d.ko + '</h4><div class="desc">' + (d.brands || []).join('·') + ' · ' + ((d.grade || {}).cls || '') + ' → 약제 카드에서 보기</div><div class="cardgo">열기 →</div></div>';
+      }).join('') + '</div>';
+    }
+    if (hits.length) h += '<div class="srchsub">관련 카드 (' + hits.length + ')</div><div class="grid" id="srchcards"></div>';
+    if (!hits.length && !drugHits.length) h += '<p class="muted" style="padding:24px;text-align:center;font-size:16px">검색 결과 없음</p>';
+    host.innerHTML = h;
+    if (hits.length) { var g = host.querySelector('#srchcards'); hits.forEach(function (c) { g.appendChild(cardEl(c)); }); }
+    $('cardHost').classList.add('hidden');
+    host.classList.remove('hidden');
+  }
+
+  function renderSources() {
+    $('sources').innerHTML = '<h4>📚 출처·가이드라인</h4><ul>' +
+      D.SOURCES.map(function (s) {
+        return '<li>' + (s.url ? '<a href="' + s.url + '" target="_blank">' + s.label + ' ↗</a>' : s.label) + '</li>';
+      }).join('') + '</ul><p class="muted" style="margin-top:8px">작성 박형도 · asOf ' + D.META.asOf + ' · 조언 보조용, 최종 책임 처방의</p>';
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})(OP_DATA, OP_ENGINE);
+</script>
+</body>
+</html>

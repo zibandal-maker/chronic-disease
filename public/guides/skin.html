@@ -230,44 +230,7 @@ body{padding-bottom:84px;}
 .uctopt.on{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);font-weight:650;}
 .uctv{width:20px;height:20px;border-radius:50%;background:var(--panel2);color:var(--ink-faint);font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex:none;}
 .uctopt.on .uctv{background:var(--accent);color:#fff;}
-.igaopt{display:block;width:100%;border:1.3px solid var(--line);background:var(--panel);border-radius:9px;padding:10px 12px;margin-bottom:7px;text-align:left;cursor:pointer;transition:all .12s;}
-.igaopt.on{border-color:var(--accent);background:var(--accent-bg);}
-.igaopt .igal{font-size:13.5px;font-weight:750;color:var(--ink);margin-bottom:3px;}
-.igaopt.on .igal{color:var(--accent);}
-.igaopt .igad{font-size:11.5px;color:var(--ink-dim);line-height:1.45;}
-/* TCS 가이드 */
-.tcssite{border:1px solid var(--line);border-radius:9px;padding:9px 11px;margin-bottom:7px;background:var(--panel);}
-.tcssite-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;flex-wrap:wrap;}
-.tcssite-n{font-size:13px;font-weight:750;}
-.tcssite-r{font-size:11px;font-weight:700;color:var(--ad);background:var(--ad-bg);padding:2px 8px;border-radius:10px;}
-.tcssite-d{font-size:11.5px;color:var(--ink-dim);line-height:1.45;}
-.tcsacc{border:1px solid var(--line);border-radius:9px;margin-top:8px;overflow:hidden;cursor:pointer;background:var(--panel2);}
-.tcsacc-h{padding:9px 12px;font-size:12.5px;font-weight:700;color:var(--ink-dim);}
-.tcsacc-b{max-height:0;overflow:hidden;transition:max-height .01s;padding:0 12px;}
-.tcsacc.open .tcsacc-b{max-height:none;padding:0 12px 12px;}
-.tcsrow{padding:7px 0;border-top:1px dashed var(--line);}
-.tcsrow .k{font-weight:700;font-size:12px;color:var(--ink);display:block;margin-bottom:3px;}
-.tcsrow .tcsv{font-size:11px;color:var(--ink-dim);line-height:1.6;}
-.tcscls{padding:8px 0;border-top:1px dashed var(--line);}
-.tcscls-h{font-size:12.5px;font-weight:700;margin-bottom:3px;}
-.tcscls-n{color:#fff;padding:1px 7px;border-radius:9px;font-size:11px;margin-right:5px;}
-.tcscls-d{font-size:11px;color:var(--ink-dim);margin-bottom:3px;}
-.tcscls-u{font-size:11px;color:var(--ok);}
-.tcscls-a{font-size:11px;color:var(--block);}
-.wkgroup{border:1px solid var(--line);border-radius:9px;padding:10px 12px;margin-bottom:9px;background:var(--panel);}
-.wkg-t{font-size:13px;font-weight:750;margin-bottom:7px;color:var(--care);}
-.wkrow{padding:5px 0;}
-.wkrow .k{font-weight:700;font-size:11.5px;color:var(--ink);display:block;margin-bottom:3px;}
 .calc-launch{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--accent);background:var(--accent-bg);color:var(--accent);border-radius:20px;padding:7px 14px;font-size:12.5px;font-weight:700;cursor:pointer;margin-top:8px;}
-.cstep{border:1px solid var(--line);border-radius:9px;padding:9px 11px;margin-bottom:7px;background:var(--panel);cursor:pointer;}
-.cstep-h{display:flex;align-items:center;justify-content:space-between;}
-.cstep-h .on{font-size:13.5px;font-weight:700;}
-.cstep-chev{color:var(--ink-faint);transition:transform .2s;}
-.cstep.open .cstep-chev{transform:rotate(180deg);}
-.cstep-why{font-size:11.5px;color:var(--ink-faint);margin-top:3px;line-height:1.45;}
-.cstep-reg{max-height:0;overflow:hidden;transition:max-height .01s;}
-.cstep.open .cstep-reg{max-height:none;margin-top:8px;}
-.cstep-rt{font-size:11px;font-weight:750;color:var(--clin);margin-bottom:4px;}
 
 /* 모달 */
 .modal{position:fixed;inset:0;z-index:60;background:rgba(20,30,40,.55);display:flex;align-items:flex-end;justify-content:center;}
@@ -311,10 +274,6 @@ body{padding-bottom:84px;}
   body{padding-top:46px !important;}
   @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
 </style>
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
 <div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
   <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
   <a class="ph-home" href="../index.html" title="홈">🏠</a>
@@ -380,7 +339,6 @@ var DRUG_CLASS = {
   "class:anti_ige":          { label:"항-IgE 생물학제제", short:"anti-IgE" },
   "class:systemic_immuno":   { label:"전신 면역억제제", short:"전신면역억제" },
   "class:systemic_steroid":  { label:"전신 스테로이드", short:"전신스테로이드" },
-  "class:retinoid_oral":     { label:"경구 레티노이드", short:"레티노이드" },
   "class:ltra":              { label:"류코트리엔 수용체 길항제", short:"LTRA" }
 };
 
@@ -388,30 +346,6 @@ var DRUG_CLASS = {
    각 약물은: 표적·기전·계열·상품명·용량·연령·금기·부작용·모니터링
    질환별 '쓰임'과 '급여'는 각 질환 엔진이 ID로 인용 (여기엔 약물 본연 속성만) */
 var DRUG_DB = {
-
-  /* ===== 레티노이드 (만성 중증 손습진 — AD 적응증 아님) ===== */
-  "drug:alitretinoin": {
-    name:"알리트레티노인", brand:"알리톡(Alitoc)/Toctino", en:"alitretinoin",
-    cls:"class:retinoid_oral", target:"RAR·RXR 레티노이드 수용체",
-    route:"경구(1일 1회, 식사와 함께)",
-    dose:"1일 1회 10~30mg 식사 직후. 초기 30mg→이상반응 시 10mg 감량. 당뇨·비만·심혈관위험·이상지질혈증은 10mg부터 시작 후 필요 시 30mg 증량.",
-    doseDetail:"손이 깨끗/거의 깨끗 도달 시 즉시 중단. 12주 후에도 중증이면 중단, 24주까지 목표 미달 시에도 중단. 1주기 통상 12~24주.",
-    age:"성인",
-    moa:"레티노이드 수용체 작용 → 각질형성·염증 조절. 만성 손습진 기전에 작용.",
-    indication:"★적응증: 최소 4주간 강력 국소 스테로이드에 불응한 성인의 재발성 만성 중증 손습진(PGA 평가). ※아토피피부염 전반의 적응증이 아님.",
-    efficacy:"ESCD 2015: 국소스테로이드 불응 만성 중증 손습진의 2차 치료로 권고 A. 국내 만성 중증 손습진의 거의 유일한 경구 적응증 약.",
-    pearls:["손에 국한된 난치 습진에서 '만성 손습진' 확진 시 고려(AD 손습진과 감별 필요)",
-            "AD 치료 알고리즘(EASI·생물/JAK 게이트)과 별개 — 적응증·급여 경로가 다름",
-            "두통이 흔한 부작용이나 장기 난치 환자는 감수하는 경향"],
-    tips:["★임신 절대금기 — 레티노이드 최기형성. 임신방지프로그램(PPP) 필수, 가임기 철저 피임",
-          "투여 중 혈중 지질·혈당 주기적 확인(이상지질·당뇨 악화 가능)",
-          "간기능·갑상선기능 모니터 고려",
-          "헌혈 금지(투여 중·중단 후 일정기간)"],
-    ae:["두통(흔함)","이상지질혈증","갑상선기능 변화","피부·점막 건조","근골격통","간효소 상승"],
-    contra:["임신·수유","가임기 피임 미시행","고지혈증 조절 안 됨","갑상선기능 이상(조절 전)","간장애","비타민A 과다"],
-    monitor:["임신검사(투여 전·중)","혈중 지질·혈당","간기능·갑상선기능","두통 등 부작용"],
-    ageBand:{ infant:false, child:false, adol:false, adult:true }
-  },
 
   /* ===== 생물학제제 (AD) ===== */
   "drug:dupilumab": {
@@ -545,42 +479,28 @@ var DRUG_DB = {
   "drug:cyclosporine": {
     name:"사이클로스포린", brand:"사이폴엔 등", en:"cyclosporine",
     cls:"class:systemic_immuno", target:"칼시뉴린(T세포 활성 억제)",
-    route:"경구(1일 2회 분복)",
-    dose:"시작 2.5~5mg/kg/day 분복(2회). 중증·신속조절 필요 시 5mg/kg/day부터(step-down), 비응급은 2.5~3mg/kg부터.",
-    doseDetail:"조정: 4주 후 효과 불충분·내약 양호 시 2~4주 간격 0.5~1mg/kg 증량(최대 5mg/kg). 관해 후 유지 1~2mg/kg 또는 5mg/kg 격일~5일 간격(간헐요법). 통상 단기(3~6개월)·교량 목적, 장기 지속은 신독성으로 회피.",
-    age:"성인(소아 off-label 3~5mg/kg)",
-    moa:"칼시뉴린 억제→IL-2 등 T세포 사이토카인 전사 차단. 2주 내 빠른 반응.",
-    efficacy:"중등증-중증 AD 빠른 관해유도(2주~). 중단 후 재발 흔함 → advanced로 교량.",
+    route:"경구",
+    dose:"3~5mg/kg/day 분복(반응 보며 감량). 단기·교량 목적.",
+    age:"성인(소아 신중)",
+    moa:"칼시뉴린 억제→IL-2 등 T세포 사이토카인 전사 차단.",
     pearls:["AD 생물학제제 급여게이트의 '전신면역억제제 3개월' 조건 충족약",
-            "CSU 3차 옵션(off-label, 지침 권고 A)","신독성·고혈압으로 장기사용 제한(통상 ≤6개월~1년)",
-            "체중무관 고정용량(150~300mg)도 단기엔 가능"],
-    tips:["Cr은 검사실 기준이 아니라 '개인 기저치 대비' 상승으로 판단(근육량 영향)",
-          "Cr이 기저 대비 25~30%↑ 지속 시 25~50% 감량 또는 중단",
-          "광선치료(UVB/PUVA) 병용·전후 회피 — 편평세포암 위험↑",
-          "생백신 금기, 자몽주스·CYP3A4 약물 상호작용 주의",
-          "MTX 병용 시 대개 ≤3mg/kg로도 조절(병용 신중)"],
-    ae:["신기능저하(용량의존)","고혈압","다모증","잇몸증식","감각이상","감염위험","이상지질","오심"],
-    contra:["조절안된 고혈압","신장애","악성종양(현/과거)","생백신","중증감염"],
-    monitor:["혈압(매 방문)·신기능 Cr/eGFR(기저·2주~월간)·전해질 K/Mg·요산·간·지질","감염징후"],
+            "CSU 3차 옵션(off-label, 지침 권고)","신독성·고혈압으로 장기사용 제한"],
+    ae:["신기능저하","고혈압","다모증","잇몸증식","감염위험","이상지질"],
+    contra:["조절안된 고혈압","신장애","악성종양","생백신"],
+    monitor:["혈압·신기능(Cr)·전해질(K)·약물농도","감염징후"],
     ageBand:{ infant:false, child:true, adol:true, adult:true }
   },
   "drug:methotrexate": {
     name:"메토트렉세이트", brand:"MTX", en:"methotrexate",
     cls:"class:systemic_immuno", target:"디하이드로엽산환원효소(항대사)",
-    route:"경구/피하(주 1회)",
-    dose:"성인 5~15mg/주 시작(통상 15mg), 반응·신기능·연령 고려 조정, 최대 25mg/주. 소아 0.2~0.4mg/kg/주(최대 0.7, cap 25mg).",
-    doseDetail:"★주 1회 투여(매일 아님 — 매일 투여는 치명적 독성). 엽산 5~6mg/주 병행(MTX 비투여일). 효과 발현 느림(8~12주). 경구 흡수 불안정 시 피하 전환.",
-    age:"성인·소아(체중기반)",
-    moa:"항대사·면역조절. AD 전신치료 대안(EuroGuiDerm: 중등도 효과·안전·내약).",
-    efficacy:"느리지만 안정적. CsA 부적합(신장애·고혈압)·장기 필요 시 대안.",
-    pearls:["AD 전신면역억제제 게이트 대체 충족약(CsA 외)","★주 1회·엽산 병용 필수","효과 느림(8~12주)—조기 중단 주의"],
-    tips:["주 1회 고정 요일 지정(매일 복용 사고 방지 — 처방·복약지도 명확히)",
-          "엽산 5~6mg/주로 구내염·소화기·혈액 부작용 경감",
-          "음주 회피(간독성), 신기능 저하 시 용량↓",
-          "임신 절대금기 — 가임기 피임, 중단 후 일정기간 대기"],
-    ae:["간독성","골수억제(혈구감소)","구내염","오심","탈모(경미)","폐독성(드묾)"],
-    contra:["임신·수유","간질환","중증 신부전","활동성감염","과음","골수억제"],
-    monitor:["CBC·간기능 AST/ALT(기저·정기)·신기능","B형/C형 간염(기저)","엽산 보충 확인"],
+    route:"경구/피하(주1회)",
+    dose:"주 1회 투여(엽산 보충 병행).",
+    age:"성인·소아(신중)",
+    moa:"항대사·면역조절. AD 전신치료 대안.",
+    pearls:["AD 전신면역억제제 게이트 대체 충족약(CsA 외)","주 1회·엽산 병용 필수"],
+    ae:["간독성","골수억제","구내염","오심","폐독성(드묾)"],
+    contra:["임신","간질환","신부전","활동성감염","음주"],
+    monitor:["CBC·간기능·신기능 정기","엽산 보충"],
     ageBand:{ infant:false, child:true, adol:true, adult:true }
   },
 
@@ -732,29 +652,6 @@ function drugsByClass(clsId){
    EASI(AD) / UAS7(CSU) / UCT(CSU) 계산식 데이터 + 산출 함수
    출처: Hanifin EASI(0~72), UAS7(Mlynek 0~42), UCT(Weller 0~16)
    ============================================================ */
-
-/* ---- IGA 계산 정의 (lab:iga) ----
-   vIGA-AD 5단계 단일 선택. 형태학적 서술자 포함 */
-var CALC_IGA = {
-  id:"lab:iga", label:"IGA (vIGA-AD)", range:"0~4",
-  src:"Validated IGA for AD (vIGA-AD™ 2017) · 두피·손발바닥 제외",
-  note:"정적(static) 5단계 전반 평가. 홍반·침윤/구진·태선화·삼출/가피를 종합해 단일 등급 선택.",
-  levels:[
-    { v:0, label:"0 — Clear(깨끗)", desc:"염증 징후 없음(홍반·구진·태선화·삼출 없음). 염증후 색소침착/탈색은 있을 수 있음." },
-    { v:1, label:"1 — Almost clear(거의 깨끗)", desc:"겨우 인지되는 홍반, 겨우 인지되는 침윤/구진, 최소 태선화. 삼출·가피 없음." },
-    { v:2, label:"2 — Mild(경증)", desc:"약하지만 분명한 홍반(분홍), 약하지만 분명한 침윤/구진, 약하지만 분명한 태선화. 삼출·가피 없음." },
-    { v:3, label:"3 — Moderate(중등증)", desc:"뚜렷한 홍반(둔한 적색), 뚜렷한 침윤/구진, 뚜렷한 태선화. 삼출·가피 있을 수 있음." },
-    { v:4, label:"4 — Severe(중증)", desc:"현저한 홍반(짙은/선명한 적색), 현저한 침윤/구진, 현저한 태선화. 광범위. 삼출·가피 있을 수 있음." }
-  ],
-  tip:"환자 전체 피부를 보고 가장 잘 맞는 한 등급 선택. IGA 3~4가 중등증-중증, 치료반응(IGA 0/1 도달) 평가에 사용."
-};
-function calcIGA(input){
-  input=input||{};
-  var v=(typeof input.level==="number")?input.level:null;
-  var lv=null;
-  for(var i=0;i<CALC_IGA.levels.length;i++){ if(CALC_IGA.levels[i].v===v) lv=CALC_IGA.levels[i]; }
-  return { score:v, level:lv, moderate:(v!=null&&v>=3) };
-}
 
 /* ---- EASI 계산 정의 (lab:easi) ----
    4부위 × (홍반E+침윤/구진I+표피탈락Ex+태선화L) × 면적점수 × 가중치 */
@@ -914,7 +811,6 @@ var AD_LADDER = [
     severity:["clear","mild","moderate","severe"],
     drugs:[],
     actions:["보습제 충분량 매일(주력 기반치료)","입욕 후 3분내 보습","악화인자·자극 회피","피부감염 관리"],
-    regimen:["보습제: 성인 주 250g 이상, 1일 여러 번. 입욕 후 3분 내(soak&seal)","세정: 미온수·순한 무향 세정제, 때밀기 회피","악화인자: 땀·과열·건조·울 자극·스트레스 관리"],
     why:"피부장벽 회복은 모든 중증도의 토대. 보습 단독으로 경증 상당수 조절·재발↓."
   },
   {
@@ -922,11 +818,6 @@ var AD_LADDER = [
     severity:["mild","moderate","severe"],
     drugs:["drug:tcs_generic","drug:tacrolimus_top","drug:pimecrolimus_top"],
     actions:["TCS 부위·강도 맞춰 도포(FTU 기준)","얼굴·간찰부는 TCI 선호","급성기 후 proactive(주2회) 유지","급여게이트상 국소치료제 4주↑ 이력 필요"],
-    regimen:["몸통·사지 중등도: 3~5군 TCS 1일 1~2회(급성 삼출=크림, 건조·태선화=연고)",
-             "두껍고 만성: 1~2군 연고 최대 2~4주 집중 후 감량",
-             "얼굴·간찰부: 6~7군 단기 또는 타크로리무스 0.03~0.1%/피메크로리무스 1% 1일 2회",
-             "관해 후 proactive: 호발부위 주 2회 TCS 또는 TCI",
-             "보습제와 30~60분 간격 도포(희석 방지)"],
     why:"국소 스테로이드는 AD 국소치료 근간(권고A,1a). TCI는 위축 없어 민감부위·유지에 적합."
   },
   {
@@ -934,9 +825,6 @@ var AD_LADDER = [
     severity:["moderate","severe"],
     drugs:["drug:cyclosporine","drug:methotrexate"],
     actions:["국소치료 4주 실패 후 고려","사이클로스포린 3~5mg/kg 단기","급여게이트상 전신면역억제제 3개월↑ 이력이 advanced 진입 조건","CsA 신독성·혈압 모니터"],
-    regimen:["사이클로스포린: 시작 2.5~5mg/kg/day 분복 2회(중증=5mg/kg step-down), 2~4주마다 0.5~1mg/kg 조정, 관해 후 1~2mg/kg 유지. 통상 3~6개월. 혈압·Cr 모니터",
-             "MTX: 성인 5~15mg/주(통상 15)→최대 25mg/주, ★주 1회, 엽산 5~6mg/주 병행, 효과 8~12주",
-             "전신스테로이드: 급성 구제 단기만(장기 회피)"],
     why:"중등증-중증서 단기 관해유도. 단 신독성으로 장기 제한 → advanced therapy로 가는 교량."
   },
   {
@@ -948,14 +836,6 @@ var AD_LADDER = [
              "동반 Type2질환(천식·비염·비용종)→듀피젠트 우선 고려",
              "빠른 소양 개선·경구 선호→JAK(검사 모니터 필수)",
              "65세↑·심혈관/악성종양 위험→JAK 1차 급여 불가(생물 불응 후만)"],
-    regimen:["듀피젠트: 성인 초회 600mg→300mg q2w SC(검사부담 적음, 동반 Type2에 1순위)",
-             "아트랄자: 초회 600mg→300mg q2w(반응 시 q4w), 두경부·결막염 회피",
-             "엡글리스: 초회/4주차 500mg→250mg q2w, 유지 q4w(12세·40kg↑)",
-             "린버크: 15 또는 30mg 1일 1회 경구(고령/위험군 15mg), 빠른 소양 개선",
-             "시빈코: 100 또는 200mg 1일 1회 경구",
-             "올루미언트: 2 또는 4mg 1일 1회(성인만)",
-             "★JAK 전 결핵·간염·CBC·지질·임신 확인, 대상포진 백신 고려",
-             "평가: 14주 후 16주째 EASI-75 → 추가 6개월 인정"],
     why:"2024 지침 중등증-중증서 생물학제제·JAK 최고수준 권고. 기전·편의·동반질환으로 개별화."
   },
   {
@@ -963,7 +843,6 @@ var AD_LADDER = [
     severity:["moderate","severe"],
     drugs:["drug:prednisolone"],
     actions:["광범위 급성악화 단기만","장기 전신스테로이드 회피(반동)"],
-    regimen:["전신스테로이드: 단기(수일~1주) 저용량, 점감 후 중단. 장기·반복 회피(반동악화)"],
     why:"전신스테로이드는 단기 구제용. 장기 사용은 권고하지 않음."
   }
 ];
@@ -987,8 +866,7 @@ var AD_RECOMMENDATIONS = {
   "r_dupi_comorbid":   { txt:"동반 Type2 염증질환(천식·비염·비용종) 있으면 듀피젠트가 합리적", grade:"전문가의견·기전근거", src:"적응증·기전 근거", detail:"듀피젠트는 천식·만성비부비동염동반비용종·호산구식도염 등 다중 적응증. 한 약제로 동반 Type2 질환을 함께 커버해 약물부담·비용 효율." },
   "r_jak_risk":        { txt:"고령·심혈관/악성종양 위험군은 JAK 안전성 신중", grade:"안전성경고(계열 박스경고)", src:"JAK 계열 경고 · 급여 단서", detail:"중증감염·악성종양·MACE·혈전·사망 위험. 65세↑·흡연·심혈관위험·악성종양력 환자는 위험-이익 재평가. 급여상 이들은 JAK 1차 불가(생물 불응 후만)." },
   "r_dupi_conjunctivitis": { txt:"듀피젠트 결막염 위험인자: 고령·결막염 과거력·기저 EASI≥28", grade:"실사용연구(국내)", src:"국내 단일기관 후향연구(2024)", detail:"듀피 치료자 약 29%서 안구표면질환(DAOSD) 발생, 그중 약 11%는 안과부작용으로 중단. 위험군은 인공눈물·안과의뢰 선제 대비." },
-  "r_easi75_eval":     { txt:"생물/JAK 반응평가: 14주 투여 후 16주째 EASI-75", grade:"급여 평가기준", src:"심평원 급여기준", detail:"EASI 75% 이상 감소 시 추가 6개월 인정, 이후 6개월마다 재평가. 미달 시 지속 급여 불인정 → 교차 전환 고려 시점." },
-  "r_alitretinoin":    { txt:"국소스테로이드 불응 만성 중증 손습진의 2차 치료로 알리트레티노인 권고", grade:"권고 A(ESCD 2015)", src:"유럽접촉피부염협회(ESCD) · 국내 허가/급여", detail:"적응증은 '4주 이상 강력 국소스테로이드 불응 성인의 재발성 만성 중증 손습진'(PGA 평가). 아토피피부염 전반의 적응증이 아니므로 AD 알고리즘과 분리. 임신 절대금기(레티노이드)." }
+  "r_easi75_eval":     { txt:"생물/JAK 반응평가: 14주 투여 후 16주째 EASI-75", grade:"급여 평가기준", src:"심평원 급여기준", detail:"EASI 75% 이상 감소 시 추가 6개월 인정, 이후 6개월마다 재평가. 미달 시 지속 급여 불인정 → 교차 전환 고려 시점." }
 };
 
 /* ---- EASI → 중증도 밴드 ---- */
@@ -1011,7 +889,7 @@ function adClinicalEngine(input){
   for(var i=0;i<AD_LADDER.length;i++){
     var st=AD_LADDER[i];
     if(st.severity.indexOf(sevId)>=0 || st.order===0){
-      out.steps.push({ id:st.id, label:st.label, why:st.why, drugs:st.drugs.slice(), actions:st.actions.slice(), regimen:(st.regimen||[]).slice() });
+      out.steps.push({ id:st.id, label:st.label, why:st.why, drugs:st.drugs.slice(), actions:st.actions.slice() });
     }
   }
 
@@ -1252,33 +1130,6 @@ var AD_COMORBID = {
   why:"아토피행진(atopic march) 관점 — 동반질환을 함께 봐야 치료전략·약제선택이 정확."
 };
 
-/* ---- 검사 패널 (ad:care:workup) ----
-   진단보조 + 전신/advanced 치료 전·중 검사 */
-var AD_WORKUP = {
-  id:"ad:care:workup",
-  diagnostic:{
-    title:"진단 보조(선택적)",
-    items:[
-      "총 IgE·특이 IgE(아토피 소인 확인, 진단 필수는 아님)",
-      "호산구수(중증도·Type2 활성 참고)",
-      "필요 시 첩포검사(접촉피부염 감별), KOH(진균 감별)",
-      "심한 난치·비전형 → 피부생검(피부림프종 등 감별)"
-    ],
-    note:"AD는 임상진단. 검사는 감별·중증도 보조 목적이며 일률 시행 불필요."
-  },
-  beforeSystemic:{
-    title:"전신면역억제제(CsA/MTX) 시작 전·중",
-    csa:["혈압(기저·매 방문)","신기능 Cr·eGFR(기저, 2주~월간)","전해질 K·Mg·요산","간기능","공복지질","감염 선별(필요 시)","약물상호작용 점검(CYP3A4)"],
-    mtx:["CBC(기저·정기)","간기능 AST/ALT","신기능","B형/C형 간염","결핵(고위험 시)","임신검사","흉부X(폐독성 기저, 선택)","엽산 5~6mg/주 병행"]
-  },
-  beforeAdvanced:{
-    title:"생물학제제/JAK 시작 전",
-    biologic:["과민반응력","기생충 위험 평가(듀피, 드묾)","기저 안과증상(결막염 위험군 선별)"],
-    jak:["결핵(IGRA/흉부X)","B형·C형 간염","CBC(빈혈·혈소판·림프구)","간기능","공복지질","임신검사","대상포진 백신 고려(투여 전)","CPK(기저, 선택)"]
-  },
-  why:"전신·advanced 치료는 안전성 관리가 핵심. JAK는 검사 부담이 가장 크고, 생물학제제는 상대적으로 가벼움. CsA는 신기능·혈압이 핵심."
-};
-
 /* ---- 정문 보조: 챙길 목록 산출 ----
    input: { currentDrugs:[], comorbid:[], highRisk:bool, age } */
 function adComprehensiveCare(input){
@@ -1304,86 +1155,6 @@ function adComprehensiveCare(input){
   if(comorbid.indexOf("comorbid:asthma")>=0) care.flags.push("동반 천식 → 듀피젠트 한 약제로 양 질환 커버 가능");
   return care;
 }
-
-/* ============================================================
-   ad_topical.js — 아토피 국소치료 상세 (TCS 강도·제형·부위 매칭)
-   "약이 많아 선택 어려움" 해결: 상황→강도·제형 구체 추천
-   출처: TCS 7-class(미국 분류) · AAD/AAP·StatPearls 제형 가이드
-   네임스페이스: ad:topical:*
-   ============================================================ */
-
-/* ---- TCS 7군 강도 분류 (대표 성분·국내 상품 포함) ---- */
-var TCS_CLASSES = [
-  { cls:1, potency:"초강력(Ultra-high)", egColor:"block",
-    drugs:["클로베타솔 프로피오네이트 0.05%(더모베이트)","베타메타손 디프로피오네이트(증강형) 0.05%","디플로라손 디아세테이트 0.05%"],
-    use:"두껍고 만성화된 태선화 병변·손발. 비민감부위만. ★최대 2~4주 연속, 이후 감량/휴약.",
-    avoid:"얼굴·간찰부·소아 광범위 금지. 장기 시 위축·전신흡수." },
-  { cls:2, potency:"고강력(High)", egColor:"block",
-    drugs:["베타메타손 디프로피오네이트 0.05% 연고","플루오시노니드 0.05%","데속시메타손 0.25%","모메타손 푸로에이트 0.1% 연고"],
-    use:"몸통·사지의 두꺼운/저항성 병변, 급성 중증 플레어.",
-    avoid:"얼굴·간찰부 회피. 단기 집중." },
-  { cls:3, potency:"중-고강력(Upper-mid)", egColor:"warn",
-    drugs:["베타메타손 발레레이트 0.1% 연고","트리암시놀론 아세토니드 0.1%(연고)","플루티카손 프로피오네이트 0.005% 연고"],
-    use:"몸통·사지 중등도 병변.", avoid:"얼굴·간찰부 장기 회피." },
-  { cls:4, potency:"중강력(Mid)", egColor:"warn",
-    drugs:["트리암시놀론 아세토니드 0.1% 크림","모메타손 푸로에이트 0.1% 크림","플루오시놀론 아세토니드 0.025%"],
-    use:"몸통·사지 중등도, 소아 몸통(단기).", avoid:"얼굴 장기." },
-  { cls:5, potency:"중-저강력(Lower-mid)", egColor:"warn",
-    drugs:["하이드로코르티손 부티레이트 0.1%","하이드로코르티손 발레레이트 0.2%","프레드니카르베이트 0.1%","플루티카손 프로피오네이트 0.05% 크림"],
-    use:"중등도 병변, 간찰부 단기, 소아.", avoid:"얼굴 고빈도 장기." },
-  { cls:6, potency:"저강력(Low)", egColor:"ok",
-    drugs:["알클로메타손 디프로피오네이트 0.05%","데소니드 0.05%","플루오시놀론 아세토니드 0.01%"],
-    use:"얼굴·간찰부·소아·민감부위. 유지·proactive에 적합.", avoid:"두꺼운 병변엔 효과 부족." },
-  { cls:7, potency:"최저강력(Lowest)", egColor:"ok",
-    drugs:["하이드로코르티손 1%·2.5%","덱사메타손 0.1%"],
-    use:"영유아 얼굴·눈주위, 가장 민감한 부위, 경미한 병변.", avoid:"중등도↑엔 부족." }
-];
-
-/* ---- 제형(vehicle) 선택 기준 ---- */
-var TCS_VEHICLES = [
-  { id:"ointment", name:"연고(Ointment)",
-    best:"두껍고 건조한/태선화 병변, 만성기. 폐색성↑로 흡수·효력 강함.",
-    avoid:"진물나는 급성 삼출, 털 많은 부위(모낭염), 간찰부(짓무름).",
-    tip:"같은 성분도 연고가 크림보다 강함. 건조한 한국 겨울철 야간 도포에 유리." },
-  { id:"cream", name:"크림(Cream)",
-    best:"급성 삼출/염증, 간찰부, 낮 시간(잔여감 적음). 무난한 범용.",
-    avoid:"매우 건조·두꺼운 병변엔 연고보다 약함.",
-    tip:"화장품처럼 발려 순응도 좋음. 대부분 환자 1차 제형." },
-  { id:"lotion", name:"로션·액(Lotion/Solution)",
-    best:"넓은 면적, 모발 있는 부위(두피·사지), 여름철.",
-    avoid:"매우 건조 병변엔 보습력 부족, 알코올기제는 자극.",
-    tip:"펴 바르기 쉬워 광범위에 유리." },
-  { id:"foam", name:"폼(Foam)",
-    best:"두피 등 모발부위, 넓은 부위 빠른 도포.",
-    avoid:"비용·접근성.", tip:"두피 병변에 연고보다 적합." }
-];
-
-/* ---- 부위별 강도 추천 매트릭스 (★상황→추천) ---- */
-var TCS_SITE_GUIDE = [
-  { site:"얼굴·눈주위", rec:"6~7군(저강력)", vehicle:"크림/로션", clsRange:[6,7],
-    note:"피부 얇아 흡수↑·위축 위험. 단기만. 장기·재발은 TCI(타크로/피메크로)로 전환 권장.",
-    tci:true },
-  { site:"목·간찰부(겨드랑·서혜·접힘)", rec:"5~6군", vehicle:"크림", clsRange:[5,6],
-    note:"폐색 효과로 흡수↑(연고 회피). 단기. 유지엔 TCI.", tci:true },
-  { site:"몸통·사지(일반)", rec:"3~5군(중강력)", vehicle:"크림/연고", clsRange:[3,5],
-    note:"성인 중등도 병변의 주력. 급성 삼출은 크림, 건조·태선화는 연고." },
-  { site:"두껍고 만성 태선화(손·발 포함)", rec:"1~2군(고~초강력)", vehicle:"연고", clsRange:[1,2],
-    note:"★최대 2~4주 집중 후 감량. 손발바닥은 흡수 낮아 강한 제형 필요." },
-  { site:"두피", rec:"3~5군", vehicle:"로션/폼/용액", clsRange:[3,5],
-    note:"모발부위 → 연고 회피, 로션·폼 선호." },
-  { site:"영유아 전반", rec:"6~7군 우선", vehicle:"크림/연고(저강력)", clsRange:[6,7],
-    note:"영유아는 체표면적비↑로 전신흡수 위험. 저강력 우선, 얼굴은 7군 또는 TCI." }
-];
-
-/* ---- 도포 원칙 ---- */
-var TCS_APPLICATION = {
-  ftu:"1 FTU(손끝~첫마디 짜낸 양)≈성인 양손바닥 2개 면적. 1g≈10×10cm.",
-  frequency:"급성기 1일 1~2회. 보습제와 30~60분 간격(희석 방지).",
-  proactive:"관해 후 호발부위 주 2회 국소 항염 유지 → 재발↓(proactive).",
-  taper:"호전되면 강도·빈도 단계적 감량. 갑작스런 중단은 반동.",
-  amount:"성인 전신 1회 약 20~30g. 광범위 만성은 월 단위로 충분량 처방.",
-  safety:"민감부위·장기 고강도 시 위축·모세혈관확장·경구주위피부염 주의. TCI 병용·전환으로 절감."
-};
 
 /* ============================================================
    ad_library.js — 아토피피부염(AD) 도서관 콘텐츠
@@ -1416,7 +1187,6 @@ var AD_LIBRARY = [
         "proactive(주2회 유지)로 재발↓"
       ]},
       { type:"drugcards", title:"국소 약제", drugs:["drug:tcs_generic","drug:tacrolimus_top","drug:pimecrolimus_top"] },
-      { type:"tcsguide", title:"★TCS 강도·제형·부위 선택", ref:"TCS" },
       { type:"note", title:"TCS 강도(7등급)", body:"Class I(최강 clobetasol)~VII(최약 hydrocortisone). 부위·연령·중증도로 선택. 얼굴·접히는 부위·소아는 약한 강도 또는 TCI. 몸통·사지 두꺼운 태선화는 강한 강도 단기." },
       { type:"note", title:"FTU 도포량", body:"1 FTU(손끝~첫마디 짜낸 양)≈성인 양손바닥 면적. 부위별 FTU 가이드로 과/소도포 방지." },
       { type:"refs", title:"근거", items:["r_topical_first"] }
@@ -1467,9 +1237,8 @@ var AD_LIBRARY = [
   },
   {
     id:"ad:topic:monitoring", disease:"ad", cat:"care", icon:"🔬",
-    title:"검사 · 모니터링 · 부작용", lead:"검사 패널·JAK 검사·결막염·감염관리",
+    title:"모니터링 · 부작용", lead:"JAK 검사·결막염·감염관리",
     sections:[
-      { type:"workup", title:"★검사 패널", ref:"AD_WORKUP" },
       { type:"monitor", title:"JAK 투여 전/중", ref:"AD_JAK_MONITORING" },
       { type:"monitor", title:"생물학제제", ref:"AD_BIOLOGIC_MONITORING" },
       { type:"infection", title:"감염 관리", ref:"AD_INFECTION" },
@@ -1487,22 +1256,6 @@ var AD_LIBRARY = [
     ]
   },
   {
-    id:"ad:topic:handeczema", disease:"ad", cat:"clin", icon:"✋",
-    title:"손습진 감별 · 알리톡", lead:"손에 국한된 난치 습진 — AD 알고리즘과 별개 경로",
-    sections:[
-      { type:"keypoints", title:"왜 따로 보는가", items:[
-        "손에 국한된 난치성 습진은 ★아토피 손습진 / 만성 손습진(접촉·자극성 포함)을 감별",
-        "만성 중증 손습진은 별도 적응증 약(알리톡=알리트레티노인)이 있음",
-        "AD advanced(생물/JAK)는 EASI≥23 전신 게이트 — 손 국한이면 게이트 충족 어려움",
-        "★알리톡은 AD 적응증이 아님 → AD 알고리즘에 직접 넣지 않음(별개 경로)"
-      ]},
-      { type:"note", title:"감별 포인트", body:"아토피 손습진: 전형 AD 병력·타 부위 침범·굴측 습진 동반·소아기 발병. 만성 손습진: 직업·자극·접촉 이력, 손에 국한·재발, 첩포검사로 접촉성 감별. 두 가지가 겹칠 수 있어 병력+첩포검사로 정리." },
-      { type:"drugcards", title:"알리톡(만성 중증 손습진)", drugs:["drug:alitretinoin"] },
-      { type:"note", title:"치료 경로 정리", body:"손 국한 난치 습진 → ①국소 강력 스테로이드 4주↑ → ②불응·만성 중증이면 알리톡(손습진 적응증, PGA 평가, 12~24주) 고려. AD 전신질환으로 광범위(EASI≥23)하면 그때 생물학제제/JAK 경로. 두 경로는 적응증·급여가 다름." },
-      { type:"refs", title:"근거", items:["r_alitretinoin"] }
-    ]
-  },
-  {
     id:"ad:topic:kcd", disease:"ad", cat:"pay", icon:"🏷️",
     title:"질병코드", lead:"L20.x · L20.85(중증) · V308",
     sections:[
@@ -1511,9 +1264,7 @@ var AD_LIBRARY = [
         { code:"L20.8", label:"기타 아토피피부염" },
         { code:"L20.84", label:"내인성(intrinsic) 아토피피부염" },
         { code:"L20.85", label:"중증 아토피피부염 ↔ 산정특례 V308 · 생물/JAK 급여 연결", hot:true },
-        { code:"L20.9", label:"아토피피부염, 상세불명" },
-        { code:"L30.9", label:"피부염, 상세불명 (만성 손습진 청구 시 — 알리톡 적응증과 연계)" },
-        { code:"L23.x", label:"알레르기성 접촉피부염 (첩포검사 양성 시)" }
+        { code:"L20.9", label:"아토피피부염, 상세불명" }
       ]},
       { type:"note", title:"청구 포인트", body:"중증·생물학제제/JAK 급여 청구는 L20.85 + 산정특례 V308 연계. 게이트(EASI·이력) 서류와 정합 확인." }
     ]
@@ -1563,11 +1314,11 @@ var CSU_CLASSIFY = {
 /* ---- 검사 (csu:workup) ---- */
 var CSU_WORKUP = {
   id:"csu:workup",
-  basic:["CBC with diff(호산구·이상 선별)","ESR 또는 CRP(전신염증·기저질환 선별)","갑상선기능(TSH)·갑상선자가항체(anti-TPO, 자가면역 동반 흔함)"],
-  selective:["자가혈청피부반응검사(ASST, 자가면역형 의심)","총 IgE(오말리주맙 반응 참고)","D-dimer(중증·난치 활성도 지표)","간염 검사(B형/C형, 면역억제 전)"],
-  inducible:["물리적 유발검사 — 한랭(ice cube test)·압박·피부묘기(dermographism)·콜린성(운동·온열)·일광 등 의심 자극별"],
-  avoid:"광범위 알레르기검사·무분별 검사는 권고하지 않음(원인 규명률 낮음). 음식 알레르기는 CSU 원인으로 드묾.",
-  note:"기본검사 최소화 + 병력 중심. 갑상선·자가면역 단서는 챙김. 물리적 두드러기 의심 시에만 유발검사."
+  basic:["CBC·ESR/CRP(기본 선별)","갑상선기능·갑상선자가항체(동반 흔함)"],
+  selective:["자가혈청피부반응검사(ASST, 자가면역형)","총 IgE(오말리주맙 반응 참고)","D-dimer(중증·난치 활성도)"],
+  inducible:["물리적 유발검사(한랭·압박·피부묘기 등) — 유발성 의심 시"],
+  avoid:"광범위 알레르기검사·무분별 검사는 권고하지 않음(원인 규명률 낮음).",
+  note:"기본검사 최소화 + 병력 중심. 갑상선·자가면역 단서는 챙김."
 };
 
 /* ---- 치료 단계 (csu:step) ---- */
@@ -1576,10 +1327,6 @@ var CSU_LADDER = [
     id:"csu:step:std", order:1, label:"1단계 — 2세대 H1 항히스타민 표준용량",
     drugs:["drug:bilastine","drug:fexofenadine","drug:cetirizine","drug:levocetirizine","drug:loratadine","drug:desloratadine"],
     actions:["비진정성 2세대 H1 1제 표준용량","4주 정도 경과 확인","규칙적 복용(필요시 복용보다 우월)"],
-    regimen:["빌라스틴 20mg 1일 1회(공복) / 펙소페나딘 180mg 1일 1회 / 세티리진 10mg / 레보세티리진 5mg / 데스로라타딘 5mg 중 1제",
-             "★증상 있을 때만이 아니라 매일 규칙적으로 복용",
-             "통상 2~4주 반응 평가 후 다음 단계 결정",
-             "진정 적은 빌라스틴·펙소페나딘이 운전·학업 병행자에 유리"],
     why:"2세대 H1이 1차. 진정·항콜린 부작용 적은 비진정성 우선(권고)."
   },
   {
@@ -1587,30 +1334,20 @@ var CSU_LADDER = [
     drugs:["drug:bilastine","drug:fexofenadine","drug:cetirizine","drug:levocetirizine"],
     actions:["표준용량 미조절 시 동일 약제 최대 4배 증량","또는 서로 다른 2세대 4종 병용",
              "국내 허가사항 고려해 4종 병용을 선호하는 경향","4배 증량이 UAS7=0 도달률은 더 높음(국내연구)"],
-    regimen:["★통상용량 2주 이상 지속 시 4배까지 증량(예: 세티리진 10→40mg/일, 펙소페나딘 180→720mg/일)",
-             "또는 서로 다른 2세대 H1 최대 4종 병용(각 표준용량)",
-             "증량 1~4주 후에도 지속 시 3단계로",
-             "고용량 시 졸음·구갈·QT 주의(빌라스틴·펙소가 상대적으로 안전)",
-             "★증량분은 허가용량 초과 → 청구 삭감 주의(소견 명확화)"],
     why:"증량이 1차 전략(국제지침). 안전성 문제 없이 유의한 개선. 고용량 시 졸음·QT만 주의.",
-    adjunct:["drug:montelukast"], adjunctNote:"항류코트리엔(몬테루카스트 10mg 저녁) 추가 — 제한적 권고, NSAID악화형 일부 유용."
+    adjunct:["drug:montelukast"], adjunctNote:"항류코트리엔(몬테루카스트) 추가 — 제한적 권고, NSAID악화형 일부 유용."
   },
   {
     id:"csu:step:third", order:3, label:"3단계 — 오말리주맙 또는 사이클로스포린",
     drugs:["drug:omalizumab","drug:cyclosporine"],
     actions:["항히스타민 증량에도 불응 시 추가","오말리주맙 300mg q4w(지침 우선 권고)",
              "★오말리주맙 CSU 적응증은 국내 비급여(전액본인)","사이클로스포린은 off-label·모니터 필요"],
-    regimen:["오말리주맙: 300mg q4w SC 고정(체중·IgE 무관). 반응 1~2주(early) 또는 12~16주(late). ★CSU 비급여=전액본인(연 360만원/월2회 720만원)",
-             "사이클로스포린: 2.5~5mg/kg/day 분복 2회, 신독성·혈압 모니터(off-label, 권고A)",
-             "항히스타민은 병용 유지(중단 아님)",
-             "급성악화 시 전신스테로이드 단기(최대 10일)"],
     why:"오말리주맙이 안전성·근거상 사이클로스포린보다 선호(국제지침). 단 국내 급여장벽이 현실 변수."
   },
   {
     id:"csu:step:rescue", order:9, label:"급성악화 구제(단기)",
     drugs:["drug:prednisolone"],
     actions:["급성 악화·심한 발작 단기만(수일)","장기 전신스테로이드 회피"],
-    regimen:["전신스테로이드: 급성악화 시 단기(★최대 10일), 점감 후 중단. 장기·반복 회피"],
     why:"전신스테로이드 단기 구제만. 장기 사용 권고하지 않음(근거IV·권고D)."
   }
 ];
@@ -1649,7 +1386,7 @@ function csuClinicalEngine(input){
   for(var i=0;i<CSU_LADDER.length;i++){
     var st=CSU_LADDER[i];
     if(st.order>=1 && st.order<=3){ out.steps.push({ id:st.id, label:st.label, why:st.why, order:st.order,
-      drugs:st.drugs.slice(), actions:st.actions.slice(), regimen:(st.regimen||[]).slice(), adjunct:st.adjunct||null, adjunctNote:st.adjunctNote||null }); }
+      drugs:st.drugs.slice(), actions:st.actions.slice(), adjunct:st.adjunct||null, adjunctNote:st.adjunctNote||null }); }
   }
   // 조절상태 환기
   if(controlled===true) out.notes.push("UCT "+input.uct+" ≥ 12 → 잘 조절됨. 현 단계 유지하며 감량 시도 고려.");
@@ -1952,61 +1689,7 @@ function renderSection(sec,ci,si){
   else if(t==="omalizumab"){ h+=renderOmalizumab(); }
   else if(t==="csualt"){ h+=renderCsuAlt(); }
   else if(t==="refs"){ h+=renderRefs(sec.items); }
-  else if(t==="tcsguide"){ h+=renderTcsGuide(); }
-  else if(t==="workup"){ h+=renderWorkup(); }
   h+='</div>';
-  return h;
-}
-
-/* ---- TCS 강도·제형·부위 가이드 ---- */
-function renderTcsGuide(){
-  var h='';
-  // 부위별 추천 (핵심)
-  h+='<div style="font-size:12px;font-weight:700;color:var(--ink-dim);margin-bottom:6px">부위별 추천 (상황 → 강도·제형)</div>';
-  for(var i=0;i<TCS_SITE_GUIDE.length;i++){
-    var s=TCS_SITE_GUIDE[i];
-    h+='<div class="tcssite"><div class="tcssite-h"><span class="tcssite-n">'+s.site+'</span><span class="tcssite-r">'+s.rec+' · '+s.vehicle+'</span></div>';
-    h+='<div class="tcssite-d">'+s.note+(s.tci?' <b style="color:var(--care)">→ 유지·재발 시 TCI 전환</b>':'')+'</div></div>';
-  }
-  // 제형 선택 (접이식)
-  h+='<div class="tcsacc" onclick="toggleAcc(this)"><div class="tcsacc-h">제형(연고·크림·로션·폼) 선택 ▾</div><div class="tcsacc-b">';
-  for(var v=0;v<TCS_VEHICLES.length;v++){
-    var ve=TCS_VEHICLES[v];
-    h+='<div class="tcsrow"><span class="k">'+ve.name+'</span><div class="tcsv"><div>✅ '+ve.best+'</div><div>⛔ '+ve.avoid+'</div><div style="color:var(--clin)">💡 '+ve.tip+'</div></div></div>';
-  }
-  h+='</div></div>';
-  // 7군 강도표 (접이식)
-  h+='<div class="tcsacc" onclick="toggleAcc(this)"><div class="tcsacc-h">TCS 7군 강도 분류표 ▾</div><div class="tcsacc-b">';
-  for(var c=0;c<TCS_CLASSES.length;c++){
-    var cl=TCS_CLASSES[c];
-    var col=cl.egColor==="block"?"var(--block)":cl.egColor==="warn"?"var(--warn)":"var(--ok)";
-    h+='<div class="tcscls"><div class="tcscls-h"><span class="tcscls-n" style="background:'+col+'">'+cl.cls+'군</span> '+cl.potency+'</div>';
-    h+='<div class="tcscls-d">'+cl.drugs.join(" · ")+'</div>';
-    h+='<div class="tcscls-u">✅ '+cl.use+'</div><div class="tcscls-a">⛔ '+cl.avoid+'</div></div>';
-  }
-  h+='</div></div>';
-  // 도포 원칙
-  var a=TCS_APPLICATION;
-  h+='<div class="note"><div class="nt">도포 원칙</div>FTU: '+a.ftu+'<br>빈도: '+a.frequency+'<br>proactive: '+a.proactive+'<br>감량: '+a.taper+'</div>';
-  return h;
-}
-function toggleAcc(el){ el.className=(el.className.indexOf("open")>=0)?"tcsacc":"tcsacc open"; }
-
-/* ---- 검사 패널 ---- */
-function renderWorkup(){
-  var w=AD_WORKUP, h='';
-  function blk(title,arr){ var x='<div class="wkrow"><span class="k">'+title+'</span><div class="bx">'; for(var i=0;i<arr.length;i++)x+='<span>'+arr[i]+'</span>'; return x+'</div></div>'; }
-  // 진단
-  h+='<div class="wkgroup"><div class="wkg-t">'+w.diagnostic.title+'</div>';
-  h+='<ul class="kp">'; for(var i=0;i<w.diagnostic.items.length;i++) h+='<li>'+w.diagnostic.items[i]+'</li>'; h+='</ul>';
-  h+='<div class="note" style="margin-top:6px">'+w.diagnostic.note+'</div></div>';
-  // 전신면역억제제 전
-  h+='<div class="wkgroup"><div class="wkg-t">'+w.beforeSystemic.title+'</div>';
-  h+=blk("사이클로스포린",w.beforeSystemic.csa)+blk("MTX",w.beforeSystemic.mtx)+'</div>';
-  // advanced 전
-  h+='<div class="wkgroup"><div class="wkg-t">'+w.beforeAdvanced.title+'</div>';
-  h+=blk("생물학제제",w.beforeAdvanced.biologic)+blk("JAK(검사 부담 큼)",w.beforeAdvanced.jak)+'</div>';
-  h+='<div class="note">'+w.why+'</div>';
   return h;
 }
 
@@ -2124,10 +1807,8 @@ function renderDrugCards(ids,ci,si){
        '<span class="gn">'+d.name+'</span><span class="tg">'+d.target.split("(")[0].trim()+'</span></div>';
     h+='<div class="drugmini-b">';
     h+='<div class="row"><span class="k">기전</span>'+d.moa+'</div>';
-    if(d.indication){ h+='<div class="warnbox" style="background:var(--clin-bg);color:var(--clin)">📌 '+d.indication+'</div>'; }
     if(d.efficacy){ h+='<div class="row"><span class="k">효과·근거</span>'+d.efficacy+'</div>'; }
     h+='<div class="row"><span class="k">용량</span>'+d.dose+'</div>';
-    if(d.doseDetail){ h+='<div class="row"><span class="k">용법 상세</span>'+d.doseDetail+'</div>'; }
     if(d.age_dose){ h+='<div class="row"><span class="k">연령별 용량</span>'+d.age_dose+'</div>'; }
     h+='<div class="row"><span class="k">연령</span>'+d.age+'</div>';
     if(d.pearls&&d.pearls.length){ h+='<div class="row"><span class="k">임상 포인트</span><div class="bx">'; for(var p=0;p<d.pearls.length;p++) h+='<span>'+d.pearls[p]+'</span>'; h+='</div></div>'; }
@@ -2375,7 +2056,7 @@ function renderFlow(){
   var h='<div class="banner"><b>아토피 실시간 플로우</b> — 환자 앞에서 입력 → 3엔진(임상·급여·관리) 카드. 조언자 역할이며 처방을 강제하지 않습니다.</div>';
   h+='<div class="inpgrid">';
   h+='<div class="fld"><label>EASI (0~72)</label><input id="f_easi" type="number" inputmode="decimal" placeholder="예: 28"><button class="fld-calc" onclick="openCalc(\'easi\',function(v){document.getElementById(\'f_easi\').value=v;})">🧮 계산</button></div>';
-  h+='<div class="fld"><label>IGA (0~4)</label><input id="f_iga" type="number" inputmode="decimal" placeholder="예: 4"><button class="fld-calc" onclick="openCalc(\'iga\',function(v){document.getElementById(\'f_iga\').value=v;})">🩺 평가</button></div>';
+  h+='<div class="fld"><label>IGA (0~4)</label><input id="f_iga" type="number" inputmode="decimal" placeholder="예: 4"></div>';
   h+='<div class="fld"><label>국소치료 사용(주)</label><input id="f_tw" type="number" inputmode="decimal" placeholder="예: 6"></div>';
   h+='<div class="fld"><label>전신면역억제제(개월)</label><input id="f_sm" type="number" inputmode="decimal" placeholder="예: 3"></div>';
   h+='<div class="fld"><label>연령</label><select id="f_age"><option value="adult">성인</option><option value="adol">청소년(12~17)</option><option value="child">소아(6~11)</option></select></div>';
@@ -2421,18 +2102,8 @@ function runFlow(){
   // 임상 카드
   h+='<div class="rescard clin"><div class="rh"><span class="ricon">🩺</span>임상 권고 (2024 지침)</div><div class="rb">';
   if(clin.severityBand) h+='<div style="margin-bottom:8px">중증도: <span class="badge '+(clin.severityBand.color==="block"?"b-block":clin.severityBand.color==="warn"?"b-warn":"b-ok")+'">'+clin.severityBand.label+'</span></div>';
-  h+='<div style="font-size:12px;color:var(--ink-faint);margin-bottom:6px">적용 단계 (탭하면 구체 용법)</div>';
-  for(var i=0;i<clin.steps.length;i++){
-    var st=clin.steps[i];
-    var sid="cstep_"+i;
-    h+='<div class="cstep" id="'+sid+'" onclick="toggleCstep(\''+sid+'\')"><div class="cstep-h"><span class="on">'+st.label+'</span><span class="cstep-chev">▾</span></div><div class="cstep-why">'+st.why+'</div>';
-    if(st.regimen&&st.regimen.length){
-      h+='<div class="cstep-reg"><div class="cstep-rt">처방 예시</div><ul class="tiplist">';
-      for(var r=0;r<st.regimen.length;r++){ h+='<li>'+boldStar(st.regimen[r])+'</li>'; }
-      h+='</ul></div>';
-    }
-    h+='</div>';
-  }
+  h+='<div style="font-size:12px;color:var(--ink-faint);margin-bottom:6px">적용 단계</div>';
+  for(var i=0;i<clin.steps.length;i++){ h+='<div class="optrow"><div style="flex:1"><span class="on">'+clin.steps[i].label+'</span><div class="od">'+clin.steps[i].why+'</div></div></div>'; }
   for(var n=0;n<clin.notes.length;n++){ h+='<div class="note">'+clin.notes[n]+'</div>'; }
   h+='</div></div>';
 
@@ -2521,18 +2192,10 @@ function runCsuFlow(){
   if(clin.controlled===true) h+=' <span class="badge b-ok">UCT 조절됨</span>';
   else if(clin.controlled===false) h+=' <span class="badge b-warn">UCT 조절 불충분</span>';
   h+='</div>';
-  h+='<div style="font-size:12px;color:var(--ink-faint);margin:6px 0 4px">치료 단계 (탭하면 구체 용법)</div>';
+  h+='<div style="font-size:12px;color:var(--ink-faint);margin:6px 0 4px">치료 단계</div>';
   for(var i=0;i<clin.steps.length;i++){
     var cur=(clin.steps[i].order===input.currentStep);
-    var sid="cstepu_"+i, st=clin.steps[i];
-    h+='<div class="cstep" id="'+sid+'" onclick="toggleCstep(\''+sid+'\')"><div class="cstep-h"><span class="on"><span class="prio" style="display:inline-flex;width:18px;height:18px;font-size:10px;margin-right:5px">'+st.order+'</span>'+st.label.replace(/^\d단계 — /,'')+(cur?' (현재)':'')+'</span><span class="cstep-chev">▾</span></div><div class="cstep-why">'+st.why+'</div>';
-    if(st.regimen&&st.regimen.length){
-      h+='<div class="cstep-reg"><div class="cstep-rt">처방 예시</div><ul class="tiplist">';
-      for(var r=0;r<st.regimen.length;r++){ h+='<li>'+boldStar(st.regimen[r])+'</li>'; }
-      if(st.adjunctNote) h+='<li style="color:var(--clin)">보조: '+st.adjunctNote+'</li>';
-      h+='</ul></div>';
-    }
-    h+='</div>';
+    h+='<div class="optrow"><span class="prio">'+clin.steps[i].order+'</span><div style="flex:1"><span class="on">'+clin.steps[i].label.replace(/^\d단계 — /,'')+(cur?' (현재)':'')+'</span><div class="od">'+clin.steps[i].why+'</div></div></div>';
   }
   for(var n=0;n<clin.notes.length;n++){ h+='<div class="note">'+clin.notes[n]+'</div>'; }
   h+='</div></div>';
@@ -2564,13 +2227,11 @@ function runCsuFlow(){
   document.getElementById("csuFlowResult").scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-function toggleCstep(sid){ var el=document.getElementById(sid); el.className=(el.className.indexOf("open")>=0)?"cstep":"cstep open"; }
-
 /* ---------- 모달 ---------- */
 function closeModal(){ document.getElementById("modal").hidden=true; }
 
 /* ---------- 점수 계산기 ---------- */
-var CALC_STATE={ type:null, easi:{}, uas7:{}, uct:{}, iga:{level:null}, onApply:null };
+var CALC_STATE={ type:null, easi:{}, uas7:{}, uct:{}, onApply:null };
 
 function openCalc(type, onApply){
   CALC_STATE.type=type;
@@ -2578,7 +2239,6 @@ function openCalc(type, onApply){
   if(type==="easi" && !CALC_STATE.easi.h){ CALC_STATE.easi={h:{},u:{},t:{},l:{}}; }
   if(type==="uas7" && !CALC_STATE.uas7.days){ CALC_STATE.uas7={days:[{},{},{},{},{},{},{}]}; }
   if(type==="uct" && !CALC_STATE.uct.answers){ CALC_STATE.uct={answers:[null,null,null,null]}; }
-  if(type==="iga" && CALC_STATE.iga.level==null){ CALC_STATE.iga={level:null}; }
   renderCalc();
   document.getElementById("modal").hidden=false;
 }
@@ -2587,26 +2247,7 @@ function renderCalc(){
   if(CALC_STATE.type==="easi") body.innerHTML=renderCalcEASI();
   else if(CALC_STATE.type==="uas7") body.innerHTML=renderCalcUAS7();
   else if(CALC_STATE.type==="uct") body.innerHTML=renderCalcUCT();
-  else if(CALC_STATE.type==="iga") body.innerHTML=renderCalcIGA();
 }
-function renderCalcIGA(){
-  var c=CALC_IGA;
-  var h='<h3>🩺 IGA (vIGA-AD) 평가</h3>';
-  h+='<div class="calcsrc">'+c.src+' · 범위 '+c.range+'</div>';
-  h+='<div class="calctip">'+c.tip+'</div>';
-  for(var i=0;i<c.levels.length;i++){
-    var lv=c.levels[i], on=(CALC_STATE.iga.level===lv.v)?" on":"";
-    h+='<button class="igaopt'+on+'" onclick="setIga('+lv.v+')"><div class="igal">'+lv.label+'</div><div class="igad">'+lv.desc+'</div></button>';
-  }
-  var res=calcIGA(CALC_STATE.iga);
-  if(res.score!=null){
-    var col=res.score>=3?"var(--block)":res.score>=2?"var(--warn)":"var(--ok)";
-    h+='<div class="calcresult" style="border-color:'+col+'"><div class="calcrn">IGA</div><div class="calcrs" style="color:'+col+'">'+res.score+'</div><div class="calcrb" style="color:'+col+'">'+res.level.label.split("—")[1].trim()+'</div><div class="calcrsub">'+(res.moderate?"중등증-중증(IGA 3~4)":"경증 이하")+'</div></div>';
-  }
-  if(CALC_STATE.onApply && res.score!=null) h+='<button class="calcapply" onclick="applyCalc()">이 점수로 플로우 채우기 →</button>';
-  return h;
-}
-function setIga(v){ CALC_STATE.iga.level=v; renderCalc(); }
 
 /* EASI 계산기 */
 function renderCalcEASI(){
@@ -2712,7 +2353,6 @@ function applyCalc(){
   if(t==="easi") val=calcEASI(CALC_STATE.easi).score;
   else if(t==="uas7") val=calcUAS7(CALC_STATE.uas7).score;
   else if(t==="uct") val=calcUCT(CALC_STATE.uct).score;
-  else if(t==="iga") val=calcIGA(CALC_STATE.iga).score;
   if(CALC_STATE.onApply) CALC_STATE.onApply(val);
   closeModal();
 }

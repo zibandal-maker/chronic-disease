@@ -244,26 +244,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .node{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px 15px;margin-bottom:11px;box-shadow:var(--shadow)}
 .node h4{font-size:14px;margin-bottom:4px}
 .node .nq{font-size:12.5px;color:var(--ink-dim);margin-bottom:10px;line-height:1.5}
-
-/* 세로 세그(병기 등 긴 라벨) */
-.seg-v{display:flex;flex-direction:column;gap:7px}
-.seg-v button{padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:13.5px;font-weight:600;
-  color:var(--ink);background:var(--panel);text-align:left;transition:.13s}
-.seg-v button.on{background:var(--clin);color:#fff;border-color:var(--clin)}
-
-/* 진단 채점 토글 버튼 */
-.dx-toggle{width:100%;padding:11px;border:1.5px dashed var(--clin-line);border-radius:10px;background:var(--clin-bg);
-  color:var(--clin);font-size:13px;font-weight:650;transition:.13s}
-.dx-toggle:active{transform:scale(.99)}
-
-/* 조언 카드 — 플로우 수준 풍부함, 큰 글씨 */
-.advice-lead{font-size:14px;color:var(--ink);line-height:1.6;margin:0 0 8px;font-weight:500}
-.advice-list{margin:6px 0 0;padding-left:19px}
-.advice-list li{font-size:13.5px;color:var(--ink-dim);line-height:1.65;margin:6px 0}
-
-.opt-reset{width:100%;padding:13px;margin-top:6px;border:1.5px solid var(--line);border-radius:11px;
-  background:var(--panel);color:var(--clin);font-size:14px;font-weight:650}
-
 .opt{display:block;width:100%;text-align:left;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;
   margin-bottom:7px;font-size:13px;color:var(--ink);background:var(--panel);transition:.13s;font-weight:550}
 .opt:active{transform:scale(.99)}
@@ -326,10 +306,6 @@ mark{background:#fde9a8;color:inherit;padding:0 2px;border-radius:3px}
   body{padding-top:46px !important;}
   @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
 </style>
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
 <div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
   <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
   <a class="ph-home" href="../index.html" title="홈">🏠</a>
@@ -859,64 +835,26 @@ function reimbBadge(id){
   };
   return m[id]||{b:"-",cls:"info",note:""};
 }
-
-/* ---- 공용 ACR/EULAR 채점기 빌더 (진단탭·시뮬·플로우 공용) ---- */
-/* container에 채점 UI를 렌더하고, 점수 변할 때 onScore(result) 콜백. compact=true면 축약 라벨 */
-function buildAcrCalc(container, onScore, opts){
-  opts=opts||{};
-  const sel={};
-  ACR_EULAR.forEach(item=>{
-    const f=document.createElement("div");f.className="field";
-    f.innerHTML=`<label>${item.q}</label>`;
-    const seg=document.createElement("div");seg.className="chips";
-    item.opts.forEach(o=>{
-      const btn=document.createElement("button");btn.className="chip";
-      btn.textContent=o.l+(o.v!==0?` (${o.v>0?"+":""}${o.v})`:"");
-      btn.onclick=()=>{
-        [...seg.children].forEach(x=>x.classList.remove("on"));
-        btn.classList.add("on");sel[item.id]=o.v;
-        if(onScore)onScore(acrEularScore(sel),sel);
-      };
-      seg.appendChild(btn);
-    });
-    f.appendChild(seg);container.appendChild(f);
-  });
-  if(onScore)onScore(acrEularScore(sel),sel);
-}
 </script>
 <script>
 /* ════════════════════════════════════════════════════════════
    CONTENT LAYER — 도서관 토픽
    ════════════════════════════════════════════════════════════ */
 const LIBRARY=[
-  {id:"dx",cat:"clin",ic:"🔬",n:"진단 · ACR/EULAR 자동채점",d:"분류기준·확진(MSU)·DECT/US",render:"renderDx",
-   kw:"진단 분류기준 ACR EULAR 채점 점수 MSU 결정 편광현미경 활액 DECT 초음파 DCS 가성통풍 감별 1st MTP 8점"},
-  {id:"stage",cat:"clin",ic:"📈",n:"병기 · 자연경과",d:"4병기·전이·합병증",render:"renderStage",
-   kw:"병기 무증상 급성 간헐기 만성 결절성 tophus 토푸스 자연경과 합병증 신석 1st MTP 발작 온도 포화"},
-  {id:"asymptomatic",cat:"clin",ic:"🤔",n:"무증상 고요산혈증",d:"3층 구조·한미일 비교·RCT·예외",render:"renderAhu",
-   kw:"무증상 고요산혈증 E79 추적관찰 FEATHER CKD-FIX PERL 일본 ACR KDIGO 컷오프 8 9 종양용해 워크업 workup"},
-  {id:"acute",cat:"clin",ic:"🔥",n:"급성 발작 치료",d:"3약물 세부분기·위험도차등·용량",render:"renderAcute",
-   kw:"급성 발작 콜키신 NSAID 나프록센 이부프로펜 스테로이드 프레드니솔론 글루코코르티코이드 관절강내 트리암시놀론 병용 CYP3A4 P-gp 상호작용 스타틴 48시간 위험도"},
-  {id:"ult",cat:"clin",ic:"📉",n:"요산저하요법(ULT)",d:"적응증·목표·반발성발작 예방",render:"renderUlt",
-   kw:"ULT 요산저하 알로푸리놀 페북소스타트 적응증 결절 재발 목표 sUA 6 5 반발성 발작 예방 mobilization flare 콜키신 예방 지속 중단"},
-  {id:"drugclass",cat:"clin",ic:"💊",n:"약제 종류별 설명",d:"계열·성분별 기전·용량·중단·상호작용",render:"renderDrugClass",
-   kw:"약제 약물 계열 성분 알로푸리놀 자이로릭 페북소스타트 페브릭 벤즈브로마론 유니논 프로베네시드 콜키신 콜킨 나프록센 프레드니솔론 XOI 배설촉진 기전 용량 상품명 중단 상호작용 부작용 금기 급여"},
-  {id:"safety",cat:"clin",ic:"🛡️",n:"안전성 · 신기능 용량표",d:"eGFR별 전약물·HLA·CV·간독성",render:"renderSafety",
-   kw:"안전성 신기능 eGFR 용량표 신장 CKD HLA-B 5801 AHS SJS TEN DRESS 중증피부반응 심혈관 CARES FAST 간독성 콜키신 감량 투석"},
-  {id:"special",cat:"clin",ic:"🪨",n:"특수: 요로결석·종양용해",d:"알칼리화·라스부리카제·투석",render:"renderSpecial",
-   kw:"특수 요로결석 결석 N20 요산결석 알칼리화 소변 pH 종양용해 라스부리카제 신병증 투석 화학요법"},
-  {id:"emerging",cat:"clin",ic:"🧬",n:"신흥 · 개발 약물",d:"도티누라드·페그로티케이스·국산",render:"renderEmerging",
-   kw:"신흥 개발 신약 도티누라드 dotinurad URAT1 페그로티케이스 pegloticase uricase 카나키누맙 canakinumab IL-1 티굴릭소스타트 tigulixostat LG화학 국산 레시뉴라드 토피록소스타트"},
-  {id:"purine",cat:"edu",ic:"🧪",n:"퓨린대사 · 요산생성",d:"대사경로·배설·포화·온도",render:"renderPurine",
-   kw:"퓨린 대사 요산 생성 경로 잔틴 xanthine hypoxanthine XO IMP 배설 신장 URAT1 포화 온도 결정 MSU 배출저하 과다생성"},
-  {id:"diet",cat:"edu",ic:"🍽️",n:"식이 · 음주 · 과당",d:"퓨린 정량DB·기전·채소 예외",render:"renderDiet",
-   kw:"식이 식단 음식 음주 술 맥주 막걸리 와인 과당 fructose 퓨린 멸치 내장 간 등푸른생선 고등어 채소 시금치 유제품 우유 커피 체리 다이어트 체중 퓨린함량"},
-  {id:"comorbid",cat:"edu",ic:"🔗",n:"동반질환 · 요산상승 약물",d:"HTN/DM/CKD·이뇨제·아스피린",render:"renderComorbid",
-   kw:"동반질환 고혈압 당뇨 CKD 비만 이상지질혈증 대사증후군 심혈관 요산상승 약물 이뇨제 thiazide loop 아스피린 cyclosporine pyrazinamide"},
-  {id:"reimb",cat:"pay",ic:"💰",n:"급여기준",d:"알로푸리놀1차/페북2차·HLA검사",render:"renderReimb",
-   kw:"급여 비급여 인정 삭감 알로푸리놀 1차 페북소스타트 2차 벤즈브로마론 프로베네시드 HLA 검사 무증상 첨부서류 심평원 고시"},
-  {id:"kcd",cat:"pay",ic:"🔖",n:"급여코드(KCD)",d:"M10 통풍·E79 고요산·N20 결석·검색",render:"renderKcd",
-   kw:"급여코드 KCD 상병 M10 통풍 특발성 M10.0 약물유발 신장 E79 고요산혈증 N20 요로결석 청구 부위 코드"}
+  {id:"dx",cat:"clin",ic:"🔬",n:"진단 · ACR/EULAR 자동채점",d:"분류기준·확진(MSU)·DECT/US",render:"renderDx"},
+  {id:"stage",cat:"clin",ic:"📈",n:"병기 · 자연경과",d:"4병기·전이·합병증",render:"renderStage"},
+  {id:"asymptomatic",cat:"clin",ic:"🤔",n:"무증상 고요산혈증",d:"3층 구조·한미일 비교·RCT·예외",render:"renderAhu"},
+  {id:"acute",cat:"clin",ic:"🔥",n:"급성 발작 치료",d:"3약물 세부분기·위험도차등·용량",render:"renderAcute"},
+  {id:"ult",cat:"clin",ic:"📉",n:"요산저하요법(ULT)",d:"적응증·목표·반발성발작 예방",render:"renderUlt"},
+  {id:"drugclass",cat:"clin",ic:"💊",n:"약제 종류별 설명",d:"계열·성분별 기전·용량·중단·상호작용",render:"renderDrugClass"},
+  {id:"safety",cat:"clin",ic:"🛡️",n:"안전성 · 신기능 용량표",d:"eGFR별 전약물·HLA·CV·간독성",render:"renderSafety"},
+  {id:"special",cat:"clin",ic:"🪨",n:"특수: 요로결석·종양용해",d:"알칼리화·라스부리카제·투석",render:"renderSpecial"},
+  {id:"emerging",cat:"clin",ic:"🧬",n:"신흥 · 개발 약물",d:"도티누라드·페그로티케이스·국산",render:"renderEmerging"},
+  {id:"purine",cat:"edu",ic:"🧪",n:"퓨린대사 · 요산생성",d:"대사경로·배설·포화·온도",render:"renderPurine"},
+  {id:"diet",cat:"edu",ic:"🍽️",n:"식이 · 음주 · 과당",d:"퓨린 정량DB·기전·채소 예외",render:"renderDiet"},
+  {id:"comorbid",cat:"edu",ic:"🔗",n:"동반질환 · 요산상승 약물",d:"HTN/DM/CKD·이뇨제·아스피린",render:"renderComorbid"},
+  {id:"reimb",cat:"pay",ic:"💰",n:"급여기준",d:"알로푸리놀1차/페북2차·HLA검사",render:"renderReimb"},
+  {id:"kcd",cat:"pay",ic:"🔖",n:"급여코드(KCD)",d:"M10 통풍·E79 고요산·N20 결석·검색",render:"renderKcd"}
 ];
 const CAT_LB={clin:"임상",pay:"급여",edu:"교육"};
 const CAT_ORDER=["clin","edu","pay"];
@@ -1006,7 +944,7 @@ function renderLibSections(q){
   const ql=q.toLowerCase();
   let total=0;
   CAT_ORDER.forEach(cat=>{
-    const items=LIBRARY.filter(t=>t.cat===cat && (!ql||(t.n+" "+t.d+" "+t.cat+" "+(CAT_LB[t.cat]||"")+" "+(t.kw||"")).toLowerCase().includes(ql)));
+    const items=LIBRARY.filter(t=>t.cat===cat && (!ql||(t.n+t.d+t.cat+(CAT_LB[t.cat]||"")).toLowerCase().includes(ql)));
     if(!items.length)return;
     total+=items.length;
     const sec=CAT_SECTION[cat];
@@ -1041,12 +979,29 @@ function renderDx(){
   </div>
   ${noteBox("이 분류기준은 임상연구 대상 식별용으로 개발됨 — 진단의 보조이며 임상 판단을 대체하지 않음.","clin")}`;
   const calc=$("#dxCalc",body);
-  buildAcrCalc(calc,(r)=>{
+  const sel={};
+  ACR_EULAR.forEach(item=>{
+    const f=el("div","field");
+    f.innerHTML=`<label>${item.q}</label>`;
+    const seg=el("div","chips");
+    item.opts.forEach(o=>{
+      const b=el("button","chip");
+      b.textContent=o.l+(o.v!==0?` (${o.v>0?"+":""}${o.v})`:"");
+      b.onclick=()=>{
+        [...seg.children].forEach(x=>x.classList.remove("on"));
+        b.classList.add("on");sel[item.id]=o.v;recompute();
+      };
+      seg.appendChild(b);
+    });
+    f.appendChild(seg);calc.appendChild(f);
+  });
+  function recompute(){
+    const r=acrEularScore(sel);
     const out=$("#dxOut",body);out.style.display="block";
     out.innerHTML=`<span class="cval">${r.score}점</span> / 8 &nbsp; ${r.gout?pill("통풍 분류 (≥8)","block"):pill("기준 미달 (<8)","info")}
       ${r.bd.length?`<div style="font-size:11.5px;color:var(--ink-dim);margin-top:7px">${r.bd.map(b=>`${b.q}: <b>${b.v>0?"+":""}${b.v}</b>`).join(" · ")}</div>`:""}
       ${!r.gout?`<div style="font-size:11px;color:var(--ink-faint);margin-top:6px">미달 시 가성통풍·패혈성관절염·반응성/건선/류마티스 관절염 등 감별 고려</div>`:""}`;
-  });
+  }
   openSheet("진단 · ACR/EULAR 2015","자동 채점 계산기",body);
 }
 
@@ -1455,188 +1410,83 @@ function renderEmerging(){
 </script>
 <script>
 /* ════════════════════════════════════════════════════════════
-   시뮬레이션 — 조언자. 구조화 입력 → 풍부한 조언 카드 (강제 아님)
+   시뮬레이션 — 체크형 조언 누적 (강제 아님)
    ════════════════════════════════════════════════════════════ */
-const SIM={stage:null,dx:null,acrScore:null,comorbid:{},hla:"unk",tophus:false,flares:0,egfr:null,sua:null};
+const SIM_PICK={}; // node -> choice
+const SIM_ITEMS=[]; // 누적 챙길 항목
 function renderSim(){
-  // 상태 초기화
-  Object.assign(SIM,{stage:null,dx:null,acrScore:null,comorbid:{},hla:"unk",tophus:false,flares:0,egfr:null,sua:null});
   const v=$("#view-sim");
   v.innerHTML=`
-  <div class="banner"><div class="banner-ic">🧭</div><h3>시뮬레이션 · 조언자</h3><p>단계를 입력하면 이 환자에서 고려할 점을 조언 카드로 정리합니다. 처방을 내리지 않습니다.</p></div>
-
-  <div class="node">
-    <h4>1 · 진단</h4>
-    <div class="nq">통풍이 확진/분류되었나요?</div>
-    <div class="seg" id="simDx">
-      <button data-v="confirmed">확진/분류됨</button>
-      <button data-v="uncertain">불확실 — 채점</button>
-    </div>
-    <div id="simDxCalc" style="display:none;margin-top:12px"></div>
-  </div>
-
-  <div class="node">
-    <h4>2 · 병기</h4>
-    <div class="nq">현재 상태를 선택하세요.</div>
-    <div class="seg-v" id="simStage">
-      <button data-v="asymptomatic">🤔 무증상 고요산혈증</button>
-      <button data-v="acute">🔥 급성 발작 중</button>
-      <button data-v="chronic">📉 간헐기 / 만성·결절성</button>
-    </div>
-  </div>
-
-  <div class="node">
-    <h4>3 · 동반질환 · 안전성 <span class="exp-mini">해당 모두 선택</span></h4>
-    <div class="chips" id="simComorbid"></div>
-    <div class="field" style="margin-top:12px;margin-bottom:0"><label>eGFR (선택)</label><input type="number" id="simEgfr" placeholder="예: 42"></div>
-  </div>
-
-  <div class="node" id="simNodeMore">
-    <h4>4 · 요산 · 발작 (선택 입력)</h4>
-    <div class="field"><label>혈청 요산 sUA (mg/dL)</label><input type="number" id="simSua" step="0.1" placeholder="예: 8.4"></div>
-    <div class="field"><label>통풍결절</label><div class="seg" id="simTophus"><button data-v="0" class="on">없음</button><button data-v="1">있음</button></div></div>
-    <div class="field"><label>연 발작 횟수</label><input type="number" id="simFlares" placeholder="예: 3"></div>
-    <div class="field" style="margin-bottom:0"><label>HLA-B*5801 (알로푸리놀 고려 시)</label><div class="seg" id="simHla">
-      <button data-v="unk" class="on">모름</button><button data-v="neg">음성</button><button data-v="pos">양성</button></div></div>
-  </div>
-
-  <button class="run-btn" id="simRun">📋 조언 정리 보기</button>
-  <div id="simOut" style="margin-top:14px"></div>`;
-
-  // 진단 세그
-  $$("#simDx button",v).forEach(b=>b.onclick=()=>{
-    [...b.parentElement.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");
-    SIM.dx=b.dataset.v;
-    const cz=$("#simDxCalc",v);
-    if(b.dataset.v==="uncertain"){
-      cz.style.display="block";cz.innerHTML=`<div class="calc-out" id="simDxOut" style="display:none"></div><div id="simDxFields"></div>`;
-      buildAcrCalc($("#simDxFields",v),(r)=>{
-        SIM.acrScore=r;
-        const o=$("#simDxOut",v);o.style.display="block";
-        o.innerHTML=`<span class="cval">${r.score}점</span> / 8 &nbsp; ${r.gout?pill("통풍 분류 (≥8)","block"):pill("기준 미달 (<8)","info")}`;
-      });
-    }else{cz.style.display="none";SIM.acrScore=null;}
-  });
-  // 병기 세그(세로)
-  $$("#simStage button",v).forEach(b=>b.onclick=()=>{
-    [...b.parentElement.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");SIM.stage=b.dataset.v;});
-  // 동반질환 다중선택
-  const coDefs=[["ckd","CKD"],["cvd","심혈관질환"],["htn","고혈압"],["dm","당뇨"],["pud","소화성궤양"],["hf","심부전"],["urolithiasis","요로결석"]];
-  const cw=$("#simComorbid",v);
-  coDefs.forEach(([k,l])=>{const b=el("button","chip");b.textContent=l;b.onclick=()=>{SIM.comorbid[k]=!SIM.comorbid[k];b.classList.toggle("on");};cw.appendChild(b);});
-  // tophus/hla 세그
-  $$("#simTophus button",v).forEach(b=>b.onclick=()=>{[...b.parentElement.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");SIM.tophus=b.dataset.v==="1";});
-  $$("#simHla button",v).forEach(b=>b.onclick=()=>{[...b.parentElement.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");SIM.hla=b.dataset.v;});
-  $("#simRun",v).onclick=simRun;
-}
-
-function simRun(){
-  const v=$("#view-sim");
-  SIM.egfr=parseFloat($("#simEgfr",v).value); if(isNaN(SIM.egfr))SIM.egfr=null;
-  SIM.sua=parseFloat($("#simSua",v).value); if(isNaN(SIM.sua))SIM.sua=null;
-  SIM.flares=parseInt($("#simFlares",v).value)||0;
-  if(!SIM.stage){ $("#simOut",v).innerHTML=noteBox("병기를 먼저 선택해주세요.","warn"); return; }
-
-  const cards=[];
-
-  // 진단 카드
-  if(SIM.dx==="uncertain"&&SIM.acrScore){
-    const r=SIM.acrScore;
-    cards.push(adviceCard("🔬","진단","clin",
-      `ACR/EULAR <b>${r.score}점</b> — ${r.gout?"통풍 분류 기준 충족(≥8)":"기준 미달(<8)"}.`,
-      r.gout?["분류기준은 충족하나 확진은 활액 MSU가 표준 — 가능하면 확인","치료 시작 전 감별(가성통풍·패혈성 관절염) 배제"]
-            :["8점 미달 — 가성통풍·패혈성/반응성/건선성 관절염 등 감별","활액 MSU 검사로 확진 시도 권장"]));
-  }else if(SIM.dx==="confirmed"){
-    cards.push(adviceCard("🔬","진단","clin","확진/분류된 통풍으로 진행.",["확진 표준은 활액·결절 MSU 결정 확인"]));
-  }
-
-  // 무증상 분기
-  if(SIM.stage==="asymptomatic"){
-    const a=ahuAdvisor({sua:SIM.sua,...SIM.comorbid});
-    cards.push(adviceCard("🤔","무증상 고요산혈증","clin",
-      `<span class="pill ${a.strength}">${a.decision}</span>`,
-      a.opts.concat(["일률 치료 아님 — 개별 득실. 한·미·일 입장은 도서관 무증상 토픽 참조","2차 원인·동반질환(비만·음주·이뇨제) workup 필수"]),
-      a.krNote));
-  }
-
-  // 급성기 분기
-  if(SIM.stage==="acute"){
-    const acIn={egfr:SIM.egfr,pud:SIM.comorbid.pud,dm_uncontrolled:false,infection:false,hf:SIM.comorbid.hf,anticoag:false,onColchicine:false,monoLarge:false};
-    const r=acuteOptions(acIn);
-    const top=r.drugs.filter(d=>d.stat==="preferred"||d.stat==="usable").map(d=>`${d.name} (${d.dose})`);
-    const avoid=r.drugs.filter(d=>d.stat==="avoid"||d.stat==="contra").map(d=>`${d.name} — ${d.why}`);
-    cards.push(adviceCard("🔥","급성 발작 — 항염증","clin",
-      `3약물 동등 → 위험도로 선택. 발작 <b>24h 이내</b> 시작이 효과 좌우.`,
-      [].concat(
-        top.length?["고려 가능: "+top.join(" / ")]:[],
-        avoid.length?["주의/회피: "+avoid.join(" · ")]:[],
-        ["★NSAID+전신 스테로이드 병용은 회피(GI·체액저류)","ULT 복용 중이면 발작에도 중단하지 않음"]
-      )));
-  }
-
-  // ULT 분기 (만성 또는 적응)
-  if(SIM.stage==="chronic"||SIM.stage==="acute"){
-    const ind=ultIndication({tophus:SIM.tophus,flaresPerYear:SIM.flares,jointDamage:false,urolithiasis:SIM.comorbid.urolithiasis,sua:SIM.sua});
-    const tgt=urateTarget(SIM.tophus);
-    const opts=ultOptions({egfr:SIM.egfr,hla:SIM.hla,cvd:SIM.comorbid.cvd});
-    const usable=opts.filter(d=>d.stat!=="contra"&&d.stat!=="avoid").slice(0,2).map(d=>`${d.name} (${d.dose})`);
-    cards.push(adviceCard("📉","요산저하요법(ULT)",ind.indicated?"clin":"info",
-      ind.indicated?`적응 충족: <b>${ind.reasons.join(" · ")}</b> → 목표 sUA <b>&lt;${tgt}</b>`
-                   :`적응 불충분 — 생활습관·추적. 신기능저하·sUA 8~9↑·결석이면 시작 고려.`,
-      [].concat(
-        usable.length?["약물 후보: "+usable.join(" / ")]:[],
-        SIM.hla==="unk"?["알로푸리놀 전 HLA-B*5801 검사 고려(한국인 ~12%) 또는 저용량 시작"]:[],
-        SIM.hla==="pos"?["HLA 양성 → 알로푸리놀 회피, 페북소스타트 등 대안"]:[],
-        SIM.comorbid.cvd?["CVD 동반 → 페북소스타트 CARES 경고(FAST 반박) 유의"]:[],
-        ["중단 시 재발 36~81% → 금기·부작용 없으면 지속"]
-      )));
-    // 반발성 발작 예방 (ULT 적응 시 항상)
-    if(ind.indicated){
-      const fp=flareProphylaxis({egfr:SIM.egfr,pud:SIM.comorbid.pud,statin:false,cyp3a4:false,tophus:SIM.tophus,flaresPerYear:SIM.flares});
-      cards.push(adviceCard("🛡️","반발성 발작 예방 (ULT 동반 필수)","edu",
-        `ULT 시작 시 최대 <b>80%</b>에서 발작 — 예방 없이 시작 금물.`,
-        [fp.agents[0].name+" "+fp.agents[0].dose+" (1차)","기간: "+fp.duration,"👤 환자: "+fp.teach]));
-    }
-  }
-
-  // 신기능 카드 (eGFR 입력 시)
-  if(SIM.egfr!=null){
-    const band=egfrBand(SIM.egfr);
-    const warns=[];
-    ["drug:colchicine","drug:probenecid","class:nsaid"].forEach(id=>{
-      const rd=RENAL_DOSE[id][band]; const nm=DRUG_DB[id]?DRUG_DB[id].name:(id==="class:nsaid"?"NSAID":id);
-      if(rd.s==="contra"||rd.s==="avoid")warns.push(`${nm}: ${rd.dose} (${rd.note||rd.s})`);
-      else if(rd.s==="dose"||rd.s==="caution")warns.push(`${nm}: ${rd.dose}`);
-    });
-    cards.push(adviceCard("🧮","신기능 ("+BAND_LABEL[band]+")","clin",
-      `eGFR 기준 약물 제약 — 상세는 도서관 안전성 토픽.`,
-      warns.length?warns:["이 구간에서 주요 약물 제약 적음"]));
-  }
-
-  // 동반질환·생활습관 카드 (항상)
-  const lifeItems=["절주 — 맥주·막걸리 최악(퓨린+배설차단+젖산 3중)","과당 제한 — 하이볼·청량음료·콘시럽","체중감량(점진)·저지방 유제품·채소·커피 권장"];
-  if(SIM.comorbid.htn||SIM.comorbid.dm||SIM.comorbid.ckd)
-    lifeItems.push("동반질환 목표 관리 + 요산상승 약물(thiazide·loop·저용량 아스피린) 재검토");
-  cards.push(adviceCard("🍽️","생활습관 · 교육 (항상)","edu","약만큼 중요 — 식이 기여는 혈중 요산의 ~30%.",lifeItems));
-
-  $("#simOut",v).innerHTML=`
-    <div class="sec-label">📋 이 환자 조언 정리</div>
-    ${cards.join("")}
-    ${noteBox("모든 항목은 조언이며 최종 결정은 처방의 책임입니다.","")}
-    <button class="opt-reset" onclick="renderSim();window.scrollTo(0,0)">↺ 처음부터 다시</button>`;
-  $("#simOut",v).scrollIntoView({behavior:"smooth",block:"start"});
-}
-
-/* 조언 카드 빌더 — 플로우 수준의 풍부함 */
-function adviceCard(ic,title,cls,lead,items,note){
-  return `<div class="rcard"><div class="rcard-h ${cls}">${ic} ${title}</div><div class="rcard-b">
-    <p class="advice-lead">${lead}</p>
-    ${items&&items.length?`<ul class="advice-list">${items.map(i=>`<li>${i}</li>`).join("")}</ul>`:""}
-    ${note?noteBox(note,"warn"):""}
+  ${`<div class="banner"><div class="banner-ic">🧭</div><h3>시뮬레이션 · 조언자</h3><p>각 단계를 선택하면 고려할 옵션·근거가 아래에 누적됩니다. 처방을 내리지 않고 "챙길 것"을 모읍니다.</p></div>`}
+  <div id="simNodes"></div>
+  <div class="sim-sticky"><div class="sim-sticky-inner">
+    <h4>📋 챙길 항목</h4><div id="simAcc"><div class="sim-empty">선택을 시작하면 여기에 누적됩니다.</div></div>
   </div></div>`;
+  SIM_ITEMS.length=0;for(const k in SIM_PICK)delete SIM_PICK[k];
+  renderSimNodes();
 }
-</script>
-<script>
+const SIM_NODES=[
+  {id:"dx",h:"1 · 진단 확인",q:"통풍이 확진/분류되었나?",opts:[
+    {l:"MSU 결정 확인 또는 ACR/EULAR ≥8",s:"진단 확정 — 병기 판정으로",add:null},
+    {l:"불확실",s:"활액검사/분류기준 재확인 권장",add:"진단 재확인: 활액 MSU 또는 ACR/EULAR 채점(도서관 진단 탭)"}]},
+  {id:"stage",h:"2 · 병기",q:"현재 상태는?",opts:[
+    {l:"무증상 고요산혈증",s:"→ 무증상 분기",add:"무증상: 2차원인 workup + LAYER C 행동트리(도서관)"},
+    {l:"급성 발작 중",s:"→ 급성 분기",add:"급성: 항염증 3약물 위험도 차등 선택(24h 내 시작)"},
+    {l:"간헐기/만성·결절성",s:"→ ULT 분기",add:"ULT 적응증·목표 평가 + 반발성 발작 예방 동반"}]},
+  {id:"comorbid",h:"3 · 동반질환·안전성",q:"고려할 동반질환 (대표)",opts:[
+    {l:"CKD 동반",s:"신기능별 약물 제약 — 용량표 확인",add:"CKD: eGFR별 용량표(콜키신 감량·프로베네시드 회피·GC 안전)"},
+    {l:"CVD 동반",s:"페북소스타트 CV 경고 유의",add:"CVD: 페북소스타트 CARES 경고(FAST 반박) 고려"},
+    {l:"특이사항 없음",s:"표준 진행",add:null}]},
+  {id:"hla",h:"4 · HLA-B*5801",q:"알로푸리놀 고려 시 HLA",opts:[
+    {l:"검사 안 함/모름",s:"한국인 ~12% 보유 — 검사 또는 저용량 시작",add:"HLA-B*5801: 검사 고려(한국인 12%) 또는 알로푸리놀 저용량 시작"},
+    {l:"음성",s:"알로푸리놀 사용 가능",add:null},
+    {l:"양성",s:"알로푸리놀 회피 → 페북소스타트 등",add:"HLA 양성: 알로푸리놀 회피 → 페북소스타트 대안"}]},
+  {id:"ult",h:"5 · ULT 결정",q:"요산저하요법 적응?",opts:[
+    {l:"적응 충족(결절·재발·손상·결석)",s:"ULT 시작 + 목표 설정",add:"ULT 시작: 목표 sUA<6(결절<5) + 발작예방 콜키신 병용"},
+    {l:"첫 발작·적응 불충분",s:"생활습관 + 추적",add:"추적: 생활습관 교정 + sUA 모니터, 재발 시 ULT 재평가"}]},
+  {id:"life",h:"6 · 생활습관 (항상)",q:"환자교육 핵심",opts:[
+    {l:"교육 항목 추가",s:"음주·과당·체중·식이",add:"생활습관: 절주(맥주 최악)·과당 제한·체중감량·저지방유제품/채소 권장(채소예외)"}]}
+];
+function renderSimNodes(){
+  const wrap=$("#simNodes");wrap.innerHTML="";
+  // 항상 첫 노드부터, 선택 시 다음 노드 공개
+  let show=true;
+  SIM_NODES.forEach((node,idx)=>{
+    if(!show)return;
+    const n=el("div","node");
+    n.innerHTML=`<h4>${node.h}</h4><div class="nq">${node.q}</div>`;
+    node.opts.forEach((o,oi)=>{
+      const b=el("button","opt"+(SIM_PICK[node.id]===oi?" sel":""));
+      b.innerHTML=`${o.l}<span class="osub">${o.s}</span>`;
+      b.onclick=()=>{
+        SIM_PICK[node.id]=oi;
+        rebuildAcc();renderSimNodes();
+      };
+      n.appendChild(b);
+    });
+    wrap.appendChild(n);
+    if(SIM_PICK[node.id]==null)show=false; // 미선택 시 다음 잠금
+  });
+  // finale
+  if(SIM_PICK["life"]!=null){
+    const fin=el("div","node");
+    fin.style.borderColor="var(--clin)";
+    fin.innerHTML=`<h4>✓ 요약</h4><div class="nq">아래 "챙길 항목"이 이 환자의 고려사항입니다. 모든 선택은 조언이며 최종 결정은 처방의 책임입니다.</div>
+      <button class="opt" onclick="renderSim()" style="text-align:center;color:var(--clin);font-weight:650">처음부터 다시</button>`;
+    fin.querySelector(".opt").classList.remove("opt");
+    wrap.appendChild(fin);
+  }
+}
+function rebuildAcc(){
+  SIM_ITEMS.length=0;
+  SIM_NODES.forEach(node=>{
+    const pick=SIM_PICK[node.id];
+    if(pick!=null&&node.opts[pick].add)SIM_ITEMS.push(node.opts[pick].add);
+  });
+  const acc=$("#simAcc");
+  if(!SIM_ITEMS.length){acc.innerHTML=`<div class="sim-empty">선택을 시작하면 여기에 누적됩니다.</div>`;return;}
+  acc.innerHTML=`<ul>${SIM_ITEMS.map(i=>`<li>${i}</li>`).join("")}</ul>`;
+}
 
 /* ════════════════════════════════════════════════════════════
    플로우 — 실시간 입력 → 3엔진 카드
@@ -1648,16 +1498,6 @@ function renderFlow(){
   <div class="kp">
     <div class="field"><label>병기</label><div class="seg" id="fStage">
       <button data-v="asymptomatic">무증상</button><button data-v="acute" class="on">급성</button><button data-v="chronic">만성/간헐</button></div></div>
-    <div class="field" style="margin-bottom:0">
-      <label>진단 (ACR/EULAR 채점 — 선택)</label>
-      <button class="dx-toggle" id="fDxToggle">🔬 진단 채점기 열기 / 닫기</button>
-      <div id="fDxBox" style="display:none;margin-top:10px">
-        <div class="calc-out" id="fDxOut" style="display:none"></div>
-        <div id="fDxFields"></div>
-      </div>
-    </div>
-  </div>
-  <div class="kp">
     <div class="field"><label>혈청 요산 sUA (mg/dL)</label><input type="number" id="fSua" step="0.1" placeholder="예: 8.4"></div>
     <div class="field"><label>eGFR</label><input type="number" id="fEgfr" placeholder="예: 42"></div>
     <div class="field"><label>통풍결절</label><div class="seg" id="fTophus"><button data-v="0" class="on">없음</button><button data-v="1">있음</button></div></div>
@@ -1665,25 +1505,10 @@ function renderFlow(){
       <button data-v="unk" class="on">모름</button><button data-v="neg">음성</button><button data-v="pos">양성</button></div></div>
     <div class="field"><label>연 발작 횟수</label><input type="number" id="fFlares" placeholder="예: 3"></div>
     <div class="field"><label>동반질환 (해당 모두)</label><div class="chips" id="fComorbid"></div></div>
-    <div class="field" style="margin-bottom:0"><label>급성기 상황 (발작 시)</label><div class="chips" id="fAcute"></div></div>
+    <div class="field"><label>급성기 상황 (발작 시)</label><div class="chips" id="fAcute"></div></div>
+    <button class="run-btn" onclick="flowRun()">3엔진 카드 생성</button>
   </div>
-  <button class="run-btn" onclick="flowRun()">⚡ 3엔진 카드 생성</button>
   <div id="flowOut"></div>`;
-  // 진단 채점 토글
-  window._flowAcr=null;
-  $("#fDxToggle",v).onclick=()=>{
-    const box=$("#fDxBox",v);
-    if(box.style.display==="none"){
-      box.style.display="block";
-      if(!$("#fDxFields",v).children.length){
-        buildAcrCalc($("#fDxFields",v),(r)=>{
-          window._flowAcr=r;
-          const o=$("#fDxOut",v);o.style.display="block";
-          o.innerHTML=`<span class="cval">${r.score}점</span> / 8 &nbsp; ${r.gout?pill("통풍 분류 (≥8)","block"):pill("기준 미달 (<8)","info")}`;
-        });
-      }
-    }else box.style.display="none";
-  };
   // segs
   $$("#fStage button,#fTophus button,#fHla button").forEach(b=>b.onclick=()=>{
     [...b.parentElement.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");});
@@ -1709,15 +1534,13 @@ function flowRun(){
 
   // 진단·병기 카드
   const tgt=urateTarget(tophus);
-  const acr=window._flowAcr;
   html+=`<div class="rcard"><div class="rcard-h urate">🎯 병기 · 요산 목표</div><div class="rcard-b">
-    ${acr?`<div style="margin-bottom:10px">🔬 ACR/EULAR <b>${acr.score}점</b>/8 ${acr.gout?pill("통풍 분류 (≥8)","block"):pill("기준 미달 (<8)","info")}${!acr.gout?` <span style="font-size:11px;color:var(--ink-faint)">— 감별 고려</span>`:""}</div>`:""}
     <div class="metric">
       <div class="mbox"><div class="mval">${inp.sua!=null?inp.sua:"–"}</div><div class="mlb">현재 sUA</div></div>
       <div class="mbox"><div class="mval" style="color:var(--urate)">&lt;${tgt}</div><div class="mlb">목표 ${tophus?"결절":"무결절"}</div></div>
       <div class="mbox"><div class="mval">${egfrBand(egfr)?BAND_LABEL[egfrBand(egfr)].replace("eGFR ",""):"–"}</div><div class="mlb">신기능</div></div>
     </div>
-    ${inp.sua!=null&&inp.sua>tgt?noteBox(`목표(&lt;${tgt}) 미달 — ULT 적응 시 적정 필요`,"warn"):inp.sua!=null?noteBox("목표 범위 내","clin"):""}
+    ${inp.sua!=null&&inp.sua>tgt?noteBox(`목표(<${tgt}) 미달 — ULT 적응 시 적정 필요`,"warn"):inp.sua!=null?noteBox("목표 범위 내","clin"):""}
   </div></div>`;
 
   // 무증상 분기

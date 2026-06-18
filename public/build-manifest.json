@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-06-18T04:08:49.555Z",
+  "builtAt": "2026-06-15T02:08:49.789Z",
   "built": [
     {
       "id": "htn",
@@ -44,10 +44,6 @@
     {
       "id": "antimicrobial",
       "out": "antimicrobial.html"
-    },
-    {
-      "id": "isolation",
-      "out": "isolation.html"
     },
     {
       "id": "icu_calc",

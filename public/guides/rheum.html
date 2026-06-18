@@ -56,7 +56,6 @@ body{
 .navbtn.active{color:#fff;border-bottom-color:var(--accent,#6fb0e8);background:rgba(255,255,255,.08)}
 .navbtn[data-tab="symptom"].active{--accent:var(--clin)}
 .navbtn[data-tab="result"].active{--accent:var(--clin)}
-.navbtn[data-tab="workup"].active{--accent:#6fb0e8}
 .navbtn[data-tab="inflam"].active{--accent:#e08043}
 .navbtn[data-tab="ra"].active{--accent:#3fb89c}
 .navbtn[data-tab="library"].active{--accent:#6fb0e8}
@@ -261,32 +260,7 @@ ul.kp li{margin-bottom:5px;font-size:13.5px;line-height:1.5}
   font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
 .flow-step:nth-child(3){background:#fff}
 .flow-step:nth-child(5){background:var(--panel2)}
-.flow-arrow{text-align:center;color:var(--clin);font-size:12px;padding:1px 0;background:#fff}
-/* 계산기 */
-.calc-chip{appearance:none;border:1.4px solid var(--line);background:var(--panel);font-family:inherit;
-  font-size:13px;font-weight:600;color:var(--ink-dim);padding:9px 12px;border-radius:9px;cursor:pointer;
-  transition:all .12s;display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;line-height:1.35}
-.calc-chip:hover{border-color:var(--clin-line)}
-.calc-chip.on{background:var(--clin-bg);border-color:var(--clin);color:var(--ink)}
-.calc-chip .cscore{font-size:13px;flex-shrink:0}
-.calc-result{position:sticky;bottom:0;margin-top:14px;padding:12px;border-radius:11px;
-  background:var(--panel2);border:1.5px solid var(--line);display:flex;align-items:center;gap:13px}
-.calc-badge{font-size:20px;font-weight:850;padding:6px 16px;border-radius:10px;background:#e9eef2;color:var(--ink-dim);white-space:nowrap}
-.calc-badge.part{background:var(--pay-bg);color:var(--pay)}
-.calc-badge.hit{background:var(--ref-bg);color:var(--ref)}
-.calc-meta{font-size:12.5px;color:var(--ink-dim);flex:1;line-height:1.4}
-/* 검사 플로우 */
-.wk-node{border:1.5px solid var(--clin-line);border-radius:12px;margin-bottom:12px;overflow:hidden}
-.wk-node .wk-h{background:var(--clin-bg);padding:11px 14px;font-weight:750;font-size:14px;color:#1c4e7e}
-.wk-node .wk-b{padding:12px 14px}
-.wk-branch{display:flex;align-items:center;gap:9px;padding:10px 12px;border:1.3px solid var(--line);
-  border-radius:9px;margin-bottom:7px;cursor:pointer;background:var(--panel);transition:all .12s;font-size:13px;
-  font-family:inherit;text-align:left;width:100%;font-weight:600;color:var(--ink-dim)}
-.wk-branch:hover{border-color:var(--clin);background:var(--clin-bg)}
-.wk-branch .wk-arrow{margin-left:auto;color:var(--clin);font-weight:800}
-.wk-end{background:linear-gradient(180deg,#f0f7f3,#fff);border:1.6px solid var(--ra-line);border-radius:12px;padding:14px;margin-bottom:12px}
-.wk-end .we-dz{font-size:17px;font-weight:850;color:var(--ra);display:flex;align-items:center;gap:8px}
-.wk-end .we-x{font-size:13px;color:var(--ink-dim);margin:6px 0 10px;line-height:1.5}.empty-hint{text-align:center;color:var(--ink-faint);font-size:13px;padding:24px 12px;line-height:1.6}
+.flow-arrow{text-align:center;color:var(--clin);font-size:12px;padding:1px 0;background:#fff}.empty-hint{text-align:center;color:var(--ink-faint);font-size:13px;padding:24px 12px;line-height:1.6}
 
 @media (max-width:560px){
   .entrygrid,.topicgrid{grid-template-columns:1fr}
@@ -320,10 +294,6 @@ ul.kp li{margin-bottom:5px;font-size:13.5px;line-height:1.5}
   body{padding-top:46px !important;}
   @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
 </style>
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
 <div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
   <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
   <a class="ph-home" href="../index.html" title="홈">🏠</a>
@@ -344,7 +314,6 @@ ul.kp li{margin-bottom:5px;font-size:13.5px;line-height:1.5}
     <button class="navbtn active" data-tab="library"><span class="ic">📚</span>도서관</button>
     <button class="navbtn" data-tab="symptom"><span class="ic">🩺</span>증상</button>
     <button class="navbtn" data-tab="result"><span class="ic">🔬</span>결과해석</button>
-    <button class="navbtn" data-tab="workup"><span class="ic">🧭</span>검사플로우</button>
     <button class="navbtn" data-tab="inflam"><span class="ic">🔥</span>자가염증</button>
     <button class="navbtn" data-tab="ra"><span class="ic">🖐</span>RA</button>
   </div>
@@ -792,117 +761,6 @@ const ANCA_FLOW=[
    symptom:"혈관염 임상소견(자반·다발신경염·신폐침범) 없으면 위양성 고려"},
 ];
 
-/* ---- 자가면역 검사 진행 플로우 (캐스케이드) — 단계별 분기·종착 (v1.8) ---- */
-const WORKUP_CASCADE={
-  start:{
-    id:"start",title:"의심 → 기본 검사",
-    desc:"증상으로 검사 전 확률을 세운 뒤, 작업진단 방향에 맞춰 기본 검사를 낸다.",
-    branches:[
-      {label:"전신 CTD 의심 (발진·레이노·시카·다발관절·신장)",to:"ana_branch"},
-      {label:"혈관염 의심 (객혈·혈뇨·자반·다발신경염·상기도)",to:"anca_branch"},
-      {label:"관절 중심 (대칭 소관절·아침강직)",to:"ra_branch"},
-      {label:"불명열+발진+고령근위통 (항체음성 의심)",to:"inflam_branch"},
-    ],
-  },
-  nodes:{
-    ana_branch:{title:"① ANA (FANA)",type:"test",
-      desc:"전신 결합조직질환의 1차 관문. 패턴+역가로 보고.",
-      pos:{label:"ANA 양성 (≥1:80)",to:"ana_pos"},
-      neg:{label:"ANA 음성",to:"ana_neg"}},
-    ana_pos:{title:"② ANA 양성 → ENA 패널 reflex",type:"test",
-      desc:"★급여: ANA 양성 확인 후 단계적. anti-dsDNA·Sm·RNP·SSA·SSB·Scl70·centromere·Jo1 + 보체(C3/C4)·CBC·UA.",
-      patternHint:"패턴이 방향 제시: 균질→dsDNA / 반점→ENA / 중심체→centromere / 핵소체→Scl70·RNAP",
-      branches:[
-        {label:"anti-dsDNA(+) / 저보체 / 신장·혈구·발진",to:"end_sle"},
-        {label:"anti-SSA/SSB(+) + 시카",to:"end_sjogren"},
-        {label:"anti-Scl70/centromere(+) + 레이노·피부경화",to:"end_ssc"},
-        {label:"고역가 anti-RNP + 부은손·레이노·근염",to:"end_mctd"},
-        {label:"anti-Jo1(+) + 근위약화·ILD",to:"end_iim"},
-      ]},
-    ana_neg:{title:"② ANA 음성",type:"branch",
-      desc:"ANA 음성이라고 CTD 완전 배제는 아님(특히 일부 근염·혈관염). 임상의심 높으면 표적항체·RA 평가.",
-      branches:[
-        {label:"관절 중심 → RF·anti-CCP",to:"ra_branch"},
-        {label:"근염 의심 → CK·근염특이항체(전문의)",to:"end_iim"},
-        {label:"임상의심 낮음 → 위양성/비SARD, 추적",to:"end_lowprob"},
-      ]},
-    anca_branch:{title:"① ANCA (IIF) + PR3/MPO",type:"test",
-      desc:"혈관염 1차. IIF(C/P-ANCA) → 양성 시 PR3/MPO 항원특이 확인. Cr·UA·요침사·흉부영상 동반.",
-      branches:[
-        {label:"PR3(+) + 상기도·폐결절·신염",to:"end_gpa"},
-        {label:"MPO(+) + 급속신염·폐출혈",to:"end_mpa"},
-        {label:"MPO(+) + 천식·호산구·다발신경염",to:"end_egpa"},
-        {label:"ANCA(+) 임상불일치",to:"end_ancafp"},
-      ]},
-    ra_branch:{title:"① RF + anti-CCP + ESR/CRP",type:"test",
-      desc:"관절 중심. anti-CCP 특이도↑·예후. 손/발 X-ray·(가능시)초음파.",
-      branches:[
-        {label:"RF/CCP(+) or 임상 활막염 → RA 점수",to:"end_ra"},
-        {label:"혈청음성이나 활막염 명확 → RA 가능",to:"end_ra"},
-      ]},
-    inflam_branch:{title:"① CBC·페리틴·ESR/CRP (항체축)",type:"test",
-      desc:"항체 음성이 지지하는 축. 페리틴·호중구%·연령·증상으로 분기.",
-      branches:[
-        {label:"고열+연어색발진+호중구↑+페리틴폭증",to:"end_aosd"},
-        {label:"≥50세 양측 견부통+ESR↑",to:"end_pmr"},
-        {label:"≥50세 측두두통·턱파행·시각",to:"end_gca"},
-      ]},
-  },
-  ends:{
-    end_sle:{dz:"SLE",crit:"sle_2019",extra:"신장(요단백/생검)·보체·혈구 가중. 항인지질 동반 확인",icon:"🦋"},
-    end_sjogren:{dz:"Sjögren",crit:"sjogren_2016",extra:"Schirmer·OSS·소타액선 생검으로 점수 가중",icon:"💧"},
-    end_ssc:{dz:"전신경화증",crit:"ssc_2013",extra:"조갑주름 NVC·폐(HRCT)·식도. 피부범위로 미만/제한",icon:"✋"},
-    end_mctd:{dz:"MCTD",crit:null,extra:"고역가 anti-RNP가 핵심. 중복증후군 — 전문의 평가",icon:"🔀"},
-    end_iim:{dz:"염증성 근병증",crit:"iim_2017",extra:"CK·근전도·MRI·근생검·근염특이항체로 가중(전문의)",icon:"💪"},
-    end_gpa:{dz:"GPA",crit:"aav_2022_gpa",extra:"상기도·폐·신 생검. PR3가 +5 가중",icon:"🩸"},
-    end_mpa:{dz:"MPA",crit:"aav_2022_mpa",extra:"신생검(약면역)·MPO +6. 폐섬유화 동반 확인",icon:"🩸"},
-    end_egpa:{dz:"EGPA",crit:"aav_2022_egpa",extra:"호산구·천식·비용종. ANCA 음성 많음",icon:"🌬"},
-    end_ancafp:{dz:"ANCA 위양성 고려",crit:null,extra:"감염·약물·IBD서도 양성. 혈관염 임상소견 재평가",icon:"⚠"},
-    end_ra:{dz:"류마티스관절염",crit:"ra_2010",extra:"관절수·혈청·급성기·기간으로 점수. window of opportunity",icon:"🖐"},
-    end_aosd:{dz:"성인발병스틸병",crit:"aosd_yamaguchi",extra:"배제진단(감염·악성)·MAS 경계. 야마구치 점수",icon:"🔥"},
-    end_pmr:{dz:"PMR",crit:"pmr_2012",extra:"GCA 동반 항상 점검. 스테로이드 반응 진단지지",icon:"🔵"},
-    end_gca:{dz:"GCA",crit:"gca_2022",extra:"★즉시 스테로이드. 측두동맥 초음파/생검",icon:"👁"},
-    end_lowprob:{dz:"저확률 / 비SARD",crit:null,extra:"위양성 가능. 특이증상 출현 시 재평가. 무리한 추가검사 자제",icon:"➖"},
-  },
-};
-
-/* ---- RA flare — steroid pulse / bridge 용법 (1차 시도 가능) ---- */
-const RA_FLARE_STEROID={
-  intro:"RA flare(이전 잘 조절되던 환자의 급성 악화)는 1차에서도 단기 글루코코르티코이드를 시도할 수 있다. ★핵심: 최저 유효용량·최단기간 + flare는 DMARD 조정 필요 신호 → 전문의 연계.",
-  routes:[
-    {name:"경구 단기 (oral bridge)",
-     dose:"프레드니솔론 ~15~30mg/일 단기 → 빠른 감량(예: COBRA-Slim식 6주 내 5mg). 또는 신규/경미는 5~10mg/일 단기",
-     feat:"용량 조절 쉬움·즉시 가능. 가장 흔한 1차 방법",
-     caut:"★급격 중단 시 반동(rebound) — 점감. 18주 같은 장기·반복 회피"},
-    {name:"근주 depot (IM)",
-     dose:"메틸프레드니솔론 또는 트리암시놀론 IM depot 단회(예: 메틸프레드니솔론 80~120mg IM)",
-     feat:"단회 주사·복약순응 불필요·진료실서 즉시. 다관절 flare에",
-     caut:"투여 후 용량 조절 불가. 주사부위 통증·홍조"},
-    {name:"관절강내 (intra-articular)",
-     dose:"1~소수 관절 국한 flare 시 해당 관절 스테로이드 주입",
-     feat:"전신노출 최소·국소 강력. 단관절 우세 flare에 적합",
-     caut:"감염관절 배제 필수. 무균술. 동일관절 빈회 회피"},
-  ],
-  pulse:"★고용량 IV pulse(메틸프레드니솔론 250~1000mg/일 ×3일)는 중증 전신·장기위협(혈관염·중증 다장기) 상황의 전문의 영역 — 단순 관절 flare엔 부적합. 1차에선 경구·IM·관절강내까지.",
-  redflag:"flare가 아니라 감염성 관절염(단관절 급성 발적+발열)일 수 있음 — 스테로이드 전 반드시 배제. flare 반복은 기저 DMARD 부족 신호 → 전문의 의뢰.",
-};
-
-/* ---- RA 1차 약제 사용 진입 (비전문의가 시작 가능한 범위) ---- */
-const RA_PRIMARY_USE={
-  scope:"심하지 않은(경도~중등도, 장기위협 없는) RA는 1차에서도 csDMARD를 시작·교량해볼 수 있다. 단 진단 확정·중등도 이상·진행성은 분과 의뢰.",
-  canStart:[
-    "HCQ: 경증·초기. 안전(골수·간독성 거의 없음). 시작 전·정기 안과검진만 챙기면 1차서 무난",
-    "SSZ: 경증·병용. G6PD·과민 확인. CBC/LFT 모니터링",
-    "MTX: anchor지만 모니터링 부담 — 1차서 시작 가능하나 eGFR·간·임신 체크 + 엽산 필수, 자신 없으면 의뢰",
-    "단기 스테로이드: DMARD 효과 전 교량·flare (위 flare 섹션)",
-  ],
-  refer:[
-    "중등도~고활성도·다관절·미란·전신증상","csDMARD 충분치료(흔히 3~6개월) 실패 → 생물학/JAK 필요",
-    "관절 외 장기침범(ILD·혈관염·공막염)","진단 불확실·비전형","임신 계획·가임기 약물 조정",
-  ],
-  principle:"★Treat-to-Target: 목표(저활성도/관해) 미달 시 스테로이드 늘리지 말고 DMARD 단계상향. 의뢰 망설일 이유 없음 — 조기 전문의 연계가 예후를 가른다.",
-};
-
 /* ---- 자가항체 → 질환 → 증상 결부 (결과해석 보조) ---- */
 const AUTOAB_FLOW=[
   {ab:"anti-dsDNA",dz:"SLE(특이)",sym:"신염 활성도와 연동 — 단백뇨·혈뇨 추적"},
@@ -1003,7 +861,7 @@ const TOPIC_CONTENT={
     <p style="font-size:13.5px;color:var(--ink-dim)">각 질환을 탭하면 전체 점수표가 열립니다.</p>
     <div class="chipgrid" style="flex-direction:column;align-items:stretch;margin-top:10px">
     ${Object.entries(CRITERIA).map(([k,c])=>`<button class="chip" style="display:flex;justify-content:space-between"
-      onclick="closeModal();setTimeout(()=>openCalc('${k}'),60)">
+      onclick="closeModal();setTimeout(()=>openCriteriaModal('${k}'),60)">
       <span><b>${c.label}</b></span><small style="color:var(--ink-faint)">${c.source}</small></button>`).join("")}
     </div>`},
 
@@ -1216,7 +1074,6 @@ function render(){
   if(t==="library")renderLibrary();
   else if(t==="symptom")renderSymptom();
   else if(t==="result")renderResult();
-  else if(t==="workup")renderWorkup();
   else if(t==="inflam")renderInflam();
   else if(t==="ra")renderRA();
 }
@@ -1253,9 +1110,7 @@ function renderLibrary(){
     <button class="entrycard e-clin" onclick="setTab('symptom')"><div class="ec-ic">🩺</div>
       <div class="ec-t">증상 → 검사 판단</div><div class="ec-d">"검사할 가치가 있나?" 검사 전 확률 산출</div></button>
     <button class="entrycard e-clin" onclick="setTab('result')"><div class="ec-ic">🔬</div>
-      <div class="ec-t">결과 해석</div><div class="ec-d">ANA·ANCA·RF 양성 → 후속검사·분류기준 계산기</div></button>
-    <button class="entrycard e-clin" onclick="setTab('workup')"><div class="ec-ic">🧭</div>
-      <div class="ec-t">검사 플로우</div><div class="ec-d">FANA·ANCA 다음 단계, 양성 분기 → 종착 질환</div></button>
+      <div class="ec-t">결과 해석</div><div class="ec-d">ANA·ANCA·RF 양성 → 후속검사·분류기준</div></button>
     <button class="entrycard e-inflam" onclick="setTab('inflam')"><div class="ec-ic">🔥</div>
       <div class="ec-t">자가염증 축</div><div class="ec-d">AOSD·PMR·GCA — 항체 음성이 지지</div></button>
     <button class="entrycard e-ra" onclick="setTab('ra')"><div class="ec-ic">🖐</div>
@@ -1422,13 +1277,12 @@ function renderResult(){
     </tbody></table>
   </div></div>
 
-  <div class="card"><div class="card-h">🧮 분류기준 계산기 (체크 → 자동 점수)</div><div class="card-b">
+  <div class="card"><div class="card-h">📋 분류기준 대조</div><div class="card-b">
     <div class="banner-diag">⚠ 분류기준 ≠ 진단기준 · 전문의 평가 권고</div>
-    <p style="font-size:12.5px;color:var(--ink-dim);margin:0 0 10px">질환을 탭하면 체크박스 계산기가 열립니다. 항목 체크 시 점수가 자동 합산되고 역치 판정됩니다.</p>
-    <div class="chipgrid" style="flex-direction:column;align-items:stretch">
-      ${Object.entries(CRITERIA).map(([k,c])=>`<button class="chip" style="display:flex;justify-content:space-between" onclick="openCalc('${k}')">
-        <span>🧮 <b>${c.label}</b></span><small style="color:var(--ink-faint)">${c.source} · 역치 ${c.threshold!=null?c.threshold:'확률'}</small></button>`).join("")}
-    </div>
+    <div class="numfield"><label>질환 선택</label>
+      <select id="critSel" onchange="renderCritForm(this.value)"><option value="">선택</option>
+        ${Object.entries(CRITERIA).map(([k,c])=>`<option value="${k}">${c.label} (${c.source})</option>`).join("")}</select></div>
+    <div id="critForm"></div>
   </div></div>`;
 }
 
@@ -1473,7 +1327,7 @@ function runANCA(){
       </div></div>`).join("")}
     <div class="note warn"><b>⚠ 적신호:</b> 폐출혈(객혈)·급속진행사구체신염(혈뇨+신기능저하)이면 응급 의뢰.</div>
     <div class="note clin">★IIF 단독은 감염·약물·IBD서도 위양성. PR3/MPO 항원특이 면역측정으로 확인. 분류기준상 ANCA 가중치 높아 분류 ≠ 임상진단.</div>
-    <button class="btn ghost sm" style="margin-top:10px" onclick="openCalc('aav_2022_gpa')">AAV 2022 점수표 보기</button>
+    <button class="btn ghost sm" style="margin-top:10px" onclick="openCriteriaModal('aav_2022_gpa')">AAV 2022 점수표 보기</button>
   </div></div>`;
 }
 
@@ -1541,13 +1395,13 @@ function renderInflam(){
   <div class="card accent-inflam"><div class="card-h">🔥 갈래 분기</div><div class="card-b tight">
     <div class="testitem"><div class="ti-main"><div class="ti-name">AOSD (전 연령)</div>
       <div class="ti-why">불명열 ≥39℃ + 연어색 발진 + 관절통 + 호중구↑. 페리틴 폭증. ANA/RF 음성이 지지.</div></div>
-      <button class="btn ghost sm" onclick="openCalc('aosd_yamaguchi')">야마구치</button></div>
+      <button class="btn ghost sm" onclick="openCriteriaModal('aosd_yamaguchi')">야마구치</button></div>
     <div class="testitem"><div class="ti-main"><div class="ti-name">PMR (≥50세)</div>
       <div class="ti-why">양측 견부·고관절대 통증 + 조조강직 >45분 + ESR/CRP↑. ★GCA 동반 항상 점검.</div></div>
-      <button class="btn ghost sm" onclick="openCalc('pmr_2012')">PMR 기준</button></div>
+      <button class="btn ghost sm" onclick="openCriteriaModal('pmr_2012')">PMR 기준</button></div>
     <div class="testitem"><div class="ti-main"><div class="ti-name">GCA (≥50세) 🚨</div>
       <div class="ti-why">측두부 두통·턱파행·시각이상·두피압통. 실명 위험 — 의심 시 즉시 스테로이드.</div></div>
-      <button class="btn ghost sm" onclick="openCalc('gca_2022')">GCA 기준</button></div>
+      <button class="btn ghost sm" onclick="openCriteriaModal('gca_2022')">GCA 기준</button></div>
   </div></div>
 
   <div class="redflag-card"><div class="rf-h">👁 GCA — 점수 우회 긴급 게이트</div><div class="rf-b">
@@ -1597,53 +1451,6 @@ function renderInflam(){
   </div></div>`;
 }
 
-/* ---------- 검사 진행 플로우 (캐스케이드) ---------- */
-let WK_STACK=["start"];
-function renderWorkup(){ WK_STACK=["start"]; drawWorkup(); }
-function wkGo(to){ WK_STACK.push(to); drawWorkup(); }
-function wkReset(){ WK_STACK=["start"]; drawWorkup(); }
-function wkBack(){ if(WK_STACK.length>1){WK_STACK.pop();drawWorkup();} }
-function drawWorkup(){
-  const cur=WK_STACK[WK_STACK.length-1];
-  let html=`<div class="phead"><div class="eyebrow">검사 진행 · 단계별 분기</div>
-    <h1>자가면역 검사 플로우</h1><p>FANA·ANCA 다음에 뭘 하나? 양성에 따라 다음 검사를 고르고, 증상·항목이 더해지며 점수가 가중돼 종착 질환으로 좁혀간다.</p>
-    <div class="axis-line clin"></div></div>`;
-  html+=`<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;font-size:11px;align-items:center">
-    ${WK_STACK.map((id,i)=>`<span style="padding:3px 9px;border-radius:20px;background:${i===WK_STACK.length-1?'var(--clin)':'var(--panel2)'};color:${i===WK_STACK.length-1?'#fff':'var(--ink-faint)'};font-weight:700">${wkTitle(id)}</span>${i<WK_STACK.length-1?'<span style="color:var(--ink-faint)">›</span>':''}`).join("")}</div>`;
-  if(WK_STACK.length>1){
-    html+=`<div class="btnrow" style="margin-top:0;margin-bottom:12px">
-      <button class="btn ghost sm" onclick="wkBack()">‹ 뒤로</button>
-      <button class="btn ghost sm" onclick="wkReset()">↺ 처음부터</button></div>`;
-  }
-  if(WK_STACK.length>1 && WORKUP_CASCADE.ends[cur]){
-    const e=WORKUP_CASCADE.ends[cur];
-    html+=`<div class="wk-end"><div class="we-dz">${e.icon} ${e.dz}</div>
-      <div class="we-x">${e.extra}</div>
-      ${e.crit?`<button class="btn primary" onclick="openCalc('${e.crit}')">🧮 ${CRITERIA[e.crit].label} 분류기준 계산기 열기</button>`
-        :`<div class="note clin">표준 분류기준 계산기 없음 — 전문의 평가. 위 추가 항목으로 임상 종합.</div>`}</div>
-      <div class="note">★종착은 "여기에 가까워진다"는 방향. 추가 증상·검사로 점수가 가중되며 확정에 다가간다. 분류 ≠ 진단.</div>`;
-    main().innerHTML=html; return;
-  }
-  const node = cur==="start" ? WORKUP_CASCADE.start : WORKUP_CASCADE.nodes[cur];
-  html+=`<div class="wk-node"><div class="wk-h">${node.title}</div><div class="wk-b">
-    <div style="font-size:13px;color:var(--ink-dim);margin-bottom:10px;line-height:1.5">${node.desc}</div>`;
-  if(node.patternHint)html+=`<div class="note clin">${node.patternHint}</div>`;
-  let branches=node.branches;
-  if(node.type==="test" && (node.pos||node.neg)) branches=[node.pos,node.neg].filter(Boolean);
-  html+=`<div style="margin-top:10px">${branches.map(b=>`<button class="wk-branch" onclick="wkGo('${b.to}')">
-    <span>${b.label}</span><span class="wk-arrow">→</span></button>`).join("")}</div></div></div>`;
-  if(cur==="start"){
-    html+=`<div class="note clin"><b>원칙:</b> 검사를 출발점으로 두지 말 것. 증상으로 검사 전 확률을 먼저 세운 뒤 진입(증상 탭). 저확률 무차별 ANA는 위양성 폭포.</div>`;
-  }
-  main().innerHTML=html;
-}
-function wkTitle(id){
-  if(id==="start")return "시작";
-  if(WORKUP_CASCADE.nodes[id])return WORKUP_CASCADE.nodes[id].title.replace(/^[①②③④]\s*/,"").slice(0,12);
-  if(WORKUP_CASCADE.ends[id])return WORKUP_CASCADE.ends[id].dz;
-  return id;
-}
-
 /* ---------- RA 축 ---------- */
 function renderRA(){
   main().innerHTML=`
@@ -1663,7 +1470,7 @@ function renderRA(){
   <div class="card accent-ra"><div class="card-h">🔬 신체진찰 상세</div><div class="card-b tight">
     ${RA_DIAGNOSIS.exam.map(e=>`<div class="testitem"><div class="ti-main">
       <div class="ti-name">${e[0]}</div><div class="ti-why">${e[1]}</div></div></div>`).join("")}
-    <button class="btn ghost sm" style="margin-top:10px" onclick="openCalc('ra_2010')">2010 분류기준 점수표</button>
+    <button class="btn ghost sm" style="margin-top:10px" onclick="openCriteriaModal('ra_2010')">2010 분류기준 점수표</button>
   </div></div>
 
   <div class="card accent-ra"><div class="card-h">🫁 관절 외 소견 (extra-articular)</div><div class="card-b">
@@ -1737,103 +1544,10 @@ function renderRA(){
   <div class="card accent-pay"><div class="card-h">💰 생물학적제제·JAK 급여 (안내선)</div><div class="card-b">
     <div class="note">${BIOLOGIC_REIMB_KR.ra}</div>
     <div class="note warn">${BIOLOGIC_REIMB_KR.note}</div>
-  </div></div>
-
-  <div class="banner-diag" style="margin-top:20px;background:var(--ra-bg);color:var(--ra);border-color:var(--ra-line)">🩺 1차에서 어디까지 — 경증은 시작해볼 수 있다</div>
-
-  <div class="card accent-ra"><div class="card-h">💊 1차 약제 시작 (비전문의 가능 범위)</div><div class="card-b">
-    <div class="note clin">${RA_PRIMARY_USE.scope}</div>
-    <h3 class="sec">✅ 1차에서 시작·교량 가능</h3>
-    <ul class="kp">${RA_PRIMARY_USE.canStart.map(s=>`<li>${s}</li>`).join("")}</ul>
-    <h3 class="sec">➡️ 분과 전문의 의뢰</h3>
-    <ul class="kp">${RA_PRIMARY_USE.refer.map(s=>`<li>${s}</li>`).join("")}</ul>
-    <div class="note warn">${RA_PRIMARY_USE.principle}</div>
-  </div></div>
-
-  <div class="card accent-ref"><div class="card-h">⚡ RA Flare — 스테로이드 (1차 시도 가능)</div><div class="card-b">
-    <div class="note clin">${RA_FLARE_STEROID.intro}</div>
-    ${RA_FLARE_STEROID.routes.map(r=>`<div class="def-card" style="margin-top:9px"><div class="dc-h" onclick="this.parentElement.classList.toggle('open')">
-      <span>${r.name}</span><span class="arr">▸</span></div><div class="dc-b">
-      <div style="font-size:12.5px"><b>용법:</b> ${r.dose}</div>
-      <div style="font-size:12.5px;margin-top:3px"><b>특징:</b> ${r.feat}</div>
-      <div style="font-size:12.5px;margin-top:3px;color:var(--pay)"><b>주의:</b> ${r.caut}</div>
-    </div></div>`).join("")}
-    <div class="note warn" style="margin-top:10px">${RA_FLARE_STEROID.pulse}</div>
-    <div class="redflag-card" style="margin-top:10px"><div class="rf-h">🚨 flare 전 반드시 배제</div><div class="rf-b">${RA_FLARE_STEROID.redflag}</div></div>
   </div></div>`;
 }
 
-/* ---------- 공용 분류기준 계산기 모달 (어디서든 호출) ---------- */
-let CALC_CHECKED=new Set();
-let CALC_CRIT=null;
-function openCalc(critId){
-  CALC_CHECKED=new Set(); CALC_CRIT=critId;
-  const c=CRITERIA[critId];
-  let body=`<div class="banner-diag">⚠ 분류기준 ≠ 진단기준 · 체크하면 자동 합산 · 전문의 평가 권고</div>`;
-  if(c.entry)body+=`<div class="note clin"><b>진입조건:</b> ${c.entry.lab}</div>`;
-  if(c.prereq)body+=`<div class="note clin"><b>전제:</b> ${c.prereq}</div>`;
-  body+=`<div class="note">${c.rule}</div>`;
-  if(c.probabilistic){
-    body+=`<h3 class="sec">간이 점검 (해당 항목 체크)</h3><div class="chipgrid" style="flex-direction:column;align-items:stretch">`;
-    c.simpleItems.forEach((it,i)=>{body+=`<button class="chip" onclick="this.classList.toggle('on')">${it}</button>`;});
-    body+=`</div><div class="note warn" style="margin-top:10px">확률 기반 정밀 회귀점수는 전문의 영역. 1차에서는 anti-Jo1·CK·근위약화가 핵심 단서.</div>`;
-    openModalRaw(`🧮 ${c.label} 간이 점검`,body);
-    return;
-  }
-  body+=`<div id="calcItems" style="margin-top:10px">`;
-  if(c.items){
-    body+=`<div class="chipgrid" style="flex-direction:column;align-items:stretch">`;
-    c.items.forEach((it,i)=>{
-      body+=`<button class="calc-chip" data-key="${critId}_${i}" data-score="${it[1]}" onclick="toggleCalc(this)">
-        <span>${it[0]} <small style="color:var(--ink-faint)">${it[2]}</small></span>
-        <b class="cscore" style="color:${it[1]<0?'var(--ref)':'var(--ok)'}">${it[1]>0?'+':''}${it[1]}</b></button>`;
-    });
-    body+=`</div>`;
-  } else if(c.domains){
-    c.domains.forEach((d,di)=>{
-      body+=`<div class="grouplbl">${d.dom}${c.rule.includes('최고')||critId==='sle_2019'?' <small style="font-weight:600;color:var(--ink-faint)">(최고 1개만 계수)</small>':''}</div>
-        <div class="chipgrid" style="flex-direction:column;align-items:stretch">`;
-      d.items.forEach((it,ii)=>{
-        body+=`<button class="calc-chip" data-key="${critId}_${di}_${ii}" data-dom="${di}" data-score="${it[1]}" onclick="toggleCalc(this)">
-          <span>${it[0]}</span><b class="cscore" style="color:${it[1]<0?'var(--ref)':'var(--ok)'}">${it[1]>0?'+':''}${it[1]}</b></button>`;
-      });
-      body+=`</div>`;
-    });
-  }
-  body+=`</div>
-    <div class="calc-result" id="calcResult">
-      <div class="calc-badge" id="calcBadge">0점</div>
-      <div class="calc-meta" id="calcMeta">항목을 체크하세요 · 역치 ${c.threshold!=null?c.threshold:'—'}</div>
-    </div>
-    <div class="note warn" id="calcVerdict" style="display:none"></div>`;
-  openModalRaw(`🧮 ${c.label} 계산기 <span style="font-size:12px;font-weight:600;color:var(--ink-faint)">${c.source}</span>`,body);
-  updateCalc();
-}
-function toggleCalc(el){
-  const key=el.dataset.key;
-  if(CALC_CHECKED.has(key)){CALC_CHECKED.delete(key);el.classList.remove("on");}
-  else{CALC_CHECKED.add(key);el.classList.add("on");}
-  updateCalc();
-}
-function updateCalc(){
-  const r=criteriaScore(CALC_CRIT,[...CALC_CHECKED]);
-  const c=CRITERIA[CALC_CRIT];
-  const badge=$("#calcBadge"),meta=$("#calcMeta"),verdict=$("#calcVerdict");
-  if(!badge)return;
-  badge.textContent=r.total+"점";
-  badge.className="calc-badge "+(r.classified?"hit":(r.total>0?"part":""));
-  meta.innerHTML=`역치 ${r.threshold!=null?r.threshold:'—'} · 기여 ${r.contributing.length}항목`
-    +(r.contributing.length?` <span style="color:var(--ink-faint)">(${r.contributing.map(x=>(x.score>0?'+':'')+x.score).join(", ")})</span>`:"");
-  if(r.threshold!=null){
-    verdict.style.display="block";
-    verdict.className="note "+(r.classified?"":"clin");
-    verdict.innerHTML=r.classified
-      ? `★분류기준 <b>충족</b> (${r.total}점 ≥ ${r.threshold}). 단 이것은 분류일 뿐 진단이 아님 — "${c.label} 분류기준 ${r.total}점, 전문의 평가 권고".`
-      : `미충족 (${r.total}점 < ${r.threshold}). 미충족이어도 임상진단 가능 — 점수는 보조. 강한 의심이면 의뢰.`;
-  }
-}
-
-
+/* ---------- 토픽 모달 ---------- */
 function openTopic(id){
   const content=TOPIC_CONTENT[id];
   if(!content){openModalRaw("준비 중","이 토픽은 다음 빌드에서 확장됩니다.");return;}
