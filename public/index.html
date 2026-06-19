@@ -262,9 +262,68 @@
   .fb-status.ok{color:var(--care);}
   .fb-status.err{color:#c43838;}
   @media (max-width:360px){.author{display:none;}}
+
+  /* ── 검색창 ── */
+  .searchbar{position:relative;margin:2px 2px 12px;}
+  .searchbar input{width:100%;box-sizing:border-box;font-family:var(--sans);
+    font-size:15px;color:var(--ink);background:var(--panel);
+    border:1px solid var(--line);border-radius:12px;padding:12px 40px 12px 42px;
+    box-shadow:var(--shadow);transition:.15s;}
+  .searchbar input:focus{outline:none;border-color:var(--accent);
+    box-shadow:0 0 0 3px var(--accent-bg);}
+  .searchbar .s-ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);
+    font-size:16px;opacity:.5;pointer-events:none;}
+  .searchbar .s-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);
+    width:24px;height:24px;border:none;background:var(--panel2);border-radius:50%;
+    cursor:pointer;color:var(--ink-dim);font-size:14px;display:none;align-items:center;justify-content:center;}
+  .searchbar .s-clear.on{display:flex;}
+
+  /* ── 즐겨찾기 별 ── */
+  a.card .fav{position:absolute;top:12px;right:12px;width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;border-radius:8px;
+    border:none;background:transparent;cursor:pointer;font-size:17px;line-height:1;
+    color:#cfd6dd;transition:.15s;z-index:2;}
+  a.card .fav:hover{background:var(--panel2);}
+  a.card .fav.on{color:#f0a500;}
+  a.card .fav:active{transform:scale(.85);}
+  .section-label{font-size:12px;font-weight:700;color:var(--ink-faint);
+    letter-spacing:.03em;margin:4px 2px 10px;display:flex;align-items:center;gap:6px;}
+  .section-label::after{content:"";flex:1;height:1px;background:var(--line);}
+
+  /* ── 면책 게이트 ── */
+  .gate-overlay{position:fixed;inset:0;z-index:3000;display:flex;
+    align-items:center;justify-content:center;padding:20px;
+    background:rgba(16,28,40,.62);backdrop-filter:blur(4px);}
+  .gate-overlay.hidden{display:none;}
+  .gate-card{width:100%;max-width:420px;background:var(--panel);border-radius:18px;
+    padding:26px 22px 22px;box-shadow:0 20px 60px rgba(16,28,40,.4);
+    animation:slideup .3s cubic-bezier(.2,.8,.3,1);}
+  .gate-card .g-ico{font-size:34px;line-height:1;margin-bottom:12px;}
+  .gate-card h2{margin:0 0 10px;font-size:19px;font-weight:800;color:#101c28;letter-spacing:-.01em;}
+  .gate-card p{margin:0 0 10px;font-size:13.5px;line-height:1.6;color:var(--ink-dim);}
+  .gate-card .g-warn{font-size:12.5px;color:#a05a1a;background:#fbf0d8;
+    border:1px solid #f0dca8;border-radius:10px;padding:10px 12px;margin:14px 0 18px;line-height:1.55;}
+  .gate-card button{width:100%;font-family:var(--sans);font-size:15px;font-weight:700;
+    padding:13px;border-radius:12px;cursor:pointer;border:none;
+    background:var(--accent);color:#fff;transition:.15s;}
+  .gate-card button:hover{filter:brightness(1.06);}
+  .gate-card button:active{transform:scale(.98);}
+  .gate-card .g-foot{margin-top:12px;font-size:11.5px;color:var(--ink-faint);text-align:center;line-height:1.5;}
 </style>
 </head>
 <body>
+<div class="gate-overlay hidden" id="gateOverlay" aria-hidden="true">
+  <div class="gate-card" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+    <div class="g-ico">🩺</div>
+    <h2 id="gateTitle">의료 전문가용 도구입니다</h2>
+    <p>이 시스템은 한국 진료지침과 심평원 급여기준을 정리한 <b>처방 의사결정 보조 도구</b>로, 의료 전문가를 대상으로 합니다.</p>
+    <p>모든 내용은 임상 판단을 <b>보조</b>할 뿐이며, 진단·처방·청구의 최종 책임은 사용하는 의사에게 있습니다. 환자 본인의 자가 진단·치료 판단 용도가 아닙니다.</p>
+    <div class="g-warn">⚠️ 일반인·환자께서는 이 도구의 정보를 본인 또는 타인의 진료 결정에 사용하지 마시고, 반드시 담당 의료진과 상담하시기 바랍니다.</div>
+    <button id="gateAccept">확인했습니다 · 의료 전문가입니다</button>
+    <div class="g-foot">한 번 확인하면 이 기기에서 다시 표시되지 않습니다.</div>
+  </div>
+</div>
+
 <div class="topright">
   <span class="author">작성 <b>박형도</b></span>
   <button class="fb-btn" id="fbOpen" aria-label="피드백 보내기">
@@ -310,8 +369,21 @@
     </div>
   </header>
 
+  <div class="searchbar">
+    <span class="s-ico">🔍</span>
+    <input id="search" type="text" inputmode="search" autocomplete="off"
+      placeholder="도구·약물·키워드 검색 (예: DOAC, 급여, htn, 골다공증)" aria-label="도구 검색">
+    <button class="s-clear" id="sClear" aria-label="검색어 지우기">✕</button>
+  </div>
+
   <nav class="filterbar" id="filterbar" aria-label="분류 필터"></nav>
 
+  <div id="favSection" style="display:none">
+    <div class="section-label">⭐ 즐겨찾기</div>
+    <main class="grid" id="favGrid"></main>
+  </div>
+
+  <div class="section-label" id="allLabel" style="display:none">전체 도구</div>
   <main class="grid" id="grid"></main>
 
   <noscript>
@@ -346,17 +418,35 @@
 
 <script>
   // REGISTRY/BUILD_DATE 는 빌드 시 registry.json 으로 치환됨
-  const REGISTRY = {"meta":{"title":"진료지원 시스템","subtitle":"한국 가이드라인 · 심평원 급여 기준 · 임상 계산 — 조언자 도구","owner":"화성유일병원 내과센터","version":"portal-1.1","note":"각 도구는 독립 실행. 본 포털은 읽기 전용 허브이며 도구 내부 로직을 수정하지 않는다.","feedbackEndpoint":"https://formspree.io/f/mzdqylkl","siteUrl":"https://chronic-disease-dun.vercel.app","seoDescription":"한국 학회 진료지침과 심평원 급여기준을 함께 제공하는 의료진용 처방 의사결정 지원 도구. 고혈압·당뇨·이상지질혈증·천식·COPD·부정맥·골다공증 등 14개 만성질환 가이드와 ICU 약물 계산기.","seoKeywords":"처방 가이드, 심평원 급여기준, 진료지침, 의사결정 지원, 만성질환 처방, HIRA 급여, 항생제 처방, ICU 약물 계산"},"guides":[{"id":"htn","title":"고혈압","emoji":"🩺","src":"htn_prescribing_guide__7_.html","out":"htn.html","guideline":"대한고혈압학회 진료지침 2026 (제6판) · ESC 2024 · AHA/ACC 2025","group":"B","accent":"#1a73e8","tag":"순환기"},{"id":"arrhythmia","title":"부정맥","emoji":"💓","src":"arrhythmia_guide.html","out":"arrhythmia.html","guideline":"부정맥 진료 가이드 · 심방세동·항응고·율동조절 · ESC 2024 · 심평원 급여","group":"A","accent":"#1a73e8","tag":"순환기"},{"id":"dm","title":"당뇨병","emoji":"🍬","src":"dm_guide__5_.html","out":"dm.html","guideline":"대한당뇨병학회 2025 진료지침 (9판) · 심평원 당뇨병용제 고시","group":"A","accent":"#2c6fb0","tag":"내분비"},{"id":"dyslipidemia","title":"이상지질혈증","emoji":"🫀","src":"dyslipidemia_guide.html","out":"dyslipidemia.html","guideline":"한국지질·동맥경화학회 진료지침 (5판) · 심평원 급여","group":"A","accent":"#c0392b","tag":"내분비"},{"id":"asthma","title":"천식","emoji":"🫁","src":"asthma_totalcare_app__2_.html","out":"asthma.html","guideline":"대한천식알레르기학회 · GINA — Total Care","group":"B","accent":"#1f6fb2","tag":"호흡기"},{"id":"copd","title":"COPD","emoji":"💨","src":"copd_guide__2_.html","out":"copd.html","guideline":"대한결핵및호흡기학회 2024 · GOLD 2025 · 심평원 급여","group":"A","accent":"#2c6fb0","tag":"호흡기"},{"id":"ar","title":"알레르기 비염","emoji":"🤧","src":"ar_guide__2_.html","out":"ar.html","guideline":"KAAACI 2023/2024 · ARIA · 심평원 급여","group":"B","accent":"#0a82c4","tag":"알레르기"},{"id":"skin","title":"피부질환","emoji":"🧴","src":"skin_guide__1_.html","out":"skin.html","guideline":"대한피부과학회 · 아토피/만성두드러기 — 통합 가이드","group":"A","accent":"#d8632a","tag":"피부"},{"id":"ibd","title":"염증성 장질환","emoji":"🔥","src":"ibd_guide__1_.html","out":"ibd.html","guideline":"대한장연구학회 · UC/크론병 — 통합 가이드","group":"A","accent":"#2c6fb0","tag":"소화기"},{"id":"rheum","title":"류마티스·자가면역","emoji":"🦴","src":"rheum_guide.html","out":"rheum.html","guideline":"대한류마티스학회 · 초기 감별 가이드","group":"A","accent":"#1a8a72","tag":"류마티스"},{"id":"gout","title":"통풍","emoji":"🦶","src":"gout_guide.html","out":"gout.html","guideline":"대한류마티스학회 통풍 진료지침 · ACR 2020 · 심평원 급여","group":"A","accent":"#8a6d3b","tag":"류마티스"},{"id":"osteoporosis","title":"골다공증","emoji":"🩻","src":"osteoporosis_guide.html","out":"osteoporosis.html","guideline":"골다공증 진료지침 · 대한골대사학회 · T-score·FRAX · 심평원 급여","group":"A","accent":"#5b7a9a","tag":"내분비"},{"id":"antimicrobial","title":"감염·항생제","emoji":"🦠","src":"antimicrobial_app_v1__6_.html","out":"antimicrobial.html","guideline":"감염 임상결정 지원 · 경험적 항생제 선택 · 심평원 급여","group":"A","accent":"#7a4fb0","tag":"감염"},{"id":"isolation","title":"법정감염병·격리","emoji":"🚷","src":"isolation_guide.html","out":"isolation.html","guideline":"법정감염병 분류·격리 기준 · 질병관리청 신고 지침","group":"A","accent":"#b8521f","tag":"감염"},{"id":"icu_calc","title":"ICU 약물 계산기","emoji":"💉","src":"icu_drug_calculator.html","out":"icu_calc.html","guideline":"중환자 약물 용량·주입속도 계산 · 멀티 환자 세션","group":"A","accent":"#c0392b","tag":"중환자"}]};
+  const REGISTRY = {"meta":{"title":"진료지원 시스템","subtitle":"한국 가이드라인 · 심평원 급여 기준 · 임상 계산 — 조언자 도구","owner":"화성유일병원 내과센터","version":"portal-1.1","note":"각 도구는 독립 실행. 본 포털은 읽기 전용 허브이며 도구 내부 로직을 수정하지 않는다.","feedbackEndpoint":"https://formspree.io/f/mzdqylkl","siteUrl":"https://chronic-disease-dun.vercel.app","seoDescription":"한국 학회 진료지침과 심평원 급여기준을 함께 제공하는 의료진용 처방 의사결정 지원 도구. 고혈압·당뇨·이상지질혈증·천식·COPD·부정맥·골다공증 등 14개 만성질환 가이드와 ICU 약물 계산기.","seoKeywords":"처방 가이드, 심평원 급여기준, 진료지침, 의사결정 지원, 만성질환 처방, HIRA 급여, 항생제 처방, ICU 약물 계산"},"guides":[{"id":"htn","title":"고혈압","emoji":"🩺","src":"htn_prescribing_guide__7_.html","out":"htn.html","guideline":"대한고혈압학회 진료지침 2026 (제6판) · ESC 2024 · AHA/ACC 2025","group":"B","accent":"#1a73e8","tag":"순환기","keywords":"고혈압 hypertension BP 혈압 ARB ACEi CCB 이뇨제 암로디핀 로사르탄 텔미사르탄 SPC"},{"id":"arrhythmia","title":"부정맥","emoji":"💓","src":"arrhythmia_guide.html","out":"arrhythmia.html","guideline":"부정맥 진료 가이드 · 심방세동·항응고·율동조절 · ESC 2024 · 심평원 급여","group":"A","accent":"#1a73e8","tag":"순환기","keywords":"부정맥 심방세동 AF AFib 항응고 DOAC NOAC 아픽사반 리바록사반 에독사반 다비가트란 와파린 CHADS VASC 율동조절 서맥 SVT 빈맥"},{"id":"dm","title":"당뇨병","emoji":"🍬","src":"dm_guide__5_.html","out":"dm.html","guideline":"대한당뇨병학회 2025 진료지침 (9판) · 심평원 당뇨병용제 고시","group":"A","accent":"#2c6fb0","tag":"내분비","keywords":"당뇨 당뇨병 diabetes DM 메트포민 SGLT2 GLP1 DPP4 인슐린 다파글리플로진 엠파글리플로진 HbA1c 혈당"},{"id":"dyslipidemia","title":"이상지질혈증","emoji":"🫀","src":"dyslipidemia_guide.html","out":"dyslipidemia.html","guideline":"한국지질·동맥경화학회 진료지침 (5판) · 심평원 급여","group":"A","accent":"#c0392b","tag":"내분비","keywords":"이상지질혈증 고지혈증 dyslipidemia 스타틴 statin LDL 콜레스테롤 PCSK9 에제티미브 로수바스타틴 아토르바스타틴 중성지방 TG"},{"id":"asthma","title":"천식","emoji":"🫁","src":"asthma_totalcare_app__2_.html","out":"asthma.html","guideline":"대한천식알레르기학회 · GINA — Total Care","group":"B","accent":"#1f6fb2","tag":"호흡기","keywords":"천식 asthma 흡입제 ICS LABA 비오신약 biologic 오말리주맙 두필루맙 GINA 기관지"},{"id":"copd","title":"COPD","emoji":"💨","src":"copd_guide__2_.html","out":"copd.html","guideline":"대한결핵및호흡기학회 2024 · GOLD 2025 · 심평원 급여","group":"A","accent":"#2c6fb0","tag":"호흡기","keywords":"만성폐쇄성폐질환 COPD LAMA LABA 흡입제 GOLD CAT mMRC 폐기능"},{"id":"ar","title":"알레르기 비염","emoji":"🤧","src":"ar_guide__2_.html","out":"ar.html","guideline":"KAAACI 2023/2024 · ARIA · 심평원 급여","group":"B","accent":"#0a82c4","tag":"알레르기","keywords":"알레르기비염 비염 allergic rhinitis 항히스타민 비강스프레이 면역치료 ARIA 두필루맙"},{"id":"skin","title":"피부질환","emoji":"🧴","src":"skin_guide__1_.html","out":"skin.html","guideline":"대한피부과학회 · 아토피/만성두드러기 — 통합 가이드","group":"A","accent":"#d8632a","tag":"피부","keywords":"피부 아토피 피부염 두드러기 만성두드러기 CSU 아토피피부염 두필루맙 JAK 스테로이드 EASI UAS"},{"id":"ibd","title":"염증성 장질환","emoji":"🔥","src":"ibd_guide__1_.html","out":"ibd.html","guideline":"대한장연구학회 · UC/크론병 — 통합 가이드","group":"A","accent":"#2c6fb0","tag":"소화기","keywords":"염증성장질환 궤양성대장염 크론병 UC 크론 IBD 생물학제제 인플릭시맙 아달리무맙 베돌리주맙 우스테키누맙"},{"id":"rheum","title":"류마티스·자가면역","emoji":"🦴","src":"rheum_guide.html","out":"rheum.html","guideline":"대한류마티스학회 · 초기 감별 가이드","group":"A","accent":"#1a8a72","tag":"류마티스","keywords":"류마티스 자가면역 관절염 RA 루푸스 통풍 항CCP ANA DMARD 메토트렉세이트"},{"id":"gout","title":"통풍","emoji":"🦶","src":"gout_guide.html","out":"gout.html","guideline":"대한류마티스학회 통풍 진료지침 · ACR 2020 · 심평원 급여","group":"A","accent":"#8a6d3b","tag":"류마티스","keywords":"통풍 gout 고요산혈증 요산 알로푸리놀 페북소스타트 콜키신 ULT 요산저하 ACR EULAR"},{"id":"osteoporosis","title":"골다공증","emoji":"🩻","src":"osteoporosis_guide.html","out":"osteoporosis.html","guideline":"골다공증 진료지침 · 대한골대사학회 · T-score·FRAX · 심평원 급여","group":"A","accent":"#5b7a9a","tag":"내분비","keywords":"골다공증 osteoporosis BMD T-score FRAX 비스포스포네이트 데노수맙 프롤리아 이베니티 골밀도 골절"},{"id":"antimicrobial","title":"감염·항생제","emoji":"🦠","src":"antimicrobial_app_v1__6_.html","out":"antimicrobial.html","guideline":"감염 임상결정 지원 · 경험적 항생제 선택 · 심평원 급여","group":"A","accent":"#7a4fb0","tag":"감염","keywords":"감염 항생제 antibiotic 경험적항생제 세팔로스포린 페니실린 카바페넴 항균 균 배양 감수성 폐렴 요로감염"},{"id":"isolation","title":"법정감염병·격리","emoji":"🚷","src":"isolation_guide.html","out":"isolation.html","guideline":"법정감염병 분류·격리 기준 · 질병관리청 신고 지침","group":"A","accent":"#b8521f","tag":"감염","keywords":"법정감염병 격리 감염병 신고 음압 비말 접촉 검역 결핵 TB MERS 코로나 질병관리청"},{"id":"icu_calc","title":"ICU 약물 계산기","emoji":"💉","src":"icu_drug_calculator.html","out":"icu_calc.html","guideline":"중환자 약물 용량·주입속도 계산 · 멀티 환자 세션","group":"A","accent":"#c0392b","tag":"중환자","keywords":"중환자 ICU 약물계산 용량계산 주입속도 승압제 강심제 도파민 노르에피네프린 진정제 mcg kg min"}]};
   const BUILD_DATE = "2026-06-19";
 
   const guides = REGISTRY.guides;
   document.getElementById('cnt').textContent = guides.length;
   document.getElementById('bdate').textContent = BUILD_DATE;
 
+  // ── 즐겨찾기 저장 (localStorage, 기기별) ──
+  const FAV_KEY = 'cdss_favorites_v1';
+  function loadFavs(){
+    try { return JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); }
+    catch(e){ return []; }
+  }
+  function saveFavs(arr){
+    try { localStorage.setItem(FAV_KEY, JSON.stringify(arr)); } catch(e){}
+  }
+  let favs = loadFavs();
+  function isFav(id){ return favs.indexOf(id) > -1; }
+  function toggleFav(id){
+    const i = favs.indexOf(id);
+    if (i > -1) favs.splice(i,1); else favs.push(id);
+    saveFavs(favs); render();
+  }
+
   // 분류 필터 구성
   const tags = ['전체', ...Array.from(new Set(guides.map(g => g.tag)))];
   const fbar = document.getElementById('filterbar');
   let active = '전체';
+  let query = '';
   tags.forEach(t => {
     const b = document.createElement('button');
     b.className = 'fbtn' + (t === '전체' ? ' on' : '');
@@ -370,33 +460,98 @@
     return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
   }
 
-  const grid = document.getElementById('grid');
-  function render(){
-    const list = guides.filter(g => active === '전체' || g.tag === active);
-    grid.innerHTML = '';
-    if (!list.length){ grid.innerHTML = '<div class="empty">해당 분류의 가이드가 없습니다.</div>'; return; }
-    list.forEach(g => {
-      const a = document.createElement('a');
-      a.className = 'card';
-      a.href = 'guides/' + g.out;
-      a.style.setProperty('--ac', g.accent);
-      a.style.setProperty('--acbg', hexToRgba(g.accent, .12));
-      a.innerHTML = `
-        <div class="card-top">
-          <div class="emoji">${g.emoji}</div>
-          <div class="card-h">
-            <div class="t">${g.title}<span class="tag">${g.tag}</span></div>
-            <div class="gl">${g.guideline}</div>
-          </div>
+  // 검색 매칭: 제목·가이드라인·분류·id(영문키워드) 전부
+  function matchQuery(g, q){
+    if (!q) return true;
+    const hay = (g.title + ' ' + g.guideline + ' ' + g.tag + ' ' + g.id + ' ' + (g.keywords||'')).toLowerCase();
+    return hay.indexOf(q) > -1;
+  }
+
+  function makeCard(g){
+    const a = document.createElement('a');
+    a.className = 'card';
+    a.href = 'guides/' + g.out;
+    a.style.setProperty('--ac', g.accent);
+    a.style.setProperty('--acbg', hexToRgba(g.accent, .12));
+    a.innerHTML = `
+      <button class="fav${isFav(g.id)?' on':''}" data-id="${g.id}" title="즐겨찾기" aria-label="즐겨찾기 토글">${isFav(g.id)?'★':'☆'}</button>
+      <div class="card-top">
+        <div class="emoji">${g.emoji}</div>
+        <div class="card-h">
+          <div class="t">${g.title}<span class="tag">${g.tag}</span></div>
+          <div class="gl">${g.guideline}</div>
         </div>
-        <div class="card-foot">
-          <span class="open">열기 <span class="arr">→</span></span>
-          <span class="idlabel">${g.id}</span>
-        </div>`;
-      grid.appendChild(a);
-    });
+      </div>
+      <div class="card-foot">
+        <span class="open">열기 <span class="arr">→</span></span>
+        <span class="idlabel">${g.id}</span>
+      </div>`;
+    // 별 클릭은 카드 이동 막고 토글만
+    const star = a.querySelector('.fav');
+    star.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); toggleFav(g.id); });
+    return a;
+  }
+
+  const grid = document.getElementById('grid');
+  const favGrid = document.getElementById('favGrid');
+  const favSection = document.getElementById('favSection');
+  const allLabel = document.getElementById('allLabel');
+
+  function render(){
+    const list = guides.filter(g => (active === '전체' || g.tag === active) && matchQuery(g, query));
+
+    // 즐겨찾기 섹션: 검색·필터 결과 중 즐겨찾기한 것 (검색어 없을 때만 별도 노출)
+    const favList = query ? [] : list.filter(g => isFav(g.id));
+    const mainList = query ? list : list.filter(g => !isFav(g.id));
+
+    // 즐겨찾기 섹션
+    favGrid.innerHTML = '';
+    if (favList.length){
+      favSection.style.display = '';
+      favList.forEach(g => favGrid.appendChild(makeCard(g)));
+      allLabel.style.display = mainList.length ? '' : 'none';
+    } else {
+      favSection.style.display = 'none';
+      allLabel.style.display = 'none';
+    }
+
+    // 전체 섹션
+    grid.innerHTML = '';
+    if (!list.length){
+      grid.innerHTML = '<div class="empty">검색 결과가 없습니다.</div>';
+      return;
+    }
+    mainList.forEach(g => grid.appendChild(makeCard(g)));
   }
   render();
+
+  // ── 검색 입력 ──
+  const searchInput = document.getElementById('search');
+  const sClear = document.getElementById('sClear');
+  searchInput.addEventListener('input', () => {
+    query = searchInput.value.trim().toLowerCase();
+    sClear.classList.toggle('on', query.length > 0);
+    render();
+  });
+  sClear.addEventListener('click', () => {
+    searchInput.value = ''; query = ''; sClear.classList.remove('on');
+    render(); searchInput.focus();
+  });
+
+  // ── 면책 게이트 (한 번 확인 시 localStorage 플래그) ──
+  const GATE_KEY = 'cdss_disclaimer_ack_v1';
+  const gateOverlay = document.getElementById('gateOverlay');
+  let acked = false;
+  try { acked = localStorage.getItem(GATE_KEY) === '1'; } catch(e){}
+  if (!acked){
+    gateOverlay.classList.remove('hidden');
+    gateOverlay.setAttribute('aria-hidden','false');
+  }
+  document.getElementById('gateAccept').addEventListener('click', () => {
+    try { localStorage.setItem(GATE_KEY, '1'); } catch(e){}
+    gateOverlay.classList.add('hidden');
+    gateOverlay.setAttribute('aria-hidden','true');
+  });
 
   // ── 피드백 ──
   const FB_ENDPOINT = (REGISTRY.meta && REGISTRY.meta.feedbackEndpoint) || "";

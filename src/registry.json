@@ -20,7 +20,8 @@
       "guideline": "대한고혈압학회 진료지침 2026 (제6판) · ESC 2024 · AHA/ACC 2025",
       "group": "B",
       "accent": "#1a73e8",
-      "tag": "순환기"
+      "tag": "순환기",
+      "keywords": "고혈압 hypertension BP 혈압 ARB ACEi CCB 이뇨제 암로디핀 로사르탄 텔미사르탄 SPC"
     },
     {
       "id": "arrhythmia",
@@ -31,7 +32,8 @@
       "guideline": "부정맥 진료 가이드 · 심방세동·항응고·율동조절 · ESC 2024 · 심평원 급여",
       "group": "A",
       "accent": "#1a73e8",
-      "tag": "순환기"
+      "tag": "순환기",
+      "keywords": "부정맥 심방세동 AF AFib 항응고 DOAC NOAC 아픽사반 리바록사반 에독사반 다비가트란 와파린 CHADS VASC 율동조절 서맥 SVT 빈맥"
     },
     {
       "id": "dm",
@@ -42,7 +44,8 @@
       "guideline": "대한당뇨병학회 2025 진료지침 (9판) · 심평원 당뇨병용제 고시",
       "group": "A",
       "accent": "#2c6fb0",
-      "tag": "내분비"
+      "tag": "내분비",
+      "keywords": "당뇨 당뇨병 diabetes DM 메트포민 SGLT2 GLP1 DPP4 인슐린 다파글리플로진 엠파글리플로진 HbA1c 혈당"
     },
     {
       "id": "dyslipidemia",
@@ -53,7 +56,8 @@
       "guideline": "한국지질·동맥경화학회 진료지침 (5판) · 심평원 급여",
       "group": "A",
       "accent": "#c0392b",
-      "tag": "내분비"
+      "tag": "내분비",
+      "keywords": "이상지질혈증 고지혈증 dyslipidemia 스타틴 statin LDL 콜레스테롤 PCSK9 에제티미브 로수바스타틴 아토르바스타틴 중성지방 TG"
     },
     {
       "id": "asthma",
@@ -64,7 +68,8 @@
       "guideline": "대한천식알레르기학회 · GINA — Total Care",
       "group": "B",
       "accent": "#1f6fb2",
-      "tag": "호흡기"
+      "tag": "호흡기",
+      "keywords": "천식 asthma 흡입제 ICS LABA 비오신약 biologic 오말리주맙 두필루맙 GINA 기관지"
     },
     {
       "id": "copd",
@@ -75,7 +80,8 @@
       "guideline": "대한결핵및호흡기학회 2024 · GOLD 2025 · 심평원 급여",
       "group": "A",
       "accent": "#2c6fb0",
-      "tag": "호흡기"
+      "tag": "호흡기",
+      "keywords": "만성폐쇄성폐질환 COPD LAMA LABA 흡입제 GOLD CAT mMRC 폐기능"
     },
     {
       "id": "ar",
@@ -86,7 +92,8 @@
       "guideline": "KAAACI 2023/2024 · ARIA · 심평원 급여",
       "group": "B",
       "accent": "#0a82c4",
-      "tag": "알레르기"
+      "tag": "알레르기",
+      "keywords": "알레르기비염 비염 allergic rhinitis 항히스타민 비강스프레이 면역치료 ARIA 두필루맙"
     },
     {
       "id": "skin",
@@ -97,7 +104,8 @@
       "guideline": "대한피부과학회 · 아토피/만성두드러기 — 통합 가이드",
       "group": "A",
       "accent": "#d8632a",
-      "tag": "피부"
+      "tag": "피부",
+      "keywords": "피부 아토피 피부염 두드러기 만성두드러기 CSU 아토피피부염 두필루맙 JAK 스테로이드 EASI UAS"
     },
     {
       "id": "ibd",
@@ -108,7 +116,8 @@
       "guideline": "대한장연구학회 · UC/크론병 — 통합 가이드",
       "group": "A",
       "accent": "#2c6fb0",
-      "tag": "소화기"
+      "tag": "소화기",
+      "keywords": "염증성장질환 궤양성대장염 크론병 UC 크론 IBD 생물학제제 인플릭시맙 아달리무맙 베돌리주맙 우스테키누맙"
     },
     {
       "id": "rheum",
@@ -119,7 +128,8 @@
       "guideline": "대한류마티스학회 · 초기 감별 가이드",
       "group": "A",
       "accent": "#1a8a72",
-      "tag": "류마티스"
+      "tag": "류마티스",
+      "keywords": "류마티스 자가면역 관절염 RA 루푸스 통풍 항CCP ANA DMARD 메토트렉세이트"
     },
     {
       "id": "gout",
@@ -130,7 +140,8 @@
       "guideline": "대한류마티스학회 통풍 진료지침 · ACR 2020 · 심평원 급여",
       "group": "A",
       "accent": "#8a6d3b",
-      "tag": "류마티스"
+      "tag": "류마티스",
+      "keywords": "통풍 gout 고요산혈증 요산 알로푸리놀 페북소스타트 콜키신 ULT 요산저하 ACR EULAR"
     },
     {
       "id": "osteoporosis",
@@ -141,7 +152,8 @@
       "guideline": "골다공증 진료지침 · 대한골대사학회 · T-score·FRAX · 심평원 급여",
       "group": "A",
       "accent": "#5b7a9a",
-      "tag": "내분비"
+      "tag": "내분비",
+      "keywords": "골다공증 osteoporosis BMD T-score FRAX 비스포스포네이트 데노수맙 프롤리아 이베니티 골밀도 골절"
     },
     {
       "id": "antimicrobial",
@@ -152,7 +164,8 @@
       "guideline": "감염 임상결정 지원 · 경험적 항생제 선택 · 심평원 급여",
       "group": "A",
       "accent": "#7a4fb0",
-      "tag": "감염"
+      "tag": "감염",
+      "keywords": "감염 항생제 antibiotic 경험적항생제 세팔로스포린 페니실린 카바페넴 항균 균 배양 감수성 폐렴 요로감염"
     },
     {
       "id": "isolation",
@@ -163,7 +176,8 @@
       "guideline": "법정감염병 분류·격리 기준 · 질병관리청 신고 지침",
       "group": "A",
       "accent": "#b8521f",
-      "tag": "감염"
+      "tag": "감염",
+      "keywords": "법정감염병 격리 감염병 신고 음압 비말 접촉 검역 결핵 TB MERS 코로나 질병관리청"
     },
     {
       "id": "icu_calc",
@@ -174,7 +188,8 @@
       "guideline": "중환자 약물 용량·주입속도 계산 · 멀티 환자 세션",
       "group": "A",
       "accent": "#c0392b",
-      "tag": "중환자"
+      "tag": "중환자",
+      "keywords": "중환자 ICU 약물계산 용량계산 주입속도 승압제 강심제 도파민 노르에피네프린 진정제 mcg kg min"
     }
   ]
 }
