@@ -344,7 +344,7 @@ __JSONLD__
   // 검색 매칭: 제목·가이드라인·분류·id(영문키워드) 전부
   function matchQuery(g, q){
     if (!q) return true;
-    const hay = (g.title + ' ' + g.guideline + ' ' + g.tag + ' ' + g.id + ' ' + (g.keywords||'')).toLowerCase();
+    const hay = (g.title + ' ' + g.guideline + ' ' + g.tag + ' ' + g.id + ' ' + (g.keywords||'') + ' ' + (g._idx||'')).toLowerCase();
     return hay.indexOf(q) > -1;
   }
 

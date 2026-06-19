@@ -33,6 +33,47 @@ function findSrc(filename) {
   return null;
 }
 
+// ── 가이드 본문에서 검색 색인 텍스트 추출 ──
+// JS 데이터 객체 안에 콘텐츠가 있는 가이드(dm 등)를 위해 script 내 문자열 리터럴도 긁는다.
+function extractSearchIndex(html) {
+  let s = html;
+  // style 블록 제거 (검색 가치 없음)
+  s = s.replace(/<style[\s\S]*?<\/style>/gi, ' ');
+  // script 내 따옴표 문자열 리터럴 추출 (약물명·상품명이 여기 있음)
+  const literals = [];
+  const reLit = /["'`]([^"'`\n]{2,80})["'`]/g;
+  let m;
+  while ((m = reLit.exec(s)) !== null) literals.push(m[1]);
+  // 태그 사이 텍스트 노드 추출 (script 제거 후)
+  let noScript = s.replace(/<script[\s\S]*?<\/script>/gi, ' ');
+  noScript = noScript.replace(/<[^>]+>/g, ' ');
+  let text = literals.join(' ') + ' ' + noScript;
+  // HTML 엔티티 디코드 (간이)
+  text = text.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>')
+             .replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&nbsp;/g,' ');
+  // 토큰화: 한글/영문/숫자 덩어리만, 코드성 토큰(함수명·CSS·색상값) 걸러내기
+  const tokens = text.match(/[가-힣A-Za-z][가-힣A-Za-z0-9.\-]{1,}/g) || [];
+  const STOP = new Set(['function','return','const','var','let','this','null','true','false',
+    'div','span','class','style','color','width','height','padding','margin','border','background',
+    'document','window','length','push','href','onclick','value','innerHTML','forEach','querySelector',
+    'addEventListener','px','rgba','rgb','solid','flex','none','block','center','left','right','top','bottom']);
+  const seen = new Set();
+  const out = [];
+  for (let t of tokens) {
+    const low = t.toLowerCase();
+    // CSS/색상/순수숫자/너무짧은 영문 제거
+    if (/^[0-9.\-]+$/.test(t)) continue;
+    if (/^[a-f0-9]{6}$/i.test(t)) continue; // hex color
+    if (STOP.has(low)) continue;
+    if (/^[a-z]{1,2}$/.test(low)) continue; // 1~2자 영문 약어는 노이즈 많음
+    if (seen.has(low)) continue;            // 중복 제거 → 색인 압축
+    seen.add(low);
+    out.push(t);
+    if (out.length >= 3000) break;          // 도구당 상한(색인 비대화 방지)
+  }
+  return out.join(' ');
+}
+
 function headerSnippet(g) {
   // 같은 origin이라 부모 페이지로 history.back; 단독 진입 시엔 index로.
   return `${MARK}
@@ -99,6 +140,7 @@ fs.mkdirSync(OUT_DIR, { recursive: true });
 
 let ok = 0, miss = 0;
 const built = [];
+const searchIndex = {}; // id → 본문 추출 색인 텍스트
 for (const g of REG.guides) {
   const srcPath = findSrc(g.src);
   if (!srcPath) {
@@ -107,12 +149,19 @@ for (const g of REG.guides) {
     continue;
   }
   let html = fs.readFileSync(srcPath, 'utf8');
+  // 본문 검색 색인 추출 (헤더 주입 전 원본 기준)
+  searchIndex[g.id] = extractSearchIndex(html);
   html = injectHeader(html, g);
   fs.writeFileSync(path.join(OUT_DIR, g.out), html);
-  console.log(`✓ ${g.id.padEnd(14)} → guides/${g.out}  (${(html.length/1024).toFixed(0)} KB)`);
+  const idxKb = (searchIndex[g.id].length/1024).toFixed(0);
+  console.log(`✓ ${g.id.padEnd(14)} → guides/${g.out}  (${(html.length/1024).toFixed(0)} KB, 색인 ${idxKb}KB)`);
   ok++;
   built.push({ id: g.id, out: g.out });
 }
+
+// 빌드 시점에 registry 사본에 검색 색인 부착 (registry.json 원본은 불변)
+const REG_WITH_INDEX = JSON.parse(JSON.stringify(REG));
+REG_WITH_INDEX.guides.forEach(g => { g._idx = searchIndex[g.id] || ''; });
 
 // ── 대시보드 index.html 생성 (템플릿에 registry + SEO 인라인 주입) ──
 const tpl = fs.readFileSync(path.resolve(ROOT, 'src', 'index.template.html'), 'utf8');
@@ -145,7 +194,7 @@ const jsonld = {
 };
 
 const indexHtml = tpl
-  .split('__REGISTRY__').join(JSON.stringify(REG))
+  .split('__REGISTRY__').join(JSON.stringify(REG_WITH_INDEX))
   .split('__BUILD_DATE__').join(buildDate)
   .split('__SEO_DESC__').join(esc(M.seoDescription || ''))
   .split('__SEO_KEYWORDS__').join(esc(M.seoKeywords || ''))
