@@ -3,7 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>진료지원 시스템</title>
+<title>진료지원 시스템 — 한국 진료지침·심평원 급여 처방 가이드</title>
+<meta name="description" content="__SEO_DESC__">
+<meta name="keywords" content="__SEO_KEYWORDS__">
+<meta name="author" content="박형도">
+<link rel="canonical" href="__SITE_URL__/">
+<meta name="robots" content="index, follow">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="진료지원 시스템 — 진료지침·심평원 급여 처방 가이드">
+<meta property="og:description" content="__SEO_DESC__">
+<meta property="og:url" content="__SITE_URL__/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="진료지원 시스템">
+<meta name="twitter:description" content="__SEO_DESC__">
+<script type="application/ld+json">
+__JSONLD__
+</script>
 <style>
   :root{
     --bg:#eef1f5; --panel:#ffffff; --panel2:#f5f7f9; --line:#dde3ea;
@@ -192,6 +209,15 @@
 
   <main class="grid" id="grid"></main>
 
+  <noscript>
+    <div style="margin-top:8px">
+      <p style="font-size:13px;color:#48586a">아래는 진료지원 시스템에 포함된 도구 목록입니다.</p>
+      <ul style="line-height:1.9;font-size:14px">
+        __NOSCRIPT_LINKS__
+      </ul>
+    </div>
+  </noscript>
+
   <footer>
     <b>출처</b> · 각 도구 내부에 해당 학회 진료지침·심평원 고시·참고문헌 링크 명시.
     급여기준·약제 정보는 갱신될 수 있으므로 처방·청구 시 최신 고시(심평원)·허가사항 확인 권장.
@@ -305,5 +331,10 @@
     }
   };
 </script>
+<!-- Vercel Web Analytics -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

@@ -114,14 +114,73 @@ for (const g of REG.guides) {
   built.push({ id: g.id, out: g.out });
 }
 
-// ── 대시보드 index.html 생성 (템플릿에 registry 인라인 주입) ──
+// ── 대시보드 index.html 생성 (템플릿에 registry + SEO 인라인 주입) ──
 const tpl = fs.readFileSync(path.resolve(ROOT, 'src', 'index.template.html'), 'utf8');
 const buildDate = new Date().toISOString().slice(0, 10);
+const M = REG.meta || {};
+const SITE = (M.siteUrl || '').replace(/\/+$/, ''); // 끝 슬래시 제거
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// noscript 정적 링크 (크롤러용)
+const noscriptLinks = REG.guides.map(g =>
+  `<li><a href="guides/${g.out}">${esc(g.emoji)} ${esc(g.title)}</a> — ${esc(g.guideline)}</li>`
+).join('\n        ');
+
+// JSON-LD 구조화 데이터 (WebSite + ItemList)
+const jsonld = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "진료지원 시스템",
+  "description": M.seoDescription || "",
+  "url": SITE + "/",
+  "publisher": { "@type": "Organization", "name": M.owner || "" },
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": REG.guides.map((g, i) => ({
+      "@type": "ListItem", "position": i + 1, "name": g.title,
+      "url": SITE + "/guides/" + g.out
+    }))
+  }
+};
+
 const indexHtml = tpl
   .split('__REGISTRY__').join(JSON.stringify(REG))
-  .split('__BUILD_DATE__').join(buildDate);
+  .split('__BUILD_DATE__').join(buildDate)
+  .split('__SEO_DESC__').join(esc(M.seoDescription || ''))
+  .split('__SEO_KEYWORDS__').join(esc(M.seoKeywords || ''))
+  .split('__SITE_URL__').join(SITE)
+  .split('__NOSCRIPT_LINKS__').join(noscriptLinks)
+  .split('__JSONLD__').join(JSON.stringify(jsonld, null, 2));
 fs.writeFileSync(path.join(ROOT, 'public', 'index.html'), indexHtml);
 console.log(`✓ 대시보드      → index.html`);
+
+// ── sitemap.xml 생성 (index + 14개 가이드) ──
+const urls = [
+  { loc: SITE + '/', priority: '1.0' },
+  ...REG.guides.map(g => ({ loc: SITE + '/guides/' + g.out, priority: '0.8' }))
+];
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(u => `  <url>
+    <loc>${u.loc}</loc>
+    <lastmod>${buildDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>${u.priority}</priority>
+  </url>`).join('\n')}
+</urlset>
+`;
+fs.writeFileSync(path.join(ROOT, 'public', 'sitemap.xml'), sitemap);
+console.log(`✓ sitemap.xml   → ${urls.length}개 URL`);
+
+// ── robots.txt 생성 ──
+const robots = `User-agent: *
+Allow: /
+
+Sitemap: ${SITE}/sitemap.xml
+`;
+fs.writeFileSync(path.join(ROOT, 'public', 'robots.txt'), robots);
+console.log(`✓ robots.txt`);
 
 // 빌드 매니페스트(대시보드 fallback/디버그용)
 fs.writeFileSync(
@@ -130,4 +189,8 @@ fs.writeFileSync(
 );
 
 console.log(`\n빌드 완료: ${ok}개 성공, ${miss}개 누락.`);
+if (!SITE || SITE.includes('YOUR-DOMAIN')) {
+  console.log('\n⚠️  registry.json의 meta.siteUrl을 실제 배포 도메인으로 바꾸세요.');
+  console.log('   현재 sitemap.xml·canonical·JSON-LD가 플레이스홀더 도메인을 가리킵니다.');
+}
 if (miss > 0) process.exitCode = 0; // 누락은 경고만, 배포는 진행
