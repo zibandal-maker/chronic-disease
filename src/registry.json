@@ -6,7 +6,7 @@
     "version": "portal-1.1",
     "note": "각 도구는 독립 실행. 본 포털은 읽기 전용 허브이며 도구 내부 로직을 수정하지 않는다.",
     "feedbackEndpoint": "https://formspree.io/f/mzdqylkl",
-    "siteUrl": "https://chronic-disease-dun.vercel.app/",
+    "siteUrl": "https://chronic-disease-dun.vercel.app",
     "seoDescription": "한국 학회 진료지침과 심평원 급여기준을 함께 제공하는 의료진용 처방 의사결정 지원 도구. 고혈압·당뇨·이상지질혈증·천식·COPD·부정맥·골다공증 등 14개 만성질환 가이드와 ICU 약물 계산기.",
     "seoKeywords": "처방 가이드, 심평원 급여기준, 진료지침, 의사결정 지원, 만성질환 처방, HIRA 급여, 항생제 처방, ICU 약물 계산"
   },
