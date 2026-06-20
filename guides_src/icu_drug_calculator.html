@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>ICU 약물 계산기 — 화성유일병원 내과중환자실</title>
+<title>ICU 약물 계산기</title>
 
 <!-- ── SEO ── -->
-<meta name="description" content="화성유일병원 내과중환자실 ICU 약물 용량 계산기. 승압제(노르에피네프린·바소프레신·도파민), 진정·진통제(덱스메데토미딘·미다졸람·프로포폴·레미펜타닐), 이뇨제, NMBA, 항부정맥제 mL/hr 자동 계산. 멀티 환자 세션, 수액 I/O 관리, 응급약물 참조. 의료전문가용.">
-<meta name="keywords" content="ICU 약물 계산기, 중환자실, 승압제 계산, 노르에피네프린, 바소프레신, 도파민, 도부타민, 덱스메데토미딘, 미다졸람, 프로포폴, 레미펜타닐, 펜타닐, 라식스, 에스몰롤, 로쿠로늄, 수가마덱스, 수액 관리, mL/hr, 화성유일병원">
-<meta name="author" content="화성유일병원 내과중환자실">
+<meta name="description" content="ICU 약물 용량 계산기. 승압제(노르에피네프린·바소프레신·도파민), 진정·진통제(덱스메데토미딘·미다졸람·프로포폴·레미펜타닐), 이뇨제, NMBA, 항부정맥제 mL/hr 자동 계산. 멀티 환자 세션, 수액 I/O 관리, 응급약물 참조. 의료전문가용.">
+<meta name="keywords" content="ICU 약물 계산기, 중환자실, 승압제 계산, 노르에피네프린, 바소프레신, 도파민, 도부타민, 덱스메데토미딘, 미다졸람, 프로포폴, 레미펜타닐, 펜타닐, 라식스, 에스몰롤, 로쿠로늄, 수가마덱스, 수액 관리, mL/hr">
+<meta name="author" content="ICU Drug Calculator">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://icu-drug-calculator.vercel.app/icu_drug_calculator.html">
 <meta name="google-site-verification" content="860d075650487ad0">
 
 <!-- ── Open Graph (카카오·슬랙·SNS 공유 미리보기) ── -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="ICU 약물 계산기 — 화성유일병원 내과중환자실">
+<meta property="og:title" content="ICU 약물 계산기">
 <meta property="og:description" content="승압제·진정제·이뇨제 mL/hr 자동 계산. 멀티 환자 세션, 수액 I/O 관리, 응급약물 참조. 의료전문가용 ICU 처방 보조 도구.">
 <meta property="og:url" content="https://icu-drug-calculator.vercel.app/icu_drug_calculator.html">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:site_name" content="화성유일병원 내과중환자실 진료지원 시스템">
+<meta property="og:site_name" content="ICU 약물 계산기">
 
 <!-- ── Schema.org 구조화 데이터 (Google 리치 스니펫) ── -->
 <script type="application/ld+json">
@@ -27,7 +27,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "ICU 약물 계산기",
-  "alternateName": "화성유일병원 내과중환자실 약물 계산기",
+  "alternateName": "ICU Drug Calculator",
   "description": "중환자실 약물 용량 자동 계산 도구. 승압제, 진정·진통제, 이뇨제, NMBA, 항부정맥제 mL/hr 계산. 수액 I/O 관리 포함.",
   "url": "https://icu-drug-calculator.vercel.app/icu_drug_calculator.html",
   "applicationCategory": "MedicalApplication",
@@ -35,7 +35,7 @@
   "inLanguage": "ko",
   "author": {
     "@type": "Organization",
-    "name": "화성유일병원 내과중환자실",
+    "name": "ICU Drug Calculator",
     "url": "https://icu-drug-calculator.vercel.app"
   },
   "audience": {
@@ -298,7 +298,22 @@ input{-webkit-appearance:none;appearance:none;font-size:16px;} /* 16px 미만이
 .rp-pu{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bg);}
 .rp-ye{background:var(--yellow-lt);color:var(--yellow);border:1px solid #fde68a;}
 
-footer{text-align:center;margin-top:32px;font-size:11px;color:var(--muted2);line-height:1.9;}
+footer{margin-top:32px;font-size:11px;color:var(--muted2);line-height:1.7;}
+.footer-disclaimer{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:13px 15px;margin-bottom:12px;}
+.fd-title{font-size:12.5px;font-weight:800;color:#991b1b;margin-bottom:6px;}
+.fd-body{font-size:11px;color:#7f1d1d;line-height:1.65;}
+.fd-body b{font-weight:700;}
+.footer-acc{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px;background:var(--surface);}
+.footer-acc-btn{width:100%;text-align:left;background:var(--surface2);border:none;padding:11px 15px;font-size:12.5px;font-weight:700;color:var(--text2);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:inherit;}
+.facc-arrow{font-size:11px;color:var(--muted);}
+.footer-acc-body{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+.ref-cat{font-size:11px;font-weight:800;color:var(--accent);padding:11px 15px 4px;text-transform:uppercase;letter-spacing:.02em;}
+.ref-list{list-style:none;margin:0;padding:0 15px 6px;}
+.ref-list li{font-size:11px;color:var(--text2);line-height:1.7;padding:2px 0;}
+.ref-list a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-bg);}
+.ref-list a:active{opacity:.7;}
+.ref-note{font-size:10px;color:var(--muted2);padding:8px 15px 13px;line-height:1.5;border-top:1px solid var(--border);margin-top:6px;}
+.footer-final{text-align:center;font-size:11.5px;font-weight:700;color:var(--red);padding:4px 0 8px;}
 
 /* ══════════════════════════════
    SLIDER + TITRATION + BIG RESULT
@@ -1465,16 +1480,61 @@ input[type=range]::-moz-range-thumb{
 </div><!-- /app -->
 
 <footer>
-  화성유일병원 내과중환자실 약물 계산기 · 2025 Rev. · v3.1-cardio<br>
-  SSC 2021 · AHA ACLS 2020 · FDA 2024 · Precedex PI<br>
-  <span style="color:var(--red);font-weight:700;">임상 적용 전 주치의 확인 필수</span>
+  <div class="footer-disclaimer">
+    <div class="fd-title">⚠️ 면책 조항 (Disclaimer)</div>
+    <div class="fd-body">
+      본 계산기는 <b>의료 전문가의 임상적 판단을 보조하기 위한 참고 도구</b>이며, 진단·처방·치료의 근거로 단독 사용할 수 없습니다.
+      모든 계산 결과는 <b>반드시 실제 투여 전 독립적으로 재확인</b>해야 하며, 환자의 개별 임상 상태·동반질환·기관 프로토콜에 따라 달라질 수 있습니다.
+      본 도구의 사용으로 발생하는 어떠한 결과에 대해서도 제작자는 법적 책임을 지지 않습니다.
+      최종 의학적 결정과 그 책임은 전적으로 처방 의료진에게 있습니다.
+    </div>
+  </div>
+
+  <div class="footer-acc">
+    <button class="footer-acc-btn" type="button" onclick="toggleRefAcc(this)">📚 근거 및 출처 (References) <span class="facc-arrow">▾</span></button>
+    <div class="footer-acc-body">
+      <div class="ref-cat">약물 용량·가이드라인</div>
+      <ul class="ref-list">
+        <li>Surviving Sepsis Campaign 2021 — <a href="https://www.sccm.org/clinical-resources/guidelines/guidelines/surviving-sepsis-guidelines-2021" target="_blank" rel="noopener">SCCM</a></li>
+        <li>AHA ACLS Guidelines 2020 — <a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines" target="_blank" rel="noopener">AHA</a></li>
+        <li>약물 제품정보(PI) / FDA Label — <a href="https://www.accessdata.fda.gov/scripts/cder/daf/" target="_blank" rel="noopener">FDA DailyMed</a></li>
+        <li>용량 참조 — <a href="https://www.mdcalc.com" target="_blank" rel="noopener">MDCalc</a></li>
+      </ul>
+
+      <div class="ref-cat">수액 분포·요법</div>
+      <ul class="ref-list">
+        <li>Plasma-Lyte 148 조성 (PI) — <a href="https://www.drugs.com/pro/plasma-lyte-148.html" target="_blank" rel="noopener">Drugs.com PI</a></li>
+        <li>수액 체액 분포: Norberg 2010, Chappell 2008, Bhardwaj 2006</li>
+        <li>알부민: Caironi 2014 (ALBIOS), Finfer 2011 (SAFE)</li>
+        <li>유지수액 4-2-1: Holliday-Segar 1957 · NICE CG174 — <a href="https://www.nice.org.uk/guidance/cg174" target="_blank" rel="noopener">NICE</a></li>
+      </ul>
+
+      <div class="ref-cat">전해질·산염기</div>
+      <ul class="ref-list">
+        <li>Na 교정 (Adrogué-Madias) — <a href="https://www.nejm.org/doi/full/10.1056/NEJM200005253422107" target="_blank" rel="noopener">NEJM 2000</a></li>
+        <li>저나트륨혈증 치료 표준: Sterns 2024 (CJASN)</li>
+        <li>Na 교정 속도 — <a href="https://www.mdcalc.com/calc/480/sodium-correction-rate-hyponatremia-hypernatremia" target="_blank" rel="noopener">MDCalc #480</a></li>
+        <li>ABGA 해석 (Winter's·AG·Δratio) — <a href="https://litfl.com/acid-base-disorders/" target="_blank" rel="noopener">LITFL</a> · <a href="https://derangedphysiology.com" target="_blank" rel="noopener">Deranged Physiology</a></li>
+      </ul>
+
+      <div class="ref-cat">혈액제제 (한국 표준 용량)</div>
+      <ul class="ref-list">
+        <li>혈액제제 1단위 용량 — <a href="https://www.amc.seoul.kr/asan/healthinfo/management/managementDetail.do?managementId=183" target="_blank" rel="noopener">서울아산병원</a></li>
+        <li>대한적십자사 혈액관리본부 — <a href="https://www.bloodinfo.net" target="_blank" rel="noopener">혈액정보</a></li>
+      </ul>
+
+      <div class="ref-note">※ 일부 출처는 정식 학술 인용이 아닌 임상 참조 자료를 포함합니다. 각 항목의 최신 원문을 직접 확인하십시오.</div>
+    </div>
+  </div>
+
+  <div class="footer-final">임상 적용 전 주치의 확인 필수 · 모든 값 참고용</div>
 </footer>
 </div>
 
 <script>
 // ══════════════════════════════════════════════
 //  💧 수액·IO 모듈 v1.0
-//  화성유일병원 내과중환자실
+//  ICU Drug Calculator
 // ══════════════════════════════════════════════
 
 // ── 상수 ──
@@ -4253,6 +4313,13 @@ function renderActiveSummary(act){
   }
   html+='</div>';
   sum.innerHTML=html;
+}
+function toggleRefAcc(btn){
+  var body=btn.nextElementSibling;
+  var arrow=btn.querySelector('.facc-arrow');
+  var open=body.style.maxHeight && body.style.maxHeight!=='0px';
+  if(open){ body.style.maxHeight='0px'; if(arrow)arrow.textContent='▾'; }
+  else { body.style.maxHeight=body.scrollHeight+'px'; if(arrow)arrow.textContent='▴'; }
 }
 function scrollToCard(id){
   var c=document.getElementById(id);
