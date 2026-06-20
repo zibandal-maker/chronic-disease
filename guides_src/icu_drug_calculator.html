@@ -3,14 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>ICU 약물 계산기 — 화성유일병원</title>
+<title>ICU 약물 계산기 — 화성유일병원 내과중환자실</title>
+
+<!-- ── SEO ── -->
+<meta name="description" content="화성유일병원 내과중환자실 ICU 약물 용량 계산기. 승압제(노르에피네프린·바소프레신·도파민), 진정·진통제(덱스메데토미딘·미다졸람·프로포폴·레미펜타닐), 이뇨제, NMBA, 항부정맥제 mL/hr 자동 계산. 멀티 환자 세션, 수액 I/O 관리, 응급약물 참조. 의료전문가용.">
+<meta name="keywords" content="ICU 약물 계산기, 중환자실, 승압제 계산, 노르에피네프린, 바소프레신, 도파민, 도부타민, 덱스메데토미딘, 미다졸람, 프로포폴, 레미펜타닐, 펜타닐, 라식스, 에스몰롤, 로쿠로늄, 수가마덱스, 수액 관리, mL/hr, 화성유일병원">
+<meta name="author" content="화성유일병원 내과중환자실">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://icu-drug-calculator.vercel.app/icu_drug_calculator.html">
+<meta name="google-site-verification" content="860d075650487ad0">
+
+<!-- ── Open Graph (카카오·슬랙·SNS 공유 미리보기) ── -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="ICU 약물 계산기 — 화성유일병원 내과중환자실">
+<meta property="og:description" content="승압제·진정제·이뇨제 mL/hr 자동 계산. 멀티 환자 세션, 수액 I/O 관리, 응급약물 참조. 의료전문가용 ICU 처방 보조 도구.">
+<meta property="og:url" content="https://icu-drug-calculator.vercel.app/icu_drug_calculator.html">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="화성유일병원 내과중환자실 진료지원 시스템">
+
+<!-- ── Schema.org 구조화 데이터 (Google 리치 스니펫) ── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "ICU 약물 계산기",
+  "alternateName": "화성유일병원 내과중환자실 약물 계산기",
+  "description": "중환자실 약물 용량 자동 계산 도구. 승압제, 진정·진통제, 이뇨제, NMBA, 항부정맥제 mL/hr 계산. 수액 I/O 관리 포함.",
+  "url": "https://icu-drug-calculator.vercel.app/icu_drug_calculator.html",
+  "applicationCategory": "MedicalApplication",
+  "operatingSystem": "Web Browser",
+  "inLanguage": "ko",
+  "author": {
+    "@type": "Organization",
+    "name": "화성유일병원 내과중환자실",
+    "url": "https://icu-drug-calculator.vercel.app"
+  },
+  "audience": {
+    "@type": "MedicalAudience",
+    "audienceType": "Clinician"
+  },
+  "keywords": "ICU, 중환자실, 약물 계산기, 승압제, 수액 관리, 의료전문가"
+}
+</script>
 <style>
 
 
 :root{
-  --bg:#f0f2f5;--surface:#fff;--surface2:#f8f9fb;
-  --border:#e4e8ee;--border2:#d0d7e3;
-  --accent:#2563eb;--accent-lt:#eff4ff;
+  --bg:#e8ecf3;--surface:#fcfdff;--surface2:#f1f4fa;
+  --border:#dde3ee;--border2:#c5d0e2;
+  --accent:#3a5fc8;--accent-lt:#eef3fc;--accent-bg:#dbe6f8;
   --green:#16a34a;--green-lt:#f0fdf4;--green-bg:#dcfce7;
   --orange:#ea580c;--orange-lt:#fff7ed;--orange-bg:#fed7aa;
   --red:#dc2626;--red-lt:#fef2f2;--red-bg:#fecaca;
@@ -20,11 +61,12 @@
   --cyan:#0891b2;--cyan-lt:#ecfeff;--cyan-bg:#a5f3fc;
   --emerald:#059669;--emerald-lt:#ecfdf5;--emerald-bg:#a7f3d0;
   --indigo:#4338ca;--indigo-lt:#eef2ff;--indigo-bg:#c7d2fe;
-  --text:#0f172a;--text2:#374151;--muted:#6b7280;--muted2:#9ca3af;
+  --text:#1c2535;--text2:#3a4456;--muted:#6b7687;--muted2:#9aa3b2;
   --mono:'SF Mono','Fira Code','Consolas',monospace;
   --sans:-apple-system,'Segoe UI','Noto Sans KR',sans-serif;
   --r:10px;--rl:14px;
-  --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --sh:0 1px 3px rgba(30,50,90,.05),0 1px 2px rgba(30,50,90,.03);
+  --sh2:0 4px 16px rgba(30,50,90,.08);
 }
 
 /* ── Reset ── */
@@ -48,14 +90,41 @@ input{-webkit-appearance:none;appearance:none;font-size:16px;} /* 16px 미만이
 .app{max-width:960px;margin:0 auto;padding:8px 16px 60px;}
 
 /* ── Header ── */
-.app-header{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sh);}
+.app-header{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:11px 16px;margin-bottom:13px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sh);}
 .hdr-l{display:flex;align-items:center;gap:12px;}
-.logo{width:40px;height:40px;background:linear-gradient(135deg,#2563eb,#0d9488);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.hdr-title{font-size:17px;font-weight:700;letter-spacing:-.3px;}
+.logo{width:33px;height:33px;background:linear-gradient(135deg,#3a5fc8,#1d8ba0);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.hdr-title{font-size:15px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
 .hdr-sub{font-size:11px;color:var(--muted);margin-top:1px;}
-.hdr-badge{font-size:11px;font-weight:600;padding:4px 10px;background:var(--accent-lt);color:var(--accent);border:1px solid #bfdbfe;border-radius:20px;}
+.hdr-feedback{font-size:11.5px;font-weight:600;padding:6px 12px;background:var(--accent-lt);color:var(--accent);border:1px solid var(--accent-bg);border-radius:9px;text-decoration:none;white-space:nowrap;}
+.hdr-feedback:active{background:var(--accent-bg);}
 
 /* ── Patient panel ── */
+
+/* ── 컴팩트 환자 바 (모바일 최적화) ── */
+.pt-compact{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:6px 8px;margin-bottom:8px;box-shadow:var(--sh);}
+.pt-compact-name{flex:1;min-width:0;}
+.pt-name-inp{width:100%;border:none;background:none;font-size:14px;font-weight:700;color:var(--text);padding:6px 8px;outline:none;}
+.pt-name-inp::placeholder{color:var(--muted2);font-weight:400;}
+.pt-compact-wt{display:flex;align-items:center;gap:0;background:var(--surface2);border:1px solid var(--border);border-radius:9px;overflow:hidden;flex-shrink:0;}
+.pt-wt-step{width:34px;height:36px;border:none;background:none;font-size:18px;font-weight:700;color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.pt-wt-step:active{background:var(--accent-lt);}
+.pt-compact-wt input{width:42px;height:36px;border:none;background:none;text-align:center;font-family:var(--mono);font-size:16px;font-weight:800;color:var(--text);outline:none;padding:0;-moz-appearance:textfield;}
+.pt-compact-wt input::-webkit-inner-spin-button,.pt-compact-wt input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+.pt-wt-unit{font-size:11px;color:var(--muted);padding-right:8px;}
+.pt-edit-btn{flex-shrink:0;font-size:11.5px;font-weight:600;color:var(--accent);background:var(--accent-lt);border:1px solid var(--accent-bg);border-radius:8px;padding:8px 10px;cursor:pointer;white-space:nowrap;}
+.pt-active-btn{flex-shrink:0;display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--green);background:var(--green-lt);border:1px solid #bbf7d0;border-radius:8px;padding:8px 11px;cursor:pointer;white-space:nowrap;}
+.pt-active-btn.on{background:var(--green);color:#fff;border-color:var(--green);}
+.pt-active-btn.has-drugs:not(.on){background:#dcfce7;}
+.pt-active-cnt{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;padding:0 4px;background:var(--green);color:#fff;border-radius:9px;font-size:10px;font-weight:800;}
+.pt-active-btn.on .pt-active-cnt{background:#fff;color:var(--green);}
+.pt-active-btn:empty,.pt-active-cnt:empty{display:none;}
+
+.pt-quick-wrap{display:flex;align-items:center;gap:5px;flex-wrap:nowrap;overflow-x:auto;margin-bottom:8px;padding-bottom:2px;scrollbar-width:none;}
+.pt-quick-wrap::-webkit-scrollbar{display:none;}
+.pt-quick-lbl{font-size:11px;color:var(--muted);font-weight:600;flex-shrink:0;}
+.pt-quick-wrap .qbtn{flex-shrink:0;}
+
+/* ── 컴팩트 환자 바 (모바일 최적화) 끝 ── 
 .pt-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px 20px;margin-bottom:14px;box-shadow:var(--sh);display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
 .pt-field{display:flex;flex-direction:column;gap:5px;}
 .f-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
@@ -88,9 +157,9 @@ input{-webkit-appearance:none;appearance:none;font-size:16px;} /* 16px 미만이
   border-bottom-color:var(--border);
   box-shadow:0 2px 12px rgba(0,0,0,.10);
 }
-.tabs{display:flex;gap:6px;margin-bottom:0;flex-wrap:wrap;}
-.tab{padding:8px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;transition:all .15s;}
-.tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;}
+.tabs{display:flex;gap:5px;margin-bottom:0;flex-wrap:wrap;}
+.tab{flex:1 1 auto;min-width:62px;justify-content:center;padding:8px 6px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-size:11.5px;font-weight:600;display:flex;align-items:center;gap:3px;transition:all .15s;box-shadow:var(--sh);cursor:pointer;white-space:nowrap;}
+.tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;box-shadow:0 2px 8px rgba(58,95,200,.3);}
 
 /* ── Drug card ── */
 .dc{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);margin-bottom:10px;box-shadow:var(--sh);overflow:hidden;}
@@ -106,18 +175,21 @@ input{-webkit-appearance:none;appearance:none;font-size:16px;} /* 16px 미만이
 .dc-hdr-click:active{background:var(--surface2);}
 
 
-.dc-l{display:flex;align-items:center;gap:10px;}
+.dc-l{display:flex;align-items:center;gap:10px;min-width:0;flex:1;}
 .dc-bar{width:4px;height:38px;border-radius:2px;flex-shrink:0;}
-.dc-name{font-size:14px;font-weight:700;color:var(--text);}
-.dc-sub{font-size:11px;color:var(--muted);margin-top:1px;}
-.dc-r{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
+.dc-txt{min-width:0;display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;}
+.dc-name{font-size:14.5px;font-weight:800;color:var(--text);line-height:1.2;white-space:nowrap;flex-shrink:0;}
+.dc-namekr{font-size:11.5px;font-weight:400;color:var(--muted);line-height:1.3;white-space:nowrap;}
+.dc-sub{font-size:11px;color:var(--muted);margin-top:3px;font-family:var(--mono);}
+.dc-r{display:flex;align-items:center;gap:5px;justify-content:flex-end;flex-shrink:0;flex-wrap:wrap;max-width:55%;}
 .chev{font-size:13px;color:var(--muted2);transition:transform .2s;margin-left:4px;flex-shrink:0;}
 .dc.open .chev{transform:rotate(180deg);}
-.dc-body{display:none;padding:16px;}
+.dc-sub-detail{font-size:11px;font-family:var(--mono);color:var(--muted);padding:0 2px;margin-bottom:9px;}
+.dc-body{display:none;padding:12px 13px 13px;}
 .dc.open .dc-body{display:block;}
 
 /* ── Badges ── */
-.bd{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;}
+.bd{font-size:10px;font-weight:700;padding:3px 8px;border-radius:7px;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;}
 .bd-blue{background:var(--accent-lt);color:var(--accent);border:1px solid #bfdbfe;}
 .bd-green{background:var(--green-lt);color:var(--green);border:1px solid #bbf7d0;}
 .bd-orange{background:var(--orange-lt);color:var(--orange);border:1px solid var(--orange-bg);}
@@ -131,14 +203,14 @@ input{-webkit-appearance:none;appearance:none;font-size:16px;} /* 16px 미만이
 .bd-indigo{background:var(--indigo-lt);color:var(--indigo);border:1px solid var(--indigo-bg);}
 
 /* ── Formulation tabs — now <button> ── */
-.ftabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
-.ftab{padding:6px 13px;border-radius:7px;border:1.5px solid var(--border);background:var(--surface2);font-size:12px;font-weight:500;color:var(--muted);font-family:var(--sans);transition:all .12s;}
+.ftabs{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap;}
+.ftab{padding:5px 8px;border-radius:7px;border:1px solid var(--border);background:var(--surface2);font-size:10px;font-weight:600;color:var(--muted);font-family:var(--sans);transition:all .12s;white-space:nowrap;}
 .ftab.active{font-weight:700;}
 .ftab:active{opacity:.7;}
 
 /* ── Info row ── */
-.info-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;margin-bottom:10px;font-size:13px;}
-.ic{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;}
+.info-row{display:flex;align-items:center;flex-wrap:wrap;gap:5px;background:var(--surface2);border-radius:7px;padding:5px 9px;margin-bottom:7px;font-size:13px;}
+.ic{font-size:10.5px;color:var(--muted);display:flex;align-items:center;gap:3px;}
 .ic b{font-family:var(--mono);font-weight:700;color:var(--text);}
 .sep{color:var(--border2);font-size:14px;}
 
@@ -171,7 +243,7 @@ input{-webkit-appearance:none;appearance:none;font-size:16px;} /* 16px 미만이
 .res-note{font-size:11px;color:var(--muted);}
 
 /* ── Banners ── */
-.ban{display:flex;align-items:flex-start;gap:8px;padding:9px 13px;border-radius:8px;margin-top:8px;font-size:12px;font-weight:500;line-height:1.5;}
+.ban{display:flex;align-items:flex-start;gap:6px;padding:7px 10px;border-radius:7px;margin-top:7px;font-size:10.5px;font-weight:500;line-height:1.45;}
 .ban-salvage{background:#fef3c7;color:#92400e;border:1px solid #fde68a;}
 .ban-caution{background:var(--orange-lt);color:#9a3412;border:1px solid var(--orange-bg);}
 .ban-info{background:var(--accent-lt);color:#1e40af;border:1px solid #bfdbfe;}
@@ -210,12 +282,13 @@ input{-webkit-appearance:none;appearance:none;font-size:16px;} /* 16px 미만이
 .sec-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;margin-top:4px;}
 .sec-bar{width:3px;height:18px;border-radius:2px;flex-shrink:0;}
 .sec-lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
-.o-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:16px;}
-.oc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--sh);}
+.o-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:16px;align-items:start;}
+.o-grid .oc.open{grid-column:1/-1;}
+.oc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:0;box-shadow:var(--sh);overflow:hidden;}
 .oc-hdr{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
 .oc-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.oc-name{font-size:13px;font-weight:700;}
-.oc-conc{font-size:11px;color:var(--muted);}
+.oc-name{font-size:13px;font-weight:800;color:var(--text);line-height:1.3;word-break:keep-all;}
+.oc-conc{font-size:10.5px;color:var(--muted);font-family:var(--mono);margin-top:1px;}
 .oc-body{font-size:12px;color:var(--text2);line-height:1.75;}
 .oc-body .mono{font-family:var(--mono);font-weight:700;color:var(--text);}
 .oc-body .rp{display:inline-block;border-radius:6px;padding:1px 7px;font-family:var(--mono);font-weight:700;font-size:12px;}
@@ -232,15 +305,15 @@ footer{text-align:center;margin-top:32px;font-size:11px;color:var(--muted2);line
 ══════════════════════════════ */
 
 /* Slider */
-.slider-wrap{display:flex;flex-direction:column;gap:4px;margin-bottom:8px;}
+.slider-wrap{display:flex;flex-direction:column;gap:4px;margin-bottom:7px;}
 .slider-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 .slider-label{font-size:12px;color:var(--muted);font-weight:600;min-width:80px;}
 
 input[type=range]{
   -webkit-appearance:none;
   appearance:none;
-  height:6px;
-  border-radius:3px;
+  height:4px;
+  border-radius:2px;
   background:var(--border);
   outline:none;
   flex:1;
@@ -250,22 +323,23 @@ input[type=range]{
 }
 input[type=range]::-webkit-slider-thumb{
   -webkit-appearance:none;
-  width:22px;height:22px;
+  width:17px;height:17px;
   border-radius:50%;
-  background:var(--accent);
-  box-shadow:0 1px 4px rgba(37,99,235,.3);
+  background:#fff;
+  border:2px solid var(--accent);
+  box-shadow:0 1px 3px rgba(58,95,200,.35);
   cursor:pointer;
 }
 input[type=range]::-moz-range-thumb{
-  width:22px;height:22px;
+  width:17px;height:17px;
   border-radius:50%;
-  background:var(--accent);
-  border:none;
+  background:#fff;
+  border:2px solid var(--accent);
   cursor:pointer;
 }
 
 /* Titration row */
-.titration-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.titration-row{display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
 .tit-btn{width:33px;height:33px;border-radius:7px;border:1.5px solid var(--border);background:var(--surface2);font-size:16px;font-weight:700;color:var(--text2);display:flex;align-items:center;justify-content:center;touch-action:manipulation;-webkit-appearance:none;flex-shrink:0;transition:all .12s;}
 .tit-btn:active{background:var(--accent-lt);border-color:var(--accent);color:var(--accent);}
 .tit-step{font-size:11px;color:var(--muted);padding:3px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;white-space:nowrap;}
@@ -278,33 +352,33 @@ input[type=range]::-moz-range-thumb{
 
 /* Big result */
 .res-big{
-  border-radius:10px;
-  padding:11px 16px;
+  border-radius:9px;
+  padding:10px 14px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  flex-wrap:wrap;
   gap:8px;
-  margin-bottom:8px;
+  margin-bottom:7px;
 }
 .res-big.empty{background:var(--surface2);border:1px dashed var(--border);}
 .res-big.ok{background:#f0fdf9;border:1.5px solid #bfdbfe;}
 .res-big.warn{background:#fff7ed;border:1.5px solid var(--orange-bg);}
 .res-big.danger{background:#fef2f2;border:1.5px solid var(--red-bg);}
-.res-big-l{display:flex;flex-direction:column;gap:3px;}
+.res-big-l{display:flex;flex-direction:column;gap:1px;}
+.res-big-numline{display:flex;align-items:baseline;gap:5px;}
 .res-big-num{
   font-family:var(--mono);
-  font-size:38px;
+  font-size:29px;
   font-weight:800;
   line-height:1;
-  letter-spacing:-1px;
+  letter-spacing:-.5px;
 }
 .res-big-num.ok{color:var(--accent);}
 .res-big-num.warn{color:var(--orange);}
 .res-big-num.danger{color:var(--red);}
 .res-big-num.empty{font-size:13px;font-weight:400;color:var(--muted2);letter-spacing:0;}
-.res-big-unit{font-size:12px;color:var(--muted);font-weight:600;margin-top:1px;}
-.res-big-dose{font-size:11px;color:var(--muted);margin-top:2px;}
+.res-big-unit{font-size:12px;color:var(--muted);font-weight:600;}
+.res-big-dose{font-size:10.5px;color:var(--muted2);margin-top:1px;}
 .res-big-r{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
 .res-big-tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;}
 
@@ -366,7 +440,7 @@ input[type=range]::-moz-range-thumb{
 .dc-btn:active{background:var(--surface2);}
 .use-tog{width:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;touch-action:manipulation;padding:0 12px 0 0;flex-shrink:0;}
 .use-tog-wrap{position:relative;width:38px;height:22px;border-radius:11px;background:#d1d5db;transition:background .22s ease;flex-shrink:0;}
-.use-tog-wrap.on{background:var(--accent);}
+.use-tog-wrap.on{background:#34c759;}
 .use-tog-knob{position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .2s cubic-bezier(.34,1.56,.64,1);box-shadow:0 1px 3px rgba(0,0,0,.25);}
 .use-tog-wrap.on .use-tog-knob{left:19px;}
 
@@ -392,7 +466,9 @@ input[type=range]::-moz-range-thumb{
 .dc-btn:active{background:var(--surface2);}
 .dc-l{display:flex;align-items:center;gap:10px;min-width:0;}
 .dc-bar{width:3px;height:36px;border-radius:2px;flex-shrink:0;}
-.dc-name{font-size:14px;font-weight:700;color:var(--text);}
+.dc-txt{min-width:0;display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;}
+.dc-name{font-size:14.5px;font-weight:800;color:var(--text);line-height:1.2;white-space:nowrap;flex-shrink:0;}
+.dc-namekr{font-size:11.5px;font-weight:400;color:var(--muted);line-height:1.3;white-space:nowrap;}
 .dc-sub{font-size:11px;color:var(--muted);margin-top:2px;}
 .dc-r{display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .chev{font-size:12px;color:var(--muted2);transition:transform .2s;}
@@ -401,7 +477,7 @@ input[type=range]::-moz-range-thumb{
 .dc.open .dc-body{display:block;}
 .use-tog{width:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;touch-action:manipulation;padding:0 12px 0 0;flex-shrink:0;}
 .use-tog-wrap{position:relative;width:38px;height:22px;border-radius:11px;background:#d1d5db;transition:background .22s ease;flex-shrink:0;}
-.use-tog-wrap.on{background:var(--accent);}
+.use-tog-wrap.on{background:#34c759;}
 .use-tog-knob{position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .2s cubic-bezier(.34,1.56,.64,1);box-shadow:0 1px 3px rgba(0,0,0,.25);}
 .use-tog-wrap.on .use-tog-knob{left:19px;}
 .oc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);}
@@ -452,7 +528,7 @@ input[type=range]::-moz-range-thumb{
 .emg-dose{font-size:13px;font-weight:800;color:var(--accent);font-family:var(--mono);text-align:right;white-space:nowrap;flex-shrink:0;}
 
 /* ── Custom Mix Panel ── */
-.mix-panel{margin-bottom:10px;}
+.mix-panel{margin-bottom:8px;}
 .mix-custom-wrap{display:none;background:var(--surface2);border:1.5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-top:6px;}
 .mix-custom-wrap.open{display:block;}
 .mix-custom-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
@@ -620,6 +696,179 @@ input[type=range]::-moz-range-thumb{
 .comp-ivf{border-color:#f9a8d4;} .comp-ivf b{color:#db2777;}
 .comp-isf{border-color:#c4b5fd;} .comp-isf b{color:#7c3aed;}
 .comp-note{font-size:10px;color:var(--muted2);margin-top:2px;}
+
+/* ── ABGA 분석기 ── */
+.abga-optional{margin-bottom:12px;}
+.abga-opt-label{font-size:10.5px;color:var(--muted2);margin-bottom:6px;font-weight:600;}
+.abga-primary{border-radius:9px;padding:11px 13px;font-size:14px;margin-bottom:10px;}
+.abga-primary.abga-acid{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
+.abga-primary.abga-alk{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;}
+.abga-primary.abga-normal{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;}
+.abga-vals{font-size:11px;font-family:var(--mono);opacity:.8;margin-top:3px;}
+.abga-block{background:var(--surface2);border-radius:8px;padding:9px 12px;font-size:12px;color:var(--text2);margin-bottom:8px;line-height:1.55;}
+.abga-summary{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:9px 12px;font-size:11px;color:#854d0e;margin-bottom:12px;}
+
+/* ── Na 교정 계산기 ── */
+.elyte-warn-top{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 11px;font-size:11px;color:#854d0e;margin-bottom:12px;line-height:1.5;}
+.elyte-inputs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:8px;}
+.elyte-field{display:flex;flex-direction:column;gap:4px;}
+.elyte-field label{font-size:11px;font-weight:700;color:var(--muted);}
+.elyte-inp-wrap{display:flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0 10px;height:42px;}
+.elyte-inp-wrap input{flex:1;border:none;background:none;font-family:var(--mono);font-size:16px;font-weight:700;color:var(--text);outline:none;width:100%;-moz-appearance:textfield;}
+.elyte-inp-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;}
+.elyte-inp-wrap span{font-size:11px;color:var(--muted);}
+.elyte-field select{height:42px;border:1px solid var(--border);background:var(--surface2);border-radius:8px;padding:0 10px;font-size:13px;color:var(--text);outline:none;}
+.elyte-note-wt{font-size:11px;color:var(--muted);margin-bottom:12px;padding:0 2px;}
+.elyte-direction{border-radius:9px;padding:11px 13px;font-size:13px;margin-bottom:12px;}
+.elyte-direction.dir-hypo{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;}
+.elyte-direction.dir-hyper{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
+.elyte-direction.dir-normal{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;}
+.elyte-rate-title{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:7px;}
+.elyte-rate-table{border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:12px;}
+.elyte-rate-hdr,.elyte-rate-row{display:grid;grid-template-columns:1.2fr 1fr 1fr;align-items:center;}
+.elyte-rate-hdr{background:var(--surface2);font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;}
+.elyte-rate-hdr span{padding:7px 11px;}
+.elyte-rate-row{border-top:1px solid var(--border);font-size:13px;}
+.elyte-rate-row span{padding:9px 11px;}
+.elyte-rate-row span:first-child{font-weight:700;color:var(--text);}
+.elyte-rate-row .ert-delta{font-family:var(--mono);color:var(--muted);}
+.elyte-rate-row .ert-rate{font-family:var(--mono);font-weight:800;color:var(--accent);}
+.elyte-rate-row.ert-danger{background:#fef2f2;}
+.elyte-rate-row.ert-danger .ert-delta{color:var(--red);font-weight:700;}
+.elyte-am{background:var(--accent-lt);border-radius:8px;padding:9px 12px;font-size:12.5px;color:var(--text2);margin-bottom:12px;}
+.elyte-safety{margin-bottom:12px;}
+.elyte-safety-line{font-size:11.5px;line-height:1.55;padding:7px 11px;border-radius:7px;background:var(--surface2);margin-bottom:5px;color:var(--text2);}
+.elyte-ref{font-size:10px;color:var(--muted2);line-height:1.6;border-top:1px solid var(--border);padding-top:9px;}
+@media (max-width:480px){ .elyte-inputs{grid-template-columns:1fr;} }
+
+/* ── 범용
+/* ── 범용 계산기 ── */
+.calc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:18px;box-shadow:var(--sh);}
+.calc-card-hdr{font-size:15px;font-weight:800;color:var(--text);margin-bottom:16px;}
+.calc-hdr-sub{font-size:11px;font-weight:400;color:var(--muted);margin-left:6px;}
+.calc-sec{margin-bottom:16px;}
+.calc-sec-lbl{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.calc-row{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;}
+.calc-field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:90px;}
+.calc-f-lbl{font-size:11px;font-weight:600;color:var(--muted);height:14px;line-height:14px;}
+.calc-field input,.calc-field select{height:44px;box-sizing:border-box;padding:0 12px;border:1px solid var(--border);border-radius:9px;font-size:15px;font-family:var(--mono);background:var(--surface);color:var(--text);width:100%;}
+.calc-field select{font-family:inherit;font-size:14px;}
+.calc-inp-suffix{position:relative;display:flex;align-items:center;}
+.calc-inp-suffix input{padding-right:42px;}
+.calc-sfx{position:absolute;right:12px;font-size:12px;color:var(--muted2);pointer-events:none;font-family:inherit;}
+.calc-plus{font-size:18px;color:var(--muted2);font-weight:700;align-self:flex-start;margin-top:24px;flex:0 0 auto;}
+.calc-conc-out{margin-top:10px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);}
+.calc-conc-sub{font-size:11px;color:var(--muted);font-family:var(--mono);}
+.calc-dir-row{display:flex;gap:6px;margin:16px 0;}
+.calc-dir-btn{flex:1;padding:9px 8px;font-size:12.5px;font-weight:700;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--muted);cursor:pointer;}
+.calc-dir-btn.active{background:#eff6ff;border-color:#bfdbfe;color:var(--accent);}
+.calc-result-big{margin-top:10px;padding:16px 18px;background:var(--accent-lt);border:1px solid var(--accent-bg);border-radius:11px;text-align:center;}
+.calc-res-main{display:flex;align-items:baseline;justify-content:center;gap:7px;}
+.calc-res-gtt{font-size:11.5px;color:var(--muted);font-family:var(--mono);margin-top:7px;}
+.calc-res-num{font-size:32px;font-weight:800;font-family:var(--mono);color:var(--accent);}
+.calc-res-unit{font-size:14px;color:var(--muted);font-weight:600;}
+.calc-res-empty{font-size:14px;color:var(--muted2);}
+.calc-gtt{margin-top:14px;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;}
+.calc-gtt-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.calc-gtt-row{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);}
+.calc-gtt-row b{font-family:var(--mono);color:var(--text);}
+
+/* ── oc 카드 접기/펼치기 ── */
+.oc-hdr-btn{display:flex;align-items:center;gap:9px;flex:1;min-width:0;background:none;border:none;padding:12px 4px 12px 13px;cursor:pointer;text-align:left;font:inherit;color:inherit;}
+
+.oc-txt{min-width:0;flex:1;}
+.oc-namekr{font-size:11px;font-weight:400;color:var(--muted);}
+.oc-tag{font-size:11px;color:var(--accent);font-weight:600;margin-top:2px;}
+.oc-conc-detail{font-size:12px;font-family:var(--mono);color:var(--text2);background:var(--surface2);border-radius:7px;padding:7px 10px;margin:0 13px 10px;}
+.oc-collapse{display:none;}
+.oc.open .oc-collapse{display:block;padding-bottom:13px;}
+.oc-icon{margin-left:0;}
+
+.oc.open .oc-collapse{display:block;}
+.oc.open .oc-chev{transform:rotate(180deg);}
+.oc-chev{margin-left:6px;}
+.oc-hdr{margin-bottom:0;}
+
+/* ── Heparin 프로토콜·nomogram ── */
+.hep-proto-row{display:flex;gap:6px;margin:8px 0;}
+.hep-proto-btn{flex:1;padding:7px 8px;font-size:12px;font-weight:700;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--muted);cursor:pointer;}
+.hep-proto-btn.active{background:#fef2f2;border-color:#fecaca;color:#b91c1c;}
+.hep-load{margin:6px 0;padding:9px 11px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;font-size:12.5px;color:#7f1d1d;line-height:1.5;}
+.hep-nomo-wrap{margin-top:12px;}
+.hep-nomo-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.hep-nomo{width:100%;border-collapse:collapse;font-size:11.5px;}
+.hep-nomo th{background:var(--surface2);border:1px solid var(--border);padding:5px 6px;font-weight:700;color:var(--muted);text-align:center;}
+.hep-nomo td{border:1px solid var(--border);padding:5px 6px;text-align:center;color:var(--text);}
+.hep-nomo td:first-child{font-family:var(--mono);font-weight:700;}
+.hep-nomo td:last-child{text-align:left;}
+.hep-nomo tr.nomo-low td{background:#fffbeb;}
+.hep-nomo tr.nomo-ok td{background:#f0fdf4;}
+.hep-nomo tr.nomo-high td{background:#fef2f2;}
+.hep-nomo-note{margin-top:6px;font-size:11px;color:var(--muted);line-height:1.5;}
+
+/* 고정용량 슬라이더식 */
+.dose-control{background:var(--surface2);border-radius:10px;padding:12px;margin-bottom:9px;}
+.dose-slider-wrap{margin-bottom:10px;}
+.dose-slider{width:100%;height:4px;border-radius:2px;-webkit-appearance:none;appearance:none;background:var(--border);outline:none;cursor:pointer;touch-action:manipulation;}
+.dose-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--accent);box-shadow:0 1px 4px rgba(58,95,200,.35);cursor:pointer;}
+.dose-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--accent);cursor:pointer;}
+.dose-readout{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.dose-left{display:flex;align-items:baseline;gap:5px;}
+.dose-cur{font-family:var(--mono);font-size:18px;font-weight:800;color:var(--text);}
+.dose-cur-unit{font-size:11px;color:var(--muted);}
+.dose-arrow{font-size:13px;color:var(--muted2);}
+.dose-rate{display:flex;align-items:baseline;gap:4px;}
+.dose-rate-num{font-family:var(--mono);font-size:23px;font-weight:800;color:var(--accent);}
+.dose-rate-unit{font-size:11px;color:var(--muted);}
+.oc-ref{font-size:10.5px;color:var(--muted);line-height:1.5;padding:0 2px;}
+.oc-ref b{color:var(--text2);}
+
+/* 고정용량 속도표 행 선택 */
+.oc-row-sel{background:var(--accent-lt)!important;}
+.oc-row-sel td{font-weight:700;color:var(--accent)!important;}
+.oc-row-sel td:first-child::before{content:"▶ ";color:var(--accent);font-size:9px;}
+.dash-rate-injecting{font-size:13px;font-weight:700;color:var(--accent);}
+
+/* ── 현재 약물 대시보드 ── */
+.dash-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.dash-pt{display:flex;align-items:baseline;gap:8px;}
+.dash-pt-name{font-size:17px;font-weight:800;color:var(--text);}
+.dash-pt-wt{font-size:13px;font-family:var(--mono);color:var(--muted);}
+.dash-count{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-lt);padding:5px 11px;border-radius:20px;}
+.dash-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:18px;}
+.dash-card{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:11px;overflow:hidden;box-shadow:var(--sh);cursor:pointer;transition:transform .1s;}
+.dash-card:active{transform:scale(.98);}
+.dash-bar{width:4px;flex-shrink:0;}
+.dash-card-body{padding:11px 13px;min-width:0;flex:1;}
+.dash-dname{font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dash-rate{display:flex;align-items:baseline;gap:4px;margin-top:5px;}
+.dash-rate-num{font-family:var(--mono);font-size:22px;font-weight:800;color:var(--accent);line-height:1;}
+.dash-rate-unit{font-size:11px;color:var(--muted);}
+.dash-dose{font-size:10.5px;color:var(--muted);font-family:var(--mono);margin-top:3px;}
+.active-list-label{font-size:12px;font-weight:800;color:var(--text2);letter-spacing:.02em;margin:4px 2px 11px;padding-top:14px;border-top:1px solid var(--border);}
+
+/* ════ 반응형 (모바일 최적화) ════ */
+
+@media (max-width:430px){
+  .dc-btn{flex-direction:column;align-items:stretch;gap:7px;padding:12px 14px;}
+  .dc-r{justify-content:flex-start;max-width:100%;margin-left:14px;}
+  .dc-name{white-space:normal;}
+}
+
+@media (max-width:640px){
+  .app{padding:8px 12px 60px;}
+  /* 환자 패널 세로 여유 */
+  .pt-panel{flex-wrap:wrap;}
+  /* 범용계산기 믹스 입력: 모바일에서 약물량+단위 한 줄, 수액량 다음 줄 */
+  .calc-row{gap:8px;}
+  .calc-field{min-width:72px;}
+  /* 결과 숫자 모바일에서 약간 축소 */
+  .res-num,.calc-res-num{font-size:30px;}
+}
+@media (max-width:359px){
+  /* 아주 좁은 폰: 이외약물 1열 */
+  .o-grid{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
@@ -628,57 +877,273 @@ input[type=range]::-moz-range-thumb{
 <div class="app-header">
   <div class="hdr-l">
     <div class="logo">💊</div>
-    <div>
-      <div class="hdr-title">ICU 약물 용량 계산기</div>
-      <div class="hdr-sub">화성유일병원 내과중환자실</div>
-    </div>
+    <div class="hdr-title">ICU 약물 계산기</div>
   </div>
-  <span class="hdr-badge">2025 Rev.</span>
+  <a class="hdr-feedback" href="https://formspree.io/f/mkoadkje" target="_blank" rel="noopener">💬 피드백</a>
 </div>
 
 <div class="sticky-bar" id="sticky-bar">
   <div class="session-bar" id="session-bar"></div>
-  <div class="pt-panel" style="margin-bottom:10px;">
-    <div class="pt-field">
-      <div class="f-label">👤 환자명</div>
-      <div class="inp-wrap"><input class="txt" type="text" id="ptName" placeholder="홍길동" inputmode="text"></div>
+  <div class="pt-compact" id="pt-compact">
+    <div class="pt-compact-name">
+      <input class="pt-name-inp" type="text" id="ptName" placeholder="환자명" inputmode="text">
     </div>
-    <div class="pt-field">
-      <div class="f-label">⚖️ 체중 (BWT)</div>
-      <div class="inp-wrap">
-        <input type="number" id="bwt" value="60" min="20" max="200" step="1" inputmode="decimal" oninput="updateAll()">
-        <span class="u-label">kg</span>
-      </div>
+    <div class="pt-compact-wt">
+      <button class="pt-wt-step" type="button" onclick="stepBwt(-1)">−</button>
+      <input type="number" id="bwt" value="60" min="20" max="200" step="1" inputmode="decimal" oninput="updateAll()">
+      <span class="pt-wt-unit">kg</span>
+      <button class="pt-wt-step" type="button" onclick="stepBwt(1)">＋</button>
     </div>
-    <div class="qbtns" style="margin-top:auto;">
-      <span style="font-size:11px;color:var(--muted);font-weight:600;">빠른 설정</span>
-      <button class="qbtn" type="button" onclick="setBwt(45)">45</button>
-      <button class="qbtn" type="button" onclick="setBwt(50)">50</button>
-      <button class="qbtn" type="button" onclick="setBwt(55)">55</button>
-      <button class="qbtn" type="button" onclick="setBwt(60)">60</button>
-      <button class="qbtn" type="button" onclick="setBwt(65)">65</button>
-      <button class="qbtn" type="button" onclick="setBwt(70)">70</button>
-      <button class="qbtn" type="button" onclick="setBwt(75)">75</button>
-      <button class="qbtn" type="button" onclick="setBwt(80)">80</button>
-    </div>
+    <button class="pt-edit-btn" type="button" onclick="togPtPanel()" id="pt-edit-btn">빠른설정 ▾</button>
+    <button class="pt-active-btn" type="button" onclick="switchTab('active',this)" id="pt-active-btn">💉 현재약물<span class="pt-active-cnt" id="pt-active-cnt"></span></button>
+  </div>
+  <div class="pt-quick-wrap" id="pt-quick-wrap" style="display:none;">
+    <span class="pt-quick-lbl">빠른 체중</span>
+    <button class="qbtn" type="button" onclick="setBwt(45)">45</button>
+    <button class="qbtn" type="button" onclick="setBwt(50)">50</button>
+    <button class="qbtn" type="button" onclick="setBwt(55)">55</button>
+    <button class="qbtn" type="button" onclick="setBwt(60)">60</button>
+    <button class="qbtn" type="button" onclick="setBwt(65)">65</button>
+    <button class="qbtn" type="button" onclick="setBwt(70)">70</button>
+    <button class="qbtn" type="button" onclick="setBwt(75)">75</button>
+    <button class="qbtn" type="button" onclick="setBwt(80)">80</button>
   </div>
   <div class="tabs">
-    <button class="tab active" type="button" onclick="switchTab('vp',this)">🔴 승압제/강심제</button>
-    <button class="tab" type="button" onclick="switchTab('sd',this)">😴 진정·진통·이뇨</button>
-    <button class="tab" type="button" onclick="switchTab('ot',this)">💙 이외 약물</button>
-    <button class="tab" type="button" onclick="switchTab('ibw',this)">📐 IBW · 환기</button>
-    <button class="tab" type="button" onclick="switchTab('emg',this)">🚨 응급약물</button>
-    <button class="tab" type="button" onclick="switchTab('fluid',this)">💧 수액·IO</button>
-    <button class="tab" type="button" id="tab-active-btn" onclick="switchTab('active',this)">✅ 현재 약물</button>
+    <button class="tab active" type="button" onclick="switchTab('vp',this)">🔴 승압</button>
+    <button class="tab" type="button" onclick="switchTab('sd',this)">😴 진정</button>
+    <button class="tab" type="button" onclick="switchTab('ot',this)">💙 이외</button>
+    <button class="tab" type="button" onclick="switchTab('cardio',this)">🫀 심혈관</button>
+    <button class="tab" type="button" onclick="switchTab('calc',this)">🧮 계산기</button>
+    <button class="tab" type="button" onclick="switchTab('elyte',this)">🧪 전해질</button>
+    <button class="tab" type="button" onclick="switchTab('ibw',this)">📐 IBW</button>
+    <button class="tab" type="button" onclick="switchTab('emg',this)">🚨 응급</button>
+    <button class="tab" type="button" onclick="switchTab('fluid',this)">💧 수액</button>
   </div>
 </div><!-- /sticky-bar -->
 
 <div id="tab-vp"></div>
 <div id="tab-sd" style="display:none;"></div>
 <div id="tab-ot" style="display:none;"></div>
+<div id="tab-cardio" style="display:none;"></div>
+<div id="tab-calc" style="display:none;">
+
+  <div class="calc-card">
+    <div class="calc-card-hdr">🧮 범용 인퓨전 계산기 <span class="calc-hdr-sub">모든 약물·단위 커스텀</span></div>
+
+    <!-- 1. 믹스 (농도 산출) -->
+    <div class="calc-sec">
+      <div class="calc-sec-lbl">① 약물 믹스 → 농도</div>
+      <div class="calc-row">
+        <div class="calc-field">
+          <span class="calc-f-lbl">약물량</span>
+          <input type="number" id="uc-drug" value="200" min="0" step="any" inputmode="decimal" oninput="ucCalc()">
+        </div>
+        <div class="calc-field">
+          <span class="calc-f-lbl">단위</span>
+          <select id="uc-drug-unit" onchange="ucCalc()">
+            <option value="mg">mg</option>
+            <option value="mcg">mcg</option>
+            <option value="g">g</option>
+            <option value="unit">unit</option>
+            <option value="meq">mEq</option>
+          </select>
+        </div>
+        <div class="calc-plus">+</div>
+        <div class="calc-field">
+          <span class="calc-f-lbl">수액량</span>
+          <div class="calc-inp-suffix"><input type="number" id="uc-vol" value="200" min="0.1" step="any" inputmode="decimal" oninput="ucCalc()"><span class="calc-sfx">mL</span></div>
+        </div>
+      </div>
+      <div class="calc-conc-out" id="uc-conc-out">농도: — </div>
+    </div>
+
+    <!-- 2. 방향 선택 -->
+    <div class="calc-dir-row">
+      <button class="calc-dir-btn active" type="button" id="uc-dir-fwd" onclick="ucSetDir('fwd')">용량 → 속도 (mL/hr)</button>
+      <button class="calc-dir-btn" type="button" id="uc-dir-rev" onclick="ucSetDir('rev')">속도 → 용량</button>
+    </div>
+
+    <!-- 3-A. 정방향: dose → rate -->
+    <div class="calc-sec" id="uc-fwd-panel">
+      <div class="calc-sec-lbl">② 목표 용량 → 주입 속도</div>
+      <div class="calc-row">
+        <div class="calc-field">
+          <span class="calc-f-lbl">용량</span>
+          <input type="number" id="uc-dose" value="5" min="0" step="any" inputmode="decimal" oninput="ucCalc()">
+        </div>
+        <div class="calc-field">
+          <span class="calc-f-lbl">단위</span>
+          <select id="uc-dose-unit" onchange="ucCalc()">
+            <option value="mcgkgmin">mcg/kg/min</option>
+            <option value="mcgkghr">mcg/kg/hr</option>
+            <option value="mgkgmin">mg/kg/min</option>
+            <option value="mgkghr">mg/kg/hr</option>
+            <option value="mcgmin">mcg/min</option>
+            <option value="mcghr">mcg/hr</option>
+            <option value="mgmin">mg/min</option>
+            <option value="mghr">mg/hr</option>
+            <option value="unitkghr">U/kg/hr</option>
+            <option value="unithr">U/hr</option>
+            <option value="unitmin">U/min</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result-big" id="uc-rate-out"><span class="calc-res-empty">입력 후 계산</span></div>
+    </div>
+
+    <!-- 3-B. 역방향: rate → dose -->
+    <div class="calc-sec" id="uc-rev-panel" style="display:none;">
+      <div class="calc-sec-lbl">② 주입 속도 → 투여 용량</div>
+      <div class="calc-row">
+        <div class="calc-field">
+          <span class="calc-f-lbl">주입속도</span>
+          <div class="calc-inp-suffix"><input type="number" id="uc-rate-in" value="10" min="0" step="any" inputmode="decimal" oninput="ucCalc()"><span class="calc-sfx">mL/hr</span></div>
+        </div>
+        <div class="calc-field">
+          <span class="calc-f-lbl">출력 단위</span>
+          <select id="uc-out-unit" onchange="ucCalc()">
+            <option value="mcgkgmin">mcg/kg/min</option>
+            <option value="mcgkghr">mcg/kg/hr</option>
+            <option value="mgkghr">mg/kg/hr</option>
+            <option value="mcgmin">mcg/min</option>
+            <option value="mgmin">mg/min</option>
+            <option value="mghr">mg/hr</option>
+            <option value="unitkghr">U/kg/hr</option>
+            <option value="unithr">U/hr</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result-big" id="uc-dose-out"><span class="calc-res-empty">입력 후 계산</span></div>
+    </div>
+
+    
+
+    <div class="ban-info" style="margin-top:14px;"><span class="ban-icon">⚠️</span><span>체중은 상단 환자 정보의 값을 사용합니다. 계산 결과는 참고용이며, 실제 투여 전 반드시 재확인하십시오.</span></div>
+  </div>
+
+</div>
+
+
+<div id="tab-elyte" style="display:none;">
+  <div class="calc-card">
+    <div class="calc-title">🧪 Na 교정 계산기 <span class="calc-subtitle">저/고나트륨혈증 · Adrogué-Madias</span></div>
+
+    <div class="elyte-warn-top">⚠️ Na는 1가 이온: <b>1 mmol/L = 1 mEq/L</b> (동일). 모든 값 참고용 · 실제 교정은 2시간마다 Na 재측정 필수</div>
+
+    <div class="elyte-inputs">
+      <div class="elyte-field">
+        <label>현재 혈청 Na</label>
+        <div class="elyte-inp-wrap"><input type="number" id="na-cur" value="120" min="100" max="180" step="1" inputmode="decimal" oninput="calcNaCorrection()"><span>mmol/L</span></div>
+      </div>
+      <div class="elyte-field">
+        <label>목표 Na (24h)</label>
+        <div class="elyte-inp-wrap"><input type="number" id="na-target" value="128" min="100" max="180" step="1" inputmode="decimal" oninput="calcNaCorrection()"><span>mmol/L</span></div>
+      </div>
+      <div class="elyte-field">
+        <label>성별 (TBW 계수)</label>
+        <select id="na-sex" onchange="calcNaCorrection()">
+          <option value="0.6">남성 (0.6)</option>
+          <option value="0.5">여성 (0.5)</option>
+          <option value="0.5">고령 남성 (0.5)</option>
+          <option value="0.45">고령 여성 (0.45)</option>
+        </select>
+      </div>
+      <div class="elyte-field">
+        <label>수액 종류</label>
+        <select id="na-fluid" onchange="calcNaCorrection()">
+          <option value="513">3% NaCl (513 mmol/L)</option>
+          <option value="154">0.9% NS (154)</option>
+          <option value="77">0.45% Half saline (77)</option>
+          <option value="0">D5W / 자유수 (0)</option>
+        </select>
+      </div>
+    </div>
+    <div class="elyte-note-wt">체중 <b id="na-wt-disp">60</b> kg (상단 환자 정보) · TBW = <b id="na-tbw-disp">36.0</b> L</div>
+
+    <!-- 방향·안전 판정 -->
+    <div id="na-direction" class="elyte-direction"></div>
+
+    <!-- 교정속도별 주입속도 -->
+    <div class="elyte-rate-title">📊 교정 속도별 권장 주입 속도</div>
+    <div class="elyte-rate-table">
+      <div class="elyte-rate-hdr"><span>교정 속도</span><span>예상 24h ΔNa</span><span>주입 속도</span></div>
+      <div class="elyte-rate-row" id="na-row-05"><span>0.5 mmol/L/hr</span><span class="ert-delta">—</span><span class="ert-rate">—</span></div>
+      <div class="elyte-rate-row" id="na-row-075"><span>0.75 mmol/L/hr</span><span class="ert-delta">—</span><span class="ert-rate">—</span></div>
+      <div class="elyte-rate-row" id="na-row-10"><span>1.0 mmol/L/hr</span><span class="ert-delta">—</span><span class="ert-rate">—</span></div>
+    </div>
+
+    <!-- Adrogue-Madias 1L 효과 -->
+    <div class="elyte-am" id="na-am"></div>
+
+    <!-- 안전 가드 -->
+    <div class="elyte-safety" id="na-safety"></div>
+
+    <div class="elyte-ref">
+      <b>Adrogué-Madias:</b> ΔNa(1L) = (수액Na − 혈청Na) / (TBW + 1) · 주입속도 = 목표ΔNa/hr ÷ ΔNa(1L) × 1000<br>
+      <b>안전 한계:</b> 저Na 교정 ≤8 mmol/L/24h (고위험 ≤6) · 고Na 교정 ≤0.5 mmol/L/hr (≤10/24h) · 출처: Sterns 2024, Adrogué-Madias NEJM 2000, MDCalc #480
+    </div>
+  </div>
+
+  <div class="calc-card" style="margin-top:16px;">
+    <div class="calc-title">🩸 ABGA 분석기 <span class="calc-subtitle">산-염기 단계별 해석</span></div>
+
+    <div class="elyte-inputs abga-inputs">
+      <div class="elyte-field">
+        <label>pH</label>
+        <div class="elyte-inp-wrap"><input type="number" id="abg-ph" value="7.30" min="6.5" max="7.9" step="0.01" inputmode="decimal" oninput="calcABGA()"></div>
+      </div>
+      <div class="elyte-field">
+        <label>PaCO₂</label>
+        <div class="elyte-inp-wrap"><input type="number" id="abg-co2" value="30" min="5" max="120" step="1" inputmode="decimal" oninput="calcABGA()"><span>mmHg</span></div>
+      </div>
+      <div class="elyte-field">
+        <label>HCO₃⁻</label>
+        <div class="elyte-inp-wrap"><input type="number" id="abg-hco3" value="14" min="2" max="60" step="1" inputmode="decimal" oninput="calcABGA()"><span>mEq/L</span></div>
+      </div>
+      <div class="elyte-field">
+        <label>경과</label>
+        <select id="abg-chron" onchange="calcABGA()">
+          <option value="acute">급성</option>
+          <option value="chronic">만성</option>
+        </select>
+      </div>
+    </div>
+    <div class="abga-optional">
+      <div class="abga-opt-label">선택 입력 (AG 분석용)</div>
+      <div class="elyte-inputs">
+        <div class="elyte-field">
+          <label>Na⁺</label>
+          <div class="elyte-inp-wrap"><input type="number" id="abg-na" value="140" min="100" max="180" step="1" inputmode="decimal" oninput="calcABGA()"><span>mEq/L</span></div>
+        </div>
+        <div class="elyte-field">
+          <label>Cl⁻</label>
+          <div class="elyte-inp-wrap"><input type="number" id="abg-cl" value="100" min="60" max="140" step="1" inputmode="decimal" oninput="calcABGA()"><span>mEq/L</span></div>
+        </div>
+        <div class="elyte-field">
+          <label>Albumin</label>
+          <div class="elyte-inp-wrap"><input type="number" id="abg-alb" value="4.0" min="1" max="6" step="0.1" inputmode="decimal" oninput="calcABGA()"><span>g/dL</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1차 판정 -->
+    <div id="abg-primary" class="abga-primary"></div>
+    <!-- 보상 -->
+    <div id="abg-comp" class="abga-block"></div>
+    <!-- AG -->
+    <div id="abg-ag" class="abga-block"></div>
+    <!-- 종합 -->
+    <div id="abg-summary" class="abga-summary"></div>
+
+    <div class="elyte-ref">
+      <b>Winter's:</b> 예상 PaCO₂ = 1.5×HCO₃ + 8±2 (대사성 산증) · <b>AG</b> = Na − (Cl + HCO₃), 정상 12±2, 알부민 보정 +2.5×(4.0−Alb)<br>
+      <b>Delta ratio</b> = ΔAG/ΔHCO₃: 1–2 단순 AGMA · &lt;1 동반 non-AG 산증 · &gt;2 동반 대사성 알칼리증 · 출처: Harrison's, LITFL, Deranged Physiology
+    </div>
+  </div>
+</div>
+
 
 <div id="tab-ibw" style="display:none;">
-
   <!-- IBW 입력 패널 -->
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 20px;margin-bottom:14px;box-shadow:var(--sh);">
     <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">이상체중 계산 (Devine 공식)</div>
@@ -910,8 +1375,8 @@ input[type=range]::-moz-range-thumb{
     <div class="fset-group" id="vent-detail-group">
       <span class="fset-label">가습기</span>
       <select id="fluid-humid" class="fluid-select" onchange="updateFluidCalc()" style="font-size:12px;padding:4px 7px;">
-        <option value="hme">HME (인공코)</option>
-        <option value="heated">Heated Humidifier</option>
+        <option value="hme">HME (수동 가습)</option>
+        <option value="heated">가열식 가습기</option>
         <option value="none">가습 없음</option>
       </select>
     </div>
@@ -938,19 +1403,19 @@ input[type=range]::-moz-range-thumb{
     <div class="fluid-card" id="fluid-plan-card">
       <div class="fluid-card-hdr">📋 수액 계획 <span style="font-size:11px;color:var(--muted);font-weight:400;">목표 Balance 기반</span></div>
 
-      <!-- 승압제 자동 -->
-      <div class="fluid-row-hdr">승압제 (자동)</div>
+      <!-- 약물 carrier 자동 -->
+      <div class="fluid-row-hdr">약물 carrier (자동)</div>
       <div id="vp-auto-list" class="fluid-auto-list">
-        <span style="color:var(--muted2);font-size:12px;">현재 약물 탭에서 승압제 토글 ON 시 자동 계산</span>
+        <span style="color:var(--muted2);font-size:12px;">현재약물에 켜진 인퓨전 약물의 mL/hr 자동 합산</span>
       </div>
-      <div class="fluid-row-total"><span>승압제 합계</span><span id="vp-total" class="fluid-mono">— mL</span></div>
+      <div class="fluid-row-total"><span>약물 carrier 합계</span><span id="vp-total" class="fluid-mono">— mL</span></div>
 
       <!-- 일반 수액 -->
       <div class="fluid-row-hdr" style="margin-top:10px;">일반 수액 <button class="fluid-add-btn" type="button" onclick="addFluidRow()">＋ 추가</button></div>
       <div id="fluid-rows"></div>
 
       <!-- 혈액제제 -->
-      <div class="fluid-row-hdr" style="margin-top:10px;">혈액제제 <button class="fluid-add-btn" type="button" onclick="addBloodRow()">＋ 추가</button></div>
+      <div class="fluid-row-hdr" style="margin-top:10px;">혈액제제·콜로이드 <button class="fluid-add-btn" type="button" onclick="addBloodRow()">＋ 추가</button></div>
       <div id="blood-rows"></div>
 
       <!-- 기타 -->
@@ -967,6 +1432,7 @@ input[type=range]::-moz-range-thumb{
         <div id="plan-insens-detail" style="font-size:11px;color:var(--muted);padding:2px 0 4px;line-height:1.5;"></div>
         <div class="fluid-result-row fluid-result-highlight"><span>예상 Net Balance</span><span id="plan-net" class="fluid-mono">— mL</span></div>
         <div class="fluid-result-row" style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;"><span>💡 권고 유지수액</span><span id="plan-suggest" class="fluid-mono" style="color:var(--accent);font-weight:800;">— mL/hr</span></div>
+        <div class="fluid-result-row" style="margin-top:4px;"><span style="font-size:11px;color:var(--muted);">📐 하루 최소 필요량 (참고)</span><span id="plan-maint" class="fluid-mono" style="font-size:11px;color:var(--muted);">—</span></div>
       </div>
     </div>
 
@@ -986,638 +1452,20 @@ input[type=range]::-moz-range-thumb{
           <tbody id="dist-tbody"></tbody>
           </table>
           </div>
-          <div id="dist-compartment-ref" style="margin-top:12px;"></div>TYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>ICU 약물 계산기 — 화성유일병원</title>
-<style>
+          <div id="dist-compartment-ref" style="margin-top:12px;"></div>
+        </div><!-- /fluid-dist-list overflow -->
+      </div><!-- /fluid-dist-list -->
+    </div><!-- /fluid-dist-card -->
+  </div><!-- /tab-fluid -->
 
-
-:root{
-  --bg:#f0f2f5;--surface:#fff;--surface2:#f8f9fb;
-  --border:#e4e8ee;--border2:#d0d7e3;
-  --accent:#2563eb;--accent-lt:#eff4ff;
-  --green:#16a34a;--green-lt:#f0fdf4;--green-bg:#dcfce7;
-  --orange:#ea580c;--orange-lt:#fff7ed;--orange-bg:#fed7aa;
-  --red:#dc2626;--red-lt:#fef2f2;--red-bg:#fecaca;
-  --purple:#7c3aed;--purple-lt:#f5f3ff;--purple-bg:#ddd6fe;
-  --teal:#0d9488;--teal-lt:#f0fdfa;--teal-bg:#ccfbf1;
-  --yellow:#ca8a04;--yellow-lt:#fefce8;
-  --cyan:#0891b2;--cyan-lt:#ecfeff;--cyan-bg:#a5f3fc;
-  --emerald:#059669;--emerald-lt:#ecfdf5;--emerald-bg:#a7f3d0;
-  --indigo:#4338ca;--indigo-lt:#eef2ff;--indigo-bg:#c7d2fe;
-  --text:#0f172a;--text2:#374151;--muted:#6b7280;--muted2:#9ca3af;
-  --mono:'SF Mono','Fira Code','Consolas',monospace;
-  --sans:-apple-system,'Segoe UI','Noto Sans KR',sans-serif;
-  --r:10px;--rl:14px;
-  --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
-}
-
-/* ── Reset ── */
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;font-size:14px;line-height:1.5;-webkit-text-size-adjust:100%;}
-
-/* ── iOS button reset — 핵심 ── */
-button{
-  font-family:var(--sans);
-  -webkit-appearance:none;
-  appearance:none;
-  border:none;
-  background:none;
-  cursor:pointer;
-  touch-action:manipulation; /* 300ms delay 제거 */
-  -webkit-user-select:none;
-  user-select:none;
-}
-input{-webkit-appearance:none;appearance:none;font-size:16px;} /* 16px 미만이면 iOS zoom */
-
-.app{max-width:960px;margin:0 auto;padding:8px 16px 60px;}
-
-/* ── Header ── */
-.app-header{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sh);}
-.hdr-l{display:flex;align-items:center;gap:12px;}
-.logo{width:40px;height:40px;background:linear-gradient(135deg,#2563eb,#0d9488);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.hdr-title{font-size:17px;font-weight:700;letter-spacing:-.3px;}
-.hdr-sub{font-size:11px;color:var(--muted);margin-top:1px;}
-.hdr-badge{font-size:11px;font-weight:600;padding:4px 10px;background:var(--accent-lt);color:var(--accent);border:1px solid #bfdbfe;border-radius:20px;}
-
-/* ── Patient panel ── */
-.pt-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px 20px;margin-bottom:14px;box-shadow:var(--sh);display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
-.pt-field{display:flex;flex-direction:column;gap:5px;}
-.f-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
-.inp-wrap{display:flex;align-items:center;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .15s;}
-.inp-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
-.inp-wrap input{background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:20px;font-weight:700;width:80px;padding:8px 10px;text-align:right;}
-.inp-wrap input.txt{font-family:var(--sans);font-size:16px;font-weight:500;width:130px;text-align:left;}
-.u-label{font-size:12px;color:var(--muted);padding:0 10px;font-weight:600;white-space:nowrap;}
-.qbtns{display:flex;gap:4px;flex-wrap:wrap;align-items:center;}
-
-/* ── All interactive buttons share these ── */
-.qbtn,.tab,.dc-hdr-click,
-
-/* Quick buttons */
-.qbtn{padding:6px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);font-size:11px;font-weight:600;color:var(--muted);font-family:var(--mono);transition:background .12s,color .12s;}
-.qbtn:active{background:var(--accent-lt);color:var(--accent);}
-
-/* ── Tabs ── */
-.sticky-bar{
-  position:-webkit-sticky;
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:var(--bg);
-  padding:10px 0 6px;
-  border-bottom:1px solid transparent;
-  transition:border-color .2s, box-shadow .2s;
-}
-.sticky-bar.stuck{
-  border-bottom-color:var(--border);
-  box-shadow:0 2px 12px rgba(0,0,0,.10);
-}
-.tabs{display:flex;gap:6px;margin-bottom:0;flex-wrap:wrap;}
-.tab{padding:8px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;transition:all .15s;}
-.tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;}
-
-/* ── Drug card ── */
-.dc{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);margin-bottom:10px;box-shadow:var(--sh);overflow:hidden;}
-
-/* dc-hdr is now a <button> that spans full width */
-.dc-hdr{display:flex;align-items:stretch;border-bottom:1px solid transparent;}
-.dc.open .dc-hdr{border-bottom-color:var(--border);background:var(--surface2);}
-.dc-hdr-click{flex:1;display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;transition:background .12s;min-width:0;}
-.dc-hdr-click:hover{background:var(--surface2);}
-.dc-hdr-toggle{display:flex;align-items:center;padding:0 14px 0 0;flex-shrink:0;}
-
-
-.dc-hdr-click:active{background:var(--surface2);}
-
-
-.dc-l{display:flex;align-items:center;gap:10px;}
-.dc-bar{width:4px;height:38px;border-radius:2px;flex-shrink:0;}
-.dc-name{font-size:14px;font-weight:700;color:var(--text);}
-.dc-sub{font-size:11px;color:var(--muted);margin-top:1px;}
-.dc-r{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
-.chev{font-size:13px;color:var(--muted2);transition:transform .2s;margin-left:4px;flex-shrink:0;}
-.dc.open .chev{transform:rotate(180deg);}
-.dc-body{display:none;padding:16px;}
-.dc.open .dc-body{display:block;}
-
-/* ── Badges ── */
-.bd{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;}
-.bd-blue{background:var(--accent-lt);color:var(--accent);border:1px solid #bfdbfe;}
-.bd-green{background:var(--green-lt);color:var(--green);border:1px solid #bbf7d0;}
-.bd-orange{background:var(--orange-lt);color:var(--orange);border:1px solid var(--orange-bg);}
-.bd-red{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bg);}
-.bd-purple{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bg);}
-.bd-teal{background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-bg);}
-.bd-yellow{background:var(--yellow-lt);color:var(--yellow);border:1px solid #fde68a;}
-.bd-gray{background:#f3f4f6;color:#4b5563;border:1px solid #e5e7eb;}
-.bd-cyan{background:var(--cyan-lt);color:var(--cyan);border:1px solid var(--cyan-bg);}
-.bd-emerald{background:var(--emerald-lt);color:var(--emerald);border:1px solid var(--emerald-bg);}
-.bd-indigo{background:var(--indigo-lt);color:var(--indigo);border:1px solid var(--indigo-bg);}
-
-/* ── Formulation tabs — now <button> ── */
-.ftabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
-.ftab{padding:6px 13px;border-radius:7px;border:1.5px solid var(--border);background:var(--surface2);font-size:12px;font-weight:500;color:var(--muted);font-family:var(--sans);transition:all .12s;}
-.ftab.active{font-weight:700;}
-.ftab:active{opacity:.7;}
-
-/* ── Info row ── */
-.info-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;margin-bottom:10px;font-size:13px;}
-.ic{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;}
-.ic b{font-family:var(--mono);font-weight:700;color:var(--text);}
-.sep{color:var(--border2);font-size:14px;}
-
-/* ── Dose row ── */
-.dose-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
-.d-label{font-size:12px;color:var(--muted);font-weight:600;min-width:80px;}
-.d-wrap{display:flex;align-items:center;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .15s;}
-.d-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
-.d-wrap input{background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:16px;font-weight:700;width:90px;padding:8px 10px;text-align:right;}
-.d-unit{font-size:11px;color:var(--muted);padding:0 10px;font-weight:600;white-space:nowrap;}
-
-/* ── Result box ── */
-.res{border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.res.empty{background:var(--surface2);border:1.5px dashed var(--border);}
-.res.ok{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1.5px solid #bfdbfe;}
-.res.warn{background:linear-gradient(135deg,#fff7ed,#fefce8);border:1.5px solid var(--orange-bg);}
-.res.danger{background:linear-gradient(135deg,#fef2f2,#fff7ed);border:1.5px solid var(--red-bg);}
-.res-l{display:flex;flex-direction:column;gap:2px;}
-.res-rate{font-family:var(--mono);font-size:30px;font-weight:700;line-height:1;}
-.res-rate.ok{color:var(--accent);}
-.res-rate.warn{color:var(--orange);}
-.res-rate.danger{color:var(--red);}
-.res-rate.empty{font-size:14px;font-weight:400;color:var(--muted2);}
-.res-unit{font-size:12px;color:var(--muted);margin-top:4px;font-weight:600;}
-.res-r{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
-.res-tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;}
-.tag-ok{background:#dbeafe;color:#1d4ed8;}
-.tag-warn{background:var(--orange-bg);color:var(--orange);}
-.tag-danger{background:var(--red-bg);color:var(--red);}
-.res-note{font-size:11px;color:var(--muted);}
-
-/* ── Banners ── */
-.ban{display:flex;align-items:flex-start;gap:8px;padding:9px 13px;border-radius:8px;margin-top:8px;font-size:12px;font-weight:500;line-height:1.5;}
-.ban-salvage{background:#fef3c7;color:#92400e;border:1px solid #fde68a;}
-.ban-caution{background:var(--orange-lt);color:#9a3412;border:1px solid var(--orange-bg);}
-.ban-info{background:var(--accent-lt);color:#1e40af;border:1px solid #bfdbfe;}
-.ban-limit{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bg);}
-.ban-icon{flex-shrink:0;}
-
-/* ── Sub boxes ── */
-.sub-box{border-radius:8px;padding:10px 14px;margin-bottom:12px;}
-.sub-box.purple{background:var(--purple-lt);border:1px solid var(--purple-bg);}
-.sub-box.green{background:var(--green-lt);border:1px solid #bbf7d0;}
-.sub-box.cyan{background:var(--cyan-lt);border:1px solid var(--cyan-bg);}
-.sub-box.indigo{background:var(--indigo-lt);border:1px solid var(--indigo-bg);}
-.sub-box.yellow{background:var(--yellow-lt);border:1px solid #fde68a;}
-.sub-box.surface{background:var(--surface2);border:1px solid var(--border);}
-.sub-box-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;}
-.sub-box.purple .sub-box-title{color:var(--purple);}
-.sub-box.green .sub-box-title{color:var(--green);}
-.sub-box.cyan .sub-box-title{color:var(--cyan);}
-.sub-box.indigo .sub-box-title{color:var(--indigo);}
-.sub-box.yellow .sub-box-title{color:var(--yellow);}
-.sub-box.surface .sub-box-title{color:var(--muted);}
-
-/* ── Bolus grid ── */
-.bolus-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:6px;}
-.bolus-cell{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;text-align:center;}
-.bc-label{font-size:11px;color:var(--muted);margin-bottom:3px;}
-.bc-val{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--accent);}
-.bc-unit{font-size:11px;color:var(--muted);margin-top:1px;}
-
-/* ── Vasopressin table ── */
-.vaso-tbl{width:100%;border-collapse:collapse;font-size:13px;}
-.vaso-tbl th{padding:8px 10px;text-align:left;font-weight:700;border-bottom:1.5px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;background:var(--surface2);}
-.vaso-tbl td{padding:9px 10px;border-bottom:1px solid var(--border);}
-
-/* ── Section headers (other tab) ── */
-.sec-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;margin-top:4px;}
-.sec-bar{width:3px;height:18px;border-radius:2px;flex-shrink:0;}
-.sec-lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
-.o-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:16px;}
-.oc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--sh);}
-.oc-hdr{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
-.oc-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.oc-name{font-size:13px;font-weight:700;}
-.oc-conc{font-size:11px;color:var(--muted);}
-.oc-body{font-size:12px;color:var(--text2);line-height:1.75;}
-.oc-body .mono{font-family:var(--mono);font-weight:700;color:var(--text);}
-.oc-body .rp{display:inline-block;border-radius:6px;padding:1px 7px;font-family:var(--mono);font-weight:700;font-size:12px;}
-.rp-bl{background:var(--accent-lt);color:var(--accent);border:1px solid #bfdbfe;}
-.rp-or{background:var(--orange-lt);color:var(--orange);border:1px solid var(--orange-bg);}
-.rp-gr{background:var(--green-lt);color:var(--green);border:1px solid #bbf7d0;}
-.rp-pu{background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bg);}
-.rp-ye{background:var(--yellow-lt);color:var(--yellow);border:1px solid #fde68a;}
-
-footer{text-align:center;margin-top:32px;font-size:11px;color:var(--muted2);line-height:1.9;}
-
-/* ══════════════════════════════
-   SLIDER + TITRATION + BIG RESULT
-══════════════════════════════ */
-
-/* Slider */
-.slider-wrap{display:flex;flex-direction:column;gap:4px;margin-bottom:8px;}
-.slider-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.slider-label{font-size:12px;color:var(--muted);font-weight:600;min-width:80px;}
-
-input[type=range]{
-  -webkit-appearance:none;
-  appearance:none;
-  height:6px;
-  border-radius:3px;
-  background:var(--border);
-  outline:none;
-  flex:1;
-  min-width:120px;
-  cursor:pointer;
-  touch-action:manipulation;
-}
-input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none;
-  width:22px;height:22px;
-  border-radius:50%;
-  background:var(--accent);
-  box-shadow:0 1px 4px rgba(37,99,235,.3);
-  cursor:pointer;
-}
-input[type=range]::-moz-range-thumb{
-  width:22px;height:22px;
-  border-radius:50%;
-  background:var(--accent);
-  border:none;
-  cursor:pointer;
-}
-
-/* Titration row */
-.titration-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
-.tit-btn{width:33px;height:33px;border-radius:7px;border:1.5px solid var(--border);background:var(--surface2);font-size:16px;font-weight:700;color:var(--text2);display:flex;align-items:center;justify-content:center;touch-action:manipulation;-webkit-appearance:none;flex-shrink:0;transition:all .12s;}
-.tit-btn:active{background:var(--accent-lt);border-color:var(--accent);color:var(--accent);}
-.tit-step{font-size:11px;color:var(--muted);padding:3px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;white-space:nowrap;}
-.tit-val-wrap{display:flex;align-items:center;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .15s;min-width:120px;}
-.tit-val-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
-.tit-val-wrap input{background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:13px;font-weight:700;width:90px;padding:5px 10px;text-align:right;-webkit-appearance:textfield;-moz-appearance:textfield;appearance:textfield;}
-.tit-val-wrap input::-webkit-outer-spin-button,
-.tit-val-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
-.tit-unit{font-size:12px;color:var(--muted);padding:0 10px 0 2px;font-weight:600;white-space:nowrap;}
-
-/* Big result */
-.res-big{
-  border-radius:10px;
-  padding:11px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-bottom:8px;
-}
-.res-big.empty{background:var(--surface2);border:1px dashed var(--border);}
-.res-big.ok{background:#f0fdf9;border:1.5px solid #bfdbfe;}
-.res-big.warn{background:#fff7ed;border:1.5px solid var(--orange-bg);}
-.res-big.danger{background:#fef2f2;border:1.5px solid var(--red-bg);}
-.res-big-l{display:flex;flex-direction:column;gap:3px;}
-.res-big-num{
-  font-family:var(--mono);
-  font-size:38px;
-  font-weight:800;
-  line-height:1;
-  letter-spacing:-1px;
-}
-.res-big-num.ok{color:var(--accent);}
-.res-big-num.warn{color:var(--orange);}
-.res-big-num.danger{color:var(--red);}
-.res-big-num.empty{font-size:13px;font-weight:400;color:var(--muted2);letter-spacing:0;}
-.res-big-unit{font-size:12px;color:var(--muted);font-weight:600;margin-top:1px;}
-.res-big-dose{font-size:11px;color:var(--muted);margin-top:2px;}
-.res-big-r{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
-.res-big-tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;}
-
-
-/* ── Session bar ── */
-.session-bar{display:flex;align-items:center;gap:6px;padding:8px 16px;background:var(--surface2);border-bottom:1px solid var(--border);flex-wrap:wrap;}
-.pt-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:12px;cursor:pointer;background:var(--surface);transition:all .15s;-webkit-appearance:none;touch-action:manipulation;font-family:var(--sans);}
-.pt-chip:active{opacity:.75;}
-.pt-chip.active{border-color:var(--accent);background:var(--accent-lt);}
-.pt-chip .pt-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.pt-chip .pt-name{font-weight:700;color:var(--text);}
-.pt-chip.active .pt-name{color:var(--accent);}
-.pt-chip .pt-wt{font-size:11px;color:var(--muted);font-family:var(--mono);}
-.pt-chip .pt-del{font-size:16px;color:var(--muted2);padding:0 0 0 2px;line-height:1;}
-.pt-chip .pt-del:hover{color:var(--red);}
-.pt-add-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:8px;border:1.5px dashed var(--border2);font-size:12px;color:var(--muted);cursor:pointer;background:none;-webkit-appearance:none;touch-action:manipulation;font-family:var(--sans);transition:all .15s;}
-.pt-add-btn:hover{border-color:var(--accent);color:var(--accent);}
-
-/* ── Drug use toggle ── */
-.drug-toggle-wrap{display:flex;align-items:center;gap:6px;flex-shrink:0;}
-.drug-in-use{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--green-bg);color:var(--green);border:1px solid #bbf7d0;white-space:nowrap;animation:fadeIn .2s ease;}
-@keyframes fadeIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
-.use-toggle{width:38px;height:22px;border-radius:11px;border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;touch-action:manipulation;-webkit-appearance:none;}
-.use-toggle.on{background:var(--accent);}
-.use-toggle.off{background:#e5e7eb;}
-.use-toggle::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;transition:left .15s;box-shadow:0 1px 2px rgba(0,0,0,.15);}
-.use-toggle.on::after{left:19px;}
-.use-toggle.off::after{left:3px;}
-
-/* ── Active drugs tab ── */
-.active-drug-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 16px;margin-bottom:8px;box-shadow:var(--sh);display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.active-drug-l{display:flex;align-items:center;gap:10px;}
-.active-drug-info .aname{font-size:14px;font-weight:700;color:var(--text);}
-.active-drug-info .adose{font-size:11px;color:var(--muted);margin-top:2px;}
-.active-rate-wrap{text-align:right;flex-shrink:0;}
-.active-rate-num{font-family:var(--mono);font-size:34px;font-weight:800;line-height:1;letter-spacing:-1px;}
-.active-rate-unit{font-size:12px;color:var(--muted);font-weight:600;margin-top:2px;}
-.active-empty{text-align:center;padding:40px 20px;color:var(--muted2);font-size:14px;}
-.tab-mock-hl{background:var(--green-lt)!important;border-color:#bbf7d0!important;color:var(--green)!important;}
-
-/* ── Modal overlay ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:flex;align-items:center;justify-content:center;}
-.modal-box{background:var(--surface);border-radius:var(--rl);padding:24px;width:300px;box-shadow:0 8px 32px rgba(0,0,0,.15);}
-.modal-title{font-size:16px;font-weight:700;margin-bottom:16px;}
-.modal-field{margin-bottom:12px;}
-.modal-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
-.modal-input{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:15px;font-family:var(--sans);color:var(--text);outline:none;}
-.modal-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
-.modal-btns{display:flex;gap:8px;margin-top:16px;}
-.modal-btn{flex:1;padding:9px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;-webkit-appearance:none;border:none;font-family:var(--sans);}
-.modal-btn.confirm{background:var(--accent);color:#fff;}
-.modal-btn.cancel{background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
-
-
-/* ── Card header (clean structure) ── */
-.dc-hdr{display:flex;align-items:stretch;border-bottom:1px solid transparent;transition:background .12s;}
-.dc.open .dc-hdr{border-bottom-color:var(--border);background:var(--surface2);}
-.dc-btn{flex:1;display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:none;border:none;text-align:left;font-family:var(--sans);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-width:0;}
-.dc-btn:active{background:var(--surface2);}
-.use-tog{width:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;touch-action:manipulation;padding:0 12px 0 0;flex-shrink:0;}
-.use-tog-wrap{position:relative;width:38px;height:22px;border-radius:11px;background:#d1d5db;transition:background .22s ease;flex-shrink:0;}
-.use-tog-wrap.on{background:var(--accent);}
-.use-tog-knob{position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .2s cubic-bezier(.34,1.56,.64,1);box-shadow:0 1px 3px rgba(0,0,0,.25);}
-.use-tog-wrap.on .use-tog-knob{left:19px;}
-
-/* Session bar */
-.session-bar{display:flex;align-items:center;gap:6px;padding:8px 16px;background:var(--surface2);border-bottom:1px solid var(--border);flex-wrap:wrap;}
-.pt-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:12px;cursor:pointer;background:var(--surface);touch-action:manipulation;-webkit-tap-highlight-color:transparent;font-family:var(--sans);}
-.pt-chip.active{border-color:var(--accent);background:var(--accent-lt);}
-.pt-chip:active{opacity:.75;}
-.pt-add-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:8px;border:1.5px dashed var(--border2);font-size:12px;color:var(--muted);cursor:pointer;background:none;touch-action:manipulation;font-family:var(--sans);}
-.pt-add-btn:active{background:var(--accent-lt);border-color:var(--accent);color:var(--accent);}
-
-
-
-
-.drug-section{margin-bottom:6px;}
-.sec-hdr{display:flex;align-items:center;gap:8px;padding:6px 0 4px;margin:12px 0 6px;}
-.sec-bar{width:3px;height:16px;border-radius:2px;flex-shrink:0;}
-.sec-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);}
-.dc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;box-shadow:var(--sh);overflow:hidden;}
-.dc-hdr{display:flex;align-items:stretch;border-bottom:1px solid transparent;transition:background .12s;}
-.dc.open .dc-hdr{border-bottom-color:var(--border);background:var(--surface2);}
-.dc-btn{flex:1;display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:none;border:none;text-align:left;font-family:var(--sans);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-width:0;}
-.dc-btn:active{background:var(--surface2);}
-.dc-l{display:flex;align-items:center;gap:10px;min-width:0;}
-.dc-bar{width:3px;height:36px;border-radius:2px;flex-shrink:0;}
-.dc-name{font-size:14px;font-weight:700;color:var(--text);}
-.dc-sub{font-size:11px;color:var(--muted);margin-top:2px;}
-.dc-r{display:flex;align-items:center;gap:6px;flex-shrink:0;}
-.chev{font-size:12px;color:var(--muted2);transition:transform .2s;}
-.dc.open .chev{transform:rotate(180deg);}
-.dc-body{display:none;padding:12px 16px 14px;}
-.dc.open .dc-body{display:block;}
-.use-tog{width:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;touch-action:manipulation;padding:0 12px 0 0;flex-shrink:0;}
-.use-tog-wrap{position:relative;width:38px;height:22px;border-radius:11px;background:#d1d5db;transition:background .22s ease;flex-shrink:0;}
-.use-tog-wrap.on{background:var(--accent);}
-.use-tog-knob{position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .2s cubic-bezier(.34,1.56,.64,1);box-shadow:0 1px 3px rgba(0,0,0,.25);}
-.use-tog-wrap.on .use-tog-knob{left:19px;}
-.oc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);}
-.oc-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.oc-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-.oc-name{font-size:13px;font-weight:700;color:var(--text);}
-.oc-conc{font-size:11px;color:var(--muted);margin-top:1px;}
-.oc-body{font-size:12px;color:var(--text2);line-height:1.7;}
-.o-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:14px;}
-.ref-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px;}
-.ref-tbl th{padding:5px 8px;border-bottom:1.5px solid var(--border);color:var(--muted);font-weight:700;text-align:left;background:var(--surface2);}
-.ref-tbl td{padding:5px 8px;border-bottom:.5px solid var(--border);}
-.ref-tbl .rn{font-family:var(--mono);font-weight:800;text-align:center;}
-.session-bar{display:flex;align-items:center;gap:6px;padding:8px 16px;background:var(--surface2);border-bottom:1px solid var(--border);flex-wrap:wrap;}
-.pt-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:12px;cursor:pointer;background:var(--surface);touch-action:manipulation;-webkit-tap-highlight-color:transparent;font-family:var(--sans);}
-.pt-chip.active{border-color:var(--accent);background:var(--accent-lt);}
-.pt-chip:active{opacity:.75;}
-.pt-add-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:8px;border:1.5px dashed var(--border2);font-size:12px;color:var(--muted);cursor:pointer;background:none;touch-action:manipulation;font-family:var(--sans);}
-.pt-add-btn:active{background:var(--accent-lt);border-color:var(--accent);color:var(--accent);}
-.active-empty-msg{text-align:center;padding:40px 20px;color:var(--muted2);font-size:14px;}
-@keyframes fadeIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
-
-
-.calc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:10px;}
-.cg-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 10px;text-align:center;}
-.cg-val{font-family:var(--mono);font-size:18px;font-weight:800;color:var(--accent);}
-.cg-unit{font-size:11px;color:var(--muted);margin-top:2px;}
-.cg-label{font-size:11px;color:var(--muted2);margin-bottom:4px;}
-
-
-.tit-val-wrap:focus-within{border-color:var(--accent);}
-
-.info-box{font-size:13px;color:var(--text2);background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;margin-bottom:10px;}
-.tit-val-wrap input{background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:20px;font-weight:700;width:70px;padding:5px 8px;text-align:right;}
-.tit-val-wrap:focus-within{border-color:var(--accent);}
-.ftab{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface2);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;touch-action:manipulation;font-family:var(--sans);transition:all .12s;-webkit-appearance:none;}
-.ftab.active{background:var(--accent-lt);border-color:var(--accent);color:var(--accent);}
-.titration-table{width:100%;border-collapse:collapse;font-size:13px;}
-.emg-section{margin-bottom:10px;border-radius:10px;overflow:hidden;box-shadow:var(--sh);}
-.emg-sec-hdr{padding:9px 14px;font-size:12px;font-weight:800;color:#fff;letter-spacing:.05em;text-transform:uppercase;}
-.emg-list{background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;}
-.emg-item{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:.5px solid var(--border);gap:12px;}
-.emg-item:last-child{border-bottom:none;}
-.emg-left{display:flex;flex-direction:column;gap:2px;min-width:0;}
-.emg-name{font-size:13px;font-weight:700;color:var(--text);}
-.emg-route{display:inline-block;font-size:10px;font-weight:700;padding:1px 5px;border-radius:4px;background:var(--surface2);color:var(--muted);border:1px solid var(--border);margin-left:3px;vertical-align:middle;}
-.emg-sub{font-size:11px;color:var(--muted);margin-top:1px;}
-.emg-dose{font-size:13px;font-weight:800;color:var(--accent);font-family:var(--mono);text-align:right;white-space:nowrap;flex-shrink:0;}
-
-/* ── Custom Mix Panel ── */
-.mix-panel{margin-bottom:10px;}
-.mix-custom-wrap{display:none;background:var(--surface2);border:1.5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-top:6px;}
-.mix-custom-wrap.open{display:block;}
-.mix-custom-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
-.mix-custom-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;min-width:60px;}
-.mix-custom-inp{font-family:var(--mono);font-size:15px;font-weight:700;width:90px;padding:6px 10px;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;color:var(--text);text-align:right;outline:none;-webkit-appearance:textfield;-moz-appearance:textfield;appearance:textfield;}
-.mix-custom-inp::-webkit-outer-spin-button,.mix-custom-inp::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
-.mix-custom-inp:focus{border-color:var(--accent);}
-.mix-custom-unit{font-size:12px;color:var(--muted);font-weight:600;}
-.mix-custom-result{font-size:13px;font-weight:700;color:var(--accent);padding:6px 12px;background:var(--accent-lt);border-radius:8px;border:1px solid #bfdbfe;text-align:center;}
-.mix-ftab-custom{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface2);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;touch-action:manipulation;font-family:var(--sans);transition:all .12s;-webkit-appearance:none;}
-.mix-ftab-custom.active{background:#f0fdf4;border-color:#16a34a;color:#16a34a;}
-
-/* ══════════════════════════════
-   💧 수액·IO 모듈 CSS
-   ══════════════════════════════ */
-.fluid-setting-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;
-  padding:10px 14px;background:var(--surface2);border-radius:10px;
-  border:1px solid var(--border);margin-bottom:12px;}
-.fset-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
-.fset-label{font-size:11px;font-weight:700;color:var(--muted);
-  text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
-.fset-btn{padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);
-  background:var(--surface);font-size:12px;font-weight:600;color:var(--muted);
-  cursor:pointer;font-family:var(--sans);transition:all .12s;white-space:nowrap;}
-.fset-btn.active{background:var(--accent-lt);border-color:var(--accent);color:var(--accent);}
-
-.fluid-top-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
-@media(max-width:640px){.fluid-top-grid{grid-template-columns:1fr;}}
-
-.fluid-card{background:var(--surface);border:1px solid var(--border);
-  border-radius:10px;padding:14px;box-shadow:var(--sh);margin-bottom:0;}
-.fluid-card-hdr{font-size:14px;font-weight:700;color:var(--text);
-  margin-bottom:12px;display:flex;align-items:center;gap:6px;}
-
-.fluid-row-hdr{font-size:11px;font-weight:700;color:var(--muted);
-  text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;
-  display:flex;align-items:center;gap:6px;}
-.fluid-add-btn{padding:3px 9px;border-radius:20px;border:1.5px dashed var(--border2);
-  font-size:11px;font-weight:600;color:var(--muted);background:none;
-  cursor:pointer;font-family:var(--sans);}
-.fluid-add-btn:active{background:var(--accent-lt);border-color:var(--accent);color:var(--accent);}
-
-.fluid-auto-list{background:var(--surface2);border-radius:8px;
-  padding:8px 10px;margin-bottom:6px;min-height:32px;font-size:13px;}
-.fluid-auto-item{display:flex;justify-content:space-between;align-items:center;
-  padding:3px 0;border-bottom:.5px solid var(--border);}
-.fluid-auto-item:last-child{border-bottom:none;}
-.fluid-row-total{display:flex;justify-content:space-between;align-items:center;
-  padding:5px 10px;background:var(--surface2);border-radius:6px;
-  font-size:12px;font-weight:700;color:var(--text);}
-
-.fluid-item-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
-.fluid-select{padding:5px 8px;border:1.5px solid var(--border);border-radius:7px;
-  background:var(--surface2);color:var(--text);font-size:12px;font-family:var(--sans);outline:none;}
-.fluid-num-inp{padding:5px 8px;border:1.5px solid var(--border);border-radius:7px;
-  background:var(--surface2);color:var(--text);font-size:13px;font-family:var(--mono);
-  font-weight:700;text-align:right;outline:none;
-  -webkit-appearance:textfield;-moz-appearance:textfield;appearance:textfield;}
-.fluid-num-inp::-webkit-outer-spin-button,.fluid-num-inp::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
-.fluid-unit{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap;}
-.fluid-del-btn{padding:2px 7px;border-radius:6px;border:1px solid var(--border);
-  background:none;color:var(--muted2);cursor:pointer;font-size:13px;line-height:1;}
-.fluid-del-btn:active{background:var(--red-bg);color:var(--red);}
-
-.fluid-result-box{background:var(--surface2);border-radius:8px;
-  padding:10px 12px;margin-top:10px;border:1px solid var(--border);}
-.fluid-result-row{display:flex;justify-content:space-between;align-items:center;
-  padding:4px 0;font-size:13px;}
-.fluid-result-highlight{font-weight:700;color:var(--text);margin-top:2px;}
-.fluid-mono{font-family:var(--mono);font-weight:700;font-size:14px;}
-.plan-val{color:var(--accent);}
-.bal-pos{color:var(--orange);}
-.bal-neg{color:#2563eb;}
-.bal-ok{color:var(--green);}
-
-/* 분포 계산 테이블 */
-.dist-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px;}
-.dist-tbl th{padding:5px 8px;background:var(--surface2);border-bottom:1.5px solid var(--border);
-  font-size:11px;font-weight:700;color:var(--muted);text-align:left;text-transform:uppercase;}
-.dist-tbl td{padding:6px 8px;border-bottom:.5px solid var(--border);font-size:12px;}
-.dist-val{font-family:var(--mono);font-weight:800;color:var(--accent);text-align:right;}
-.dist-total-row td{padding:7px 8px;font-size:13px;background:var(--accent-lt);
-  border-top:1.5px solid var(--accent);}
-.dist-total-row .dist-val{font-size:14px;color:var(--accent);}
-
-/* 면책 + 출처 */
-.fluid-disclaimer{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;
-  padding:10px 12px;margin-bottom:10px;font-size:11px;color:#92400e;line-height:1.6;}
-.fluid-disclaimer-title{font-weight:700;font-size:12px;margin-bottom:4px;}
-.fluid-refs{padding:8px 10px;background:var(--surface2);border-radius:8px;
-  border:1px solid var(--border);}
-.fluid-refs-title{font-size:11px;font-weight:700;color:var(--muted);
-  text-transform:uppercase;margin-bottom:5px;}
-.fluid-ref-link{display:block;font-size:11px;color:var(--accent);
-  text-decoration:none;padding:2px 0;}
-.fluid-ref-link:hover{text-decoration:underline;}
-
-/* I/O 듀티 카드 */
-.duty-card{background:var(--surface);border:1px solid var(--border);
-  border-radius:10px;margin-bottom:8px;overflow:hidden;}
-.duty-card-hdr{display:flex;align-items:center;justify-content:space-between;
-  padding:9px 14px;background:var(--surface2);border-bottom:1px solid var(--border);
-  font-size:13px;font-weight:700;color:var(--text);}
-.duty-body{display:grid;grid-template-columns:1fr 1fr;gap:0;}
-@media(max-width:500px){.duty-body{grid-template-columns:1fr;}}
-.duty-col{padding:12px 14px;}
-.duty-col-hdr{font-size:11px;font-weight:700;color:var(--muted);
-  text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
-.duty-io-row{display:flex;align-items:center;justify-content:space-between;
-  padding:3px 0;font-size:12px;border-bottom:.5px solid var(--border);}
-.duty-io-row:last-child{border-bottom:none;}
-.duty-io-label{color:var(--text2);}
-.duty-io-val{display:flex;align-items:center;gap:4px;}
-.duty-io-inp{width:70px;padding:3px 6px;border:1.5px solid var(--border);
-  border-radius:6px;background:var(--surface2);font-family:var(--mono);
-  font-size:12px;font-weight:700;text-align:right;color:var(--text);outline:none;
-  -webkit-appearance:textfield;-moz-appearance:textfield;appearance:textfield;}
-.duty-io-inp::-webkit-outer-spin-button,.duty-io-inp::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
-.duty-io-inp:focus{border-color:var(--accent);}
-.duty-auto-val{font-family:var(--mono);font-weight:700;color:var(--muted);}
-.duty-col-sep{border-left:1px solid var(--border);}
-.duty-balance-bar{display:flex;align-items:center;justify-content:space-between;
-  padding:8px 14px;border-top:1px solid var(--border);background:var(--surface2);}
-.duty-bal-lbl{font-size:12px;font-weight:700;color:var(--text);}
-.duty-bal-val{font-family:var(--mono);font-size:16px;font-weight:800;}
-.duty-bal-target{font-size:11px;color:var(--muted);}
-
-.out-chk-label{display:flex;align-items:center;gap:4px;font-size:12px;
-  color:var(--text2);cursor:pointer;padding:3px 8px;border-radius:6px;
-  border:1px solid var(--border);background:var(--surface);}
-.out-chk-label:has(input:checked){background:var(--accent-lt);
-  border-color:var(--accent);color:var(--accent);}
-
-.fluid-inp-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
-
-/* ── 수액 분포 구획 테이블 ── */
-.dist-tbl th{padding:6px 8px;background:var(--surface2);
-  border-bottom:1.5px solid var(--border);font-size:11px;
-  font-weight:700;color:var(--muted);text-align:center;}
-.dist-tbl th:first-child{text-align:left;}
-.dist-tbl td{padding:7px 8px;border-bottom:.5px solid var(--border);
-  vertical-align:top;text-align:center;font-size:12px;}
-.dist-tbl td:first-child{text-align:left;}
-.dist-num{text-align:right !important;font-family:var(--mono);
-  font-weight:700;font-size:12px;color:var(--text2);}
-.dist-ivf{text-align:center;}
-.dist-isf{text-align:center;}
-.dist-icf{text-align:center;}
-.dist-sum-row td{background:var(--surface2);padding:8px;
-  border-top:1.5px solid var(--border);font-size:12px;}
-
-/* ── 기저 체액 구획 참조 ── */
-.comp-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px;}
-.comp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:6px;}
-@media(max-width:500px){.comp-grid{grid-template-columns:repeat(3,1fr);}}
-.comp-item{display:flex;flex-direction:column;align-items:center;
-  padding:8px 4px;border-radius:8px;border:1.5px solid var(--border);
-  background:var(--surface2);text-align:center;gap:2px;}
-.comp-item span{font-size:10px;color:var(--muted);font-weight:600;}
-.comp-item b{font-family:var(--mono);font-size:14px;font-weight:800;}
-.comp-item .comp-sub{font-size:9px;color:var(--muted2);}
-.comp-tbw{border-color:#e2e8f0;} .comp-tbw b{color:var(--text);}
-.comp-ecf{border-color:#fca5a5;} .comp-ecf b{color:#dc2626;}
-.comp-icf{border-color:#93c5fd;} .comp-icf b{color:#2563eb;}
-.comp-ivf{border-color:#f9a8d4;} .comp-ivf b{color:#db2777;}
-.comp-isf{border-color:#c4b5fd;} .comp-isf b{color:#7c3aed;}
-.comp-note{font-size:10px;color:var(--muted2);margin-top:2px;}
-</style>
-</head>
-<body>
 <div id="tab-active" style="display:none;">
+  <div id="active-summary"></div>
+  <div id="active-list-label" style="display:none;" class="active-list-label">약물 상세 · 조절</div>
   <div id="active-drugs-list"></div>
-
 </div><!-- /app -->
 
 <footer>
-  화성유일병원 내과중환자실 약물 계산기 · 2025 Rev.<br>
+  화성유일병원 내과중환자실 약물 계산기 · 2025 Rev. · v3.1-cardio<br>
   SSC 2021 · AHA ACLS 2020 · FDA 2024 · Precedex PI<br>
   <span style="color:var(--red);font-weight:700;">임상 적용 전 주치의 확인 필수</span>
 </footer>
@@ -1637,16 +1485,17 @@ input[type=range]::-moz-range-thumb{
 var IVR_TABLE = {
   'NS':   {ivf:0.25, isf:0.75,  icf:0.00,  label:'0.9% NS',          desc:'ECF 분포 (Na 등장액)', ref:'Norberg 2010'},
   'LR':   {ivf:0.25, isf:0.75,  icf:0.00,  label:'Hartmann (LR)',     desc:'ECF 분포 (생리적 등장액)', ref:'Chappell 2008'},
+  'PLA':  {ivf:0.25, isf:0.75,  icf:0.00,  label:'Plasma Solution A', desc:'균형결정질액 · Na140/Cl98/K5/Mg3/acetate27/gluconate23 · 294mOsm · ECF 분포 · 저염소·알칼리화', ref:'Plasma-Lyte 148 PI'},
   'D5W':  {ivf:0.083,isf:0.25,  icf:0.667, label:'5% Dextrose',       desc:'TBW 균등분포 (자유수 전환)', ref:'Boddy 1974'},
   'D10W': {ivf:0.083,isf:0.25,  icf:0.667, label:'10% Dextrose',      desc:'TBW 균등분포', ref:'D5W 동일'},
   'D5NS': {ivf:0.17, isf:0.50,  icf:0.33,  label:'D5 0.9%NS',         desc:'NS+D5W 혼합 분포', ref:'혼합계산'},
   'HTS':  {ivf:0.50, isf:0.50,  icf:-1.00, label:'3% NaCl (고장식염수)', desc:'ECF osmotic pull (ICF→ECF)', ref:'Bhardwaj 2006'},
   'Alb5': {ivf:0.50, isf:0.50,  icf:0.00,  label:'5% Albumin',        desc:'콜로이드: 혈관내+간질', ref:'Caironi 2014 ALBIOS'},
   'Alb20':{ivf:4.00, isf:-3.00, icf:0.00,  label:'20% Albumin',       desc:'Hyperoncotic: ISF→IVF 동원', ref:'Finfer 2011'},
-  'pRBC': {ivf:1.00, isf:0.00,  icf:0.00,  label:'pRBC',              desc:'100% 혈관내', ref:'Harvey 2015'},
-  'FFP':  {ivf:0.75, isf:0.25,  icf:0.00,  label:'FFP',               desc:'혈장: 대부분 혈관내', ref:'Yazer 2018'},
-  'PLT':  {ivf:0.90, isf:0.10,  icf:0.00,  label:'PLT',               desc:'혈소판: 대부분 혈관내', ref:'Croskerry 2010'},
-  'Cryo': {ivf:0.75, isf:0.25,  icf:0.00,  label:'Cryoprecipitate',   desc:'FFP 유사', ref:'FFP 동일'},
+  'pRBC': {ivf:1.00, isf:0.00,  icf:0.00,  label:'pRBC (220mL/U)',              desc:'100% 혈관내', ref:'Harvey 2015'},
+  'FFP':  {ivf:0.75, isf:0.25,  icf:0.00,  label:'FFP (150mL/U)',               desc:'혈장: 대부분 혈관내', ref:'Yazer 2018'},
+  'PLT':  {ivf:0.90, isf:0.10,  icf:0.00,  label:'PLT 농축 (40mL/U)',               desc:'혈소판: 대부분 혈관내', ref:'Croskerry 2010'},
+  'Cryo': {ivf:0.75, isf:0.25,  icf:0.00,  label:'Cryo (15mL/U)',   desc:'FFP 유사', ref:'FFP 동일'},
   'Other':{ivf:0.25, isf:0.75,  icf:0.00,  label:'기타 (NS 기준)',     desc:'ECF 분포 추정', ref:'NS 기준 추정'},
 };
 
@@ -1676,27 +1525,45 @@ function setOutputMode(mode, btn){
 }
 
 // ── 승압제 자동 계산 ──
+// 활성 약물 1개의 현재 mL/hr 읽기 (모든 유형 대응)
+function getDrugRateMLhr(cid){
+  var card=document.getElementById(cid);
+  // 1) 계산형: res-big-num, 2) 인슐린: res-rate
+  if(card){
+    var numEl=card.querySelector('.res-big-num')||card.querySelector('.res-rate');
+    if(numEl){
+      var t=numEl.textContent;
+      if(t.indexOf('체중')<0 && t.indexOf('계산')<0 && t.indexOf('대기')<0 && t.indexOf('입력')<0){
+        var r=parseFloat(t);
+        if(r && !isNaN(r)) return r;
+      }
+    }
+  }
+  // 3) 고정용량 슬라이더/vaso: ocSelectedRate
+  if(ocSelectedRate[cid] && ocSelectedRate[cid].rate){
+    var r2=parseFloat(ocSelectedRate[cid].rate);
+    if(r2 && !isNaN(r2)) return r2;
+  }
+  return 0;
+}
 function calcVasopressorInput(dutyHr){
   var s = activeSess(); if(!s) return {total:0, items:[]};
   var act = s.active || [];
   var items = [];
   var total = 0;
-
-  VASOPRESSOR_IDS.forEach(function(cid){
-    if(act.indexOf(cid) < 0) return;
-    // 현재 mL/hr 읽기 - res-big-num에서
-    var card = document.getElementById(cid);
-    if(!card) return;
-    var numEl = card.querySelector('.res-big-num');
-    if(!numEl) return;
-    var rate = parseFloat(numEl.textContent);
-    if(!rate || isNaN(rate)) return;
+  // 현재약물에 켜진 모든 인퓨전 약물 합산 (DRUGS 순서)
+  for(var i=0;i<DRUGS.length;i++){
+    var d=DRUGS[i];
+    if(act.indexOf(d.id) < 0) continue;
+    var rate=getDrugRateMLhr(d.id);
+    if(!rate) continue;
     var vol = Math.round(rate * dutyHr);
-    var nameEl = card.querySelector('.dc-name');
-    var name = nameEl ? nameEl.textContent.split(' ')[0] : cid;
-    items.push({name:name, rate:rate, vol:vol});
+    var nm=(d.name||d.id);
+    var mEng=nm.match(/^([A-Za-z0-9\s\-]+?)\s*\(/);
+    if(mEng) nm=mEng[1].trim(); else nm=nm.split(' ')[0];
+    items.push({name:nm, rate:rate, vol:vol});
     total += vol;
-  });
+  }
   return {total:total, items:items};
 }
 
@@ -1754,7 +1621,7 @@ function onVentChange(){
 function addFluidRow(){
   fluidRowCount++;
   var id = 'fl-' + fluidRowCount;
-  var opts = Object.keys(IVR_TABLE).filter(function(k){return k!=='pRBC'&&k!=='FFP'&&k!=='PLT'&&k!=='Cryo';});
+  var opts = Object.keys(IVR_TABLE).filter(function(k){return k!=='pRBC'&&k!=='FFP'&&k!=='PLT'&&k!=='Cryo'&&k!=='Alb5'&&k!=='Alb20';});
   var selHtml = '<select class="fluid-select" id="'+id+'-type" onchange="updateFluidCalc()">';
   opts.forEach(function(k){ selHtml += '<option value="'+k+'">'+IVR_TABLE[k].label+'</option>'; });
   selHtml += '</select>';
@@ -1778,8 +1645,8 @@ function addFluidRow(){
 function addBloodRow(){
   bloodRowCount++;
   var id = 'bl-' + bloodRowCount;
-  var btypes = ['pRBC','FFP','PLT','Cryo'];
-  var bvols  = {pRBC:250, FFP:250, PLT:250, Cryo:50};
+  var btypes = ['pRBC','FFP','PLT','Cryo','Alb5','Alb20'];
+  var bvols  = {pRBC:220, FFP:150, PLT:40, Cryo:15, Alb5:250, Alb20:100};
   var selHtml = '<select class="fluid-select" id="'+id+'-type" onchange="setBloodVol(\''+id+'\')">';
   btypes.forEach(function(k){ selHtml += '<option value="'+k+'">'+IVR_TABLE[k].label+'</option>'; });
   selHtml += '</select>';
@@ -1795,12 +1662,13 @@ function addBloodRow(){
     + '<span id="'+id+'-total" class="fluid-mono" style="font-size:13px;min-width:50px;">250 mL</span>'
     + '<button class="fluid-del-btn" type="button" onclick="delRow(\''+id+'\')">×</button>';
   document.getElementById('blood-rows').appendChild(row);
+  setBloodVol(id);
   updateFluidCalc();
 }
 
 function setBloodVol(id){
   var type = (document.getElementById(id+'-type')||{}).value;
-  var vols = {pRBC:250,FFP:250,PLT:250,Cryo:50};
+  var vols = {pRBC:220,FFP:150,PLT:40,Cryo:15,Alb5:250,Alb20:100};
   var el = document.getElementById(id+'-vol');
   if(el && vols[type]) el.value = vols[type];
   updateFluidCalc();
@@ -1862,7 +1730,7 @@ function addDutyCard(){
     // Input 열
     +'<div class="duty-col">'
     +'<div class="duty-col-hdr">📥 Input</div>'
-    +'<div class="duty-io-row"><span class="duty-io-label">승압제 (자동)</span><div class="duty-io-val"><span class="duty-auto-val" id="dc'+dc+'-vp">'+vpData.total+' mL</span></div></div>'
+    +'<div class="duty-io-row"><span class="duty-io-label">약물 carrier</span><div class="duty-io-val"><span class="duty-auto-val" id="dc'+dc+'-vp">'+vpData.total+' mL</span></div></div>'
     +'<div class="duty-io-row"><span class="duty-io-label">유지수액</span><div class="duty-io-val"><input type="number" id="dc'+dc+'-fluid" class="duty-io-inp" value="0" min="0" step="50" inputmode="decimal" oninput="calcDutyBalance('+dc+')"><span class="fluid-unit">mL</span></div></div>'
     +'<div class="duty-io-row"><span class="duty-io-label">혈액제제</span><div class="duty-io-val"><input type="number" id="dc'+dc+'-blood" class="duty-io-inp" value="0" min="0" step="50" inputmode="decimal" oninput="calcDutyBalance('+dc+')"><span class="fluid-unit">mL</span></div></div>'
     +'<div class="duty-io-row"><span class="duty-io-label">기타</span><div class="duty-io-val"><input type="number" id="dc'+dc+'-otherin" class="duty-io-inp" value="0" min="0" step="10" inputmode="decimal" oninput="calcDutyBalance('+dc+')"><span class="fluid-unit">mL</span></div></div>'
@@ -1964,7 +1832,7 @@ function updateFluidCalc(){
   var vpList = document.getElementById('vp-auto-list');
   if(vpList){
     if(vpData.items.length===0){
-      vpList.innerHTML='<span style="color:var(--muted2);font-size:12px;">현재 약물 탭에서 승압제 토글 ON 시 자동 계산</span>';
+      vpList.innerHTML='<span style="color:var(--muted2);font-size:12px;">현재약물에 켜진 인퓨전 약물의 mL/hr 자동 합산</span>';
     } else {
       vpList.innerHTML = vpData.items.map(function(it){
         return '<div class="fluid-auto-item"><span>'+it.name+'</span><span class="fluid-mono" style="font-size:12px;">'+it.rate.toFixed(1)+' mL/hr × '+dutyHr+'hr = <b>'+it.vol+'</b> mL</span></div>';
@@ -2043,6 +1911,21 @@ function updateFluidCalc(){
     Math.abs(diff)<=200?'bal-ok':net>target?'bal-pos':'bal-neg');
   setEl('plan-suggest', sugRate+' mL/hr');
 
+  // 하루 최소 유지 필요량 (참고용)
+  var wt=bwt();
+  // 4-2-1 룰 (Holliday-Segar)
+  var h421;
+  if(wt<=10) h421=wt*4;
+  else if(wt<=20) h421=40+(wt-10)*2;
+  else h421=60+(wt-20)*1;
+  var day421=Math.round(h421*24);
+  // NICE 성인 25-30 mL/kg/day
+  var niceLo=Math.round(wt*25), niceHi=Math.round(wt*30);
+  var maintEl=document.getElementById('plan-maint');
+  if(maintEl){
+    maintEl.textContent='4-2-1: '+Math.round(h421)+' mL/hr ('+day421+' mL/d) · NICE: '+niceLo+'–'+niceHi+' mL/d';
+  }
+
   // 8. 분포 계산 테이블
   updateDistTable(vpData.total, fluidTotal, bloodTotal, dutyHr);
 
@@ -2063,7 +1946,7 @@ function updateDistTable(vpMl, fluidMl, bloodMl, dutyHr){
   var rows = [];
 
   // 승압제 carrier (NS 기준)
-  if(vpMl > 0) rows.push({type:'NS', vol:vpMl, label:'승압제 carrier'});
+  if(vpMl > 0) rows.push({type:'NS', vol:vpMl, label:'약물 carrier'});
 
   // 일반 수액
   document.querySelectorAll('[id^="fl-"]').forEach(function(row){
@@ -2276,7 +2159,8 @@ function toggleCustomMix(drugId, btn){
   var calcMap = {
     'epi':'cEpi','dobu':'cDobu','dex':'cDex','midaz':'cMidaz',
     'ultiva':'cUltiva','bec':'cBec','lasix':'cLasix','prop':'cProp',
-    'fent':'cFent','esmo':'cEsmo'
+    'fent':'cFent','esmo':'cEsmo',
+    'milri':'cMilri','dilti':'cDilti','octreo':'cOctreo','hep':'cHep','labet':'cLabet','ins':'cIns'
   };
   var fn = window[calcMap[drugId]];
   if(fn) fn();
@@ -2338,8 +2222,8 @@ var DRUGS = [
   badges:[['bd-red','🔴 1st Line']],
   body:`
     <div class="info-row" style="gap:10px;">
-      <button class="ftab active" type="button" id="norepi-f-a" onclick="selF('norepi','a')">일반 16mg/500mL</button>
-      <button class="ftab" type="button" id="norepi-f-b" onclick="selF('norepi','b')">농축 48mg/200mL</button>
+      <button class="ftab active" type="button" id="norepi-f-a" onclick="selF('norepi','a')">일반</button>
+      <button class="ftab" type="button" id="norepi-f-b" onclick="selF('norepi','b')">농축</button>
       <button class="mix-ftab-custom" type="button" id="mix-btn-norepi" onclick="toggleCustomMixNorepi(this)">커스텀</button>
     </div>
     <div id="norepi-info" class="info-row" style="margin-top:-4px;"></div>
@@ -2377,7 +2261,7 @@ var DRUGS = [
   badges:[['bd-purple','🟣 2nd Line'],['bd-orange','⚠️ Salvage ≥0.04']],
   body:`
     <div class="info-row" style="margin-bottom:8px;">
-      <span class="ic vaso-info-row">💧 <b>20u (1A)</b> + D/W 99mL→100mL = 농도 <b>0.2 u/mL</b></span>
+      <span class="ic vaso-info-row">💉<b>20u</b>(1A) + 💧100mL = <b>0.2</b> u/mL</span>
       <button class="mix-ftab-custom" type="button" id="mix-btn-vaso" onclick="toggleCustomMixVaso(this)">커스텀</button>
     </div>
     <div class="mix-custom-wrap" id="mix-custom-vaso">
@@ -2494,6 +2378,80 @@ var DRUGS = [
   `
 },
 {
+  id:'c-milri', tab:'cardio', section:'inotrope',
+  color:'#0891b2',
+  name:'Milrinone',
+  nameKr:'밀리논 · 프리마코',
+  sub:'20mg/100mL · 0.125–0.75 mcg/kg/min',
+  badges:[['bd-green','💚 Inodilator (PDE-3i)']],
+  body:`
+    <div class="info-row"><span class="ic">💉 20mg/100mL</span><span class="sep">=</span><span class="ic">농도 <b>200 mcg/mL</b></span></div>
+    <div class="mix-panel">
+      <button class="mix-ftab-custom" type="button" id="mix-btn-milri" onclick="toggleCustomMix('milri',this)">커스텀</button>
+      <div class="mix-custom-wrap" id="mix-custom-milri">
+        <div class="mix-custom-row">
+          <span class="mix-custom-label">약물량</span>
+          <input class="mix-custom-inp" type="number" id="mix-drug-milri" value="20" min="0.1" step="any" inputmode="decimal" oninput="updateCustomConc('milri',cMilri)">
+          <span class="mix-custom-unit">mg</span>
+          <span class="mix-custom-unit" style="padding:0 4px;color:var(--muted2);">+</span>
+          <span class="mix-custom-label">총 용량</span>
+          <input class="mix-custom-inp" type="number" id="mix-vol-milri" value="100" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('milri',cMilri)">
+          <span class="mix-custom-unit">mL</span>
+          <input type="hidden" id="mix-unit-milri" value="mcg">
+        </div>
+        <div class="mix-custom-result" id="mix-res-milri">= 200.0 mcg/mL</div>
+      </div>
+    </div>
+    <div class="slider-wrap"><input type="range" id="milri-sl" min="0.125" max="0.75" step="0.025" style="accent-color:#0891b2;" oninput="syncInput('milri-sl','milri-d',cMilri)"></div>
+    <div class="titration-row">
+      <button class="tit-btn" type="button" onclick="titrate('milri-d','milri-sl',-0.025,cMilri)">−</button>
+      <div class="tit-val-wrap"><input type="number" id="milri-d" value="0.375" min="0.125" max="0.75" step="0.025" inputmode="decimal" oninput="syncSlider('milri-d','milri-sl');cMilri()"><span class="tit-unit">mcg/kg/min</span></div>
+      <button class="tit-btn" type="button" onclick="titrate('milri-d','milri-sl',0.025,cMilri)">＋</button>
+      <span class="tit-step">± 0.025</span>
+      <div class="qbtns"><button class="qbtn" type="button" onclick="setDSlider('milri-d','milri-sl',0.125,cMilri)">0.125</button><button class="qbtn" type="button" onclick="setDSlider('milri-d','milri-sl',0.25,cMilri)">0.25</button><button class="qbtn" type="button" onclick="setDSlider('milri-d','milri-sl',0.375,cMilri)">0.375</button><button class="qbtn" type="button" onclick="setDSlider('milri-d','milri-sl',0.5,cMilri)">0.5</button></div>
+    </div>
+    <div id="milri-res" class="res-big empty"><span class="res-big-num empty">체중 입력 후 계산</span></div>
+    <div class="ban-info"><span class="ban-icon">💡</span><span>신기능 저하 시 용량 감량. 저혈압·심실부정맥 주의. 로딩(50mcg/kg)은 저혈압 위험으로 ICU에서 생략 흔함.</span></div>
+  `
+},
+{
+  id:'c-dilti', tab:'cardio', section:'inotrope',
+  color:'#7c3aed',
+  name:'Diltiazem',
+  nameKr:'딜티아젬 · 헤르벤',
+  sub:'100mg/100mL · 5–15 mg/hr (AF rate control)',
+  badges:[['bd-purple','💜 항부정맥 (Ca채널)']],
+  body:`
+    <div class="info-row"><span class="ic">💉 100mg/100mL</span><span class="sep">=</span><span class="ic">농도 <b>1000 mcg/mL</b></span></div>
+    <div class="mix-panel">
+      <button class="mix-ftab-custom" type="button" id="mix-btn-dilti" onclick="toggleCustomMix('dilti',this)">커스텀</button>
+      <div class="mix-custom-wrap" id="mix-custom-dilti">
+        <div class="mix-custom-row">
+          <span class="mix-custom-label">약물량</span>
+          <input class="mix-custom-inp" type="number" id="mix-drug-dilti" value="100" min="0.1" step="any" inputmode="decimal" oninput="updateCustomConc('dilti',cDilti)">
+          <span class="mix-custom-unit">mg</span>
+          <span class="mix-custom-unit" style="padding:0 4px;color:var(--muted2);">+</span>
+          <span class="mix-custom-label">총 용량</span>
+          <input class="mix-custom-inp" type="number" id="mix-vol-dilti" value="100" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('dilti',cDilti)">
+          <span class="mix-custom-unit">mL</span>
+          <input type="hidden" id="mix-unit-dilti" value="mg">
+        </div>
+        <div class="mix-custom-result" id="mix-res-dilti">= 1.0 mg/mL</div>
+      </div>
+    </div>
+    <div class="slider-wrap"><input type="range" id="dilti-sl" min="5" max="15" step="1" style="accent-color:#7c3aed;" oninput="syncInput('dilti-sl','dilti-d',cDilti)"></div>
+    <div class="titration-row">
+      <button class="tit-btn" type="button" onclick="titrate('dilti-d','dilti-sl',-1,cDilti)">−</button>
+      <div class="tit-val-wrap"><input type="number" id="dilti-d" value="10" min="5" max="15" step="1" inputmode="decimal" oninput="syncSlider('dilti-d','dilti-sl');cDilti()"><span class="tit-unit">mg/hr</span></div>
+      <button class="tit-btn" type="button" onclick="titrate('dilti-d','dilti-sl',1,cDilti)">＋</button>
+      <span class="tit-step">± 1</span>
+      <div class="qbtns"><button class="qbtn" type="button" onclick="setDSlider('dilti-d','dilti-sl',5,cDilti)">5</button><button class="qbtn" type="button" onclick="setDSlider('dilti-d','dilti-sl',10,cDilti)">10</button><button class="qbtn" type="button" onclick="setDSlider('dilti-d','dilti-sl',15,cDilti)">15</button></div>
+    </div>
+    <div id="dilti-res" class="res-big empty"><span class="res-big-num empty">계산 대기</span></div>
+    <div class="ban-info"><span class="ban-icon">💡</span><span>체중 무관 (mg/hr). 로딩 0.25mg/kg IV 후 유지주입. 저혈압·서맥·심부전 악화 주의.</span></div>
+  `
+},
+{
   id:'c-dopa', tab:'vp',
   color:'#2563eb',
   name:'Dopamine',
@@ -2502,9 +2460,9 @@ var DRUGS = [
   badges:[['bd-blue','🫀 Vasopressor'],['bd-green','강심제']],
   body:`
     <div class="info-row">
-      <button class="ftab active" type="button" id="dopa-f-a" onclick="selF('dopa','a')">프리믹스 400mg/200mL</button>
-      <button class="ftab" type="button" id="dopa-f-b" onclick="selF('dopa','b')">일반 800mg/500mL</button>
-      <button class="ftab" type="button" id="dopa-f-c" onclick="selF('dopa','c')">농축 1600mg/500mL</button>
+      <button class="ftab active" type="button" id="dopa-f-a" onclick="selF('dopa','a')">프리믹스</button>
+      <button class="ftab" type="button" id="dopa-f-b" onclick="selF('dopa','b')">일반</button>
+      <button class="ftab" type="button" id="dopa-f-c" onclick="selF('dopa','c')">농축</button>
     </div>
     <div id="dopa-info" class="info-row" style="margin-top:-4px;"></div>
     <div class="slider-wrap"><input type="range" id="dopa-sl" min="1" max="20" step="1" style="accent-color:#2563eb;" oninput="syncInput('dopa-sl','dopa-d',cDopa)"></div>
@@ -2750,8 +2708,8 @@ var DRUGS = [
 {
   id:'c-bec', tab:'sd',
   color:'#6d28d9',
-  name:'Becarone',
-  nameKr:'베카론 · NMBA',
+  name:'Vecuronium',
+  nameKr:'베쿠로늄 · 베카론 (NMBA)',
   sub:'50mg/100mL (500 mcg/mL) · 0.8–1.7 mcg/kg/min',
   badges:[['bd-purple','💜 NMBA']],
   body:`
@@ -2849,7 +2807,7 @@ var DRUGS = [
 // TAB: 이외 약물 (tab-ot)
 // ─────────────────────────────────────
 {
-  id:'c-esmo', tab:'ot', section:'beta',
+  id:'c-esmo', tab:'cardio', section:'beta',
   color:'#0d9488',
   name:'Esmolol',
   nameKr:'브레비블록',
@@ -2886,17 +2844,71 @@ var DRUGS = [
   `
 },
 {
+  id:'c-labet', tab:'cardio', section:'beta',
+  color:'#0d9488',
+  name:'Labetalol',
+  nameKr:'라베탈롤 · 트란데이트',
+  sub:'200mg/200mL · 0.5–2 mg/min (α/β-Blocker)',
+  badges:[['bd-teal','🫀 α/β-Blocker'],['bd-red','Max 300mg 누적']],
+  body:`
+    <div class="info-row"><span class="ic">💉 200mg/200mL</span><span class="sep">=</span><span class="ic">농도 <b>1 mg/mL</b></span></div>
+    <div class="mix-panel">
+      <button class="mix-ftab-custom" type="button" id="mix-btn-labet" onclick="toggleCustomMix('labet',this)">커스텀</button>
+      <div class="mix-custom-wrap" id="mix-custom-labet">
+        <div class="mix-custom-row">
+          <span class="mix-custom-label">약물량</span>
+          <input class="mix-custom-inp" type="number" id="mix-drug-labet" value="200" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('labet',cLabet)">
+          <span class="mix-custom-unit">mg</span>
+          <span class="mix-custom-unit" style="padding:0 4px;color:var(--muted2);">+</span>
+          <span class="mix-custom-label">총 용량</span>
+          <input class="mix-custom-inp" type="number" id="mix-vol-labet" value="200" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('labet',cLabet)">
+          <span class="mix-custom-unit">mL</span>
+          <input type="hidden" id="mix-unit-labet" value="mg">
+        </div>
+        <div class="mix-custom-result" id="mix-res-labet">= 1.0 mg/mL</div>
+      </div>
+    </div>
+    <div class="slider-wrap"><input type="range" id="labet-sl" min="0.5" max="2" step="0.5" style="accent-color:#0d9488;" oninput="syncInput('labet-sl','labet-d',cLabet)"></div>
+    <div class="titration-row">
+      <button class="tit-btn" type="button" onclick="titrate('labet-d','labet-sl',-0.5,cLabet)">−</button>
+      <div class="tit-val-wrap"><input type="number" id="labet-d" value="2" min="0.5" max="4" step="0.5" inputmode="decimal" oninput="syncSlider('labet-d','labet-sl');cLabet()"><span class="tit-unit">mg/min</span></div>
+      <button class="tit-btn" type="button" onclick="titrate('labet-d','labet-sl',0.5,cLabet)">＋</button>
+      <span class="tit-step">± 0.5</span>
+      <div class="qbtns"><button class="qbtn" type="button" onclick="setDSlider('labet-d','labet-sl',0.5,cLabet)">0.5</button><button class="qbtn" type="button" onclick="setDSlider('labet-d','labet-sl',1,cLabet)">1</button><button class="qbtn" type="button" onclick="setDSlider('labet-d','labet-sl',2,cLabet)">2</button></div>
+    </div>
+    <div id="labet-res" class="res-big empty"><span class="res-big-num empty">계산 대기</span></div>
+    <div class="ban-info"><span class="ban-icon">💡</span><span>체중 무관 (mg/min). 볼루스: 20mg(2분)→40·80mg 10분 간격(누적 max 300mg). 지속주입 2mg/min 시작. 천식·심한 서맥·2·3도 AVB·심부전 금기. 4mg/min 초과 시 상의.</span></div>
+  `
+
+},
+{
   id:'c-ins', tab:'ot', section:'glucose',
   color:'#ca8a04',
-  name:'Insulin Regular',
-  nameKr:'인슐린 휴마로그/노보린 R',
-  sub:'50units/50mL (1 unit/mL) · ICU 혈당 조절',
+  name:'Insulin Infusion',
+  nameKr:'인슐린 인퓨전 (RI)',
+  sub:'100U/100mL (1 U/mL) · ICU 혈당 조절',
   badges:[['bd-yellow','🩸 혈당조절']],
   body:`
-    <div class="info-row"><span class="ic">💉 50u/50mL</span><span class="sep">=</span><span class="ic">농도 <b>1 unit/mL</b></span></div>
+    <div class="info-row"><span class="ic">💉 100U/100mL</span><span class="sep">=</span><span class="ic">농도 <b>1 U/mL</b></span></div>
+    <div class="mix-panel">
+      <button class="mix-ftab-custom" type="button" id="mix-btn-ins" onclick="toggleCustomMix('ins',this)">커스텀</button>
+      <div class="mix-custom-wrap" id="mix-custom-ins">
+        <div class="mix-custom-row">
+          <span class="mix-custom-label">약물량</span>
+          <input class="mix-custom-inp" type="number" id="mix-drug-ins" value="100" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('ins',cIns)">
+          <span class="mix-custom-unit">U</span>
+          <span class="mix-custom-unit" style="padding:0 4px;color:var(--muted2);">+</span>
+          <span class="mix-custom-label">총 용량</span>
+          <input class="mix-custom-inp" type="number" id="mix-vol-ins" value="100" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('ins',cIns)">
+          <span class="mix-custom-unit">mL</span>
+          <input type="hidden" id="mix-unit-ins" value="U">
+        </div>
+        <div class="mix-custom-result" id="mix-res-ins">= 1.0 U/mL</div>
+      </div>
+    </div>
     <div class="titration-row">
       <button class="tit-btn" type="button" onclick="titrate('ins-d','ins-sl',-1,cIns)">−</button>
-      <div class="tit-val-wrap"><input type="number" id="ins-d" value="2" min="0.5" max="20" step="0.5" inputmode="decimal" oninput="cIns()"><span class="tit-unit">unit/hr</span></div>
+      <div class="tit-val-wrap"><input type="number" id="ins-d" value="2" min="0.5" max="20" step="0.5" inputmode="decimal" oninput="cIns()"><span class="tit-unit">U/hr</span></div>
       <button class="tit-btn" type="button" onclick="titrate('ins-d','ins-sl',1,cIns)">＋</button>
     </div>
     <div id="ins-res" class="res-big empty"><span class="res-big-num empty">속도 입력</span></div>
@@ -2906,28 +2918,27 @@ var DRUGS = [
 
 // oc 카드들 (정보형)
 {
-  id:'oc-lido', tab:'ot', section:'antiarr', type:'oc',
+  id:'oc-lido', tab:'cardio', section:'antiarr', type:'oc',
   color:'#2563eb', iconBg:'#eff6ff', icon:'⚡',
+  tag:'항부정맥제',
   name:'Lidocaine (리도카인 2%)', conc:'2000mg/500mL (4 mg/mL)',
   body:`
 <div class="mix-panel" style="margin-bottom:8px;"><button class="mix-ftab-custom" type="button" id="mix-btn-oc-lido" onclick="toggleCustomMix('oc-lido',this)">커스텀</button><div class="mix-custom-wrap" id="mix-custom-oc-lido"><div class="mix-custom-row"><span class="mix-custom-label">약물량</span><input class="mix-custom-inp" type="number" id="mix-drug-oc-lido" value="2000" min="0.1" step="any" inputmode="decimal" oninput="updateCustomConc('oc-lido',function(){calcOcTable('oc-lido')})"><span class="mix-custom-unit">mg</span><span class="mix-custom-unit" style="padding:0 4px;color:var(--muted2);">+</span><span class="mix-custom-label">총 용량</span><input class="mix-custom-inp" type="number" id="mix-vol-oc-lido" value="500" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('oc-lido',function(){calcOcTable('oc-lido')})"><span class="mix-custom-unit">mL</span><input type="hidden" id="mix-unit-oc-lido" value="mg"></div><div class="mix-custom-result" id="mix-res-oc-lido">= 4.0 mg/mL</div></div></div>
 <div class="oc-body">
-    <span class="bd bd-blue" style="font-size:11px;display:inline-flex;margin-bottom:5px;">Loading — 체중 기반</span><br>
-    <div id="lido-bolus" style="background:var(--accent-lt);border:1px solid #bfdbfe;border-radius:6px;padding:6px 9px;margin-bottom:4px;font-family:var(--mono);font-size:12px;color:var(--accent);"></div>
-    <div id="lido-max" style="background:#fefce8;border:1px solid #fde68a;border-radius:6px;padding:6px 9px;font-size:12px;color:#854d0e;"></div>
-    <div style="margin-top:8px;font-size:12px;color:var(--muted);">추가 <b>0.5 mg/kg</b>씩, 누적 Max <b>3 mg/kg</b></div>
-    <div style="font-size:11px;color:var(--muted);margin-top:4px;">Infusion — 4 mg/mL</div>
-    <table class="ref-tbl" style="margin-top:6px;"><thead><tr><th>용량</th><th>속도</th><th>비고</th></tr></thead>
-    <tbody id="oc-lido-rate-tbl"><tr data-dose="1" data-dose-unit="mgmin"><td>1 mg/min</td><td class="rn rate-cell" style="color:#2563eb;">15 mL/hr</td><td>시작</td></tr>
-    <tr data-dose="2" data-dose-unit="mgmin"><td>2 mg/min</td><td class="rn rate-cell" style="color:#2563eb;">30 mL/hr</td><td>+15 mL/hr</td></tr>
-    <tr data-dose="3" data-dose-unit="mgmin"><td>3 mg/min</td><td class="rn rate-cell" style="color:#2563eb;">45 mL/hr</td><td>+15 mL/hr</td></tr>
-    <tr data-dose="4" data-dose-unit="mgmin"><td>4 mg/min</td><td class="rn rate-cell" style="color:#2563eb;">60 mL/hr</td><td>Max</td></tr></tbody></table>
-    <div style="margin-top:6px;font-size:11px;color:var(--muted);">증량: <b>+15 mL/hr</b> · 간기능 저하·고령 시 감량</div>
+    <div class="dose-control">
+      <div class="dose-slider-wrap"><input type="range" class="dose-slider" id="oc-lido-osl" min="1" max="4" step="0.5" value="2" oninput="updOcSlider('oc-lido')"></div>
+      <div class="dose-readout"><div class="dose-left"><span class="dose-cur" id="oc-lido-ocur">2</span><span class="dose-cur-unit">mg/min</span><span class="dose-arrow">→</span></div>
+      <div class="dose-rate"><span class="dose-rate-num" id="oc-lido-orate">30</span><span class="dose-rate-unit">mL/hr</span></div></div>
+    </div>
+    <div id="lido-bolus" style="background:var(--accent-lt);border-radius:6px;padding:5px 9px;margin-bottom:3px;font-family:var(--mono);font-size:11px;color:var(--accent);"></div>
+    <div id="lido-max" style="background:#fefce8;border-radius:6px;padding:5px 9px;font-size:11px;color:#854d0e;"></div>
+    <div class="oc-ref" style="margin-top:6px;">Loading <b>1–1.5 mg/kg</b> (추가 0.5mg/kg, 누적 Max 3mg/kg) · 증량 <b>+15 mL/hr</b> · 간기능·고령 감량</div>
   </div>`
 },
 {
-  id:'oc-amio', tab:'ot', section:'antiarr', type:'oc',
+  id:'oc-amio', tab:'cardio', section:'antiarr', type:'oc',
   color:'#ea580c', iconBg:'#fff7ed', icon:'⚡',
+  tag:'항부정맥제',
   name:'Amiodarone (코다론)', conc:'150mg/3mL',
   body:`
 <div class="mix-panel" style="margin-bottom:8px;"><button class="mix-ftab-custom" type="button" id="mix-btn-oc-amio" onclick="toggleCustomMix('oc-amio',this)">커스텀</button><div class="mix-custom-wrap" id="mix-custom-oc-amio"><div class="mix-custom-row"><span class="mix-custom-label">약물량</span><input class="mix-custom-inp" type="number" id="mix-drug-oc-amio" value="900" min="0.1" step="any" inputmode="decimal" oninput="updateCustomConc('oc-amio',function(){calcOcTable('oc-amio')})"><span class="mix-custom-unit">mg</span><span class="mix-custom-unit" style="padding:0 4px;color:var(--muted2);">+</span><span class="mix-custom-label">총 용량</span><input class="mix-custom-inp" type="number" id="mix-vol-oc-amio" value="500" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('oc-amio',function(){calcOcTable('oc-amio')})"><span class="mix-custom-unit">mL</span><input type="hidden" id="mix-unit-oc-amio" value="mg"></div><div class="mix-custom-result" id="mix-res-oc-amio">= 1.8 mg/mL</div></div></div>
@@ -2940,8 +2951,9 @@ var DRUGS = [
   </div>`
 },
 {
-  id:'oc-adeno', tab:'ot', section:'antiarr', type:'oc',
+  id:'oc-adeno', tab:'cardio', section:'antiarr', type:'oc',
   color:'#16a34a', iconBg:'#f0fdf4', icon:'💚',
+  tag:'항부정맥제(SVT)',
   name:'Adenosine (아데노신)', conc:'6mg/2mL',
   body:`<div class="oc-body">
     <span class="mono">6mg</span> → <span class="mono">12mg</span>, Max <span class="mono">30mg</span><br>
@@ -2949,23 +2961,25 @@ var DRUGS = [
   </div>`
 },
 {
-  id:'oc-vera', tab:'ot', section:'antiarr', type:'oc',
+  id:'oc-vera', tab:'cardio', section:'antiarr', type:'oc',
   color:'#7c3aed', iconBg:'#f5f3ff', icon:'💜',
+  tag:'항부정맥제(Ca채널)',
   name:'Verapamil (이솝틴)', conc:'Infusion: 10mg/100mL (0.1 mg/mL)',
   body:`
 <div class="mix-panel" style="margin-bottom:8px;"><button class="mix-ftab-custom" type="button" id="mix-btn-oc-vera" onclick="toggleCustomMix('oc-vera',this)">커스텀</button><div class="mix-custom-wrap" id="mix-custom-oc-vera"><div class="mix-custom-row"><span class="mix-custom-label">약물량</span><input class="mix-custom-inp" type="number" id="mix-drug-oc-vera" value="10" min="0.1" step="any" inputmode="decimal" oninput="updateCustomConc('oc-vera',function(){calcOcTable('oc-vera')})"><span class="mix-custom-unit">mg</span><span class="mix-custom-unit" style="padding:0 4px;color:var(--muted2);">+</span><span class="mix-custom-label">총 용량</span><input class="mix-custom-inp" type="number" id="mix-vol-oc-vera" value="100" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('oc-vera',function(){calcOcTable('oc-vera')})"><span class="mix-custom-unit">mL</span><input type="hidden" id="mix-unit-oc-vera" value="mg"></div><div class="mix-custom-result" id="mix-res-oc-vera">= 0.1 mg/mL</div></div></div>
 <div class="oc-body">
-    Bolus: <span class="mono">2.5–5mg</span> over 2분<br>
-    <table class="ref-tbl" style="margin-top:6px;"><thead><tr><th>용량</th><th>속도</th><th>비고</th></tr></thead>
-    <tbody id="oc-vera-rate-tbl"><tr data-dose="1" data-dose-unit="mghr"><td>1 mg/hr</td><td class="rn rate-cell" style="color:#7c3aed;">10 mL/hr</td><td>시작</td></tr>
-    <tr data-dose="2" data-dose-unit="mghr"><td>3 mg/hr</td><td class="rn rate-cell" style="color:#7c3aed;">30 mL/hr</td><td>+10 mL/hr</td></tr>
-    <tr data-dose="3" data-dose-unit="mghr"><td>5 mg/hr</td><td class="rn rate-cell" style="color:#7c3aed;">50 mL/hr</td><td>Max</td></tr></tbody></table>
-    <div style="margin-top:4px;font-size:11px;color:var(--muted);">증량: <b>+10 mL/hr</b></div>
+    <div class="dose-control">
+      <div class="dose-slider-wrap"><input type="range" class="dose-slider" id="oc-vera-osl" min="1" max="5" step="0.5" value="2" oninput="updOcSlider('oc-vera')"></div>
+      <div class="dose-readout"><div class="dose-left"><span class="dose-cur" id="oc-vera-ocur">2</span><span class="dose-cur-unit">mg/hr</span><span class="dose-arrow">→</span></div>
+      <div class="dose-rate"><span class="dose-rate-num" id="oc-vera-orate">20</span><span class="dose-rate-unit">mL/hr</span></div></div>
+    </div>
+    <div class="oc-ref">Bolus <b>2.5–5mg</b> over 2분 · 증량 <b>+10 mL/hr</b></div>
   </div>`
 },
 {
-  id:'oc-digo', tab:'ot', section:'antiarr', type:'oc',
+  id:'oc-digo', tab:'cardio', section:'antiarr', type:'oc',
   color:'#ca8a04', iconBg:'#fefce8', icon:'💛',
+  tag:'강심·rate control',
   name:'Digoxin (디곡신)', conc:'0.25mg/1mL',
   body:`<div class="oc-body">
     Loading: <span class="mono">0.5→0.25→0.25mg</span> (6h 간격, 총 1.0mg)<br>
@@ -2974,39 +2988,41 @@ var DRUGS = [
   </div>`
 },
 {
-  id:'oc-ntg', tab:'ot', section:'antihyp', type:'oc',
+  id:'oc-ntg', tab:'cardio', section:'bp', type:'oc',
   color:'#dc2626', iconBg:'#fef2f2', icon:'🔴',
+  tag:'혈관확장제',
   name:'Nitroglycerin (니트로링구알)', conc:'50mg/500mL · 100 mcg/mL',
   body:`
 <div class="mix-panel" style="margin-bottom:8px;"><button class="mix-ftab-custom" type="button" id="mix-btn-oc-ntg" onclick="toggleCustomMix('oc-ntg',this)">커스텀</button><div class="mix-custom-wrap" id="mix-custom-oc-ntg"><div class="mix-custom-row"><span class="mix-custom-label">약물량</span><input class="mix-custom-inp" type="number" id="mix-drug-oc-ntg" value="50" min="0.1" step="any" inputmode="decimal" oninput="updateCustomConc('oc-ntg',function(){calcOcTable('oc-ntg')})"><span class="mix-custom-unit">mg</span><span class="mix-custom-unit" style="padding:0 4px;color:var(--muted2);">+</span><span class="mix-custom-label">총 용량</span><input class="mix-custom-inp" type="number" id="mix-vol-oc-ntg" value="500" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('oc-ntg',function(){calcOcTable('oc-ntg')})"><span class="mix-custom-unit">mL</span><input type="hidden" id="mix-unit-oc-ntg" value="mcg"></div><div class="mix-custom-result" id="mix-res-oc-ntg">= 100.0 mcg/mL</div></div></div>
 <div class="oc-body">
-    <table class="ref-tbl"><thead><tr><th>용량</th><th>속도</th><th>비고</th></tr></thead>
-    <tbody id="oc-ntg-rate-tbl"><tr data-dose="5" data-dose-unit="mcgmin"><td>5 mcg/min</td><td class="rn rate-cell" style="color:#dc2626;">3 mL/hr</td><td>시작</td></tr>
-    <tr data-dose="10" data-dose-unit="mcgmin"><td>10 mcg/min</td><td class="rn rate-cell" style="color:#dc2626;">6 mL/hr</td><td>+3</td></tr>
-    <tr data-dose="20" data-dose-unit="mcgmin"><td>20 mcg/min</td><td class="rn rate-cell" style="color:#dc2626;">12 mL/hr</td><td>+6</td></tr>
-    <tr data-dose="40" data-dose-unit="mcgmin"><td>100 mcg/min</td><td class="rn rate-cell" style="color:#dc2626;">60 mL/hr</td><td>고용량</td></tr>
-    <tr data-dose="100" data-dose-unit="mcgmin"><td>200 mcg/min</td><td class="rn rate-cell" style="color:#dc2626;">120 mL/hr</td><td>Max</td></tr></tbody></table>
-    <div style="margin-top:6px;font-size:11px;color:var(--muted);">초기 증량: +3 mL/hr · 20 mcg/min 이상 +6–12 mL/hr</div>
+    <div class="dose-control">
+      <div class="dose-slider-wrap"><input type="range" class="dose-slider" id="oc-ntg-osl" min="5" max="200" step="5" value="10" oninput="updOcSlider('oc-ntg')"></div>
+      <div class="dose-readout"><div class="dose-left"><span class="dose-cur" id="oc-ntg-ocur">10</span><span class="dose-cur-unit">mcg/min</span><span class="dose-arrow">→</span></div>
+      <div class="dose-rate"><span class="dose-rate-num" id="oc-ntg-orate">6</span><span class="dose-rate-unit">mL/hr</span></div></div>
+    </div>
+    <div class="oc-ref">초기 증량 <b>+3 mL/hr</b> · 20 mcg/min 이상 +6–12 mL/hr</div>
   </div>`
 },
 {
-  id:'oc-nic', tab:'ot', section:'antihyp', type:'oc',
+  id:'oc-nic', tab:'cardio', section:'bp', type:'oc',
   color:'#dc2626', iconBg:'#fef2f2', icon:'🔴',
+  tag:'Ca채널 차단·강압',
   name:'Nicardipine (페르디핀)', conc:'50mg/500mL · 0.1 mg/mL',
   body:`
 <div class="mix-panel" style="margin-bottom:8px;"><button class="mix-ftab-custom" type="button" id="mix-btn-oc-nic" onclick="toggleCustomMix('oc-nic',this)">커스텀</button><div class="mix-custom-wrap" id="mix-custom-oc-nic"><div class="mix-custom-row"><span class="mix-custom-label">약물량</span><input class="mix-custom-inp" type="number" id="mix-drug-oc-nic" value="50" min="0.1" step="any" inputmode="decimal" oninput="updateCustomConc('oc-nic',function(){calcOcTable('oc-nic')})"><span class="mix-custom-unit">mg</span><span class="mix-custom-unit" style="padding:0 4px;color:var(--muted2);">+</span><span class="mix-custom-label">총 용량</span><input class="mix-custom-inp" type="number" id="mix-vol-oc-nic" value="500" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('oc-nic',function(){calcOcTable('oc-nic')})"><span class="mix-custom-unit">mL</span><input type="hidden" id="mix-unit-oc-nic" value="mg"></div><div class="mix-custom-result" id="mix-res-oc-nic">= 0.1 mg/mL</div></div></div>
 <div class="oc-body">
-    <table class="ref-tbl"><thead><tr><th>용량</th><th>속도</th><th>비고</th></tr></thead>
-    <tbody id="oc-nic-rate-tbl"><tr data-dose="5" data-dose-unit="mghr"><td>5 mg/hr</td><td class="rn rate-cell" style="color:#dc2626;">50 mL/hr</td><td>시작</td></tr>
-    <tr data-dose="7.5" data-dose-unit="mghr"><td>7.5 mg/hr</td><td class="rn rate-cell" style="color:#dc2626;">75 mL/hr</td><td>+25</td></tr>
-    <tr data-dose="10" data-dose-unit="mghr"><td>10 mg/hr</td><td class="rn rate-cell" style="color:#dc2626;">100 mL/hr</td><td>+25</td></tr>
-    <tr data-dose="12.5" data-dose-unit="mghr"><td>15 mg/hr</td><td class="rn rate-cell" style="color:#dc2626;">150 mL/hr</td><td>Max</td></tr></tbody></table>
-    <div style="margin-top:6px;font-size:11px;color:var(--muted);">증량 +25 mL/hr · 5–15분 간격</div>
+    <div class="dose-control">
+      <div class="dose-slider-wrap"><input type="range" class="dose-slider" id="oc-nic-osl" min="2.5" max="15" step="2.5" value="5" oninput="updOcSlider('oc-nic')"></div>
+      <div class="dose-readout"><div class="dose-left"><span class="dose-cur" id="oc-nic-ocur">5</span><span class="dose-cur-unit">mg/hr</span><span class="dose-arrow">→</span></div>
+      <div class="dose-rate"><span class="dose-rate-num" id="oc-nic-orate">50</span><span class="dose-rate-unit">mL/hr</span></div></div>
+    </div>
+    <div class="oc-ref">증량 <b>+25 mL/hr</b> · 5–15분 간격</div>
   </div>`
 },
 {
   id:'oc-flum', tab:'ot', section:'antag', type:'oc',
   color:'#16a34a', iconBg:'#f0fdf4', icon:'💚',
+  tag:'벤조디아제핀 역전제',
   name:'Flumazenil (플루닐)', conc:'0.5mg/5mL · Infusion: 2mg/100mL',
   body:`
 <div class="mix-panel" style="margin-bottom:8px;"><button class="mix-ftab-custom" type="button" id="mix-btn-oc-flum" onclick="toggleCustomMix('oc-flum',this)">커스텀</button><div class="mix-custom-wrap" id="mix-custom-oc-flum"><div class="mix-custom-row"><span class="mix-custom-label">약물량</span><input class="mix-custom-inp" type="number" id="mix-drug-oc-flum" value="2" min="0.1" step="any" inputmode="decimal" oninput="updateCustomConc('oc-flum',function(){calcOcTable('oc-flum')})"><span class="mix-custom-unit">mg</span><span class="mix-custom-unit" style="padding:0 4px;color:var(--muted2);">+</span><span class="mix-custom-label">총 용량</span><input class="mix-custom-inp" type="number" id="mix-vol-oc-flum" value="100" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('oc-flum',function(){calcOcTable('oc-flum')})"><span class="mix-custom-unit">mL</span><input type="hidden" id="mix-unit-oc-flum" value="mg"></div><div class="mix-custom-result" id="mix-res-oc-flum">= 0.0 mg/mL</div></div></div>
@@ -3019,6 +3035,7 @@ var DRUGS = [
 {
   id:'oc-nalox', tab:'ot', section:'antag', type:'oc',
   color:'#ea580c', iconBg:'#fff7ed', icon:'🟠',
+  tag:'오피오이드 역전제',
   name:'Naloxone (날록손)', conc:'0.4mg/1mL 원액',
   body:`<div class="oc-body">
     <span class="bd bd-orange" style="font-size:11px;display:inline-flex;margin-bottom:5px;">고정용량</span><br>
@@ -3030,16 +3047,134 @@ var DRUGS = [
 {
   id:'oc-vitk', tab:'ot', section:'other', type:'oc',
   color:'#0d9488', iconBg:'#f0fdfa', icon:'🩵',
+  tag:'항응고(와파린) 역전',
   name:'Vitamin K', conc:'10mg/1mL',
   body:`<div class="oc-body">
     <span class="mono">5–10mg</span> 30분 이상 IV<br>
     <span style="color:var(--red);font-size:11px;">⚠️ 급속 IV → 아나필락시스</span>
   </div>`
+},
+{
+  id:'c-octreo', tab:'ot', section:'other',
+  color:'#0d9488',
+  name:'Octreotide',
+  nameKr:'옥트레오타이드 · 산도스타틴',
+  sub:'0.5mg/50mL · 25–50 mcg/hr (정맥류 출혈)',
+  badges:[['bd-green','💚 정맥류 출혈']],
+  body:`
+    <div class="info-row"><span class="ic">💉 0.5mg/50mL</span><span class="sep">=</span><span class="ic">농도 <b>10 mcg/mL</b></span></div>
+    <div class="mix-panel">
+      <button class="mix-ftab-custom" type="button" id="mix-btn-octreo" onclick="toggleCustomMix('octreo',this)">커스텀</button>
+      <div class="mix-custom-wrap" id="mix-custom-octreo">
+        <div class="mix-custom-row">
+          <span class="mix-custom-label">약물량</span>
+          <input class="mix-custom-inp" type="number" id="mix-drug-octreo" value="0.5" min="0.01" step="any" inputmode="decimal" oninput="updateCustomConc('octreo',cOctreo)">
+          <span class="mix-custom-unit">mg</span>
+          <span class="mix-custom-unit" style="padding:0 4px;color:var(--muted2);">+</span>
+          <span class="mix-custom-label">총 용량</span>
+          <input class="mix-custom-inp" type="number" id="mix-vol-octreo" value="50" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('octreo',cOctreo)">
+          <span class="mix-custom-unit">mL</span>
+          <input type="hidden" id="mix-unit-octreo" value="mcg">
+        </div>
+        <div class="mix-custom-result" id="mix-res-octreo">= 10.0 mcg/mL</div>
+      </div>
+    </div>
+    <div class="slider-wrap"><input type="range" id="octreo-sl" min="25" max="50" step="5" style="accent-color:#0d9488;" oninput="syncInput('octreo-sl','octreo-d',cOctreo)"></div>
+    <div class="titration-row">
+      <button class="tit-btn" type="button" onclick="titrate('octreo-d','octreo-sl',-5,cOctreo)">−</button>
+      <div class="tit-val-wrap"><input type="number" id="octreo-d" value="50" min="25" max="50" step="5" inputmode="decimal" oninput="syncSlider('octreo-d','octreo-sl');cOctreo()"><span class="tit-unit">mcg/hr</span></div>
+      <button class="tit-btn" type="button" onclick="titrate('octreo-d','octreo-sl',5,cOctreo)">＋</button>
+      <span class="tit-step">± 5</span>
+      <div class="qbtns"><button class="qbtn" type="button" onclick="setDSlider('octreo-d','octreo-sl',25,cOctreo)">25</button><button class="qbtn" type="button" onclick="setDSlider('octreo-d','octreo-sl',50,cOctreo)">50</button></div>
+    </div>
+    <div id="octreo-res" class="res-big empty"><span class="res-big-num empty">계산 대기</span></div>
+    <div class="ban-info"><span class="ban-icon">💡</span><span>체중 무관 (mcg/hr). 정맥류 출혈: 50mcg bolus 후 50mcg/hr. 통상 3–5일 유지.</span></div>
+  `
+},
+{
+  id:'c-hep', tab:'ot', section:'other',
+  color:'#b91c1c',
+  name:'Heparin',
+  nameKr:'헤파린 (UFH) · 체중기반 프로토콜',
+  sub:'25000U/250mL · 일반 12 / STEMI 18 U/kg/hr',
+  badges:[['bd-red','🔴 항응고']],
+  body:`
+    <div class="info-row"><span class="ic">💉 25000U/250mL</span><span class="sep">=</span><span class="ic">농도 <b>100 U/mL</b></span></div>
+    <div class="mix-panel">
+      <button class="mix-ftab-custom" type="button" id="mix-btn-hep" onclick="toggleCustomMix('hep',this)">커스텀</button>
+      <div class="mix-custom-wrap" id="mix-custom-hep">
+        <div class="mix-custom-row">
+          <span class="mix-custom-label">약물량</span>
+          <input class="mix-custom-inp" type="number" id="mix-drug-hep" value="25000" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('hep',cHep)">
+          <span class="mix-custom-unit">U</span>
+          <span class="mix-custom-unit" style="padding:0 4px;color:var(--muted2);">+</span>
+          <span class="mix-custom-label">총 용량</span>
+          <input class="mix-custom-inp" type="number" id="mix-vol-hep" value="250" min="1" step="any" inputmode="decimal" oninput="updateCustomConc('hep',cHep)">
+          <span class="mix-custom-unit">mL</span>
+          <input type="hidden" id="mix-unit-hep" value="U">
+        </div>
+        <div class="mix-custom-result" id="mix-res-hep">= 100.0 U/mL</div>
+      </div>
+    </div>
+
+    <!-- 프로토콜 선택 -->
+    <div class="hep-proto-row">
+      <button class="hep-proto-btn active" type="button" id="hep-proto-std" onclick="setHepProto('std')">일반 (VTE 등)</button>
+      <button class="hep-proto-btn" type="button" id="hep-proto-stemi" onclick="setHepProto('stemi')">STEMI</button>
+    </div>
+
+    <!-- Loading dose 자동계산 -->
+    <div class="hep-load" id="hep-load">로딩 용량 — 체중 입력 시 계산</div>
+
+    <div class="slider-wrap"><input type="range" id="hep-sl" min="3" max="20" step="1" style="accent-color:#b91c1c;" oninput="syncInput('hep-sl','hep-d',cHep)"></div>
+    <div class="titration-row">
+      <button class="tit-btn" type="button" onclick="titrate('hep-d','hep-sl',-1,cHep)">−</button>
+      <div class="tit-val-wrap"><input type="number" id="hep-d" value="12" min="1" max="30" step="1" inputmode="decimal" oninput="syncSlider('hep-d','hep-sl');cHep()"><span class="tit-unit">U/kg/hr</span></div>
+      <button class="tit-btn" type="button" onclick="titrate('hep-d','hep-sl',1,cHep)">＋</button>
+      <span class="tit-step">± 1</span>
+      <div class="qbtns"><button class="qbtn" type="button" onclick="setDSlider('hep-d','hep-sl',12,cHep)">12</button><button class="qbtn" type="button" onclick="setDSlider('hep-d','hep-sl',18,cHep)">18</button></div>
+    </div>
+    <div id="hep-res" class="res-big empty"><span class="res-big-num empty">체중 입력 후 계산</span></div>
+
+    <!-- aPTT nomogram -->
+    <div class="hep-nomo-wrap">
+      <div class="hep-nomo-title">📋 aPTT 기반 용량 조절 (체중기반 nomogram)</div>
+      <table class="hep-nomo">
+        <thead><tr><th>aPTT (초)</th><th>Bolus</th><th>중단</th><th>주입속도 조절</th></tr></thead>
+        <tbody>
+          <tr class="nomo-low"><td>&lt; 40</td><td>80 U/kg</td><td>—</td><td>+3 U/kg/hr 증량</td></tr>
+          <tr class="nomo-low"><td>40–49</td><td>40 U/kg</td><td>—</td><td>+2 U/kg/hr 증량</td></tr>
+          <tr class="nomo-low"><td>50–59</td><td>—</td><td>—</td><td>+1 U/kg/hr 증량</td></tr>
+          <tr class="nomo-ok"><td>60–94</td><td>—</td><td>—</td><td><b>변경 없음 (목표)</b></td></tr>
+          <tr class="nomo-high"><td>95–104</td><td>—</td><td>—</td><td>−1 U/kg/hr 감량</td></tr>
+          <tr class="nomo-high"><td>105–114</td><td>—</td><td>30분 중단</td><td>−2 U/kg/hr 감량</td></tr>
+          <tr class="nomo-high"><td>≥ 115</td><td>—</td><td>1시간 중단</td><td>−3 U/kg/hr 감량</td></tr>
+        </tbody>
+      </table>
+      <div class="hep-nomo-note">목표 치료 범위: <b>aPTT 60–94초</b> · 주입 6시간 후 및 용량 변경 후 6시간마다 aPTT 측정</div>
+    </div>
+
+    <div class="ban-info"><span class="ban-icon">💡</span><span><b>일반</b>: 로딩 60 U/kg(max 5000) → 유지 12 U/kg/hr(max 1000 U/hr) · <b>STEMI</b>: 로딩 80 U/kg → 유지 18 U/kg/hr. 적응증·기관 프로토콜에 따라 상이하므로 반드시 확인.</span></div>
+  `
 }
 ];
 
 function bwt(){return parseFloat(document.getElementById('bwt').value)||60;}
 function setBwt(v){document.getElementById('bwt').value=v;updateAll();}
+function stepBwt(delta){
+  var el=document.getElementById('bwt');
+  var v=(parseFloat(el.value)||60)+delta;
+  if(v<20)v=20; if(v>200)v=200;
+  el.value=v; updateAll();
+}
+function togPtPanel(){
+  var w=document.getElementById('pt-quick-wrap');
+  var btn=document.getElementById('pt-edit-btn');
+  if(!w)return;
+  var open=w.style.display!=='none';
+  w.style.display=open?'none':'flex';
+  if(btn)btn.innerHTML=open?'빠른설정 ▾':'빠른설정 ▴';
+}
 function setD(id,v,fn){document.getElementById(id).value=v;fn();}
 function fmt(n){if(!isFinite(n))return'—';return n<10?(Math.round(n*100)/100).toFixed(2):(Math.round(n*10)/10).toFixed(1);}
 function syncSlider(inputId, sliderId){
@@ -3078,8 +3213,8 @@ function renderBig(elId, rate, dose, minD, maxD, unit, note){
   var lbls={ok:'정상 범위',warn:'상한 근접',danger:'범위 초과'};
   el.className='res-big '+lvl;
   el.innerHTML='<div class="res-big-l">'
-    +'<div class="res-big-num '+lvl+'">'+(rate>999?'>999':fmt(rate))+'</div>'
-    +'<div class="res-big-unit">'+(unit||'mL / hr')+'</div>'
+    +'<div class="res-big-numline"><div class="res-big-num '+lvl+'">'+(rate>999?'>999':fmt(rate))+'</div>'
+    +'<div class="res-big-unit">'+(unit||'mL / hr')+'</div></div>'
     +'<div class="res-big-dose">'+(note||dose+' — BWT '+bwt()+' kg')+'</div>'
     +'</div><div class="res-big-r">'
     +'<span class="res-big-tag '+tags[lvl]+'">'+lbls[lvl]+'</span>'
@@ -3088,16 +3223,16 @@ function renderBig(elId, rate, dose, minD, maxD, unit, note){
 function setDopaInfo(){
   var f=DOPA_F[dopaFi];
   document.getElementById('dopa-info').innerHTML=
-    '<span class="ic">💉 Dopamine <b>'+f.drug+'mg</b></span><span class="sep">+</span>'
-    +'<span class="ic">💧 총량 <b>'+f.vol+'mL</b></span><span class="sep">=</span>'
-    +'<span class="ic">농도 <b>'+f.conc_mgml+' mg/mL</b> ('+(f.conc_mgml*1000).toFixed(0)+' mcg/mL)</span>';
+    '<span class="ic">💉<b>'+f.drug+'mg</b></span><span class="sep">+</span>'
+    +'<span class="ic">💧'+f.vol+'mL</span><span class="sep">=</span>'
+    +'<span class="ic"><b>'+(f.conc_mgml*1000).toFixed(0)+'</b> mcg/mL</span>';
 }
 function setNorepiInfo(){
   var f=NOREPI_F[norepiFi];
   document.getElementById('norepi-info').innerHTML=
-    '<span class="ic">💉 큐프린 <b>'+f.drug+'mg</b> ('+(f.drug===16?'4A':'12A')+')</span><span class="sep">+</span>'
-    +'<span class="ic">💧 D/W <b>'+(f.vol-f.drug)+'mL</b>→'+f.vol+'mL</span><span class="sep">=</span>'
-    +'<span class="ic">농도 <b>'+f.conc_ugml+' mcg/mL</b></span>';
+    '<span class="ic">💉<b>'+f.drug+'mg</b>('+(f.drug===16?'4A':'12A')+')</span><span class="sep">+</span>'
+    +'<span class="ic">💧'+f.vol+'mL</span><span class="sep">=</span>'
+    +'<span class="ic"><b>'+f.conc_ugml+'</b> mcg/mL</span>';
 }
 function selF(drug,fi){
   if(drug==='dopa'){
@@ -3129,7 +3264,7 @@ function buildVasoTable(){
     var bg=d.salvage?'#fef2f2':d.warn?'#fff7ed':'';
     var rc=d.salvage?'var(--red)':d.warn?'var(--orange)':'var(--accent)';
     var badge=d.salvage?'<span class="bd bd-red">🚨 SALVAGE ONLY</span>':d.warn?'<span class="bd bd-orange">⚠️ 권장 상한</span>':'<span class="bd bd-green">✓ 표준</span>';
-    tb.innerHTML+='<tr style="background:'+bg+';border-bottom:0.5px solid var(--border);">'
+    tb.innerHTML+='<tr style="background:'+bg+';border-bottom:0.5px solid var(--border);cursor:pointer;" onclick="selectVasoRate('+d.dose+','+d.rate+',this)">'
       +'<td style="font-family:var(--mono);font-weight:700;padding:8px 12px;">'+d.dose+' <span style="font-size:11px;color:var(--muted);font-weight:400;">u/min</span></td>'
       +'<td style="text-align:center;font-family:var(--mono);font-weight:800;font-size:16px;color:'+rc+';padding:8px 12px;">'+d.rate+' <span style="font-size:11px;font-weight:400;color:var(--muted);">mL/hr</span></td>'
       +'<td style="text-align:center;padding:8px 12px;">'+badge+'</td>'
@@ -3151,6 +3286,332 @@ function cEpi(){
 function cDobu(){
   var d=parseFloat(document.getElementById('dobu-d').value)||5;
   renderBig('dobu-res',d*bwt()*60/getConc('dobu',2000,'mcg'),d,2,20);
+}
+function cMilri(){
+  var d=parseFloat(document.getElementById('milri-d').value)||0.375;
+  renderBig('milri-res',d*bwt()*60/getConc('milri',200,'mcg'),d,0.125,0.75);
+}
+function cDilti(){
+  var d=parseFloat(document.getElementById('dilti-d').value)||10;
+  renderBig('dilti-res',d/getConc('dilti',1,'mg'),d,5,15);
+}
+function cOctreo(){
+  var d=parseFloat(document.getElementById('octreo-d').value)||50;
+  renderBig('octreo-res',d/getConc('octreo',10,'mcg'),d,25,50);
+}
+function cHep(){
+  var d=parseFloat(document.getElementById('hep-d').value)||12;
+  renderBig('hep-res',d*bwt()/getConc('hep',100,'U'),d,12,18);
+  updHepLoad();
+}
+function cLabet(){
+  var d=parseFloat(document.getElementById('labet-d').value)||2;
+  // mg/min × 60 ÷ (mg/mL) = mL/hr (체중무관)
+  renderBig('labet-res',d*60/getConc('labet',1,'mg'),d,0.5,2);
+}
+
+// ══════════════════════════════
+//  범용 인퓨전 계산기
+// ══════════════════════════════
+var ucDir='fwd';
+function ucSetDir(dir){
+  ucDir=dir;
+  document.getElementById('uc-dir-fwd').classList.toggle('active',dir==='fwd');
+  document.getElementById('uc-dir-rev').classList.toggle('active',dir==='rev');
+  document.getElementById('uc-fwd-panel').style.display=dir==='fwd'?'block':'none';
+  document.getElementById('uc-rev-panel').style.display=dir==='rev'?'block':'none';
+  ucCalc();
+}
+function ucDrugToBase(val,unit){
+  if(unit==='mcg') return {v:val/1000, base:'mg'};
+  if(unit==='g')   return {v:val*1000, base:'mg'};
+  if(unit==='mg')  return {v:val,      base:'mg'};
+  if(unit==='unit')return {v:val,      base:'unit'};
+  if(unit==='meq') return {v:val,      base:'meq'};
+  return {v:val, base:'mg'};
+}
+function ucParseDose(unit){
+  var perKg = unit.indexOf('kg')>=0;
+  var perMin = unit.indexOf('min')>=0;
+  var fam = unit.indexOf('unit')===0 ? 'unit' : 'mass';
+  var massUnit = fam==='unit' ? 'unit' : (unit.indexOf('mcg')===0?'mcg':'mg');
+  return {perKg:perKg, perMin:perMin, massUnit:massUnit, fam:fam};
+}
+function ucCalc(){
+  var drugVal=parseFloat(document.getElementById('uc-drug').value)||0;
+  var drugUnit=document.getElementById('uc-drug-unit').value;
+  var vol=parseFloat(document.getElementById('uc-vol').value)||0;
+  var w=bwt();
+  var db=ucDrugToBase(drugVal,drugUnit);
+  var concBase = vol>0 ? db.v/vol : 0;
+  var concEl=document.getElementById('uc-conc-out');
+  if(concEl){
+    var unitLbl=db.base==='mg'?'mg/mL':(db.base==='unit'?'U/mL':'mEq/mL');
+    concEl.innerHTML='농도: <b>'+ (concBase? ucFmt(concBase):'—') +'</b> '+unitLbl
+      + (concBase && db.base==='mg'?' <span class="calc-conc-sub">('+ucFmt(concBase*1000)+' mcg/mL)</span>':'');
+  }
+  if(ucDir==='fwd'){
+    var dose=parseFloat(document.getElementById('uc-dose').value)||0;
+    var du=document.getElementById('uc-dose-unit').value;
+    var pd=ucParseDose(du);
+    var doseBasePerMin = dose;
+    if(pd.fam==='mass' && pd.massUnit==='mcg') doseBasePerMin = dose/1000;
+    if(!pd.perMin) doseBasePerMin = doseBasePerMin/60;
+    if(pd.perKg) doseBasePerMin = doseBasePerMin*w;
+    var rate = concBase>0 ? (doseBasePerMin*60)/concBase : 0;
+    var el=document.getElementById('uc-rate-out');
+    if(rate>0 && isFinite(rate)){
+      el.innerHTML='<div class="calc-res-main"><span class="calc-res-num">'+ucFmt(rate)+'</span><span class="calc-res-unit">mL/hr</span></div>'
+        +'<div class="calc-res-gtt">매크로 '+ucFmt(rate*20/60)+' · 마이크로 '+ucFmt(rate)+' gtt/min</div>';
+    } else el.innerHTML='<span class="calc-res-empty">입력 확인</span>';
+  } else {
+    var rateIn=parseFloat(document.getElementById('uc-rate-in').value)||0;
+    var ou=document.getElementById('uc-out-unit').value;
+    var pd2=ucParseDose(ou);
+    var basePerMin = rateIn*concBase/60;
+    var out=basePerMin;
+    if(!pd2.perMin) out=out*60;
+    if(pd2.perKg) out = w>0? out/w : 0;
+    if(pd2.fam==='mass' && pd2.massUnit==='mcg') out=out*1000;
+    var el2=document.getElementById('uc-dose-out');
+    var lbl=ucUnitLabel(ou);
+    if(out>0 && isFinite(out)) el2.innerHTML='<span class="calc-res-num">'+ucFmt(out)+'</span><span class="calc-res-unit">'+lbl+'</span>';
+    else el2.innerHTML='<span class="calc-res-empty">입력 확인</span>';
+    ucGtt(rateIn);
+  }
+}
+// ── Na 교정 계산기 (Adrogué-Madias) ──
+function calcNaCorrection(){
+  var naCur=parseFloat((document.getElementById('na-cur')||{}).value)||120;
+  var naTgt=parseFloat((document.getElementById('na-target')||{}).value)||naCur;
+  var sexCoef=parseFloat((document.getElementById('na-sex')||{}).value)||0.6;
+  var fluidNa=parseFloat((document.getElementById('na-fluid')||{}).value);
+  if(isNaN(fluidNa))fluidNa=513;
+  var wt=bwt();
+  var tbw=wt*sexCoef;
+  // 표시
+  var wd=document.getElementById('na-wt-disp'); if(wd)wd.textContent=wt;
+  var td=document.getElementById('na-tbw-disp'); if(td)td.textContent=tbw.toFixed(1);
+
+  // 방향 판정
+  var isHypo=naCur<135;
+  var isHyper=naCur>145;
+  var dir=naTgt-naCur; // +면 올림, -면 내림
+  var dirEl=document.getElementById('na-direction');
+  var dirHtml='', dirCls='';
+  if(isHypo){
+    dirHtml='🔵 <b>저나트륨혈증</b> (현재 '+naCur+' mmol/L) — 교정 방향: <b>상승</b>';
+    dirCls='dir-hypo';
+  } else if(isHyper){
+    dirHtml='🔴 <b>고나트륨혈증</b> (현재 '+naCur+' mmol/L) — 교정 방향: <b>하강</b>';
+    dirCls='dir-hyper';
+  } else {
+    dirHtml='🟢 정상 범위 (135–145) — 현재 '+naCur+' mmol/L';
+    dirCls='dir-normal';
+  }
+  if(dirEl){ dirEl.className='elyte-direction '+dirCls; dirEl.innerHTML=dirHtml; }
+
+  // Adrogué-Madias: 1L 주입 시 ΔNa
+  var deltaPerL=(fluidNa - naCur)/(tbw + 1);
+  var amEl=document.getElementById('na-am');
+  if(amEl){
+    var sign=deltaPerL>=0?'+':'';
+    amEl.innerHTML='💧 선택 수액 1L 주입 시 예상 Na 변화: <b>'+sign+deltaPerL.toFixed(2)+' mmol/L</b> (= '+sign+deltaPerL.toFixed(2)+' mEq/L)';
+  }
+
+  // 교정 속도별 주입 속도 (저Na 상승 기준)
+  // 주입속도(mL/hr) = 목표ΔNa/hr ÷ deltaPerL × 1000
+  var rates=[['na-row-05',0.5],['na-row-075',0.75],['na-row-10',1.0]];
+  rates.forEach(function(r){
+    var row=document.getElementById(r[0]); if(!row)return;
+    var rateHr=r[1]; // mmol/L/hr
+    var d24=Math.round(rateHr*24*10)/10;
+    var deltaCell=row.querySelector('.ert-delta');
+    var rateCell=row.querySelector('.ert-rate');
+    if(deltaCell)deltaCell.textContent=d24+' mmol/L';
+    // 주입속도: 올림 교정이면 양수 deltaPerL 필요
+    var mlhr='—';
+    if(deltaPerL!==0){
+      var v=rateHr/Math.abs(deltaPerL)*1000;
+      if(isFinite(v)&&v>0) mlhr=Math.round(v)+' mL/hr';
+    }
+    if(rateCell)rateCell.textContent=mlhr;
+    // 24h 한계 초과 행 경고색
+    row.classList.toggle('ert-danger', d24>8);
+  });
+
+  // 안전 가드
+  var safEl=document.getElementById('na-safety');
+  var msgs=[];
+  if(isHypo){
+    var planned=Math.abs(dir);
+    if(planned>8){
+      msgs.push('🚨 <b>위험</b>: 24h 목표 상승 '+planned+' mmol/L → 한계 8 초과. <b>삼투성 탈수초증후군(ODS)</b> 위험. 24h ≤8 (고위험 ≤6) 권장.');
+    } else if(planned>6){
+      msgs.push('⚠️ 24h 목표 상승 '+planned+' mmol/L — 평균위험 한계(8) 이내이나 고위험군(간경변·저칼륨·알코올·영양실조)은 ≤6 권장.');
+    } else {
+      msgs.push('✅ 24h 목표 상승 '+planned+' mmol/L — 안전 범위(≤6–8).');
+    }
+    msgs.push('중증 증상(경련·혼수): 3% saline 100–150mL 10–20분 볼루스, 첫 6h 4–6 mmol/L 목표 후 감속. 2h마다 Na 재측정.');
+  } else if(isHyper){
+    var plannedH=Math.abs(dir);
+    var maxH=10;
+    if(plannedH>maxH){
+      msgs.push('🚨 <b>위험</b>: 24h 목표 하강 '+plannedH+' mmol/L → 한계 10 초과. 뇌부종 위험. ≤0.5 mmol/L/hr (≤10/24h) 권장.');
+    } else {
+      msgs.push('✅ 24h 목표 하강 '+plannedH+' mmol/L — 안전 범위(≤10/24h). 시간당 ≤0.5 mmol/L.');
+    }
+    msgs.push('고나트륨: 원인 교정 후 자유수(D5W/half saline)로 천천히. 급성(<48h)이 아니면 서서히.');
+  }
+  if(safEl) safEl.innerHTML=msgs.map(function(m){return '<div class="elyte-safety-line">'+m+'</div>';}).join('');
+}
+
+// ── ABGA 분석기 ──
+function calcABGA(){
+  var ph=parseFloat((document.getElementById('abg-ph')||{}).value)||7.4;
+  var co2=parseFloat((document.getElementById('abg-co2')||{}).value)||40;
+  var hco3=parseFloat((document.getElementById('abg-hco3')||{}).value)||24;
+  var chron=(document.getElementById('abg-chron')||{}).value||'acute';
+  var na=parseFloat((document.getElementById('abg-na')||{}).value);
+  var cl=parseFloat((document.getElementById('abg-cl')||{}).value);
+  var alb=parseFloat((document.getElementById('abg-alb')||{}).value);
+
+  // 1차 장애 판정
+  var primEl=document.getElementById('abg-primary');
+  var acidemia=ph<7.35, alkalemia=ph>7.45;
+  var primary='', primCls='', primType='';
+  // pH 방향 + HCO3/CO2 방향
+  if(acidemia){
+    if(hco3<22){ primary='대사성 산증'; primType='MA'; }
+    else if(co2>45){ primary='호흡성 산증'; primType='RA'; }
+    else { primary='산증 (혼합 가능)'; primType='MA'; }
+    primCls='abga-acid';
+  } else if(alkalemia){
+    if(hco3>26){ primary='대사성 알칼리증'; primType='MAlk'; }
+    else if(co2<35){ primary='호흡성 알칼리증'; primType='RAlk'; }
+    else { primary='알칼리증 (혼합 가능)'; primType='MAlk'; }
+    primCls='abga-alk';
+  } else {
+    // pH 정상 - 혼합 가능
+    if(co2>45&&hco3>26){ primary='정상 pH · 호흡성산증+대사성알칼리증 가능'; primType='mix'; }
+    else if(co2<35&&hco3<22){ primary='정상 pH · 호흡성알칼리증+대사성산증 가능'; primType='mix'; }
+    else { primary='정상 산-염기'; primType='normal'; }
+    primCls='abga-normal';
+  }
+  if(primEl){ primEl.className='abga-primary '+primCls;
+    primEl.innerHTML='1차 장애: <b>'+primary+'</b><div class="abga-vals">pH '+ph+' · PaCO₂ '+co2+' · HCO₃ '+hco3+'</div>'; }
+
+  // 보상 평가
+  var compEl=document.getElementById('abg-comp');
+  var compHtml='';
+  if(primType==='MA'){
+    var expCo2=1.5*hco3+8;
+    var lo=Math.round((expCo2-2)*10)/10, hi=Math.round((expCo2+2)*10)/10;
+    var cmp='적절';
+    if(co2<lo) cmp='측정 PaCO₂가 예상보다 낮음 → 동반 <b>호흡성 알칼리증</b>';
+    else if(co2>hi) cmp='측정 PaCO₂가 예상보다 높음 → 동반 <b>호흡성 산증</b>';
+    else cmp='적절한 호흡성 보상 (단순 대사성 산증)';
+    compHtml='보상 (Winter\'s): 예상 PaCO₂ <b>'+lo+'–'+hi+'</b> mmHg · 측정 '+co2+'<br>→ '+cmp;
+  } else if(primType==='MAlk'){
+    var expCo2b=40+0.7*(hco3-24);
+    var lob=Math.round(expCo2b-2), hib=Math.round(expCo2b+2);
+    var cmpb=(co2>=lob&&co2<=hib)?'적절한 호흡성 보상':(co2<lob?'측정 PaCO₂ 낮음 → 동반 호흡성 알칼리증':'측정 PaCO₂ 높음 → 동반 호흡성 산증');
+    compHtml='보상: 예상 PaCO₂ <b>'+lob+'–'+hib+'</b> mmHg (HCO₃ 10↑당 +5~7) · 측정 '+co2+'<br>→ '+cmpb;
+  } else if(primType==='RA'){
+    var dco2=(co2-40)/10;
+    var expHco3=chron==='chronic'?24+3.5*dco2:24+1*dco2;
+    compHtml='보상 ('+(chron==='chronic'?'만성':'급성')+' 호흡성산증): 예상 HCO₃ <b>'+Math.round(expHco3*10)/10+'</b> mEq/L · 측정 '+hco3+'<br>→ '+(Math.abs(hco3-expHco3)<=3?'적절':'불일치 → 혼합 장애 가능');
+  } else if(primType==='RAlk'){
+    var dco2b=(40-co2)/10;
+    var expHco3b=chron==='chronic'?24-5*dco2b:24-2*dco2b;
+    compHtml='보상 ('+(chron==='chronic'?'만성':'급성')+' 호흡성알칼리증): 예상 HCO₃ <b>'+Math.round(expHco3b*10)/10+'</b> mEq/L · 측정 '+hco3+'<br>→ '+(Math.abs(hco3-expHco3b)<=3?'적절':'불일치 → 혼합 장애 가능');
+  } else {
+    compHtml='보상 평가: 1차 장애 확정 후 적용';
+  }
+  if(compEl) compEl.innerHTML=compHtml;
+
+  // Anion Gap (Na, Cl 입력 시)
+  var agEl=document.getElementById('abg-ag');
+  if(!isNaN(na)&&!isNaN(cl)){
+    var ag=na-(cl+hco3);
+    var normAG=12;
+    var agCorr=ag;
+    var albNote='';
+    if(!isNaN(alb)){
+      agCorr=ag+2.5*(4.0-alb);
+      albNote=' · 알부민보정 AG <b>'+Math.round(agCorr*10)/10+'</b>';
+    }
+    var agHigh=(agCorr>normAG+2);
+    var agHtml='Anion Gap = '+na+' − ('+cl+' + '+hco3+') = <b>'+Math.round(ag*10)/10+'</b> (정상 12±2)'+albNote;
+    if(agHigh){
+      agHtml+='<br>→ <b>High AG 대사성 산증</b>';
+      // Delta ratio
+      var dAG=agCorr-12, dHCO3=24-hco3;
+      if(dHCO3>0){
+        var dr=dAG/dHCO3;
+        var drInt=dr<1?'<1 → 동반 <b>non-AG 대사성 산증</b>':(dr>2?'>2 → 동반 <b>대사성 알칼리증</b> 또는 만성 호흡성산증':'1–2 → 단순 AG 대사성 산증');
+        agHtml+=' · Delta ratio '+Math.round(dr*100)/100+' ('+drInt+')';
+      }
+    } else {
+      agHtml+='<br>→ 정상 AG (non-AG/hyperchloremic 산증 또는 AG 정상)';
+    }
+    agEl.innerHTML=agHtml;
+    agEl.style.display='block';
+  } else {
+    agEl.innerHTML='Anion Gap: Na·Cl 입력 시 자동 계산';
+    agEl.style.display='block';
+  }
+
+  // 종합
+  var sumEl=document.getElementById('abg-summary');
+  if(sumEl){
+    sumEl.innerHTML='⚠️ 임상 맥락(병력·증상)과 함께 해석. 단일 ABGA로 확정 진단 불가.';
+  }
+}
+
+function ucGtt(rate){
+  var ma=document.getElementById('uc-gtt-macro'), mi=document.getElementById('uc-gtt-micro');
+  if(!ma||!mi) return;
+  if(rate>0 && isFinite(rate)){
+    ma.textContent=ucFmt(rate*20/60)+' gtt/min';
+    mi.textContent=ucFmt(rate)+' gtt/min';
+  } else { ma.textContent='—'; mi.textContent='—'; }
+}
+function ucUnitLabel(u){
+  var map={mcgkgmin:'mcg/kg/min',mcgkghr:'mcg/kg/hr',mgkghr:'mg/kg/hr',mgkgmin:'mg/kg/min',
+    mcgmin:'mcg/min',mcghr:'mcg/hr',mgmin:'mg/min',mghr:'mg/hr',
+    unitkghr:'U/kg/hr',unithr:'U/hr',unitmin:'U/min'};
+  return map[u]||u;
+}
+function ucFmt(n){
+  if(!isFinite(n)) return '—';
+  if(n>=100) return n.toFixed(0);
+  if(n>=10) return n.toFixed(1);
+  if(n>=1) return n.toFixed(2);
+  return n.toFixed(3);
+}
+var hepProto='std';
+function setHepProto(p){
+  hepProto=p;
+  var std=document.getElementById('hep-proto-std'), st=document.getElementById('hep-proto-stemi');
+  if(std)std.classList.toggle('active',p==='std');
+  if(st)st.classList.toggle('active',p==='stemi');
+  // 유지용량 기본값 자동 전환
+  var di=document.getElementById('hep-d'), sl=document.getElementById('hep-sl');
+  if(di){di.value=(p==='stemi'?18:12); if(sl)sl.value=di.value;}
+  cHep();
+}
+function updHepLoad(){
+  var el=document.getElementById('hep-load'); if(!el)return;
+  var w=bwt();
+  if(hepProto==='stemi'){
+    var ld=Math.round(80*w);
+    el.innerHTML='<b>STEMI 로딩:</b> 80 U/kg × '+w+'kg = <b>'+ld.toLocaleString()+' U</b> IV bolus';
+  } else {
+    var raw=60*w, ld=Math.min(raw,5000), capped=raw>5000;
+    el.innerHTML='<b>일반 로딩:</b> 60 U/kg × '+w+'kg = <b>'+Math.round(ld).toLocaleString()+' U</b> IV bolus'
+      +(capped?' <span style="color:var(--orange);">(상한 5000 U 적용)</span>':'');
+  }
 }
 function cDopa(){
   var d=parseFloat(document.getElementById('dopa-d').value)||5;
@@ -3330,15 +3791,17 @@ function cSug(){
 }
 function cIns(){
   var d=parseFloat(document.getElementById('ins-d').value)||2;
-  // 1 unit/mL → rate = d mL/hr 그대로
+  // d U/hr ÷ 농도(U/mL) = mL/hr
+  var conc=getConc('ins',1,'U');
+  var rate=d/conc;
   var el=document.getElementById('ins-res');
   var lvl=d>5?'warn':'ok';
   var tags={ok:'tag-ok',warn:'tag-warn'};
   var lbls={ok:'정상 범위',warn:'고용량 확인'};
   el.className='res '+lvl;
-  el.innerHTML='<div class="res-l"><div class="res-rate '+lvl+'">'+fmt(d)+'</div><div class="res-unit">mL / hr</div></div>'
+  el.innerHTML='<div class="res-l"><div class="res-rate '+lvl+'">'+fmt(rate)+'</div><div class="res-unit">mL / hr</div></div>'
     +'<div class="res-r"><span class="res-tag '+tags[lvl]+'">'+lbls[lvl]+'</span>'
-    +'<span class="res-note">'+d+' unit/hr · 1 unit/mL</span></div>';
+    +'<span class="res-note">'+d+' U/hr · '+fmt(conc)+' U/mL</span></div>';
 }
 function setSex(sex){
   ibwSex = sex;
@@ -3470,19 +3933,27 @@ function tog(id){document.getElementById(id).classList.toggle('open');}
 function switchTab(name,btn){
   var tabs=document.querySelectorAll('.tab');
   for(var i=0;i<tabs.length;i++) tabs[i].classList.remove('active');
-  btn.classList.add('active');
-  var names=['vp','sd','ot','ibw','emg','fluid','active'];
+  if(btn && btn.classList && btn.classList.contains('tab')) btn.classList.add('active');
+  // 환자 바의 현재약물 버튼 active 표시
+  var actBtn=document.getElementById('pt-active-btn');
+  if(actBtn) actBtn.classList.toggle('on',name==='active');
+  var names=['vp','sd','ot','cardio','calc','ibw','emg','fluid','elyte','active'];
   for(var i=0;i<names.length;i++) document.getElementById('tab-'+names[i]).style.display=names[i]===name?'block':'none';
   if(name==='ibw'){var hsl=document.getElementById('ibw-height-sl');var hi=document.getElementById('ibw-height');if(hsl&&hi)hsl.value=hi.value;cIBW();}
   if(name==='active'){renderActiveDrugs();updateAll();}
+  if(name==='calc'){ucCalc();}
+  if(name==='elyte'){calcNaCorrection();calcABGA();}
   if(name==='fluid'){initFluidModule();updateFluidCalc();}
 }
 // ══════════════════════════════
 //  RENDER ENGINE
 // ══════════════════════════════
 function renderDrugs(){
-  var tabs={vp:[],sd:[],ot:[]};
-  var sections={ot:{beta:[],antiarr:[],antihyp:[],antag:[],glucose:[],other:[]}};
+  var tabs={vp:[],sd:[]};
+  var sections={
+    ot:{beta:[],antag:[],glucose:[],other:[]},
+    cardio:{inotrope:[],antiarr:[],bp:[],beta:[]}
+  };
 
   for(var i=0;i<DRUGS.length;i++){
     var d=DRUGS[i];
@@ -3490,6 +3961,10 @@ function renderDrugs(){
       var sec=d.section||'other';
       if(!sections.ot[sec]) sections.ot[sec]=[];
       sections.ot[sec].push(d);
+    } else if(d.tab==='cardio'){
+      var sec2=d.section||'antiarr';
+      if(!sections.cardio[sec2]) sections.cardio[sec2]=[];
+      sections.cardio[sec2].push(d);
     } else {
       if(!tabs[d.tab]) tabs[d.tab]=[];
       tabs[d.tab].push(d);
@@ -3504,54 +3979,58 @@ function renderDrugs(){
     tabs[tab].forEach(function(d){ el.appendChild(makeDcCard(d)); });
   });
 
-  // ot 탭
-  var ot=document.getElementById('tab-ot');
-  if(!ot) return;
-  ot.innerHTML='';
+  // 섹션 렌더 헬퍼 (ot, cardio 공용)
+  function renderSections(containerId, secList, secMap){
+    var cont=document.getElementById(containerId);
+    if(!cont) return;
+    cont.innerHTML='';
+    secList.forEach(function(s){
+      var items=secMap[s.key];
+      if(!items||!items.length) return;
+      var hdr=document.createElement('div');
+      hdr.className='sec-hdr';
+      hdr.innerHTML='<div class="sec-bar" style="background:'+s.color+';"></div><span class="sec-lbl">'+s.label+'</span>';
+      cont.appendChild(hdr);
+      if(s.grid){
+        var grid=document.createElement('div');
+        grid.className='o-grid';
+        grid.id=s.gridId||('grid-'+s.key);
+        items.forEach(function(d){ grid.appendChild(d.type==='oc'?makeOcCard(d):makeDcCard(d)); });
+        cont.appendChild(grid);
+      } else {
+        var wrap=document.createElement('div');
+        wrap.id='wrap-'+s.key;
+        wrap.style.marginBottom='16px';
+        items.forEach(function(d){ wrap.appendChild(d.type==='oc'?makeOcCard(d):makeDcCard(d)); });
+        cont.appendChild(wrap);
+      }
+    });
+  }
 
-  var secDefs=[
+  // ot 탭 섹션
+  var otDefs=[
     {key:'beta',    label:'β-차단제', color:'var(--teal)',   grid:false},
-    {key:'antiarr', label:'항부정맥제',color:'var(--accent)', grid:true,  gridId:'grid-antiarr'},
-    {key:'antihyp', label:'강압제',   color:'var(--red)',    grid:true,  gridId:'grid-antihyp'},
     {key:'antag',   label:'길항제',   color:'var(--green)',  grid:true,  gridId:'grid-antag'},
     {key:'glucose', label:'혈당 조절',color:'var(--yellow)', grid:false},
     {key:'other',   label:'기타',     color:'var(--teal)',   grid:true,  gridId:'grid-other'},
   ];
+  renderSections('tab-ot', otDefs, sections.ot);
 
-  secDefs.forEach(function(s){
-    var items=sections.ot[s.key];
-    if(!items||!items.length) return;
-
-    // 섹션 헤더
-    var hdr=document.createElement('div');
-    hdr.className='sec-hdr';
-    hdr.innerHTML='<div class="sec-bar" style="background:'+s.color+';"></div><span class="sec-lbl">'+s.label+'</span>';
-    ot.appendChild(hdr);
-
-    if(s.grid){
-      var grid=document.createElement('div');
-      grid.className='o-grid';
-      grid.id=s.gridId||('grid-'+s.key);
-      items.forEach(function(d){
-        grid.appendChild(d.type==='oc' ? makeOcCard(d) : makeDcCard(d));
-      });
-      ot.appendChild(grid);
-    } else {
-      var wrap=document.createElement('div');
-      wrap.id='wrap-'+s.key;
-      wrap.style.marginBottom='16px';
-      items.forEach(function(d){
-        wrap.appendChild(d.type==='oc' ? makeOcCard(d) : makeDcCard(d));
-      });
-      ot.appendChild(wrap);
-    }
-  });
+  // 심혈관 탭 섹션
+  var cardioDefs=[
+    {key:'inotrope', label:'강심 · Rate control', color:'#0891b2', grid:false},
+    {key:'antiarr',  label:'항부정맥제',          color:'var(--accent)', grid:true, gridId:'grid-c-antiarr'},
+    {key:'beta',     label:'β-차단제',            color:'var(--teal)',   grid:false},
+    {key:'bp',       label:'혈압 조절',           color:'var(--red)',    grid:true, gridId:'grid-c-bp'},
+  ];
+  renderSections('tab-cardio', cardioDefs, sections.cardio);
 }
+
 
 function makeDcCard(d){
   var badges=d.badges||[];
   var bh=badges.map(function(b){return '<span class="bd '+b[0]+'">'+b[1]+'</span>';}).join('');
-  var nameKr=d.nameKr?(' <span style="font-weight:400;color:var(--muted);font-size:12px;">'+d.nameKr+'</span>'):'';
+  var nameKr=d.nameKr?('<div class="dc-namekr">'+d.nameKr+'</div>'):'';
   var div=document.createElement('div');
   div.className='dc';
   div.id=d.id;
@@ -3559,15 +4038,15 @@ function makeDcCard(d){
     '<div class="dc-hdr">'
     +'<button class="dc-btn" type="button" onclick="tog(\''+d.id+'\')">'
     +'<div class="dc-l"><div class="dc-bar" style="background:'+d.color+';"></div>'
-    +'<div><div class="dc-name">'+d.name+nameKr+'</div>'
-    +'<div class="dc-sub">'+d.sub+'</div></div></div>'
+    +'<div class="dc-txt"><div class="dc-name">'+d.name+'</div>'+nameKr
+    +'</div></div>'
     +'<div class="dc-r">'+bh+'<span class="chev">▾</span></div>'
     +'</button>'
     +'<button class="use-tog off" type="button" id="tog-'+d.id+'" onclick="togDrug(\''+d.id+'\',event)">'
     +'<div class="use-tog-wrap off" id="togw-'+d.id+'"><div class="use-tog-knob"></div></div>'
     +'</button>'
     +'</div>'
-    +'<div class="dc-body">'+d.body+'</div>';
+    +'<div class="dc-body"><div class="dc-sub-detail">'+d.sub+'</div>'+d.body+'</div>';
   return div;
 }
 
@@ -3575,15 +4054,25 @@ function makeOcCard(d){
   var div=document.createElement('div');
   div.className='oc';
   div.id=d.id;
+  // 이름: 영문만 헤더에, 한글명은 작게
+  var nm=d.name||'';
+  var mEng=nm.match(/^([A-Za-z0-9\s\-]+)\s*\(([^)]+)\)/);
+  var engName=mEng?mEng[1].trim():nm;
+  var krName=mEng?mEng[2].trim():'';
+  var tag=d.tag||'';
   div.innerHTML=
     '<div class="oc-hdr">'
+    +'<button class="oc-hdr-btn" type="button" onclick="tog(\''+d.id+'\')">'
     +'<div class="oc-icon" style="background:'+d.iconBg+';">'+d.icon+'</div>'
-    +'<div><div class="oc-name">'+d.name+'</div><div class="oc-conc">'+d.conc+'</div></div>'
+    +'<div class="oc-txt"><div class="oc-name">'+engName+(krName?' <span class="oc-namekr">'+krName+'</span>':'')+'</div>'
+    +(tag?'<div class="oc-tag">'+tag+'</div>':'')+'</div>'
+    +'<span class="chev oc-chev">▾</span>'
+    +'</button>'
     +'<button class="use-tog off" type="button" id="tog-'+d.id+'" onclick="togDrug(\''+d.id+'\',event)" style="margin-left:auto;flex-shrink:0;">'
     +'<div class="use-tog-wrap off" id="togw-'+d.id+'"><div class="use-tog-knob"></div></div>'
     +'</button>'
     +'</div>'
-    +d.body;
+    +'<div class="oc-collapse"><div class="oc-conc-detail">💉 '+d.conc+'</div>'+d.body+'</div>';
   return div;
 }
 
@@ -3704,15 +4193,185 @@ function renderActiveDrugs(){
     container.appendChild(card);
   }
 
+  renderActiveSummary(act);
+  var lbl=document.getElementById('active-list-label');
+  if(lbl) lbl.style.display=act.length?'block':'none';
   updActBtn();
+}
+
+function renderActiveSummary(act){
+  var sum=document.getElementById('active-summary');
+  if(!sum) return;
+  if(!act||!act.length){ sum.innerHTML=''; return; }
+  var s=activeSess();
+  var pName=(s&&s.name)?s.name:'환자';
+  var pWt=(s&&s.weight)?s.weight:bwt();
+  var html='<div class="dash-hdr"><div class="dash-pt"><span class="dash-pt-name">'+escH(pName)+'</span><span class="dash-pt-wt">'+pWt+'kg</span></div>'
+    +'<div class="dash-count">'+act.length+'개 주입 중</div></div>';
+  html+='<div class="dash-grid">';
+  for(var i=0;i<DRUGS.length;i++){
+    var d=DRUGS[i];
+    if(act.indexOf(d.id)<0) continue;
+    // 속도 읽기: id에서 prefix 제거 후 -res
+    var key=d.id.replace(/^c-/,'').replace(/^oc-/,'');
+    var resEl=document.getElementById(key+'-res');
+    var rate='—', dose='', doseUnit='';
+    if(resEl){
+      var numEl=resEl.querySelector('.res-big-num')||resEl.querySelector('.res-rate');
+      if(numEl && numEl.textContent && numEl.textContent.indexOf('체중')<0 && numEl.textContent.indexOf('계산')<0 && numEl.textContent.indexOf('대기')<0 && numEl.textContent.indexOf('입력')<0){
+        rate=numEl.textContent.trim();
+      }
+      var di=document.getElementById(key+'-d');
+      if(di){
+        dose=di.value;
+        // 단위: 입력 옆 .tit-unit 텍스트
+        var unitEl=di.parentNode?di.parentNode.querySelector('.tit-unit'):null;
+        if(unitEl) doseUnit=unitEl.textContent.trim();
+      }
+    }
+    // 고정용량 oc 약물: 속도표에서 선택된 행
+    if(rate==='—' && ocSelectedRate[d.id]){
+      var sel=ocSelectedRate[d.id];
+      rate=(sel.rate||'').replace(/mL\/hr/i,'').trim()||'—';
+      dose=sel.dose||'';
+      doseUnit='';
+    }
+    var fixedNoRate=(rate==='—');
+    var nm=d.name||d.nameKr||d.id;
+    // 영문명만 추출 (괄호 앞)
+    var mEng=nm.match(/^([A-Za-z0-9\s\-]+?)\s*\(/);
+    if(mEng) nm=mEng[1].trim();
+    html+='<div class="dash-card" onclick="scrollToCard(\''+d.id+'\')">'
+      +'<div class="dash-bar" style="background:'+(d.color||'#3a5fc8')+';"></div>'
+      +'<div class="dash-card-body">'
+      +'<div class="dash-dname">'+nm+'</div>'
+      +(fixedNoRate
+        ? '<div class="dash-rate"><span class="dash-rate-injecting">주입 중</span></div><div class="dash-dose">속도 미설정 · 탭하여 선택</div>'
+        : '<div class="dash-rate"><span class="dash-rate-num">'+rate+'</span><span class="dash-rate-unit">mL/hr</span></div>'
+          +(dose?'<div class="dash-dose">'+dose+(doseUnit?' '+doseUnit:'')+'</div>':''))
+      +'</div></div>';
+  }
+  html+='</div>';
+  sum.innerHTML=html;
+}
+function scrollToCard(id){
+  var c=document.getElementById(id);
+  if(c){ c.scrollIntoView({behavior:'smooth',block:'center'}); if(!c.classList.contains('open'))tog(id); }
+}
+
+// 고정용량 약물 슬라이더식 (속도 선택)
+var ocSelectedRate={};
+// 약물별 슬라이더 설정: conc(농도 기준단위/mL), doseUnit, 환산식
+var SLIDER_OC={
+  'oc-lido':  {min:1, max:4, step:0.5, val:2, unit:'mg/min', conc:4, mode:'massmin'},   // 4mg/mL
+  'oc-vera':  {min:0.5, max:5, step:0.5, val:2, unit:'mg/hr', conc:0.1, mode:'masshr'}, // 0.1mg/mL
+  'oc-ntg':   {min:5, max:200, step:5, val:10, unit:'mcg/min', conc:100, mode:'mcgmin_on_mcgml'}, // 100mcg/mL
+  'oc-nic':   {min:2.5, max:15, step:2.5, val:5, unit:'mg/hr', conc:0.1, mode:'masshr'}, // 0.1mg/mL
+  'oc-vaso':  {min:0.01, max:0.04, step:0.01, val:0.02, unit:'u/min', conc:0.2, mode:'umin'} // 0.2u/mL
+};
+// 슬라이더 값(dose) → mL/hr
+function ocSliderRate(drugId, dose){
+  var cfg=SLIDER_OC[drugId]; if(!cfg) return 0;
+  var conc=ocCustomConc(drugId)||cfg.conc;
+  var rate=0;
+  if(cfg.mode==='massmin') rate=dose*60/conc;              // mg/min ÷ mg/mL ×60
+  else if(cfg.mode==='masshr') rate=dose/conc;             // mg/hr ÷ mg/mL
+  else if(cfg.mode==='mcgmin_on_mcgml') rate=dose*60/conc; // mcg/min ÷ mcg/mL ×60
+  else if(cfg.mode==='umin') rate=dose*60/conc;            // u/min ÷ u/mL ×60
+  return rate;
+}
+function ocCustomConc(drugId){
+  // 커스텀 믹스가 있으면 그 농도 사용 (기준단위/mL)
+  var di=document.getElementById('mix-drug-'+drugId);
+  var vi=document.getElementById('mix-vol-'+drugId);
+  if(di&&vi){
+    var d=parseFloat(di.value), v=parseFloat(vi.value);
+    if(d>0&&v>0){
+      var conc=d/v;
+      var cfg=SLIDER_OC[drugId];
+      // NTG: mix는 mg, dose는 mcg → mcg/mL로 변환
+      if(cfg && cfg.mode==='mcgmin_on_mcgml') conc=conc*1000;
+      return conc;
+    }
+  }
+  return 0;
+}
+function ocFmt(n){ if(n>=100)return Math.round(n); if(n>=10)return Math.round(n*10)/10; return Math.round(n*100)/100; }
+function updOcSlider(drugId){
+  var cfg=SLIDER_OC[drugId]; if(!cfg) return;
+  var sl=document.getElementById(drugId+'-osl');
+  if(!sl) return;
+  var dose=parseFloat(sl.value);
+  var rate=ocSliderRate(drugId, dose);
+  var curEl=document.getElementById(drugId+'-ocur');
+  var rateEl=document.getElementById(drugId+'-orate');
+  if(curEl) curEl.textContent=ocFmt(dose);
+  if(rateEl) rateEl.textContent=ocFmt(rate);
+  // 슬라이더 채움
+  var pct=(dose-cfg.min)/(cfg.max-cfg.min)*100;
+  sl.style.background='linear-gradient(90deg,var(--accent) 0%,var(--accent) '+pct+'%,var(--border) '+pct+'%)';
+  // 선택 상태 저장 (대시보드용)
+  ocSelectedRate[drugId]={dose:ocFmt(dose)+' '+cfg.unit, rate:ocFmt(rate)+' mL/hr'};
+  // 대시보드 갱신
+  var s=activeSess();
+  if(s&&s.active&&s.active.indexOf(drugId)>=0) renderActiveSummary(s.active);
+}
+// 슬라이더식 본문 HTML 생성
+function ocSliderBody(drugId, concLabel, refHtml){
+  var cfg=SLIDER_OC[drugId];
+  return '<div class="oc-conc-detail">💉 '+concLabel+'</div>'
+    +'<div class="dose-control">'
+    +'<div class="dose-slider-wrap"><input type="range" class="dose-slider" id="'+drugId+'-osl" min="'+cfg.min+'" max="'+cfg.max+'" step="'+cfg.step+'" value="'+cfg.val+'" oninput="updOcSlider(\''+drugId+'\')"></div>'
+    +'<div class="dose-readout"><div class="dose-left"><span class="dose-cur" id="'+drugId+'-ocur">'+cfg.val+'</span><span class="dose-cur-unit">'+cfg.unit+'</span><span class="dose-arrow">→</span></div>'
+    +'<div class="dose-rate"><span class="dose-rate-num" id="'+drugId+'-orate">0</span><span class="dose-rate-unit">mL/hr</span></div></div>'
+    +'</div>'
+    +(refHtml?'<div class="oc-ref">'+refHtml+'</div>':'');
+}
+function selectVasoRate(dose,rate,rowEl){
+  var tb=document.getElementById('vaso-tb');
+  var rows=tb.querySelectorAll('tr');
+  for(var i=0;i<rows.length;i++) rows[i].classList.remove('oc-row-sel');
+  rowEl.classList.add('oc-row-sel');
+  ocSelectedRate['c-vaso']={dose:dose+' u/min', rate:rate+' mL/hr'};
+  var s=activeSess();
+  if(s&&s.active&&s.active.indexOf('c-vaso')>=0) renderActiveSummary(s.active);
+}
+function selectOcRate(drugId,rowEl){
+  var tbody=rowEl.parentNode;
+  var rows=tbody.querySelectorAll('tr');
+  for(var i=0;i<rows.length;i++) rows[i].classList.remove('oc-row-sel');
+  rowEl.classList.add('oc-row-sel');
+  var doseCell=rowEl.cells[0]?rowEl.cells[0].textContent.trim():'';
+  var rateCell=rowEl.querySelector('.rate-cell');
+  var rateTxt=rateCell?rateCell.textContent.trim():'';
+  ocSelectedRate[drugId]={dose:doseCell, rate:rateTxt};
+  if(typeof renderActiveDrugs==='function'){
+    var s=activeSess();
+    if(s&&s.active&&s.active.indexOf(drugId)>=0) renderActiveSummary(s.active);
+  }
+}
+function bindOcRateRows(){
+  // 슬라이더 초기화
+  for(var did in SLIDER_OC){ if(SLIDER_OC.hasOwnProperty(did)) updOcSlider(did); }
+  // 남은 속도표(있으면) 행 바인딩
+  var tbls=document.querySelectorAll('[id$="-rate-tbl"]');
+  for(var t=0;t<tbls.length;t++){
+    var tbl=tbls[t];
+    var drugId=tbl.id.replace('-rate-tbl','');
+    var rows=tbl.querySelectorAll('tr[data-dose]');
+    for(var r=0;r<rows.length;r++){
+      (function(row,did){ row.style.cursor='pointer'; row.onclick=function(){selectOcRate(did,row);}; })(rows[r],drugId);
+    }
+  }
 }
 
 
 function updActBtn(){
-  var btn=document.getElementById('tab-active-btn'); if(!btn)return;
   var s=activeSess(); var cnt=s&&s.active?s.active.length:0;
-  btn.textContent='✅ 현재 약물'+(cnt>0?' ('+cnt+')':'');
-  btn.style.cssText=cnt>0?'background:var(--green-lt);border-color:#bbf7d0;color:var(--green);':'';
+  var cntEl=document.getElementById('pt-active-cnt');
+  if(cntEl) cntEl.textContent=cnt>0?cnt:'';
+  var btn=document.getElementById('pt-active-btn');
+  if(btn) btn.classList.toggle('has-drugs',cnt>0);
 }
 
 // ══════════════════════════════
@@ -3867,10 +4526,14 @@ function initSessions(){
 //  updateAll
 // ══════════════════════════════
 function updateAll(){
-  cNorepi();cEpi();cDobu();cDopa();cEsmo();cPhe();
-  cDex();cMidaz();cUltiva();cEtom();cHalo();cBec();cLasix();
+  cNorepi();cEpi();cDobu();cMilri();cDopa();cEsmo();cPhe();cDilti();
+  cDex();cMidaz();cUltiva();cEtom();cHalo();cBec();cLasix();cLabet();
   cLido();cNalox();
-  cProp();cFent();cRoc();cSug();cIns();
+  cProp();cFent();cRoc();cSug();cIns();cOctreo();cHep();
+  // 체중 의존 모듈도 갱신
+  if(typeof updateFluidCalc==='function') updateFluidCalc();
+  if(typeof calcNaCorrection==='function') calcNaCorrection();
+  if(typeof bindOcRateRows==='function'){ for(var _d in SLIDER_OC){ if(SLIDER_OC.hasOwnProperty(_d)) updOcSlider(_d); } }
 }
 
 // ══════════════════════════════
@@ -3896,10 +4559,12 @@ var sliders=[
   ['norepi-d','norepi-sl'],['epi-d','epi-sl'],['dobu-d','dobu-sl'],
   ['dopa-d','dopa-sl'],['esmo-d','esmo-sl'],['dex-d','dex-sl'],
   ['midaz-d','midaz-sl'],['ultiva-d','ultiva-sl'],['bec-d','bec-sl'],
-  ['lasix-d','lasix-sl'],['prop-d','prop-sl'],['fent-d','fent-sl']
+  ['lasix-d','lasix-sl'],['prop-d','prop-sl'],['fent-d','fent-sl'],
+  ['milri-d','milri-sl'],['dilti-d','dilti-sl'],['octreo-d','octreo-sl'],['hep-d','hep-sl'],['labet-d','labet-sl']
 ];
 for(var i=0;i<sliders.length;i++) syncSlider(sliders[i][0],sliders[i][1]);
 tog('c-norepi');
+bindOcRateRows();
 initSessions();
 
 </script>
