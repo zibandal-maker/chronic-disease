@@ -884,6 +884,45 @@ input[type=range]::-moz-range-thumb{
   /* 아주 좁은 폰: 이외약물 1열 */
   .o-grid{grid-template-columns:1fr;}
 }
+
+/* ===== v3.5 전해질·대사 확장 (아코디언 + 처방) ===== */
+.elyte-acc{border:1px solid var(--border);border-radius:12px;margin-bottom:9px;overflow:hidden;background:var(--surface);}
+.elyte-acc-btn{width:100%;text-align:left;background:var(--surface);border:none;padding:14px 15px;font-size:14px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;cursor:pointer;}
+.elyte-acc-btn .eacc-sub{font-size:10.5px;font-weight:600;color:var(--muted);flex:1;}
+.elyte-acc-btn .eacc-arrow{font-size:13px;color:var(--accent);font-weight:700;}
+.elyte-acc-btn.open{background:var(--accent-lt);color:var(--accent);}
+.elyte-acc-body{max-height:0;overflow:hidden;transition:max-height .28s ease;}
+.elyte-acc-pad{padding:4px 14px 14px;}
+.elyte-sub{font-size:11.5px;color:var(--muted);margin:6px 0;}
+.crcl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.crcl-cell{background:var(--surface2);border-radius:10px;padding:11px;border:1px solid var(--border);}
+.crcl-lbl{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.02em;}
+.crcl-val{font-size:21px;font-weight:800;color:var(--accent);margin:3px 0;}
+.crcl-val span{font-size:11px;color:var(--muted);font-weight:600;}
+.crcl-use{font-size:10.5px;color:var(--text2);line-height:1.4;}
+.osm-gap{background:var(--surface2);border-radius:9px;padding:9px 11px;font-size:13px;margin:8px 0;}
+.osm-gap b{color:var(--accent);font-size:16px;}
+.elyte-flag-warn{background:#fff4e5;border-left:3px solid #d97706;color:#92400e;padding:8px 11px;border-radius:7px;font-size:11.5px;margin:7px 0;line-height:1.45;}
+.elyte-flag-danger{background:#fde8e8;border-left:3px solid #dc2626;color:#991b1b;padding:8px 11px;border-radius:7px;font-size:11.5px;margin:7px 0;font-weight:600;}
+.elyte-flag-ok{background:#e7f6ec;border-left:3px solid #16a34a;color:#166534;padding:7px 11px;border-radius:7px;font-size:11.5px;margin:7px 0;}
+.elyte-flag-note{font-size:10.5px;color:var(--muted);margin:6px 0;line-height:1.45;padding:0 2px;}
+.k-band{font-weight:800;font-size:14px;padding:9px 12px;border-radius:9px;margin:8px 0;}
+.k-low{background:#fff4e5;color:#92400e;}
+.k-high{background:#fde8e8;color:#991b1b;}
+.k-ok{background:#e7f6ec;color:#166534;}
+.rx-box{background:var(--accent-lt);border:1px solid var(--accent-bg);border-radius:10px;padding:11px 13px;margin:9px 0;}
+.rx-title{font-size:11.5px;font-weight:800;color:var(--accent);margin-bottom:6px;}
+.rx-line{font-size:13px;color:var(--text);line-height:1.55;margin:2px 0;}
+.rx-line b{color:var(--accent);font-size:14px;}
+.rx-note{font-size:11px;color:var(--text2);}
+.k-rate-guard{background:var(--surface2);border-radius:9px;padding:10px 12px;font-size:11.5px;line-height:1.6;margin:8px 0;}
+.k-emerg-title{font-size:12.5px;font-weight:800;color:#dc2626;margin:10px 0 6px;}
+.k-emerg-row{display:grid;grid-template-columns:80px 1fr;gap:4px 9px;padding:8px 10px;background:var(--surface2);border-radius:9px;margin-bottom:6px;}
+.k-emerg-step{font-size:11px;font-weight:800;color:var(--accent);}
+.k-emerg-drug{font-size:12px;font-weight:700;color:var(--text);}
+.k-emerg-note{grid-column:2;font-size:10.5px;color:var(--muted);line-height:1.45;}
+@media (max-width:430px){.crcl-grid{grid-template-columns:1fr;}}
+
 </style>
 </head>
 <body>
@@ -1040,8 +1079,11 @@ input[type=range]::-moz-range-thumb{
 
 
 <div id="tab-elyte" style="display:none;">
+  <div class="elyte-acc">
+    <button class="elyte-acc-btn open" onclick="toggleElyteAcc(this)">🧪 Na 교정 계산기 <span class="eacc-sub">저/고Na · Adrogué-Madias</span><span class="eacc-arrow">▴</span></button>
+    <div class="elyte-acc-body" style="max-height:none;">
   <div class="calc-card">
-    <div class="calc-title">🧪 Na 교정 계산기 <span class="calc-subtitle">저/고나트륨혈증 · Adrogué-Madias</span></div>
+    <div class="calc-title" style="display:none;">Na</div>
 
     <div class="elyte-warn-top">⚠️ Na는 1가 이온: <b>1 mmol/L = 1 mEq/L</b> (동일). 모든 값 참고용 · 실제 교정은 2시간마다 Na 재측정 필수</div>
 
@@ -1098,9 +1140,14 @@ input[type=range]::-moz-range-thumb{
       <b>안전 한계:</b> 저Na 교정 ≤8 mmol/L/24h (고위험 ≤6) · 고Na 교정 ≤0.5 mmol/L/hr (≤10/24h) · 출처: Sterns 2024, Adrogué-Madias NEJM 2000, MDCalc #480
     </div>
   </div>
+    </div>
+  </div>
 
-  <div class="calc-card" style="margin-top:16px;">
-    <div class="calc-title">🩸 ABGA 분석기 <span class="calc-subtitle">산-염기 단계별 해석</span></div>
+  <div class="elyte-acc">
+    <button class="elyte-acc-btn" onclick="toggleElyteAcc(this)">🩸 ABGA 분석기 <span class="eacc-sub">산-염기 단계별 해석</span><span class="eacc-arrow">▾</span></button>
+    <div class="elyte-acc-body">
+  <div class="calc-card" style="margin-top:0;">
+    <div class="calc-title" style="display:none;">ABGA</div>
 
     <div class="elyte-inputs abga-inputs">
       <div class="elyte-field">
@@ -1155,6 +1202,113 @@ input[type=range]::-moz-range-thumb{
       <b>Delta ratio</b> = ΔAG/ΔHCO₃: 1–2 단순 AGMA · &lt;1 동반 non-AG 산증 · &gt;2 동반 대사성 알칼리증 · 출처: Harrison's, LITFL, Deranged Physiology
     </div>
   </div>
+    </div>
+  </div>
+
+  <!-- ===== v3.5b §3 보정 칼슘 ===== -->
+  <div class="elyte-acc">
+    <button class="elyte-acc-btn" onclick="toggleElyteAcc(this)">🦴 보정 칼슘 <span class="eacc-sub">알부민 보정 · Payne</span><span class="eacc-arrow">▾</span></button>
+    <div class="elyte-acc-body">
+      <div class="elyte-acc-pad">
+        <div class="elyte-inputs">
+          <div class="elyte-field"><label>측정 Ca</label>
+            <div class="elyte-inp-wrap"><input type="number" id="cca-ca" value="8.0" min="3" max="15" step="0.1" inputmode="decimal" oninput="calcCorrCa()"><span>mg/dL</span></div></div>
+          <div class="elyte-field"><label>알부민</label>
+            <div class="elyte-inp-wrap"><input type="number" id="cca-alb" value="2.0" min="1" max="6" step="0.1" inputmode="decimal" oninput="calcCorrCa()"><span>g/dL</span></div></div>
+        </div>
+        <div id="cca-out"></div>
+        <div class="elyte-ref"><b>보정 Ca</b> = 측정 Ca + 0.8×(4.0 − 알부민) · 중증 저알부민혈증에선 부정확 → iCa 우선 · 출처: Payne 1973</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== v3.5b §4 신기능 ===== -->
+  <div class="elyte-acc">
+    <button class="elyte-acc-btn" onclick="toggleElyteAcc(this)">🫘 신기능 CrCl / eGFR <span class="eacc-sub">약물용량 vs 병기</span><span class="eacc-arrow">▾</span></button>
+    <div class="elyte-acc-body">
+      <div class="elyte-acc-pad">
+        <div class="elyte-warn-top">⚠️ <b>약물 용량조절 = CrCl(Cockcroft-Gault)</b> · <b>CKD 병기 = eGFR(CKD-EPI)</b> — 용도가 다르니 섞지 말 것</div>
+        <div class="elyte-inputs">
+          <div class="elyte-field"><label>나이</label>
+            <div class="elyte-inp-wrap"><input type="number" id="crcl-age" value="70" min="18" max="120" step="1" inputmode="decimal" oninput="calcCrCl()"><span>세</span></div></div>
+          <div class="elyte-field"><label>혈청 Cr</label>
+            <div class="elyte-inp-wrap"><input type="number" id="crcl-scr" value="1.0" min="0.2" max="15" step="0.1" inputmode="decimal" oninput="calcCrCl()"><span>mg/dL</span></div></div>
+          <div class="elyte-field"><label>성별</label>
+            <select id="crcl-sex" onchange="calcCrCl()"><option value="M">남성</option><option value="F">여성</option></select></div>
+        </div>
+        <div class="elyte-note-wt">체중 <b id="crcl-wt-disp">60</b> kg (상단 환자 정보 연동)</div>
+        <div id="crcl-out"></div>
+        <div class="elyte-ref"><b>CG:</b> (140−나이)×체중/(72×SCr)×(여 0.85) → mL/min · <b>CKD-EPI 2021</b> race-free → mL/min/1.73㎡ · 출처: Cockcroft-Gault Nephron 1976, Inker NEJM 2021, KDIGO 2024</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== v3.5b §5 삼투압 ===== -->
+  <div class="elyte-acc">
+    <button class="elyte-acc-btn" onclick="toggleElyteAcc(this)">💧 혈청 삼투압 + Osm gap <span class="eacc-sub">중독 감별 · ABGA 연계</span><span class="eacc-arrow">▾</span></button>
+    <div class="elyte-acc-body">
+      <div class="elyte-acc-pad">
+        <div class="elyte-inputs">
+          <div class="elyte-field"><label>Na</label>
+            <div class="elyte-inp-wrap"><input type="number" id="osm-na" value="140" min="100" max="180" step="1" inputmode="decimal" oninput="calcOsm()"><span>mEq/L</span></div></div>
+          <div class="elyte-field"><label>혈당</label>
+            <div class="elyte-inp-wrap"><input type="number" id="osm-glu" value="90" min="0" max="1500" step="1" inputmode="decimal" oninput="calcOsm()"><span>mg/dL</span></div></div>
+          <div class="elyte-field"><label>BUN</label>
+            <div class="elyte-inp-wrap"><input type="number" id="osm-bun" value="14" min="0" max="200" step="1" inputmode="decimal" oninput="calcOsm()"><span>mg/dL</span></div></div>
+          <div class="elyte-field"><label>측정 삼투압 (선택)</label>
+            <div class="elyte-inp-wrap"><input type="number" id="osm-meas" value="" min="200" max="400" step="1" inputmode="decimal" placeholder="입력시 gap" oninput="calcOsm()"><span>mOsm/kg</span></div></div>
+        </div>
+        <div id="osm-out"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== v3.5b §6 K 교정·보충 ===== -->
+  <div class="elyte-acc">
+    <button class="elyte-acc-btn" onclick="toggleElyteAcc(this)">⚡ K⁺ 교정 · 보충 처방 <span class="eacc-sub">저K 보충예시 · 고K 응급세트</span><span class="eacc-arrow">▾</span></button>
+    <div class="elyte-acc-body">
+      <div class="elyte-acc-pad">
+        <div class="elyte-inputs">
+          <div class="elyte-field"><label>혈청 K</label>
+            <div class="elyte-inp-wrap"><input type="number" id="k-cur" value="3.0" min="1" max="9" step="0.1" inputmode="decimal" oninput="calcKCorr()"><span>mEq/L</span></div></div>
+        </div>
+        <div id="k-out"></div>
+        <div class="elyte-ref"><b>저K:</b> 20mEq/100mL NS 표준, 2시간/회 · 말초 ≤10mEq/hr·≤40mEq/L, 중심 ≤20mEq/hr · <b>고K:</b> 막안정화→shift→제거 · 출처: KDIGO 2018(EJEM 2020), Kruse 1990, ICU 전해질 프로토콜(UMich·DMC)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== v3.5b §7 Mg 보충 ===== -->
+  <div class="elyte-acc">
+    <button class="elyte-acc-btn" onclick="toggleElyteAcc(this)">🧲 Mg 보충 처방 <span class="eacc-sub">level별 용량·희석·시간</span><span class="eacc-arrow">▾</span></button>
+    <div class="elyte-acc-body">
+      <div class="elyte-acc-pad">
+        <div class="elyte-inputs">
+          <div class="elyte-field"><label>혈청 Mg</label>
+            <div class="elyte-inp-wrap"><input type="number" id="mg-cur" value="1.4" min="0.5" max="5" step="0.1" inputmode="decimal" oninput="calcMgRep()"><span>mg/dL</span></div></div>
+        </div>
+        <div id="mg-out"></div>
+        <div class="elyte-ref">MgSO₄ 1g=8mEq=4mmol · IV 약 50%만 보유→느린주입 유리 · 신부전 감량 · 출처: Wellington ICU, UMich, DMC 프로토콜</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== v3.5b §8 PO4 보충 ===== -->
+  <div class="elyte-acc">
+    <button class="elyte-acc-btn" onclick="toggleElyteAcc(this)">🦴 Phosphate 보충 처방 <span class="eacc-sub">체중연동 mmol·희석·시간</span><span class="eacc-arrow">▾</span></button>
+    <div class="elyte-acc-body">
+      <div class="elyte-acc-pad">
+        <div class="elyte-inputs">
+          <div class="elyte-field"><label>혈청 PO₄</label>
+            <div class="elyte-inp-wrap"><input type="number" id="phos-cur" value="1.5" min="0.3" max="10" step="0.1" inputmode="decimal" oninput="calcPhosRep()"><span>mg/dL</span></div></div>
+        </div>
+        <div class="elyte-note-wt">체중 <b id="phos-wt-disp">60</b> kg 연동 · P 환산 mg/dL÷3.1≈mmol/L</div>
+        <div id="phos-out"></div>
+        <div class="elyte-ref">Na/K-phosphate IV · 말초 ≤7mmol/h · 중증 개별화식(NJM 2018): 0.5×kg×(1.25−P mmol) · 한국 Phosten 20mmolP+20mmolK/vial · Ca×P&gt;55 침전 · 출처: NJM 2018, Medscape, Phosten PI</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 
@@ -1510,6 +1664,15 @@ input[type=range]::-moz-range-thumb{
       </ul>
 
       <div class="ref-cat">전해질·산염기</div>
+      <ul class="ref-list">
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/1244564/" target="_blank" rel="noopener">Cockcroft-Gault, Nephron 1976 (CrCl)</a></li>
+        <li><a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2102953" target="_blank" rel="noopener">CKD-EPI 2021 race-free, Inker NEJM 2021</a></li>
+        <li><a href="https://kdigo.org/guidelines/ckd-evaluation-and-management/" target="_blank" rel="noopener">KDIGO 2024 CKD 가이드라인</a></li>
+        <li><a href="https://journals.lww.com/euro-emergencymed/fulltext/2020/10000/acute_hyperkalemia_in_the_emergency_department__a.10.aspx" target="_blank" rel="noopener">KDIGO 급성 고K 관리 (EJEM 2020)</a></li>
+        <li><a href="https://emcrit.org/ibcc/gfr/" target="_blank" rel="noopener">EMCrit IBCC — GFR 약물용량</a></li>
+        <li><a href="http://www.surgicalcriticalcare.net/Guidelines/Electrolyte%20replacement%202018.pdf" target="_blank" rel="noopener">ICU 전해질 보충 프로토콜 (Surgical Critical Care)</a></li>
+        <li><a href="https://njmonline.nl/article_ft.php?a=2061" target="_blank" rel="noopener">중증 저인산혈증 보충 (NJM 2018)</a></li>
+      </ul>
       <ul class="ref-list">
         <li>Na 교정 (Adrogué-Madias) — <a href="https://www.nejm.org/doi/full/10.1056/NEJM200005253422107" target="_blank" rel="noopener">NEJM 2000</a></li>
         <li>저나트륨혈증 치료 표준: Sterns 2024 (CJASN)</li>
@@ -4002,7 +4165,7 @@ function switchTab(name,btn){
   if(name==='ibw'){var hsl=document.getElementById('ibw-height-sl');var hi=document.getElementById('ibw-height');if(hsl&&hi)hsl.value=hi.value;cIBW();}
   if(name==='active'){renderActiveDrugs();updateAll();}
   if(name==='calc'){ucCalc();}
-  if(name==='elyte'){calcNaCorrection();calcABGA();}
+  if(name==='elyte'){calcNaCorrection();calcABGA();calcCorrCa();calcCrCl();calcOsm();calcKCorr();calcMgRep();calcPhosRep();}
   if(name==='fluid'){initFluidModule();updateFluidCalc();}
 }
 // ══════════════════════════════
@@ -4592,7 +4755,246 @@ function initSessions(){
 // ══════════════════════════════
 //  updateAll
 // ══════════════════════════════
+/* ============================================================
+   v3.5 전해질·대사 확장 (b: 보충 프로토콜 예시 + 아코디언)
+   additive, v3.4 무손상
+   ============================================================ */
+
+/* ---------- DATA 레이어 ---------- */
+var CORR_CA = { albNormal:4.0, factor:0.8 };
+
+var RENAL_EQ = {
+  cg:{ sexFactor:{M:1.0,F:0.85} },
+  ckdepi:{ F:{kappa:0.7,alpha:-0.241,sexCoef:1.012},
+           M:{kappa:0.9,alpha:-0.302,sexCoef:1.000},
+           base:142, expLow:-1.200, ageCoef:0.9938 },
+  arc:{ threshold:130 }, dialysis:{ threshold:15 },
+  ckdStage:[ {g:'G1',min:90},{g:'G2',min:60},{g:'G3a',min:45},
+             {g:'G3b',min:30},{g:'G4',min:15},{g:'G5',min:0} ]
+};
+
+var OSM_C = { naCoef:2, gluDiv:18, bunDiv:2.8, normalLow:275, normalHigh:295, gapHigh:10 };
+
+/* ===== K 보충: level별 구체 처방 (mEq/L 단위, 정상 3.5-5.0) =====
+   출처: DMC/Surgical Critical Care/UMich ICU 전해질 프로토콜, KCl PI, Kruse 1990 */
+var K_REPLACE = {
+  normalLow:3.5, normalHigh:5.0,
+  // 저K: level대별 KCl 총량(mEq)·분할·1회 주입시간. 표준 농도 20mEq/100mL
+  low:[
+    {min:3.0, max:3.4, total:'KCl 20 mEq × 2회', each:'각 100mL NS에 희석, 1회 2시간', note:'총 40 mEq'},
+    {min:2.5, max:2.9, total:'KCl 20 mEq × 3회', each:'각 100mL NS에 희석, 1회 2시간', note:'총 60 mEq, 매시간 또는 종료 후 K 재측정'},
+    {min:0,   max:2.4, total:'KCl 20 mEq × 4회', each:'각 100mL NS에 희석, 1회 2시간', note:'총 80 mEq. 심전도 모니터, 종료 0.5-1h 후 K 측정, 주치의 연락'}
+  ],
+  carrier:'희석액은 NS 권장(D5W는 인슐린 매개 K 세포내이동으로 일시적 악화 가능)',
+  rateGuard:{ periphMax:10, centralMax:20, periphConc:40, critMax:40 },
+  pearl:'Mg 동반저하 시 K 교정 불응 → Mg 먼저 보충. 신부전·핍뇨 시 감속·재측정 강화.',
+  critical:'K<2.0 + 심전도변화/마비: 중심정맥 최대 40 mEq/hr(24h ≤400), 지속 심전도 모니터 필수(전문의 판단).'
+};
+
+/* ===== Mg 보충: level별 (mg/dL, 정상 1.7-2.4) =====
+   출처: UMich(1g MgSO4=8.1mEq), Wellington ICU, DMC 프로토콜 */
+var MG_REPLACE = {
+  low:1.7, high:2.4, conv:'MgSO₄ 1g = 8 mEq = 4 mmol',
+  level:[
+    {min:1.6, max:1.8, dose:'MgSO₄ 2 g', mix:'50-100mL NS/D5W', time:'1시간(≤150mg/min)', note:'경증. 경구 MgO 400mg q4h 대안'},
+    {min:1.0, max:1.5, dose:'MgSO₄ 4 g', mix:'100-250mL NS/D5W', time:'2-4시간', note:'중등도. 4-8h 느린 주입이 신배설 줄여 보유율↑'},
+    {min:0,   max:0.9, dose:'MgSO₄ 6 g', mix:'250-500mL NS/D5W', time:'4-8시간', note:'중증. 주치의 연락, 4h 후 재측정'}
+  ],
+  emergency:'Torsade/심정지: MgSO₄ 2g IV 1-2분 push(중심정맥 선호) 후 재평가.',
+  guard:'IV 약 50%만 신체 보유(나머지 신배설)→느린 주입 유리. 신부전 감량·독성(저혈압·심부건반사 소실) 주의.'
+};
+
+/* ===== PO4 보충: level별 (mg/dL, 정상 2.5-4.5; SI: 0.81/0.61/0.32 mmol/L 경계) =====
+   출처: NJM 2018(Na2K-PO4 1.5mmol/mL, 10mmol/h), 개별화식, 한국 Phosten(20mmol P/20mmol K per 20mL) */
+var PHOS_REPLACE = {
+  low:2.5, high:4.5,
+  level:[
+    {min:2.0, max:2.4, dose:'0.16 mmol/kg', mix:'Na/K-phosphate, 100-250mL NS', time:'6시간', note:'경증. 체중 60kg ≈ 9.6 mmol'},
+    {min:1.0, max:1.9, dose:'0.32 mmol/kg', mix:'Na/K-phosphate, 250mL NS', time:'6시간', note:'중등도. 체중 60kg ≈ 19 mmol'},
+    {min:0,   max:0.9, dose:'0.5 × 체중 × (1.25 − P[mmol/L])', mix:'중심정맥, 별도 채널', time:'≤10 mmol/h', note:'중증. 개별화식(NJM 2018). 인산 mmol = 0.5×kg×(1.25−P_mmol). P를 mmol/L로 환산(mg/dL÷3.1)'}
+  ],
+  product:'한국 Phosten(JW): 모노포타슘인산 1바이알 = P 20mmol + K 20mmol / 20mL',
+  guard:'최대 ≤7 mmol/h(말초). K 동반(K-phos) → 고K 주의. Ca×P>55 침전·전이성석회화. 저Na/저K 여부로 Na-phos vs K-phos 선택.',
+  conv:'P 환산: mg/dL ÷ 3.1 ≈ mmol/L (예 2.5 mg/dL ≈ 0.81 mmol/L)'
+};
+
+/* ---------- 공통 헬퍼 ---------- */
+function nv(id){ var e=document.getElementById(id); return e?(parseFloat(e.value)||0):0; }
+function sv(id){ var e=document.getElementById(id); return e?e.value:''; }
+function setTxt(id,html){ var e=document.getElementById(id); if(e)e.innerHTML=html; }
+
+/* ---------- elyte 섹션 아코디언 토글 ----------
+   동적 콘텐츠(계산결과 innerHTML 변경) 수용 위해 펼침시 maxHeight 비제한 */
+function toggleElyteAcc(btn){
+  var body=btn.nextElementSibling;
+  var arrow=btn.querySelector('.eacc-arrow');
+  var open=btn.classList.contains('open');
+  if(open){
+    body.style.maxHeight='0px'; btn.classList.remove('open'); if(arrow)arrow.textContent='▾';
+  } else {
+    body.style.maxHeight='none'; btn.classList.add('open'); if(arrow)arrow.textContent='▴';
+  }
+}
+
+/* ---------- §3 보정 칼슘 ---------- */
+function calcCorrCa(){
+  var ca=nv('cca-ca'), alb=nv('cca-alb');
+  if(!ca||!alb){ setTxt('cca-out',''); return; }
+  var corr=ca + CORR_CA.factor*(CORR_CA.albNormal-alb);
+  var html='<div class="res-big"><span class="res-big-numline">'
+    +'<b class="res-big-num">'+corr.toFixed(1)+'</b> <span>mg/dL</span></span></div>'
+    +'<div class="elyte-sub">측정 Ca '+ca.toFixed(1)+' → 알부민 보정 '+corr.toFixed(1)+' mg/dL</div>';
+  if(alb<3.0) html+='<div class="elyte-flag-warn">⚠️ 중증 저알부민혈증: 보정식 부정확 가능 → <b>이온화칼슘(iCa) 직접측정 우선</b></div>';
+  setTxt('cca-out',html);
+}
+
+/* ---------- §4 신기능 ---------- */
+function calcCrCl(){
+  var age=nv('crcl-age'), scr=nv('crcl-scr'), sex=sv('crcl-sex')||'M', wt=bwt();
+  if(!age||!scr){ setTxt('crcl-out',''); return; }
+  var cg=(140-age)*wt/(72*scr)*RENAL_EQ.cg.sexFactor[sex];
+  var p=RENAL_EQ.ckdepi[sex];
+  var egfr=RENAL_EQ.ckdepi.base
+    *Math.pow(Math.min(scr/p.kappa,1),p.alpha)
+    *Math.pow(Math.max(scr/p.kappa,1),RENAL_EQ.ckdepi.expLow)
+    *Math.pow(RENAL_EQ.ckdepi.ageCoef,age)*p.sexCoef;
+  var stg='';
+  for(var i=0;i<RENAL_EQ.ckdStage.length;i++){ if(egfr>=RENAL_EQ.ckdStage[i].min){ stg=RENAL_EQ.ckdStage[i].g; break; } }
+  var html='<div class="crcl-grid">'
+    +'<div class="crcl-cell"><div class="crcl-lbl">CrCl (Cockcroft-Gault)</div>'
+    +'<div class="crcl-val">'+cg.toFixed(1)+' <span>mL/min</span></div>'
+    +'<div class="crcl-use">💊 약물 용량조절용 (FDA 표준, 절대값)</div></div>'
+    +'<div class="crcl-cell"><div class="crcl-lbl">eGFR (CKD-EPI 2021)</div>'
+    +'<div class="crcl-val">'+egfr.toFixed(1)+' <span>mL/min/1.73㎡</span></div>'
+    +'<div class="crcl-use">🩺 CKD 병기용 '+stg+' (KDIGO 2024, BSA 정규화)</div></div></div>';
+  if(cg>RENAL_EQ.arc.threshold) html+='<div class="elyte-flag-warn">⚡ CrCl &gt;130 → <b>ARC(증가신청소율)</b>: ICU 흔함, 신배설 약물(β-lactam·vanco 등) <b>증량 고려</b></div>';
+  if(egfr<RENAL_EQ.dialysis.threshold) html+='<div class="elyte-flag-danger">🚨 eGFR &lt;15 (G5): 투석 고려 단계</div>';
+  html+='<div class="elyte-flag-note">※ AKI·불안정 신기능·극단 근육량(비만·악액질·절단)에서 부정확. 비만시 AdjBW 고려.</div>';
+  setTxt('crcl-out',html);
+}
+
+/* ---------- §5 삼투압 ---------- */
+function calcOsm(){
+  var na=nv('osm-na'), glu=nv('osm-glu'), bun=nv('osm-bun'), meas=nv('osm-meas');
+  if(!na){ setTxt('osm-out',''); return; }
+  var calc=OSM_C.naCoef*na + glu/OSM_C.gluDiv + bun/OSM_C.bunDiv;
+  var html='<div class="res-big"><span class="res-big-numline">'
+    +'<b class="res-big-num">'+calc.toFixed(0)+'</b> <span>mOsm/kg (계산)</span></span></div>';
+  if(meas){
+    var gap=meas-calc;
+    html+='<div class="osm-gap">Osm gap = 측정 '+meas.toFixed(0)+' − 계산 '+calc.toFixed(0)+' = <b>'+gap.toFixed(0)+'</b> mOsm/kg</div>';
+    if(gap>OSM_C.gapHigh) html+='<div class="elyte-flag-warn">⚠️ Osm gap &gt;10 → <b>미측정 삼투질</b>: 메탄올·에틸렌글리콜·아세톤 등 <b>독성알코올 감별</b>. ABGA의 AG와 함께 해석.</div>';
+    else html+='<div class="elyte-flag-ok">✓ Osm gap 정상 범위</div>';
+  }
+  html+='<div class="elyte-ref"><b>계산식:</b> 2×Na + 혈당/18 + BUN/2.8 (mg/dL) · 정상 측정 삼투압 275-295 · gap = 측정−계산</div>';
+  setTxt('osm-out',html);
+}
+
+/* ---------- §6 K 교정 + 보충 처방 예시 ---------- */
+function calcKCorr(){
+  var k=nv('k-cur');
+  if(!k){ setTxt('k-out',''); return; }
+  var html='';
+  if(k<K_REPLACE.normalLow){
+    var band=null;
+    for(var i=0;i<K_REPLACE.low.length;i++){ if(k>=K_REPLACE.low[i].min && k<=K_REPLACE.low[i].max){ band=K_REPLACE.low[i]; break; } }
+    if(!band) band=K_REPLACE.low[K_REPLACE.low.length-1];
+    html='<div class="k-band k-low">저칼륨혈증 (K '+k.toFixed(1)+' mEq/L)</div>'
+      +'<div class="rx-box"><div class="rx-title">💉 보충 예시</div>'
+      +'<div class="rx-line"><b>'+band.total+'</b></div>'
+      +'<div class="rx-line">· '+band.each+'</div>'
+      +'<div class="rx-line rx-note">'+band.note+'</div>'
+      +'<div class="rx-line rx-note">희석액: '+K_REPLACE.carrier+'</div></div>'
+      +'<div class="k-rate-guard"><b>속도·농도 한계</b><br>'
+      +'· 말초: ≤'+K_REPLACE.rateGuard.periphMax+' mEq/hr · 농도 ≤'+K_REPLACE.rateGuard.periphConc+' mEq/L (정맥염)<br>'
+      +'· 중심(ECG 모니터): ≤'+K_REPLACE.rateGuard.centralMax+' mEq/hr</div>'
+      +'<div class="elyte-flag-note">⚑ '+K_REPLACE.pearl+'</div>'
+      +'<div class="elyte-flag-warn">🚨 '+K_REPLACE.critical+'</div>';
+  } else if(k>K_REPLACE.normalHigh){
+    html='<div class="k-band k-high">고칼륨혈증 (K '+k.toFixed(1)+' mEq/L)</div>'
+      +'<div class="k-emerg-title">🚨 고K 응급 세트 (막안정화 → 세포내이동 → 제거)</div>'
+      +rxRow('① 막 안정화','Calcium gluconate 10% 10mL (1g) IV','심근 보호(K 안 낮춤). ECG변화 지속 5분 후 반복. digoxin 의심시 100mL D5W 희석 15-30분.')
+      +rxRow('② 세포내 이동','RI 10U + 50% DW 50mL (25g) IV','20-30분 발현·2-6h. 저혈당 흔함→혈당 0/15/30분 후 시간당 모니터.')
+      +rxRow('② 세포내 이동','Salbutamol 10mg 분무','β2 shift, insulin과 가산.')
+      +rxRow('② 세포내 이동','NaHCO₃ 8.4% 50mL (50mmol)','산증 동반시. Ca와 같은 라인 금지(침전).')
+      +rxRow('③ 제거','투석 / loop 이뇨제 / K-결합제(SZC·patiromer)','체외 제거는 투석·결합제·이뇨제만 가능.')
+      +'<div class="elyte-flag-note">※ 용량은 참고 표준(KDIGO 2018). 기관 프로토콜·환자상태 우선. ECG·혈당·K 추적 필수.</div>';
+  } else {
+    html='<div class="k-band k-ok">정상 범위 (K '+k.toFixed(1)+' mEq/L, 3.5-5.0)</div>';
+  }
+  setTxt('k-out',html);
+}
+function rxRow(step,drug,note){
+  return '<div class="k-emerg-row"><div class="k-emerg-step">'+step+'</div>'
+    +'<div class="k-emerg-drug">'+drug+'</div>'
+    +'<div class="k-emerg-note">'+note+'</div></div>';
+}
+
+/* ---------- §7 Mg 보충 ---------- */
+function calcMgRep(){
+  var mg=nv('mg-cur');
+  if(!mg){ setTxt('mg-out',''); return; }
+  var html='';
+  if(mg>=MG_REPLACE.low && mg<=MG_REPLACE.high){
+    html='<div class="k-band k-ok">정상 (Mg '+mg.toFixed(1)+' mg/dL, 1.7-2.4)</div>';
+  } else if(mg>MG_REPLACE.high){
+    html='<div class="k-band k-high">고마그네슘혈증 (Mg '+mg.toFixed(1)+')</div>'
+      +'<div class="elyte-flag-note">보충 중단·원인 검토. 증상시 Ca글루콘산 길항. 신부전 흔한 원인.</div>';
+  } else {
+    var band=null;
+    for(var i=0;i<MG_REPLACE.level.length;i++){ if(mg>=MG_REPLACE.level[i].min && mg<=MG_REPLACE.level[i].max){ band=MG_REPLACE.level[i]; break; } }
+    if(!band) band=MG_REPLACE.level[MG_REPLACE.level.length-1];
+    html='<div class="k-band k-low">저마그네슘혈증 (Mg '+mg.toFixed(1)+' mg/dL)</div>'
+      +'<div class="rx-box"><div class="rx-title">💉 보충 예시</div>'
+      +'<div class="rx-line"><b>'+band.dose+'</b> + '+band.mix+'</div>'
+      +'<div class="rx-line">· 주입시간: '+band.time+'</div>'
+      +'<div class="rx-line rx-note">'+band.note+'</div>'
+      +'<div class="rx-line rx-note">'+MG_REPLACE.conv+'</div></div>'
+      +'<div class="elyte-flag-warn">⚡ 응급: '+MG_REPLACE.emergency+'</div>'
+      +'<div class="elyte-flag-note">⚑ '+MG_REPLACE.guard+'</div>';
+  }
+  setTxt('mg-out',html);
+}
+
+/* ---------- §8 PO4 보충 ---------- */
+function calcPhosRep(){
+  var ph=nv('phos-cur'), wt=bwt();
+  if(!ph){ setTxt('phos-out',''); return; }
+  var html='';
+  if(ph>=PHOS_REPLACE.low && ph<=PHOS_REPLACE.high){
+    html='<div class="k-band k-ok">정상 (PO₄ '+ph.toFixed(1)+' mg/dL, 2.5-4.5)</div>';
+  } else if(ph>PHOS_REPLACE.high){
+    html='<div class="k-band k-high">고인산혈증 (PO₄ '+ph.toFixed(1)+')</div>'
+      +'<div class="elyte-flag-note">인결합제·식이제한·원인(신부전·횡문근융해 등) 검토. Ca×P 침전 주의.</div>';
+  } else {
+    var band=null;
+    for(var i=0;i<PHOS_REPLACE.level.length;i++){ if(ph>=PHOS_REPLACE.level[i].min && ph<=PHOS_REPLACE.level[i].max){ band=PHOS_REPLACE.level[i]; break; } }
+    if(!band) band=PHOS_REPLACE.level[PHOS_REPLACE.level.length-1];
+    // 체중 환산 표시 (가능한 경우)
+    var doseCalc='';
+    if(band.dose.indexOf('mmol/kg')>-1){
+      var perKg=parseFloat(band.dose);
+      doseCalc=' → '+(perKg*wt).toFixed(1)+' mmol ('+wt+'kg)';
+    } else if(band.dose.indexOf('0.5')>-1){
+      var pmmol=ph/3.1;
+      var d=0.5*wt*(1.25-pmmol);
+      doseCalc=' → 약 '+(d>0?d.toFixed(1):'재계산')+' mmol ('+wt+'kg, P '+pmmol.toFixed(2)+' mmol/L)';
+    }
+    html='<div class="k-band k-low">저인산혈증 (PO₄ '+ph.toFixed(1)+' mg/dL)</div>'
+      +'<div class="rx-box"><div class="rx-title">💉 보충 예시</div>'
+      +'<div class="rx-line"><b>'+band.dose+'</b>'+doseCalc+'</div>'
+      +'<div class="rx-line">· '+band.mix+' · 주입 '+band.time+'</div>'
+      +'<div class="rx-line rx-note">'+band.note+'</div>'
+      +'<div class="rx-line rx-note">제품: '+PHOS_REPLACE.product+'</div></div>'
+      +'<div class="elyte-flag-note">⚑ '+PHOS_REPLACE.guard+'</div>'
+      +'<div class="elyte-flag-note">환산: '+PHOS_REPLACE.conv+'</div>';
+  }
+  setTxt('phos-out',html);
+}
+
+
 function updateAll(){
+  try{var _w=document.getElementById('crcl-wt-disp');if(_w)_w.textContent=bwt();var _p=document.getElementById('phos-wt-disp');if(_p)_p.textContent=bwt();calcCrCl();calcPhosRep();}catch(e){}
   cNorepi();cEpi();cDobu();cMilri();cDopa();cEsmo();cPhe();cDilti();
   cDex();cMidaz();cUltiva();cEtom();cHalo();cBec();cLasix();cLabet();
   cLido();cNalox();
