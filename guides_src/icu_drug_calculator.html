@@ -980,6 +980,22 @@ input[type=range]::-moz-range-thumb{
 .fav-cnt{background:var(--accent);color:#fff;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:4px;}
 .fav-empty{text-align:center;padding:40px 20px;color:var(--muted2);font-size:14px;line-height:1.6;}
 .fav-empty span{font-size:12px;color:var(--muted);}
+
+.nut-card{margin-top:16px;}
+.nut-hint,.nut-bmi{font-size:12.5px;color:var(--text2);margin:8px 0;}
+.nut-bmi b{color:var(--accent);}
+.nut-wtlbl{font-size:10.5px;color:var(--muted);background:var(--surface2);padding:1px 6px;border-radius:5px;margin-left:4px;}
+.nut-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.nut-cell{background:var(--surface2);border-radius:10px;padding:11px;border:1px solid var(--border);}
+.nut-lbl{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;}
+.nut-val{font-size:20px;font-weight:800;color:var(--accent);margin:3px 0;}
+.nut-val-sm{font-size:15px;}
+.nut-val span{font-size:11px;color:var(--muted);font-weight:600;}
+.nut-range{font-size:10.5px;color:var(--text2);line-height:1.3;}
+.nut-early{background:var(--accent-lt);border-radius:8px;padding:8px 11px;font-size:11.5px;color:var(--text);margin:8px 0;}
+.nut-early b{color:var(--accent);}
+.nut-warn{font-size:10.5px;color:#92400e;background:#fff4e5;border-radius:7px;padding:7px 10px;margin-top:7px;line-height:1.45;}
+@media (max-width:430px){.nut-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -1711,6 +1727,20 @@ input[type=range]::-moz-range-thumb{
         </div><!-- /fluid-dist-list overflow -->
       </div><!-- /fluid-dist-list -->
     </div><!-- /fluid-dist-card -->
+
+  <!-- ===== v3.11 영양 요구량 ===== -->
+  <div class="calc-card nut-card">
+    <div class="calc-title">🍽 영양 요구량 <span class="calc-subtitle">열량·단백 · ASPEN/ESPEN</span></div>
+    <div class="elyte-inputs">
+      <div class="elyte-field"><label>신장</label>
+        <div class="elyte-inp-wrap"><input type="number" id="nut-ht" value="170" min="100" max="220" step="1" inputmode="decimal" oninput="calcNutrition()"><span>cm</span></div></div>
+      <div class="elyte-field"><label>성별</label>
+        <select id="nut-sex" onchange="calcNutrition()"><option value="male">남성</option><option value="female">여성</option></select></div>
+    </div>
+    <div class="elyte-note-wt">체중 <b id="nut-wt-disp">60</b> kg (상단 환자 정보 연동)</div>
+    <div id="nut-out"></div>
+    <div class="elyte-ref"><b>열량:</b> 12–25 kcal/kg/일(ASPEN 2022), 급성기 ≤70% · <b>단백:</b> 1.2–2.0 g/kg(ASPEN), 비만 BMI30–40 2.0·>40 2.5 g/kg IBW · BMI≥30은 IBW 기준 · 출처: ASPEN 2022, ESPEN 2023, EMCrit IBCC</div>
+  </div>
 
   </div><!-- /tab-fluid -->
 
@@ -4244,7 +4274,6 @@ function cIBW(){
       + (tvBasis==='tbw' && isObese ? ' &nbsp;<span style="color:var(--orange);font-weight:700;">⚠️ 비만 환자 — IBW 기준으로 전환 권장</span>' : '');
   }
 }
-function tog(id){document.getElementById(id).classList.toggle('open');}
 function switchTab(name,btn){
   var tabs=document.querySelectorAll('.tab');
   for(var i=0;i<tabs.length;i++) tabs[i].classList.remove('active');
@@ -4260,7 +4289,7 @@ function switchTab(name,btn){
   if(name==='calc'){ucCalc();}
   if(name==='fav'){renderFavTab();}
   if(name==='elyte'){calcNaCorrection();calcABGA();calcCorrCa();calcCrCl();calcOsm();calcKCorr();calcMgRep();calcPhosRep();}
-  if(name==='fluid'){initFluidModule();updateFluidCalc();}
+  if(name==='fluid'){calcNutrition();initFluidModule();updateFluidCalc();}
 }
 // ══════════════════════════════
 //  RENDER ENGINE
@@ -5250,6 +5279,68 @@ function favStarHtml(id){
 }
 
 
+/* ============================================================
+   v3.11 영양 요구량 (열량·단백) — 수액탭
+   ASPEN 2022 / ESPEN 2023. 예측식 부정확성 경고 포함.
+   calcIBW(기존) 재사용. additive 무손상.
+   ============================================================ */
+var NUTRITION = {
+  // 열량 kcal/kg/일
+  kcalLow:12, kcalHigh:25, kcalTypical:25,
+  earlyPhasePct:70,        // 급성기 첫주 ≤70% 권고
+  // 단백 g/kg/일 (BMI별)
+  proteinStd:[1.2,2.0],    // BMI<30
+  proteinObese30_40:2.0,   // BMI 30-40 (g/kg IBW)
+  proteinObese40:2.5,      // BMI>40
+  espenProtein:1.3,
+  bmiObese:30, bmiSevere:40
+};
+
+function calcNutrition(){
+  var wt=bwt();
+  var ht=parseFloat((document.getElementById('nut-ht')||{}).value)||0;
+  var sex=(document.getElementById('nut-sex')||{}).value||'male';
+  var out=document.getElementById('nut-out');
+  if(!out) return;
+  if(!ht || ht<100){ out.innerHTML='<div class="nut-hint">신장을 입력하면 BMI·체중 보정과 함께 계산됩니다.</div>'; return; }
+
+  var bmi=wt/Math.pow(ht/100,2);
+  var ibw=calcIBW(ht,sex);
+  // 계산용 체중: BMI<30 실제, ≥30 IBW
+  var useWt = bmi<NUTRITION.bmiObese ? wt : ibw;
+  var wtLabel = bmi<NUTRITION.bmiObese ? '실제체중' : '이상체중(IBW)';
+
+  // 열량
+  var kcalLow=Math.round(NUTRITION.kcalLow*useWt);
+  var kcalHigh=Math.round(NUTRITION.kcalHigh*useWt);
+  var kcalTyp=Math.round(NUTRITION.kcalTypical*useWt);
+  var kcalEarly=Math.round(kcalTyp*NUTRITION.earlyPhasePct/100);
+
+  // 단백
+  var protTxt='';
+  if(bmi<NUTRITION.bmiObese){
+    protTxt=Math.round(NUTRITION.proteinStd[0]*useWt)+'–'+Math.round(NUTRITION.proteinStd[1]*useWt)+' g/일 (1.2–2.0 g/kg)';
+  } else if(bmi<NUTRITION.bmiSevere){
+    protTxt=Math.round(NUTRITION.proteinObese30_40*ibw)+' g/일 (2.0 g/kg IBW, BMI 30–40)';
+  } else {
+    protTxt=Math.round(NUTRITION.proteinObese40*ibw)+' g/일 (2.5 g/kg IBW, BMI >40)';
+  }
+
+  var bmiCls = bmi<18.5?'저체중':(bmi<25?'정상':(bmi<30?'과체중':(bmi<40?'비만':'고도비만')));
+
+  var html='<div class="nut-bmi">BMI <b>'+bmi.toFixed(1)+'</b> ('+bmiCls+') · 계산 체중 <b>'+useWt.toFixed(1)+'</b> kg <span class="nut-wtlbl">'+wtLabel+'</span></div>';
+
+  html+='<div class="nut-grid">';
+  html+='<div class="nut-cell"><div class="nut-lbl">열량 목표</div><div class="nut-val">'+kcalTyp+' <span>kcal/일</span></div><div class="nut-range">범위 '+kcalLow+'–'+kcalHigh+' (12–25 kcal/kg)</div></div>';
+  html+='<div class="nut-cell"><div class="nut-lbl">단백 목표</div><div class="nut-val nut-val-sm">'+protTxt.split(' (')[0]+'</div><div class="nut-range">'+(protTxt.indexOf('(')>=0?protTxt.substring(protTxt.indexOf('(')+1,protTxt.length-1):'')+'</div></div>';
+  html+='</div>';
+
+  html+='<div class="nut-early">⏱ 급성기(첫 주) 저열량 권고: 목표의 ≤70% = <b>'+kcalEarly+' kcal/일</b> 까지 (ESPEN)</div>';
+  html+='<div class="nut-warn">⚠️ 예측식은 부정확합니다(개인 대사 편차 큼). 가능하면 간접열량계(IC)·VCO₂ 측정 우선. propofol 열량(1.1 kcal/mL) 별도 합산 필요.</div>';
+  out.innerHTML=html;
+}
+
+
 function initSessions(){
   loadSess();
   if(SESSIONS.length===0){
@@ -5508,6 +5599,7 @@ function calcPhosRep(){
 
 
 function updateAll(){
+  try{var _nw=document.getElementById('nut-wt-disp');if(_nw)_nw.textContent=bwt();calcNutrition();}catch(e){}
   try{var _w=document.getElementById('crcl-wt-disp');if(_w)_w.textContent=bwt();var _p=document.getElementById('phos-wt-disp');if(_p)_p.textContent=bwt();calcCrCl();calcPhosRep();}catch(e){}
   cNorepi();cEpi();cDobu();cMilri();cDopa();cEsmo();cPhe();cDilti();
   cDex();cMidaz();cUltiva();cEtom();cHalo();cBec();cLasix();cLabet();
