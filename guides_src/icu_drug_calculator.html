@@ -2464,7 +2464,7 @@ function toggleCustomMixNorepi(btn){
   var isOpen = wrap.classList.contains('open');
   // 커스텀 열 때 프리셋 버튼 비활성화
   if(!isOpen){
-    ['norepi-f-a','norepi-f-b'].forEach(function(id){
+    ['norepi-f-a','norepi-f-b','norepi-f-c'].forEach(function(id){
       var el=document.getElementById(id);
       if(el){el.classList.remove('active');el.style.color='';el.style.borderColor='';}
     });
@@ -2534,8 +2534,9 @@ var DOPA_F=[
   {drug:1600,vol:500,conc_mgml:3.2}
 ];
 var NOREPI_F=[
-  {drug:16,vol:500,conc_ugml:32},
-  {drug:48,vol:200,conc_ugml:240}
+  {drug:16,vol:500,conc_ugml:32,amp:'4A'},
+  {drug:32,vol:500,conc_ugml:64,amp:'8A'},
+  {drug:48,vol:200,conc_ugml:240,amp:'12A'}
 ];
 var VASO_D=[
   {dose:0.01,rate:3},
@@ -2563,12 +2564,13 @@ var DRUGS = [
   color:'#dc2626',
   name:'Norepinephrine',
   nameKr:'Norpin · 큐프린',
-  sub:'0.025–3 mcg/kg/min · 2가지 세팅',
+  sub:'0.025–3 mcg/kg/min · 3가지 세팅',
   badges:[['bd-red','🔴 1st Line']],
   body:`
     <div class="info-row" style="gap:10px;">
       <button class="ftab active" type="button" id="norepi-f-a" onclick="selF('norepi','a')">일반</button>
-      <button class="ftab" type="button" id="norepi-f-b" onclick="selF('norepi','b')">농축</button>
+      <button class="ftab" type="button" id="norepi-f-b" onclick="selF('norepi','b')">더블링</button>
+      <button class="ftab" type="button" id="norepi-f-c" onclick="selF('norepi','c')">농축</button>
       <button class="mix-ftab-custom" type="button" id="mix-btn-norepi" onclick="toggleCustomMixNorepi(this)">커스텀</button>
     </div>
     <div id="norepi-info" class="info-row" style="margin-top:-4px;"></div>
@@ -3575,7 +3577,7 @@ function setDopaInfo(){
 function setNorepiInfo(){
   var f=NOREPI_F[norepiFi];
   document.getElementById('norepi-info').innerHTML=
-    '<span class="ic">💉<b>'+f.drug+'mg</b>('+(f.drug===16?'4A':'12A')+')</span><span class="sep">+</span>'
+    '<span class="ic">💉<b>'+f.drug+'mg</b>('+f.amp+')</span><span class="sep">+</span>'
     +'<span class="ic">💧'+f.vol+'mL</span><span class="sep">=</span>'
     +'<span class="ic"><b>'+f.conc_ugml+'</b> mcg/mL</span>';
 }
@@ -3591,7 +3593,7 @@ function selF(drug,fi){
     }
     setDopaInfo();cDopa();
   } else {
-    var keys=['a','b'];
+    var keys=['a','b','c'];
     norepiFi=keys.indexOf(fi);if(norepiFi<0)norepiFi=0;
     for(var i=0;i<keys.length;i++){
       var t=document.getElementById('norepi-f-'+keys[i]);
