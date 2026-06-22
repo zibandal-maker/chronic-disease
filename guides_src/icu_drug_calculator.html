@@ -923,6 +923,63 @@ input[type=range]::-moz-range-thumb{
 .k-emerg-note{grid-column:2;font-size:10.5px;color:var(--muted);line-height:1.45;}
 @media (max-width:430px){.crcl-grid{grid-template-columns:1fr;}}
 
+
+/* ===== v3.6 커스텀 약물 ===== */
+.custom-builder-card{margin-top:16px;}
+.custom-add-btn{width:100%;padding:12px;border:2px dashed var(--accent);background:var(--accent-lt);color:var(--accent);font-weight:800;font-size:13.5px;border-radius:10px;cursor:pointer;}
+.custom-form{margin-top:12px;background:var(--surface2);border-radius:11px;padding:13px;}
+.custom-form-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+.custom-form-row label{font-size:12px;font-weight:700;color:var(--text);width:52px;flex-shrink:0;}
+.custom-form-row input[type="text"],.custom-form-row input[type="number"]{flex:1;padding:9px 11px;border:1px solid var(--border);border-radius:8px;font-size:14px;background:var(--surface);color:var(--text);min-width:0;}
+.custom-form-row select{padding:9px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--surface);color:var(--text);}
+.custom-form-unit{font-size:12px;color:var(--muted);font-weight:600;}
+.custom-form-actions{display:flex;gap:8px;margin-top:4px;}
+.custom-form-create{flex:1;padding:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-weight:800;font-size:13px;cursor:pointer;}
+.custom-form-cancel{padding:10px 16px;background:var(--surface);color:var(--muted);border:1px solid var(--border);border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;}
+.custom-form-note{font-size:10.5px;color:var(--muted);margin-top:8px;line-height:1.4;}
+.custom-empty{font-size:12px;color:var(--muted);text-align:center;padding:16px;background:var(--surface2);border-radius:10px;margin-top:10px;}
+.custom-card{border:2px dashed var(--muted2,#9ca3af);background:var(--surface2);border-radius:12px;padding:13px;margin-top:10px;}
+.custom-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.custom-badge{background:var(--muted2,#9ca3af);color:#fff;font-size:10px;padding:2px 7px;border-radius:6px;font-weight:800;flex-shrink:0;}
+.custom-name{font-size:14px;font-weight:800;color:var(--text);flex:1;}
+.custom-del{background:none;border:none;font-size:16px;cursor:pointer;opacity:.6;padding:2px 6px;}
+.custom-del:hover{opacity:1;}
+.custom-conc{font-size:12.5px;color:var(--text2);margin-bottom:9px;}
+.custom-conc b{color:var(--accent);font-size:15px;}
+.custom-mode-row{display:flex;gap:6px;margin-bottom:9px;}
+.custom-mode-tab{flex:1;padding:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-weight:700;border-radius:8px;cursor:pointer;}
+.custom-mode-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.custom-mode-tab.disabled{opacity:.4;cursor:not-allowed;}
+.custom-dose-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+.custom-dose-row input{flex:1;padding:11px;border:1px solid var(--border);border-radius:8px;font-size:16px;font-weight:700;background:var(--surface);color:var(--text);min-width:0;}
+.custom-dose-unit{font-size:12px;color:var(--muted);font-weight:600;flex-shrink:0;}
+.custom-result{background:var(--surface);border-radius:9px;padding:11px;text-align:center;font-size:13px;color:var(--text);}
+.cres-num{font-size:22px;font-weight:800;color:var(--accent);}
+.cres-sub{font-size:11px;color:var(--muted);font-weight:400;}
+.custom-fav{background:none;border:none;font-size:17px;cursor:pointer;color:#f59e0b;padding:0 4px;line-height:1;}
+.custom-fav.on{color:#f59e0b;}
+.custom-active-btn{width:100%;padding:9px;margin-top:9px;border:1.5px solid var(--accent);background:var(--surface);color:var(--accent);font-weight:700;font-size:12.5px;border-radius:8px;cursor:pointer;}
+.custom-active-btn.on{background:var(--accent);color:#fff;}
+.custom-card-active{border-color:var(--accent);border-style:solid;}
+.dash-custom-hdr{font-size:12px;font-weight:800;color:var(--muted);margin:14px 0 8px;padding-top:12px;border-top:1px dashed var(--border);}
+.dash-custom-cnt{background:#9ca3af;color:#fff;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:4px;}
+.dash-card-custom{border:1.5px dashed #9ca3af!important;}
+.dash-custom-tag{background:#9ca3af;color:#fff;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:700;vertical-align:middle;}
+.custom-unit-sel{padding:11px 8px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:700;background:var(--surface);color:var(--text);flex-shrink:0;min-width:120px;}
+.custom-conc-sub{font-size:11px;color:var(--muted);font-weight:400;}
+.cres-unit{font-size:13px;color:var(--muted);font-weight:600;}
+.cres-gtt{font-size:10.5px;color:var(--muted);margin-top:4px;}
+.custom-warn{font-size:10.5px;color:#92400e;background:#fff4e5;border-radius:6px;padding:6px 9px;margin-top:8px;line-height:1.4;}
+
+
+.dc-fav,.oc-fav{background:none;border:none;font-size:18px;cursor:pointer;color:#d1d5db;padding:0 6px;flex-shrink:0;line-height:1;align-self:center;}
+.dc-fav.on{color:#f59e0b;}
+.fav-tab-hdr{font-size:17px;font-weight:800;color:var(--text);margin-bottom:4px;}
+.fav-tab-sub{font-size:12px;font-weight:500;color:var(--muted);margin-left:6px;}
+.fav-sec-hdr{font-size:12px;font-weight:800;color:var(--muted);margin:16px 0 8px;text-transform:uppercase;letter-spacing:.03em;}
+.fav-cnt{background:var(--accent);color:#fff;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:4px;}
+.fav-empty{text-align:center;padding:40px 20px;color:var(--muted2);font-size:14px;line-height:1.6;}
+.fav-empty span{font-size:12px;color:var(--muted);}
 </style>
 </head>
 <body>
@@ -972,6 +1029,7 @@ input[type=range]::-moz-range-thumb{
     <button class="tab" type="button" onclick="switchTab('ibw',this)">📐 IBW</button>
     <button class="tab" type="button" onclick="switchTab('emg',this)">🚨 응급</button>
     <button class="tab" type="button" onclick="switchTab('fluid',this)">💧 수액</button>
+    <button class="tab" type="button" onclick="switchTab('fav',this)">⭐</button>
   </div>
 </div><!-- /sticky-bar -->
 
@@ -1073,6 +1131,34 @@ input[type=range]::-moz-range-thumb{
     
 
     <div class="ban-info" style="margin-top:14px;"><span class="ban-icon">⚠️</span><span>체중은 상단 환자 정보의 값을 사용합니다. 계산 결과는 참고용이며, 실제 투여 전 반드시 재확인하십시오.</span></div>
+  </div>
+
+  <!-- ===== v3.6 커스텀 약물 생성 ===== -->
+  <div class="calc-card custom-builder-card">
+    <div class="calc-title">➕ 커스텀 약물 <span class="calc-subtitle">목록에 없는 약 직접 정의 · 폰 저장</span></div>
+    <button class="custom-add-btn" type="button" onclick="toggleCustomForm()">＋ 새 커스텀 약물 추가</button>
+    <div class="custom-form" id="custom-form" style="display:none;">
+      <div class="custom-form-row">
+        <label>약물명</label>
+        <input type="text" id="cd-name" placeholder="예: Phenylephrine" maxlength="40">
+      </div>
+      <div class="custom-form-row">
+        <label>약물량</label>
+        <input type="number" id="cd-amount" placeholder="200" min="0.001" step="any" inputmode="decimal">
+        <select id="cd-unit"><option value="mg">mg</option><option value="mcg">mcg</option><option value="unit">unit</option><option value="mEq">mEq</option></select>
+      </div>
+      <div class="custom-form-row">
+        <label>총 용량</label>
+        <input type="number" id="cd-volume" placeholder="50" min="1" step="any" inputmode="decimal">
+        <span class="custom-form-unit">mL</span>
+      </div>
+      <div class="custom-form-actions">
+        <button class="custom-form-create" type="button" onclick="addCustomDrug()">생성</button>
+        <button class="custom-form-cancel" type="button" onclick="toggleCustomForm()">취소</button>
+      </div>
+      <div class="custom-form-note">mg·mcg 약물만 mcg/kg/min 환산 가능 · unit·mEq는 mL/hr 계산만</div>
+    </div>
+    <div id="custom-drug-list"></div>
   </div>
 
 </div>
@@ -1625,7 +1711,13 @@ input[type=range]::-moz-range-thumb{
         </div><!-- /fluid-dist-list overflow -->
       </div><!-- /fluid-dist-list -->
     </div><!-- /fluid-dist-card -->
+
   </div><!-- /tab-fluid -->
+
+<div id="tab-fav" style="display:none;">
+  <div class="fav-tab-hdr">⭐ 즐겨찾기 <span class="fav-tab-sub">자주 쓰는 약물 모아보기</span></div>
+  <div id="fav-list"></div>
+</div>
 
 <div id="tab-active" style="display:none;">
   <div id="active-summary"></div>
@@ -4160,11 +4252,13 @@ function switchTab(name,btn){
   // 환자 바의 현재약물 버튼 active 표시
   var actBtn=document.getElementById('pt-active-btn');
   if(actBtn) actBtn.classList.toggle('on',name==='active');
-  var names=['vp','sd','ot','cardio','calc','ibw','emg','fluid','elyte','active'];
+  var names=['vp','sd','ot','cardio','calc','ibw','emg','fluid','elyte','active','fav'];
+  if(name!=='fav' && typeof favReturnCards==='function') favReturnCards();
   for(var i=0;i<names.length;i++) document.getElementById('tab-'+names[i]).style.display=names[i]===name?'block':'none';
   if(name==='ibw'){var hsl=document.getElementById('ibw-height-sl');var hi=document.getElementById('ibw-height');if(hsl&&hi)hsl.value=hi.value;cIBW();}
   if(name==='active'){renderActiveDrugs();updateAll();}
   if(name==='calc'){ucCalc();}
+  if(name==='fav'){renderFavTab();}
   if(name==='elyte'){calcNaCorrection();calcABGA();calcCorrCa();calcCrCl();calcOsm();calcKCorr();calcMgRep();calcPhosRep();}
   if(name==='fluid'){initFluidModule();updateFluidCalc();}
 }
@@ -4265,6 +4359,7 @@ function makeDcCard(d){
     +'</div></div>'
     +'<div class="dc-r">'+bh+'<span class="chev">▾</span></div>'
     +'</button>'
+    +favStarHtml(d.id)
     +'<button class="use-tog off" type="button" id="tog-'+d.id+'" onclick="togDrug(\''+d.id+'\',event)">'
     +'<div class="use-tog-wrap off" id="togw-'+d.id+'"><div class="use-tog-knob"></div></div>'
     +'</button>'
@@ -4291,6 +4386,7 @@ function makeOcCard(d){
     +(tag?'<div class="oc-tag">'+tag+'</div>':'')+'</div>'
     +'<span class="chev oc-chev">▾</span>'
     +'</button>'
+    +favStarHtml(d.id)
     +'<button class="use-tog off" type="button" id="tog-'+d.id+'" onclick="togDrug(\''+d.id+'\',event)" style="margin-left:auto;flex-shrink:0;">'
     +'<div class="use-tog-wrap off" id="togw-'+d.id+'"><div class="use-tog-knob"></div></div>'
     +'</button>'
@@ -4374,10 +4470,14 @@ function renderActiveDrugs(){
   while(container.firstChild) container.removeChild(container.firstChild);
 
   if(!act.length){
-    var msg=document.createElement('div');
-    msg.className='active-empty-msg';
-    msg.innerHTML='사용 중인 약물이 없습니다.<br><span style="font-size:12px;">각 약물 카드 우측의 토글을 켜면 여기에 표시됩니다.</span>';
-    container.appendChild(msg);
+    var hasCustomActive=CUSTOM_DRUGS.some(function(d){return d.active;});
+    if(!hasCustomActive){
+      var msg=document.createElement('div');
+      msg.className='active-empty-msg';
+      msg.innerHTML='사용 중인 약물이 없습니다.<br><span style="font-size:12px;">각 약물 카드 우측의 토글을 켜면 여기에 표시됩니다.</span>';
+      container.appendChild(msg);
+    }
+    renderCustomActiveCards();
     updActBtn(); return;
   }
 
@@ -4417,6 +4517,7 @@ function renderActiveDrugs(){
   }
 
   renderActiveSummary(act);
+  renderCustomActiveCards();
   var lbl=document.getElementById('active-list-label');
   if(lbl) lbl.style.display=act.length?'block':'none';
   updActBtn();
@@ -4738,6 +4839,417 @@ function confirmAdd(){
   applySession(sid);renderSessBar();saveSess();updateAll();renderActiveDrugs();
 }
 
+/* ============================================================
+   v3.8 커스텀 약물 — 즐겨찾기(fav) + 현재약물 토글(active)
+   v3.7(단위 전체조합) 기반 가산. 검증약물 DOM이동 로직 무손상.
+   커스텀 active 카드는 active 탭에 독립 렌더(innerHTML 충돌 회피).
+   ============================================================ */
+var CUSTOM_DRUGS = [];
+var CUSTOM_KEY = 'icu_custom_drugs';
+
+function saveCustomDrugs(){ try{localStorage.setItem(CUSTOM_KEY,JSON.stringify(CUSTOM_DRUGS));}catch(e){} }
+function loadCustomDrugs(){ try{var s=localStorage.getItem(CUSTOM_KEY);if(s)CUSTOM_DRUGS=JSON.parse(s);}catch(e){} }
+
+function cdDoseUnits(amountUnit){
+  if(amountUnit==='unit'){
+    return [['unitkghr','U/kg/hr'],['unithr','U/hr'],['unitmin','U/min'],['mlhr','mL/hr']];
+  }
+  if(amountUnit==='meq'||amountUnit==='mEq'){
+    return [['mlhr','mL/hr']];
+  }
+  return [['mcgkgmin','mcg/kg/min'],['mcgkghr','mcg/kg/hr'],['mgkgmin','mg/kg/min'],['mgkghr','mg/kg/hr'],
+          ['mcgmin','mcg/min'],['mcghr','mcg/hr'],['mgmin','mg/min'],['mghr','mg/hr'],['mlhr','mL/hr']];
+}
+
+function toggleCustomForm(){
+  var f=document.getElementById('custom-form'); if(!f)return;
+  f.style.display=(f.style.display==='block')?'none':'block';
+}
+
+function addCustomDrug(){
+  var name=((document.getElementById('cd-name')||{}).value||'').trim();
+  var amount=parseFloat((document.getElementById('cd-amount')||{}).value)||0;
+  var unit=(document.getElementById('cd-unit')||{}).value||'mg';
+  var volume=parseFloat((document.getElementById('cd-volume')||{}).value)||0;
+  if(!name){ alert('약물명을 입력하세요.'); return; }
+  if(amount<=0){ alert('약물량을 입력하세요.'); return; }
+  if(volume<=0){ alert('총 용량(mL)을 입력하세요.'); return; }
+  var defUnit = cdDoseUnits(unit)[0][0];
+  var d={ id:'custom-'+genId(), name:escH(name), amount:amount, amountUnit:unit,
+          volume:volume, doseUnit:defUnit, dose:5, fav:false, active:false, createdAt:Date.now() };
+  CUSTOM_DRUGS.push(d);
+  saveCustomDrugs(); renderCustomDrugs();
+  document.getElementById('cd-name').value='';
+  document.getElementById('cd-amount').value='';
+  document.getElementById('cd-volume').value='';
+  document.getElementById('custom-form').style.display='none';
+}
+
+function delCustomDrug(id){
+  if(!confirm('이 커스텀 약물을 삭제할까요?')) return;
+  CUSTOM_DRUGS=CUSTOM_DRUGS.filter(function(d){return d.id!==id;});
+  saveCustomDrugs(); renderCustomDrugs(); renderActiveDrugs();
+}
+
+function changeCustomUnit(id){
+  var sel=document.getElementById('cunit-'+id); if(!sel)return;
+  for(var i=0;i<CUSTOM_DRUGS.length;i++) if(CUSTOM_DRUGS[i].id===id){ CUSTOM_DRUGS[i].doseUnit=sel.value; break; }
+  saveCustomDrugs(); calcCustomDrug(id);
+  if(cdFind(id) && cdFind(id).active) renderActiveDrugs();
+}
+
+// 즐겨찾기 토글
+function toggleCustomFav(id){
+  var d=cdFind(id); if(!d)return;
+  d.fav=!d.fav; saveCustomDrugs(); renderCustomDrugs();
+}
+
+// 현재약물 토글
+function toggleCustomActive(id){
+  var d=cdFind(id); if(!d)return;
+  d.active=!d.active; saveCustomDrugs();
+  renderCustomDrugs(); renderActiveDrugs();
+  if(typeof updActBtn==='function') updActBtn();
+}
+
+function cdFind(id){
+  for(var i=0;i<CUSTOM_DRUGS.length;i++) if(CUSTOM_DRUGS[i].id===id) return CUSTOM_DRUGS[i];
+  return null;
+}
+
+// 농도(base/mL) — ucDrugToBase 공유
+function cdConcBase(d){
+  var db=ucDrugToBase(d.amount, (d.amountUnit==='mEq')?'meq':d.amountUnit);
+  return d.volume>0 ? db.v/d.volume : 0;
+}
+function cdBaseLabel(d){
+  var db=ucDrugToBase(d.amount,(d.amountUnit==='mEq')?'meq':d.amountUnit);
+  return db.base;
+}
+
+// mL/hr 산출 (계산기/active 공용)
+function cdRateMlhr(d){
+  var concBase=cdConcBase(d);
+  if(d.doseUnit==='mlhr') return d.dose; // mL/hr 직접
+  var pd=ucParseDose(d.doseUnit);
+  var w=bwt();
+  var dpm=d.dose;
+  if(pd.fam==='mass' && pd.massUnit==='mcg') dpm=dpm/1000;
+  if(!pd.perMin) dpm=dpm/60;
+  if(pd.perKg) dpm=dpm*w;
+  return concBase>0 ? (dpm*60)/concBase : 0;
+}
+
+function calcCustomDrug(id){
+  var d=cdFind(id); if(!d) return;
+  var inp=document.getElementById('cdose-'+id);
+  if(inp){ d.dose=parseFloat(inp.value)||0; saveCustomDrugs(); }
+  var out=document.getElementById('cres-'+id);
+  var concBase=cdConcBase(d);
+  var base=cdBaseLabel(d);
+  if(out){
+    var html='';
+    if(d.doseUnit==='mlhr'){
+      var perHr = d.dose*concBase;
+      var lbl = base==='mg'?'mg/hr':(base==='unit'?'U/hr':'mEq/hr');
+      var sub = base==='mg'? ' ('+ucFmt(perHr*1000)+' mcg/hr)':'';
+      html='<span class="cres-num">'+ucFmt(perHr)+'</span> <span class="cres-unit">'+lbl+'</span>'
+         +'<div class="cres-sub">'+d.dose+' mL/hr'+sub+'</div>';
+    } else {
+      var rate=cdRateMlhr(d);
+      var pd=ucParseDose(d.doseUnit);
+      var kgNote = pd.perKg ? ' × '+bwt()+'kg' : '';
+      html='<span class="cres-num">'+ucFmt(rate)+'</span> <span class="cres-unit">mL/hr</span>'
+         +'<div class="cres-sub">'+d.dose+' '+ucUnitLabel(d.doseUnit)+kgNote+'</div>'
+         +'<div class="cres-gtt">매크로 '+ucFmt(rate*20/60)+' · 마이크로 '+ucFmt(rate)+' gtt/min</div>';
+    }
+    out.innerHTML=html;
+  }
+  // active 표시 중이면 대시보드도 갱신
+  if(d.active && typeof renderActiveDrugs==='function') renderActiveDrugs();
+}
+
+function renderCustomDrugs(){
+  var c=document.getElementById('custom-drug-list'); if(!c)return;
+  if(CUSTOM_DRUGS.length===0){
+    c.innerHTML='<div class="custom-empty">저장된 커스텀 약물이 없습니다. 위 버튼으로 추가하세요.</div>';
+    return;
+  }
+  // 즐겨찾기 우선 정렬 (원본 순서 유지하며 fav만 위로)
+  var sorted=CUSTOM_DRUGS.slice().sort(function(a,b){
+    if(a.fav===b.fav) return a.createdAt-b.createdAt;
+    return a.fav?-1:1;
+  });
+  var h='';
+  for(var i=0;i<sorted.length;i++){
+    var d=sorted[i];
+    var concBase=cdConcBase(d);
+    var base=cdBaseLabel(d);
+    var concUnit = base==='mg'?'mg/mL':(base==='unit'?'U/mL':'mEq/mL');
+    var concSub = base==='mg'? ' <span class="custom-conc-sub">('+ucFmt(concBase*1000)+' mcg/mL)</span>':'';
+    var units=cdDoseUnits(d.amountUnit);
+    var opts='';
+    for(var u=0;u<units.length;u++){
+      opts+='<option value="'+units[u][0]+'"'+(d.doseUnit===units[u][0]?' selected':'')+'>'+units[u][1]+'</option>';
+    }
+    h+='<div class="custom-card'+(d.active?' custom-card-active':'')+'">'
+      +'<div class="custom-head">'
+      +'<span class="custom-badge">커스텀</span>'
+      +'<span class="custom-name">🧪 '+d.name+'</span>'
+      +'<button class="custom-fav'+(d.fav?' on':'')+'" type="button" onclick="toggleCustomFav(\''+d.id+'\')" title="즐겨찾기">'+(d.fav?'★':'☆')+'</button>'
+      +'<button class="custom-del" type="button" onclick="delCustomDrug(\''+d.id+'\')" title="삭제">🗑</button></div>'
+      +'<div class="custom-conc">'+d.amount+' '+d.amountUnit+' / '+d.volume+' mL = <b>'+ucFmt(concBase)+'</b> '+concUnit+concSub+'</div>'
+      +'<div class="custom-dose-row">'
+      +'<input type="number" id="cdose-'+d.id+'" value="'+d.dose+'" min="0" step="any" inputmode="decimal" oninput="calcCustomDrug(\''+d.id+'\')">'
+      +'<select id="cunit-'+d.id+'" class="custom-unit-sel" onchange="changeCustomUnit(\''+d.id+'\')">'+opts+'</select>'
+      +'</div>'
+      +'<div class="custom-result" id="cres-'+d.id+'"></div>'
+      +'<button class="custom-active-btn'+(d.active?' on':'')+'" type="button" onclick="toggleCustomActive(\''+d.id+'\')">'
+      +(d.active?'✓ 현재 약물에 표시 중 (탭하여 해제)':'＋ 현재 약물로 추가')+'</button>'
+      +'<div class="custom-warn">⚠️ 사용자 입력값 · 농도·용량 미검증. 투여 전 처방·라벨 재확인.</div>'
+      +'</div>';
+  }
+  c.innerHTML=h;
+  for(var j=0;j<sorted.length;j++) calcCustomDrug(sorted[j].id);
+}
+
+// active 탭에 커스텀 약물 대시보드 카드 추가 (renderActiveDrugs에서 호출)
+function renderCustomActiveCards(){
+  var sum=document.getElementById('active-summary');
+  if(!sum) return;
+  // 기존 커스텀 active 영역 제거
+  var old=document.getElementById('custom-active-dash');
+  if(old) old.parentNode.removeChild(old);
+  var actCustom=CUSTOM_DRUGS.filter(function(d){return d.active;});
+  if(!actCustom.length) return;
+  var wrap=document.createElement('div');
+  wrap.id='custom-active-dash';
+  var html='<div class="dash-custom-hdr">커스텀 약물 <span class="dash-custom-cnt">'+actCustom.length+'</span></div>';
+  html+='<div class="dash-grid">';
+  for(var i=0;i<actCustom.length;i++){
+    var d=actCustom[i];
+    var rate=cdRateMlhr(d);
+    var doseTxt = d.doseUnit==='mlhr' ? (d.dose+' mL/hr 입력') : (d.dose+' '+ucUnitLabel(d.doseUnit));
+    html+='<div class="dash-card dash-card-custom" onclick="switchTab(\'calc\',null)">'
+      +'<div class="dash-bar" style="background:#9ca3af;"></div>'
+      +'<div class="dash-card-body">'
+      +'<div class="dash-dname">🧪 '+d.name+' <span class="dash-custom-tag">커스텀</span></div>'
+      +'<div class="dash-rate"><span class="dash-rate-num">'+ucFmt(rate)+'</span><span class="dash-rate-unit">mL/hr</span></div>'
+      +'<div class="dash-dose">'+doseTxt+' · 미검증</div>'
+      +'</div></div>';
+  }
+  html+='</div>';
+  wrap.innerHTML=html;
+  sum.appendChild(wrap);
+}
+
+/* ============================================================
+   v3.9 통합 즐겨찾기 (검증약물 + 커스텀)
+   검증약물=바로가기(복제 안함, ID충돌 회피), 전역 저장. 무손상 가산.
+   ============================================================ */
+var FAV_DRUGS = [];
+var FAV_KEY = 'icu_favorites';
+
+function saveFav(){ try{localStorage.setItem(FAV_KEY,JSON.stringify(FAV_DRUGS));}catch(e){} }
+function loadFav(){ try{var s=localStorage.getItem(FAV_KEY);if(s)FAV_DRUGS=JSON.parse(s);}catch(e){} }
+function isFav(id){ return FAV_DRUGS.indexOf(id)>=0; }
+
+// 검증약물 즐겨찾기 토글 (카드 헤더 별표)
+function toggleFav(id,e){
+  if(e){ e.stopPropagation(); e.preventDefault(); }
+  var i=FAV_DRUGS.indexOf(id);
+  if(i>=0) FAV_DRUGS.splice(i,1);
+  else FAV_DRUGS.push(id);
+  saveFav();
+  // 별표 UI 갱신 (해당 카드들)
+  var stars=document.querySelectorAll('[data-fav-id="'+id+'"]');
+  for(var k=0;k<stars.length;k++){
+    if(isFav(id)){ stars[k].classList.add('on'); stars[k].textContent='★'; }
+    else{ stars[k].classList.remove('on'); stars[k].textContent='☆'; }
+  }
+}
+
+// 검증약물 현재 속도 읽기 (renderActiveSummary 로직 재사용)
+function getDrugRate(id){
+  var key=id.replace(/^c-/,'').replace(/^oc-/,'');
+  var resEl=document.getElementById(key+'-res');
+  if(resEl){
+    var numEl=resEl.querySelector('.res-big-num')||resEl.querySelector('.res-rate');
+    if(numEl && numEl.textContent && numEl.textContent.indexOf('체중')<0 && numEl.textContent.indexOf('계산')<0 && numEl.textContent.indexOf('대기')<0 && numEl.textContent.indexOf('입력')<0){
+      return numEl.textContent.trim();
+    }
+  }
+  if(typeof ocSelectedRate!=='undefined' && ocSelectedRate[id]){
+    var sel=ocSelectedRate[id];
+    return (sel.rate||'').replace(/mL\/hr/i,'').trim()||'—';
+  }
+  return '—';
+}
+
+// 검증약물 객체 찾기
+function favFindDrug(id){
+  for(var i=0;i<DRUGS.length;i++) if(DRUGS[i].id===id) return DRUGS[i];
+  return null;
+}
+
+// 즐겨찾기 탭 렌더
+function favReturnCards(){
+  var c=document.getElementById('fav-list'); if(!c) return;
+  var moved=Array.prototype.slice.call(c.querySelectorAll('[data-fav-orig-parent]'));
+  for(var i=0;i<moved.length;i++){
+    var card=moved[i];
+    var pid=card.getAttribute('data-fav-orig-parent');
+    var oidx=parseInt(card.getAttribute('data-fav-orig-index')||'0',10);
+    var par=document.getElementById(pid);
+    if(par){
+      var children=Array.prototype.slice.call(par.children);
+      var ref=null;
+      for(var j=0;j<children.length;j++){
+        var ci=parseInt(children[j].getAttribute('data-orig-index')||'-1',10);
+        if(ci>=0 && ci>oidx){ref=children[j];break;}
+      }
+      if(ref) par.insertBefore(card,ref);
+      else par.appendChild(card);
+    }
+    card.removeAttribute('data-fav-orig-parent');
+    card.removeAttribute('data-fav-orig-index');
+    card.style.marginBottom='';
+    card.style.width='';
+  }
+}
+
+function renderFavTab(){
+  var c=document.getElementById('fav-list'); if(!c) return;
+  // 1) 기존 이동 카드 복귀
+  favReturnCards();
+  // 커스텀 재생성 영역/안내문구 제거
+  var extras=c.querySelectorAll('.fav-extra');
+  for(var i=0;i<extras.length;i++) extras[i].parentNode.removeChild(extras[i]);
+
+  var favCustom=(typeof CUSTOM_DRUGS!=='undefined')?CUSTOM_DRUGS.filter(function(d){return d.fav;}):[];
+  var validFav=FAV_DRUGS.filter(function(id){return favFindDrug(id);});
+
+  if(!validFav.length && !favCustom.length){
+    var empty=document.createElement('div');
+    empty.className='fav-empty fav-extra';
+    empty.innerHTML='⭐ 즐겨찾기한 약물이 없습니다.<br><span>각 약물 카드의 별표(☆)를 누르면 여기에 모입니다.</span>';
+    c.appendChild(empty);
+    return;
+  }
+
+  // 2) 검증약물 실제 카드 이동 (DRUGS 순서)
+  for(var i=0;i<DRUGS.length;i++){
+    var d=DRUGS[i];
+    if(FAV_DRUGS.indexOf(d.id)<0) continue;
+    var card=document.getElementById(d.id);
+    if(!card) continue;
+    // 이미 fav-list에 있으면(다른 이유로) 건너뜀
+    var par=card.parentNode;
+    var parId='';
+    var cur=par;
+    for(var dd=0;dd<4;dd++){
+      if(!cur) break;
+      if(cur.id&&cur.id!=='tab-fav'){parId=cur.id;break;}
+      cur=cur.parentNode;
+    }
+    // 부모 내 인덱스 저장 + 형제 마킹
+    var origIdx=0;
+    var siblings=par?Array.prototype.slice.call(par.children):[];
+    for(var j=0;j<siblings.length;j++){ if(siblings[j]===card){origIdx=j;break;} }
+    for(var j=0;j<siblings.length;j++){
+      if(!siblings[j].getAttribute('data-orig-index')){
+        siblings[j].setAttribute('data-orig-index', String(j));
+      }
+    }
+    card.setAttribute('data-fav-orig-parent', parId||'tab-vp');
+    card.setAttribute('data-fav-orig-index', String(origIdx));
+    card.style.marginBottom='10px';
+    c.appendChild(card);
+  }
+
+  // 3) 커스텀 약물 카드 — 즐겨찾기 탭 전용 컨테이너에 재생성
+  if(favCustom.length){
+    var cwrap=document.createElement('div');
+    cwrap.className='fav-extra';
+    cwrap.id='fav-custom-list';
+    c.appendChild(cwrap);
+    renderFavCustomCards();
+  }
+}
+
+// 즐겨찾기 탭 내 커스텀 카드 (계산기탭 카드와 동일 형식, id 충돌 회피용 prefix)
+function renderFavCustomCards(){
+  var w=document.getElementById('fav-custom-list'); if(!w) return;
+  var favCustom=CUSTOM_DRUGS.filter(function(d){return d.fav;});
+  var h='';
+  for(var i=0;i<favCustom.length;i++){
+    var d=favCustom[i];
+    var concBase=cdConcBase(d);
+    var base=cdBaseLabel(d);
+    var concUnit = base==='mg'?'mg/mL':(base==='unit'?'U/mL':'mEq/mL');
+    var concSub = base==='mg'? ' <span class="custom-conc-sub">('+ucFmt(concBase*1000)+' mcg/mL)</span>':'';
+    var units=cdDoseUnits(d.amountUnit);
+    var opts='';
+    for(var u=0;u<units.length;u++){
+      opts+='<option value="'+units[u][0]+'"'+(d.doseUnit===units[u][0]?' selected':'')+'>'+units[u][1]+'</option>';
+    }
+    h+='<div class="custom-card">'
+      +'<div class="custom-head">'
+      +'<span class="custom-badge">커스텀</span>'
+      +'<span class="custom-name">🧪 '+d.name+'</span>'
+      +'<button class="custom-fav on" type="button" onclick="toggleCustomFav(\''+d.id+'\')" title="즐겨찾기">★</button>'
+      +'</div>'
+      +'<div class="custom-conc">'+d.amount+' '+d.amountUnit+' / '+d.volume+' mL = <b>'+ucFmt(concBase)+'</b> '+concUnit+concSub+'</div>'
+      +'<div class="custom-dose-row">'
+      +'<input type="number" id="fcdose-'+d.id+'" value="'+d.dose+'" min="0" step="any" inputmode="decimal" oninput="calcFavCustom(\''+d.id+'\')">'
+      +'<select id="fcunit-'+d.id+'" class="custom-unit-sel" onchange="changeFavCustomUnit(\''+d.id+'\')">'+opts+'</select>'
+      +'</div>'
+      +'<div class="custom-result" id="fcres-'+d.id+'"></div>'
+      +'<div class="custom-warn">⚠️ 사용자 입력값 · 농도·용량 미검증. 투여 전 처방·라벨 재확인.</div>'
+      +'</div>';
+  }
+  w.innerHTML=h;
+  for(var j=0;j<favCustom.length;j++) calcFavCustom(favCustom[j].id);
+}
+
+// 즐겨찾기 탭 커스텀 계산 (계산기탭과 값 동기화)
+function calcFavCustom(id){
+  var d=cdFind(id); if(!d) return;
+  var inp=document.getElementById('fcdose-'+id);
+  if(inp){ d.dose=parseFloat(inp.value)||0; saveCustomDrugs(); }
+  var out=document.getElementById('fcres-'+id);
+  if(out){
+    var concBase=cdConcBase(d), base=cdBaseLabel(d);
+    var html='';
+    if(d.doseUnit==='mlhr'){
+      var perHr=d.dose*concBase;
+      var lbl=base==='mg'?'mg/hr':(base==='unit'?'U/hr':'mEq/hr');
+      var sub=base==='mg'?' ('+ucFmt(perHr*1000)+' mcg/hr)':'';
+      html='<span class="cres-num">'+ucFmt(perHr)+'</span> <span class="cres-unit">'+lbl+'</span><div class="cres-sub">'+d.dose+' mL/hr'+sub+'</div>';
+    } else {
+      var rate=cdRateMlhr(d);
+      var pd=ucParseDose(d.doseUnit);
+      var kg=pd.perKg?' × '+bwt()+'kg':'';
+      html='<span class="cres-num">'+ucFmt(rate)+'</span> <span class="cres-unit">mL/hr</span><div class="cres-sub">'+d.dose+' '+ucUnitLabel(d.doseUnit)+kg+'</div><div class="cres-gtt">매크로 '+ucFmt(rate*20/60)+' · 마이크로 '+ucFmt(rate)+' gtt/min</div>';
+    }
+    out.innerHTML=html;
+  }
+  // 계산기탭 동일 약물 입력도 동기화
+  var mainInp=document.getElementById('cdose-'+id);
+  if(mainInp && mainInp.value!=String(d.dose)) mainInp.value=d.dose;
+}
+function changeFavCustomUnit(id){
+  var sel=document.getElementById('fcunit-'+id); if(!sel)return;
+  var d=cdFind(id); if(d){ d.doseUnit=sel.value; saveCustomDrugs(); }
+  calcFavCustom(id);
+}
+
+// 검증약물 카드 헤더용 별표 HTML
+function favStarHtml(id){
+  return '<button class="dc-fav'+(isFav(id)?' on':'')+'" type="button" data-fav-id="'+id+'" onclick="toggleFav(\''+id+'\',event)" title="즐겨찾기">'+(isFav(id)?'★':'☆')+'</button>';
+}
+
+
 function initSessions(){
   loadSess();
   if(SESSIONS.length===0){
@@ -4750,6 +5262,8 @@ function initSessions(){
     applySession(ACTIVE_SID);
   }
   renderSessBar();renderActiveDrugs();updActBtn();
+  loadFav();
+  loadCustomDrugs();renderCustomDrugs();
 }
 
 // ══════════════════════════════
