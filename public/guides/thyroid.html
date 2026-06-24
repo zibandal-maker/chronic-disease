@@ -1,0 +1,3327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦋 갑상선 통합 처방가이드</title>
+<style>
+:root{
+  /* 갑상선 테마: teal 계열(초음파 모니터 톤) */
+  --teal:#0d7377; --teal-d:#095457; --teal-l:#14a085;
+  --indigo:#4a5899; --indigo-l:#6b7bc4;     /* 결절축 */
+  --amber:#e89611; --red:#d6455d; --green:#1f9e6b;
+  --bg:#f5f8f9; --card:#ffffff; --ink:#1a2629; --sub:#5b6b70; --line:#e1ebed;
+  --gradeA:#1f9e6b; --gradeB:#e89611; --gradeC:#8896a0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo",sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.5;font-size:14px;-webkit-text-size-adjust:100%}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:780px;margin:0 auto;padding:0 14px 60px}
+
+/* 헤더 */
+header{background:linear-gradient(135deg,var(--teal) 0%,var(--teal-d) 100%);color:#fff;
+  padding:18px 14px 14px;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(13,115,119,.18)}
+header .h-in{max-width:780px;margin:0 auto}
+header h1{font-size:18px;font-weight:700;letter-spacing:-.3px}
+header .sub{font-size:11.5px;opacity:.85;margin-top:2px}
+
+/* 탭 */
+.tabs{display:flex;gap:6px;margin-top:12px}
+.tab{flex:1;padding:9px;text-align:center;background:rgba(255,255,255,.14);color:#fff;
+  border:none;border-radius:9px 9px 0 0;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+.tab.active{background:var(--bg);color:var(--teal-d)}
+.tab.nodule.active{color:var(--indigo)}
+
+/* 입력 패널 */
+.panel{background:var(--card);border-radius:0 0 14px 14px;padding:14px;margin-bottom:14px;
+  box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.field{margin-bottom:11px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--sub);margin-bottom:4px}
+.field input,.field select{width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;
+  font-size:14px;background:#fbfdfd}
+.field input:focus,.field select:focus{outline:none;border-color:var(--teal-l)}
+.row{display:flex;gap:8px}.row>.field{flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chip{padding:6px 11px;border:1.5px solid var(--line);border-radius:18px;font-size:12.5px;
+  cursor:pointer;background:#fbfdfd;user-select:none}
+.chip.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.seg{display:flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{flex:1;padding:8px;border:none;background:#fbfdfd;font-size:13px;cursor:pointer}
+.seg button.on{background:var(--indigo);color:#fff}
+.btn-run{width:100%;padding:12px;background:var(--teal);color:#fff;border:none;border-radius:10px;
+  font-size:15px;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-run:active{background:var(--teal-d)}
+.nodule-mode .btn-run{background:var(--indigo)}
+
+/* 결과 카드 */
+.result{margin-top:4px}
+.card{background:var(--card);border-radius:12px;margin-bottom:11px;overflow:hidden;
+  box-shadow:0 1px 6px rgba(0,0,0,.05);border-left:4px solid var(--teal)}
+.card.nodule{border-left-color:var(--indigo)}
+.card.warn{border-left-color:var(--amber)}
+.card.danger{border-left-color:var(--red)}
+.card-h{padding:11px 13px;font-weight:700;font-size:14px;display:flex;align-items:center;gap:7px}
+.card-b{padding:0 13px 12px}
+
+/* 권고등급 배지 */
+.grade{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;
+  padding:0 5px;border-radius:5px;font-size:11px;font-weight:800;color:#fff}
+.grade.A{background:var(--gradeA)}.grade.B{background:var(--gradeB)}.grade.C{background:var(--gradeC)}
+.orig{font-size:10.5px;color:var(--sub);margin-left:4px}
+
+/* 약물/타겟 행 */
+.drug-row{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-top:1px solid var(--line)}
+.drug-row:first-child{border-top:none}
+.rank{min-width:22px;height:22px;border-radius:6px;background:var(--teal-l);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.drug-main{flex:1}
+.drug-name{font-weight:600;font-size:14px}
+.drug-meta{font-size:12px;color:var(--sub);margin-top:2px}
+.drug-dose{font-size:12.5px;background:#eef6f6;padding:4px 8px;border-radius:6px;margin-top:4px;display:inline-block}
+
+/* flag */
+.flag{display:flex;gap:7px;padding:8px 10px;border-radius:8px;font-size:12.5px;margin-top:7px;align-items:flex-start}
+.flag.info{background:#eef4f6;color:#2d5560}
+.flag.caution{background:#fdf3e3;color:#8a5a00}
+.flag.warning{background:#fceb ee;color:#9c2740;background:#fcebee}
+.flag.referral{background:#eae8f7;color:#3a3d7a;font-weight:600}
+
+/* 분류(K-TIRADS/Bethesda) */
+.cls{display:flex;align-items:center;gap:9px;padding:10px;border-radius:9px;margin-bottom:7px}
+.cls-k5{background:#fbe9ec;color:#a01b34}.cls-k4{background:#fdf0e0;color:#8a5200}
+.cls-k3{background:#fdf8e3;color:#7a6500}.cls-k2{background:#e8f5ec;color:#1a6b42}
+.cls-badge{font-weight:800;font-size:15px;min-width:38px}
+.cls-mal{margin-left:auto;font-size:12px;font-weight:600}
+
+/* details 접기 */
+details{margin-top:8px;border-top:1px solid var(--line);padding-top:8px}
+details summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--teal-d);list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▸ ";color:var(--teal-l)}
+details[open] summary::before{content:"▾ "}
+details .det-body{padding:8px 2px 2px;font-size:12.5px;color:var(--sub);line-height:1.6}
+
+/* 균형정보(가이드라인↔급여) */
+.balance{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-radius:8px;overflow:hidden;margin-top:6px}
+.balance>div{background:#fff;padding:9px}
+.balance .bh{font-size:11px;font-weight:700;color:var(--sub);margin-bottom:3px}
+.balance .gl{border-top:2px solid var(--teal-l)}
+.balance .rb{border-top:2px solid var(--amber)}
+.conflict{grid-column:1/3;background:#fff8ec;padding:8px 9px;font-size:12px;color:#7a5200}
+
+/* 비교표 */
+.cmp{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.cmp th,.cmp td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.cmp th{background:#eef6f6;font-size:11px}
+.cmp td:first-child{font-weight:600;width:22%}
+
+/* KCD */
+.kcd-item{border:1px solid var(--line);border-radius:8px;padding:9px;margin-bottom:7px}
+.kcd-code{display:inline-block;background:var(--teal);color:#fff;padding:2px 8px;border-radius:5px;
+  font-weight:700;font-size:12px;margin-right:6px}
+.kcd-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.tag{font-size:11px;padding:2px 7px;border-radius:10px;background:#eef4f6;color:var(--sub)}
+
+/* 출처 */
+.refs{margin-top:18px;padding:14px;background:#eef3f4;border-radius:12px;font-size:11.5px}
+.refs h3{font-size:13px;margin-bottom:8px;color:var(--teal-d)}
+.refs .rgrp{margin-bottom:10px}
+.refs .rgrp b{display:block;font-size:11px;color:var(--sub);margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}
+.refs a{color:var(--teal);text-decoration:none;word-break:break-all}
+.refs li{list-style:none;margin-bottom:4px;line-height:1.45}
+
+.sec-title{font-size:13px;font-weight:700;color:var(--sub);margin:18px 0 8px;padding-left:2px}
+.empty{text-align:center;padding:40px 20px;color:var(--sub);font-size:13px}
+.disclaimer{font-size:11px;color:var(--sub);text-align:center;margin-top:14px;line-height:1.5;padding:0 10px}
+/* ===== 도서관 ===== */
+.badge-main{font-size:9px;background:#fff;color:var(--teal-d);border-radius:4px;padding:1px 4px;margin-left:4px;font-weight:800;vertical-align:super}
+.lib-intro{font-size:12.5px;color:var(--sub);background:#eef6f6;padding:11px 13px;border-radius:10px;margin-bottom:11px;line-height:1.5}
+.lib-search input{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;background:#fff;margin-bottom:9px}
+.lib-search input:focus{outline:none;border-color:var(--teal-l)}
+.lib-filter{display:flex;gap:6px;margin-bottom:13px;flex-wrap:wrap}
+.lf{padding:7px 13px;border:1.5px solid var(--line);border-radius:18px;background:#fff;font-size:12.5px;cursor:pointer;font-weight:600;color:var(--sub)}
+.lf.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.lib-hint{font-size:12px;color:var(--sub);background:#f0f5f6;padding:9px 12px;border-radius:9px;margin:12px 0}
+
+.libcard{background:var(--card);border-radius:12px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.05);border-left:4px solid var(--line)}
+.libcard[data-cat="pay"]{border-left-color:var(--amber)}
+.libcard[data-cat="clin"]{border-left-color:var(--teal)}
+.libcard[data-cat="care"]{border-left-color:var(--indigo)}
+.libcard-head{width:100%;display:flex;align-items:center;gap:11px;padding:13px;background:none;border:none;cursor:pointer;text-align:left}
+.lc-icon{font-size:22px;flex-shrink:0}
+.lc-tt{flex:1;min-width:0}
+.lc-title{display:block;font-weight:700;font-size:14.5px;color:var(--ink)}
+.lc-sub{display:block;font-size:11.5px;color:var(--sub);margin-top:2px}
+.lc-cat{font-size:10px;font-weight:700;color:#fff;padding:2px 8px;border-radius:10px;flex-shrink:0}
+.lc-arrow{font-size:20px;color:var(--sub);transition:transform .2s;flex-shrink:0}
+.libcard.open .lc-arrow{transform:rotate(90deg)}
+.libcard-body{padding:0 13px 13px;border-top:1px solid var(--line)}
+.lib-sec{margin-top:13px}
+
+.sh{font-weight:700;font-size:13.5px;color:var(--teal-d);margin-bottom:6px}
+.snote{font-size:11.5px;color:var(--sub);margin-bottom:6px;line-height:1.5}
+.kp{list-style:none;padding:0}
+.kp li{position:relative;padding:5px 0 5px 16px;font-size:13px;line-height:1.5;border-bottom:1px solid #f0f4f5}
+.kp li:before{content:"▪";position:absolute;left:2px;color:var(--teal-l)}
+.kp li:last-child{border-bottom:none}
+
+.minicards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mc{background:#f7fafb;border-radius:9px;padding:9px;border:1px solid var(--line)}
+.mc.danger{background:#fcebee;border-color:#f3c6cf}
+.mch{font-weight:700;font-size:12.5px;margin-bottom:3px}
+.mcb{font-size:11.5px;color:var(--sub);line-height:1.45}
+
+.ladder-l{display:flex;flex-direction:column;gap:7px}
+.lr{display:flex;gap:10px;align-items:flex-start;background:#f7fafb;border-radius:9px;padding:9px}
+.lr.danger{background:#fcebee}
+.ln{min-width:22px;height:22px;border-radius:6px;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.lr.danger .ln{background:var(--red)}
+.lh{font-weight:600;font-size:13px}
+.lb{font-size:11.5px;color:var(--sub);margin-top:2px;line-height:1.45}
+
+.dtable{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+.dtable th,.dtable td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.dtable th{background:#eef6f6;font-size:11px;font-weight:700}
+.dtable td:first-child{font-weight:600}
+.codetable .code-cell{font-family:ui-monospace,monospace;font-weight:700;color:var(--teal-d);white-space:nowrap}
+.codetable .code-note{font-size:11px;color:var(--sub)}
+
+/* drugclass 펼침 */
+.dcclass{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:4px}
+.dcclass-head{width:100%;display:flex;align-items:center;gap:8px;padding:11px;background:#f7fafb;border:none;cursor:pointer;text-align:left;flex-wrap:wrap}
+.dcc-title{font-weight:700;font-size:13.5px;flex:1 1 100%}
+.dcc-eff{font-size:11.5px;color:var(--sub);flex:1 1 70%}
+.dcc-cnt{font-size:10px;background:var(--teal);color:#fff;padding:2px 7px;border-radius:9px;font-weight:700}
+.dcc-arrow{font-size:18px;color:var(--sub);transition:transform .2s}
+.dcclass.open .dcc-arrow{transform:rotate(90deg)}
+.dcclass-body{padding:11px}
+.drugclass-box{display:flex;flex-direction:column;gap:1px;background:var(--line);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.dc-row{display:flex;background:#fff;padding:7px 9px;gap:9px}
+.dc-k{font-size:11px;font-weight:700;color:var(--sub);min-width:42px;flex-shrink:0}
+.dc-v{font-size:12px;line-height:1.45}
+.dc-ae .dc-k{color:var(--red)}.dc-contra .dc-k{color:#a0344a}
+.dc-reimb{background:#fffaf0}.dc-reimb .dc-k{color:var(--amber)}
+.memlist{margin-top:4px}
+.mem-h{font-size:11px;font-weight:700;color:var(--sub);margin-bottom:6px}
+.memcard{background:#f7fafb;border-radius:9px;padding:9px;margin-bottom:7px;border:1px solid var(--line)}
+.mem-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mem-nm{font-weight:700;font-size:13px}
+.mem-brand{font-size:11px;color:var(--sub);background:#fff;padding:1px 7px;border-radius:8px;border:1px solid var(--line)}
+.mem-tip{font-size:11.5px;color:#3a5560;margin-top:5px;line-height:1.5}
+.mem-stop{font-size:11.5px;margin-top:5px;padding:5px 8px;background:#fff4e6;border-radius:7px;color:#8a5200}
+.mem-stop.hard{background:#fcebee;color:#9c2740;font-weight:600}
+.stop-lbl{font-weight:700;margin-right:5px}
+
+/* ===== 인터랙티브 진단 알고리듬 ===== */
+.algo{background:#f7fbfb;border:1.5px solid var(--teal-l);border-radius:12px;padding:13px;margin-top:4px}
+.algo-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.algo-ttl{font-weight:700;font-size:13.5px;color:var(--teal-d)}
+.algo-reset{font-size:11px;background:#fff;border:1px solid var(--line);border-radius:7px;padding:4px 9px;cursor:pointer;color:var(--sub)}
+.algo-crumb{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.crumb{font-size:11px;background:var(--teal);color:#fff;padding:3px 9px;border-radius:11px;position:relative}
+.crumb:not(:last-child):after{content:"›";margin-left:5px;opacity:.6}
+.algo-q{font-weight:700;font-size:14.5px;margin-bottom:4px;color:var(--ink)}
+.algo-hint{font-size:11.5px;color:var(--sub);margin-bottom:10px;line-height:1.5;background:#eef6f6;padding:7px 10px;border-radius:7px}
+.algo-opts{display:flex;flex-direction:column;gap:7px}
+.algo-opt{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;
+  background:#fff;border:1.5px solid var(--teal-l);border-radius:9px;padding:12px 13px;
+  font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left;transition:.12s}
+.algo-opt:active{background:var(--teal);color:#fff}
+.opt-arrow{color:var(--teal-l);font-weight:700;flex-shrink:0}
+.algo-opt:active .opt-arrow{color:#fff}
+.algo-back{margin-top:9px;font-size:12px;background:none;border:none;color:var(--sub);cursor:pointer;padding:4px}
+
+/* 결과 노드 — 톤별 색상 */
+.algo-res{border-radius:10px;padding:12px;border-left:4px solid var(--teal)}
+.res-treat{background:#e9f6f0;border-left-color:var(--green)}
+.res-observe{background:#eef4f6;border-left-color:var(--teal)}
+.res-selflimit{background:#fef6e8;border-left-color:var(--amber)}
+.res-branch{background:#eef0fb;border-left-color:var(--indigo)}
+.res-refer{background:#fceef0;border-left-color:var(--red)}
+.res-normal{background:#eef4f6;border-left-color:var(--teal-l)}
+.res-caution{background:#fdf3e3;border-left-color:var(--amber)}
+.res-dx{font-weight:800;font-size:16px;margin-bottom:5px}
+.res-sum{font-size:12.5px;color:var(--sub);line-height:1.5;margin-bottom:7px}
+.res-flag{font-size:12px;font-weight:700;color:#9c2740;background:#fff;padding:6px 9px;border-radius:7px;margin-bottom:8px;display:inline-block}
+.res-adv{list-style:none;padding:0;margin:0 0 9px}
+.res-adv li{position:relative;padding:4px 0 4px 15px;font-size:12.5px;line-height:1.5}
+.res-adv li:before{content:"▸";position:absolute;left:0;color:var(--teal-l)}
+.res-lib{font-size:12px;background:var(--teal);color:#fff;border:none;border-radius:8px;padding:8px 12px;cursor:pointer;font-weight:600}
+.res-lib:active{background:var(--teal-d)}
+</style>
+</head>
+<body>
+<!--PORTAL_HEADER_V1-->
+<style>
+  #portal-hdr{position:fixed;top:0;left:0;right:0;height:46px;z-index:99999;
+    display:flex;align-items:center;gap:10px;padding:0 12px;box-sizing:border-box;
+    background:rgba(248,250,252,.94);backdrop-filter:saturate(1.4) blur(10px);
+    -webkit-backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid rgba(20,40,60,.10);
+    font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;}
+  #portal-hdr a.ph-back,#portal-hdr a.ph-home{display:inline-flex;align-items:center;justify-content:center;
+    height:30px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;
+    color:#1a2530;background:#fff;border:1px solid rgba(20,40,60,.14);transition:.15s;}
+  #portal-hdr a.ph-back{padding:0 11px 0 8px;gap:3px;}
+  #portal-hdr a.ph-home{width:32px;font-size:15px;}
+  #portal-hdr a.ph-back:active,#portal-hdr a.ph-home:active{transform:scale(.96);background:#eef1f4;}
+  #portal-hdr .ph-emoji{font-size:17px;line-height:1;}
+  #portal-hdr .ph-title{font-size:14.5px;font-weight:700;color:#16202b;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;}
+  #portal-hdr .ph-tag{font-size:11px;font-weight:600;color:#5a6a78;background:#eef1f4;
+    padding:2px 7px;border-radius:999px;white-space:nowrap;}
+  #portal-hdr .ph-accent{width:3px;height:18px;border-radius:2px;background:#0e8a8a;flex:0 0 auto;}
+  #portal-hdr .ph-spacer{flex:1 1 auto;min-width:0;}
+  body{padding-top:46px !important;}
+  @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
+</style>
+<div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
+  <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
+  <a class="ph-home" href="../index.html" title="홈">🏠</a>
+  <span class="ph-accent"></span>
+  <span class="ph-emoji">🦋</span>
+  <span class="ph-title">갑상선</span>
+  <span class="ph-spacer"></span>
+  <span class="ph-tag">내분비</span>
+</div>
+
+<!--/PORTAL_HEADER_V1-->
+
+<header>
+  <div class="h-in">
+    <h1>🦋 갑상선 통합 처방가이드</h1>
+    <div class="sub">대한갑상선학회 권고안 2023-2024 · 심평원 급여기준 · 조언 도구</div>
+    <div class="tabs">
+      <button class="tab lib active" onclick="switchTab('lib')">📚 도서관<span class="badge-main">주</span></button>
+      <button class="tab func" onclick="switchTab('func')">⚕️ 기능이상</button>
+      <button class="tab nodule" onclick="switchTab('nodule')">🔬 결절·종양</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" id="app"></div>
+
+<script>
+/* ===== 인라인 주입 지점 (조립 시 DATA/ENGINE/CONTENT/LABEL이 여기 삽입) ===== */
+/* === grade_norm === */
+/* ============================================================
+   권고등급 정규화 (grade_norm.js) v1.0
+   각 학회 가이드라인 고유 등급 → 통합 표준 grade_norm(A/B/C) 매핑.
+   relation_layer.json 표준과 정렬. 원본 등급은 항상 보존(recLevelOrig).
+   정렬 키: grade_rank(1,2,3 추천순위) 1차 + grade_norm(A>B>C) 보조.
+   ============================================================ */
+
+/* 학회별 등급 → grade_norm 매핑 사전 */
+var GRADE_MAP = {
+  // 대한갑상선학회 결절·분화암 권고수준 (1~4)
+  "recsys:kta_nodule_1to4": {
+    "1": { norm:"A", rank:1, label:"강력히 권고" },
+    "2": { norm:"B", rank:2, label:"일반적으로 권고" },
+    "3": { norm:"C", rank:3, label:"전문가 합의" },
+    "4": { norm:"C", rank:4, label:"권고 보류" },
+    // 복합 등급: 상위 채택
+    "1/2": { norm:"A", rank:1, label:"권고(상위)" },
+    "2/3": { norm:"B", rank:2, label:"권고" },
+    "3/2": { norm:"B", rank:2, label:"권고" }
+  },
+  // 기능이상 GRADE 기반
+  "recsys:kta_func_grade": {
+    "강함/높음":   { norm:"A", rank:1, label:"강한 권고·높은 근거" },
+    "강함/중등도": { norm:"A", rank:1, label:"강한 권고·중등도 근거" },
+    "약함/낮음":   { norm:"C", rank:3, label:"약한 권고·낮은 근거" },
+    "전문가합의":  { norm:"C", rank:3, label:"전문가 합의" }
+  }
+};
+
+/* 등급 정규화: (recSys, recLevel원본) → {grade_norm, grade_rank, recLevelOrig, label} */
+function normalizeGrade(recSys, recLevel){
+  var m = GRADE_MAP[recSys];
+  var hit = m && m[recLevel];
+  if(!hit){
+    // 미정의: 첫 토큰 시도
+    var first = String(recLevel).split("/")[0];
+    hit = m && m[first];
+  }
+  if(!hit) return { grade_norm:"C", grade_rank:9, recLevelOrig:recLevel, label:String(recLevel), recSys:recSys };
+  return {
+    grade_norm: hit.norm,
+    grade_rank: hit.rank,
+    recLevelOrig: recLevel,   // 원본 등급 보존 (체계 무손상)
+    label: hit.label,
+    recSys: recSys
+  };
+}
+
+/* 정렬 비교자: grade_rank 오름차순(1=최우선), 동률 시 grade_norm A>B>C */
+var NORM_ORDER = { "A":0, "B":1, "C":2 };
+function gradeCompare(a, b){
+  var ra = a.grade_rank!=null?a.grade_rank:9, rb = b.grade_rank!=null?b.grade_rank:9;
+  if(ra!==rb) return ra-rb;
+  return (NORM_ORDER[a.grade_norm]||9) - (NORM_ORDER[b.grade_norm]||9);
+}
+
+
+
+/* === label_map === */
+var LABEL_MAP={
+ "drug": {
+  "drug:calcium_carbonate": {
+   "ko": "탄산칼슘",
+   "atc": [
+    "A12AA04"
+   ]
+  },
+  "drug:levothyroxine": {
+   "ko": "레보티록신(LT4)",
+   "atc": [
+    "H03AA01"
+   ]
+  },
+  "drug:liothyronine": {
+   "ko": "리오티로닌(LT3)",
+   "atc": [
+    "H03AA02"
+   ]
+  },
+  "drug:methimazole": {
+   "ko": "메티마졸(MMI)",
+   "atc": [
+    "H03BB02"
+   ]
+  },
+  "drug:carbimazole": {
+   "ko": "카비마졸(CBZ)",
+   "atc": [
+    "H03BB01"
+   ]
+  },
+  "drug:propranolol": {
+   "ko": "프로프라놀롤",
+   "atc": [
+    "C07AA05"
+   ]
+  },
+  "drug:propylthiouracil": {
+   "ko": "프로필티오우라실(PTU)",
+   "atc": [
+    "H03BA02"
+   ]
+  },
+  "drug:potassium_iodide": {
+   "ko": "요오드화칼륨(KI)",
+   "atc": [
+    "H03CA"
+   ]
+  },
+  "drug:calcitriol": {
+   "ko": "칼시트리올",
+   "atc": [
+    "A11CC04",
+    "D05AX03"
+   ]
+  },
+  "drug:alfacalcidol": {
+   "ko": "알파칼시돌",
+   "atc": [
+    "A11CC03"
+   ]
+  },
+  "drug:cholecalciferol": {
+   "ko": "콜레칼시페롤",
+   "atc": [
+    "A11CC05"
+   ]
+  }
+ },
+ "lab": {
+  "lab:tsh": {
+   "ko": "갑상선자극호르몬",
+   "unit": "mIU/L"
+  },
+  "lab:free_t4": {
+   "ko": "유리티록신",
+   "unit": "ng/dL"
+  },
+  "lab:free_t3": {
+   "ko": "유리삼요오드티로닌",
+   "unit": "pg/mL"
+  },
+  "lab:total_t3": {
+   "ko": "총삼요오드티로닌",
+   "unit": "ng/dL"
+  },
+  "lab:t3": {
+   "ko": "삼요오드티로닌",
+   "unit": "ng/dL"
+  },
+  "lab:t4": {
+   "ko": "티록신",
+   "unit": "ng/dL"
+  },
+  "lab:trab": {
+   "ko": "TSH수용체항체",
+   "unit": "IU/L"
+  },
+  "lab:tpo_ab": {
+   "ko": "갑상선과산화효소항체",
+   "unit": "IU/mL"
+  },
+  "lab:tg": {
+   "ko": "갑상선글로불린",
+   "unit": "ng/mL"
+  },
+  "lab:tg_ab": {
+   "ko": "갑상선글로불린항체",
+   "unit": "IU/mL"
+  },
+  "lab:calcitonin": {
+   "ko": "칼시토닌",
+   "unit": "pg/mL"
+  },
+  "lab:thyroid_panel": {
+   "ko": "갑상선기능검사",
+   "unit": "-"
+  }
+ },
+ "proc": {
+  "proc:fna": {
+   "ko": "세침흡인검사"
+  },
+  "proc:cnb": {
+   "ko": "중심바늘생검"
+  },
+  "proc:rfa": {
+   "ko": "고주파절제술"
+  },
+  "proc:laser_ablation": {
+   "ko": "레이저절제술"
+  },
+  "proc:ethanol_ablation": {
+   "ko": "에탄올절제술"
+  },
+  "proc:thyroid_scan": {
+   "ko": "갑상선스캔"
+  },
+  "proc:rai": {
+   "ko": "방사성요오드치료"
+  },
+  "proc:ext_radiation": {
+   "ko": "외부방사선조사"
+  }
+ },
+ "comorbid": {
+  "comorbid:cad": {
+   "ko": "관상동맥질환"
+  },
+  "comorbid:hf": {
+   "ko": "심부전"
+  },
+  "comorbid:dyslipidemia": {
+   "ko": "이상지질혈증"
+  },
+  "comorbid:af": {
+   "ko": "심방세동"
+  },
+  "comorbid:osteoporosis": {
+   "ko": "골다공증"
+  },
+  "comorbid:pregnancy": {
+   "ko": "임신"
+  }
+ }
+};
+
+/* === comorbid guide map === */
+var GUIDE_TO_COMORBID={"thyroid":["comorbid:cad","comorbid:hf","comorbid:dyslipidemia","comorbid:af","comorbid:osteoporosis","comorbid:pregnancy"]};
+/* === func_data === */
+/* ============================================================
+   갑상선 통합 가이드 — 기능이상 축 DATA 레이어 (func_data.js)
+   스펙 v2.1 동결본 기반. 모든 임상값은 이 파일에만 존재(하드코딩 금지).
+   전역 ID 참조 원칙: 약물=drug:, 검사=lab:, 동반질환=comorbid:, 권고체계=recsys:
+   출처: 2023 무증상갑상선기능저하증 권고안 / 분화암 진료권고안 2024 /
+         그레이브스 ATD 치료 / 식약처 허가사항 / 고시 2022-283호
+   ============================================================ */
+
+/* ---------- 권고체계 정의 (두 체계 분리 — 혼용 금지) ---------- */
+var REC_SYSTEMS = {
+  "recsys:kta_nodule_1to4": {
+    id: "recsys:kta_nodule_1to4",
+    label: "대한갑상선학회 결절·분화암 권고수준",
+    scale: ["1","2","3","4"],
+    detail: {
+      "1": "강력히 권고/권고하지 않음 (충분·객관적 근거)",
+      "2": "일반적으로 권고 (근거 있으나 불확실/간접)",
+      "3": "전문가 합의",
+      "4": "권고 보류 (근거 불충분/이견)"
+    }
+  },
+  "recsys:kta_func_grade": {
+    id: "recsys:kta_func_grade",
+    label: "기능이상 권고 (GRADE 기반)",
+    scale: ["강함/높음","강함/중등도","약함/낮음","전문가합의"],
+    detail: {} // 각 권고에 문자열로 표기
+  }
+};
+
+/* ---------- TSH 참고구간 (단일 변수 관리, 기기별 차이 명시) ---------- */
+var TSH_REF = {
+  id: "thyroid:ref:tsh",
+  lab: "lab:tsh",
+  lowerDefault: 0.4,
+  upperDefault: 5.0,           // 가이드라인 통용 진단 컷오프 (4.5~5.0)
+  upperRange: [4.5, 5.0],
+  unit: "mIU/L",
+  assayFlag: "TSH 참고구간은 검사기관·검사기기(assay)별로 다르므로 각 검사실 자체 참고치를 우선 적용한다.",
+  popNote: "국건영 6기 기반 한국인 집단 통계 참고구간은 0.6–6.8 mIU/L (인구 분포값, 진단 컷오프와 구분)."
+};
+
+/* ---------- 기능상태 분류 규칙 ---------- */
+var FUNCTION_CLASSIFY = {
+  id: "thyroid:rule:function_classify",
+  states: {
+    euthyroid:       { label: "정상", logic: "TSH 정상 + FT4 정상" },
+    overt_hypo:      { label: "현성 갑상선기능저하증", logic: "FT4↓ + TSH↑" },
+    subclinical_hypo:{ label: "무증상 갑상선기능저하증(SCH)", logic: "FT4 정상 + TSH > 상한" },
+    overt_hyper:     { label: "현성 갑상선기능항진증", logic: "FT4↑ + TSH↓" },
+    subclinical_hyper:{ label: "무증상 갑상선기능항진증", logic: "FT4·T3 정상 + TSH↓" },
+    t3_toxicosis:    { label: "T3 중독증", logic: "T3↑ + FT4 정상 + TSH↓" }
+  },
+  labs: ["lab:tsh","lab:free_t4","lab:free_t3","lab:total_t3"]
+};
+
+/* ---------- SCH 치료 판정 (2023 권고안) ---------- */
+var SCH_RULES = {
+  id: "thyroid:rule:sch_treat",
+  recSys: "recsys:kta_func_grade",
+  ref: "GL-thyroid-sch-2023",
+  ageThreshold: 70,
+  // 경증/중증 구분 (집단 참고치 6.8 기반, TSH mIU/L). 중증 기준 = 10.0
+  severity: { mild: [null,10.0], severe: [10.0,null], severeCut: 10.0 },
+
+  // ★ 1차 원칙: 추적관찰 (투약 없이 2-3개월 후 TSH 재검)
+  firstStep: {
+    id: "thyroid:rule:sch_recheck",
+    action: "투약 없이 2–3개월 후 TSH 재검 (일과성·경증과 진행위험군 감별)",
+    recLevel: "강함/높음",
+    note: "SCH의 상당수는 일과성. 첫 단계는 진행위험 높은 중증을 가려내는 것",
+    addLab: "TPO 항체 측정 권고 (양성 시 현성 진행 위험 2배↑)",
+    lab: ["lab:tsh","lab:tpo_ab"]
+  },
+
+  // 진행 위험인자 (치료 고려 쪽으로 기우는 인자들)
+  progressionRiskFactors: [
+    { key:"severe", label:"중증 (TSH > 10.0)", weight:"high" },
+    { key:"tsh_rising", label:"추적 시 TSH 지속 상승", weight:"high" },
+    { key:"tpo_positive", label:"TPO 항체 양성 / 자가면역 갑상선염 소견", weight:"mod" },
+    { key:"female", label:"여성", weight:"mod" },
+    { key:"lobectomy", label:"갑상선엽절제술 과거력", weight:"high" },
+    { key:"neck_radiation", label:"경부 방사선 치료 병력", weight:"high" },
+    { key:"us_autoimmune", label:"초음파 에코저하·염증 소견", weight:"mod" }
+  ],
+
+  branches: {
+    // 노인(≥70): 보수적 추적이 원칙
+    elderly: {
+      id: "thyroid:rule:sch_observe_elderly",
+      condition: "age >= 70",
+      action: "처방 없이 검사만 추적하는 보수적 접근이 원칙",
+      recLevel: "강함/중등도",
+      reason: "고령 LT4 치료는 TSH억제 시 심방세동·골다공증·사망률 우려. 호르몬 대사 지연·다약제 문제",
+      ref: "GL-thyroid-sch-2023"
+    },
+    // 성인(<70): 추적관찰 1차, 위험인자 충족 시 치료 고려 (즉시 치료 아님)
+    adult: {
+      id: "thyroid:rule:sch_adult",
+      condition: "age < 70",
+      observeFirst: {
+        action: "추적관찰 1차 — 2–3개월 후 재검 + TPO 항체",
+        recLevel: "강함/높음"
+      },
+      treatConsider: {
+        action: "위험인자 충족 시 LT4 치료 고려 (자동 1차 아님)",
+        drug: "drug:levothyroxine",
+        recLevel: "약함/낮음",
+        triggers: "중증(>10)·TSH지속상승·엽절제술/방사선 병력·진행 확실시",
+        note: "젊은 성인 대단위 근거 부족 — 개별 판단"
+      },
+      ref: "GL-thyroid-sch-2023"
+    }
+  },
+
+  // ★ 예외: 적극 치료 군 (주저할 이유 없음)
+  activeTreatmentGroup: {
+    id: "thyroid:rule:sch_active_treat",
+    conditions: ["가임 연령 여성(임신 계획)","임신 중","현성 저하증으로 진행 뚜렷"],
+    action: "적극적 LT4 치료 (주저할 이유 없음)",
+    drug: "drug:levothyroxine",
+    recLevel: "강함/중등도",
+    pregnancyNote: "임신 1기 TSH 상한 4.0 (지역 참고치 없을 시). 진행위험 높으면 LT4",
+    ref: "GL-thyroid-sch-2023"
+  }
+};
+
+/* ---------- 현성 저하증 LT4 용량 ---------- */
+var LT4_DOSING = {
+  id: "thyroid:rule:overt_hypo_dose",
+  drug: "drug:levothyroxine",
+  recSys: "recsys:kta_func_grade",
+  standard: { perKg: 1.6, unit: "μg/kg/day", note: "약 100μg/day" },
+  cautious: {
+    condition: "심질환 동반 or age >= 60",
+    start: [12.5, 25], unit: "μg/day",
+    titrate: "25–50μg씩 천천히 증량(심질환은 더 천천히)"
+  },
+  target: { tsh: "정상범위", ft4: "정상 상위 1/3" },
+  admin: "아침 식전 공복 1회. 검사 당일은 채혈 후 복용.",
+  ref: "GL-thyroid-sch-2023"
+};
+
+/* ---------- 항진증/그레이브스 ATD ---------- */
+var ATD_RULES = {
+  id: "thyroid:rule:graves_atd_course",
+  recSys: "recsys:kta_func_grade",
+  firstLine: {
+    drug: "drug:methimazole", class: "class:thionamide",
+    dosing: {
+      initial: { mild: 15, moderate: [30,40], severe: 60, unit: "mg/day",
+                 note: "8시간 간격 3회 분할(식약처 허가)" },
+      maintenance: { range: [5,15], unit: "mg/day", note: "1–2회 분할" }
+    },
+    freq: "1일 1회(유지기)"
+  },
+  carbimazole: {
+    drug: "drug:carbimazole",
+    note: "MMI 전구약물. CBZ 10mg ≈ MMI 6mg. 교차 시 용량 주의"
+  },
+  ptu: {
+    drug: "drug:propylthiouracil", class: "class:thionamide",
+    indication: ["임신 1기","갑상선중독발작","MMI 부작용"],
+    dosing: { note: "1일 2–3회 분복" },
+    mechanismNote: "말초 T4→T3 전환 억제(DIO1) 추가 작용"
+  },
+  symptomControl: { drug: "drug:propranolol", note: "베타차단 — 증상조절" },
+  thyroidStorm: { drug: "drug:potassium_iodide", note: "갑상선중독발작 시 단기" },
+  duration: { range: [12,18], unit: "개월" },
+  stopCriteria: {
+    kta: "TSH 정상 + TRAb 음성",
+    ata: "TSH 정상이면 TRAb 높아도 중단 가능 (가이드라인 비교 레이어 참조)",
+    lab: ["lab:tsh","lab:trab"]
+  },
+  pregnancy: {
+    lowDose: { mmi: "≤5–10mg", ptu: "≤100–200mg" },
+    note: "가임여성은 저용량으로 안정 후 임신. 임신 확인 시 ATD 중단 가능, 1–2주 후 재평가."
+  },
+  relapseRisk: ["남성","흡연","큰 갑상선종","TRAb 지속 양성"],
+  safetyFlags: [
+    { msg: "PTU 간독성·무과립구증 — 간기능·WBC 모니터", labs: ["lab:t4"] },
+    { msg: "MMI 무과립구증·간독성 — 발열·인후통 시 즉시 WBC 확인" }
+  ],
+  ref: "GL-thyroid-hyper-2013"
+};
+
+/* ---------- TSH 억제요법 (분화암 동반) — 확정 수치 ---------- */
+var SUPPRESSION_TARGET = {
+  id: "thyroid:target:tsh_suppression",
+  recSys: "recsys:kta_nodule_1to4",
+  drug: "drug:levothyroxine",
+  initialRisk: {
+    low:    { target: [0.5, 2.0], suppressBelow01: "비권고", recTarget: "3", recSuppress: "1" },
+    intermediate: { target: [0.1, 2.0], suppressBelow01: "비권고", recTarget: "3", recSuppress: "2" },
+    high:   { target: [null, 0.1], note: "<0.1 유지", rec: "1" }
+  },
+  ors: { // 지속적위험분류 반응별
+    excellent:        { target: [0.5, 2.0], note: "억제 불필요", rec: "2" },
+    structural_incomplete: { target: [null, 0.1], note: "<0.1 유지", rec: "1" },
+    biochem_lobectomy_low: { target: [0.5, 2.0], rec: "3" },
+    biochem_total_low:     { target: [0.5, 2.0], rec: "2" },
+    biochem_intermediate:  { target: [0.1, 0.5], note: "후 완화", rec: "2" },
+    biochem_high:          { target: [0.1, 0.5], note: "초기 5년 후 완화", rec: "2" }
+  },
+  overSuppressionFlags: [
+    { when: "comorbid:af", msg: "과억제 시 심방세동 위험↑" },
+    { when: "comorbid:osteoporosis", msg: "과억제 시 골다공증 위험↑" }
+  ],
+  contrastFlag: "양성결절 LT4 억제는 비권고[수준1](결절축). 같은 약·같은 억제가 분화암에선 위험군별 목표 처방 — 맥락 정반대.",
+  ref: "GL-thyroid-dtc-2024"
+};
+
+/* ---------- LT4 추적 (분화암 외래) ---------- */
+var LT4_FOLLOWUP_DTC = {
+  id: "thyroid:rule:lt4_followup_dtc",
+  recSys: "recsys:kta_nodule_1to4",
+  drug: "drug:levothyroxine",
+  interval: { max: 12, unit: "개월", labs: ["lab:tsh","lab:free_t4"], rec: "2" },
+  principle: "목표 TSH 유지 최소 용량. 복용 전 FT4 정상범위 유지.",
+  ref: "GL-thyroid-dtc-2024"
+};
+
+/* ---------- 수술 후 부갑상선기능저하증 외래관리 ---------- */
+var HYPOPARA_MGMT = {
+  id: "thyroid:rule:hypopara_postop",
+  recSys: "recsys:kta_nodule_1to4",
+  drugs: {
+    calcium: { drug: "drug:calcium_carbonate", dose: "500mg 3정 1일 3회", note: "국내 임상 통용" },
+    activeVitD: { drug: "drug:calcitriol", dose: "0.25μg 1캡슐 1일 2회", note: "활성형 비타민D" },
+    alt: ["drug:alfacalcidol","drug:cholecalciferol"]
+  },
+  monitoring: { labs: ["lab:tsh"], extra: "혈청 칼슘·이온화칼슘·PTH·25(OH)D 주기적 측정", rec: "1" },
+  permanentNote: "영구적 부갑상선저하증: 기능저하 정도에 따라 비타민D·칼슘 약물치료 필요[수준1]",
+  ref: "GL-thyroid-dtc-2024"
+};
+
+
+
+/* === nodule_data === */
+/* ============================================================
+   갑상선 통합 가이드 — 결절 축 DATA 레이어 (nodule_data.js)
+   스펙 v2.1. 출처: 갑상선결절 진료권고안 2024 / 분화암 진료권고안 2024 (PDF 검증)
+   권고체계: recsys:kta_nodule_1to4 (1~4). 시술=proc:, 분류=thyroid:tirads/bethesda
+   ============================================================ */
+
+/* ---------- 진입 알고리즘 ---------- */
+var NODULE_ENTRY = {
+  id: "thyroid:rule:nodule_entry",
+  recSys: "recsys:kta_nodule_1to4",
+  steps: [
+    { step: "결절 발견 → TSH 포함 갑상선기능검사", labs: ["lab:tsh","lab:thyroid_panel"], rec: "1" },
+    { step: "TSH 낮음 → 갑상선스캔(자율기능성 감별)", proc: "proc:thyroid_scan", rec: "1" },
+    { step: "TSH 정상/높음 → 갑상선초음파 + 경부림프절 평가", rec: "1" }
+  ],
+  tg: { rule: "일률적 혈청 Tg 측정 비권고", lab: "lab:tg", rec: "1" },
+  calcitonin: { rule: "수술·비수술적치료 전 측정 고려", lab: "lab:calcitonin", rec: "2",
+                cutoff: "≥10 pg/mL에서 수질암 의심" },
+  bridgeFlag: "TSH 이상 시 [기능이상 축]에서 추가 평가 안내(자동전환 X)"
+};
+
+/* ---------- K-TIRADS 분류표 + FNA 크기기준 ---------- */
+var KTIRADS_TABLE = {
+  id: "thyroid:tirads:table",
+  recSys: "recsys:kta_nodule_1to4",
+  categories: {
+    "thyroid:tirads:k5": { cat:5, label:"높은의심", malignancy:[60,null], malignancyLabel:">60%",
+      composition:["저에코 고형"], suspicious:true,
+      fnaSize:{ gt:1.0, unit:"cm", sub:"0.5–1cm도 고위험특성 동반시 고려" } },
+    "thyroid:tirads:k4": { cat:4, label:"중간의심", malignancy:[10,40], malignancyLabel:"10–40%",
+      composition:["저에코 고형(암의심X)","부분낭성/등고에코(암의심O)","완전석회화"],
+      fnaSize:{ range:[1.0,1.5], unit:"cm", sub:"임상·환자요인 범위내 결정" } },
+    "thyroid:tirads:k3": { cat:3, label:"낮은의심", malignancy:[3,10], malignancyLabel:"3–10%",
+      composition:["부분낭성/등고에코(암의심X)"], suspicious:false,
+      fnaSize:{ gt:2.0, unit:"cm" } },
+    "thyroid:tirads:k2": { cat:2, label:"양성", malignancy:[null,3], malignancyLabel:"<3%",
+      composition:["해면상 등고에코","comet-tail 부분낭성","순수낭종"],
+      fnaSize:{ rule:"원칙 비대상", sub:"크기증가/시술예정시 예외" } },
+    "thyroid:tirads:k1": { cat:1, label:"무결절", malignancy:null }
+  },
+  // 계산기 로직: 2축 입력 → 카테고리
+  calcAxes: {
+    composition: ["저에코 고형","부분낭성/등고에코","해면/순수낭종","완전석회화"],
+    suspicious: { features:["미세석회화","taller-than-wide","불규칙(침상·소엽)경계"], rule:"≥1 존재 시 양성소견" }
+  },
+  calcLogic: [
+    { if:"composition=='저에코 고형' && suspicious", then:"thyroid:tirads:k5" },
+    { if:"composition=='저에코 고형' && !suspicious", then:"thyroid:tirads:k4" },
+    { if:"composition=='부분낭성/등고에코' && suspicious", then:"thyroid:tirads:k4" },
+    { if:"composition=='완전석회화'", then:"thyroid:tirads:k4" },
+    { if:"composition=='부분낭성/등고에코' && !suspicious", then:"thyroid:tirads:k3" },
+    { if:"composition=='해면/순수낭종'", then:"thyroid:tirads:k2" }
+  ],
+  poorPrognosisOverride: {
+    factors:["림프절전이 의심","갑상선외부침범","원격전이 확인","수질암 의심"],
+    rule:"크기 무관 가장 의심스러운 결절에서 병리진단검사"
+  },
+  proc: ["proc:fna","proc:cnb"],
+  ref: "GL-thyroid-nodule-2024"
+};
+
+/* ---------- Bethesda 2023 (3판) ---------- */
+var BETHESDA_TABLE = {
+  id: "thyroid:bethesda:table",
+  recSys: "recsys:kta_nodule_1to4",
+  version: "2023 제3판",
+  categories: {
+    "thyroid:bethesda:b1": { cat:"I", label:"비진단적", riskAdult:[5,20,13],
+      next:"재시행(초음파유도)", rec:"1" },
+    "thyroid:bethesda:b2": { cat:"II", label:"양성", riskAdult:[2,7,4],
+      next:"추가검사 불필요, 초음파소견 따라 추적", rec:"1" },
+    "thyroid:bethesda:b3": { cat:"III", label:"비정형(AUS)", riskAdult:[13,30,22],
+      next:"반복FNA/CNB/분자표지자 or 추적 or 수술", rec:"3/2" },
+    "thyroid:bethesda:b4": { cat:"IV", label:"여포종양", riskAdult:[23,34,30],
+      next:"수술 우선고려(2cm↑ 위험↑), 분자표지자", rec:"2/3" },
+    "thyroid:bethesda:b5": { cat:"V", label:"악성의심", riskAdult:[67,83,74],
+      next:"악성에 준해 수술", rec:"2" },
+    "thyroid:bethesda:b6": { cat:"VI", label:"악성", riskAdult:[97,100,97],
+      next:"수술 권고; 저위험 미세유두암은 적극관찰 고려", rec:"1/2" }
+  },
+  riskNote: "riskAdult = [범위min, 범위max, 대표값] 성인 암위험도(%)",
+  ref: "GL-thyroid-nodule-2024"
+};
+
+/* ---------- 추적관찰 ---------- */
+var NODULE_FOLLOWUP = {
+  id: "thyroid:rule:nodule_followup",
+  recSys: "recsys:kta_nodule_1to4",
+  benign: { // 병리 양성 진단된 결절
+    high:   { interval:"6–12개월 초음파, 크기감소 없으면 병리재검", rec:"1",
+              clinNote:"≤1cm는 재검 말고 초음파추적 가능" },
+    lowMid: { interval:"12–24개월 초음파", rec:"3" },
+    benignUS:{ interval:"추적 불필요", rec:"2" }
+  },
+  belowFNA: { // FNA 미적응(크기미달)
+    high:   { interval:"초기 1–2년 6–12개월, 안정시 1년", rec:"2" },
+    lowMid: { interval:"1–2년+ (≤1cm 낮은의심은 2–5년)", rec:"3" },
+    benignUS:{ interval:"2–5년 or 불필요", rec:"3" }
+  },
+  growthDef: "두 방향 ≥2mm + 직경 ≥20% 또는 용적 ≥50% 증가",
+  ref: "GL-thyroid-nodule-2024"
+};
+
+/* ---------- 양성결절 치료 (처방가이드 핵심 분기) ---------- */
+var NODULE_TREATMENT = {
+  id: "thyroid:rule:nodule_treatment",
+  recSys: "recsys:kta_nodule_1to4",
+  lt4Suppression: {
+    rule: "일률적 LT4 억제요법 비권고", rec:"1",
+    evidence:"TSH 0.1–0.2 미만 억제는 부정맥·골다공증 위험↑, 이득<위해",
+    drug:"drug:levothyroxine",
+    contrastFlag:"분화암 동반 억제요법(기능축)과 명확히 구분"
+  },
+  ablationEligibility: {
+    define:"FNA/CNB ≥2회 양성",
+    exclude:["thyroid:tirads:k5","Bethesda 4/5/6(암·여포종양 의심)"]
+  },
+  procedures: {
+    ethanol: { proc:"proc:ethanol_ablation", indication:"재발 양성 낭성결절 + 압박/미용", rec:"1", tier:"일차" },
+    rfa:    { proc:"proc:rfa", indication:"양성 고형결절 압박/미용", rec:"2", tier:"우선권고" },
+    laser:  { proc:"proc:laser_ablation", indication:"양성 고형결절 압박/미용 대안", rec:"2" },
+    autonomous:{ procs:["proc:rai"], alt:"수술", indication:"현성 자율기능성 결절 일차", rec:"1" }
+  },
+  sizeCondition: "단엽 협부·자율기능성은 작아도 가능. 양엽은 ≥2cm+증상.",
+  nonSurgicalExclude: "흉골뒤·6–7cm↑·자율기능성 큰결절 → 수술/RAI 우선",
+  ref: "GL-thyroid-nodule-2024"
+};
+
+/* ---------- 임신부 결절 ---------- */
+var NODULE_PREGNANCY = {
+  id: "thyroid:rule:nodule_pregnancy",
+  recSys: "recsys:kta_nodule_1to4",
+  fna: { rule:"초음파기반 FNA 동일 적용", proc:"proc:fna", rec:"1", note:"스캔 금기" },
+  malignancy:{ rule:"24주까지 의미있는 성장/림프절전이 시 수술고려. 중기수술 vs 분만후 예후차 없음", rec:"3" },
+  ref: "GL-thyroid-nodule-2024"
+};
+
+/* ---------- 분화암(DTC) 외래 경계 ---------- */
+var DTC_SCOPE = {
+  id: "thyroid:scope:dtc",
+  recSys: "recsys:kta_nodule_1to4",
+  inApp: [
+    "위험군별 TSH 억제 목표 (→ SUPPRESSION_TARGET 연동)",
+    "LT4 추적 (→ LT4_FOLLOWUP_DTC)",
+    "수술 후 부갑상선저하증 외래관리 (→ HYPOPARA_MGMT)",
+    "Tg 추적 개념(동일검사법, TgAb 동시측정)"
+  ],
+  inAppLabs: ["lab:tg","lab:tg_ab"],
+  referralOnly: {
+    surgery: "수술범위 결정(엽 vs 전절제, cT/cN 기반)",
+    rai: "방사성요오드 치료·용량(30-50/30-100/100+ mCi)",
+    targeted: {
+      note: "방사성요오드 불응성 진행성 DTC — 다학제·3차 의뢰. 앱 비처방(레지스트리 미등록).",
+      drugs_text: ["렌바티닙","소라페닙","카보잔티닙","셀퍼카티닙","프랄세티닙",
+                   "라로트렉티닙","엔트렉티닙","다브라페닙+트라메티닙"]
+    },
+    advanced: "진행성·전이·소아 DTC 전체"
+  },
+  referralFlags: [
+    { when:"Bethesda 5/6", msg:"악성의심·악성 → 수술 상담 의뢰" },
+    { when:"K-TIRADS 5 + 전이/외부침범 의심", msg:"즉시 의뢰" },
+    { when:"Tg 상승 + 영상 병소", msg:"재발 평가 의뢰" },
+    { when:"고위험군 TSH 목표 관리 부담", msg:"3차 공동관리 권유" }
+  ],
+  ref: "GL-thyroid-dtc-2024"
+};
+
+
+
+/* === content_data === */
+/* ============================================================
+   갑상선 통합 가이드 — CONTENT 레이어 (content_data.js) v2.2
+   가이드라인 비교(KTA↔ATA/ETA) · 도서관 · KCD급여코드 · 출처링크.
+   모든 비교/수치는 DATA에만. 출처는 GL ID·notice ID·논문 DOI로 참조.
+   가이드라인↔급여 상충은 balanceInfo로 명시 병치.
+   ============================================================ */
+
+/* ---------- 가이드라인 비교 레이어 (KTA ↔ ATA/ETA) ---------- */
+var GUIDELINE_COMPARE = {
+  id: "thyroid:content:guideline_compare",
+  columns: ["쟁점", "대한갑상선학회(KTA)", "ATA / ETA"],
+  rows: [
+    { issue:"TSH 정상상한",
+      kta:"4.5~5.0 (검사기기별 상이, 각 검사실 참고치 우선)",
+      intl:"ATA ~4.0–4.5",
+      refKta:"GL-thyroid-sch-2023", refIntl:"doi:10.1089/thy.2014.0028" },
+    { issue:"SCH 노인(≥70) 치료",
+      kta:"경증·중증 모두 LT4 비권고(관찰)",
+      intl:"ETA: 연령·증상 고려 개별화, 일반적으로 보존적",
+      refKta:"GL-thyroid-sch-2023", refIntl:"doi:10.1159/000356507" },
+    { issue:"ATD 중단 기준",
+      kta:"TSH 정상 + TRAb 음성 (12–18개월)",
+      intl:"ATA: TSH+TRAb 둘 다 정상 시 중단 (S,H). TRAb 지속양성→ATD 연장 or RAI/수술. ETA: TRAb<2 U/L·MMI≤2.5mg 권장",
+      refKta:"GL-thyroid-hyper-2013", refIntl:"doi:10.1089/thy.2016.0229" },
+    { issue:"ATD 1차 선택",
+      kta:"MMI 1차 (PTU는 임신1기·중독발작·MMI부작용 한정)",
+      intl:"동일 (ATA/ETA 모두 MMI 1차, 임신1기 PTU)",
+      refKta:"GL-thyroid-hyper-2013", refIntl:"doi:10.1089/thy.2016.0229" },
+    { issue:"장기 저용량 ATD",
+      kta:"관해 안 되면 저용량 MMI 장기 가능",
+      intl:"ATA 2016 개정: 안전성 근거 축적, 저용량 MMI 장기요법 적극 고려(특히 RAI 회피)",
+      refKta:"GL-thyroid-hyper-2013", refIntl:"doi:10.1089/thy.2016.0229" },
+    { issue:"양성결절 LT4 억제",
+      kta:"일률적 비권고 [수준1] (부정맥·골다공증 위해>이득)",
+      intl:"ATA 2015: 동일하게 일률적 억제 비권고",
+      refKta:"GL-thyroid-nodule-2024", refIntl:"doi:10.1089/thy.2015.0020" },
+    { issue:"미세유두암 적극관찰",
+      kta:"저위험 성인 고려 [수준2]",
+      intl:"ATA: 선택적 도입 (일본 Kuma/Ito 코호트 근거)",
+      refKta:"GL-thyroid-dtc-2024", refIntl:"doi:10.1089/thy.2015.0020" },
+    { issue:"분화암 TSH 억제 목표",
+      kta:"저위험 0.5–2 / 중간 0.1–2.0 / 고위험 <0.1",
+      intl:"ATA: ORS 반응기반 유사 (구조적불완전 <0.1)",
+      refKta:"GL-thyroid-dtc-2024", refIntl:"doi:10.1089/thy.2015.0020" }
+  ]
+};
+
+/* ---------- 가이드라인 ↔ 급여 균형 정보 (상충 명시 병치) ---------- */
+var BALANCE_INFO = {
+  id: "thyroid:content:balance",
+  items: [
+    { topic:"갑상선기능검사 추적 빈도",
+      guideline:"권고: 치료초기 4주, 안정 후 2–3개월, 유지기 6–12개월 (임상필요시 추가)",
+      reimbursement:"급여: FreeT3/T4/FreeT4/T3/TSH 중 3종 이내 급여, 초과 시 본인부담 90%",
+      conflict:"빈도는 임상권고이지 급여 횟수상한 아님. 검사 종류 수(3종)가 급여 제한점.",
+      notice:"notice:고시2022-283-갑상선기능검사" },
+    { topic:"갑상선 자가항체 검사",
+      guideline:"TRAb: 그레이브스 진단·중단시점 / TPO·TgAb: 자가면역 평가",
+      reimbursement:"항체는 별도 산정. T3/T4/TSH 이상 시 인정. TRAb는 그레이브스·하시모토·일차성저하 시 인정",
+      conflict:"기능검사 3종과 별도 합산 주의. 무분별 동시처방 시 삭감 위험.",
+      notice:"notice:갑상선항체-누321-324" },
+    { topic:"결절 추적 초음파",
+      guideline:"K-TIRADS별 6–24개월 간격 (Bethesda III/IV는 경과관찰)",
+      reimbursement:"Bethesda III/IV 시 추가 1회 진단초음파 급여, 1회 초과 본인부담 80%",
+      conflict:"양성 확정 결절의 장기 추적초음파는 급여 제한적. 임상 필요성 문서화 권장.",
+      notice:"notice:고시2022-32-갑상선초음파" },
+    { topic:"LT4 체중감소 목적 사용",
+      guideline:"해당 적응증 없음",
+      reimbursement:"체중감소 목적 LT4 단독/병용은 허가초과(off-label) — 급여 불가",
+      conflict:"갑상선기능 정상자에 대한 LT4 처방은 삭감·환수 대상.",
+      notice:null }
+  ]
+};
+
+/* ---------- KCD 급여코드 섹션 (흔한 상병코드 + 동반 검사·처방) ---------- */
+var KCD_SECTION = {
+  id: "thyroid:content:kcd",
+  codes: [
+    { dx:"dx:e03", kcd:"E03", label:"기타 갑상선기능저하증",
+      common:["E03.9 상세불명","E03.8 기타 명시된"],
+      labs:["lab:tsh","lab:free_t4"], drugs:["drug:levothyroxine"] },
+    { dx:"dx:e02", kcd:"E02", label:"무증상 요오드결핍성 갑상선기능저하증",
+      note:"SCH 코딩 주의 — 요오드결핍성 분류", labs:["lab:tsh"], drugs:["drug:levothyroxine"] },
+    { dx:"dx:e05", kcd:"E05", label:"갑상선중독증(갑상선기능항진증)",
+      common:["E05.0 그레이브스병(미만성갑상선종 동반)","E05.9 상세불명"],
+      labs:["lab:tsh","lab:free_t4","lab:trab"],
+      drugs:["drug:methimazole","drug:propylthiouracil","drug:propranolol"] },
+    { dx:"dx:e06", kcd:"E06", label:"갑상선염",
+      common:["E06.3 자가면역성 갑상선염(하시모토)"],
+      labs:["lab:tsh","lab:tpo_ab"], drugs:["drug:levothyroxine"] },
+    { dx:"dx:e04", kcd:"E04", label:"기타 비독성 갑상선종(결절·종)",
+      common:["E04.1 비독성 단일결절","E04.2 비독성 다결절성갑상선종"],
+      labs:["lab:tsh"], procs:["proc:fna","proc:thyroid_scan"] },
+    { dx:"dx:c73", kcd:"C73", label:"갑상선 악성신생물",
+      note:"산정특례 대상(본인부담 5%). V193 등록",
+      labs:["lab:tsh","lab:tg","lab:tg_ab"],
+      drugs:["drug:levothyroxine","drug:calcium_carbonate","drug:calcitriol"] }
+  ],
+  specialNote:"C73 갑상선암은 암 산정특례(V193, 본인부담 5%, 5년) 대상."
+};
+
+/* ---------- 도서관 (핵심표시·확장형 토픽) ---------- */
+var LIBRARY = {
+  id: "thyroid:content:library",
+  topics: [
+    { id:"lib:guideline_compare", title:"국내↔해외 가이드라인 비교", icon:"🌐", ref:"GUIDELINE_COMPARE" },
+    { id:"lib:sch_decision", title:"SCH 치료 의사결정 트리", icon:"🔀", ref:"GL-thyroid-sch-2023" },
+    { id:"lib:atd_safety", title:"ATD 안전성: 무과립구증·간독성 조기경보", icon:"⚠️", ref:"GL-thyroid-hyper-2013",
+      content:"무과립구증(0.2–0.5%): 발열·인후통 시 즉시 WBC·호중구 확인, ANC<500 시 ATD 즉시 중단. 간독성: PTU>MMI, 황달·짙은뇨 교육." },
+    { id:"lib:pregnancy", title:"임신 중 갑상선: trimester 목표·약물전환", icon:"🤰", ref:"GL-thyroid-hyper-2013",
+      content:"임신1기 PTU(MMI 기형유발: aplasia cutis·choanal/esophageal atresia). 2기 이후 MMI 전환 고려. 임신부 TSH는 trimester별 참고치 적용." },
+    { id:"lib:tirads", title:"K-TIRADS 상세 (2021)", icon:"📊", ref:"GL-thyroid-nodule-2024" },
+    { id:"lib:bethesda", title:"Bethesda 2023(3판) 상세", icon:"🔬", ref:"GL-thyroid-nodule-2024" },
+    { id:"lib:suppression", title:"분화암 TSH 억제 위험-이익", icon:"🎯", ref:"GL-thyroid-dtc-2024" },
+    { id:"lib:hypopara", title:"수술후 부갑상선저하증 관리", icon:"💊", ref:"GL-thyroid-dtc-2024",
+      content:"칼슘 carbonate 500mg 3T tid + calcitriol 0.25μg bid. 저칼슘 증상(Chvostek·Trousseau·이상감각) 교육. 칼슘·PTH·25(OH)D 추적." },
+    { id:"lib:lab_interpret", title:"TFT 해석: 약물영향·sick euthyroid·biotin", icon:"🧪", ref:"GL-thyroid-sch-2023",
+      content:"Biotin 보충제는 TSH 낮음·T4 높음 위양성 → 2일 중단 후 재검. Sick euthyroid: 급성기 T3↓. 약물영향: 아미오다론·리튬·스테로이드." }
+  ]
+};
+
+/* ---------- 출처·참고문헌 (하단 고정, 링크) ---------- */
+var REFERENCES = {
+  id: "thyroid:content:references",
+  guidelines: [
+    { id:"GL-thyroid-sch-2023", title:"대한갑상선학회 무증상갑상선기능저하증 진료권고안 2023",
+      cite:"Int J Thyroidol 2023;16(1):32-50", url:"https://doi.org/10.11106/ijt.2023.16.1.32" },
+    { id:"GL-thyroid-hyper-2013", title:"대한갑상선학회 갑상선기능항진증 진단·치료 권고",
+      cite:"Int J Thyroidol 2013;6(1):1-11", url:"https://www.thyroid.kr" },
+    { id:"GL-thyroid-nodule-2024", title:"대한갑상선학회 갑상선결절 진료권고안 2024",
+      cite:"Int J Thyroidol 2024;17(1):208-244", url:"https://doi.org/10.11106/ijt.2024.17.1.208" },
+    { id:"GL-thyroid-dtc-2024", title:"대한갑상선학회 갑상선분화암 진료권고안 2024",
+      cite:"Int J Thyroidol 2024;17(1):1-20", url:"https://doi.org/10.11106/ijt.2024.17.1.1" },
+    { id:"GL-thyroid-rai-2025", title:"대한갑상선학회 갑상선기능항진증 방사성요오드 치료 권고안 2025",
+      cite:"Int J Thyroidol 2025;18(1):65-79", url:"https://doi.org/10.11106/ijt.2025.18.1.65", note:"참고전용(외래 범위 밖)" }
+  ],
+  intlGuidelines: [
+    { id:"ata-hyper-2016", title:"ATA Hyperthyroidism Guideline 2016",
+      cite:"Thyroid 2016;26(10):1343-1421", url:"https://doi.org/10.1089/thy.2016.0229" },
+    { id:"ata-dtc-2015", title:"ATA Thyroid Nodule & DTC Guideline 2015",
+      cite:"Thyroid 2016;26(1):1-133", url:"https://doi.org/10.1089/thy.2015.0020" },
+    { id:"eta-sch-2013", title:"ETA Subclinical Hypothyroidism Guideline",
+      cite:"Eur Thyroid J 2013;2:215-228", url:"https://doi.org/10.1159/000356507" }
+  ],
+  reimbursement: [
+    { id:"notice:고시2022-283-갑상선기능검사", title:"갑상선 기능검사 급여기준 (고시 2022-283호)",
+      url:"https://www.hira.or.kr" },
+    { id:"notice:고시2022-32-갑상선초음파", title:"갑상선 초음파 급여기준 (고시 2022-32호)",
+      url:"https://www.hira.or.kr" }
+  ],
+  drugLicense: { title:"의약품 허가사항", url:"https://nedrug.mfds.go.kr" }
+};
+
+
+
+/* === library_data === */
+/* ============================================================
+   갑상선 도서관 데이터 (library_data.js) v2.0
+   카드 병합: 검사해석(TFT+항체) · 진단플로우(알고리듬+감별) · 약제(+ATD안전성)
+   카테고리: pay(급여)·clin(임상)·care(관리)
+   ============================================================ */
+
+var THY_LIBRARY = [
+ {
+  "id": "lab_interp",
+  "cat": "clin",
+  "icon": "🧪",
+  "title": "검사 해석 (TFT · 자가항체)",
+  "sub": "기능검사 패턴 · 약물영향 · 항체 의미",
+  "tags": [
+   "TSH",
+   "FreeT4",
+   "해석",
+   "sick euthyroid",
+   "biotin",
+   "아미오다론",
+   "리튬",
+   "참고치",
+   "항체",
+   "TPO",
+   "TgAb",
+   "TRAb",
+   "TBII",
+   "TSI",
+   "TSAb",
+   "자가면역",
+   "하시모토",
+   "그레이브스",
+   "급여"
+  ],
+  "sections": [
+   {
+    "type": "table",
+    "title": "TSH × FT4 패턴 판독",
+    "cols": [
+     "TSH",
+     "FT4",
+     "해석"
+    ],
+    "rows": [
+     [
+      "↑",
+      "↓",
+      "현성 갑상선기능저하증"
+     ],
+     [
+      "↑",
+      "정상",
+      "무증상 갑상선기능저하증(SCH)"
+     ],
+     [
+      "↓",
+      "↑",
+      "현성 갑상선기능항진증"
+     ],
+     [
+      "↓",
+      "정상",
+      "무증상 항진증 (또는 T3중독증 — T3 확인)"
+     ],
+     [
+      "↓",
+      "↓",
+      "중추성 저하증 / 비갑상선질환(sick euthyroid)"
+     ],
+     [
+      "↑",
+      "↑",
+      "TSH종양 / 갑상선호르몬저항성 (드묾)"
+     ]
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "★참고치 함정 — 기기별 차이",
+    "items": [
+     "TSH 정상상한은 가이드라인 통용 4.5~5.0이나, ★검사기관·검사기기(assay)별로 다름",
+     "각 검사실 자체 참고치를 우선 적용 (단일 고정값 금지)",
+     "국건영 6기 한국인 집단 통계는 0.6–6.8 — 인구 분포값이지 진단 컷오프 아님",
+     "임신부는 trimester별 참고치 별도 적용"
+    ]
+   },
+   {
+    "type": "cards",
+    "title": "위양성·교란 요인",
+    "items": [
+     {
+      "h": "Biotin 보충제",
+      "b": "고용량 비오틴 → TSH 낮음·T4 높음 위양성. 2일 중단 후 재검",
+      "danger": true
+     },
+     {
+      "h": "Sick euthyroid",
+      "b": "급성기 질환 시 T3↓(low T3), 회복기 TSH 일시 상승. 안정 후 재평가"
+     },
+     {
+      "h": "아미오다론",
+      "b": "요오드 과다 → 저하·항진 모두 유발 가능. AIT type 1/2 감별"
+     },
+     {
+      "h": "리튬",
+      "b": "갑상선호르몬 분비 억제 → 저하증·갑상선종 유발"
+     },
+     {
+      "h": "스테로이드·도파민",
+      "b": "TSH 억제 → 입원환자 해석 주의"
+     },
+     {
+      "h": "에스트로겐",
+      "b": "TBG 증가 → 총 T4↑(유리 T4는 정상). FT4로 판단"
+     }
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "★항체 3그룹 — 무엇을 보는가",
+    "items": [
+     "①TPO 항체·TgAb = 자가면역 '표지자'(하시모토·그레이브스 모두 양성 가능). 주로 하시모토",
+     "②TRAb(TSH수용체항체) = 그레이브스 '확진'. 자극형(TSI)·차단형 모두 포함",
+     "★중복 주의: 항체는 질환 특이적이지 않음 — TPO는 그레이브스에서도 양성. 기능검사+임상과 함께 해석",
+     "항체 단독으로 진단 확정 금지. TSH·FreeT4 패턴이 우선"
+    ]
+   },
+   {
+    "type": "table",
+    "title": "항체별 의미·연관 질환",
+    "cols": [
+     "항체",
+     "측정 대상",
+     "주 연관",
+     "해석"
+    ],
+    "rows": [
+     [
+      "TPO 항체",
+      "갑상선과산화효소",
+      "하시모토(저하)",
+      "자가면역 표지자. SCH 진행위험 2배↑. 그레이브스도 양성 가능"
+     ],
+     [
+      "TgAb(항Tg)",
+      "갑상선글로불린",
+      "하시모토 보조",
+      "TPO 음성 일부에서 보조. 분화암 추적 시 Tg 해석 교란"
+     ],
+     [
+      "TRAb(TBII)",
+      "TSH수용체 결합",
+      "그레이브스",
+      "1차 검사. 결합 측정. 양성=그레이브스 강력 시사"
+     ],
+     [
+      "TSI(bioassay)",
+      "TSH수용체 자극능",
+      "그레이브스",
+      "TBII 애매할 때. 자극능 직접 측정. 임신·신생아 위험예측"
+     ],
+     [
+      "차단항체",
+      "TSH수용체 차단",
+      "위축성 저하",
+      "TSH 작용 차단 → 갑상선 위축·저하증"
+     ]
+    ]
+   },
+   {
+    "type": "cards",
+    "title": "패턴별 해석 (실전)",
+    "items": [
+     {
+      "h": "항진 + TRAb 양성",
+      "b": "→ 그레이브스. ATD 시작. TRAb는 중단시점·재발예측에도 사용"
+     },
+     {
+      "h": "항진 + TRAb 음성 + RAIU↓",
+      "b": "→ 파괴성 갑상선염(무통성/아급성). ATD 불필요",
+      "danger": false
+     },
+     {
+      "h": "저하 + TPO 양성",
+      "b": "→ 하시모토. 현성이면 LT4. SCH면 진행위험 높아 추적 강화"
+     },
+     {
+      "h": "정상기능 + TPO 양성",
+      "b": "→ 자가면역 소인. 향후 저하증 위험 — 추적. 즉시 치료 아님"
+     },
+     {
+      "h": "TBII 애매 / 항진·저하 반복",
+      "b": "→ TSI bioassay 고려(급여). 자극 vs 차단 항체 우세 감별"
+     }
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "TSI bioassay 급여 기준 (2023.4 기준)",
+    "items": [
+     "TBII만으로 그레이브스 진단이 애매한 경우",
+     "그레이브스에서 항진·저하 반복, 안병증(TAO) 경과관찰, ATD 중단 전 재발 평가",
+     "그레이브스 병력 임산부의 임신 3기 + 그 신생아",
+     "급여: 진단 시 1회, 추적 시 연 1회"
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "임신·신생아 — 항체의 중요성",
+    "items": [
+     "TRAb는 태반 통과 → 그레이브스 산모의 태아/신생아 갑상선기능 영향",
+     "임신 3기 TRAb 높으면(특히 >3배) 신생아 갑상선중독증 위험 → 측정 권고",
+     "차단항체 우세 산모 → 신생아 일과성 갑상선기능저하 가능"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "diagnosis",
+  "cat": "clin",
+  "icon": "🧭",
+  "title": "진단 플로우 (알고리듬 · 감별)",
+  "sub": "선택형 알고리듬 + 갑상선염 감별 참고표",
+  "tags": [
+   "알고리듬",
+   "진단",
+   "플로우",
+   "의사결정",
+   "TSH",
+   "감별",
+   "그레이브스",
+   "갑상선염",
+   "인터랙티브",
+   "갑상선염",
+   "아급성",
+   "무통성",
+   "산후",
+   "하시모토",
+   "RAIU",
+   "ESR",
+   "감별",
+   "드퀘르뱅",
+   "파괴성"
+  ],
+  "sections": [
+   {
+    "type": "keypoints",
+    "title": "사용법",
+    "items": [
+     "검사 결과·소견에 맞는 선택지를 누르면 다음 단계로 내려갑니다",
+     "종착점에서 진단명·핵심 권고·관련 도서관 카드를 보여줍니다",
+     "★조언 도구입니다 — 최종 진단·처방은 의료진 판단",
+     "'↺ 처음부터'로 재시작, '← 이전'으로 한 단계 되돌리기"
+    ]
+   },
+   {
+    "type": "algorithm",
+    "title": "① 갑상선기능 이상 진단",
+    "algo": "algo:function"
+   },
+   {
+    "type": "algorithm",
+    "title": "② 갑상선중독증 원인 감별 (그레이브스 vs 갑상선염)",
+    "algo": "algo:thyroiditis"
+   },
+   {
+    "type": "keypoints",
+    "title": "★핵심 — 갑상선중독증의 두 갈래 (합성↑ vs 파괴)",
+    "items": [
+     "갑상선중독증 = 호르몬 과잉 '상태'. 원인이 ①합성 증가(그레이브스·중독결절)인지 ②파괴성 유출(갑상선염)인지 감별이 핵심",
+     "★합성 증가 = 항갑상선제(ATD) 필요 / ★파괴성 = ATD 무효(대증치료만)",
+     "국내 갑상선중독증 원인 빈도: 그레이브스 82.7% · 무통성 갑상선염 13.3% · 아급성 3.5% · 중독결절 0.5%",
+     "감별 못 하면 파괴성 갑상선염에 불필요한 ATD 투여 → 회복기 저하증 악화"
+    ]
+   },
+   {
+    "type": "table",
+    "title": "항진 상태 감별 — RAIU·TRAb·통증 (가장 중요)",
+    "cols": [
+     "감별점",
+     "그레이브스",
+     "파괴성 갑상선염",
+     "중독성 결절"
+    ],
+    "rows": [
+     [
+      "RAIU(섭취율)",
+      "미만성 증가↑",
+      "★저하↓(파괴)",
+      "국소 증가"
+     ],
+     [
+      "TRAb",
+      "양성(확진 핵심)",
+      "음성",
+      "음성"
+     ],
+     [
+      "갑상선 혈류(도플러)",
+      "증가",
+      "감소/정상",
+      "결절 부위"
+     ],
+     [
+      "통증",
+      "없음",
+      "아급성=있음/무통성=없음",
+      "없음"
+     ],
+     [
+      "경과",
+      "지속(치료 필요)",
+      "일과성(자연회복)",
+      "지속"
+     ],
+     [
+      "치료",
+      "ATD/RAI/수술",
+      "대증(파괴성은 ATD 무효)",
+      "RAI/수술"
+     ]
+    ]
+   },
+   {
+    "type": "ladder",
+    "title": "항진 환자 접근 순서",
+    "items": [
+     {
+      "n": "1",
+      "h": "TSH↓ + FreeT4/T3↑ 확인",
+      "b": "현성 갑상선중독증 확인"
+     },
+     {
+      "n": "2",
+      "h": "TRAb 측정 + 임상소견",
+      "b": "안병증·미만성갑상선종·TRAb양성 → 그레이브스 임상진단 가능"
+     },
+     {
+      "n": "3",
+      "h": "애매하면 RAIU/스캔",
+      "b": "★증가=그레이브스 / 저하=파괴성 갑상선염 / 국소=중독결절"
+     },
+     {
+      "n": "4",
+      "h": "통증·ESR 평가",
+      "b": "전경부 통증+ESR↑ → 아급성. 통증없음+ESR정상 → 무통성/산후"
+     },
+     {
+      "n": "!",
+      "h": "파괴성이면 ATD 중단",
+      "b": "파괴성은 항갑상선제 무효 — 베타차단·NSAID/스테로이드 대증",
+      "danger": true
+     }
+    ]
+   },
+   {
+    "type": "cards",
+    "title": "갑상선염 종류별 특징",
+    "items": [
+     {
+      "h": "아급성(육아종성/드퀘르뱅)",
+      "b": "상기도감염 후. ★전경부 통증·압통+ESR 상승. 삼상성(항진1-2개월→저하→회복). 통증 심하면 스테로이드/NSAID"
+     },
+     {
+      "h": "무통성(silent)",
+      "b": "아급성과 경과 동일하나 ★통증 없음·ESR 정상. 하시모토 변형. TPO 양성 흔함. 자연회복"
+     },
+     {
+      "h": "산후 갑상선염",
+      "b": "분만 후 발생. 항진→저하(산후 3-6개월). 산후우울과 겹쳐 진단 지연. TPO 양성 위험인자",
+      "danger": false
+     },
+     {
+      "h": "하시모토(만성 림프구성)",
+      "b": "★가장 흔한 저하증 원인. 자가면역. TPO/TgAb 양성. 중년여성 5-10배. 미만성 단단한 갑상선종"
+     },
+     {
+      "h": "급성(화농성)",
+      "b": "세균감염. 발열·심한 통증·발적. ★응급 — 항생제±배농. 드묾",
+      "danger": true
+     }
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "삼상성 경과 — 파괴성 갑상선염 (반드시 기억)",
+    "items": [
+     "1상 항진기(1-2개월): 파괴된 여포에서 호르몬 유출 → 일과성 중독증. RAIU 저하",
+     "2상 저하기: 저장 호르몬 소진 → 일시적 갑상선기능저하 (LT4 단기 필요할 수 있음)",
+     "3상 회복기: 대부분 정상 회복. 일부(특히 TPO양성)는 영구 저하증 이행",
+     "★항진기에 그레이브스로 오인해 ATD 주면 저하기를 악화시킴 — RAIU/TRAb로 반드시 감별"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "drugclass",
+  "cat": "clin",
+  "icon": "📖",
+  "title": "약제 종류별 설명",
+  "sub": "갑상선호르몬 · 항갑상선제 · 베타차단 · 요오드 · 비타민D · ATD 안전성",
+  "tags": [
+   "레보티록신",
+   "LT4",
+   "메티마졸",
+   "MMI",
+   "PTU",
+   "프로프라놀롤",
+   "카비마졸",
+   "칼시트리올",
+   "복약",
+   "상호작용",
+   "무과립구증",
+   "간독성",
+   "ANC",
+   "발열",
+   "인후통",
+   "MMI",
+   "PTU",
+   "경고"
+  ],
+  "sections": [
+   {
+    "type": "drugclass",
+    "title": "갑상선호르몬 (class:thyroid_hormone)",
+    "mechanism": "부족한 T4(또는 T3) 보충 → 정상 갑상선기능 회복",
+    "effect": "TSH 정상화. 현성 저하증·SCH 치료·분화암 TSH 억제",
+    "ae": "과량 시 의인성 갑상선중독(빈맥·체중감소·골다공증·심방세동). 노인·심질환 주의",
+    "contra": "치료되지 않은 부신기능저하·급성심근경색. 체중감소 목적 사용 금기",
+    "feature": "반감기 7일로 길어 1일 1회. 복약 순응·흡수 간섭이 핵심 변수",
+    "reimb": "일반 급여(성분명). 체중감소 목적 비급여",
+    "members": [
+     {
+      "nm": "레보티록신(LT4)",
+      "brand": "씬지로이드·신지록신",
+      "tip": "★아침 식전 1시간 공복. 칼슘·철분·PPI·제산제와 4시간 간격. 콩가루·식이섬유·자몽 흡수↓. 암환자는 공복 필수, 단순보충은 식후 허용(흡수↓ 인지)",
+      "stop": "과량 시 감량 — TSH 억제(<0.1) 지속은 부정맥·골소실"
+     },
+     {
+      "nm": "리오티로닌(LT3)",
+      "brand": "테트로닌",
+      "tip": "반감기 짧아 1일 2-3회. RAI 전처치 LT4→LT3 전환 시 사용. 일상 보충엔 비권장",
+      "stop": ""
+     }
+    ]
+   },
+   {
+    "type": "drugclass",
+    "title": "항갑상선제 (class:thionamide)",
+    "mechanism": "갑상선과산화효소(TPO) 억제 → 갑상선호르몬 합성 차단. PTU는 말초 T4→T3 전환도 억제",
+    "effect": "그레이브스·중독증 치료. 12–18개월 후 TSH정상+TRAb음성 시 중단 고려",
+    "ae": "★무과립구증(0.2–0.5%, 발열·인후통)·간독성. 발진·관절통·간효소상승",
+    "contra": "이전 ATD 무과립구증·중증 간독성 기왕력",
+    "feature": "MMI 1차(1일1회). PTU는 임신1기·중독발작·MMI부작용 한정",
+    "reimb": "일반 급여",
+    "members": [
+     {
+      "nm": "메티마졸(MMI)",
+      "brand": "안티로이드·메티마졸",
+      "tip": "초기 경증15/중등도30-40/중증60mg(8h 3회분할), 유지 5-15mg 1-2회. 1차 선택",
+      "stop": "⛔ ANC<500 → 즉시 중단. ★임신1기 기형유발(MMI embryopathy) → PTU 전환"
+     },
+     {
+      "nm": "카비마졸(CBZ)",
+      "brand": "카르비메졸",
+      "tip": "MMI 전구약물. CBZ 10mg ≈ MMI 6mg. 교차 시 용량 환산 주의",
+      "stop": "MMI와 동일 안전성 프로파일"
+     },
+     {
+      "nm": "프로필티오우라실(PTU)",
+      "brand": "안티로이드정(PTU)",
+      "tip": "임신1기·갑상선중독발작·MMI부작용 한정. 1일 2-3회 분복. 100-200mg 이하(임신)",
+      "stop": "⛔ 간독성 PTU>MMI(전격간부전 보고). 황달·짙은뇨·우상복부통 시 중단"
+     }
+    ]
+   },
+   {
+    "type": "drugclass",
+    "title": "베타차단제 (증상조절)",
+    "mechanism": "교감신경 차단 → 빈맥·진전·불안 증상 완화. propranolol은 말초 T4→T3 전환도 일부 억제",
+    "effect": "갑상선중독 증상 즉시 완화. ATD 효과 발현 전 가교",
+    "ae": "서맥·저혈압·기관지수축(천식 주의)",
+    "contra": "천식·중증 서맥·비대상성 심부전",
+    "feature": "근본치료 아님 — 증상조절. 기능정상화되면 감량·중단",
+    "members": [
+     {
+      "nm": "프로프라놀롤",
+      "brand": "인데랄",
+      "tip": "비선택적 β차단 + T4→T3 전환억제. 갑상선중독발작에 선호",
+      "stop": "기능 정상화 시 점진 감량"
+     }
+    ]
+   },
+   {
+    "type": "drugclass",
+    "title": "무기 요오드 (중독발작·수술전)",
+    "mechanism": "Wolff-Chaikoff 효과 → 갑상선호르몬 합성·분비 일시 차단. 갑상선 혈류 감소",
+    "effect": "갑상선중독발작·수술전 단기. ATD 투여 1시간 후 사용",
+    "ae": "장기 사용 시 탈출현상(escape). 요오드 과민",
+    "contra": "단독 사용 금기(ATD 선행 필요)",
+    "feature": "단기·응급용. RAI 예정 시 금기(섭취 방해)",
+    "members": [
+     {
+      "nm": "요오드화칼륨(KI)",
+      "brand": "루골액·SSKI",
+      "tip": "갑상선중독발작: ATD 1h 후 투여. 수술전 7-10일 갑상선 혈류 감소 목적",
+      "stop": "단기만 — 탈출현상"
+     }
+    ]
+   },
+   {
+    "type": "drugclass",
+    "title": "비타민D·칼슘 (수술후 부갑상선저하)",
+    "mechanism": "활성형 비타민D(칼시트리올)는 장 칼슘흡수 촉진. 칼슘염 직접 보충",
+    "effect": "갑상선전절제 후 부갑상선저하성 저칼슘혈증 교정",
+    "ae": "고칼슘혈증·고칼슘뇨(신결석). 과량 주의",
+    "contra": "고칼슘혈증",
+    "feature": "칼슘+활성형D 병용. 칼슘·PTH·25(OH)D 추적",
+    "members": [
+     {
+      "nm": "칼시트리올",
+      "brand": "본키·로칼트롤",
+      "tip": "0.25μg 1일 2회. 활성형이라 신장 1α-수산화 불필요 — 부갑상선저하에 적합",
+      "stop": "고칼슘혈증 시 감량"
+     },
+     {
+      "nm": "탄산칼슘",
+      "brand": "-",
+      "tip": "500mg 3정 1일 3회. ★위산 필요 → 식후 복용. 레보티록신과 4시간 간격",
+      "stop": "고칼슘혈증·신결석 주의"
+     }
+    ]
+   },
+   {
+    "type": "cards",
+    "title": "중대 부작용 — 조기경보",
+    "items": [
+     {
+      "h": "무과립구증 (0.2–0.5%)",
+      "b": "★발열·인후통 시 즉시 WBC·호중구 확인. ANC<500 → ATD 즉시 중단. 치료 첫 90일·고용량 위험↑",
+      "danger": true
+     },
+     {
+      "h": "간독성",
+      "b": "PTU>MMI(전격간부전 보고). 황달·짙은뇨·우상복부통·식욕부진. PTU 간효소 모니터",
+      "danger": true
+     },
+     {
+      "h": "ANCA 혈관염",
+      "b": "PTU 장기 사용 시. 발열·관절통·신증상"
+     },
+     {
+      "h": "발진·관절통",
+      "b": "경증은 항히스타민 병용 지속 가능. 중증은 교차 또는 RAI/수술"
+     }
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "환자교육 (필수 고지)",
+    "items": [
+     "★'발열·인후통(목감기 증상) 생기면 약 중단하고 즉시 병원' — 무과립구증 경보",
+     "황달·짙은 소변·심한 피로 → 간독성 의심, 즉시 내원",
+     "임신 계획·임신 확인 시 즉시 알릴 것 (MMI→PTU 전환)",
+     "임의 중단 금지 — 재발·중독발작 위험"
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "임신 중 ATD",
+    "items": [
+     "임신1기: PTU (MMI는 기형유발 — aplasia cutis·후비공/식도폐쇄)",
+     "2기 이후: MMI 전환 고려 (PTU 간독성 회피)",
+     "저용량 유지(MMI≤5-10 / PTU≤100-200mg). TRAb 추적",
+     "임신 중 ATD 중단 가능 케이스도 있음 — 1-2주 후 재평가"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "sch",
+  "cat": "clin",
+  "icon": "🔀",
+  "title": "무증상 갑상선기능저하증(SCH) 의사결정",
+  "sub": "추적관찰 1차 · 위험인자 기반 치료 결정",
+  "tags": [
+   "SCH",
+   "무증상",
+   "추적관찰",
+   "70세",
+   "노인",
+   "임신",
+   "TPO",
+   "위험인자",
+   "TSH 10"
+  ],
+  "sections": [
+   {
+    "type": "keypoints",
+    "title": "★1차 원칙 — 추적관찰 (투약 없이 재검)",
+    "items": [
+     "★SCH 진단 시 1차는 LT4 처방이 아니라 추적관찰 — 투약 없이 2–3개월 후 TSH 재검",
+     "이유: SCH 상당수는 일과성(스트레스·약물·감염 등). 첫 단계는 일과성/경증과 진행위험 중증을 가려내는 것",
+     "★TPO 항체 측정 권고 — 양성 시 현성 진행 위험 2배↑ (자가면역 갑상선염)",
+     "경증 6.8–10 / 중증 >10 (집단 참고치 기준). 검사실 자체 참고치 우선"
+    ]
+   },
+   {
+    "type": "ladder",
+    "title": "의사결정 흐름 (2023 권고안)",
+    "items": [
+     {
+      "n": "1",
+      "h": "SCH 확인 + TPO 항체",
+      "b": "FT4 정상 + TSH > 참고상한. TPO 항체 동시 측정"
+     },
+     {
+      "n": "2",
+      "h": "★추적관찰 (1차)",
+      "b": "투약 없이 2–3개월 후 TSH 재검 — 일과성 감별"
+     },
+     {
+      "n": "3",
+      "h": "위험인자 평가",
+      "b": "중증(>10)·TSH 지속상승·TPO양성·여성·엽절제술/방사선 병력"
+     },
+     {
+      "n": "4",
+      "h": "치료 고려 (조건부)",
+      "b": "위험인자 충족 or 현성 진행 확실시 → LT4 치료 고려. 자동 1차 아님"
+     },
+     {
+      "n": "!",
+      "h": "적극 치료 예외",
+      "b": "가임여성·임신 중·현성 진행 뚜렷 → 적극 LT4 (주저 없이)",
+      "danger": true
+     }
+    ]
+   },
+   {
+    "type": "cards",
+    "title": "연령·상황별 접근",
+    "items": [
+     {
+      "h": "노인 (≥70)",
+      "b": "★처방 없이 검사만 추적이 원칙. LT4 과치료 시 심방세동·골다공증·사망률 우려",
+      "danger": true
+     },
+     {
+      "h": "성인 (<70)",
+      "b": "추적관찰 1차. 위험인자 충족 시 치료 고려. 젊은 성인 대단위 근거 부족"
+     },
+     {
+      "h": "가임 여성·임신",
+      "b": "적극 치료군. 임신1기 TSH 상한 4.0(지역 참고치 없을 시). 태아 신경발달",
+      "danger": false
+     },
+     {
+      "h": "진행 확실시",
+      "b": "엽절제술·방사선 후 분비능 저하 예상, TSH 증가폭 큼 → 치료",
+      "danger": false
+     }
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "진행 위험인자 (치료 쪽으로 기우는 인자)",
+    "items": [
+     "첫 진단 시 중증 (TSH > 10.0 mIU/L)",
+     "추적 관찰 시 TSH 지속적 상승",
+     "TPO 항체 양성 / 자가면역 갑상선염 소견 (초음파 에코저하·염증)",
+     "여성, 갑상선엽절제술 과거력, 경부 방사선 치료 병력"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "suppression",
+  "cat": "clin",
+  "icon": "🎯",
+  "title": "분화암 TSH 억제요법",
+  "sub": "위험군별 목표 · ORS · 위험-이익",
+  "tags": [
+   "TSH억제",
+   "분화암",
+   "위험군",
+   "ORS",
+   "골다공증",
+   "심방세동",
+   "목표"
+  ],
+  "sections": [
+   {
+    "type": "table",
+    "title": "초기위험군별 TSH 목표",
+    "cols": [
+     "위험군",
+     "TSH 목표",
+     "권고"
+    ],
+    "rows": [
+     [
+      "저위험",
+      "0.5–2.0 mIU/L (<0.1 억제 비권고)",
+      "목표[3]·비억제[1]"
+     ],
+     [
+      "중간위험",
+      "0.1–2.0 mIU/L (<0.1 억제 비권고)",
+      "목표[3]·비억제[2]"
+     ],
+     [
+      "고위험",
+      "<0.1 mIU/L 유지",
+      "[1]"
+     ]
+    ]
+   },
+   {
+    "type": "table",
+    "title": "ORS(지속적위험분류) 반응별",
+    "cols": [
+     "반응",
+     "TSH 목표",
+     "권고"
+    ],
+    "rows": [
+     [
+      "완전반응",
+      "0.5–2.0 (억제 불필요)",
+      "[2]"
+     ],
+     [
+      "구조적 불완전",
+      "<0.1 유지",
+      "[1]"
+     ],
+     [
+      "생화학적불완전(중간위험)",
+      "0.1–0.5 후 완화",
+      "[2]"
+     ],
+     [
+      "생화학적불완전(고위험)",
+      "초기5년 0.1–0.5 후 완화",
+      "[2]"
+     ]
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "위험-이익 균형",
+    "items": [
+     "★과억제(<0.1 장기)는 심방세동·골다공증 위험↑ → 동반 시 경고",
+     "양성결절 억제는 비권고[1] — 같은 LT4·억제가 분화암에선 위험군별 처방(맥락 정반대)",
+     "재발위험·동반질환·연령 종합해 목표 완화 시기 결정"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "classification",
+  "cat": "clin",
+  "icon": "📊",
+  "title": "K-TIRADS & Bethesda 상세",
+  "sub": "초음파 분류 · 세포검사 6범주",
+  "tags": [
+   "K-TIRADS",
+   "Bethesda",
+   "FNA",
+   "악성위험도",
+   "결절",
+   "세포검사"
+  ],
+  "sections": [
+   {
+    "type": "table",
+    "title": "K-TIRADS 2021 (암위험도·FNA기준)",
+    "cols": [
+     "분류",
+     "암위험도",
+     "FNA/CNB 기준"
+    ],
+    "rows": [
+     [
+      "K5 높은의심",
+      ">60%",
+      ">1cm (0.5-1cm 고위험특성시)"
+     ],
+     [
+      "K4 중간의심",
+      "10–40%",
+      ">1–1.5cm"
+     ],
+     [
+      "K3 낮은의심",
+      "3–10%",
+      ">2cm"
+     ],
+     [
+      "K2 양성",
+      "<3%",
+      "원칙 비대상"
+     ],
+     [
+      "K1 무결절",
+      "—",
+      "—"
+     ]
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "K-TIRADS 판정 2축",
+    "items": [
+     "구성/에코: 저에코 고형 / 부분낭성·등고에코 / 해면·순수낭종 / 완전석회화",
+     "암의심소견(≥1): 미세석회화 / taller-than-wide / 불규칙(침상·소엽)경계",
+     "저에코고형+의심=K5, 저에코고형(의심X) or 부분낭성(의심O) or 완전석회화=K4",
+     "불량예후인자(림프절전이·외부침범·원격전이·수질암의심) → 크기무관 FNA"
+    ]
+   },
+   {
+    "type": "table",
+    "title": "Bethesda 2023(3판) 6범주",
+    "cols": [
+     "범주",
+     "성인 암위험",
+     "다음 단계"
+    ],
+    "rows": [
+     [
+      "I 비진단적",
+      "13%",
+      "재시행(초음파유도)"
+     ],
+     [
+      "II 양성",
+      "4%",
+      "추가검사 불필요, 초음파 추적"
+     ],
+     [
+      "III 비정형(AUS)",
+      "22%",
+      "반복FNA/CNB/분자표지자 or 추적 or 수술"
+     ],
+     [
+      "IV 여포종양",
+      "30%",
+      "수술 우선(2cm↑ 위험↑), 분자표지자"
+     ],
+     [
+      "V 악성의심",
+      "74%",
+      "악성에 준해 수술"
+     ],
+     [
+      "VI 악성",
+      "97%",
+      "수술; 저위험 미세유두암은 적극관찰 고려"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "id": "pregnancy",
+  "cat": "care",
+  "icon": "🤰",
+  "title": "임신 중 갑상선",
+  "sub": "trimester 목표 · 약물전환 · 결절",
+  "tags": [
+   "임신",
+   "trimester",
+   "PTU",
+   "MMI",
+   "태아",
+   "수유",
+   "TSH"
+  ],
+  "sections": [
+   {
+    "type": "keypoints",
+    "title": "임신 중 갑상선기능",
+    "items": [
+     "임신부 TSH는 trimester별 참고치 적용(1기 hCG로 TSH 낮아짐)",
+     "기존 LT4 복용자: 임신 확인 시 용량 ~25-30% 증량 필요할 수 있음",
+     "SCH도 태아 신경발달 영향 → 적극 치료",
+     "산후 갑상선염: 분만 후 일과성 항진→저하 가능"
+    ]
+   },
+   {
+    "type": "cards",
+    "title": "임신 중 ATD 전환",
+    "items": [
+     {
+      "h": "임신 1기",
+      "b": "PTU 선택 (MMI 기형유발: aplasia cutis·후비공/식도폐쇄)",
+      "danger": true
+     },
+     {
+      "h": "2기 이후",
+      "b": "MMI 전환 고려 (PTU 간독성 회피)"
+     },
+     {
+      "h": "저용량 유지",
+      "b": "MMI≤5-10 / PTU≤100-200mg. TRAb 추적(태아 갑상선기능)"
+     },
+     {
+      "h": "수유",
+      "b": "MMI·PTU 모두 수유 중 허용(저용량, 수유 직후 복용)"
+     }
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "임신 중 결절·암",
+    "items": [
+     "초음파기반 FNA 동일 적용. 갑상선스캔 금기",
+     "악성이라도 중기수술 vs 분만후 예후차 없음",
+     "24주까지 의미있는 성장/림프절전이 시 수술 고려"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "hypopara",
+  "cat": "care",
+  "icon": "💊",
+  "title": "수술후 부갑상선기능저하증",
+  "sub": "저칼슘혈증 관리 · 칼슘+비타민D",
+  "tags": [
+   "부갑상선",
+   "저칼슘",
+   "칼슘",
+   "칼시트리올",
+   "Chvostek",
+   "Trousseau",
+   "갑상선전절제"
+  ],
+  "sections": [
+   {
+    "type": "keypoints",
+    "title": "수술후 저칼슘혈증 관리",
+    "items": [
+     "갑상선전절제·완료절제 후 발생. 수술 24시간 내 칼슘·PTH 확인",
+     "칼슘 carbonate 500mg 3정 1일 3회 + 칼시트리올 0.25μg 1일 2회",
+     "★탄산칼슘은 위산 필요 → 식후. 레보티록신과 4시간 간격",
+     "칼슘·이온화칼슘·PTH·25(OH)D 주기적 추적"
+    ]
+   },
+   {
+    "type": "cards",
+    "title": "저칼슘혈증 증상·징후 (환자교육)",
+    "items": [
+     {
+      "h": "Chvostek 징후",
+      "b": "안면신경 타진 시 안면근 수축"
+     },
+     {
+      "h": "Trousseau 징후",
+      "b": "혈압대 가압 시 손목 굴곡(수족경련)"
+     },
+     {
+      "h": "이상감각",
+      "b": "입주위·손발 저림·따끔거림 → 즉시 보충/내원",
+      "danger": true
+     },
+     {
+      "h": "중증",
+      "b": "후두경련·테타니·경련 → 응급 IV 칼슘",
+      "danger": true
+     }
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "영구 vs 일과성",
+    "items": [
+     "대부분 일과성 — 수개월 내 회복",
+     "영구적(6개월+ 지속): 비타민D·칼슘 장기 약물치료[수준1]",
+     "장기 치료 시 합병증(신결석·이소성석회화) 평가"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "education",
+  "cat": "care",
+  "icon": "🎓",
+  "title": "환자교육 · 생활습관",
+  "sub": "복약 순응 · 요오드 · 추적",
+  "tags": [
+   "환자교육",
+   "복약",
+   "요오드",
+   "미역",
+   "다시마",
+   "순응도",
+   "추적"
+  ],
+  "sections": [
+   {
+    "type": "keypoints",
+    "title": "레보티록신 복약 (가장 중요)",
+    "items": [
+     "★아침 식전 1시간 공복, 물과 함께. 매일 같은 시간",
+     "칼슘·철분·종합비타민·제산제(PPI)와 ★4시간 간격",
+     "콩가루·고식이섬유·자몽주스는 흡수 저해 — 간격 두기",
+     "검사 당일도 채혈 후 복용. 임의 중단·증량 금지",
+     "공복 어려우면 취침 전(저녁식사 3시간 후) 대안"
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "요오드 섭취",
+    "items": [
+     "항진증·그레이브스: 미역·다시마·김 등 요오드 과다 제한",
+     "RAI 치료 전: 저요오드식이 1-2주",
+     "저하증(하시모토): 과도한 요오드 보충제는 오히려 악화 가능",
+     "한국은 요오드 충분 지역 — 일상 식사로 충분"
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "추적·자기관리",
+    "items": [
+     "용량 안정 후 6-12개월마다 TFT. 증상 변화 시 조기 검사",
+     "항진증 치료 중: 발열·인후통(무과립구증) 즉시 보고",
+     "임신 계획 시 사전 상담 (용량·약물 조정)",
+     "금연 — 흡연은 그레이브스·안병증 악화"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "reimb",
+  "cat": "pay",
+  "icon": "💰",
+  "title": "급여 기준",
+  "sub": "기능검사 3종 · 항체 · 초음파 고시 · 균형정보",
+  "tags": [
+   "급여",
+   "삭감",
+   "고시",
+   "TSH",
+   "FreeT4",
+   "TRAb",
+   "초음파",
+   "선별급여",
+   "본인부담",
+   "2022-283"
+  ],
+  "sections": [
+   {
+    "type": "keypoints",
+    "title": "갑상선 기능검사 — 3종 룰 (고시 2022-283호, 2023.1.1)",
+    "items": [
+     "Free T3 / T4 / Free T4 / T3 / TSH 중 ★3종 이내★ 요양급여 인정",
+     "3종 초과 → 선별급여, 본인부담률 90% (사실상 자비)",
+     "실무: FreeT4 + TSH 2종이 기본. T3 추가해도 3종 OK",
+     "갑상선 기능장애 의심·진단·치료 목적일 때 인정"
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "자가항체 — 별도 산정 (합산 주의)",
+    "items": [
+     "항마이크로좀항체(TPOAb, 누321)·항Tg항체(누324): T3/T4/TSH 이상 시 인정",
+     "TRAb(TSH수용체항체/TSI): 그레이브스·하시모토·일차성저하 진단·치료효과·예후추적 시 인정",
+     "★기능검사 3종과 별도 합산 — 무분별 동시처방 시 삭감 위험",
+     "TRAb는 그레이브스 진단·ATD 중단시점 판단에 핵심"
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "갑상선 초음파 (고시 2022-32호)",
+    "items": [
+     "Bethesda III/IV(비정형·여포종양) 경과관찰 시 추가 1회 진단초음파 급여",
+     "1회 초과 → 본인부담 80% 선별급여",
+     "양성 확정 결절의 장기 추적초음파는 급여 제한적 → 임상 필요성 문서화"
+    ]
+   },
+   {
+    "type": "keypoints",
+    "title": "약물 급여 — 갑상선은 제한 거의 없음",
+    "items": [
+     "레보티록신·메티마졸·PTU·프로프라놀롤: 일반 급여, 성분명 처방",
+     "⛔ LT4 '체중감소 목적' 단독/병용 = 허가초과 → 급여 불가, 삭감·환수 대상",
+     "갑상선기능 정상자에 LT4 처방은 적응증 없음"
+    ]
+   },
+   {
+    "type": "balance",
+    "title": "⚖️ 가이드라인 ↔ 급여 균형 (상충 주의)",
+    "items": [
+     {
+      "topic": "추적검사 빈도",
+      "gl": "치료초기 4주, 안정 후 2–3개월, 유지기 6–12개월",
+      "rb": "기능검사 3종 이내 급여 (빈도 상한 아님)",
+      "conflict": "빈도는 임상권고이지 급여 횟수상한 아님. 검사 종류 수가 제한점."
+     },
+     {
+      "topic": "결절 추적 초음파",
+      "gl": "K-TIRADS별 6–24개월 간격",
+      "rb": "Bethesda III/IV만 추가 1회 급여, 초과 80%",
+      "conflict": "양성 확정 결절 장기 추적초음파는 임상 필요성 문서화 권장."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "kcd",
+  "cat": "pay",
+  "icon": "🔖",
+  "title": "갑상선 질병코드집 (KCD)",
+  "sub": "E02·E03·E05·E06·E04·C73 + 산정특례",
+  "tags": [
+   "KCD",
+   "상병코드",
+   "E03",
+   "E05",
+   "그레이브스",
+   "C73",
+   "산정특례",
+   "하시모토"
+  ],
+  "sections": [
+   {
+    "type": "codetable",
+    "title": "흔한 갑상선 상병코드",
+    "rows": [
+     [
+      "E03.9",
+      "갑상선기능저하증, 상세불명",
+      "가장 흔한 저하증 코드"
+     ],
+     [
+      "E03.8",
+      "기타 명시된 갑상선기능저하증",
+      ""
+     ],
+     [
+      "E02",
+      "무증상 요오드결핍성 갑상선기능저하증",
+      "SCH 코딩 주의(요오드결핍성 분류)"
+     ],
+     [
+      "E05.0",
+      "그레이브스병(미만성갑상선종 동반 갑상선중독증)",
+      "항진증 1순위"
+     ],
+     [
+      "E05.9",
+      "갑상선중독증, 상세불명",
+      ""
+     ],
+     [
+      "E06.3",
+      "자가면역성 갑상선염(하시모토)",
+      "TPOAb 양성 동반"
+     ],
+     [
+      "E04.1",
+      "비독성 단일 갑상선결절",
+      ""
+     ],
+     [
+      "E04.2",
+      "비독성 다결절성 갑상선종",
+      ""
+     ],
+     [
+      "C73",
+      "갑상선의 악성신생물",
+      "★산정특례 V193, 본인부담 5%, 5년"
+     ]
+    ],
+    "note": "C73 갑상선암은 암 산정특례(V193) 대상 — 등록 시 본인부담 5%로 경감."
+   }
+  ]
+ }
+];
+
+var THY_LIB_CATS = {
+ "pay": {
+  "label": "급여",
+  "color": "#e89611"
+ },
+ "clin": {
+  "label": "임상",
+  "color": "#0d7377"
+ },
+ "care": {
+  "label": "관리",
+  "color": "#4a5899"
+ }
+};
+
+
+
+/* === algo_data === */
+/* ============================================================
+   인터랙티브 진단 알고리듬 (algo_data.js) v1.0
+   선택지를 눌러 내려가는 의사결정 트리. 도서관 algorithm 섹션용.
+   구조: 각 노드 { id, q(질문), hint?, options:[{label, next}], 또는 result }
+   result 노드: { dx, summary, advice[], libRef?(도서관 카드 점프), flag? }
+   근거: 2023 SCH 권고안 / 갑상선기능항진증 / 갑상선중독증 감별 문헌
+   ============================================================ */
+
+/* ── 1. 갑상선기능 이상 진단 알고리듬 ── */
+var ALGO_FUNCTION = {
+  id: "algo:function",
+  title: "갑상선기능 이상 — 단계별 진단",
+  start: "f_tsh",
+  nodes: {
+    f_tsh: {
+      q: "1단계 — 혈청 TSH 결과는?",
+      hint: "TSH가 1차 선별검사. 참고상한은 검사실별 상이(통용 4.5–5.0).",
+      options: [
+        { label: "TSH 높음 (> 참고상한)", next: "f_high_ft4" },
+        { label: "TSH 낮음 (< 참고하한)", next: "f_low_ft4" },
+        { label: "TSH 정상", next: "f_normal" }
+      ]
+    },
+    // TSH 높음 분기
+    f_high_ft4: {
+      q: "2단계 — Free T4는?",
+      hint: "TSH 상승 시 FreeT4로 현성/무증상 구분.",
+      options: [
+        { label: "Free T4 낮음", next: "r_overt_hypo" },
+        { label: "Free T4 정상", next: "r_sch" },
+        { label: "Free T4 높음 (드묾)", next: "r_tsh_resistance" }
+      ]
+    },
+    // TSH 낮음 분기
+    f_low_ft4: {
+      q: "2단계 — Free T4 / T3는?",
+      hint: "TSH 저하 시 FreeT4·T3로 중독증 정도 평가.",
+      options: [
+        { label: "Free T4 또는 T3 높음", next: "r_overt_thyrotox" },
+        { label: "Free T4 정상 · T3 높음", next: "r_t3_tox" },
+        { label: "Free T4 · T3 모두 정상", next: "r_subclin_hyper" }
+      ]
+    },
+    // TSH 정상
+    f_normal: {
+      q: "TSH 정상 — 임상 증상이나 의심 소견은?",
+      hint: "대부분 정상. 드물게 중추성 이상·검사 교란 고려.",
+      options: [
+        { label: "증상 없음 / 우연 발견", next: "r_euthyroid" },
+        { label: "저하 증상 뚜렷한데 TSH 정상·FT4 낮음 의심", next: "r_central" },
+        { label: "약물·biotin·sick euthyroid 등 교란 의심", next: "r_interference" }
+      ]
+    },
+    // ── 결과 노드 ──
+    r_overt_hypo: {
+      result: true, dx: "현성 갑상선기능저하증", tone: "treat",
+      summary: "TSH↑ + FreeT4↓. LT4 보충의 명확한 적응증.",
+      advice: [
+        "레보티록신 1.6 μg/kg/day (약 100μg). 심질환·60세↑는 12.5–25μg 저용량 시작",
+        "아침 식전 1시간 공복. 4–8주 후 TSH 재검으로 용량 적정",
+        "목표: TSH 정상범위, FreeT4 정상 상위 1/3"
+      ],
+      libRef: "drugclass"
+    },
+    r_sch: {
+      result: true, dx: "무증상 갑상선기능저하증 (SCH)", tone: "observe",
+      summary: "TSH↑ + FreeT4 정상. ★1차는 LT4가 아니라 추적관찰.",
+      advice: [
+        "★투약 없이 2–3개월 후 TSH 재검 (일과성 감별) — TPO 항체 동시 측정",
+        "치료 고려: 중증(>10)·TSH지속상승·TPO양성·엽절제술/방사선 병력",
+        "적극 치료 예외: 가임여성·임신·현성 진행 뚜렷",
+        "노인(≥70): 보수적 추적 원칙 (과치료 시 심방세동·골다공증)"
+      ],
+      libRef: "sch", flag: "추적관찰이 1차 — 자동 LT4 처방 금지"
+    },
+    r_overt_thyrotox: {
+      result: true, dx: "현성 갑상선중독증", tone: "branch",
+      summary: "TSH↓ + FreeT4/T3↑. 원인 감별 필요 → 갑상선염 알고리듬으로.",
+      advice: [
+        "★다음 단계: 그레이브스 vs 파괴성 갑상선염 vs 중독결절 감별",
+        "합성증가(그레이브스·결절)면 ATD, 파괴성이면 ATD 무효",
+        "아래 '갑상선염 감별 알고리듬'을 이어서 진행"
+      ],
+      libRef: "diagnosis", branchTo: "algo:thyroiditis", flag: "원인 감별 전 ATD 시작 신중"
+    },
+    r_t3_tox: {
+      result: true, dx: "T3 중독증", tone: "branch",
+      summary: "TSH↓ + FreeT4 정상 + T3↑. 초기 그레이브스·자율결절에서 관찰.",
+      advice: [
+        "T3 우세 중독 — 그레이브스 초기·중독성 결절 가능",
+        "원인 감별(TRAb·RAIU) 진행",
+        "갑상선염 감별 알고리듬 참고"
+      ],
+      libRef: "diagnosis", branchTo: "algo:thyroiditis"
+    },
+    r_subclin_hyper: {
+      result: true, dx: "무증상 갑상선중독증", tone: "observe",
+      summary: "TSH↓ + FreeT4·T3 정상. 원인·위험도 따라 추적 또는 치료.",
+      advice: [
+        "TSH 0.1–0.4: 대부분 추적. TSH <0.1: 심방세동·골소실 위험 평가",
+        "원인 감별(TRAb·RAIU) — 그레이브스 초기/결절/갑상선염 가능",
+        "고령·심방세동·골다공증 동반 시 치료 고려"
+      ],
+      libRef: "diagnosis"
+    },
+    r_tsh_resistance: {
+      result: true, dx: "TSH 부적절 분비 (드묾)", tone: "refer",
+      summary: "TSH 정상/높음 + FreeT4↑. TSH종양·갑상선호르몬저항성 의심.",
+      advice: [
+        "흔치 않은 패턴 — 검사 오류(이형항체) 먼저 배제",
+        "재검·이형항체 확인 후에도 지속되면 내분비 의뢰",
+        "뇌하수체 MRI·SHBG·α-subunit 등 추가평가는 3차"
+      ],
+      tone2: "refer", flag: "검사 교란 배제 우선, 지속 시 의뢰"
+    },
+    r_euthyroid: {
+      result: true, dx: "갑상선기능 정상", tone: "normal",
+      summary: "TSH 정상 + 증상 없음. 추가검사 불필요.",
+      advice: ["증상 발생·위험인자 있을 때 재검", "TPO 양성 등 자가면역 소인 있으면 6–12개월 추적"]
+    },
+    r_central: {
+      result: true, dx: "중추성(이차성) 갑상선기능저하 의심", tone: "refer",
+      summary: "FreeT4 낮은데 TSH가 부적절하게 정상/낮음 → 뇌하수체·시상하부 원인 가능.",
+      advice: [
+        "일차성과 달리 TSH가 안 오름 — 중추성 의심",
+        "다른 뇌하수체 축(코티솔·성선)·증상 평가",
+        "내분비 의뢰 — LT4 시작 전 부신기능 확인 필요"
+      ],
+      tone2: "refer", flag: "부신기능저하 동반 시 LT4 먼저 주면 위험"
+    },
+    r_interference: {
+      result: true, dx: "검사 교란 가능성", tone: "caution",
+      summary: "약물·biotin·비갑상선질환이 TFT를 왜곡할 수 있음.",
+      advice: [
+        "Biotin 보충제: 중단 2일 후 재검 (TSH↓·T4↑ 위양성)",
+        "Sick euthyroid: 급성기 회복 후 재평가",
+        "아미오다론·리튬·스테로이드·에스트로겐 영향 확인"
+      ],
+      libRef: "lab_interp"
+    }
+  }
+};
+
+/* ── 2. 갑상선염 / 중독증 원인 감별 알고리듬 ── */
+var ALGO_THYROIDITIS = {
+  id: "algo:thyroiditis",
+  title: "갑상선중독증 원인 감별 (그레이브스 vs 갑상선염)",
+  start: "t_start",
+  nodes: {
+    t_start: {
+      q: "전제 — 현성 갑상선중독증 확인됨 (TSH↓ + FreeT4/T3↑)",
+      hint: "원인이 합성 증가인지 파괴성 유출인지가 핵심.",
+      options: [
+        { label: "원인 감별 시작 → TRAb 확인", next: "t_trab" }
+      ]
+    },
+    t_trab: {
+      q: "1단계 — TRAb (TSH수용체항체) 결과는?",
+      hint: "그레이브스 확진의 핵심 항체. 임상소견(안병증·미만성종)과 함께.",
+      options: [
+        { label: "TRAb 양성", next: "r_graves" },
+        { label: "TRAb 음성 또는 애매", next: "t_raiu" }
+      ]
+    },
+    t_raiu: {
+      q: "2단계 — 방사성요오드 섭취율(RAIU) / 스캔은?",
+      hint: "TRAb 애매할 때 결정적. 섭취 패턴으로 원인 구분.",
+      options: [
+        { label: "미만성 증가 ↑", next: "r_graves" },
+        { label: "섭취 저하 ↓ (파괴성)", next: "t_pain" },
+        { label: "국소 증가 (결절 부위)", next: "r_toxic_nodule" }
+      ]
+    },
+    t_pain: {
+      q: "3단계 — 전경부 통증 / ESR은?",
+      hint: "파괴성 갑상선염 내 세부 감별.",
+      options: [
+        { label: "통증 있음 + ESR 상승", next: "r_subacute" },
+        { label: "통증 없음 + ESR 정상", next: "t_postpartum" }
+      ]
+    },
+    t_postpartum: {
+      q: "4단계 — 최근 출산력은?",
+      hint: "무통성과 산후 갑상선염은 경과 동일, 시점으로 구분.",
+      options: [
+        { label: "최근(1년내) 출산", next: "r_postpartum" },
+        { label: "출산력 없음", next: "r_silent" }
+      ]
+    },
+    // ── 결과 노드 ──
+    r_graves: {
+      result: true, dx: "그레이브스병", tone: "treat",
+      summary: "TRAb 양성 또는 RAIU 미만성 증가. 가장 흔한 중독증 원인(82.7%).",
+      advice: [
+        "메티마졸(MMI) 1차 — 경증15/중등도30-40/중증60mg, 유지 5-15mg",
+        "임신 1기는 PTU. 증상은 프로프라놀롤 병용",
+        "12–18개월 후 TSH 정상 + TRAb 음성이면 중단 고려",
+        "★발열·인후통 시 즉시 WBC (무과립구증)"
+      ],
+      libRef: "drugclass", flag: "ATD 적응 — 합성 증가형"
+    },
+    r_toxic_nodule: {
+      result: true, dx: "중독성 결절 / 중독성 다결절성갑상선종", tone: "refer",
+      summary: "RAIU 국소 증가. 자율기능성 결절이 호르몬 과잉 생산.",
+      advice: [
+        "ATD로 일시 조절 가능하나 근본치료는 RAI 또는 수술",
+        "단일 자율결절·다결절종 — 3차 의뢰(RAI/수술 결정)",
+        "결절 평가는 결절·종양 탭 / K-TIRADS 참고"
+      ],
+      libRef: "classification", flag: "근본치료 RAI/수술 — 의뢰"
+    },
+    r_subacute: {
+      result: true, dx: "아급성 갑상선염 (육아종성/드퀘르뱅)", tone: "selflimit",
+      summary: "상기도감염 후 전경부 통증+ESR↑. 파괴성 — ATD 무효.",
+      advice: [
+        "★ATD 주지 말 것 — 파괴성 유출이라 효과 없음",
+        "통증·염증: NSAID, 심하면 프레드니솔론 (점감)",
+        "증상: 프로프라놀롤. 삼상성 경과(항진→저하→회복)",
+        "저하기에 일시적 LT4 필요할 수 있음 — 대부분 자연회복"
+      ],
+      libRef: "diagnosis", flag: "파괴성 — ATD 금지, 대증치료"
+    },
+    r_postpartum: {
+      result: true, dx: "산후 갑상선염", tone: "selflimit",
+      summary: "분만 후 발생. 통증 없음. 항진→저하(산후 3-6개월) 경과.",
+      advice: [
+        "파괴성 — ATD 무효. 항진기는 프로프라놀롤 대증",
+        "저하기 증상 뚜렷하면 일시적 LT4",
+        "산후우울과 겹쳐 진단 지연 주의. TPO 양성이 위험인자",
+        "일부는 영구 저하증 이행 → 추적"
+      ],
+      libRef: "pregnancy", flag: "파괴성 — ATD 금지"
+    },
+    r_silent: {
+      result: true, dx: "무통성 갑상선염 (silent)", tone: "selflimit",
+      summary: "통증 없음 + ESR 정상. 하시모토 변형. 파괴성 — ATD 무효.",
+      advice: [
+        "★ATD 무효 — 파괴성. 항진기 프로프라놀롤 대증",
+        "TPO 항체 양성 흔함. 삼상성 경과 후 대부분 회복",
+        "저하기 증상 시 일시적 LT4",
+        "일부 영구 저하증 이행 → 추적"
+      ],
+      libRef: "diagnosis", flag: "파괴성 — ATD 금지"
+    }
+  }
+};
+
+
+
+/* === engine === */
+/* ============================================================
+   갑상선 통합 가이드 — ENGINE 레이어 (engine.js) v2.2
+   스펙 v2.2. 단일 정문: recommend(patient) → {drugs,targets,flags,classifications}
+   원칙: DATA 참조만, 하드코딩 금지.
+   권고등급: grade_norm.js 표준(A/B/C + rank) 사용. 자체 sortKey 폐기.
+   가이드라인 ID: GL-thyroid-{sch|hyper|nodule|dtc} (relation_layer 정렬).
+   ============================================================ */
+
+var _G = { normalizeGrade: normalizeGrade, gradeCompare: gradeCompare };
+var normalizeGrade = _G.normalizeGrade, gradeCompare = _G.gradeCompare;
+
+/* 권고등급 객체 생성 헬퍼: recSys+원본등급 → 정규화 + 표시필드 */
+function grade(recSys, recLevel){
+  return normalizeGrade(recSys, recLevel);
+}
+
+/* ---------- 유틸: flag 생성 ---------- */
+function mkFlag(level, msg, ref){ return { level:level, msg:msg, ref:ref||null }; }
+
+/* ---------- 기능이상 축 정문 ---------- */
+function recommendFunc(patient, F){
+  // F = func_data 모듈
+  var out = { drugs:[], targets:[], flags:[], classifications:[] };
+  var tsh = patient.tsh, ft4 = patient.free_t4, age = patient.age;
+  var upper = F.TSH_REF.upperDefault;
+
+  // TSH 기기차이 flag 상시
+  out.flags.push(mkFlag("info", F.TSH_REF.assayFlag, F.TSH_REF.id));
+
+  // --- 기능상태 분류 ---
+  var state = null;
+  if(tsh==null){ /* 입력없음 */ }
+  else if(tsh > upper){
+    state = (ft4!=null && ft4 < patient.ft4_low) ? "overt_hypo" : "subclinical_hypo";
+  } else if(tsh < F.TSH_REF.lowerDefault){
+    if(ft4!=null && ft4 > patient.ft4_high) state="overt_hyper";
+    else if(patient.t3_high) state="t3_toxicosis";
+    else state="subclinical_hyper";
+  } else state="euthyroid";
+
+  if(state){
+    out.classifications.push({
+      id:"thyroid:func:state", value:state,
+      label: F.FUNCTION_CLASSIFY.states[state] ? F.FUNCTION_CLASSIFY.states[state].label : state
+    });
+  }
+
+  // --- SCH 치료판정 (2023 권고안: 추적관찰 1차, 치료는 조건부) ---
+  if(state==="subclinical_hypo"){
+    var sch = F.SCH_RULES;
+    var tsh = patient.tsh;
+    var isSevere = (tsh!=null && tsh > sch.severity.severeCut); // >10
+    // 진행 위험인자 수집 (입력 기반)
+    var risks = [];
+    if(isSevere) risks.push("중증 (TSH > 10.0)");
+    if(patient.tsh_rising) risks.push("추적 시 TSH 지속 상승");
+    if(patient.tpo_positive) risks.push("TPO 항체 양성/자가면역 소견");
+    if(patient.female) risks.push("여성");
+    if(patient.lobectomy) risks.push("갑상선엽절제술 과거력");
+    if(patient.neck_radiation) risks.push("경부 방사선 병력");
+
+    // 적극 치료군: 임신/가임여성(계획)/진행 뚜렷
+    var activeGroup = patient.pregnant || patient.pregnancy_planning || patient.overt_progression;
+
+    if(activeGroup){
+      var act = sch.activeTreatmentGroup;
+      out.drugs.push({ drugId:act.drug, rank:1, recSys:sch.recSys, recLevel:act.recLevel,
+        g:grade(sch.recSys, act.recLevel), note:"적극 치료군: "+act.conditions.join("·"), source:act.ref });
+      if(patient.pregnant||patient.pregnancy_planning)
+        out.flags.push(mkFlag("caution", act.pregnancyNote, act.ref));
+    } else if(age!=null && age >= sch.ageThreshold){
+      // 노인: 보수적 추적 원칙
+      var b=sch.branches.elderly;
+      out.targets.push({ id:b.id, value:"1차: "+b.action, recSys:sch.recSys, recLevel:b.recLevel,
+        g:grade(sch.recSys, b.recLevel), note:b.reason, source:b.ref });
+      out.flags.push(mkFlag("caution", "고령 SCH는 처방 없이 검사만 추적이 원칙 — LT4 과치료 시 심방세동·골다공증 위험", b.ref));
+    } else {
+      // 성인(<70): 추적관찰 1차
+      var ad=sch.branches.adult;
+      out.targets.push({ id:"thyroid:rule:sch_recheck", value:"1차: "+sch.firstStep.action,
+        recSys:sch.recSys, recLevel:sch.firstStep.recLevel,
+        g:grade(sch.recSys, sch.firstStep.recLevel),
+        note:sch.firstStep.addLab, source:sch.ref });
+      // 위험인자 있으면 치료 '고려' (자동 1차 아님)
+      if(risks.length){
+        out.targets.push({ id:ad.treatConsider.drug, value:"치료 고려: LT4 (위험인자 충족 시)",
+          recSys:sch.recSys, recLevel:ad.treatConsider.recLevel,
+          g:grade(sch.recSys, ad.treatConsider.recLevel),
+          note:"해당 위험인자: "+risks.join(", "), source:ad.ref });
+        out.flags.push(mkFlag("info", "진행 위험인자 존재 → 재검 후 LT4 치료 고려. 자동 1차 처방 아님", ad.ref));
+      } else {
+        out.flags.push(mkFlag("info", "뚜렷한 진행 위험인자 없음 → 추적관찰 우선. 일과성 가능성 감별", sch.ref));
+      }
+    }
+    // 공통 안내: TPO 항체
+    out.flags.push(mkFlag("info", "TPO 항체 측정 권고 — 양성 시 현성 진행 위험 2배↑ (자가면역 갑상선염)", sch.ref));
+  }
+
+  // --- 현성 저하증 용량 ---
+  if(state==="overt_hypo"){
+    var L=F.LT4_DOSING, cautious=false;
+    if((patient.comorbid||[]).indexOf("comorbid:cad")>=0 ||
+       (patient.comorbid||[]).indexOf("comorbid:hf")>=0 || (age!=null&&age>=60)) cautious=true;
+    var dn = cautious ? ("저용량 시작 "+L.cautious.start.join("–")+L.cautious.unit+", "+L.cautious.titrate)
+                      : (L.standard.perKg+L.standard.unit+" ("+L.standard.note+")");
+    out.drugs.push({ drugId:L.drug, rank:1, recSys:L.recSys, recLevel:"강함/높음",
+      g:grade(L.recSys, "강함/높음"), dose:dn, note:L.admin, source:L.ref });
+    out.targets.push({ id:L.id, value:"TSH "+L.target.tsh+", FT4 "+L.target.ft4,
+      recSys:L.recSys, source:L.ref });
+  }
+
+  // --- 항진증/그레이브스 ---
+  if(state==="overt_hyper" || state==="subclinical_hyper" || state==="t3_toxicosis"){
+    var A=F.ATD_RULES;
+    var preg1 = patient.pregnant_1st;
+    var ptuInd = patient.pregnant_1st || patient.thyroid_storm || patient.mmi_adverse;
+    // 임신1기: PTU 1차(MMI 기형유발 회피), 그 외: MMI 1차
+    // 1차 MMI — 임신1기엔 rank 후순위 + 경고
+    out.drugs.push({ drugId:A.firstLine.drug, rank: preg1?3:1, recSys:A.recSys, recLevel:"강함/높음",
+      g:grade(A.recSys, "강함/높음"),
+      dose:"초기 경증"+A.firstLine.dosing.initial.mild+"/중등도"+A.firstLine.dosing.initial.moderate.join("-")+"/중증"+A.firstLine.dosing.initial.severe+"mg, 유지 "+A.firstLine.dosing.maintenance.range.join("-")+"mg",
+      note: preg1?"⚠ 임신1기 기형유발 위험 — PTU 우선":"1일 1회(유지)", source:A.ref });
+    if(preg1) out.flags.push(mkFlag("warning","임신 1기: MMI 기형유발(MMI embryopathy) 위험 → PTU로 전환", A.ref));
+    // PTU (조건부) — 임신1기엔 rank1
+    out.drugs.push({ drugId:A.ptu.drug, rank: preg1?1:(ptuInd?1:3), recSys:A.recSys,
+      recLevel: ptuInd?"강함/중등도":"약함/낮음",
+      g:grade(A.recSys, ptuInd?"강함/중등도":"약함/낮음"),
+      note:"한정 적응: "+A.ptu.indication.join("·")+" (1일 2-3회 분복)", source:A.ref });
+    // 증상조절
+    if(patient.symptomatic!==false)
+      out.drugs.push({ drugId:A.symptomControl.drug, rank:2, recSys:A.recSys, recLevel:"강함/중등도",
+        g:grade(A.recSys, "강함/중등도"), note:A.symptomControl.note, source:A.ref });
+    // 안전 flag
+    A.safetyFlags.forEach(function(sf){ out.flags.push(mkFlag("warning", sf.msg, A.ref)); });
+    // 중단기준
+    out.targets.push({ id:"thyroid:target:atd_stop", value:"중단 고려: "+A.stopCriteria.kta,
+      recSys:A.recSys, source:A.ref, note:"ATA: "+A.stopCriteria.ata });
+  }
+
+  // --- 분화암 동반 TSH 억제 ---
+  if(patient.thyroid_ca && patient.ca_risk){
+    var S=F.SUPPRESSION_TARGET, ir=S.initialRisk[patient.ca_risk];
+    if(ir){
+      var tval = ir.target ? (ir.target[0]==null? "<"+ir.target[1] : ir.target.join("–")) : ir.note;
+      out.targets.push({ id:S.id+":"+patient.ca_risk, value:"초기 TSH 목표 "+tval+" mIU/L",
+        recSys:S.recSys, recLevel:ir.rec||ir.recTarget,
+        g:grade(S.recSys, ir.rec||ir.recTarget), source:S.ref });
+    }
+    S.overSuppressionFlags.forEach(function(of){
+      if((patient.comorbid||[]).indexOf(of.when)>=0) out.flags.push(mkFlag("caution", of.msg, S.ref));
+    });
+    out.flags.push(mkFlag("info", S.contrastFlag, S.ref));
+  }
+
+  return out;
+}
+
+/* ---------- 결절 축: K-TIRADS 계산기 ---------- */
+function classifyTirads(comp, suspicious, N){
+  var logic = N.KTIRADS_TABLE.calcLogic;
+  // 명시적 규칙 순서대로 평가
+  if(comp==="저에코 고형") return suspicious?"thyroid:tirads:k5":"thyroid:tirads:k4";
+  if(comp==="부분낭성/등고에코") return suspicious?"thyroid:tirads:k4":"thyroid:tirads:k3";
+  if(comp==="완전석회화") return "thyroid:tirads:k4";
+  if(comp==="해면/순수낭종") return "thyroid:tirads:k2";
+  return null;
+}
+
+/* ---------- 결절 축 정문 ---------- */
+function recommendNodule(patient, N){
+  var out = { drugs:[], targets:[], flags:[], classifications:[] };
+
+  // 진입: TSH
+  if(patient.tsh!=null){
+    var e=N.NODULE_ENTRY;
+    if(patient.tsh < (patient.tsh_low||0.4)){
+      out.flags.push(mkFlag("info","TSH 낮음 → 갑상선스캔(자율기능성 감별) 권고", e.id));
+    }
+    out.flags.push(mkFlag("info", e.bridgeFlag, e.id));
+  }
+
+  // K-TIRADS 분류
+  var k = null;
+  if(patient.tirads_direct){ k = patient.tirads_direct; }
+  else if(patient.us_composition){ k = classifyTirads(patient.us_composition, patient.us_suspicious, N); }
+  if(k){
+    var cat = N.KTIRADS_TABLE.categories[k];
+    out.classifications.push({ id:k, value:cat.label,
+      malignancy:cat.malignancyLabel, fnaSize:cat.fnaSize, recSys:N.KTIRADS_TABLE.recSys });
+    if(cat.fnaSize && (cat.fnaSize.gt||cat.fnaSize.range))
+      out.flags.push(mkFlag("info","FNA/CNB 기준: "+(cat.fnaSize.gt?(">"+cat.fnaSize.gt+cat.fnaSize.unit):(cat.fnaSize.range.join("–")+cat.fnaSize.unit)), k));
+  }
+
+  // Bethesda
+  if(patient.bethesda){
+    var b = N.BETHESDA_TABLE.categories[patient.bethesda];
+    if(b){
+      out.classifications.push({ id:patient.bethesda, value:b.label,
+        malignancy:b.riskAdult[2]+"%", next:b.next, recSys:N.BETHESDA_TABLE.recSys, recLevel:b.rec });
+      // 의뢰 트리거
+      if(patient.bethesda==="thyroid:bethesda:b5" || patient.bethesda==="thyroid:bethesda:b6")
+        out.flags.push(mkFlag("referral","악성의심·악성 → 수술 상담 의뢰", N.DTC_SCOPE.ref));
+    }
+  }
+
+  // 양성결절 LT4 억제 — 비권고 명시
+  var T=N.NODULE_TREATMENT;
+  out.flags.push(mkFlag("warning", T.lt4Suppression.rule+" [수준"+T.lt4Suppression.rec+"]: "+T.lt4Suppression.evidence, T.ref));
+
+  return out;
+}
+
+/* ---------- 통합 정문 ---------- */
+function recommend(patient, modules){
+  // modules = { func: func_data, nodule: nodule_data }
+  var axis = patient.axis || "func"; // "func" | "nodule"
+  var res;
+  if(axis==="nodule") res = recommendNodule(patient, modules.nodule);
+  else res = recommendFunc(patient, modules.func);
+
+  // drugs/targets를 grade_norm 표준으로 정렬 (rank 우선, A>B>C 보조)
+  function byGrade(a,b){
+    var ga=a.g||{grade_rank:9}, gb=b.g||{grade_rank:9};
+    return gradeCompare(ga,gb) || (a.rank||9)-(b.rank||9);
+  }
+  res.drugs.sort(byGrade);
+  res.targets.sort(byGrade);
+  return res;
+}
+
+
+
+
+/* ===== UI 상태 ===== */
+var TAB = "lib";   // lib | func | nodule
+var AXIS = "func"; // 결과 렌더용 (func/nodule)
+
+function switchTab(t){
+  TAB = t;
+  if(t==="func"||t==="nodule") AXIS = t;
+  document.querySelectorAll(".tab").forEach(function(x){ x.classList.remove("active"); });
+  document.querySelector(".tab."+t).classList.add("active");
+  document.body.classList.toggle("nodule-mode", t==="nodule");
+  document.body.classList.toggle("lib-mode", t==="lib");
+  window.scrollTo(0,0);
+  render();
+}
+
+/* 라벨 조회 */
+function L(id){
+  if(!id) return "";
+  var m=LABEL_MAP;
+  if(id.indexOf("drug:")===0) return (m.drug[id]&&m.drug[id].ko)||id;
+  if(id.indexOf("lab:")===0) return (m.lab[id]&&m.lab[id].ko)||id;
+  if(id.indexOf("proc:")===0) return (m.proc[id]&&m.proc[id].ko)||id;
+  if(id.indexOf("comorbid:")===0) return (m.comorbid[id]&&m.comorbid[id].ko)||id;
+  return id;
+}
+function esc(s){ return String(s==null?"":s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
+
+/* ===== 입력 패널 렌더 ===== */
+function inputPanel(){
+  if(AXIS==="func") return funcInput();
+  return noduleInput();
+}
+
+function funcInput(){
+  return '<div class="panel">'+
+    '<div class="row">'+
+      '<div class="field"><label>TSH (mIU/L)</label><input id="tsh" class="mono" type="number" step="0.01" placeholder="예: 8.5"></div>'+
+      '<div class="field"><label>Free T4 (ng/dL)</label><input id="ft4" class="mono" type="number" step="0.01" placeholder="정상 0.8–1.9"></div>'+
+    '</div>'+
+    '<div class="row">'+
+      '<div class="field"><label>나이</label><input id="age" class="mono" type="number" placeholder="세"></div>'+
+      '<div class="field"><label>체중 (kg)</label><input id="wt" class="mono" type="number" placeholder="LT4 용량용"></div>'+
+    '</div>'+
+    '<div class="field"><label>동반질환</label><div class="chips" id="comorbid">'+
+      comorbidChips()+'</div></div>'+
+    '<div class="field"><label>특수 상황</label><div class="chips" id="special">'+
+      '<span class="chip" data-k="pregnant_1st">🤰 임신 1기</span>'+
+      '<span class="chip" data-k="thyroid_storm">🔥 갑상선중독발작</span>'+
+      '<span class="chip" data-k="mmi_adverse">⚠️ MMI 부작용</span>'+
+      '<span class="chip" data-k="thyroid_ca">🎗️ 분화암 동반</span>'+
+    '</div></div>'+
+    '<div class="field"><label>SCH 진행 위험인자 <span style="font-weight:400;color:var(--sub)">(무증상 저하증 치료 결정용)</span></label><div class="chips" id="schrisk">'+
+      '<span class="chip" data-k="female">여성</span>'+
+      '<span class="chip" data-k="tpo_positive">TPO 항체 양성</span>'+
+      '<span class="chip" data-k="tsh_rising">TSH 지속 상승</span>'+
+      '<span class="chip" data-k="lobectomy">엽절제술 과거력</span>'+
+      '<span class="chip" data-k="neck_radiation">경부 방사선 병력</span>'+
+      '<span class="chip" data-k="pregnancy_planning">가임여성·임신계획</span>'+
+    '</div></div>'+
+    '<div class="field" id="caRiskWrap" style="display:none"><label>분화암 위험군</label>'+
+      '<div class="seg" id="caRisk">'+
+      '<button data-v="low">저위험</button><button data-v="intermediate">중간</button><button data-v="high">고위험</button>'+
+      '</div></div>'+
+    '<button class="btn-run" onclick="runFunc()">조언 보기</button>'+
+  '</div>';
+}
+function comorbidChips(){
+  var ids=(typeof GUIDE_TO_COMORBID!=="undefined"&&GUIDE_TO_COMORBID.thyroid)||
+    ["comorbid:cad","comorbid:hf","comorbid:dyslipidemia","comorbid:af","comorbid:osteoporosis"];
+  return ids.filter(function(i){return i!=="comorbid:pregnancy";}).map(function(id){
+    return '<span class="chip" data-k="'+id+'">'+esc(L(id))+'</span>';
+  }).join("");
+}
+
+function noduleInput(){
+  return '<div class="panel">'+
+    '<div class="field"><label>TSH (mIU/L) — 진입점</label><input id="n_tsh" class="mono" type="number" step="0.01" placeholder="낮으면 스캔 권고"></div>'+
+    '<div class="field"><label>K-TIRADS 입력 방식</label>'+
+      '<div class="seg" id="tiradsMode">'+
+      '<button data-v="calc" class="on" onclick="setTiradsMode(\'calc\')">🧮 계산기</button>'+
+      '<button data-v="direct" onclick="setTiradsMode(\'direct\')">직접 선택</button>'+
+      '</div></div>'+
+    '<div id="tiradsCalc">'+
+      '<div class="field"><label>구성·에코</label><select id="us_comp">'+
+        '<option value="">선택…</option>'+
+        '<option value="저에코 고형">저에코 고형결절</option>'+
+        '<option value="부분낭성/등고에코">부분낭성 or 등·고에코</option>'+
+        '<option value="완전석회화">완전 석회화</option>'+
+        '<option value="해면/순수낭종">해면상 or 순수낭종</option>'+
+      '</select></div>'+
+      '<div class="field"><label>암 의심 소견 (≥1)</label><div class="chips" id="suspChips">'+
+        '<span class="chip" data-k="susp">미세석회화 / taller-than-wide / 불규칙경계 중 하나 이상</span>'+
+      '</div></div>'+
+    '</div>'+
+    '<div id="tiradsDirect" style="display:none"><div class="field"><label>K-TIRADS 직접</label>'+
+      '<div class="seg" id="kDirect">'+
+      '<button data-v="thyroid:tirads:k2">K2</button><button data-v="thyroid:tirads:k3">K3</button>'+
+      '<button data-v="thyroid:tirads:k4">K4</button><button data-v="thyroid:tirads:k5">K5</button>'+
+      '</div></div></div>'+
+    '<div class="field"><label>Bethesda (세포검사 결과, 선택)</label><select id="bethesda">'+
+      '<option value="">미시행/선택…</option>'+
+      '<option value="thyroid:bethesda:b1">I 비진단적</option>'+
+      '<option value="thyroid:bethesda:b2">II 양성</option>'+
+      '<option value="thyroid:bethesda:b3">III 비정형(AUS)</option>'+
+      '<option value="thyroid:bethesda:b4">IV 여포종양</option>'+
+      '<option value="thyroid:bethesda:b5">V 악성의심</option>'+
+      '<option value="thyroid:bethesda:b6">VI 악성</option>'+
+    '</select></div>'+
+    '<button class="btn-run" onclick="runNodule()">조언 보기</button>'+
+  '</div>';
+}
+
+/* ===== 입력 수집 ===== */
+var picked = {}; var caRiskVal=null; var tiradsMode="calc"; var kDirectVal=null;
+function bindChips(){
+  document.querySelectorAll(".chip[data-k]").forEach(function(c){
+    c.onclick=function(){ var k=c.getAttribute("data-k"); c.classList.toggle("on");
+      picked[k]=c.classList.contains("on");
+      if(k==="thyroid_ca"){ document.getElementById("caRiskWrap").style.display=picked[k]?"block":"none"; }
+    };
+  });
+  var cr=document.getElementById("caRisk");
+  if(cr) cr.querySelectorAll("button").forEach(function(b){
+    b.onclick=function(){ cr.querySelectorAll("button").forEach(function(x){x.classList.remove("on");});
+      b.classList.add("on"); caRiskVal=b.getAttribute("data-v"); };
+  });
+  var kd=document.getElementById("kDirect");
+  if(kd) kd.querySelectorAll("button").forEach(function(b){
+    b.onclick=function(){ kd.querySelectorAll("button").forEach(function(x){x.classList.remove("on");});
+      b.classList.add("on"); kDirectVal=b.getAttribute("data-v"); };
+  });
+}
+function setTiradsMode(m){ tiradsMode=m;
+  document.querySelectorAll("#tiradsMode button").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-v")===m); });
+  document.getElementById("tiradsCalc").style.display = m==="calc"?"block":"none";
+  document.getElementById("tiradsDirect").style.display = m==="direct"?"block":"none";
+}
+
+function num(id){ var v=document.getElementById(id); return v&&v.value!==""?parseFloat(v.value):null; }
+
+function runFunc(){
+  var comorbid=[]; for(var k in picked){ if(picked[k]&&k.indexOf("comorbid:")===0) comorbid.push(k); }
+  var p={ axis:"func", tsh:num("tsh"), free_t4:num("ft4"), ft4_low:0.8, ft4_high:1.9,
+    age:num("age"), weight:num("wt"), comorbid:comorbid,
+    pregnant_1st:!!picked.pregnant_1st, thyroid_storm:!!picked.thyroid_storm,
+    mmi_adverse:!!picked.mmi_adverse, thyroid_ca:!!picked.thyroid_ca, ca_risk:caRiskVal,
+    // SCH 위험인자
+    female:!!picked.female, tpo_positive:!!picked.tpo_positive, tsh_rising:!!picked.tsh_rising,
+    lobectomy:!!picked.lobectomy, neck_radiation:!!picked.neck_radiation,
+    pregnancy_planning:!!picked.pregnancy_planning,
+    pregnant:!!picked.pregnant_1st };
+  var res=recommend(p,{func:window,nodule:window});
+  renderResult(res,"func");
+}
+function runNodule(){
+  var susp=!!picked.susp;
+  var p={ axis:"nodule", tsh:num("n_tsh") };
+  if(tiradsMode==="direct"&&kDirectVal) p.tirads_direct=kDirectVal;
+  else { var c=document.getElementById("us_comp"); if(c&&c.value){ p.us_composition=c.value; p.us_suspicious=susp; } }
+  var b=document.getElementById("bethesda"); if(b&&b.value) p.bethesda=b.value;
+  var res=recommend(p,{func:window,nodule:window});
+  renderResult(res,"nodule");
+}
+
+/* ===== 결과 렌더 ===== */
+function gradeBadge(g){
+  if(!g) return "";
+  return '<span class="grade '+g.grade_norm+'">'+g.grade_norm+'</span>'+
+    (g.recLevelOrig?'<span class="orig">권고 '+esc(g.recLevelOrig)+'</span>':"");
+}
+function renderResult(res, axis){
+  var h='<div class="result">';
+  // 분류 (결절)
+  if(res.classifications&&res.classifications.length){
+    res.classifications.forEach(function(c){
+      if(c.id&&c.id.indexOf("tirads")>=0){
+        var kc=c.id.split(":").pop();
+        h+='<div class="cls cls-'+kc+'"><span class="cls-badge">'+kc.toUpperCase()+'</span>'+
+           '<span>'+esc(c.value)+'</span><span class="cls-mal">'+esc(c.malignancy||"")+'</span></div>';
+      } else if(c.id&&c.id.indexOf("bethesda")>=0){
+        h+='<div class="cls cls-k4"><span class="cls-badge">'+esc(c.value.split(" ")[0]||"")+'</span>'+
+           '<span>'+esc(c.value)+'</span><span class="cls-mal">'+esc(c.malignancy||"")+'</span></div>';
+        if(c.next) h+='<div class="flag info">다음 단계: '+esc(c.next)+'</div>';
+      } else if(c.label){
+        h+='<div class="card '+(axis==="nodule"?"nodule":"")+'"><div class="card-h">📋 '+esc(c.label)+'</div></div>';
+      }
+    });
+  }
+  // 약물
+  if(res.drugs&&res.drugs.length){
+    h+='<div class="sec-title">💊 약물 권고 (등급순)</div><div class="card '+(axis==="nodule"?"nodule":"")+'"><div class="card-b">';
+    res.drugs.forEach(function(d){
+      h+='<div class="drug-row"><div class="rank">'+(d.rank||"")+'</div><div class="drug-main">'+
+        '<div class="drug-name">'+esc(L(d.drugId))+' '+gradeBadge(d.g)+'</div>'+
+        (d.note?'<div class="drug-meta">'+esc(d.note)+'</div>':"")+
+        (d.dose?'<div class="drug-dose mono">'+esc(d.dose)+'</div>':"")+
+        '</div></div>';
+    });
+    h+='</div></div>';
+  }
+  // 타겟
+  if(res.targets&&res.targets.length){
+    h+='<div class="sec-title">🎯 목표·판정</div><div class="card '+(axis==="nodule"?"nodule":"")+'"><div class="card-b">';
+    res.targets.forEach(function(t){
+      h+='<div class="drug-row"><div class="drug-main"><div class="drug-name">'+esc(t.value)+' '+gradeBadge(t.g)+'</div>'+
+        (t.note?'<div class="drug-meta">'+esc(t.note)+'</div>':"")+'</div></div>';
+    });
+    h+='</div></div>';
+  }
+  // flags
+  if(res.flags&&res.flags.length){
+    h+='<div class="sec-title">⚑ 주의·안내</div>';
+    res.flags.forEach(function(f){ h+='<div class="flag '+f.level+'">'+esc(f.msg)+'</div>'; });
+  }
+  h+='</div>';
+  document.getElementById("result").innerHTML=h;
+  document.getElementById("result").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+/* ===== 정적 콘텐츠 (비교표·KCD·도서관·출처) ===== */
+function staticContent(){
+  var C=window;
+  var h='';
+  // 가이드라인 비교
+  if(typeof GUIDELINE_COMPARE!=="undefined"){
+    h+='<details><summary>🌐 국내↔해외 가이드라인 비교 ('+GUIDELINE_COMPARE.rows.length+'개 쟁점)</summary><div class="det-body">'+
+      '<table class="cmp"><tr><th>쟁점</th><th>KTA</th><th>ATA/ETA</th></tr>';
+    GUIDELINE_COMPARE.rows.forEach(function(r){
+      h+='<tr><td>'+esc(r.issue)+'</td><td>'+esc(r.kta)+'</td><td>'+esc(r.intl)+'</td></tr>';
+    });
+    h+='</table></div></details>';
+  }
+  // 균형정보
+  if(typeof BALANCE_INFO!=="undefined"){
+    h+='<details><summary>⚖️ 가이드라인 ↔ 급여 균형정보 ('+BALANCE_INFO.items.length+')</summary><div class="det-body">';
+    BALANCE_INFO.items.forEach(function(it){
+      h+='<div style="font-weight:600;margin:8px 0 4px">'+esc(it.topic)+'</div><div class="balance">'+
+        '<div class="gl"><div class="bh">📘 가이드라인</div>'+esc(it.guideline)+'</div>'+
+        '<div class="rb"><div class="bh">💰 급여기준</div>'+esc(it.reimbursement)+'</div>'+
+        '<div class="conflict">⚠️ '+esc(it.conflict)+'</div></div>';
+    });
+    h+='</div></details>';
+  }
+  // KCD
+  if(typeof KCD_SECTION!=="undefined"){
+    h+='<details><summary>🏷️ 흔한 상병·급여코드 ('+KCD_SECTION.codes.length+')</summary><div class="det-body">';
+    KCD_SECTION.codes.forEach(function(c){
+      h+='<div class="kcd-item"><span class="kcd-code">'+esc(c.kcd)+'</span><b>'+esc(c.label)+'</b>';
+      if(c.note) h+='<div style="font-size:11.5px;color:#a05a00;margin-top:3px">📌 '+esc(c.note)+'</div>';
+      if(c.common) h+='<div style="font-size:11.5px;margin-top:3px">'+c.common.map(esc).join(" · ")+'</div>';
+      h+='<div class="kcd-tags">';
+      (c.labs||[]).forEach(function(x){h+='<span class="tag">🧪 '+esc(L(x))+'</span>';});
+      (c.drugs||[]).forEach(function(x){h+='<span class="tag">💊 '+esc(L(x))+'</span>';});
+      (c.procs||[]).forEach(function(x){h+='<span class="tag">🔧 '+esc(L(x))+'</span>';});
+      h+='</div></div>';
+    });
+    if(KCD_SECTION.specialNote) h+='<div class="flag caution">'+esc(KCD_SECTION.specialNote)+'</div>';
+    h+='</div></details>';
+  }
+  // 도서관
+  if(typeof LIBRARY!=="undefined"){
+    h+='<details><summary>📚 임상 도서관 ('+LIBRARY.topics.length+' 토픽)</summary><div class="det-body">';
+    LIBRARY.topics.forEach(function(t){
+      h+='<div style="margin-bottom:7px"><b>'+esc(t.icon)+' '+esc(t.title)+'</b>'+
+        (t.content?'<div style="margin-top:2px">'+esc(t.content)+'</div>':"")+'</div>';
+    });
+    h+='</div></details>';
+  }
+  return h;
+}
+
+/* ===== 출처 (하단 고정) ===== */
+function refsSection(){
+  if(typeof REFERENCES==="undefined") return "";
+  var R=REFERENCES, h='<div class="refs"><h3>📖 출처 · 참고문헌</h3>';
+  function grp(title,arr){ var s='<div class="rgrp"><b>'+title+'</b><ul>';
+    arr.forEach(function(g){ s+='<li>'+esc(g.title)+(g.cite?' — '+esc(g.cite):"")+
+      (g.url?' <a href="'+g.url+'" target="_blank" rel="noopener">🔗</a>':"")+
+      (g.note?' <span style="color:#a05">('+esc(g.note)+')</span>':"")+'</li>'; });
+    return s+'</ul></div>'; }
+  h+=grp("국내 가이드라인",R.guidelines);
+  h+=grp("해외 가이드라인",R.intlGuidelines);
+  h+=grp("급여기준",R.reimbursement);
+  h+='<div class="rgrp"><b>약물허가</b><ul><li>'+esc(R.drugLicense.title)+
+     ' <a href="'+R.drugLicense.url+'" target="_blank" rel="noopener">🔗</a></li></ul></div>';
+  h+='</div>';
+  return h;
+}
+
+/* ===== 도서관 섹션 렌더러 (당뇨 패턴 채택) ===== */
+function libSection(s){
+  var h='';
+  var hasHead = s.title && s.type!=="drugclass";
+  if(hasHead) h+='<div class="sh">'+esc(s.title)+'</div>';
+  if(s.note && s.type!=="drugclass") h+='<div class="snote">'+esc(s.note)+'</div>';
+
+  if(s.type==="keypoints"){
+    h+='<ul class="kp">';
+    s.items.forEach(function(it){ h+='<li>'+esc(it)+'</li>'; });
+    h+='</ul>';
+  } else if(s.type==="cards"){
+    h+='<div class="minicards">';
+    s.items.forEach(function(it){
+      h+='<div class="mc'+(it.danger?" danger":"")+'"><div class="mch">'+esc(it.h)+'</div><div class="mcb">'+esc(it.b)+'</div></div>';
+    });
+    h+='</div>';
+  } else if(s.type==="ladder"){
+    h+='<div class="ladder-l">';
+    s.items.forEach(function(it){
+      h+='<div class="lr'+(it.danger?" danger":"")+'"><span class="ln">'+esc(it.n)+'</span>'+
+         '<div><div class="lh">'+esc(it.h)+'</div><div class="lb">'+esc(it.b)+'</div></div></div>';
+    });
+    h+='</div>';
+  } else if(s.type==="table"){
+    h+='<table class="dtable"><thead><tr>';
+    s.cols.forEach(function(c){ h+='<th>'+esc(c)+'</th>'; });
+    h+='</tr></thead><tbody>';
+    s.rows.forEach(function(r){
+      h+='<tr>'; r.forEach(function(cell){ h+='<td>'+esc(cell)+'</td>'; }); h+='</tr>';
+    });
+    h+='</tbody></table>';
+  } else if(s.type==="codetable"){
+    h+='<table class="dtable codetable"><thead><tr><th>코드</th><th>상병명</th><th>비고</th></tr></thead><tbody>';
+    s.rows.forEach(function(r){
+      h+='<tr><td class="code-cell">'+esc(r[0])+'</td><td>'+esc(r[1])+'</td><td class="code-note">'+esc(r[2]||"")+'</td></tr>';
+    });
+    h+='</tbody></table>';
+  } else if(s.type==="balance"){
+    s.items.forEach(function(it){
+      h+='<div style="font-weight:600;margin:8px 0 4px">'+esc(it.topic)+'</div><div class="balance">'+
+        '<div class="gl"><div class="bh">📘 가이드라인</div>'+esc(it.gl)+'</div>'+
+        '<div class="rb"><div class="bh">💰 급여기준</div>'+esc(it.rb)+'</div>'+
+        '<div class="conflict">⚠️ '+esc(it.conflict)+'</div></div>';
+    });
+  } else if(s.type==="drugclass"){
+    var mem=(s.members||[]).length;
+    h+='<div class="dcclass"><button type="button" class="dcclass-head" onclick="this.parentNode.classList.toggle(\'open\');var b=this.nextElementSibling;b.style.display=b.style.display===\'none\'?\'block\':\'none\';">'+
+      '<div class="dcc-title">'+esc(s.title)+'</div>'+
+      '<div class="dcc-eff">'+esc(s.effect)+'</div>'+
+      (mem>1?'<span class="dcc-cnt">'+mem+'성분</span>':'')+
+      '<span class="dcc-arrow">›</span></button>'+
+      '<div class="dcclass-body" style="display:none">'+
+      '<div class="drugclass-box">'+
+        dcRow("기전",s.mechanism)+dcRow("효과",s.effect)+
+        dcRow("부작용",s.ae,"dc-ae")+dcRow("금기",s.contra,"dc-contra")+
+        dcRow("특징",s.feature,"dc-feat")+(s.reimb?dcRow("급여",s.reimb,"dc-reimb"):"")+
+      '</div>';
+    if(s.members&&s.members.length){
+      h+='<div class="memlist"><div class="mem-h">성분별 — 상품명 · 복약 · 중단</div>';
+      s.members.forEach(function(m){
+        h+='<div class="memcard"><div class="mem-top"><span class="mem-nm">'+esc(m.nm)+'</span>'+
+          (m.brand&&m.brand!=="-"?'<span class="mem-brand">'+esc(m.brand)+'</span>':'')+'</div>';
+        if(m.tip) h+='<div class="mem-tip">'+esc(m.tip)+'</div>';
+        if(m.stop) h+='<div class="mem-stop'+(/⛔/.test(m.stop)?' hard':'')+'"><span class="stop-lbl">중단</span>'+esc(m.stop)+'</div>';
+        h+='</div>';
+      });
+      h+='</div>';
+    }
+    h+='</div></div>';
+  } else if(s.type==="algorithm"){
+    h+=renderAlgo(s.algo);
+  }
+  return h;
+}
+function dcRow(k,v,cls){ return '<div class="dc-row '+(cls||"")+'"><span class="dc-k">'+k+'</span><span class="dc-v">'+esc(v)+'</span></div>'; }
+
+/* ===== 인터랙티브 진단 알고리듬 렌더 ===== */
+var ALGO_REGISTRY = {};
+function regAlgo(){
+  if(typeof ALGO_FUNCTION!=="undefined") ALGO_REGISTRY["algo:function"]=ALGO_FUNCTION;
+  if(typeof ALGO_THYROIDITIS!=="undefined") ALGO_REGISTRY["algo:thyroiditis"]=ALGO_THYROIDITIS;
+}
+// 각 알고리듬 인스턴스의 현재 경로 상태
+var ALGO_STATE = {};
+function renderAlgo(algoId){
+  regAlgo();
+  var tree=ALGO_REGISTRY[algoId];
+  if(!tree) return '<div class="snote">알고리듬 데이터 없음</div>';
+  if(!ALGO_STATE[algoId]) ALGO_STATE[algoId]=[tree.start];
+  return '<div class="algo" id="algo-'+cssId(algoId)+'">'+algoInner(algoId)+'</div>';
+}
+function cssId(s){ return s.replace(/[:]/g,"_"); }
+function algoInner(algoId){
+  var tree=ALGO_REGISTRY[algoId];
+  var path=ALGO_STATE[algoId];
+  var h='<div class="algo-head"><span class="algo-ttl">🧭 '+esc(tree.title)+'</span>'+
+    '<button type="button" class="algo-reset" onclick="algoReset(\''+algoId+'\')">↺ 처음부터</button></div>';
+  // 경로(breadcrumb): 지나온 선택들
+  if(path.length>1){
+    h+='<div class="algo-crumb">';
+    for(var i=0;i<path.length-1;i++){
+      var nd=tree.nodes[path[i]];
+      var chosen=nd._chosenLabel||"";
+      h+='<span class="crumb">'+esc(chosen||(nd.q||"").slice(0,14))+'</span>';
+    }
+    h+='</div>';
+  }
+  var cur=tree.nodes[path[path.length-1]];
+  if(cur.result){
+    h+=algoResult(cur);
+  } else {
+    h+='<div class="algo-q">'+esc(cur.q)+'</div>';
+    if(cur.hint) h+='<div class="algo-hint">'+esc(cur.hint)+'</div>';
+    h+='<div class="algo-opts">';
+    cur.options.forEach(function(o,idx){
+      h+='<button type="button" class="algo-opt" onclick="algoPick(\''+algoId+'\','+idx+')">'+
+        esc(o.label)+'<span class="opt-arrow">→</span></button>';
+    });
+    h+='</div>';
+    if(path.length>1) h+='<button type="button" class="algo-back" onclick="algoBack(\''+algoId+'\')">← 이전</button>';
+  }
+  return h;
+}
+function algoResult(n){
+  var toneCls = "res-"+(n.tone||"normal");
+  var h='<div class="algo-res '+toneCls+'">';
+  h+='<div class="res-dx">📋 '+esc(n.dx)+'</div>';
+  h+='<div class="res-sum">'+esc(n.summary)+'</div>';
+  if(n.flag) h+='<div class="res-flag">⚑ '+esc(n.flag)+'</div>';
+  if(n.advice&&n.advice.length){
+    h+='<ul class="res-adv">';
+    n.advice.forEach(function(a){ h+='<li>'+esc(a)+'</li>'; });
+    h+='</ul>';
+  }
+  if(n.libRef) h+='<button type="button" class="res-lib" onclick="jumpLib(\''+n.libRef+'\')">📚 관련 도서관 카드 열기</button>';
+  h+='</div>';
+  return h;
+}
+function algoPick(algoId, optIdx){
+  var tree=ALGO_REGISTRY[algoId];
+  var path=ALGO_STATE[algoId];
+  var cur=tree.nodes[path[path.length-1]];
+  var opt=cur.options[optIdx];
+  cur._chosenLabel=opt.label;
+  path.push(opt.next);
+  redrawAlgo(algoId);
+}
+function algoBack(algoId){
+  var path=ALGO_STATE[algoId];
+  if(path.length>1){ path.pop(); redrawAlgo(algoId); }
+}
+function algoReset(algoId){
+  var tree=ALGO_REGISTRY[algoId];
+  ALGO_STATE[algoId]=[tree.start];
+  redrawAlgo(algoId);
+}
+function redrawAlgo(algoId){
+  var el=document.getElementById("algo-"+cssId(algoId));
+  if(el) el.innerHTML=algoInner(algoId);
+}
+// 결과에서 도서관 카드로 점프 (해당 카드 펼치고 스크롤)
+function jumpLib(cardId){
+  if(TAB!=="lib"){ switchTab("lib"); }
+  setTimeout(function(){
+    var cards=document.querySelectorAll("#libGrid .libcard");
+    for(var i=0;i<cards.length;i++){
+      if(THY_LIBRARY[i] && THY_LIBRARY[i].id===cardId){
+        var card=cards[i];
+        if(!card.classList.contains("open")){
+          var head=card.querySelector(".libcard-head"); if(head) head.click();
+        }
+        card.scrollIntoView({behavior:"smooth",block:"start"});
+        break;
+      }
+    }
+  }, 60);
+}
+
+/* 도서관 카드 (펼침형) */
+function libCard(card){
+  var cat=THY_LIB_CATS[card.cat]||{label:"",color:"#888"};
+  var h='<div class="libcard" data-cat="'+card.cat+'">'+
+    '<button type="button" class="libcard-head" onclick="this.parentNode.classList.toggle(\'open\');var b=this.nextElementSibling;b.style.display=b.style.display===\'none\'?\'block\':\'none\';">'+
+      '<span class="lc-icon">'+esc(card.icon)+'</span>'+
+      '<span class="lc-tt"><span class="lc-title">'+esc(card.title)+'</span>'+
+        '<span class="lc-sub">'+esc(card.sub||"")+'</span></span>'+
+      '<span class="lc-cat" style="background:'+cat.color+'">'+cat.label+'</span>'+
+      '<span class="lc-arrow">›</span></button>'+
+    '<div class="libcard-body" style="display:none">';
+  card.sections.forEach(function(s){ h+='<div class="lib-sec">'+libSection(s)+'</div>'; });
+  h+='</div></div>';
+  return h;
+}
+
+/* 도서관 탭 전체 */
+function renderLibrary(){
+  if(typeof THY_LIBRARY==="undefined") return '<div class="empty">도서관 데이터 없음</div>';
+  var h='<div class="lib-intro">📚 전문가용 참고서 — 카드를 눌러 펼치세요. 급여·임상·관리 '+THY_LIBRARY.length+'개 주제.</div>';
+  // 검색
+  h+='<div class="lib-search"><input id="libQ" type="text" placeholder="🔍 검색 (예: 무과립구증, 급여, 복약, TSH)" oninput="filterLib()"></div>';
+  // 카테고리 필터
+  h+='<div class="lib-filter">'+
+     '<button class="lf on" data-c="all" onclick="setLibFilter(\'all\')">전체</button>'+
+     '<button class="lf" data-c="pay" onclick="setLibFilter(\'pay\')">💰 급여</button>'+
+     '<button class="lf" data-c="clin" onclick="setLibFilter(\'clin\')">🩺 임상</button>'+
+     '<button class="lf" data-c="care" onclick="setLibFilter(\'care\')">🌿 관리</button></div>';
+  h+='<div id="libGrid">';
+  THY_LIBRARY.forEach(function(c){ h+=libCard(c); });
+  h+='</div>';
+  return h;
+}
+var libFilter="all";
+function setLibFilter(c){
+  libFilter=c;
+  document.querySelectorAll(".lf").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-c")===c); });
+  filterLib();
+}
+function filterLib(){
+  var q=(document.getElementById("libQ")&&document.getElementById("libQ").value||"").toLowerCase();
+  var cards=document.querySelectorAll("#libGrid .libcard");
+  THY_LIBRARY.forEach(function(c,i){
+    var card=cards[i]; if(!card) return;
+    var catOk = libFilter==="all"||c.cat===libFilter;
+    var txt=(c.title+" "+(c.sub||"")+" "+(c.tags||[]).join(" ")).toLowerCase();
+    var qOk = !q || txt.indexOf(q)>=0;
+    card.style.display=(catOk&&qOk)?"block":"none";
+  });
+}
+
+/* ===== 메인 렌더 ===== */
+function render(){
+  var h='';
+  if(TAB==="lib"){
+    h+=renderLibrary();
+    h+=refsSection();
+  } else {
+    h+=inputPanel();
+    h+='<div id="result"><div class="empty">환자 정보를 입력하고 <b>조언 보기</b>를 누르세요.<br>이 도구는 의사결정을 돕는 <b>조언자</b>이며 최종 판단은 의료진에게 있습니다.</div></div>';
+    // 기능/결절 탭에서도 빠른 참고: 관련 도서관 안내
+    h+='<div class="lib-hint">📚 상세 기준·약제·급여는 <b onclick="switchTab(\'lib\')" style="color:var(--teal);cursor:pointer">도서관 탭</b>에서 확인하세요.</div>';
+    h+=refsSection();
+  }
+  h+='<div class="disclaimer">⚕️ 본 도구는 대한갑상선학회 권고안·심평원 급여기준에 근거한 임상 의사결정 <b>보조</b> 목적입니다.<br>처방을 강제하지 않으며, 모든 결정과 책임은 진료 의사에게 있습니다. 각 검사실 참고치·최신 고시를 우선하십시오.</div>';
+  document.getElementById("app").innerHTML=h;
+  picked={}; caRiskVal=null; kDirectVal=null;
+  if(TAB!=="lib"){ bindChips(); if(TAB==="nodule") setTiradsMode(tiradsMode); }
+}
+render();
+</script>
+</body>
+</html>

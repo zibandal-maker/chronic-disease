@@ -156,6 +156,18 @@
       "keywords": "골다공증 osteoporosis BMD T-score FRAX 비스포스포네이트 데노수맙 프롤리아 이베니티 골밀도 골절"
     },
     {
+      "id": "thyroid",
+      "title": "갑상선",
+      "emoji": "🦋",
+      "src": "thyroid_guide.html",
+      "out": "thyroid.html",
+      "guideline": "대한갑상선학회 권고안 2023-2024 · 기능장애·결절 · 심평원 급여",
+      "group": "A",
+      "accent": "#0e8a8a",
+      "tag": "내분비",
+      "keywords": "갑상선 thyroid 갑상선기능저하 갑상선기능항진 갑상선결절 TSH T4 T3 레보티록신 씬지로이드 메티마졸 카르비마졸 항갑상선제 그레이브스 하시모토 TPO 갑상선염 RAI 신스로이드"
+    },
+    {
       "id": "antimicrobial",
       "title": "감염·항생제",
       "emoji": "🦠",
