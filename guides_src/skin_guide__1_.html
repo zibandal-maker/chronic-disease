@@ -258,6 +258,13 @@ body{padding-bottom:84px;}
 .wkg-t{font-size:13px;font-weight:750;margin-bottom:7px;color:var(--care);}
 .wkrow{padding:5px 0;}
 .wkrow .k{font-weight:700;font-size:11.5px;color:var(--ink);display:block;margin-bottom:3px;}
+/* 다제 병용 삭감 경고 */
+.multiwarn{border:1.5px solid var(--block);background:var(--block-bg);border-radius:10px;padding:11px 13px;margin-top:9px;}
+.mw-h{font-size:13px;font-weight:800;color:var(--block);margin-bottom:7px;}
+.mw-list{margin:0;padding-left:17px;}
+.mw-list li{font-size:12px;color:var(--ink);padding:2px 0;line-height:1.5;}
+.mw-list li b{color:var(--block);}
+.mw-why{font-size:11.5px;color:var(--ink-dim);margin-top:7px;padding-top:7px;border-top:1px dashed var(--block);line-height:1.5;}
 .calc-launch{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--accent);background:var(--accent-bg);color:var(--accent);border-radius:20px;padding:7px 14px;font-size:12.5px;font-weight:700;cursor:pointer;margin-top:8px;}
 .cstep{border:1px solid var(--line);border-radius:9px;padding:9px 11px;margin-bottom:7px;background:var(--panel);cursor:pointer;}
 .cstep-h{display:flex;align-items:center;justify-content:space-between;}
@@ -1551,7 +1558,8 @@ var CSU_LADDER = [
              "또는 서로 다른 2세대 H1 최대 4종 병용(각 표준용량)",
              "증량 1~4주 후에도 지속 시 3단계로",
              "고용량 시 졸음·구갈·QT 주의(빌라스틴·펙소가 상대적으로 안전)",
-             "★증량분은 허가용량 초과 → 청구 삭감 주의(소견 명확화)"],
+             "★증량분은 허가용량 초과 → 청구 삭감 주의(소견 명확화)",
+             "★1차 의료기관: 항히스타민 2제 이상 병용 시 삭감 위험 → 최대 3제까지, JX999 소견 기재 + 만성두드러기 코드(L50.1) 삽입 필수"],
     why:"증량이 1차 전략(국제지침). 안전성 문제 없이 유의한 개선. 고용량 시 졸음·QT만 주의.",
     adjunct:["drug:montelukast"], adjunctNote:"항류코트리엔(몬테루카스트 10mg 저녁) 추가 — 제한적 권고, NSAID악화형 일부 유용."
   },
@@ -1653,6 +1661,20 @@ var CSU_ANTIHISTAMINE_REIMB = {
   note:"성분별 허가용량·연령 상한 확인. 증량 청구 시 상병·소견 명확화."
 };
 
+/* ---- ★다제 병용 삭감 방어 경고 (단일 정의 — 여러 곳에서 참조) ---- */
+var CSU_MULTI_AH_WARNING = {
+  id:"csu:reimb:multi_ah_warning",
+  short:"1차 의료기관: 2세대 항히스타민 2제 이상 시 삭감 위험 → 최대 3제까지, JX999 소견 기재 + 만성두드러기 코드 필수",
+  title:"⚠ 항히스타민 다제 병용 삭감 방어 (1차 의료기관)",
+  rules:[
+    "1차 의료기관에서 2세대 항히스타민 2제 이상 병용 시 삭감 위험",
+    "★최대 3제까지 사용 권장(4제는 삭감 위험 높음)",
+    "특정내역 구분코드 JX999에 병용 사유 소견 기재 필수",
+    "만성두드러기 상병코드(L50.1 등) 삽입 필수"
+  ],
+  why:"동일효능군(2세대 항히스타민) 중복투여는 심사조정 대상. 3제 이내 + JX999 소견 + 만성 상병코드로 의학적 필요성을 입증해야 삭감 방어 가능."
+};
+
 /* ---- 사이클로스포린 급여 (csu:reimb:cyclosporine) ---- */
 var CSU_CYCLOSPORINE_REIMB = {
   id:"csu:reimb:cyclosporine",
@@ -1688,10 +1710,12 @@ function csuReimbCheck(drugId, input){
   // 항히스타민 계열
   var DB=(typeof DRUG_DB!=="undefined")?DRUG_DB:null;
   if(DB && DB[drugId] && DB[drugId].cls==="class:antihistamine_2g"){
+    var msgs=[ CSU_ANTIHISTAMINE_REIMB.standard ];
+    if(input.updose) msgs.push("⚠ 4배 증량: "+CSU_ANTIHISTAMINE_REIMB.updose);
+    if(input.combo) msgs.push(CSU_MULTI_AH_WARNING.short);
     return { drug:drugId, grade:"benefit",
       title:DB[drugId].brand+" — 표준용량 급여",
-      msgs:[ CSU_ANTIHISTAMINE_REIMB.standard,
-             (input.updose?("⚠ 4배 증량: "+CSU_ANTIHISTAMINE_REIMB.updose):"") ].filter(Boolean) };
+      msgs:msgs, multiWarn:(input.combo===true) };
   }
   if(drugId==="drug:montelukast"){
     return { drug:drugId, grade:"adjunct", title:"몬테루카스트 — 보조(제한적)",
@@ -1749,6 +1773,7 @@ var CSU_LIBRARY = [
       { type:"csuladder", title:"단계별 치료", ref:"CSU_LADDER" },
       { type:"drugcards", title:"2세대 항히스타민", drugs:["drug:bilastine","drug:fexofenadine","drug:cetirizine","drug:levocetirizine","drug:loratadine","drug:desloratadine"] },
       { type:"note", title:"증량 vs 4종 병용", body:"국제지침은 동일 약제 4배 증량이 1차 전략. 국내는 허가사항 고려로 4종 병용을 많이 쓰나, 국내연구상 UAS7=0 도달은 4배 증량이 더 높았다. 고용량 시 졸음·QT만 주의." },
+      { type:"multiwarn", title:"★삭감 방어", ref:"CSU_MULTI_AH_WARNING" },
       { type:"refs", title:"근거", items:["r_h1_first","r_updose","r_ltra","r_steroid_short"] }
     ]
   },
@@ -1784,7 +1809,8 @@ var CSU_LIBRARY = [
         { code:"L50.8", label:"기타 두드러기" },
         { code:"L50.9", label:"두드러기, 상세불명" }
       ]},
-      { type:"note", title:"청구 포인트", body:"항히스타민 표준용량은 L50.x 상병에 급여. 4배 증량 청구 시 허가용량 초과분 삭감 주의. 오말리주맙 CSU는 비급여라 별도 동의." }
+      { type:"note", title:"청구 포인트", body:"항히스타민 표준용량은 L50.x 상병에 급여. 4배 증량 청구 시 허가용량 초과분 삭감 주의. 오말리주맙 CSU는 비급여라 별도 동의." },
+      { type:"multiwarn", title:"★삭감 방어", ref:"CSU_MULTI_AH_WARNING" }
     ]
   }
 ];
@@ -1914,6 +1940,20 @@ function renderSection(sec,ci,si){
   else if(t==="refs"){ h+=renderRefs(sec.items); }
   else if(t==="tcsguide"){ h+=renderTcsGuide(); }
   else if(t==="workup"){ h+=renderWorkup(); }
+  else if(t==="multiwarn"){ h+=renderMultiWarn(); }
+  h+='</div>';
+  return h;
+}
+
+/* ---- 항히스타민 다제 병용 삭감 경고 (단일 데이터 참조) ---- */
+function renderMultiWarn(){
+  var w=CSU_MULTI_AH_WARNING;
+  var h='<div class="multiwarn">';
+  h+='<div class="mw-h">'+w.title+'</div>';
+  h+='<ul class="mw-list">';
+  for(var i=0;i<w.rules.length;i++){ h+='<li>'+boldStar(w.rules[i])+'</li>'; }
+  h+='</ul>';
+  h+='<div class="mw-why">'+w.why+'</div>';
   h+='</div>';
   return h;
 }
@@ -2235,11 +2275,11 @@ var CSU_SIM_FLOW=[
     next:function(a){ return a==="yes"?"q_updose":"info_controlled"; } },
   { id:"info_controlled", info:"조절되면 현 용량을 유지하며 안정 후 단계적 감량을 시도합니다. UCT≥12(잘 조절됨)를 목표로 추적하고, 재발 시 즉시 원래 단계로 복귀. 자연 관해도 흔하므로 주기적으로 감량 가능성을 평가하세요.", collect:"조절 양호 — 유지 후 단계적 감량(UCT≥12 목표), 재발 시 복귀" },
   { id:"q_updose", q:"4배 증량 또는 4종 병용에도 불응?",
-    hint:"2차 전략. 국제지침은 동일 약제 4배 증량이 1차(안전성 양호). 국내는 허가사항 고려로 4종 병용도 흔하나, 국내연구상 UAS7=0 도달은 4배 증량이 더 높음. 고용량 시 졸음·QT만 주의하면 안전성 문제는 크지 않음.",
+    hint:"2차 전략. 국제지침은 동일 약제 4배 증량이 1차(안전성 양호). 국내는 허가사항 고려로 4종 병용도 흔하나, 국내연구상 UAS7=0 도달은 4배 증량이 더 높음. 고용량 시 졸음·QT만 주의하면 안전성 문제는 크지 않음. ★1차 의료기관은 항히스타민 2제 이상 병용 시 삭감 위험 → 최대 3제까지, JX999 소견 기재 + 만성두드러기 코드(L50.1) 필수.",
     opts:[ {k:"yes",label:"예"},{k:"no",label:"증량으로 조절"}],
     next:function(a){ return a==="yes"?"q_third":"info_updose"; },
-    collectFn:function(a){ return a==="yes"?"항히스타민 4배 증량/병용 불응 확인 → 3차 진입":"항히스타민 증량 시 졸음·QT 주의 / 증량분 청구 삭감 주의(허가용량 초과)"; } },
-  { id:"info_updose", info:"증량/병용으로 조절되면 유지합니다. 4배 증량이 4종 병용보다 UAS7=0 도달률이 높다는 국내 근거가 있으나, 허가용량 초과분은 청구 삭감 주의가 필요합니다. 졸음·QT 연장 가능성을 점검하고 안정되면 감량을 시도하세요.", collect:"증량/병용으로 조절 — 유지, 삭감 주의(허가용량 초과분), 안정 후 감량" },
+    collectFn:function(a){ return a==="yes"?"항히스타민 4배 증량/병용 불응 확인 → 3차 진입":"항히스타민 증량 시 졸음·QT 주의 / ★1차 의료기관: 2제 이상 병용 시 삭감 위험 → 최대 3제, JX999 소견 + 만성두드러기 코드(L50.1) 필수"; } },
+  { id:"info_updose", info:"증량/병용으로 조절되면 유지합니다. 4배 증량이 4종 병용보다 UAS7=0 도달률이 높다는 국내 근거가 있으나, 허가용량 초과분은 청구 삭감 주의가 필요합니다. ★1차 의료기관은 항히스타민 2제 이상 병용 시 삭감 위험이 있어 최대 3제까지 사용하고, 특정내역 JX999에 소견 기재 + 만성두드러기 코드(L50.1)를 삽입해야 삭감을 방어할 수 있습니다. 졸음·QT 연장 가능성을 점검하고 안정되면 감량을 시도하세요.", collect:"증량/병용 유지 — ★1차 의료기관: 최대 3제, JX999 소견 + 만성두드러기 코드(L50.1) 필수" },
   { id:"q_third", q:"3차 치료 진입 — 어느 쪽을 고려하나요?",
     hint:"오말리주맙이 지침 우선(권고A·근거II, 안전성 우위). 사이클로스포린은 효과적이나 신독성·고혈압으로 모니터 부담. 결정적 변수는 비용 — 오말리주맙 CSU는 비급여(전액본인 연 360만원). 신장애·고혈압 환자는 오말리주맙이, 비용 제약 시 사이클로스포린이 현실 선택이 되기도.",
     opts:[ {k:"oma",label:"오말리주맙"},{k:"csa",label:"사이클로스포린"}],
@@ -2459,7 +2499,7 @@ function renderCsuFlow(){
   h+='</div>';
   h+='<div style="font-size:12px;font-weight:700;color:var(--ink-faint);margin-bottom:6px">임상 특징</div>';
   h+='<div class="chips" id="c_feat" style="margin-bottom:14px">'+
-     chipBtn("inducible","유발성 의심")+chipBtn("angioedema","혈관부종 동반")+chipBtn("updose","항히스타민 증량 중")+'</div>';
+     chipBtn("inducible","유발성 의심")+chipBtn("angioedema","혈관부종 동반")+chipBtn("updose","항히스타민 증량 중")+chipBtn("multi_ah","항히스타민 2제↑ 병용")+'</div>';
   h+='<button class="runbtn" onclick="runCsuFlow()">분석 →</button>';
   h+='<div id="csuFlowResult"></div>';
   document.getElementById("view-flow").innerHTML=h;
@@ -2471,7 +2511,8 @@ function runCsuFlow(){
     currentStep:parseInt(document.getElementById("c_step").value,10),
     inducible:feat.indexOf("inducible")>=0,
     angioedema:feat.indexOf("angioedema")>=0,
-    updose:feat.indexOf("updose")>=0
+    updose:feat.indexOf("updose")>=0,
+    multiAh:feat.indexOf("multi_ah")>=0
   };
   var clin=csuClinicalEngine(input);
   var h="";
@@ -2503,6 +2544,7 @@ function runCsuFlow(){
   var ah=csuReimbCheck("drug:cetirizine",{updose:input.updose});
   h+='<div class="optrow"><span class="on">2세대 항히스타민</span><span class="badge b-ok" style="margin-left:auto">표준 급여</span></div>';
   if(input.updose) h+='<div class="note" style="border-left-color:var(--warn)">⚠ 4배 증량: 허가용량 초과분 삭감 주의. 4종 병용은 상대적으로 무난. 고용량 시 졸음·QT 주의.</div>';
+  if(input.multiAh) h+=renderMultiWarn();
   // 오말리주맙
   var om=csuReimbCheck("drug:omalizumab",{});
   h+='<div class="optrow"><span class="on">오말리주맙(졸레어)</span><span class="badge b-block" style="margin-left:auto">CSU 비급여</span></div>';
