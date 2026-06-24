@@ -89,6 +89,8 @@ __JSONLD__
     display:flex;align-items:center;gap:7px;}
   .card-h .tag{font-size:11px;font-weight:700;color:var(--ac,#5a6a78);background:var(--acbg,#eef1f4);
     padding:2px 8px;border-radius:999px;}
+  .card-h .ext-badge{font-size:10px;font-weight:700;color:#5a6a78;background:#eef1f4;
+    border:1px solid #dde3ea;padding:1px 6px;border-radius:999px;margin-left:5px;vertical-align:middle;}
   .card-h .gl{font-size:12.5px;line-height:1.5;color:var(--ink-faint);margin-top:5px;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
   .card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:15px;
@@ -351,20 +353,30 @@ __JSONLD__
   function makeCard(g){
     const a = document.createElement('a');
     a.className = 'card';
-    a.href = 'guides/' + g.out;
+    if (g.external){
+      a.href = g.href;
+      a.target = '_blank';
+      a.rel = 'noopener';
+    } else {
+      a.href = 'guides/' + g.out;
+    }
     a.style.setProperty('--ac', g.accent);
     a.style.setProperty('--acbg', hexToRgba(g.accent, .12));
+    const openLabel = g.external
+      ? '새 탭에서 열기 <span class="arr">↗</span>'
+      : '열기 <span class="arr">→</span>';
+    const extBadge = g.external ? '<span class="ext-badge">외부</span>' : '';
     a.innerHTML = `
       <button class="fav${isFav(g.id)?' on':''}" data-id="${g.id}" title="즐겨찾기" aria-label="즐겨찾기 토글">${isFav(g.id)?'★':'☆'}</button>
       <div class="card-top">
         <div class="emoji">${g.emoji}</div>
         <div class="card-h">
-          <div class="t">${g.title}<span class="tag">${g.tag}</span></div>
+          <div class="t">${g.title}<span class="tag">${g.tag}</span>${extBadge}</div>
           <div class="gl">${g.guideline}</div>
         </div>
       </div>
       <div class="card-foot">
-        <span class="open">열기 <span class="arr">→</span></span>
+        <span class="open">${openLabel}</span>
         <span class="idlabel">${g.id}</span>
       </div>`;
     // 별 클릭은 카드 이동 막고 토글만

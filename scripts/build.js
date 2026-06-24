@@ -142,6 +142,10 @@ let ok = 0, miss = 0;
 const built = [];
 const searchIndex = {}; // id → 본문 추출 색인 텍스트
 for (const g of REG.guides) {
+  if (g.external) {
+    console.log(`↗ ${g.id.padEnd(14)} → 외부 링크 (${g.href}) — 빌드 제외`);
+    continue;
+  }
   const srcPath = findSrc(g.src);
   if (!srcPath) {
     console.warn(`✗ ${g.id}: 원본 없음 (${g.src}) — 건너뜀`);
@@ -172,9 +176,10 @@ const SITE = (M.siteUrl || '').replace(/\/+$/, ''); // 끝 슬래시 제거
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // noscript 정적 링크 (크롤러용)
-const noscriptLinks = REG.guides.map(g =>
-  `<li><a href="guides/${g.out}">${esc(g.emoji)} ${esc(g.title)}</a> — ${esc(g.guideline)}</li>`
-).join('\n        ');
+const noscriptLinks = REG.guides.map(g => {
+  const href = g.external ? g.href : 'guides/' + g.out;
+  return `<li><a href="${href}">${esc(g.emoji)} ${esc(g.title)}</a> — ${esc(g.guideline)}</li>`;
+}).join('\n        ');
 
 // JSON-LD 구조화 데이터 (WebSite + ItemList)
 const jsonld = {
@@ -188,7 +193,7 @@ const jsonld = {
     "@type": "ItemList",
     "itemListElement": REG.guides.map((g, i) => ({
       "@type": "ListItem", "position": i + 1, "name": g.title,
-      "url": SITE + "/guides/" + g.out
+      "url": g.external ? g.href : SITE + "/guides/" + g.out
     }))
   }
 };
@@ -204,10 +209,10 @@ const indexHtml = tpl
 fs.writeFileSync(path.join(ROOT, 'public', 'index.html'), indexHtml);
 console.log(`✓ 대시보드      → index.html`);
 
-// ── sitemap.xml 생성 (index + 14개 가이드) ──
+// ── sitemap.xml 생성 (index + 내부 가이드만; 외부 링크는 제외) ──
 const urls = [
   { loc: SITE + '/', priority: '1.0' },
-  ...REG.guides.map(g => ({ loc: SITE + '/guides/' + g.out, priority: '0.8' }))
+  ...REG.guides.filter(g => !g.external).map(g => ({ loc: SITE + '/guides/' + g.out, priority: '0.8' }))
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
