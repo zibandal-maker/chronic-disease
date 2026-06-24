@@ -97,21 +97,26 @@ input{-webkit-appearance:none;appearance:none;font-size:16px;} /* 16px 미만이
 .hdr-sub{font-size:11px;color:var(--muted);margin-top:1px;}
 .hdr-feedback{font-size:11.5px;font-weight:600;padding:6px 12px;background:var(--accent-lt);color:var(--accent);border:1px solid var(--accent-bg);border-radius:9px;text-decoration:none;white-space:nowrap;}
 .hdr-feedback:active{background:var(--accent-bg);}
+.hdr-r{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 
 /* ── Patient panel ── */
 
 /* ── 컴팩트 환자 바 (모바일 최적화) ── */
-.pt-compact{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:6px 8px;margin-bottom:8px;box-shadow:var(--sh);}
+.pt-compact{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:6px 8px;margin-bottom:8px;box-shadow:var(--sh);}
+.pt-fav-btn{flex-shrink:0;width:30px;height:32px;border:none;background:none;font-size:17px;color:var(--yellow,#ca8a04);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:7px;padding:0;}
+.pt-fav-btn:active{background:var(--surface2);}
+.pt-fav-btn.on{color:#f59e0b;}
 .pt-compact-name{flex:1;min-width:0;}
-.pt-name-inp{width:100%;border:none;background:none;font-size:14px;font-weight:700;color:var(--text);padding:6px 8px;outline:none;}
+.pt-name-inp{width:100%;border:none;background:none;font-size:14px;font-weight:700;color:var(--text);padding:6px 4px;outline:none;}
 .pt-name-inp::placeholder{color:var(--muted2);font-weight:400;}
 .pt-compact-wt{display:flex;align-items:center;gap:0;background:var(--surface2);border:1px solid var(--border);border-radius:9px;overflow:hidden;flex-shrink:0;}
-.pt-wt-step{width:34px;height:36px;border:none;background:none;font-size:18px;font-weight:700;color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.pt-wt-step{width:28px;height:34px;border:none;background:none;font-size:17px;font-weight:700;color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .pt-wt-step:active{background:var(--accent-lt);}
-.pt-compact-wt input{width:42px;height:36px;border:none;background:none;text-align:center;font-family:var(--mono);font-size:16px;font-weight:800;color:var(--text);outline:none;padding:0;-moz-appearance:textfield;}
+.pt-compact-wt input{width:34px;height:34px;border:none;background:none;text-align:center;font-family:var(--mono);font-size:15px;font-weight:800;color:var(--text);outline:none;padding:0;-moz-appearance:textfield;}
 .pt-compact-wt input::-webkit-inner-spin-button,.pt-compact-wt input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
-.pt-wt-unit{font-size:11px;color:var(--muted);padding-right:8px;}
-.pt-edit-btn{flex-shrink:0;font-size:11.5px;font-weight:600;color:var(--accent);background:var(--accent-lt);border:1px solid var(--accent-bg);border-radius:8px;padding:8px 10px;cursor:pointer;white-space:nowrap;}
+.pt-wt-unit{font-size:10px;color:var(--muted);padding-right:5px;}
+.pt-edit-btn{flex-shrink:0;font-size:15px;color:var(--accent);background:var(--accent-lt);border:1px solid var(--accent-bg);border-radius:8px;width:32px;height:32px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;}
+.pt-edit-btn.on{background:var(--accent);border-color:var(--accent);filter:brightness(1.1);}
 .pt-active-btn{flex-shrink:0;display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--green);background:var(--green-lt);border:1px solid #bbf7d0;border-radius:8px;padding:8px 11px;cursor:pointer;white-space:nowrap;}
 .pt-active-btn.on{background:var(--green);color:#fff;border-color:var(--green);}
 .pt-active-btn.has-drugs:not(.on){background:#dcfce7;}
@@ -300,7 +305,6 @@ input{-webkit-appearance:none;appearance:none;font-size:16px;} /* 16px 미만이
 
 footer{margin-top:32px;font-size:11px;color:var(--muted2);line-height:1.7;}
 .footer-disclaimer{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:13px 15px;margin-bottom:12px;}
-.fd-author{margin-top:10px;padding-top:9px;border-top:1px solid #fecaca;font-size:11px;color:#9b6b6b;line-height:1.5;}
 .fd-title{font-size:12.5px;font-weight:800;color:#991b1b;margin-bottom:6px;}
 .fd-body{font-size:11px;color:#7f1d1d;line-height:1.65;}
 .fd-body b{font-weight:700;}
@@ -571,11 +575,11 @@ input[type=range]::-moz-range-thumb{
   cursor:pointer;font-family:var(--sans);transition:all .12s;white-space:nowrap;}
 .fset-btn.active{background:var(--accent-lt);border-color:var(--accent);color:var(--accent);}
 
-.fluid-top-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
+.fluid-top-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-bottom:0;}
 @media(max-width:640px){.fluid-top-grid{grid-template-columns:1fr;}}
 
 .fluid-card{background:var(--surface);border:1px solid var(--border);
-  border-radius:10px;padding:14px;box-shadow:var(--sh);margin-bottom:0;}
+  border-radius:10px;padding:14px;box-shadow:var(--sh);margin-bottom:0;min-width:0;overflow-wrap:anywhere;}
 .fluid-card-hdr{font-size:14px;font-weight:700;color:var(--text);
   margin-bottom:12px;display:flex;align-items:center;gap:6px;}
 
@@ -648,7 +652,7 @@ input[type=range]::-moz-range-thumb{
 .duty-card-hdr{display:flex;align-items:center;justify-content:space-between;
   padding:9px 14px;background:var(--surface2);border-bottom:1px solid var(--border);
   font-size:13px;font-weight:700;color:var(--text);}
-.duty-body{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.duty-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;}
 @media(max-width:500px){.duty-body{grid-template-columns:1fr;}}
 .duty-col{padding:12px 14px;}
 .duty-col-hdr{font-size:11px;font-weight:700;color:var(--muted);
@@ -756,6 +760,43 @@ input[type=range]::-moz-range-thumb{
 .elyte-safety-line{font-size:11.5px;line-height:1.55;padding:7px 11px;border-radius:7px;background:var(--surface2);margin-bottom:5px;color:var(--text2);}
 .elyte-ref{font-size:10px;color:var(--muted2);line-height:1.6;border-top:1px solid var(--border);padding-top:9px;}
 @media (max-width:480px){ .elyte-inputs{grid-template-columns:1fr;} }
+@media (max-width:560px){ .ibw-layout{grid-template-columns:1fr !important;} }
+/* 모바일 카드 간격 압축 — Vent/CRRT 탭 세로 공간 절약 */
+@media (max-width:480px){
+  /* 직계 카드 블록 하단 여백 축소 */
+  #tab-ibw > div, #tab-crrt > div{ margin-bottom:9px !important; }
+  /* 큰 패딩(16px 20px) 카드 → 모바일 축소 */
+  #tab-ibw > div[style*="padding:16px 20px"],
+  #tab-crrt > div[style*="padding:16px 20px"],
+  #tab-ibw > div[style*="padding:14px 16px"]{ padding:11px 13px !important; }
+  /* 공용 입력 바 패딩 축소 */
+  #tab-ibw > div[style*="padding:14px 16px"]:first-child{ padding:11px 13px !important; }
+}
+/* Vent 탭 표: 모바일에서 셀 여백·폰트 축소로 화면 폭 안에 수용 */
+.vent-tbl-wrap table{font-size:12px;}
+.vent-tbl-wrap th,.vent-tbl-wrap td{white-space:nowrap;}
+@media (max-width:430px){
+  .vent-tbl-wrap{font-size:11px;}
+  .vent-tbl-wrap table{font-size:10.5px;}
+  .vent-tbl-wrap th,.vent-tbl-wrap td{padding:6px 5px !important;}
+  .vent-tbl-wrap th{font-size:9px !important;letter-spacing:0 !important;}
+  /* 큰 숫자 셀(일회호흡량) 폰트 축소 */
+  #tv-tbody td:nth-child(2){font-size:15px !important;}
+  /* L/min 셀 폰트 축소 */
+  #tv-tbody td:nth-child(3),#tv-tbody td:nth-child(4){font-size:11px !important;}
+}
+@media (max-width:359px){
+  .vent-tbl-wrap th,.vent-tbl-wrap td{padding:5px 4px !important;}
+  .vent-tbl-wrap table{font-size:9.5px !important;}
+}
+/* 320px급 극소폭: 상단 환자·약물 바 버튼 축소 + 줄바꿈 허용 */
+@media (max-width:420px){
+  .pt-compact{flex-wrap:wrap;gap:6px;}
+}
+@media (max-width:340px){
+  .pt-active-btn{padding:7px 8px;font-size:10.5px;gap:3px;}
+  .app{padding-left:10px;padding-right:10px;}
+}
 
 /* ── 범용
 /* ── 범용 계산기 ── */
@@ -895,7 +936,7 @@ input[type=range]::-moz-range-thumb{
 .elyte-acc-body{max-height:0;overflow:hidden;transition:max-height .28s ease;}
 .elyte-acc-pad{padding:4px 14px 14px;}
 .elyte-sub{font-size:11.5px;color:var(--muted);margin:6px 0;}
-.crcl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.crcl-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin:10px 0;}
 .crcl-cell{background:var(--surface2);border-radius:10px;padding:11px;border:1px solid var(--border);}
 .crcl-lbl{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.02em;}
 .crcl-val{font-size:21px;font-weight:800;color:var(--accent);margin:3px 0;}
@@ -986,7 +1027,7 @@ input[type=range]::-moz-range-thumb{
 .nut-hint,.nut-bmi{font-size:12.5px;color:var(--text2);margin:8px 0;}
 .nut-bmi b{color:var(--accent);}
 .nut-wtlbl{font-size:10.5px;color:var(--muted);background:var(--surface2);padding:1px 6px;border-radius:5px;margin-left:4px;}
-.nut-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.nut-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin:10px 0;}
 .nut-cell{background:var(--surface2);border-radius:10px;padding:11px;border:1px solid var(--border);}
 .nut-lbl{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;}
 .nut-val{font-size:20px;font-weight:800;color:var(--accent);margin:3px 0;}
@@ -997,7 +1038,127 @@ input[type=range]::-moz-range-thumb{
 .nut-early b{color:var(--accent);}
 .nut-warn{font-size:10.5px;color:#92400e;background:#fff4e5;border-radius:7px;padding:7px 10px;margin-top:7px;line-height:1.45;}
 @media (max-width:430px){.nut-grid{grid-template-columns:1fr;}}
+
+/* CRRT 모듈 CSS */
+:root{--teal-lt:#ccfbf1;}
+/* ===== 다크 모드 — 야간 ICU 대응. 상태색(녹/주황/빨강)은 어두운 배경 가독성 위해 밝게 조정 ===== */
+[data-theme="dark"]{
+  --bg:#0f141c;--surface:#1a212e;--surface2:#222b3a;
+  --border:#2e3848;--border2:#3d4a5e;
+  --accent:#6b93f0;--accent-lt:#1e2942;--accent-bg:#243352;
+  --green:#4ade80;--green-lt:#15291c;--green-bg:#1c3a28;
+  --orange:#fb923c;--orange-lt:#2a1d11;--orange-bg:#3d2a18;
+  --red:#f87171;--red-lt:#2c1517;--red-bg:#3f1d20;
+  --purple:#a78bfa;--purple-lt:#1f1a33;--purple-bg:#2c2547;
+  --teal:#2dd4bf;--teal-lt:#10302c;--teal-bg:#14423c;
+  --yellow:#facc15;--yellow-lt:#2a2410;
+  --cyan:#22d3ee;--cyan-lt:#0e2a30;--cyan-bg:#15414a;
+  --emerald:#34d399;--emerald-lt:#0f2a20;--emerald-bg:#15412f;
+  --indigo:#818cf8;--indigo-lt:#1c2142;--indigo-bg:#272d52;
+  --text:#e6ebf2;--text2:#c0c8d4;--muted:#8b95a5;--muted2:#6b7585;
+  --ink:#e6ebf2;
+  --sh:0 1px 3px rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.2);
+  --sh2:0 4px 16px rgba(0,0,0,.4);
+}
+/* 다크모드에서 인라인 하드코딩된 밝은 그라데이션 배경 톤다운 */
+[data-theme="dark"] [style*="linear-gradient(135deg,#eff6ff"],
+[data-theme="dark"] [style*="linear-gradient(135deg,#eff6ff,#f0fdfa)"],
+[data-theme="dark"] [style*="linear-gradient(135deg,#eff6ff,#f0fdf4)"]{
+  background:var(--surface2) !important;
+}
+[data-theme="dark"] [style*="background:#fffbeb"],
+[data-theme="dark"] [style*="background:#fef2f2"]{ background:var(--surface2) !important; }
+[data-theme="dark"] [style*="border:1px solid #fde68a"],
+[data-theme="dark"] [style*="border:1px solid #bfdbfe"]{ border-color:var(--border2) !important; }
+/* 테마 토글 버튼 */
+.theme-toggle{background:none;border:1px solid var(--border2);border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:var(--text2);flex-shrink:0;transition:background .12s;}
+.theme-toggle:hover{background:var(--surface2);}
+/* 다크모드 beta 배너 가독성 */
+[data-theme="dark"] .beta-banner{ background:var(--orange-lt) !important; border-color:var(--orange-bg) !important; color:#fbbf77 !important; }
+.crrt-lbl{display:flex;flex-direction:column;font-size:11px;font-weight:700;color:var(--muted);gap:3px;}
+.crrt-lbl input[type="number"]{width:100%;box-sizing:border-box;min-width:0;font-size:14px;padding:7px 9px;border:1px solid var(--border2);border-radius:7px;font-family:var(--mono);background:var(--surface);}
+.crrt-acc{border:1px solid var(--border);border-radius:10px;margin-bottom:10px;background:var(--surface);overflow:hidden;}
+.crrt-acc>summary{padding:12px 14px;font-size:14px;font-weight:700;color:var(--ink,#1a2230);cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;}
+.crrt-acc>summary::-webkit-details-marker{display:none;}
+.crrt-acc>summary::before{content:'▸';color:var(--teal);font-weight:800;transition:transform .15s;}
+.crrt-acc[open]>summary::before{transform:rotate(90deg);}
+.crrt-acc-body{padding:0 14px 14px;}
+.crrt-badge-guide{font-size:10px;font-weight:700;color:#fff;background:var(--cyan);border-radius:5px;padding:2px 7px;margin-left:auto;}
+.crrt-badge-prac{font-size:10px;font-weight:700;color:#fff;background:var(--orange);border-radius:5px;padding:2px 7px;margin-left:auto;}
+
+/* Vent 모듈 CSS */
+.vent-acc{border:1px solid var(--border);border-radius:10px;margin-bottom:10px;background:var(--surface);overflow:hidden;}
+.vent-acc>summary{padding:12px 14px;font-size:14px;font-weight:700;color:var(--ink,#1a2230);cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;}
+.vent-acc>summary::-webkit-details-marker{display:none;}
+.vent-acc>summary::before{content:'▸';color:var(--cyan);font-weight:800;transition:transform .15s;}
+.vent-acc[open]>summary::before{transform:rotate(90deg);}
+.vent-acc-body{padding:0 14px 14px;}
+.vent-badge{font-size:10px;font-weight:700;color:#fff;background:var(--cyan);border-radius:5px;padding:2px 7px;margin-left:auto;}
+/* BETA 표시 — 검증 진행 중 섹션 */
+.beta-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:800;letter-spacing:.04em;color:#fff;background:linear-gradient(135deg,#f59e0b,#f97316);border-radius:5px;padding:2px 7px;text-transform:uppercase;vertical-align:middle;}
+.beta-banner{display:flex;align-items:flex-start;gap:8px;font-size:11.5px;line-height:1.5;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:9px;padding:9px 12px;margin-bottom:14px;}
+.beta-banner .beta-tag{flex-shrink:0;margin-top:1px;}
+/* 참조표용 카드 아코디언 (ARDS표·FiO₂-PEEP 조합표) */
+.vent-card-acc{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--sh);margin-top:14px;overflow:hidden;}
+.vent-card-acc>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+.vent-card-acc>summary::-webkit-details-marker{display:none;}
+.vent-card-acc>summary::before{content:'▸';color:var(--cyan);font-weight:800;transition:transform .15s;font-size:13px;}
+.vent-card-acc[open]>summary::before{transform:rotate(90deg);}
+.vent-card-acc>summary .vca-hint{margin-left:auto;font-size:10px;font-weight:600;color:var(--muted2);text-transform:none;letter-spacing:0;}
+.vent-card-acc>.vca-body{padding:0 18px 16px;}
+.vent-badge-b{font-size:10px;font-weight:700;color:#fff;background:var(--teal);border-radius:5px;padding:2px 7px;margin-left:auto;}
+.vent-lbl{display:flex;flex-direction:column;font-size:11px;font-weight:700;color:var(--muted);gap:3px;}
+.vent-lbl input[type="number"],.vent-lbl select{width:100%;box-sizing:border-box;min-width:0;font-size:14px;padding:7px 9px;border:1px solid var(--border2);border-radius:7px;font-family:var(--mono);background:var(--surface);}
+.vent-chk{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:var(--ink,#1a2230);padding:9px 11px;line-height:1.35;cursor:pointer;border:1px solid var(--border);border-radius:8px;margin-bottom:5px;background:var(--surface);transition:background .12s,border-color .12s;}
+.vent-chk:hover{background:var(--surface2);}
+.vent-chk>span{flex:1;text-align:left;}
+.vent-chk input[type="checkbox"]{flex-shrink:0;width:20px;height:20px;cursor:pointer;accent-color:var(--cyan);margin:0;}
+.vent-chk.checked{background:var(--cyan-lt,#cffafe);border-color:var(--cyan);color:var(--cyan);font-weight:700;}
+.crrt-chk{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:var(--ink,#1a2230);padding:9px 11px;cursor:pointer;border:1px solid var(--border);border-radius:8px;background:var(--surface);transition:background .12s,border-color .12s;}
+.crrt-chk:hover{background:var(--surface2);}
+.crrt-chk>span{flex:1;text-align:left;}
+.crrt-chk input[type="checkbox"]{flex-shrink:0;width:20px;height:20px;cursor:pointer;accent-color:var(--teal);margin:0;}
+.crrt-chk.checked{background:var(--teal-lt,#ccfbf1);border-color:var(--teal);color:var(--teal);font-weight:700;}
+
+/* Vent v0.2 배지 */
+.vent-badge-ks{font-size:10px;font-weight:700;color:#fff;background:var(--teal);border-radius:5px;padding:2px 7px;margin-left:auto;}
+
+/* 피드백 모달 CSS */
+.fb-overlay{position:fixed;inset:0;background:rgba(20,28,42,0.55);z-index:9999;align-items:center;justify-content:center;padding:16px;}
+.fb-modal{background:var(--surface,#fff);border-radius:16px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.fb-modal-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border);font-size:16px;font-weight:800;color:var(--accent);}
+.fb-x{background:none;border:none;font-size:26px;line-height:1;color:var(--muted);cursor:pointer;padding:0 4px;}
+.fb-modal-bd{padding:16px 18px;}
+.fb-lbl{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:12px;}
+.fb-inp{display:block;width:100%;margin-top:4px;padding:9px 11px;border:1px solid var(--border2);border-radius:9px;font-size:14px;font-family:inherit;background:var(--surface);box-sizing:border-box;}
+textarea.fb-inp{resize:vertical;}
+.fb-status{font-size:13px;font-weight:700;margin-bottom:10px;min-height:18px;}
+.fb-status.fb-ok{color:var(--green);}
+.fb-status.fb-err{color:var(--red);}
+.fb-submit{width:100%;padding:12px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-size:15px;font-weight:800;cursor:pointer;}
+.fb-submit:disabled{opacity:0.6;cursor:default;}
+.hdr-feedback{cursor:pointer;}
 </style>
+<!-- ===== PWA / TWA 연결 (v3.11) ===== -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#3a5fc8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ICU계산기">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+  });
+}
+</script>
+<!-- Vercel Web Analytics (static HTML) — 배포 도메인에서만 동작, 대시보드에서 Analytics enable 필요 -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 <div class="app">
@@ -1007,7 +1168,10 @@ input[type=range]::-moz-range-thumb{
     <div class="logo">💊</div>
     <div class="hdr-title">ICU 약물 계산기</div>
   </div>
-  <button type="button" class="hdr-feedback" onclick="openFeedback()">💬 피드백</button>
+  <div class="hdr-r">
+    <button class="hdr-feedback" type="button" onclick="openFeedback()">💬 피드백</button>
+    <button class="theme-toggle" type="button" onclick="toggleTheme()" id="theme-toggle" aria-label="다크모드 전환" title="다크모드 전환">🌙</button>
+  </div>
 </div>
 
 <div class="sticky-bar" id="sticky-bar">
@@ -1022,8 +1186,9 @@ input[type=range]::-moz-range-thumb{
       <span class="pt-wt-unit">kg</span>
       <button class="pt-wt-step" type="button" onclick="stepBwt(1)">＋</button>
     </div>
-    <button class="pt-edit-btn" type="button" onclick="togPtPanel()" id="pt-edit-btn">빠른설정 ▾</button>
+    <button class="pt-edit-btn" type="button" onclick="togPtPanel()" id="pt-edit-btn" aria-label="빠른설정" title="빠른설정">⚙️</button>
     <button class="pt-active-btn" type="button" onclick="switchTab('active',this)" id="pt-active-btn">💉 현재약물<span class="pt-active-cnt" id="pt-active-cnt"></span></button>
+    <button class="pt-fav-btn" type="button" onclick="switchTab('fav',this)" id="pt-fav-btn" aria-label="약물 즐겨찾기" title="약물 즐겨찾기">☆</button>
   </div>
   <div class="pt-quick-wrap" id="pt-quick-wrap" style="display:none;">
     <span class="pt-quick-lbl">빠른 체중</span>
@@ -1043,10 +1208,10 @@ input[type=range]::-moz-range-thumb{
     <button class="tab" type="button" onclick="switchTab('cardio',this)">🫀 심혈관</button>
     <button class="tab" type="button" onclick="switchTab('calc',this)">🧮 계산기</button>
     <button class="tab" type="button" onclick="switchTab('elyte',this)">🧪 전해질</button>
-    <button class="tab" type="button" onclick="switchTab('ibw',this)">📐 IBW</button>
+    <button class="tab" type="button" onclick="switchTab('ibw',this)">🫁 Vent<sup style="font-size:8px;font-weight:800;color:#f97316;margin-left:1px;">β</sup></button>
+    <button class="tab" type="button" onclick="switchTab('crrt',this)">💧 CRRT<sup style="font-size:8px;font-weight:800;color:#f97316;margin-left:1px;">β</sup></button>
     <button class="tab" type="button" onclick="switchTab('emg',this)">🚨 응급</button>
     <button class="tab" type="button" onclick="switchTab('fluid',this)">💧 수액</button>
-    <button class="tab" type="button" onclick="switchTab('fav',this)">⭐</button>
   </div>
 </div><!-- /sticky-bar -->
 
@@ -1147,7 +1312,7 @@ input[type=range]::-moz-range-thumb{
 
     
 
-    <div class="ban-info" style="margin-top:14px;"><span class="ban-icon">⚠️</span><span>체중은 상단 환자 정보의 값을 사용합니다. 계산 결과는 참고용이며, 실제 투여 전 반드시 재확인하십시오.</span></div>
+    <div class="ban-info" style="margin-top:14px;"><span class="ban-icon">⚠️</span><span>체중은 상단 환자 정보의 값을 사용합니다. 계산 결과는 참고용이며, 투여 전 다시 확인하는 것이 좋습니다.</span></div>
   </div>
 
   <!-- ===== v3.6 커스텀 약물 생성 ===== -->
@@ -1218,6 +1383,10 @@ input[type=range]::-moz-range-thumb{
         </select>
       </div>
     </div>
+    <label class="elyte-highrisk" style="display:flex;align-items:center;gap:8px;margin:8px 0;font-size:12.5px;cursor:pointer;">
+      <input type="checkbox" id="na-highrisk" onchange="calcNaCorrection()" style="width:16px;height:16px;">
+      <span>⚠️ <b>고위험군</b> (간질환·알코올·영양실조·저칼륨혈증·중증저Na &lt;115–120) — 24h 한계 ≤6으로 강화</span>
+    </label>
     <div class="elyte-note-wt">체중 <b id="na-wt-disp">60</b> kg (상단 환자 정보) · TBW = <b id="na-tbw-disp">36.0</b> L</div>
 
     <!-- 방향·안전 판정 -->
@@ -1246,67 +1415,6 @@ input[type=range]::-moz-range-thumb{
     </div>
   </div>
 
-  <div class="elyte-acc">
-    <button class="elyte-acc-btn" onclick="toggleElyteAcc(this)">🩸 ABGA 분석기 <span class="eacc-sub">산-염기 단계별 해석</span><span class="eacc-arrow">▾</span></button>
-    <div class="elyte-acc-body">
-  <div class="calc-card" style="margin-top:0;">
-    <div class="calc-title" style="display:none;">ABGA</div>
-
-    <div class="elyte-inputs abga-inputs">
-      <div class="elyte-field">
-        <label>pH</label>
-        <div class="elyte-inp-wrap"><input type="number" id="abg-ph" value="7.30" min="6.5" max="7.9" step="0.01" inputmode="decimal" oninput="calcABGA()"></div>
-      </div>
-      <div class="elyte-field">
-        <label>PaCO₂</label>
-        <div class="elyte-inp-wrap"><input type="number" id="abg-co2" value="30" min="5" max="120" step="1" inputmode="decimal" oninput="calcABGA()"><span>mmHg</span></div>
-      </div>
-      <div class="elyte-field">
-        <label>HCO₃⁻</label>
-        <div class="elyte-inp-wrap"><input type="number" id="abg-hco3" value="14" min="2" max="60" step="1" inputmode="decimal" oninput="calcABGA()"><span>mEq/L</span></div>
-      </div>
-      <div class="elyte-field">
-        <label>경과</label>
-        <select id="abg-chron" onchange="calcABGA()">
-          <option value="acute">급성</option>
-          <option value="chronic">만성</option>
-        </select>
-      </div>
-    </div>
-    <div class="abga-optional">
-      <div class="abga-opt-label">선택 입력 (AG 분석용)</div>
-      <div class="elyte-inputs">
-        <div class="elyte-field">
-          <label>Na⁺</label>
-          <div class="elyte-inp-wrap"><input type="number" id="abg-na" value="140" min="100" max="180" step="1" inputmode="decimal" oninput="calcABGA()"><span>mEq/L</span></div>
-        </div>
-        <div class="elyte-field">
-          <label>Cl⁻</label>
-          <div class="elyte-inp-wrap"><input type="number" id="abg-cl" value="100" min="60" max="140" step="1" inputmode="decimal" oninput="calcABGA()"><span>mEq/L</span></div>
-        </div>
-        <div class="elyte-field">
-          <label>Albumin</label>
-          <div class="elyte-inp-wrap"><input type="number" id="abg-alb" value="4.0" min="1" max="6" step="0.1" inputmode="decimal" oninput="calcABGA()"><span>g/dL</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 1차 판정 -->
-    <div id="abg-primary" class="abga-primary"></div>
-    <!-- 보상 -->
-    <div id="abg-comp" class="abga-block"></div>
-    <!-- AG -->
-    <div id="abg-ag" class="abga-block"></div>
-    <!-- 종합 -->
-    <div id="abg-summary" class="abga-summary"></div>
-
-    <div class="elyte-ref">
-      <b>Winter's:</b> 예상 PaCO₂ = 1.5×HCO₃ + 8±2 (대사성 산증) · <b>AG</b> = Na − (Cl + HCO₃), 정상 12±2, 알부민 보정 +2.5×(4.0−Alb)<br>
-      <b>Delta ratio</b> = ΔAG/ΔHCO₃: 1–2 단순 AGMA · &lt;1 동반 non-AG 산증 · &gt;2 동반 대사성 알칼리증 · 출처: Harrison's, LITFL, Deranged Physiology
-    </div>
-  </div>
-    </div>
-  </div>
 
   <!-- ===== v3.5b §3 보정 칼슘 ===== -->
   <div class="elyte-acc">
@@ -1416,86 +1524,177 @@ input[type=range]::-moz-range-thumb{
 
 
 <div id="tab-ibw" style="display:none;">
-  <!-- IBW 입력 패널 -->
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 20px;margin-bottom:14px;box-shadow:var(--sh);">
-    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">이상체중 계산 (Devine 공식)</div>
-    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
 
-      <!-- 키 입력 -->
-      <div style="display:flex;flex-direction:column;gap:5px;">
-        <div class="f-label">📏 키 (Height)</div>
-        <div class="inp-wrap">
-          <input type="number" id="ibw-height" value="170" min="100" max="220" step="1"
-            inputmode="decimal" oninput="cIBW()"
-            style="font-size:20px;font-weight:700;width:80px;padding:8px 10px;text-align:right;background:none;border:none;outline:none;font-family:var(--mono);color:var(--text);">
-          <span class="u-label">cm</span>
-        </div>
-      </div>
+  <div class="beta-banner">
+    <span class="beta-tag">🫁 Beta</span>
+    <span>Vent 모듈(ABGA 연동·조정 제안)은 검증을 진행 중입니다. 제안 값은 참고용으로만 보시고, setting 변경 전 반드시 재확인해 주세요.</span>
+  </div>
 
-      <!-- 성별 -->
-      <div style="display:flex;flex-direction:column;gap:5px;">
-        <div class="f-label">⚧ 성별</div>
-        <div style="display:flex;gap:6px;">
-          <button class="ftab active" type="button" id="ibw-male"
-            onclick="setSex('male')"
-            style="color:var(--accent);border-color:var(--accent);">남성</button>
-          <button class="ftab" type="button" id="ibw-female"
-            onclick="setSex('female')">여성</button>
-        </div>
-      </div>
+  <!-- ══ 결과 요약 카드 (입력 위 — 한눈에) ══ -->
+  <div id="vent-summary"></div>
 
-      <!-- 키 슬라이더 -->
-      <div style="flex:1;min-width:180px;display:flex;flex-direction:column;gap:5px;">
-        <div class="f-label">빠른 설정</div>
-        <input type="range" id="ibw-height-sl" min="140" max="200" step="1"
-          value="170" style="accent-color:var(--accent);"
-          oninput="syncInput('ibw-height-sl','ibw-height',cIBW)">
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-family:var(--mono);">
-          <span>140</span><span>160</span><span>170</span><span>180</span><span>200</span>
-        </div>
-      </div>
-
+  <!-- ===== 공용 Ventilator 입력 바 (Single Source of Truth) ===== -->
+  <div style="background:linear-gradient(135deg,#eff6ff,#f0fdfa);border:1.5px solid var(--cyan,#06b6d4);border-radius:var(--rl);padding:14px 16px;margin-bottom:16px;box-shadow:var(--sh);">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+      <span style="font-size:13px;font-weight:800;color:var(--cyan,#06b6d4);">🎛️ 현재 Ventilator Setting</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:8px 8px;">
+      <label class="vent-lbl">FiO₂<input type="number" id="vs-fio2" value="0.4" min="0.21" max="1" step="0.05" inputmode="decimal" placeholder="소수" oninput="recalcVentAll()"></label>
+      <label class="vent-lbl">PEEP<input type="number" id="vs-peep" value="5" min="0" step="1" inputmode="decimal" placeholder="cmH₂O" oninput="recalcVentAll()"></label>
+      <label class="vent-lbl">Plateau<input type="number" id="vs-plateau" value="" min="0" step="1" inputmode="decimal" placeholder="cmH₂O" oninput="recalcVentAll()"></label>
+      <label class="vent-lbl">TV<input type="number" id="vs-tv" value="450" min="0" step="10" inputmode="decimal" placeholder="mL" oninput="recalcVentAll()"></label>
+      <label class="vent-lbl">RR<input type="number" id="vs-rr" value="14" min="0" step="1" inputmode="decimal" placeholder="/min" oninput="recalcVentAll()"></label>
     </div>
   </div>
 
-  <!-- IBW 결과 + TBW 비교 -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
-    <!-- IBW 결과 -->
-    <div style="background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:2px solid #bfdbfe;border-radius:var(--rl);padding:18px 20px;">
-      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">이상체중 (IBW)</div>
-      <div id="ibw-result" style="font-family:var(--mono);font-size:48px;font-weight:800;color:var(--accent);line-height:1;letter-spacing:-2px;">—</div>
-      <div style="font-size:13px;color:var(--muted);margin-top:4px;font-weight:600;">kg</div>
-      <div id="ibw-formula" style="font-size:11px;color:var(--muted);margin-top:6px;"></div>
+  <!-- ===== ABGA 분석기 + Vent 제안 (elyte→vent 이동) ===== -->
+  <div style="margin-bottom:16px;">
+  <div class="elyte-acc">
+    <button class="elyte-acc-btn" onclick="toggleElyteAcc(this)">🩸 ABGA 분석기 <span class="eacc-sub">산-염기 단계별 해석</span><span class="eacc-arrow">▾</span></button>
+    <div class="elyte-acc-body">
+  <div class="calc-card" style="margin-top:0;">
+    <div class="calc-title" style="display:none;">ABGA</div>
+
+    <div class="elyte-inputs abga-inputs">
+      <div class="elyte-field">
+        <label>pH</label>
+        <div class="elyte-inp-wrap"><input type="number" id="abg-ph" value="7.30" min="6.5" max="7.9" step="0.01" inputmode="decimal" oninput="calcABGA()"></div>
+      </div>
+      <div class="elyte-field">
+        <label>PaCO₂</label>
+        <div class="elyte-inp-wrap"><input type="number" id="abg-co2" value="30" min="5" max="120" step="1" inputmode="decimal" oninput="calcABGA()"><span>mmHg</span></div>
+      </div>
+      <div class="elyte-field">
+        <label>HCO₃⁻</label>
+        <div class="elyte-inp-wrap"><input type="number" id="abg-hco3" value="14" min="2" max="60" step="1" inputmode="decimal" oninput="calcABGA()"><span>mEq/L</span></div>
+      </div>
+      <div class="elyte-field">
+        <label>경과</label>
+        <select id="abg-chron" onchange="calcABGA()">
+          <option value="acute">급성</option>
+          <option value="chronic">만성</option>
+        </select>
+      </div>
     </div>
-    <!-- 실제체중 vs IBW -->
-    <div id="ibw-compare-card" style="background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--rl);padding:18px 20px;">
-      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">실제체중 vs IBW</div>
-      <div id="ibw-compare" style="font-size:13px;line-height:1.8;"></div>
+    <div class="abga-optional">
+      <div class="abga-opt-label">선택 입력 (AG 분석용)</div>
+      <div class="elyte-inputs">
+        <div class="elyte-field">
+          <label>Na⁺</label>
+          <div class="elyte-inp-wrap"><input type="number" id="abg-na" value="140" min="100" max="180" step="1" inputmode="decimal" oninput="calcABGA()"><span>mEq/L</span></div>
+        </div>
+        <div class="elyte-field">
+          <label>Cl⁻</label>
+          <div class="elyte-inp-wrap"><input type="number" id="abg-cl" value="100" min="60" max="140" step="1" inputmode="decimal" oninput="calcABGA()"><span>mEq/L</span></div>
+        </div>
+        <div class="elyte-field">
+          <label>Albumin</label>
+          <div class="elyte-inp-wrap"><input type="number" id="abg-alb" value="4.0" min="1" max="6" step="0.1" inputmode="decimal" oninput="calcABGA()"><span>g/dL</span></div>
+        </div>
+      </div>
     </div>
+
+    <!-- 1차 판정 -->
+    <div id="abg-primary" class="abga-primary"></div>
+    <!-- 보상 -->
+    <div id="abg-comp" class="abga-block"></div>
+    <!-- AG -->
+    <div id="abg-ag" class="abga-block"></div>
+    <!-- 종합 -->
+    <div id="abg-summary" class="abga-summary"></div>
+
+    <!-- ABGA → Ventilator 조정 제안 -->
+    <details class="vent-acc" style="margin-bottom:12px;">
+      <summary>🫁 ABGA 기반 Ventilator 조정 제안 <span class="vent-badge-b">보조</span></summary>
+      <div class="vent-acc-body">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">위 ABGA(pH·PaCO₂·HCO₃)와 <b>상단 🎛️ Ventilator Setting</b>을 종합해 <b>다음 조정 방향</b>을 제안합니다. setting을 바꾸면 즉시 갱신됩니다. 기계가 실시간 계산하는 항목(컴플라이언스·파형)은 다루지 않습니다.</div>
+        <div id="vs-out" style="margin-top:10px;"></div>
+      </div>
+    </details>
+
+    <div class="elyte-ref">
+      <b>Winter's:</b> 예상 PaCO₂ = 1.5×HCO₃ + 8±2 (대사성 산증) · <b>AG</b> = Na − (Cl + HCO₃), 정상 12±2, 알부민 보정 +2.5×(4.0−Alb)<br>
+      <b>Delta ratio</b> = ΔAG/ΔHCO₃: 1–2 단순 AGMA · &lt;1 동반 non-AG 산증 · &gt;2 동반 대사성 알칼리증 · 출처: Harrison's, LITFL, Deranged Physiology
+    </div>
+  </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- IBW 계산 (좌) + 실제체중 vs IBW (우) 좌우 배치 -->
+  <div class="ibw-layout" style="display:grid;grid-template-columns:1.4fr 1fr;gap:10px;margin-bottom:14px;">
+
+    <!-- 좌: IBW 입력 + 결과 -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px 16px;box-shadow:var(--sh);min-width:0;">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">이상체중 계산 (Devine)</div>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:10px;">
+        <!-- 키 -->
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div class="f-label">📏 키</div>
+          <div class="inp-wrap">
+            <input type="number" id="ibw-height" value="170" min="100" max="220" step="1"
+              inputmode="decimal" oninput="cIBW()"
+              style="font-size:18px;font-weight:700;width:62px;padding:6px 8px;text-align:right;background:none;border:none;outline:none;font-family:var(--mono);color:var(--text);">
+            <span class="u-label">cm</span>
+          </div>
+        </div>
+        <!-- 성별 -->
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div class="f-label">⚧ 성별</div>
+          <div style="display:flex;gap:5px;">
+            <button class="ftab active" type="button" id="ibw-male" onclick="setSex('male')" style="color:var(--accent);border-color:var(--accent);padding:5px 10px;">남</button>
+            <button class="ftab" type="button" id="ibw-female" onclick="setSex('female')" style="padding:5px 10px;">여</button>
+          </div>
+        </div>
+        <!-- IBW 결과 (인라인) -->
+        <div style="display:flex;flex-direction:column;gap:2px;margin-left:auto;">
+          <div class="f-label">이상체중</div>
+          <div style="display:flex;align-items:baseline;gap:4px;">
+            <span id="ibw-result" style="font-family:var(--mono);font-size:26px;font-weight:800;color:var(--accent);line-height:1;letter-spacing:-1px;">—</span>
+            <span style="font-size:12px;color:var(--muted);font-weight:600;">kg</span>
+          </div>
+        </div>
+      </div>
+      <!-- 슬라이더 -->
+      <input type="range" id="ibw-height-sl" min="140" max="200" step="1" value="170"
+        style="accent-color:var(--accent);width:100%;"
+        oninput="syncInput('ibw-height-sl','ibw-height',cIBW)">
+      <div id="ibw-formula" style="font-size:10px;color:var(--muted);margin-top:6px;"></div>
+    </div>
+
+    <!-- 우: 실제체중 vs IBW -->
+    <div id="ibw-compare-card" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rl);padding:14px 16px;min-width:0;">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">실제체중 vs IBW</div>
+      <div id="ibw-compare" style="font-size:12px;line-height:1.6;"></div>
+    </div>
+
   </div>
 
   <!-- Tidal Volume 테이블 -->
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 20px;margin-bottom:14px;box-shadow:var(--sh);">
-    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">
-      폐보호 환기 — 일회호흡량 (Tidal Volume)
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:nowrap;">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis;">
+        폐보호 환기 · TV
+      </div>
+      <div id="tv-basis-row" style="display:flex;gap:5px;flex-shrink:0;">
+        <button class="ftab active" type="button" id="tv-ibw-btn"
+          onclick="setTVBasis('ibw')"
+          style="color:var(--accent);border-color:var(--accent);padding:5px 9px;font-size:11px;white-space:nowrap;">IBW</button>
+        <button class="ftab" type="button" id="tv-tbw-btn"
+          onclick="setTVBasis('tbw')" style="padding:5px 9px;font-size:11px;white-space:nowrap;">실제체중</button>
+      </div>
     </div>
 
-    <div id="tv-basis-row" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-      <button class="ftab active" type="button" id="tv-ibw-btn"
-        onclick="setTVBasis('ibw')"
-        style="color:var(--accent);border-color:var(--accent);">IBW 기준 (권장)</button>
-      <button class="ftab" type="button" id="tv-tbw-btn"
-        onclick="setTVBasis('tbw')">실제체중 기준</button>
-    </div>
+    <div id="tv-current-eval" style="margin-bottom:10px;"></div>
 
-    <div id="tv-table" style="overflow-x:auto;border-radius:8px;border:1px solid var(--border);">
+    <div id="tv-table" class="vent-tbl-wrap" style="overflow-x:auto;border-radius:8px;border:1px solid var(--border);">
       <table style="width:100%;border-collapse:collapse;font-size:13px;">
         <thead>
           <tr style="background:var(--surface2);">
             <th style="padding:10px 14px;text-align:left;font-weight:700;border-bottom:1.5px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em;">mL/kg</th>
             <th style="padding:10px 14px;text-align:center;font-weight:700;border-bottom:1.5px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;">일회호흡량</th>
-            <th style="padding:10px 14px;text-align:center;font-weight:700;border-bottom:1.5px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;">분당환기량 (RR 12)</th>
-            <th style="padding:10px 14px;text-align:center;font-weight:700;border-bottom:1.5px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;">분당환기량 (RR 14)</th>
+            <th style="padding:10px 14px;text-align:center;font-weight:700;border-bottom:1.5px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;">MV·RR12</th>
+            <th style="padding:10px 14px;text-align:center;font-weight:700;border-bottom:1.5px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;">MV·RR14</th>
             <th style="padding:10px 14px;text-align:right;font-weight:700;border-bottom:1.5px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;">적응증</th>
           </tr>
         </thead>
@@ -1504,12 +1703,19 @@ input[type=range]::-moz-range-thumb{
     </div>
 
     <div id="tv-note" style="margin-top:10px;font-size:12px;color:var(--muted);"></div>
+
+    <!-- Plateau / Driving pressure -->
+    <div style="margin-top:14px;padding-top:14px;border-top:1px dashed var(--border2);">
+      <div style="font-size:12px;font-weight:700;color:var(--cyan);margin-bottom:6px;">Plateau · Driving Pressure <span style="font-size:10.5px;font-weight:400;color:var(--muted);">상단 🎛️ Plateau·PEEP 입력 연동</span></div>
+      <div id="vent-dp-out"></div>
+    </div>
   </div>
 
   <!-- ARDS 참고 -->
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 20px;box-shadow:var(--sh);">
-    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">ARDS 중증도별 환기 전략 (ARDSnet)</div>
-    <div style="overflow-x:auto;border-radius:8px;border:1px solid var(--border);">
+    <details class="vent-card-acc" style="box-shadow:none;margin-top:0;border:none;">
+    <summary style="padding:0 0 10px;">ARDS 중증도별 환기 전략 (ARDSnet)<span class="vca-hint">중증도별 TV·Plateau·PEEP 목표 ▾</span></summary>
+    <div class="vent-tbl-wrap" style="overflow-x:auto;border-radius:8px;border:1px solid var(--border);">
       <table style="width:100%;border-collapse:collapse;font-size:12px;">
         <thead>
           <tr style="background:var(--surface2);">
@@ -1545,13 +1751,296 @@ input[type=range]::-moz-range-thumb{
         </tbody>
       </table>
     </div>
-    <div class="ban ban-info" style="margin-top:10px;"><span class="ban-icon">💡</span><span><b>ARDSnet 원칙:</b> TV는 반드시 <b>IBW 기준</b>. 실제체중 기준 시 과환기로 ventilator-induced l
-</div></div></div>
+    <div class="ban ban-info" style="margin-top:10px;"><span class="ban-icon">💡</span><span><b>ARDSnet 원칙:</b> TV는 반드시 <b>IBW 기준</b>. 실제체중 기준 시 과환기로 ventilator-induced lung injury(VILI) 위험.</span></div>
+    </details>
+
+    <!-- FiO₂–PEEP ladder (ARDSnet) -->
+    <details class="vent-card-acc">
+      <summary>FiO₂–PEEP 조합표 (ARDSnet)<span class="vca-hint">상단 FiO₂ 기준 권장 PEEP 표시 ▾</span></summary>
+      <div class="vca-body">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.5;">PEEP은 단일값이 아니라 FiO₂와의 <b>조합표</b>. 동일 FiO₂에 두 전략(lower / higher PEEP) 존재 — 환자별 선택. <b>상단 🎛️ FiO₂</b>에 따라 해당 구간을 강조합니다.</div>
+      <div id="peep-ladder-rec" style="margin-bottom:12px;"></div>
+      <div class="vent-tbl-wrap" style="overflow-x:auto;border-radius:8px;border:1px solid var(--border);">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;" id="peep-ladder-tbl">
+          <thead>
+            <tr style="background:var(--surface2);">
+              <th style="padding:8px 12px;text-align:left;border-bottom:1.5px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;">FiO₂</th>
+              <th style="padding:8px 12px;text-align:center;border-bottom:1.5px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;">Lower PEEP<br><span style="font-weight:400;text-transform:none;">(↑FiO₂ 허용)</span></th>
+              <th style="padding:8px 12px;text-align:center;border-bottom:1.5px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;">Higher PEEP<br><span style="font-weight:400;text-transform:none;">(↓FiO₂ 목표)</span></th>
+            </tr>
+          </thead>
+          <tbody id="peep-ladder-tbody"></tbody>
+        </table>
+      </div>
+      <div class="ban ban-caution" style="margin-top:10px;"><span class="ban-icon">⚠️</span><span>조합표는 <b>출발점 가이드</b>. 실제 PEEP은 컴플라이언스·혈역학·recruitability에 따라 적정화. higher-PEEP 전략은 중등도~중증 ARDS에서 고려.</span></div>
+      <div style="font-size:10.5px;color:var(--muted2);margin-top:8px;">출처: ARDSnet ARMA(NEJM 2000) · ALVEOLI(NEJM 2004)</div>
+      </div>
+    </details>
+
+    <!-- ══════ Vent §2~§4 (weaning 보조) — 폐보호 TV 아래 가산 ══════ -->
+    <div style="margin-top:18px;padding-top:16px;border-top:2px dashed var(--border2);">
+      <div style="font-size:15px;font-weight:800;color:var(--cyan);margin-bottom:4px;">🫁 Weaning / 발관 보조</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">weaning은 이어지는 과정이라 단계를 따로 판정하거나 저장하지 않습니다. 발관 성공을 혼자 예측하는 지표는 없으므로, 아래 값들은 <b>함께 보는 참고</b>로 두고 최종 판단은 의료진이 합니다.</div>
+    </div>
+
+    <!-- §2 SBT readiness -->
+    <details class="vent-acc">
+      <summary>✅ SBT Readiness 체크리스트 <span class="vent-badge">충족도</span></summary>
+      <div class="vent-acc-body">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">8개 객관 항목 충족도를 즉석 표시. <b>모두 충족 시 "SBT 고려 가능(참고)"</b>까지만 — 발관·SBT 지시는 하지 않습니다.</div>
+        <div id="vent-sbt-list"></div>
+        <div id="vent-sbt-out" style="margin-top:10px;"></div>
+      </div>
+    </details>
+
+    <!-- §3 extubation 예측지표 -->
+    <details class="vent-acc">
+      <summary>📈 Extubation 예측 지표 (RSBI · NIF · cuff leak) <span class="vent-badge-b">근거 B</span></summary>
+      <div class="vent-acc-body">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">각 지표의 기준값과 <b>한계(혼자서는 부정확)</b>를 함께 적었습니다. 점수로 합산하지 않고 충족한 지표 수만 보여줍니다.</div>
+
+        <div style="font-size:13px;font-weight:800;color:var(--cyan);margin:4px 0 6px;">RSBI (Rapid Shallow Breathing Index)</div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 12px;margin-bottom:6px;">
+          <label class="vent-lbl">RR<input type="number" id="vent-rr" value="25" min="0" step="1" inputmode="decimal" oninput="calcVentPredict()" placeholder="/min"></label>
+          <label class="vent-lbl">TV<input type="number" id="vent-tvl" value="0.4" min="0" step="0.05" inputmode="decimal" oninput="calcVentPredict()" placeholder="L"></label>
+        </div>
+        <div id="vent-rsbi-out"></div>
+
+        <div style="font-size:13px;font-weight:800;color:var(--cyan);margin:14px 0 6px;">Cuff Leak (후두부종 예측)</div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 12px;margin-bottom:6px;">
+          <label class="vent-lbl">흡기 TV<input type="number" id="vent-insp" value="500" min="0" step="10" inputmode="decimal" oninput="calcVentPredict()" placeholder="mL"></label>
+          <label class="vent-lbl">호기 TV<input type="number" id="vent-exp" value="420" min="0" step="10" inputmode="decimal" oninput="calcVentPredict()" placeholder="mL deflate"></label>
+        </div>
+        <div id="vent-cuff-out"></div>
+
+        <div style="font-size:13px;font-weight:800;color:var(--cyan);margin:14px 0 6px;">NIF / P/F (보조 입력)</div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 12px;margin-bottom:6px;">
+          <label class="vent-lbl">NIF/MIP<input type="number" id="vent-nif" value="-28" max="0" step="1" inputmode="decimal" oninput="calcVentPredict()" placeholder="cmH₂O 음수"></label>
+          <label class="vent-lbl">PaO₂/FiO₂<input type="number" id="vent-pf" value="200" min="0" step="10" inputmode="decimal" oninput="calcVentPredict()" placeholder="mmHg"></label>
+        </div>
+
+        <div id="vent-extub-out" style="margin-top:10px;"></div>
+
+        <div class="ban ban-caution" style="margin-top:10px;"><span class="ban-icon">⚠️</span><span><b>한계:</b> RSBI 특이도 ~64%로, cuff leak·NIF 모두 하나만으로는 부족합니다. 발관 성공을 보장하는 단일 기준은 없으니 여러 지표를 함께 봅니다. NIF는 cuff leak이 같이 있을 때 &lt;−30이면 성공률이 올라갑니다.</span></div>
+      </div>
+    </details>
+
+    <!-- §4 SBT 진행/실패 기준 -->
+    <details class="vent-acc">
+      <summary>⏱️ SBT 진행 / 실패 기준 (참고)</summary>
+      <div class="vent-acc-body">
+        <div class="ban ban-info"><span class="ban-icon">⏱️</span><span><b>SBT 30분(최대 120분)</b> 동안 아래 실패기준이 없으면 통과. 대부분 실패는 ~20분 내 발현.</span></div>
+        <div style="font-size:12px;color:var(--muted);margin:10px 0 4px;font-weight:700;">실패 기준 (하나라도 지속 시 중단):</div>
+        <ul style="font-size:13px;color:var(--ink,#1a2230);line-height:1.8;margin:0;padding-left:20px;">
+          <li>RR &gt;35/min (5분 이상)</li>
+          <li>SpO₂ &lt;88–90% (5분 이상)</li>
+          <li>HR &gt;140 또는 20%↑ 지속</li>
+          <li>SBP &gt;180 또는 &lt;90</li>
+          <li>호흡곤란·발한·불안·흉부역설호흡</li>
+        </ul>
+        <div class="ban ban-info" style="margin-top:10px;"><span class="ban-icon">🔗</span><span><b>SAT+SBT coordinated:</b> 진정 중단(SAT)과 SBT를 짝지어 시행하면 인공호흡 기간 단축(ABCDEF 번들). </span></div>
+      </div>
+    </details>
+
+    <div style="font-size:11px;color:var(--muted2);margin-top:14px;padding:10px;background:var(--surface2);border-radius:8px;line-height:1.6;">
+      📚 <b>출처:</b> ARDSnet(폐보호 TV) · Yang-Tobin NEJM 1991(RSBI) · De Bast ICM 2002 / Pluijms 2015(cuff leak) · COBRE-US 2023(다지표 통합·단독 한계) · Boles ERJ 2007(weaning 컨센서스) · PADIS/ABCDEF bundle.
+    </div>
+
+    <!-- ══════ Vent v0.2 §5~§7 (KSCCM 2024 정밀화) ══════ -->
+
+    <!-- §5 Diaphragm US -->
+    <details class="vent-acc">
+      <summary>🔬 Diaphragm US — DTF · DE <span class="vent-badge-b">보조</span></summary>
+      <div class="vent-acc-body">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">횡격막 초음파. DTF가 DE보다 특이도 우수(특히 심질환 동반). <b>보조 지표 — 이 값만으로 발관을 정하지 말고 RSBI 등과 함께 봅니다.</b></div>
+
+        <div style="font-size:13px;font-weight:800;color:var(--cyan);margin:4px 0 6px;">DTF (Thickening Fraction)</div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 12px;margin-bottom:6px;">
+          <label class="vent-lbl">Tdi 흡기말<input type="number" id="v2-tdi-insp" value="0.28" min="0" step="0.01" inputmode="decimal" oninput="calcVentDUS()" placeholder="cm"></label>
+          <label class="vent-lbl">Tdi 호기말<input type="number" id="v2-tdi-exp" value="0.20" min="0" step="0.01" inputmode="decimal" oninput="calcVentDUS()" placeholder="cm"></label>
+        </div>
+        <div id="v2-dtf-out"></div>
+
+        <div style="font-size:13px;font-weight:800;color:var(--cyan);margin:14px 0 6px;">DE (Excursion, M-mode 우횡격막)</div>
+        <label class="vent-lbl" style="margin-bottom:6px;">횡격막 이동거리 (cm, tidal)<input type="number" id="v2-de" value="1.5" min="0" step="0.1" inputmode="decimal" oninput="calcVentDUS()"></label>
+        <div id="v2-de-out"></div>
+
+        <div class="ban ban-caution" style="margin-top:10px;"><span class="ban-icon">⚠️</span><span><b>한계:</b> DTF ≥30–36%(AUC 0.84), DE >1.1–1.4cm(AUC 0.86). 연구 간 이질성 큼(I²&gt;60%), 측정자 숙련 필요. DTF&lt;20% 또는 DE&lt;1.0cm는 횡격막 기능장애(DD) 의심.</span></div>
+      </div>
+    </details>
+
+    <!-- §6 Post-extubation 산소요법 -->
+    <details class="vent-acc">
+      <summary>💨 Post-extubation 산소요법 + ROX <span class="vent-badge-ks">KSCCM B</span></summary>
+      <div class="vent-acc-body">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">계획발관 후 산소 전략 (KSCCM 2024 KQ8). 권고는 모두 <b>조건부</b> — 환자 특성에 따라 선택.</div>
+
+        <div id="v2-po2-cards"></div>
+
+        <div style="font-size:13px;font-weight:800;color:var(--cyan);margin:14px 0 6px;">ROX Index (HFNC 실패 예측)</div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);gap:8px 12px;margin-bottom:6px;">
+          <label class="vent-lbl">SpO₂<input type="number" id="v2-spo2" value="95" min="0" max="100" step="1" inputmode="decimal" oninput="calcVentROX()" placeholder="%"></label>
+          <label class="vent-lbl">FiO₂<input type="number" id="v2-fio2" value="0.4" min="0.21" max="1" step="0.05" inputmode="decimal" oninput="calcVentROX()" placeholder="소수"></label>
+          <label class="vent-lbl">RR<input type="number" id="v2-rox-rr" value="24" min="0" step="1" inputmode="decimal" oninput="calcVentROX()" placeholder="/min"></label>
+        </div>
+        <div id="v2-rox-out"></div>
+
+        <div class="ban ban-info" style="margin-top:10px;"><span class="ban-icon">💡</span><span><b>고위험군 예방적용:</b> 만성호흡부전·SBT후 고탄산혈증(PaCO₂&gt;45)·첫SBT실패·COPD/기관지확장증/결핵후유증·흉벽기형 → HFNC 또는 NIV 예방 고려. <b>고탄산혈증·COPD악화·심인성폐부종은 NIV 유리.</b></span></div>
+      </div>
+    </details>
+
+    <!-- §7 발관실패 위험인자 + CLT -->
+    <details class="vent-acc">
+      <summary>⚠️ 발관실패 위험인자 + CLT <span class="vent-badge-b">위험평가</span></summary>
+      <div class="vent-acc-body">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">계획발관 후 재삽관 10–20%. 위험인자 ≥2개면 고위험 — CLT·스테로이드·HFNC/NIV 예방 고려.</div>
+        <div id="v2-risk-list"></div>
+        <div id="v2-risk-out" style="margin-top:10px;"></div>
+
+        <div style="font-size:13px;font-weight:800;color:var(--cyan);margin:14px 0 6px;">Cuff Leak Test (이중 cutoff)</div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 12px;margin-bottom:6px;">
+          <label class="vent-lbl">흡기 TV<input type="number" id="v2-clt-insp" value="500" min="0" step="10" inputmode="decimal" oninput="calcVentCLT()" placeholder="mL"></label>
+          <label class="vent-lbl">호기 TV<input type="number" id="v2-clt-exp" value="470" min="0" step="10" inputmode="decimal" oninput="calcVentCLT()" placeholder="mL deflate"></label>
+        </div>
+        <div id="v2-clt-out"></div>
+
+        <div class="ban ban-info" style="margin-top:10px;"><span class="ban-icon">📋</span><span><b>[가이드 KSCCM]</b> CLT 실패 + 고위험 → 발관 ≥4h 전 스테로이드 고려(KQ4, 권고B·중등도). MPD 40mg q6h×24h 또는 dexamethasone 5mg q6h×24h. PES 발생률 6–37%.</span></div>
+      </div>
+    </details>
+
+    <div style="font-size:11px;color:var(--muted2);margin-top:14px;padding:10px;background:var(--surface2);border-radius:8px;line-height:1.6;">
+      📚 <b>v0.2 출처:</b> KSCCM 「기계환기 이탈」 2024 (Acute Crit Care 39(1):1-23) · ATS/ACCP Liberation 2017 · Marques diaphragm US 2024 · Roca ROX 2019 · Lim 2006(한국 CLT). 전체 링크 앱 하단 footer.
+    </div>
+
+</div></div>
+
+<div id="tab-crrt" style="display:none;">
+
+  <div class="beta-banner">
+    <span class="beta-tag">⚗ Beta</span>
+    <span>CRRT 모듈은 검증을 진행 중입니다. 계산·추천 값은 참고용으로만 보시고, 처방 전 반드시 재확인해 주세요.</span>
+  </div>
+
+  <div style="font-size:12px;color:var(--muted);margin-bottom:14px;padding:10px 14px;background:var(--surface2);border-radius:8px;border:1px solid var(--border);">
+    💧 <b>CRRT 조정 참고</b> · 아래 수치는 함께 보는 참고값이며, 처방은 의료진이 정합니다.<br>
+    <span style="color:var(--cyan);font-weight:700;">[가이드]</span> KSN CKRT 2025·KDIGO &nbsp; <span style="color:var(--orange);font-weight:700;">[국내 일반]</span> 국내 ICU 프로토콜 — 상충 시 둘 다 표시.
+  </div>
+
+  <!-- ══ 결과 요약 카드 (입력 위 — 한눈에) ══ -->
+  <div id="crrt-summary"></div>
+
+  <!-- ══ §1 처방 핵심: 용량 + FF + delivered (펼침) ══ -->
+  <div class="crrt-sec" style="background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:16px;margin-bottom:14px;">
+    <div style="font-size:15px;font-weight:800;color:var(--teal);margin-bottom:4px;">📊 처방 핵심 — 용량 · Filtration Fraction · 전달률</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">CVVHDF 4요소 입력 → effluent dose·FF·delivered 동시 산출</div>
+
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 12px;margin-bottom:12px;">
+      <label class="crrt-lbl">전치환 pre-PBP (mL/h)<input type="number" id="crrt-pre"  value="1000" min="0" step="50" inputmode="decimal" oninput="calcCRRT()"></label>
+      <label class="crrt-lbl">후치환 post (mL/h)<input type="number" id="crrt-post"  value="500"  min="0" step="50" inputmode="decimal" oninput="calcCRRT()"></label>
+      <label class="crrt-lbl">투석액 dialysate (mL/h)<input type="number" id="crrt-dial" value="1000" min="0" step="50" inputmode="decimal" oninput="calcCRRT()"></label>
+      <label class="crrt-lbl">net UF 환자제거 (mL/h)<input type="number" id="crrt-uf"   value="0"    min="0" step="10" inputmode="decimal" oninput="calcCRRT()"></label>
+      <label class="crrt-lbl">혈류 BFR (mL/min)<input type="number" id="crrt-bfr"  value="130"  min="0" step="10" inputmode="decimal" oninput="calcCRRT()"></label>
+      <label class="crrt-lbl">Hct (0–1)<input type="number" id="crrt-hct"  value="0.30" min="0" max="0.99" step="0.01" inputmode="decimal" oninput="calcCRRT()"></label>
+      <label class="crrt-lbl">체중 (kg) <span style="font-weight:400;color:var(--muted2);font-size:9.5px;">상단 환자 연동·조정가능</span><input type="number" id="crrt-wt"   value="70"   min="20" step="1" inputmode="decimal" oninput="calcCRRT()"></label>
+      <label class="crrt-lbl">실제 effluent (mL/h, 선택)<input type="number" id="crrt-actual" value="" min="0" step="50" inputmode="decimal" oninput="calcCRRT()" placeholder="delivered 비 계산용"></label>
+    </div>
+
+    <div id="crrt-dose-out"></div>
+  </div>
+
+  <!-- ══ §2 칼륨·인산·pH → premix 백 통합 선택 (접힘) ══ -->
+  <details class="crrt-acc">
+    <summary>🧂 전해질·산염기 → premix 백 선택 <span class="crrt-badge-prac">국내 일반</span></summary>
+    <div class="crrt-acc-body">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">CRRT는 전해질을 양방향으로 흔든다 — 저K(최대 24%)·저인(27–78%). <b>산증 교정도 IV 드립이 아니라 백의 HCO₃ 농도로</b> 한다. K·P·pH 입력 → 통합 백 추천(참고용).</div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);gap:8px 12px;margin-bottom:10px;">
+        <label class="crrt-lbl">혈청 K (mmol/L)<input type="number" id="crrt-k" value="4.2" min="0" step="0.1" inputmode="decimal" oninput="calcCRRTbag()"></label>
+        <label class="crrt-lbl">혈청 P (mg/dL)<input type="number" id="crrt-p" value="3.0" min="0" step="0.1" inputmode="decimal" oninput="calcCRRTbag()"></label>
+        <label class="crrt-lbl">동맥혈 pH (선택)<input type="number" id="crrt-ph" value="" min="6.8" max="7.8" step="0.01" inputmode="decimal" oninput="calcCRRTbag()" placeholder="예: 7.20"></label>
+      </div>
+      <div id="crrt-bag-out"></div>
+
+      <details class="crrt-acc" style="margin-top:10px;">
+        <summary>📖 용액 가이드 — 종류·조성·적응증 한눈에</summary>
+        <div class="crrt-acc-body">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">프리믹스백은 K(칼륨)·P(인) 두 축으로 고른다. CRRT가 K·P를 계속 빼내므로 <b>유지가 목표면 K 높은 백</b>, <b>인 떨어지면 P 함유백</b>이 흔하다. 브랜드(MultiBic/Prismasol)는 조성 같으면 임상적으로 동일 — 병원 공급계약 차이.</div>
+          <div id="crrt-bag-guide"></div>
+        </div>
+      </details>
+      <div class="ban ban-info" style="margin-top:10px;"><span class="ban-icon">📋</span><span><b>[가이드 KSN 2025]</b> 고인산혈증 없으면 인 함유 투석액으로 저인산 예방 고려 (조건부 권고, 근거수준 매우 낮음). <b>[KDIGO]</b> buffer는 bicarbonate 우선 — 국내 상용백(Prismasol·Hemosol·Phoxilium)은 모두 bicarbonate계라 자동 충족.</span></div>
+      <div class="ban ban-caution" style="margin-top:8px;"><span class="ban-icon">⚠️</span><span><b>IV NaHCO₃ 드립은 예외:</b> pH &lt;7.15·HCO₃ &lt;10 생명위협 산증에서 <b>CRRT 시작과 동시에 일시적으로만</b> 병용. 일상적 교정 도구 아님(수액 과부하).</span></div>
+      <div class="ban ban-caution" style="margin-top:8px;"><span class="ban-icon">📜</span><span><b>[구세대 참조]</b> 무K액(Hemosol B0)에 KCl mix: K&gt;5.0 mix 안 함 · 3.5&lt;K≤5.0 IK40 0.5A · K&lt;3.5 IK40 1A. 현재 premix 백 전환 추세. 수동 mix는 농도오류·오염 위험.</span></div>
+    </div>
+  </details>
+
+  <!-- ══ §3 마그네슘·칼슘 (접힘) ══ -->
+  <details class="crrt-acc">
+    <summary>🧪 마그네슘 · 칼슘 (비-RCA)</summary>
+    <div class="crrt-acc-body">
+      <div class="ban ban-info"><span class="ban-icon">💡</span><span><b>Mg:</b> 상용액 1–1.5 mEq/L(0.5–0.75 mmol/L). Phoxilium은 Mg보충 필요↓. RCA 시 citrate가 Mg도 chelate→소실↑. Ca-free 챔버 단독(고Ca 전략) 시 Mg 동시 소실 — Ca·Mg 동시 감시.</span></div>
+      <div class="ban ban-info" style="margin-top:8px;"><span class="ban-icon">💡</span><span><b>Ca(비-RCA):</b> 투석액 Ca ~3 mEq/L로 중립~경度 양균형. systemic iCa ≥1.4 mmol/L 시 Ca-free 챔버 단독(Mg 동시 소실 주의). RCA는 §4 별도 회로.</span></div>
+    </div>
+  </details>
+
+  <!-- ══ §4 항응고 nafamostat / RCA (접힘) ══ -->
+  <details class="crrt-acc">
+    <summary>🩸 항응고 — nafamostat(국내 표준) · RCA <span class="crrt-badge-guide">가이드</span></summary>
+    <div class="crrt-acc-body">
+      <div style="font-size:13px;font-weight:800;color:var(--teal);margin:4px 0 6px;">nafamostat (국내 사실상 표준) — futhan</div>
+      <div class="ban ban-info"><span class="ban-icon">💉</span><span>단반감기(~8분) serine protease 억제제 → 체외순환 국한 효과. 출혈 위험군에서 표준.</span></div>
+
+      <div style="background:var(--teal-lt,#ccfbf1);border:1.5px solid var(--teal);border-radius:10px;padding:12px;margin-top:8px;">
+        <div style="font-size:12px;font-weight:800;color:var(--teal);margin-bottom:6px;">📋 혼합 예시 &amp; 용량</div>
+        <div style="font-size:13px;color:var(--ink,#1a2230);line-height:1.7;">
+          <b>① Priming:</b> nafamostat <b>2 vial(100mg)</b>을 5%DW 2mL에 녹여 → <b>NS 1000mL</b>에 mix, 회로 priming<br>
+          <b>② 주입액:</b> nafamostat <b>50mg(1V)</b>을 5%DW로 희석 (관행: 50mg/50mL = <b>1 mg/mL</b>, 또는 200mg/50mL=4mg/mL)<br>
+          <b>③ 시작:</b> <b>20 mg/h</b> pre-filter 지속주입 (범위 10–30, 초기 50까지)<br>
+          <b>④ 유지:</b> post-filter <b>ACT 150–250s</b> 또는 <b>aPTT 50–70s</b> 목표로 적정 (aPTT가 ACT보다 상관성↑)<br>
+          <b>⑤ 조정:</b> 응고 시 5 mg/h씩 증량 / 출혈·aPTT 과연장 시 감량<br>
+          <b>⑥ bolus(선택):</b> 1 mg/kg 후 1 mg/kg/h 유지 (일부 프로토콜)
+        </div>
+      </div>
+      <div class="ban ban-caution" style="margin-top:8px;"><span class="ban-icon">⚠️</span><span><b>고K혈증</b>(aldosterone 억제·Na-K ATPase 저하, 20mg/h에서 수시간 내 발생 보고)·과민반응(anaphylaxis)·무과립구증. K 추세 감시. 출혈위험은 heparin보다 낮음.</span></div>
+      <details style="margin-top:8px;"><summary style="font-size:12px;color:var(--muted);cursor:pointer;padding:6px 0;">옛 프로토콜 ugtt 환산 참조 (출처 불명확)</summary>
+        <div style="font-size:12px;color:var(--muted);padding:6px 10px;background:var(--surface2);border-radius:8px;line-height:1.6;">INAFA50 200mg(4V)+5%DW 50mL = 4 mg/mL. 초기 1h <b>5 ugtt ≈ 20 mg/h</b> → 이후 <b>2.5 ugtt ≈ 10 mg/h</b>. 12h내 응고 시 0.5 ugtt 증량. [60gtt/mL 환산] — 현행 표준(5–30 mg/h) 범위 내.</div>
+      </details>
+
+      <div style="font-size:13px;font-weight:800;color:var(--teal);margin:14px 0 6px;">heparin (UFH) — nafamostat·citrate 미사용 시</div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;">
+        <div style="font-size:13px;color:var(--ink,#1a2230);line-height:1.7;">
+          <b>① Priming:</b> heparin <b>5,000–10,000 IU</b>를 NS 1L에 mix, 회로 priming<br>
+          <b>② Bolus:</b> <b>1,000–5,000 IU</b> (또는 체중기반 15–30 IU/kg, max 5,000)<br>
+          <b>③ 주입액:</b> heparin 25,000 IU + NS 50mL = <b>500 IU/mL</b> (희석형 2,000IU/1L=2IU/mL도 사용)<br>
+          <b>④ 유지:</b> <b>5–10 IU/kg/h</b> (≈400–700 IU/h) pre-filter 지속주입<br>
+          <b>⑤ 목표:</b> circuit aPTT <b>1.5–2.0배(45–60s)</b> 또는 anti-Xa 0.3–0.6, <b>6h마다</b> 측정·적정<br>
+          <b>⑥ 역전:</b> protamine (heparin 100IU당 1mg)
+        </div>
+      </div>
+      <div class="ban ban-caution" style="margin-top:8px;"><span class="ban-icon">🚫</span><span><b>heparin 금기:</b> 활동성 출혈·HIT(헤파린유발 혈소판감소증)·혈소판 &lt;50k·심한 응고장애(INR&gt;1.8). 이 경우 nafamostat 또는 RCA. 반감기 90분(신부전 시 3h까지 연장).</span></div>
+
+      <div style="font-size:13px;font-weight:800;color:var(--teal);margin:14px 0 6px;">RCA (국소 구연산) — post/systemic iCa 분리 감시</div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 12px;margin-bottom:8px;">
+        <label class="crrt-lbl">post-filter iCa (mmol/L)<input type="number" id="crrt-postica" value="0.30" min="0" step="0.01" inputmode="decimal" oninput="calcCRRTrca()"></label>
+        <label class="crrt-lbl">systemic iCa (mmol/L)<input type="number" id="crrt-sysica" value="1.10" min="0" step="0.01" inputmode="decimal" oninput="calcCRRTrca()"></label>
+        <label class="crrt-lbl">total Ca (mg/dL)<input type="number" id="crrt-totalca" value="9.6" min="0" step="0.1" inputmode="decimal" oninput="calcCRRTrca()"></label>
+      </div>
+      <div id="crrt-rca-out"></div>
+      <div class="ban ban-info" style="margin-top:8px;"><span class="ban-icon">🎯</span><span><b>타깃:</b> post-filter iCa <b>0.25–0.35</b>(필터 효율) · systemic iCa <b>1.0–1.2</b>(환자 안전). total/iCa <b>≥2.5 = citrate 축적</b>(간대사 한계 — 간부전·젖산산증 위험). ratio&gt;2.4: citrate 20분 중단 후 0.5 mmol/L 감량 재시작 또는 투석액 증량. 6시간마다 감시.</span></div>
+      <div class="ban ban-caution" style="margin-top:8px;"><span class="ban-icon">⚗️</span><span><b>citrate 알칼리증:</b> RCA 시 citrate→bicarbonate 대사로 대사알칼리증 가능(pH&gt;7.5 = net overload 의심). citrate 감량 또는 <b>Phoxilium(HCO₃30)→Biphozyl(HCO₃22) 전환</b>으로 HCO₃ 부하↓·BE 교정.</span></div>
+    </div>
+  </details>
+
+  <div style="font-size:11px;color:var(--muted2);margin-top:14px;padding:10px;background:var(--surface2);border-radius:8px;line-height:1.6;">
+    📚 <b>출처:</b> KSN CKRT 2025 지침 · KDIGO AKI 2012 · UAB CRRT Academy 2018(FF) · PLoS One 2020(백 매트릭스) · EBP 2022 · Frontiers Med 2022 · Konkuk RCT 2019 · BMC Nephrol 2024(nafamostat) · Biphozyl 2021. 전체 링크는 앱 하단 footer 참조.
+  </div>
+
+</div>
+
 
 <div id="tab-emg">
 
   <div style="font-size:12px;color:var(--muted);margin-bottom:14px;padding:10px 14px;background:var(--surface2);border-radius:8px;border:1px solid var(--border);">
-    응급상황별 신속참조 용량 · 주치의 판단 및 원내 프로토콜과 대조하여 사용하십시오.<br>
+    응급상황 신속 참조 용량입니다. 주치의 판단과 원내 프로토콜과 함께 확인해 사용합니다.<br>
     <span style="color:var(--muted2);">Reference: Resuscitation Council UK · ALS guidelines · SSC 2021</span>
   </div>
 
@@ -1572,7 +2061,7 @@ input[type=range]::-moz-range-thumb{
   </div></div>
 
   <div class="emg-section"><div class="emg-sec-hdr" style="background:#ca8a04;">⏱ SEVERE BRADYCARDIA</div><div class="emg-list">
-    <div class="emg-item"><div class="emg-left"><span class="emg-name">Atropine <span class="emg-route">IV</span></span><span class="emg-sub">최대 3mg까지 반복</span></div><span class="emg-dose">500 mcg</span></div>
+    <div class="emg-item"><div class="emg-left"><span class="emg-name">Atropine <span class="emg-route">IV</span></span><span class="emg-sub">q3–5min 반복, 최대 3mg (2020 AHA)</span></div><span class="emg-dose">1 mg</span></div>
     <div class="emg-item"><div class="emg-left"><span class="emg-name">Epinephrine infusion <span class="emg-route">IV</span></span><span class="emg-sub"></span></div><span class="emg-dose">2–10 mcg/min</span></div>
     <div class="emg-item"><div class="emg-left"><span class="emg-name">Isoprenaline <span class="emg-route">IV</span></span><span class="emg-sub">심박수 맞춰 적정</span></div><span class="emg-dose">5 mcg/min</span></div>
   </div></div>
@@ -1703,6 +2192,7 @@ input[type=range]::-moz-range-thumb{
         <div class="fluid-result-row"><span>예상 Total Output</span><span id="plan-total-out" class="fluid-mono">— mL</span></div>
         <div id="plan-insens-detail" style="font-size:11px;color:var(--muted);padding:2px 0 4px;line-height:1.5;"></div>
         <div class="fluid-result-row fluid-result-highlight"><span>예상 Net Balance</span><span id="plan-net" class="fluid-mono">— mL</span></div>
+        <div class="fluid-result-row" id="plan-net-kg-row" style="margin-top:2px;"><span style="font-size:11px;color:var(--muted);">⚖️ 체중대비 (mL/kg)</span><span id="plan-net-kg" class="fluid-mono" style="font-size:12px;">—</span></div>
         <div class="fluid-result-row" style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;"><span>💡 권고 유지수액</span><span id="plan-suggest" class="fluid-mono" style="color:var(--accent);font-weight:800;">— mL/hr</span></div>
         <div class="fluid-result-row" style="margin-top:4px;"><span style="font-size:11px;color:var(--muted);">📐 하루 최소 필요량 (참고)</span><span id="plan-maint" class="fluid-mono" style="font-size:11px;color:var(--muted);">—</span></div>
       </div>
@@ -1765,7 +2255,6 @@ input[type=range]::-moz-range-thumb{
       본 도구의 사용으로 발생하는 어떠한 결과에 대해서도 제작자는 법적 책임을 지지 않습니다.
       최종 의학적 결정과 그 책임은 전적으로 처방 의료진에게 있습니다.
     </div>
-    <div class="fd-author">내과 전문의 제작 · 오류 제보·개선 의견은 상단 <b>💬 피드백</b>으로</div>
   </div>
 
   <div class="footer-acc">
@@ -1810,7 +2299,7 @@ input[type=range]::-moz-range-thumb{
         <li>대한적십자사 혈액관리본부 — <a href="https://www.bloodinfo.net" target="_blank" rel="noopener">혈액정보</a></li>
       </ul>
 
-      <div class="ref-note">※ 일부 출처는 정식 학술 인용이 아닌 임상 참조 자료를 포함합니다. 각 항목의 최신 원문을 직접 확인하십시오.</div>
+      <div class="ref-note">※ 일부 출처는 정식 학술 인용이 아닌 임상 참조 자료를 포함합니다. 각 항목의 최신 원문을 직접 확인하시는 것이 좋습니다.</div>
     </div>
   </div>
 
@@ -2258,13 +2747,27 @@ function updateFluidCalc(){
     Math.abs(diff)<=200?'bal-ok':net>target?'bal-pos':'bal-neg');
   setEl('plan-suggest', sugRate+' mL/hr');
 
+  // 체중대비 누적 balance (mL/kg) — 절대량보다 임상 의미 큼
+  var balWt = bwt();
+  var kgEl = document.getElementById('plan-net-kg');
+  if(kgEl){
+    if(balWt>0){
+      var perKg = net / balWt;
+      var perKgR = Math.round(perKg*10)/10;
+      var band = FLUID_BAL_KG.classify(perKg);
+      kgEl.innerHTML = '<b style="color:'+band.color+';">'+(perKg>=0?'+':'')+perKgR+' mL/kg</b>'
+        + ' <span style="color:var(--muted);font-size:10.5px;">· '+balWt+'kg · '+band.label+'</span>';
+      kgEl.title = band.note;
+    } else { kgEl.textContent='— (체중 입력 필요)'; }
+  }
+
   // 하루 최소 유지 필요량 (참고용)
   var wt=bwt();
   // 4-2-1 룰 (Holliday-Segar)
   var h421;
-  if(wt<=10) h421=wt*4;
-  else if(wt<=20) h421=40+(wt-10)*2;
-  else h421=60+(wt-20)*1;
+  if(wt<=FLUID_421.t1Wt) h421=wt*FLUID_421.t1;
+  else if(wt<=FLUID_421.t2Wt) h421=FLUID_421.t1*FLUID_421.t1Wt+(wt-FLUID_421.t1Wt)*FLUID_421.t2;
+  else h421=FLUID_421.t1*FLUID_421.t1Wt+FLUID_421.t2*(FLUID_421.t2Wt-FLUID_421.t1Wt)+(wt-FLUID_421.t2Wt)*FLUID_421.t3;
   var day421=Math.round(h421*24);
   // NICE 성인 25-30 mL/kg/day
   var niceLo=Math.round(wt*25), niceHi=Math.round(wt*30);
@@ -2482,6 +2985,30 @@ function toggleCustomMixNorepi(btn){
   cNorepi();
 }
 
+/* ═══ P0-1: 약물 DATA 단일소스 헬퍼 (가산·무손상) ═══
+   용량 메타(농도·범위·임계)를 DRUGS 객체에서 읽어 하드코딩 제거.
+   drugById: 로컬ID로 DRUGS 객체 조회 / doseMeta: dose 메타 반환 */
+function drugById(id){
+  for(var i=0;i<DRUGS.length;i++){ if(DRUGS[i].id===id) return DRUGS[i]; }
+  return null;
+}
+function doseMeta(id){ var d=drugById(id); return (d&&d.dose)?d.dose:null; }
+
+/* 다단계 임상 용량경고 (전문가용) — dose.thresholds 기반.
+   세팅·농도와 무관하게 mcg/kg/min 등 임상용량만으로 판정 */
+function renderDoseWarn(warnElId, id, dose){
+  var el=document.getElementById(warnElId); if(!el) return;
+  var m=doseMeta(id);
+  if(!m||!m.thresholds){ el.innerHTML=''; return; }
+  var hit=null;
+  for(var i=0;i<m.thresholds.length;i++){ if(dose>=m.thresholds[i].at) hit=m.thresholds[i]; }
+  if(!hit){ el.innerHTML=''; return; }
+  var clsMap={info:'ban-info',caution:'ban-caution',danger:'ban-salvage'};
+  var cls=clsMap[hit.level]||'ban-info';
+  el.innerHTML='<div class="ban '+cls+'"><span class="ban-icon">⚠️</span><span>≥'
+    +hit.at+' '+(m.unit||'')+' — '+hit.msg+'</span></div>';
+}
+
 function getConc(drugId, defaultConc, unit){
   var wrap = document.getElementById('mix-custom-'+drugId);
   if(!wrap || !wrap.classList.contains('open')) return defaultConc;
@@ -2538,7 +3065,7 @@ var DOPA_F=[
 var NOREPI_F=[
   {drug:16,vol:500,conc_ugml:32,amp:'4A'},
   {drug:32,vol:500,conc_ugml:64,amp:'8A'},
-  {drug:48,vol:200,conc_ugml:240,amp:'12A'}
+  {drug:64,vol:500,conc_ugml:128,amp:'16A'}
 ];
 var VASO_D=[
   {dose:0.01,rate:3},
@@ -2547,7 +3074,7 @@ var VASO_D=[
   {dose:0.04,rate:12,salvage:true}
 ];
 // ── 전역 상태 변수 ──
-var norepiFi = 0;   // Norepi 세팅 인덱스 (0=일반, 1=농축)
+var norepiFi = 0;   // Norepi 세팅 인덱스 (0=일반, 1=더블링, 2=Quad)
 var dopaFi   = 0;   // Dopamine 세팅 인덱스
 var ibwSex   = 'male';
 var tvBasis  = 'ibw';
@@ -2563,16 +3090,27 @@ var DRUGS = [
 // ─────────────────────────────────────
 {
   id:'c-norepi', tab:'vp',
+  mapId:'drug:norepinephrine',          /* P0-1: 통합 대비 전역 ID 매핑 */
   color:'#dc2626',
   name:'Norepinephrine',
   nameKr:'Norpin · 큐프린',
   sub:'0.025–3 mcg/kg/min · 3가지 세팅',
   badges:[['bd-red','🔴 1st Line']],
+  /* P0-1: 용량 메타 — DATA 단일소스 (농도세팅과 무관한 임상 상한·다단계 임계)
+     근거: SSC 2021, SCCM(0.01–3), StatPearls, ACEP Refractory Shock 2025, Martin/PulmCrit */
+  dose:{
+    default:0.1, unit:'mcg/kg/min', min:0.025, max:1.0, nearFactor:0.85,
+    thresholds:[
+      { at:0.25, level:'info',    msg:'2차 승압제(Vasopressin 0.03 u/min) 추가 고려 · 난치성쇼크 정의(≥4h)', src:'ssc2021' },
+      { at:0.5,  level:'caution', msg:'스테로이드(hydrocortisone) 추가 고려 · 난치성쇼크 영역', src:'ssc2021,sccm' },
+      { at:1.0,  level:'danger',  msg:'고용량 — ICU 사망률 급증(관찰 ~90%). 원인 재평가·다약제 병용', src:'martin,pulmcrit' }
+    ]
+  },
   body:`
     <div class="info-row" style="gap:10px;">
       <button class="ftab active" type="button" id="norepi-f-a" onclick="selF('norepi','a')">일반</button>
       <button class="ftab" type="button" id="norepi-f-b" onclick="selF('norepi','b')">더블링</button>
-      <button class="ftab" type="button" id="norepi-f-c" onclick="selF('norepi','c')">농축</button>
+      <button class="ftab" type="button" id="norepi-f-c" onclick="selF('norepi','c')">Quad</button>
       <button class="mix-ftab-custom" type="button" id="mix-btn-norepi" onclick="toggleCustomMixNorepi(this)">커스텀</button>
     </div>
     <div id="norepi-info" class="info-row" style="margin-top:-4px;"></div>
@@ -2644,11 +3182,18 @@ var DRUGS = [
 },
 {
   id:'c-epi', tab:'vp',
+  mapId:'drug:epinephrine',
   color:'#ea580c',
   name:'Epinephrine',
   nameKr:'에피네프린',
   sub:'4mg/250mL (16 mcg/mL) · 0.01–0.5 mcg/kg/min',
   badges:[['bd-orange','🟠 Refractory'],['bd-green','✓검증']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:0.05, unit:'mcg/kg/min', min:0.01, max:0.5, conc:16, concUnit:'mcg', mode:'wt_min',
+    thresholds:[
+      { at:0.5, level:'caution', msg:'고용량 — 빈맥성부정맥·젖산상승·말초허혈 위험↑. 2차 승압제(norepi 후) 위치 재확인', src:'fda_epi,sccm' },
+      { at:2.0, level:'danger',  msg:'FDA 패키지 상한(0.05–2 mcg/kg/min) 도달. 원인 재평가·다약제 고려', src:'fda_epi' }
+    ] },
   body:`
     <div class="info-row"><span class="ic">💉 4mg + D5W 246mL</span><span class="sep">=</span><span class="ic">농도 <b>16 mcg/mL</b></span></div>
     <div class="mix-panel">
@@ -2676,6 +3221,7 @@ var DRUGS = [
       <div class="qbtns"><button class="qbtn" type="button" onclick="setDSlider('epi-d','epi-sl',0.05,cEpi)">0.05</button><button class="qbtn" type="button" onclick="setDSlider('epi-d','epi-sl',0.1,cEpi)">0.1</button><button class="qbtn" type="button" onclick="setDSlider('epi-d','epi-sl',0.2,cEpi)">0.2</button><button class="qbtn" type="button" onclick="setDSlider('epi-d','epi-sl',0.3,cEpi)">0.3</button></div>
     </div>
     <div id="epi-res" class="res-big empty"><span class="res-big-num empty">체중 입력 후 계산</span></div>
+    <div id="epi-warn"></div>
   `
 },
 {
@@ -2692,11 +3238,19 @@ var DRUGS = [
 },
 {
   id:'c-dobu', tab:'vp',
+  mapId:'drug:dobutamine',
   color:'#16a34a',
   name:'Dobutamine',
   nameKr:'도부타민',
   sub:'1000mg/500mL · 2–20 mcg/kg/min',
   badges:[['bd-green','💚 강심제 β₁']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:5, unit:'mcg/kg/min', min:2, max:20, conc:2000, concUnit:'mcg', mode:'wt_min',
+    thresholds:[
+      { at:10,  level:'info',    msg:'>10 mcg/kg/min은 드물게 필요. 빈맥·부정맥·심근산소요구↑ 주의', src:'nhs_ccf,sciencedirect' },
+      { at:20,  level:'caution', msg:'권장 상한(20). 수용체 포화로 수축력 이득 한계·부작용 급증', src:'litfl,pmc_dobu' },
+      { at:40,  level:'danger',  msg:'최대 용량(40). VT/VF·심근허혈 위험. 추가 증량 무이득 가능', src:'litfl,drugs_com' }
+    ] },
   body:`
     <div class="info-row"><span class="ic">💉 1000mg/500mL</span><span class="sep">=</span><span class="ic">농도 <b>2000 mcg/mL</b></span></div>
     <div class="mix-panel">
@@ -2724,15 +3278,19 @@ var DRUGS = [
       <div class="qbtns"><button class="qbtn" type="button" onclick="setDSlider('dobu-d','dobu-sl',2,cDobu)">2</button><button class="qbtn" type="button" onclick="setDSlider('dobu-d','dobu-sl',5,cDobu)">5</button><button class="qbtn" type="button" onclick="setDSlider('dobu-d','dobu-sl',10,cDobu)">10</button><button class="qbtn" type="button" onclick="setDSlider('dobu-d','dobu-sl',20,cDobu)">20</button></div>
     </div>
     <div id="dobu-res" class="res-big empty"><span class="res-big-num empty">체중 입력 후 계산</span></div>
+    <div id="dobu-warn"></div>
   `
 },
 {
   id:'c-milri', tab:'cardio', section:'inotrope',
+  mapId:'drug:milrinone',
   color:'#0891b2',
   name:'Milrinone',
   nameKr:'밀리논 · 프리마코',
   sub:'20mg/100mL · 0.125–0.75 mcg/kg/min',
   badges:[['bd-green','💚 Inodilator (PDE-3i)']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:0.375, unit:'mcg/kg/min', min:0.125, max:0.75, conc:200, concUnit:'mcg', mode:'wt_min' },
   body:`
     <div class="info-row"><span class="ic">💉 20mg/100mL</span><span class="sep">=</span><span class="ic">농도 <b>200 mcg/mL</b></span></div>
     <div class="mix-panel">
@@ -2765,11 +3323,14 @@ var DRUGS = [
 },
 {
   id:'c-dilti', tab:'cardio', section:'inotrope',
+  mapId:'drug:diltiazem',
   color:'#7c3aed',
   name:'Diltiazem',
   nameKr:'딜티아젬 · 헤르벤',
   sub:'100mg/100mL · 5–15 mg/hr (AF rate control)',
   badges:[['bd-purple','💜 항부정맥 (Ca채널)']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:10, unit:'mg/hr', min:5, max:15, conc:1, concUnit:'mg', mode:'hr' },
   body:`
     <div class="info-row"><span class="ic">💉 100mg/100mL</span><span class="sep">=</span><span class="ic">농도 <b>1000 mcg/mL</b></span></div>
     <div class="mix-panel">
@@ -2802,11 +3363,19 @@ var DRUGS = [
 },
 {
   id:'c-dopa', tab:'vp',
+  mapId:'drug:dopamine',
   color:'#2563eb',
   name:'Dopamine',
   nameKr:'도파민 · 이노판',
   sub:'0–20 mcg/kg/min · 3가지 세팅',
   badges:[['bd-blue','🫀 Vasopressor'],['bd-green','강심제']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:5, unit:'mcg/kg/min', min:2, max:20, conc:null, concUnit:null, mode:'wt_min_preset',
+    thresholds:[
+      { at:10,  level:'info',    msg:'10–20: α1 우세 혈관수축역(저용량 β1 강심 → 고용량 혈관수축 전환). 신혈류 감소', src:'fda_dopa,critcon' },
+      { at:20,  level:'caution', msg:'>20: 빈맥성부정맥 위험 급증·사지순환 저하. norepi 전환 고려(부정맥 적음)', src:'fda_dopa,droracle' },
+      { at:50,  level:'danger',  msg:'최대 용량(50). 신배설 저하. 다약제·원인교정 우선', src:'drugs_com' }
+    ] },
   body:`
     <div class="info-row">
       <button class="ftab active" type="button" id="dopa-f-a" onclick="selF('dopa','a')">프리믹스</button>
@@ -2823,6 +3392,7 @@ var DRUGS = [
       <div class="qbtns"><button class="qbtn" type="button" onclick="setDSlider('dopa-d','dopa-sl',2,cDopa)">2</button><button class="qbtn" type="button" onclick="setDSlider('dopa-d','dopa-sl',5,cDopa)">5</button><button class="qbtn" type="button" onclick="setDSlider('dopa-d','dopa-sl',10,cDopa)">10</button><button class="qbtn" type="button" onclick="setDSlider('dopa-d','dopa-sl',15,cDopa)">15</button></div>
     </div>
     <div id="dopa-res" class="res-big empty"><span class="res-big-num empty">체중 입력 후 계산</span></div>
+    <div id="dopa-warn"></div>
     <div id="dopa-zone" class="ban ban-info" style="display:none;"></div>
   `
 },
@@ -2832,11 +3402,14 @@ var DRUGS = [
 // ─────────────────────────────────────
 {
   id:'c-dex', tab:'sd',
+  mapId:'drug:dexmedetomidine',
   color:'#4338ca',
   name:'Dexmedetomidine (Precedex)',
   nameKr:'',
   sub:'200mcg/50mL (4 mcg/mL) · 0.2–0.7 mcg/kg/hr',
   badges:[['bd-indigo','🧠 α₂-Agonist'],['bd-gray','발관유지가능']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:0.4, unit:'mcg/kg/hr', min:0.2, max:0.7, conc:4, concUnit:'mcg', mode:'wt_hr' },
   body:`
     <div class="info-row"><span class="ic">💉 200mcg/50mL</span><span class="sep">=</span><span class="ic">농도 <b>4 mcg/mL</b></span></div>
     <div class="mix-panel">
@@ -2869,11 +3442,14 @@ var DRUGS = [
 },
 {
   id:'c-midaz', tab:'sd',
+  mapId:'drug:midazolam',
   color:'#7c3aed',
   name:'Midazolam',
   nameKr:'미다졸람',
   sub:'50mg/50mL (1 mg/mL) · 0.04–0.2 mg/kg/hr',
   badges:[['bd-purple','😴 ICU Sedation'],['bd-gray','BZD']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:0.06, unit:'mg/kg/hr', min:0.02, max:0.2, conc:1, concUnit:'mg', mode:'wt_hr' },
   body:`
     <div class="info-row"><span class="ic">💉 50mg/50mL</span><span class="sep">=</span><span class="ic">농도 <b>1 mg/mL</b></span></div>
     <div class="mix-panel">
@@ -2906,11 +3482,14 @@ var DRUGS = [
 },
 {
   id:'c-ultiva', tab:'sd',
+  mapId:'drug:remifentanil',
   color:'#059669',
   name:'Remifentanil (Ultiva)',
   nameKr:'레미펜타닐',
   sub:'2mg/50mL (40 mcg/mL) · IBW 기준',
   badges:[['bd-emerald','💉 Analgosedation']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:0.05, unit:'mcg/kg/min', min:0.025, max:0.4, conc:40, concUnit:'mcg', mode:'wt_min' },
   body:`
     <div class="info-row"><span class="ic">💉 2mg + NS 48mL</span><span class="sep">=</span><span class="ic">농도 <b>40 mcg/mL</b> · IBW 기준</span></div>
     <div class="mix-panel">
@@ -2942,11 +3521,14 @@ var DRUGS = [
 },
 {
   id:'c-prop', tab:'sd',
+  mapId:'drug:propofol',
   color:'#1d4ed8',
   name:'Propofol',
   nameKr:'프로포폴 · ICU 진정',
   sub:'500mg/50mL (10 mg/mL) · 1–4 mg/kg/hr 유지',
   badges:[['bd-blue','😴 GABA-A'],['bd-indigo','IBW 권장']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:2, unit:'mg/kg/hr', min:1, max:12, conc:10, concUnit:'mg', mode:'wt_hr' },
   body:`
     <div class="info-row">
       <button class="ftab active" type="button" id="prop-f-ibw" onclick="selF('prop','ibw')">IBW 기준</button>
@@ -2983,11 +3565,14 @@ var DRUGS = [
 },
 {
   id:'c-fent', tab:'sd',
+  mapId:'drug:fentanyl',
   color:'#059669',
   name:'Fentanyl',
   nameKr:'펜타닐 · ICU 진통',
   sub:'500mcg/50mL (10 mcg/mL) · 25–200 mcg/hr',
   badges:[['bd-emerald','💉 Opioid']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:50, unit:'mcg/hr', min:50, max:200, conc:10, concUnit:'mcg', mode:'hr' },
   body:`
     <div class="info-row"><span class="ic">💉 500mcg/50mL</span><span class="sep">=</span><span class="ic">농도 <b>10 mcg/mL</b></span></div>
     <div class="mix-panel">
@@ -3056,11 +3641,14 @@ var DRUGS = [
 },
 {
   id:'c-bec', tab:'sd',
+  mapId:'drug:vecuronium',
   color:'#6d28d9',
   name:'Vecuronium',
   nameKr:'베쿠로늄 · 베카론 (NMBA)',
   sub:'50mg/100mL (500 mcg/mL) · 0.8–1.7 mcg/kg/min',
   badges:[['bd-purple','💜 NMBA']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:1.0, unit:'mcg/kg/min', min:0.8, max:1.7, conc:500, concUnit:'mcg', mode:'wt_min' },
   body:`
     <div class="info-row"><span class="ic">💉 50mg/100mL</span><span class="sep">=</span><span class="ic">농도 <b>500 mcg/mL</b></span></div>
     <div class="mix-panel">
@@ -3115,11 +3703,14 @@ var DRUGS = [
 },
 {
   id:'c-lasix', tab:'sd',
+  mapId:'drug:furosemide',
   color:'#0891b2',
   name:'Furosemide (Lasix)',
   nameKr:'라식스 Infusion',
   sub:'400mg/250mL (1.6 mg/mL) · 5–40 mg/hr',
   badges:[['bd-cyan','💧 Loop Diuretic']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:10, unit:'mg/hr', min:1, max:20, conc:1.6, concUnit:'mg', mode:'hr' },
   body:`
     <div class="info-row"><span class="ic">💉 400mg/250mL</span><span class="sep">=</span><span class="ic">농도 <b>1.6 mg/mL</b></span></div>
     <div class="mix-panel">
@@ -3157,11 +3748,14 @@ var DRUGS = [
 // ─────────────────────────────────────
 {
   id:'c-esmo', tab:'cardio', section:'beta',
+  mapId:'drug:esmolol',
   color:'#0d9488',
   name:'Esmolol',
   nameKr:'브레비블록',
   sub:'5000mg/500mL · 50–200 mcg/kg/min',
   badges:[['bd-teal','🫀 β₁-Blocker'],['bd-red','Max 200']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:100, unit:'mcg/kg/min', min:20, max:200, conc:10, concUnit:'mg', mode:'wt_min_x1000' },
   body:`
     <div class="info-row"><span class="ic">💉 브레비블록 5000mg premix</span><span class="sep">=</span><span class="ic">농도 <b>10 mg/mL</b></span></div>
     <div class="mix-panel">
@@ -3194,11 +3788,14 @@ var DRUGS = [
 },
 {
   id:'c-labet', tab:'cardio', section:'beta',
+  mapId:'drug:labetalol',
   color:'#0d9488',
   name:'Labetalol',
   nameKr:'라베탈롤 · 트란데이트',
   sub:'200mg/200mL · 0.5–2 mg/min (α/β-Blocker)',
   badges:[['bd-teal','🫀 α/β-Blocker'],['bd-red','Max 300mg 누적']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:2, unit:'mg/min', min:0.5, max:2, conc:1, concUnit:'mg', mode:'min' },
   body:`
     <div class="info-row"><span class="ic">💉 200mg/200mL</span><span class="sep">=</span><span class="ic">농도 <b>1 mg/mL</b></span></div>
     <div class="mix-panel">
@@ -3405,11 +4002,14 @@ var DRUGS = [
 },
 {
   id:'c-octreo', tab:'ot', section:'other',
+  mapId:'drug:octreotide',
   color:'#0d9488',
   name:'Octreotide',
   nameKr:'옥트레오타이드 · 산도스타틴',
   sub:'0.5mg/50mL · 25–50 mcg/hr (정맥류 출혈)',
   badges:[['bd-green','💚 정맥류 출혈']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:50, unit:'mcg/hr', min:25, max:50, conc:10, concUnit:'mcg', mode:'hr' },
   body:`
     <div class="info-row"><span class="ic">💉 0.5mg/50mL</span><span class="sep">=</span><span class="ic">농도 <b>10 mcg/mL</b></span></div>
     <div class="mix-panel">
@@ -3442,11 +4042,14 @@ var DRUGS = [
 },
 {
   id:'c-hep', tab:'ot', section:'other',
+  mapId:'drug:heparin',
   color:'#b91c1c',
   name:'Heparin',
   nameKr:'헤파린 (UFH) · 체중기반 프로토콜',
   sub:'25000U/250mL · 일반 12 / STEMI 18 U/kg/hr',
   badges:[['bd-red','🔴 항응고']],
+  /* P0-1 A: 용량 메타 (현재값 DATA화·무회귀) */
+  dose:{ default:12, unit:'U/kg/hr', min:12, max:18, conc:100, concUnit:'U', mode:'wt_hr' },
   body:`
     <div class="info-row"><span class="ic">💉 25000U/250mL</span><span class="sep">=</span><span class="ic">농도 <b>100 U/mL</b></span></div>
     <div class="mix-panel">
@@ -3510,6 +4113,27 @@ var DRUGS = [
 
 function bwt(){return parseFloat(document.getElementById('bwt').value)||60;}
 function setBwt(v){document.getElementById('bwt').value=v;updateAll();}
+function toggleTheme(){
+  var cur=document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';
+  var next=cur==='dark'?'light':'dark';
+  applyTheme(next);
+  try{ localStorage.setItem('icucalc-theme', next); }catch(e){}
+}
+function applyTheme(theme){
+  if(theme==='dark'){ document.documentElement.setAttribute('data-theme','dark'); }
+  else { document.documentElement.removeAttribute('data-theme'); }
+  var btn=document.getElementById('theme-toggle');
+  if(btn) btn.textContent = (theme==='dark') ? '☀️' : '🌙';
+}
+(function initTheme(){
+  var saved='light';
+  try{ saved=localStorage.getItem('icucalc-theme')||'light'; }catch(e){}
+  if(saved==='dark') document.documentElement.setAttribute('data-theme','dark');
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){ applyTheme(saved); });
+  } else { applyTheme(saved); }
+})();
+
 function stepBwt(delta){
   var el=document.getElementById('bwt');
   var v=(parseFloat(el.value)||60)+delta;
@@ -3522,7 +4146,7 @@ function togPtPanel(){
   if(!w)return;
   var open=w.style.display!=='none';
   w.style.display=open?'none':'flex';
-  if(btn)btn.innerHTML=open?'빠른설정 ▾':'빠른설정 ▴';
+  if(btn)btn.classList.toggle('on', !open);
 }
 function setD(id,v,fn){document.getElementById(id).value=v;fn();}
 function fmt(n){if(!isFinite(n))return'—';return n<10?(Math.round(n*100)/100).toFixed(2):(Math.round(n*10)/10).toFixed(1);}
@@ -3621,42 +4245,53 @@ function buildVasoTable(){
   }
 }
 function cNorepi(){
-  var d=parseFloat(document.getElementById('norepi-d').value)||0.1;
+  var m=doseMeta('c-norepi');
+  var d=parseFloat(document.getElementById('norepi-d').value)||m.default;
   var norepiWrap=document.getElementById('mix-custom-norepi');
-  var norepiConc=norepiWrap&&norepiWrap.classList.contains('open')?getConc('norepi',32,'mcg'):NOREPI_F[norepiFi].conc_ugml;
-  var f=NOREPI_F[norepiFi];
-  renderBig('norepi-res',d*bwt()*60/norepiConc,d,0.025,norepiFi===0?1:3,'mL / hr',d+' mcg/kg/min · BWT '+bwt()+' kg');
-  document.getElementById('norepi-warn').innerHTML=d>=0.5?'<div class="ban ban-caution"><span class="ban-icon">⚠️</span><span>≥0.5 mcg/kg/min — Vasopressin 추가 고려.</span></div>':'';
+  /* 농도 폴백: 리터럴 32 제거 → NOREPI_F[0].conc_ugml (DATA 참조) */
+  var norepiConc=norepiWrap&&norepiWrap.classList.contains('open')?getConc('norepi',NOREPI_F[0].conc_ugml,'mcg'):NOREPI_F[norepiFi].conc_ugml;
+  /* 임상 상한 m.max는 농도세팅(norepiFi)과 무관 — 세팅연동 상한 버그 수정됨 */
+  renderBig('norepi-res',d*bwt()*60/norepiConc,d,m.min,m.max,'mL / hr',d+' '+m.unit+' · BWT '+bwt()+' kg');
+  renderDoseWarn('norepi-warn','c-norepi',d);
 }
 function cEpi(){
-  var d=parseFloat(document.getElementById('epi-d').value)||0.1;
-  renderBig('epi-res',d*bwt()*60/getConc('epi',16,'mcg'),d,0.01,0.5);
+  var m=doseMeta('c-epi');
+  var d=parseFloat(document.getElementById('epi-d').value)||m.default;
+  renderBig('epi-res',d*bwt()*60/getConc('epi',m.conc,m.concUnit),d,m.min,m.max);
+  renderDoseWarn('epi-warn','c-epi',d);
 }
 function cDobu(){
-  var d=parseFloat(document.getElementById('dobu-d').value)||5;
-  renderBig('dobu-res',d*bwt()*60/getConc('dobu',2000,'mcg'),d,2,20);
+  var m=doseMeta('c-dobu');
+  var d=parseFloat(document.getElementById('dobu-d').value)||m.default;
+  renderBig('dobu-res',d*bwt()*60/getConc('dobu',m.conc,m.concUnit),d,m.min,m.max);
+  renderDoseWarn('dobu-warn','c-dobu',d);
 }
 function cMilri(){
-  var d=parseFloat(document.getElementById('milri-d').value)||0.375;
-  renderBig('milri-res',d*bwt()*60/getConc('milri',200,'mcg'),d,0.125,0.75);
+  var m=doseMeta('c-milri');
+  var d=parseFloat(document.getElementById('milri-d').value)||m.default;
+  renderBig('milri-res',d*bwt()*60/getConc('milri',m.conc,m.concUnit),d,m.min,m.max);
 }
 function cDilti(){
-  var d=parseFloat(document.getElementById('dilti-d').value)||10;
-  renderBig('dilti-res',d/getConc('dilti',1,'mg'),d,5,15);
+  var m=doseMeta('c-dilti');
+  var d=parseFloat(document.getElementById('dilti-d').value)||m.default;
+  renderBig('dilti-res',d/getConc('dilti',m.conc,m.concUnit),d,m.min,m.max);
 }
 function cOctreo(){
-  var d=parseFloat(document.getElementById('octreo-d').value)||50;
-  renderBig('octreo-res',d/getConc('octreo',10,'mcg'),d,25,50);
+  var m=doseMeta('c-octreo');
+  var d=parseFloat(document.getElementById('octreo-d').value)||m.default;
+  renderBig('octreo-res',d/getConc('octreo',m.conc,m.concUnit),d,m.min,m.max);
 }
 function cHep(){
-  var d=parseFloat(document.getElementById('hep-d').value)||12;
-  renderBig('hep-res',d*bwt()/getConc('hep',100,'U'),d,12,18);
+  var m=doseMeta('c-hep');
+  var d=parseFloat(document.getElementById('hep-d').value)||m.default;
+  renderBig('hep-res',d*bwt()/getConc('hep',m.conc,m.concUnit),d,m.min,m.max);
   updHepLoad();
 }
 function cLabet(){
-  var d=parseFloat(document.getElementById('labet-d').value)||2;
+  var m=doseMeta('c-labet');
+  var d=parseFloat(document.getElementById('labet-d').value)||m.default;
   // mg/min × 60 ÷ (mg/mL) = mL/hr (체중무관)
-  renderBig('labet-res',d*60/getConc('labet',1,'mg'),d,0.5,2);
+  renderBig('labet-res',d*60/getConc('labet',m.conc,m.concUnit),d,m.min,m.max);
 }
 
 // ══════════════════════════════
@@ -3733,18 +4368,22 @@ function ucCalc(){
 function calcNaCorrection(){
   var naCur=parseFloat((document.getElementById('na-cur')||{}).value)||120;
   var naTgt=parseFloat((document.getElementById('na-target')||{}).value)||naCur;
-  var sexCoef=parseFloat((document.getElementById('na-sex')||{}).value)||0.6;
+  var sexCoef=parseFloat((document.getElementById('na-sex')||{}).value)||NA_SAFETY.defaultSexCoef;
   var fluidNa=parseFloat((document.getElementById('na-fluid')||{}).value);
-  if(isNaN(fluidNa))fluidNa=513;
+  if(isNaN(fluidNa))fluidNa=NA_SAFETY.fluidNa.hts3;
   var wt=bwt();
   var tbw=wt*sexCoef;
   // 표시
   var wd=document.getElementById('na-wt-disp'); if(wd)wd.textContent=wt;
   var td=document.getElementById('na-tbw-disp'); if(td)td.textContent=tbw.toFixed(1);
 
+  // 고위험군 분기 (체크 시 한계 6, 미체크 시 8)
+  var highRisk=!!(document.getElementById('na-highrisk')||{}).checked;
+  var limit24h=highRisk?NA_SAFETY.hypo.highRisk24h:NA_SAFETY.hypo.std24h;
+
   // 방향 판정
-  var isHypo=naCur<135;
-  var isHyper=naCur>145;
+  var isHypo=naCur<NA_SAFETY.normalLow;
+  var isHyper=naCur>NA_SAFETY.normalHigh;
   var dir=naTgt-naCur; // +면 올림, -면 내림
   var dirEl=document.getElementById('na-direction');
   var dirHtml='', dirCls='';
@@ -3755,7 +4394,7 @@ function calcNaCorrection(){
     dirHtml='🔴 <b>고나트륨혈증</b> (현재 '+naCur+' mmol/L) — 교정 방향: <b>하강</b>';
     dirCls='dir-hyper';
   } else {
-    dirHtml='🟢 정상 범위 (135–145) — 현재 '+naCur+' mmol/L';
+    dirHtml='🟢 정상 범위 ('+NA_SAFETY.normalLow+'–'+NA_SAFETY.normalHigh+') — 현재 '+naCur+' mmol/L';
     dirCls='dir-normal';
   }
   if(dirEl){ dirEl.className='elyte-direction '+dirCls; dirEl.innerHTML=dirHtml; }
@@ -3770,7 +4409,7 @@ function calcNaCorrection(){
 
   // 교정 속도별 주입 속도 (저Na 상승 기준)
   // 주입속도(mL/hr) = 목표ΔNa/hr ÷ deltaPerL × 1000
-  var rates=[['na-row-05',0.5],['na-row-075',0.75],['na-row-10',1.0]];
+  var rates=[['na-row-05',NA_SAFETY.hypo.rates[0]],['na-row-075',NA_SAFETY.hypo.rates[1]],['na-row-10',NA_SAFETY.hypo.rates[2]]];
   rates.forEach(function(r){
     var row=document.getElementById(r[0]); if(!row)return;
     var rateHr=r[1]; // mmol/L/hr
@@ -3785,8 +4424,8 @@ function calcNaCorrection(){
       if(isFinite(v)&&v>0) mlhr=Math.round(v)+' mL/hr';
     }
     if(rateCell)rateCell.textContent=mlhr;
-    // 24h 한계 초과 행 경고색
-    row.classList.toggle('ert-danger', d24>8);
+    // 24h 한계 초과 행 경고색 (고위험이면 6, 표준 8)
+    row.classList.toggle('ert-danger', d24>limit24h);
   });
 
   // 안전 가드
@@ -3794,23 +4433,32 @@ function calcNaCorrection(){
   var msgs=[];
   if(isHypo){
     var planned=Math.abs(dir);
-    if(planned>8){
-      msgs.push('🚨 <b>위험</b>: 24h 목표 상승 '+planned+' mmol/L → 한계 8 초과. <b>삼투성 탈수초증후군(ODS)</b> 위험. 24h ≤8 (고위험 ≤6) 권장.');
-    } else if(planned>6){
-      msgs.push('⚠️ 24h 목표 상승 '+planned+' mmol/L — 평균위험 한계(8) 이내이나 고위험군(간경변·저칼륨·알코올·영양실조)은 ≤6 권장.');
+    var sv=NA_SAFETY.hypo.severe;
+    if(planned>limit24h){
+      msgs.push('🚨 <b>위험</b>: 24h 목표 상승 '+planned+' mmol/L → 한계 '+limit24h+' 초과'
+        +(highRisk?' <b>(고위험군)</b>':'')+'. <b>삼투성 탈수초증후군(ODS)</b> 위험. 24h ≤'
+        +NA_SAFETY.hypo.std24h+' (고위험 ≤'+NA_SAFETY.hypo.highRisk24h+', 엄격 '+NA_SAFETY.hypo.highRiskLow+'–'+NA_SAFETY.hypo.highRisk24h+') 권장.');
+    } else if(planned>NA_SAFETY.hypo.highRisk24h){
+      msgs.push('⚠️ 24h 목표 상승 '+planned+' mmol/L — 표준 한계('+NA_SAFETY.hypo.std24h+') 이내이나 고위험군('
+        +NA_SAFETY.hypo.highRiskFactors+')은 ≤'+NA_SAFETY.hypo.highRisk24h+' 권장.');
     } else {
-      msgs.push('✅ 24h 목표 상승 '+planned+' mmol/L — 안전 범위(≤6–8).');
+      msgs.push('✅ 24h 목표 상승 '+planned+' mmol/L — 안전 범위(≤'+NA_SAFETY.hypo.highRisk24h+'–'+NA_SAFETY.hypo.std24h+').');
     }
-    msgs.push('중증 증상(경련·혼수): 3% saline 100–150mL 10–20분 볼루스, 첫 6h 4–6 mmol/L 목표 후 감속. 2h마다 Na 재측정.');
+    msgs.push('📏 <b>48h 한계 ≤'+NA_SAFETY.hypo.h48+' mmol/L</b> 병행 준수(과교정 정의: >'+NA_SAFETY.hypo.std24h+'/24h 또는 >'+NA_SAFETY.hypo.h48+'/48h).');
+    msgs.push('중증 증상(경련·혼수): 3% saline '+sv.htsVol[0]+'–'+sv.htsVol[1]+'mL '+sv.htsMin[0]+'–'+sv.htsMin[1]
+      +'분 볼루스(최소 '+sv.riseMin+' mmol/L 상승으로 뇌부종 역전), 첫 6h '+sv.target6h[0]+'–'+sv.target6h[1]
+      +' mmol/L 목표 후 감속. '+sv.remeasureHr+'h마다 Na 재측정.');
+    msgs.push('🕒 '+NA_SAFETY.hypo.odsOnset);
   } else if(isHyper){
     var plannedH=Math.abs(dir);
-    var maxH=10;
+    var maxH=NA_SAFETY.hyper.max24h;
     if(plannedH>maxH){
-      msgs.push('🚨 <b>위험</b>: 24h 목표 하강 '+plannedH+' mmol/L → 한계 10 초과. 뇌부종 위험. ≤0.5 mmol/L/hr (≤10/24h) 권장.');
+      msgs.push('🚨 <b>위험</b>: 24h 목표 하강 '+plannedH+' mmol/L → 한계 '+maxH+' 초과. 뇌부종 위험. ≤'
+        +NA_SAFETY.hyper.hourlyMax+' mmol/L/hr (≤'+maxH+'/24h) 권장.');
     } else {
-      msgs.push('✅ 24h 목표 하강 '+plannedH+' mmol/L — 안전 범위(≤10/24h). 시간당 ≤0.5 mmol/L.');
+      msgs.push('✅ 24h 목표 하강 '+plannedH+' mmol/L — 안전 범위(≤'+maxH+'/24h). 시간당 ≤'+NA_SAFETY.hyper.hourlyMax+' mmol/L.');
     }
-    msgs.push('고나트륨: 원인 교정 후 자유수(D5W/half saline)로 천천히. 급성(<48h)이 아니면 서서히.');
+    msgs.push(NA_SAFETY.hyper.note);
   }
   if(safEl) safEl.innerHTML=msgs.map(function(m){return '<div class="elyte-safety-line">'+m+'</div>';}).join('');
 }
@@ -3827,23 +4475,23 @@ function calcABGA(){
 
   // 1차 장애 판정
   var primEl=document.getElementById('abg-primary');
-  var acidemia=ph<7.35, alkalemia=ph>7.45;
+  var acidemia=ph<ABGA_C.phLow, alkalemia=ph>ABGA_C.phHigh;
   var primary='', primCls='', primType='';
   // pH 방향 + HCO3/CO2 방향
   if(acidemia){
-    if(hco3<22){ primary='대사성 산증'; primType='MA'; }
-    else if(co2>45){ primary='호흡성 산증'; primType='RA'; }
+    if(hco3<ABGA_C.hco3MetLow){ primary='대사성 산증'; primType='MA'; }
+    else if(co2>ABGA_C.co2RespHigh){ primary='호흡성 산증'; primType='RA'; }
     else { primary='산증 (혼합 가능)'; primType='MA'; }
     primCls='abga-acid';
   } else if(alkalemia){
-    if(hco3>26){ primary='대사성 알칼리증'; primType='MAlk'; }
-    else if(co2<35){ primary='호흡성 알칼리증'; primType='RAlk'; }
+    if(hco3>ABGA_C.hco3MetHigh){ primary='대사성 알칼리증'; primType='MAlk'; }
+    else if(co2<ABGA_C.co2RespLow){ primary='호흡성 알칼리증'; primType='RAlk'; }
     else { primary='알칼리증 (혼합 가능)'; primType='MAlk'; }
     primCls='abga-alk';
   } else {
     // pH 정상 - 혼합 가능
-    if(co2>45&&hco3>26){ primary='정상 pH · 호흡성산증+대사성알칼리증 가능'; primType='mix'; }
-    else if(co2<35&&hco3<22){ primary='정상 pH · 호흡성알칼리증+대사성산증 가능'; primType='mix'; }
+    if(co2>ABGA_C.co2RespHigh&&hco3>ABGA_C.hco3MetHigh){ primary='정상 pH · 호흡성산증+대사성알칼리증 가능'; primType='mix'; }
+    else if(co2<ABGA_C.co2RespLow&&hco3<ABGA_C.hco3MetLow){ primary='정상 pH · 호흡성알칼리증+대사성산증 가능'; primType='mix'; }
     else { primary='정상 산-염기'; primType='normal'; }
     primCls='abga-normal';
   }
@@ -3854,26 +4502,26 @@ function calcABGA(){
   var compEl=document.getElementById('abg-comp');
   var compHtml='';
   if(primType==='MA'){
-    var expCo2=1.5*hco3+8;
-    var lo=Math.round((expCo2-2)*10)/10, hi=Math.round((expCo2+2)*10)/10;
+    var expCo2=ABGA_C.winters.slope*hco3+ABGA_C.winters.intercept;
+    var lo=Math.round((expCo2-ABGA_C.winters.range)*10)/10, hi=Math.round((expCo2+ABGA_C.winters.range)*10)/10;
     var cmp='적절';
     if(co2<lo) cmp='측정 PaCO₂가 예상보다 낮음 → 동반 <b>호흡성 알칼리증</b>';
     else if(co2>hi) cmp='측정 PaCO₂가 예상보다 높음 → 동반 <b>호흡성 산증</b>';
     else cmp='적절한 호흡성 보상 (단순 대사성 산증)';
     compHtml='보상 (Winter\'s): 예상 PaCO₂ <b>'+lo+'–'+hi+'</b> mmHg · 측정 '+co2+'<br>→ '+cmp;
   } else if(primType==='MAlk'){
-    var expCo2b=40+0.7*(hco3-24);
-    var lob=Math.round(expCo2b-2), hib=Math.round(expCo2b+2);
+    var expCo2b=ABGA_C.metAlk.base+ABGA_C.metAlk.slope*(hco3-ABGA_C.hco3Normal);
+    var lob=Math.round(expCo2b-ABGA_C.winters.range), hib=Math.round(expCo2b+ABGA_C.winters.range);
     var cmpb=(co2>=lob&&co2<=hib)?'적절한 호흡성 보상':(co2<lob?'측정 PaCO₂ 낮음 → 동반 호흡성 알칼리증':'측정 PaCO₂ 높음 → 동반 호흡성 산증');
     compHtml='보상: 예상 PaCO₂ <b>'+lob+'–'+hib+'</b> mmHg (HCO₃ 10↑당 +5~7) · 측정 '+co2+'<br>→ '+cmpb;
   } else if(primType==='RA'){
     var dco2=(co2-40)/10;
-    var expHco3=chron==='chronic'?24+3.5*dco2:24+1*dco2;
-    compHtml='보상 ('+(chron==='chronic'?'만성':'급성')+' 호흡성산증): 예상 HCO₃ <b>'+Math.round(expHco3*10)/10+'</b> mEq/L · 측정 '+hco3+'<br>→ '+(Math.abs(hco3-expHco3)<=3?'적절':'불일치 → 혼합 장애 가능');
+    var expHco3=chron==='chronic'?ABGA_C.respChronic.base+ABGA_C.respChronic.slope*dco2:ABGA_C.respAcute.base+ABGA_C.respAcute.slope*dco2;
+    compHtml='보상 ('+(chron==='chronic'?'만성':'급성')+' 호흡성산증): 예상 HCO₃ <b>'+Math.round(expHco3*10)/10+'</b> mEq/L · 측정 '+hco3+'<br>→ '+(Math.abs(hco3-expHco3)<=ABGA_C.compTol?'적절':'불일치 → 혼합 장애 가능');
   } else if(primType==='RAlk'){
     var dco2b=(40-co2)/10;
-    var expHco3b=chron==='chronic'?24-5*dco2b:24-2*dco2b;
-    compHtml='보상 ('+(chron==='chronic'?'만성':'급성')+' 호흡성알칼리증): 예상 HCO₃ <b>'+Math.round(expHco3b*10)/10+'</b> mEq/L · 측정 '+hco3+'<br>→ '+(Math.abs(hco3-expHco3b)<=3?'적절':'불일치 → 혼합 장애 가능');
+    var expHco3b=chron==='chronic'?ABGA_C.respAlkChronic.base-ABGA_C.respAlkChronic.slope*dco2b:ABGA_C.respAlkAcute.base-ABGA_C.respAlkAcute.slope*dco2b;
+    compHtml='보상 ('+(chron==='chronic'?'만성':'급성')+' 호흡성알칼리증): 예상 HCO₃ <b>'+Math.round(expHco3b*10)/10+'</b> mEq/L · 측정 '+hco3+'<br>→ '+(Math.abs(hco3-expHco3b)<=ABGA_C.compTol?'적절':'불일치 → 혼합 장애 가능');
   } else {
     compHtml='보상 평가: 1차 장애 확정 후 적용';
   }
@@ -3883,22 +4531,22 @@ function calcABGA(){
   var agEl=document.getElementById('abg-ag');
   if(!isNaN(na)&&!isNaN(cl)){
     var ag=na-(cl+hco3);
-    var normAG=12;
+    var normAG=ABGA_C.ag.normal;
     var agCorr=ag;
     var albNote='';
     if(!isNaN(alb)){
-      agCorr=ag+2.5*(4.0-alb);
+      agCorr=ag+ABGA_C.ag.albCoef*(ABGA_C.ag.albNormal-alb);
       albNote=' · 알부민보정 AG <b>'+Math.round(agCorr*10)/10+'</b>';
     }
-    var agHigh=(agCorr>normAG+2);
-    var agHtml='Anion Gap = '+na+' − ('+cl+' + '+hco3+') = <b>'+Math.round(ag*10)/10+'</b> (정상 12±2)'+albNote;
+    var agHigh=(agCorr>normAG+ABGA_C.ag.range);
+    var agHtml='Anion Gap = '+na+' − ('+cl+' + '+hco3+') = <b>'+Math.round(ag*10)/10+'</b> (정상 '+ABGA_C.ag.normal+'±'+ABGA_C.ag.range+')'+albNote;
     if(agHigh){
       agHtml+='<br>→ <b>High AG 대사성 산증</b>';
       // Delta ratio
-      var dAG=agCorr-12, dHCO3=24-hco3;
+      var dAG=agCorr-ABGA_C.ag.normal, dHCO3=ABGA_C.hco3Normal-hco3;
       if(dHCO3>0){
         var dr=dAG/dHCO3;
-        var drInt=dr<1?'<1 → 동반 <b>non-AG 대사성 산증</b>':(dr>2?'>2 → 동반 <b>대사성 알칼리증</b> 또는 만성 호흡성산증':'1–2 → 단순 AG 대사성 산증');
+        var drInt=dr<ABGA_C.delta.low?'<1 → 동반 <b>non-AG 대사성 산증</b>':(dr>ABGA_C.delta.high?'>2 → 동반 <b>대사성 알칼리증</b> 또는 만성 호흡성산증':'1–2 → 단순 AG 대사성 산증');
         agHtml+=' · Delta ratio '+Math.round(dr*100)/100+' ('+drInt+')';
       }
     } else {
@@ -3916,6 +4564,9 @@ function calcABGA(){
   if(sumEl){
     sumEl.innerHTML='⚠️ 임상 맥락(병력·증상)과 함께 해석. 단일 ABGA로 확정 진단 불가.';
   }
+
+  // ABGA 변경 시 vent 제안 동기화
+  if(typeof calcVentSuggest==='function') calcVentSuggest();
 }
 
 function ucGtt(rate){
@@ -3963,14 +4614,17 @@ function updHepLoad(){
   }
 }
 function cDopa(){
-  var d=parseFloat(document.getElementById('dopa-d').value)||5;
+  var m=doseMeta('c-dopa');
+  var d=parseFloat(document.getElementById('dopa-d').value)||m.default;
   var f=DOPA_F[dopaFi];
-  renderBig('dopa-res',d*bwt()*60/(f.conc_mgml*1000),d,2,20);
+  renderBig('dopa-res',d*bwt()*60/(f.conc_mgml*1000),d,m.min,m.max);
+  renderDoseWarn('dopa-warn','c-dopa',d);
 }
 function cEsmo(){
-  var d=parseFloat(document.getElementById('esmo-d').value)||100;
-  var r=d*bwt()*60/(getConc('esmo',10,'mg')*1000);
-  var over=d>200;
+  var m=doseMeta('c-esmo');
+  var d=parseFloat(document.getElementById('esmo-d').value)||m.default;
+  var r=d*bwt()*60/(getConc('esmo',m.conc,m.concUnit)*1000);
+  var over=d>m.max;
   var el=document.getElementById('esmo-res');
   el.className='res-big '+(over?'danger':'ok');
   el.innerHTML='<div class="res-big-l"><div class="res-big-num '+(over?'danger':'ok')+'">'+fmt(r)+'</div>'
@@ -3985,25 +4639,29 @@ function cPhe(){
   document.getElementById('phe-grid').innerHTML='<div style="grid-column:1/-1;font-size:12px;color:var(--muted);margin-bottom:4px;">농도 <b style="font-family:var(--mono);">100 mcg/mL</b></div>'+mkCells(items);
 }
 function cDex(){
-  var d=parseFloat(document.getElementById('dex-d').value)||0.4;
+  var m=doseMeta('c-dex');
+  var d=parseFloat(document.getElementById('dex-d').value)||m.default;
   var w=bwt();
   var lv=(w/4).toFixed(1), lr=(w/4*6).toFixed(1);
   document.getElementById('dex-load').innerHTML='<b>1 mcg/kg</b> over 10분 → [<b>'+w+'kg</b>] <b style="font-family:var(--mono);color:var(--indigo);">'+lv+' mL</b> at <b style="font-family:var(--mono);color:var(--indigo);">'+lr+' mL/hr</b> × 10분';
-  renderBig('dex-res',d*w/getConc('dex',4,'mcg'),d,0.2,0.7,'mL / hr',d+' mcg/kg/hr · BWT '+w+' kg');
+  renderBig('dex-res',d*w/getConc('dex',m.conc,m.concUnit),d,m.min,m.max,'mL / hr',d+' '+m.unit+' · BWT '+w+' kg');
 }
 function cMidaz(){
-  var d=parseFloat(document.getElementById('midaz-d').value)||0.05;
+  var m=doseMeta('c-midaz');
+  var d=parseFloat(document.getElementById('midaz-d').value)||m.default;
   var w=bwt();
   document.getElementById('midaz-load').innerHTML='<b>0.03–0.3 mg/kg</b> over 2–3분 → [<b>'+w+'kg</b>] <b style="font-family:var(--mono);color:var(--purple);">'+(0.03*w).toFixed(1)+'–'+(0.3*w).toFixed(1)+'mg</b>';
-  renderBig('midaz-res',d*w/getConc('midaz',1,'mg'),d,0.02,0.2,'mL / hr',d+' mg/kg/hr · BWT '+w+' kg');
+  renderBig('midaz-res',d*w/getConc('midaz',m.conc,m.concUnit),d,m.min,m.max,'mL / hr',d+' '+m.unit+' · BWT '+w+' kg');
 }
 function cUltiva(){
-  var d=parseFloat(document.getElementById('ultiva-d').value)||0.1;
-  renderBig('ultiva-res',d*bwt()*60/getConc('ultiva',40,'mcg'),d,0.025,0.4,'mL / hr',d+' mcg/kg/min · BWT '+bwt()+' kg');
+  var m=doseMeta('c-ultiva');
+  var d=parseFloat(document.getElementById('ultiva-d').value)||m.default;
+  renderBig('ultiva-res',d*bwt()*60/getConc('ultiva',m.conc,m.concUnit),d,m.min,m.max,'mL / hr',d+' '+m.unit+' · BWT '+bwt()+' kg');
 }
 function cBec(){
-  var d=parseFloat(document.getElementById('bec-d').value)||1.0;
-  renderBig('bec-res',d*bwt()*60/getConc('bec',500,'mcg'),d,0.8,1.7,'mL / hr');
+  var m=doseMeta('c-bec');
+  var d=parseFloat(document.getElementById('bec-d').value)||m.default;
+  renderBig('bec-res',d*bwt()*60/getConc('bec',m.conc,m.concUnit),d,m.min,m.max,'mL / hr');
 }
 function cLasix(){
   var m=parseFloat(document.getElementById('lasix-d').value)||10;
@@ -4011,7 +4669,7 @@ function cLasix(){
   document.getElementById('lasix-load').innerHTML=
     '이뇨제 미사용: <b style="font-family:var(--mono);color:var(--cyan);">20–40mg</b> IV push<br>'
     +'체중 기반 0.5–1 mg/kg: <b style="font-family:var(--mono);color:var(--cyan);">'+(0.5*w).toFixed(0)+'–'+(1.0*w).toFixed(0)+'mg</b>';
-  var r=m/getConc('lasix',1.6,'mg');
+  var r=m/getConc('lasix',doseMeta('c-lasix').conc,doseMeta('c-lasix').concUnit);
   var over=m>40,near=m>=34;
   var lvl=over?'danger':near?'warn':'ok';
   var tags={ok:'tag-ok',warn:'tag-warn',danger:'tag-danger'};
@@ -4075,17 +4733,19 @@ function cNalox(){
   if(el) el.innerHTML=h;
 }
 function cProp(){
-  var d=parseFloat(document.getElementById('prop-d').value)||2;
+  var m=doseMeta('c-prop');
+  var d=parseFloat(document.getElementById('prop-d').value)||m.default;
   var w=bwt();
   // rate = dose(mg/kg/hr) * weight / conc(mg/mL)
-  var rate=d*w/getConc('prop',10,'mg');
-  renderBig('prop-res',rate,d,1,12,'mL / hr',d+' mg/kg/hr · BWT '+w+' kg');
+  var rate=d*w/getConc('prop',m.conc,m.concUnit);
+  renderBig('prop-res',rate,d,m.min,m.max,'mL / hr',d+' '+m.unit+' · BWT '+w+' kg');
 }
 function cFent(){
-  var d=parseFloat(document.getElementById('fent-d').value)||50;
+  var m=doseMeta('c-fent');
+  var d=parseFloat(document.getElementById('fent-d').value)||m.default;
   var w=bwt();
   // rate = dose(mcg/hr) / conc(mcg/mL)
-  var rate=d/getConc('fent',10,'mcg');
+  var rate=d/getConc('fent',m.conc,m.concUnit);
   // bolus grid: 1 mcg/kg, 1.5 mcg/kg (IV push)
   var items=[
     {label:'0.5 mcg/kg',val:(0.5*w).toFixed(0)+' mcg',unit:(0.5*w/50).toFixed(1)+' mL (원액)'},
@@ -4261,22 +4921,45 @@ function cIBW(){
           : '<span style="background:#f3f4f6;color:#6b7280;border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;">일반</span>';
 
       html += '<tr style="'+rowBg+'">'
-        +'<td style="padding:10px 14px;font-family:var(--mono);font-weight:700;font-size:15px;color:'+tvColor+';">'+mlkg+' mL/kg</td>'
+        +'<td style="padding:10px 14px;font-family:var(--mono);font-weight:700;font-size:15px;white-space:nowrap;color:'+tvColor+';">'+mlkg+'&nbsp;mL/kg</td>'
         +'<td style="padding:10px 14px;text-align:center;font-family:var(--mono);font-weight:800;font-size:26px;color:'+tvColor+';letter-spacing:-1px;">'+tv+'</td>'
-        +'<td style="padding:10px 14px;text-align:center;font-family:var(--mono);font-weight:700;font-size:14px;color:var(--text2);">'+mv12+' L/min</td>'
-        +'<td style="padding:10px 14px;text-align:center;font-family:var(--mono);font-weight:700;font-size:14px;color:var(--text2);">'+mv14+' L/min</td>'
-        +'<td style="padding:10px 14px;text-align:right;">'+badge+'</td>'
+        +'<td style="padding:10px 14px;text-align:center;font-family:var(--mono);font-weight:700;font-size:14px;white-space:nowrap;color:var(--text2);">'+mv12+'&nbsp;L/min</td>'
+        +'<td style="padding:10px 14px;text-align:center;font-family:var(--mono);font-weight:700;font-size:14px;white-space:nowrap;color:var(--text2);">'+mv14+'&nbsp;L/min</td>'
+        +'<td style="padding:10px 14px;text-align:right;white-space:nowrap;">'+badge+'</td>'
         +'</tr>';
     }
     tbody.innerHTML = html;
   }
 
-  // 기준 안내
+  // 기준 안내 — 평상시 문구는 생략(이미 위 IBW 패널·TV평가에서 확인 가능), 비만 경고만 표시
   var noteEl = document.getElementById('tv-note');
   if(noteEl){
-    noteEl.innerHTML = '현재 기준: <b>'+basisLabel+' '+basis+' kg</b>'
-      + (tvBasis==='tbw' && isObese ? ' &nbsp;<span style="color:var(--orange);font-weight:700;">⚠️ 비만 환자 — IBW 기준으로 전환 권장</span>' : '');
+    noteEl.innerHTML = (tvBasis==='tbw' && isObese ? '<span style="color:var(--orange);font-weight:700;">⚠️ 비만 환자 — IBW 기준으로 전환 권장</span>' : '');
   }
+
+  // 공용 바의 현재 TV가 IBW 기준 몇 mL/kg인지 — 폐보호 목표와 직접 연결
+  var curTvEl = document.getElementById('tv-current-eval');
+  if(curTvEl){
+    var curTv = (typeof ventNum==='function') ? ventNum('vs-tv') : null;
+    if(curTv!=null && ibw>0){
+      var perKg = Math.round(curTv/ibwRound*10)/10;
+      var tgt6 = Math.round(6*ibwRound);
+      var col, msg;
+      if(perKg>8){ col='var(--red)'; msg='폐보호 상한(8) 초과 — 감량 고려'; }
+      else if(perKg<5.5){ col='var(--orange)'; msg='6 미만 — 환기 부족 여부 확인'; }
+      else { col='var(--green)'; msg='폐보호 범위(6–8)'; }
+      curTvEl.innerHTML='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 12px;background:var(--surface2);border-radius:8px;font-size:13px;">'
+        + '<span style="color:var(--muted);">상단 설정 TV</span>'
+        + '<b style="font-family:var(--mono);font-size:16px;color:'+col+';">'+curTv+' mL</b>'
+        + '<span style="color:var(--muted);">=</span>'
+        + '<b style="font-family:var(--mono);font-size:16px;color:'+col+';">'+perKg+' mL/kg</b>'
+        + '<span style="color:'+col+';font-weight:700;font-size:12px;">· '+msg+'</span>'
+        + '<span style="color:var(--muted2);font-size:11px;margin-left:auto;">6 mL/kg ≈ '+tgt6+' mL</span></div>';
+    } else { curTvEl.innerHTML=''; }
+  }
+
+  // IBW(신장·성별) 변경 → vent 제안의 TV/kg도 동기화
+  if(typeof calcVentSuggest==='function'){ try{ calcVentSuggest(); }catch(e){} }
 }
 function switchTab(name,btn){
   var tabs=document.querySelectorAll('.tab');
@@ -4285,15 +4968,23 @@ function switchTab(name,btn){
   // 환자 바의 현재약물 버튼 active 표시
   var actBtn=document.getElementById('pt-active-btn');
   if(actBtn) actBtn.classList.toggle('on',name==='active');
-  var names=['vp','sd','ot','cardio','calc','ibw','emg','fluid','elyte','active','fav'];
+  // 즐겨찾기 별표 버튼 active 표시 (☆ ↔ ★)
+  var favBtn=document.getElementById('pt-fav-btn');
+  if(favBtn){ favBtn.classList.toggle('on',name==='fav'); favBtn.textContent=(name==='fav')?'★':'☆'; }
+  var names=['vp','sd','ot','cardio','calc','ibw','emg','fluid','elyte','active','fav','crrt'];
   if(name!=='fav' && typeof favReturnCards==='function') favReturnCards();
   for(var i=0;i<names.length;i++) document.getElementById('tab-'+names[i]).style.display=names[i]===name?'block':'none';
   if(name==='ibw'){var hsl=document.getElementById('ibw-height-sl');var hi=document.getElementById('ibw-height');if(hsl&&hi)hsl.value=hi.value;cIBW();}
+  if(name==='ibw'){try{initVent();calcABGA();}catch(e){}}
+  if(name==='ibw'){try{initVentV2();}catch(e){}}
+  if(name==='crrt'){initCRRT();}
   if(name==='active'){renderActiveDrugs();updateAll();}
   if(name==='calc'){ucCalc();}
   if(name==='fav'){renderFavTab();}
-  if(name==='elyte'){calcNaCorrection();calcABGA();calcCorrCa();calcCrCl();calcOsm();calcKCorr();calcMgRep();calcPhosRep();}
+  if(name==='elyte'){calcNaCorrection();calcCorrCa();calcCrCl();calcOsm();calcKCorr();calcMgRep();calcPhosRep();}
   if(name==='fluid'){calcNutrition();initFluidModule();updateFluidCalc();}
+  // Vercel Web Analytics — 탭별 조회 추적 (배포 도메인에서만 전송, 로컬은 무시)
+  try{ if(typeof window!=='undefined' && typeof window.va==='function') window.va('event',{name:'tab_view',data:{tab:name}}); }catch(e){}
 }
 // ══════════════════════════════
 //  RENDER ENGINE
@@ -4863,57 +5554,6 @@ function openAddModal(){
   setTimeout(function(){var el=document.getElementById('m-name');if(el)el.focus();},80);
 }
 function closeModal(){var m=document.getElementById('pt-modal');if(m)document.body.removeChild(m);}
-
-/* ===== 피드백 (앱 내 모달 + Formspree AJAX 전송) ===== */
-var FEEDBACK_ENDPOINT='https://formspree.io/f/mkoadkje';
-function openFeedback(){
-  var ov=document.createElement('div');
-  ov.id='fb-modal';
-  ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
-  ov.onclick=function(e){ if(e.target===ov) closeFeedback(); };
-  ov.innerHTML='<div style="background:var(--surface);border-radius:14px;padding:22px;width:100%;max-width:340px;box-shadow:0 8px 32px rgba(0,0,0,.2);box-sizing:border-box;">'
-    +'<div style="font-size:16px;font-weight:700;margin-bottom:4px;color:var(--text);">💬 피드백 보내기</div>'
-    +'<div style="font-size:11.5px;color:var(--muted);margin-bottom:16px;line-height:1.5;">버그·개선 의견·추가 약물 요청 등 무엇이든 환영합니다.</div>'
-    +'<div style="margin-bottom:10px;"><div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;">내용</div>'
-    +'<textarea id="fb-msg" rows="4" placeholder="예: 노르에피네프린에 16@ 옵션도 추가해주세요" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;background:var(--surface2);color:var(--text);box-sizing:border-box;outline:none;resize:vertical;font-family:inherit;"></textarea></div>'
-    +'<div style="margin-bottom:16px;"><div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;">회신용 이메일 <span style="font-weight:400;">(선택)</span></div>'
-    +'<input id="fb-email" type="email" inputmode="email" placeholder="reply@example.com" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;background:var(--surface2);color:var(--text);box-sizing:border-box;outline:none;"></div>'
-    +'<div id="fb-status" style="font-size:12px;margin-bottom:10px;min-height:16px;"></div>'
-    +'<div style="display:flex;gap:8px;">'
-    +'<button type="button" onclick="closeFeedback()" style="flex:1;padding:10px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;">취소</button>'
-    +'<button type="button" id="fb-send" onclick="sendFeedback()" style="flex:1.5;padding:10px;border-radius:8px;background:var(--accent);border:none;font-size:13px;font-weight:700;color:#fff;cursor:pointer;">보내기</button>'
-    +'</div></div>';
-  document.body.appendChild(ov);
-  setTimeout(function(){var el=document.getElementById('fb-msg');if(el)el.focus();},80);
-}
-function closeFeedback(){var m=document.getElementById('fb-modal');if(m)document.body.removeChild(m);}
-function sendFeedback(){
-  var msgEl=document.getElementById('fb-msg');
-  var emailEl=document.getElementById('fb-email');
-  var statusEl=document.getElementById('fb-status');
-  var btn=document.getElementById('fb-send');
-  var msg=(msgEl&&msgEl.value||'').trim();
-  if(!msg){ if(statusEl){statusEl.style.color='var(--red,#dc2626)';statusEl.textContent='내용을 입력해주세요.';} return; }
-  if(btn){ btn.disabled=true; btn.textContent='전송 중…'; btn.style.opacity='.6'; }
-  if(statusEl){ statusEl.style.color='var(--muted)'; statusEl.textContent=''; }
-  var payload={ message:msg, email:(emailEl&&emailEl.value||'')||'(미입력)', _source:'ICU계산기 앱' };
-  fetch(FEEDBACK_ENDPOINT,{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify(payload)
-  }).then(function(res){
-    if(res.ok){
-      if(statusEl){ statusEl.style.color='var(--green,#16a34a)'; statusEl.textContent='✓ 전송되었습니다. 감사합니다!'; }
-      if(msgEl)msgEl.value=''; if(emailEl)emailEl.value='';
-      setTimeout(closeFeedback,1400);
-    } else {
-      throw new Error('server');
-    }
-  }).catch(function(){
-    if(statusEl){ statusEl.style.color='var(--red,#dc2626)'; statusEl.innerHTML='전송 실패. 네트워크를 확인하거나 잠시 후 다시 시도해주세요.'; }
-    if(btn){ btn.disabled=false; btn.textContent='다시 보내기'; btn.style.opacity='1'; }
-  });
-}
 function confirmAdd(){
   var n=((document.getElementById('m-name')||{}).value||'').trim()||('환자'+(SESSIONS.length+1));
   var w=parseFloat(((document.getElementById('m-wt')||{}).value)||60)||60;
@@ -5421,7 +6061,83 @@ function initSessions(){
    ============================================================ */
 
 /* ---------- DATA 레이어 ---------- */
-var CORR_CA = { albNormal:4.0, factor:0.8 };
+/* ═══ P0-3: Na 교정 안전 — ODS/뇌부종 임계 (생명직결) ═══
+   변경 시 근거 재확인 필수. 근거: NEJM Evidence 2023(EVIDoa2200215),
+   CJASN "Stay the Course" 2024(PMC10843202), ScienceDirect 메타 2024,
+   Brazilian J Nephrol 2024(과교정 8/24h·18/48h, PMC12854713), ECPG 2014 */
+var NA_SAFETY = {
+  normalLow:135, normalHigh:145,
+  hypo:{
+    std24h:8, highRisk24h:6, highRiskLow:4, h48:18, hourlyMax:1.0,
+    highRiskFactors:'간질환·알코올·영양실조·저칼륨혈증·중증저Na(Na&lt;115–120)',
+    rates:[0.5,0.75,1.0],
+    severe:{ htsVol:[100,150], htsMin:[10,20], target6h:[4,6], riseMin:5, remeasureHr:2 },
+    odsOnset:'ODS는 지연성(교정 2–6일 후 발현). 교정 한계 내여도 고위험군은 발생 가능.'
+  },
+  hyper:{ max24h:10, hourlyMax:0.5,
+          note:'원인 교정 후 자유수(D5W/half saline)로 천천히. 급성(&lt;48h) 아니면 서서히.' },
+  fluidNa:{ hts3:513, ns:154, half:77, d5w:0 },
+  defaultSexCoef:0.6,
+  src:'NEJM Evidence 2023, CJASN 2024, ECPG 2014, Brazilian J Nephrol 2024'
+};
+
+var CORR_CA = { albNormal:4.0, factor:0.8, severeAlbCut:3.0 };
+
+/* ═══ P1: ABGA 해석 임계 (전부 가이드라인 정합·무회귀 동결) ═══
+   근거: StatPearls NBK482146(Winter's·pH경계), LITFL(AG·delta ratio),
+         Deranged Physiology(보상식), MDCalc(Winter's), calcbee(알부민보정 AG) */
+var ABGA_C = {
+  phLow:7.35, phHigh:7.45, hco3Normal:24,
+  hco3MetLow:22, hco3MetHigh:26, co2RespHigh:45, co2RespLow:35,
+  winters:{ slope:1.5, intercept:8, range:2 },     // 예상 PaCO₂ = 1.5×HCO₃ + 8 ± 2
+  metAlk:{ base:40, slope:0.7 },                    // 40 + 0.7×(HCO₃−24)
+  respChronic:{ base:24, slope:3.5 },               // 만성 호흡성산증: 24 + 3.5×ΔCO₂(/10)
+  respAcute:{ base:24, slope:1.0 },                 // 급성: 24 + 1×ΔCO₂(/10)
+  respAlkChronic:{ base:24, slope:5 },              // 만성 호흡성알칼리증: 24 − 5×ΔCO₂(/10)
+  respAlkAcute:{ base:24, slope:2 },                // 급성: 24 − 2×ΔCO₂(/10)
+  compTol:3,                                        // 호흡성 보상 적절 허용오차 ±3
+  ag:{ normal:12, range:2, albCoef:2.5, albNormal:4.0 },  // AG 12±2, 알부민보정 +2.5×(4.0−alb)
+  delta:{ low:1, high:2 },                          // <1 mixed / 1–2 순수 / >2 알칼리증동반
+  src:'StatPearls NBK482146, LITFL, Deranged Physiology, MDCalc'
+};
+
+/* ABGA + 현재 vent setting → 다음 조정 제안.
+   결정론적 룰만. 4개 축(산소화·환기·폐보호·과환기). 각 룰은 독립 함수로 평가하여
+   확장 시 rules 배열에 push만 하면 됨. 모든 제안은 "단일수치 기반 제안" 한계 명시. */
+var VENT_SUGGEST = {
+  // 환기(PaCO₂·pH·RR·MV) 목표
+  vent:{ phPermissiveMin:7.20, paco2NormalLow:35, paco2NormalHigh:45,
+         alkPh:7.45, alkPaco2:35,
+         rrLow:8, rrHigh:35, rrTachy:30,        // RR 정상 ~12–20, >35 빈호흡 위험, <8 저호흡
+         mvLow:4, mvHigh:10 },                  // 분당환기량 L/min (대략 정상 4–8, >10 과환기)
+  // 산소화: P/F 목표 및 ladder 연동
+  oxy:{ pfGoal:150, spo2Low:88, spo2High:96,
+        weanFio2:0.4, weanPeep:8 },           // 이 이하면 weaning 고려 영역
+  // 폐보호
+  protect:{ tvPerKgMax:8, tvPerKgTarget:6, plateauMax:30, drivingMax:15, drivingMin:5 },
+  disclaimer:'한 시점의 ABGA·setting만 본 참고 제안입니다. 혈역학·진정 깊이·목표 pH·추세를 함께 보고, 기계가 실시간으로 보여주는 컴플라이언스·파형을 우선으로 판단합니다.',
+  src:'ARDSnet, permissive hypercapnia(pH≥7.20), Amato 2015(ΔP), Surviving Sepsis/KSCCM 일반 원칙'
+};
+
+/* P1: 4-2-1 유지수액 (Holliday-Segar 1957, NICE CG174) */
+var FLUID_421 = { t1Wt:10, t2Wt:20, t1:4, t2:2, t3:1 };  // ≤10kg×4, 11–20×2, >20×1 mL/kg/hr
+
+/* 체중대비 누적 fluid balance 해석 — ICU에서 절대량보다 mL/kg를 중시.
+   임계값은 가이드라인 합의가 아닌 임상 통념 기반(참고용) → 확장·조정 가능. */
+var FLUID_BAL_KG = {
+  bands:[
+    { max:-20, key:'neg-strong', label:'강한 음성균형', color:'var(--red)',    note:'탈수·과이뇨 의심 — 관류·신기능 확인' },
+    { max:-10, key:'neg',        label:'음성균형',      color:'var(--orange)', note:'목표가 dry weight면 의도적일 수 있음' },
+    { max:10,  key:'neutral',    label:'균형 범위',      color:'var(--green)',  note:'±10 mL/kg 이내' },
+    { max:50,  key:'pos',        label:'양성균형',      color:'var(--orange)', note:'fluid overload 감시 — 폐부종·체중·산소화' },
+    { max:1e9, key:'pos-strong', label:'강한 양성균형',  color:'var(--red)',    note:'>50 mL/kg 누적 양성균형 = 사망률↑ 보고(FACTT 등). 제거 전략 고려' }
+  ],
+  classify:function(perKg){
+    for(var i=0;i<this.bands.length;i++){ if(perKg<=this.bands[i].max) return this.bands[i]; }
+    return this.bands[this.bands.length-1];
+  },
+  src:'개념적 임계 — FACTT(NEJM 2006), Boyd CCM 2011(누적 양성균형·사망률) 참고. 절대 cutoff 아님.'
+};
 
 var RENAL_EQ = {
   cg:{ sexFactor:{M:1.0,F:0.85} },
@@ -5504,7 +6220,7 @@ function calcCorrCa(){
   var html='<div class="res-big"><span class="res-big-numline">'
     +'<b class="res-big-num">'+corr.toFixed(1)+'</b> <span>mg/dL</span></span></div>'
     +'<div class="elyte-sub">측정 Ca '+ca.toFixed(1)+' → 알부민 보정 '+corr.toFixed(1)+' mg/dL</div>';
-  if(alb<3.0) html+='<div class="elyte-flag-warn">⚠️ 중증 저알부민혈증: 보정식 부정확 가능 → <b>이온화칼슘(iCa) 직접측정 우선</b></div>';
+  if(alb<CORR_CA.severeAlbCut) html+='<div class="elyte-flag-warn">⚠️ 중증 저알부민혈증: 보정식 부정확 가능 → <b>이온화칼슘(iCa) 직접측정 우선</b></div>';
   setTxt('cca-out',html);
 }
 
@@ -5527,8 +6243,8 @@ function calcCrCl(){
     +'<div class="crcl-cell"><div class="crcl-lbl">eGFR (CKD-EPI 2021)</div>'
     +'<div class="crcl-val">'+egfr.toFixed(1)+' <span>mL/min/1.73㎡</span></div>'
     +'<div class="crcl-use">🩺 CKD 병기용 '+stg+' (KDIGO 2024, BSA 정규화)</div></div></div>';
-  if(cg>RENAL_EQ.arc.threshold) html+='<div class="elyte-flag-warn">⚡ CrCl &gt;130 → <b>ARC(증가신청소율)</b>: ICU 흔함, 신배설 약물(β-lactam·vanco 등) <b>증량 고려</b></div>';
-  if(egfr<RENAL_EQ.dialysis.threshold) html+='<div class="elyte-flag-danger">🚨 eGFR &lt;15 (G5): 투석 고려 단계</div>';
+  if(cg>RENAL_EQ.arc.threshold) html+='<div class="elyte-flag-warn">⚡ CrCl &gt;'+RENAL_EQ.arc.threshold+' → <b>ARC(증가신청소율)</b>: ICU 흔함, 신배설 약물(β-lactam·vanco 등) <b>증량 고려</b></div>';
+  if(egfr<RENAL_EQ.dialysis.threshold) html+='<div class="elyte-flag-danger">🚨 eGFR &lt;'+RENAL_EQ.dialysis.threshold+' (G5): 투석 고려 단계</div>';
   html+='<div class="elyte-flag-note">※ AKI·불안정 신기능·극단 근육량(비만·악액질·절단)에서 부정확. 비만시 AdjBW 고려.</div>';
   setTxt('crcl-out',html);
 }
@@ -5543,10 +6259,10 @@ function calcOsm(){
   if(meas){
     var gap=meas-calc;
     html+='<div class="osm-gap">Osm gap = 측정 '+meas.toFixed(0)+' − 계산 '+calc.toFixed(0)+' = <b>'+gap.toFixed(0)+'</b> mOsm/kg</div>';
-    if(gap>OSM_C.gapHigh) html+='<div class="elyte-flag-warn">⚠️ Osm gap &gt;10 → <b>미측정 삼투질</b>: 메탄올·에틸렌글리콜·아세톤 등 <b>독성알코올 감별</b>. ABGA의 AG와 함께 해석.</div>';
+    if(gap>OSM_C.gapHigh) html+='<div class="elyte-flag-warn">⚠️ Osm gap &gt;'+OSM_C.gapHigh+' → <b>미측정 삼투질</b>: 메탄올·에틸렌글리콜·아세톤 등 <b>독성알코올 감별</b>. ABGA의 AG와 함께 해석.</div>';
     else html+='<div class="elyte-flag-ok">✓ Osm gap 정상 범위</div>';
   }
-  html+='<div class="elyte-ref"><b>계산식:</b> 2×Na + 혈당/18 + BUN/2.8 (mg/dL) · 정상 측정 삼투압 275-295 · gap = 측정−계산</div>';
+  html+='<div class="elyte-ref"><b>계산식:</b> 2×Na + 혈당/18 + BUN/2.8 (mg/dL) · 정상 측정 삼투압 '+OSM_C.normalLow+'-'+OSM_C.normalHigh+' · gap = 측정−계산</div>';
   setTxt('osm-out',html);
 }
 
@@ -5664,6 +6380,10 @@ function updateAll(){
   if(typeof updateFluidCalc==='function') updateFluidCalc();
   if(typeof calcNaCorrection==='function') calcNaCorrection();
   if(typeof bindOcRateRows==='function'){ for(var _d in SLIDER_OC){ if(SLIDER_OC.hasOwnProperty(_d)) updOcSlider(_d); } }
+  // CRRT 체중 — 상단 환자 체중과 동기화 (dose mL/kg/h 일관성)
+  try{ var _cw=document.getElementById('crrt-wt'); if(_cw){ _cw.value=bwt(); if(typeof calcCRRT==='function') calcCRRT(); } }catch(e){}
+  // Vent — 상단 체중 변경 시 IBW vs 실제체중 비교 갱신
+  try{ if(typeof cIBW==='function') cIBW(); }catch(e){}
 }
 
 // ══════════════════════════════
@@ -5696,7 +6416,1082 @@ for(var i=0;i<sliders.length;i++) syncSlider(sliders[i][0],sliders[i][1]);
 tog('c-norepi');
 bindOcRateRows();
 initSessions();
+try{initCRRT();}catch(e){}
+try{initVent();}catch(e){}
+
+
+
+
+
+
+/* ===== 피드백 AJAX 모달 ===== */
+function openFeedback(){
+  var ov=document.getElementById('fb-overlay'); if(!ov)return;
+  ov.style.display='flex';
+  var s=document.getElementById('fb-status'); if(s){s.textContent='';s.className='fb-status';}
+  var btn=document.getElementById('fb-submit'); if(btn){btn.disabled=false;btn.textContent='보내기';}
+}
+function closeFeedback(){
+  var ov=document.getElementById('fb-overlay'); if(ov)ov.style.display='none';
+}
+function submitFeedback(){
+  var msg=(document.getElementById('fb-msg')||{}).value||'';
+  var type=(document.getElementById('fb-type')||{}).value||'';
+  var email=(document.getElementById('fb-email')||{}).value||'';
+  var st=document.getElementById('fb-status');
+  var btn=document.getElementById('fb-submit');
+  if(!msg.trim()){ if(st){st.textContent='내용을 입력해주세요.';st.className='fb-status fb-err';} return; }
+  if(btn){btn.disabled=true;btn.textContent='전송 중...';}
+  if(st){st.textContent='';st.className='fb-status';}
+  var payload={ message:msg, _subject:'[ICU계산기] '+type, type:type };
+  if(email.trim()) payload.email=email.trim();
+  fetch('https://formspree.io/f/mkoadkje',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify(payload)
+  }).then(function(r){
+    if(r.ok){
+      if(st){st.textContent='✅ 전송되었습니다. 감사합니다!';st.className='fb-status fb-ok';}
+      var m=document.getElementById('fb-msg'); if(m)m.value='';
+      var e=document.getElementById('fb-email'); if(e)e.value='';
+      if(btn){btn.textContent='완료';}
+      setTimeout(closeFeedback,1500);
+    } else {
+      if(st){st.textContent='⚠️ 전송 실패. 잠시 후 다시 시도해주세요.';st.className='fb-status fb-err';}
+      if(btn){btn.disabled=false;btn.textContent='보내기';}
+    }
+  }).catch(function(){
+    if(st){st.textContent='⚠️ 네트워크 오류. 연결을 확인해주세요.';st.className='fb-status fb-err';}
+    if(btn){btn.disabled=false;btn.textContent='보내기';}
+  });
+}
+
+/* ===== Vent v0.2 §5~7 모듈 주입 ===== */
+/* ============================================================
+   Vent v0.2 — §5~§7 DATA + ENGINE (KSCCM 2024 정밀화)
+   Diaphragm US · Post-extubation 산소요법 · 발관실패 위험인자
+   additive 가산, v0.1 VENT·기존 무손상. 임상수치 전부 VENT_V2 객체.
+   ============================================================ */
+var VENT_V2 = {
+  ksccm2024: {
+    src:'KSCCM Liberation from MV CPG 2024 (Acute Crit Care 39(1):1-23)',
+    recs: [
+      { kq:1, topic:'Weaning protocol', rec:'기관별 weaning protocol 사용 권고', grade:'B', strength:'조건부', evidence:'중등도',
+        remark:'의사·간호사·호흡치료사 누가 적용해도 차이 없음. 기관 맞춤 protocol 개발 필요. MV기간 25h·weaning 39h·ICU재실 1.5d 단축.' },
+      { kq:2, topic:'SBT 방법 (PSV vs T-piece)', rec:'PSV·T-piece 둘 다 가능(고위험군 포함)', grade:'B', strength:'조건부', evidence:'낮음',
+        remark:'SBT 30분~2시간. PSV 시 흡기압 5–8 cmH₂O, PEEP ≤5. 환자별 임상판단으로 선택. ATS/ACCP는 압력보조(5–8) 권장.' },
+      { kq:3, topic:'Cuff Leak Test', rec:'PES 고위험군에서 임상판단 하 발관 전 시행', grade:'B', strength:'조건부', evidence:'낮음',
+        remark:'PES 위험인자: 여성·삽관>6일·큰 튜브/높은 cuff압·외상삽관·재삽관. 민감도 낮고 특이도 높음(통과해도 재삽관 배제 못함).' },
+      { kq:4, topic:'CLT 실패 시 스테로이드', rec:'CLT 실패 시 발관 전 스테로이드 권고', grade:'B', strength:'조건부', evidence:'중등도',
+        remark:'발관 ≥4시간 전. 24–48h 삽관 대상. MPD 40mg q6h×24h 또는 dexamethasone 5mg q6h×24h(연구별).', drugRef:['drug:methylprednisolone','drug:dexamethasone'] },
+      { kq:5, topic:'RSBI', rec:'임상판단 하 계산 가능', grade:'B', strength:'조건부', evidence:'낮음',
+        remark:'전통값 <105이나 최근 연구는 57–80 제안. 민감도>특이도. 측정법·시점·cutoff 표준화 안 됨.' },
+      { kq:6, topic:'흡기근육훈련 IMT', rec:'weaning 성공률 위해 IMT 권고', grade:'B', strength:'조건부', evidence:'낮음',
+        remark:'혈역학 안정·산소화 적절(PaO₂≥60,FiO₂<0.4,PEEP 5–8)·각성 시. MIP 유의 증가. 표준 기기·방법 미확립.' },
+      { kq:7, topic:'조기재활', rec:'weaning 성공률 위해 조기재활 권고', grade:'B', strength:'조건부', evidence:'낮음',
+        remark:'MV기간 2.29d·ICU재실 3.42d 단축. ECMO·CRRT 중에도 안전 시행 가능. 다학제 협력.' },
+      { kq:8, topic:'Post-extubation 산소요법', rec:'HFNC>COT(계획), NIV>COT(고위험), HFNC=NIV', grade:'B/B/E', strength:'조건부/조건부/전문가합의', evidence:'중등도/중등도/매우낮음',
+        remark:'HFNC 재삽관↓(RR 0.47). NIV는 고위험군만 유효. 고탄산혈증·COPD·심인성폐부종은 NIV 유리. HFNC 2015~국내 급여.' },
+      { kq:9, topic:'조기 기관절개', rec:'장기 MV 예상에서 조기(≤7일) 기관절개 권고 안 함', grade:'I', strength:'보류(deferred)', evidence:'낮음',
+        remark:'MV기간·ICU재실·사망률 유의차 없음. 대부분 1–3주 시행. 환자상태 기반 판단.' }
+    ]
+  },
+  diaphragmUS: {
+    src:'Marques 2024 / Llamas-Álvarez meta / KSCCM journal 2025',
+    dtf:{ cutoffLow:30, cutoffHigh:36, repValue:34, ddCut:20, unit:'%', formula:'(Tdi흡기말 − Tdi호기말)/Tdi호기말 × 100',
+          note:'Thickening Fraction. ≥30–36% 성공 예측(대표 ≥34%). AUC ~0.84, 민감도 0.89·특이도 0.80. DE보다 특이도 우수(특히 심질환). <20% 횡격막 기능장애(DD).' },
+    de:{ cutoffLow:1.1, cutoffHigh:1.4, ddCut:1.0, unit:'cm', method:'M-mode, 우횡격막',
+         note:'Excursion. tidal >1.1–1.4cm 성공 예측. AUC ~0.86, 민감도 0.79·특이도 0.71. 깊은호흡 >3.0cm. <1.0cm DD.' },
+    limit:'연구 간 이질성 큼(I²>60%). 측정자 숙련 필요. 보조 지표로 함께 사용 — 이 값만으로 발관을 정하지 않음.'
+  },
+  postExtubation: {
+    src:'KSCCM 2024 KQ8 / Roca ROX 2019 / Fuentes 2022',
+    options:[
+      { id:'vent:po2:hfnc', name:'HFNC (고유량비강캐뉼라)', detail:'최대 60 L/min', grade:'B',
+        note:'계획발관에서 COT 대비 재삽관↓(RR 0.47). dead-space washout·PEEP·WOB↓. 국내 2015~급여. 가습 편안.' },
+      { id:'vent:po2:niv', name:'NIV (비침습환기)', detail:'고위험군', grade:'B',
+        note:'고위험군만 COT 대비 재삽관↓(RR 0.63). 고탄산혈증·COPD악화·심인성폐부종 유리. 안면피부손상·복부팽만 주의.' },
+      { id:'vent:po2:cot', name:'COT (전통산소요법)', detail:'기준', grade:'기준',
+        note:'비강캐뉼라·마스크. 고유량 필요 환자엔 부적절.' }
+    ],
+    rox:{ formula:'(SpO₂[%]/FiO₂[소수])/RR', cutoff:4.88, low:4.2, high:5.4,
+          note:'HFNC 실패/재삽관 예측. >4.88 성공 가능성↑. 시작 후 2·6·12h 평가. cutoff 연구별 2.7–9.2 — 추세(ΔROX) 중요.', grade:'관찰연구' },
+    highRisk:'만성호흡부전·SBT후 고탄산혈증(PaCO₂>45)·첫SBT실패·COPD/기관지확장증/결핵후유증·흉벽기형·제한성환기장애 → HFNC/NIV 예방 고려.'
+  },
+  extubationFailure: {
+    src:'KSCCM 2024 remarks / 한국 CLT 연구(Lim 2006)',
+    failureRate:'계획발관 후 재삽관 10–20%',
+    riskFactors:[
+      '첫 SBT 실패','고령(≥65세)','BMI >30 kg/m²','박출률(EF) <40%',
+      '발관 실패 과거력','심부전으로 인한 MV','COPD 동반','APACHE II >12',
+      '기도질환(후두부종 고위험)','객담배출 저하','동반질환 ≥2개','MV 기간 ≥7일'
+    ],
+    clt:{
+      ksccm:{ volMedian:110, pctMedian:15.1, unit:'mL / %', note:'KSCCM 메타: leak vol 50–283mL(중앙값 110), % 10–57%(중앙값 15.1). PES 민감도 0.52·특이도 0.80, AUC 0.88.' },
+      korea:{ clv:50, clp:14.7, unit:'mL / %', src:'Lim 2006(삼성서울 n=34)', note:'국내: CLV 50mL·CLP 14.7%에서 민감도 100%·특이도 93.5%(PES 예측). 삽관기간 길수록 CLV·CLP 감소.' },
+      pesIncidence:'6–37%',
+      action:'CLT 실패(leak 부족)+고위험 → 발관 ≥4h 전 스테로이드 고려(KSCCM KQ4, 권고B). PES 시 재삽관율↑.'
+    }
+  }
+};
+
+/* ── ENGINE ── */
+function v2Round(x,n){ var p=Math.pow(10,n||1); return Math.round(x*p)/p; }
+function v2Num(id){ var e=document.getElementById(id); if(!e)return null; var v=parseFloat(e.value); return isNaN(v)?null:v; }
+
+function calcDTF(tdiInsp, tdiExp){
+  if(!tdiExp||tdiExp<=0) return null;
+  var dtf=v2Round((tdiInsp-tdiExp)/tdiExp*100,0);
+  var d=VENT_V2.diaphragmUS.dtf;
+  var status = dtf>=d.cutoffHigh?'strong':(dtf>=d.cutoffLow?'ok':(dtf<d.ddCut?'dd':'low'));
+  return { dtf:dtf, status:status };
+}
+function checkDE(de){
+  if(de==null) return null;
+  var d=VENT_V2.diaphragmUS.de;
+  return de>d.cutoffHigh?'success':(de<d.ddCut?'dd':'borderline');
+}
+function calcROX(spo2, fio2, rr){
+  if(!fio2||fio2<=0||!rr||rr<=0) return null;
+  var rox=v2Round((spo2/fio2)/rr,1);
+  return { rox:rox, ok:(rox>VENT_V2.postExtubation.rox.cutoff) };
+}
+function calcCuffLeakDual(insp, exp){
+  if(!insp||insp<=0) return null;
+  var ml=insp-exp, pct=v2Round(ml/insp*100,0);
+  var k=VENT_V2.extubationFailure.clt;
+  return { ml:ml, pct:pct,
+    ksccmRisk:(ml<k.ksccm.volMedian||pct<k.ksccm.pctMedian),
+    koreaRisk:(ml<k.korea.clv||pct<k.korea.clp) };
+}
+function listExtubationRisk(flags){
+  var n=0; for(var i=0;i<flags.length;i++){ if(flags[i]) n++; }
+  return { count:n, total:VENT_V2.extubationFailure.riskFactors.length, highRisk:(n>=2) };
+}
+function ksccmRecBadge(kq){
+  var recs=VENT_V2.ksccm2024.recs;
+  for(var i=0;i<recs.length;i++){ if(recs[i].kq===kq) return recs[i]; }
+  return null;
+}
+
+/* ============================================================
+   Vent v0.2 §5~§7 — UI 렌더 (엔진 vent_v2_module 검증완료)
+   ============================================================ */
+
+// §5 Diaphragm US
+function calcVentDUS(){
+  var ti=v2Num('v2-tdi-insp'), te=v2Num('v2-tdi-exp'), de=v2Num('v2-de');
+  var o1=document.getElementById('v2-dtf-out');
+  if(o1){
+    var r=calcDTF(ti,te);
+    if(r){
+      var c=r.status==='strong'?'var(--green)':(r.status==='ok'?'var(--teal)':(r.status==='dd'?'var(--red)':'var(--orange)'));
+      var lbl=r.status==='strong'?'≥36% 강한 성공 예측':(r.status==='ok'?'≥30% 성공역':(r.status==='dd'?'<20% 횡격막 기능장애(DD)':'20–30% 경계'));
+      o1.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:8px;"><div style="font-size:24px;font-weight:800;color:'+c+';font-family:var(--mono);">'+r.dtf+'%</div><div style="font-size:12px;"><b style="color:'+c+';">'+lbl+'</b><br><span style="color:var(--muted);">AUC ~0.84 · 특이도 0.80 (DE보다 우수)</span></div></div>';
+    } else o1.innerHTML='';
+  }
+  var o2=document.getElementById('v2-de-out');
+  if(o2){
+    var s=checkDE(de);
+    if(s){
+      var c2=s==='success'?'var(--green)':(s==='dd'?'var(--red)':'var(--orange)');
+      var l2=s==='success'?'>1.4cm 성공역':(s==='dd'?'<1.0cm DD 의심':'1.0–1.4cm 경계');
+      o2.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:8px;"><div style="font-size:20px;font-weight:800;color:'+c2+';font-family:var(--mono);">'+de+'cm</div><div style="font-size:12px;"><b style="color:'+c2+';">'+l2+'</b><br><span style="color:var(--muted);">AUC ~0.86 · 깊은호흡 >3.0cm</span></div></div>';
+    } else o2.innerHTML='';
+  }
+}
+
+// §6 post-extubation 옵션 카드 + ROX
+function renderVentPO2(){
+  var box=document.getElementById('v2-po2-cards'); if(!box)return;
+  var opts=VENT_V2.postExtubation.options, html='';
+  for(var i=0;i<opts.length;i++){
+    var o=opts[i];
+    var bc=o.grade==='기준'?'var(--muted)':'var(--teal)';
+    html+='<div style="border:1px solid var(--border);border-radius:9px;padding:10px;margin-bottom:8px;">';
+    html+='<div style="display:flex;align-items:center;gap:8px;"><b style="font-size:14px;color:var(--cyan);">'+o.name+'</b><span style="font-size:10px;color:#fff;background:'+bc+';border-radius:5px;padding:2px 7px;">'+o.grade+'</span><span style="font-size:11px;color:var(--muted);margin-left:auto;">'+o.detail+'</span></div>';
+    html+='<div style="font-size:12px;color:var(--ink,#1a2230);margin-top:5px;line-height:1.5;">'+o.note+'</div></div>';
+  }
+  box.innerHTML=html;
+}
+function calcVentROX(){
+  var sp=v2Num('v2-spo2'), fi=v2Num('v2-fio2'), rr=v2Num('v2-rox-rr');
+  var out=document.getElementById('v2-rox-out'); if(!out)return;
+  var r=calcROX(sp,fi,rr);
+  if(!r){ out.innerHTML=''; return; }
+  var c=r.ok?'var(--green)':'var(--orange)';
+  out.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:8px;"><div style="font-size:24px;font-weight:800;color:'+c+';font-family:var(--mono);">'+r.rox+'</div><div style="font-size:12px;"><b style="color:'+c+';">'+(r.ok?'>4.88 — HFNC 성공 가능성↑':'≤4.88 — HFNC 실패/재삽관 위험')+'</b><br><span style="color:var(--muted);">시작 후 2·6·12h 평가 · 추세(ΔROX) 중요 · cutoff 2.7–9.2 편차</span></div></div>';
+}
+
+// §7 위험인자 체크리스트 + CLT 이중
+function renderVentRisk(){
+  var box=document.getElementById('v2-risk-list'); if(!box)return;
+  var rf=VENT_V2.extubationFailure.riskFactors, html='<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2px 10px;">';
+  for(var i=0;i<rf.length;i++){
+    html+='<label class="vent-chk" style="font-size:12px;"><span>'+rf[i]+'</span><input type="checkbox" id="v2risk-'+i+'" onchange="toggleChk(this);calcVentRisk()"></label>';
+  }
+  html+='</div>';
+  box.innerHTML=html;
+}
+function calcVentRisk(){
+  var rf=VENT_V2.extubationFailure.riskFactors, flags=[];
+  for(var i=0;i<rf.length;i++){ var e=document.getElementById('v2risk-'+i); flags.push(e?e.checked:false); }
+  var r=listExtubationRisk(flags);
+  var out=document.getElementById('v2-risk-out'); if(!out)return;
+  var c=r.highRisk?'var(--red)':(r.count>0?'var(--orange)':'var(--green)');
+  var html='<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface2);border-radius:10px;">';
+  html+='<div style="font-size:28px;font-weight:800;color:'+c+';font-family:var(--mono);">'+r.count+'<span style="font-size:14px;color:var(--muted);">/'+r.total+'</span></div>';
+  html+='<div style="font-size:13px;font-weight:700;color:'+c+';">'+(r.highRisk?'⚠️ 고위험(≥2) — CLT·스테로이드·HFNC/NIV 예방 고려':(r.count>0?r.count+'개 위험인자':'위험인자 없음'))+'</div></div>';
+  out.innerHTML=html;
+}
+function calcVentCLT(){
+  var insp=v2Num('v2-clt-insp'), exp=v2Num('v2-clt-exp');
+  var out=document.getElementById('v2-clt-out'); if(!out)return;
+  var cl=calcCuffLeakDual(insp,exp);
+  if(!cl){ out.innerHTML=''; return; }
+  var html='<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;">';
+  // KSCCM
+  var kc=cl.ksccmRisk?'var(--red)':'var(--green)';
+  html+='<div style="background:var(--surface2);border-radius:8px;padding:10px;"><div style="font-size:10px;color:var(--cyan);font-weight:700;">[가이드] KSCCM 메타</div><div style="font-size:18px;font-weight:800;color:'+kc+';font-family:var(--mono);">'+cl.ml+'mL / '+cl.pct+'%</div><div style="font-size:10px;color:var(--muted);">중앙값 110mL/15.1%</div><div style="font-size:11px;font-weight:700;color:'+kc+';">'+(cl.ksccmRisk?'⚠️ PES 위험':'leak 충분')+'</div></div>';
+  // 한국
+  var qc=cl.koreaRisk?'var(--red)':'var(--green)';
+  html+='<div style="background:var(--surface2);border-radius:8px;padding:10px;"><div style="font-size:10px;color:var(--orange);font-weight:700;">[국내] Lim 2006</div><div style="font-size:18px;font-weight:800;color:'+qc+';font-family:var(--mono);">'+cl.ml+'mL / '+cl.pct+'%</div><div style="font-size:10px;color:var(--muted);">CLV 50mL/CLP 14.7%</div><div style="font-size:11px;font-weight:700;color:'+qc+';">'+(cl.koreaRisk?'⚠️ PES 위험':'leak 충분')+'</div></div>';
+  html+='</div>';
+  out.innerHTML=html;
+}
+
+function initVentV2(){ renderVentPO2(); renderVentRisk(); calcVentDUS(); calcVentROX(); calcVentRisk(); calcVentCLT(); }
+
+
+/* ===== Vent §2~4 모듈 주입 (v0.1) ===== */
+/* ============================================================
+   Vent 모듈 v0.1 — DATA + ENGINE
+   인공호흡기/Weaning 보조 조언자. SBT는 단계판정·저장 안 함(무상태).
+   발관 성공을 혼자 예측하는 지표는 없어 함께 표시.
+   임상수치 전부 VENT 객체. additive, calcIBW 무손상 참조만.
+   ============================================================ */
+var VENT = {
+  tvPerKg:{ low:6, high:8, ardsTarget:6 },
+  plateauMax:30, drivingPressureMax:15,
+  // ARDSnet FiO₂–PEEP ladder. PEEP은 "조합표"이지 단일값 아님 → 권장 구간 제시.
+  // lower=전통적(ARMA), higher=ALVEOLI high-PEEP arm. 확장: 다른 프로토콜 추가 가능.
+  peepLadder:{
+    fio2Steps:[0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0],
+    lower:    [5,  5,  8,  8,  10, 10, 12, 18],   // ARDSnet lower-PEEP/higher-FiO₂
+    higher:   [12, 14, 16, 18, 20, 22, 22, 24],   // ARDSnet higher-PEEP/lower-FiO₂
+    src:'ARDSnet ARMA(NEJM 2000) / ALVEOLI(NEJM 2004). 동일 FiO₂에 두 PEEP 전략 — 환자별 선택.'
+  },
+  sbtReadiness:[
+    {id:'vent:sbt:cause', label:'호흡부전 원인 호전/해결'},
+    {id:'vent:sbt:oxy',   label:'산소화 적절 (PaO₂/FiO₂ >150 또는 SpO₂≥90% @ FiO₂≤40%)'},
+    {id:'vent:sbt:peep',  label:'PEEP ≤5–8 cmH₂O'},
+    {id:'vent:sbt:ph',    label:'pH ≥7.35'},
+    {id:'vent:sbt:hemo',  label:'혈역학 안정 (MAP ≥65, 승압제 최소)'},
+    {id:'vent:sbt:rass',  label:'각성 적절 (RASS −1~0, 명령수행)'},
+    {id:'vent:sbt:cough', label:'기침·기도분비물 관리 가능'},
+    {id:'vent:sbt:vaso',  label:'승압제 없음/최소 (도파민·도부타민 ≤5 mcg/kg/min)'}
+  ],
+  predictors:{
+    rsbi:{ cutoff:105, betterCut:65, unit:'breaths/min/L', formula:'RR / TV(L)',
+           note:'≤105 전통 기준(~80% 성공 예측). 특이도가 낮아(~64%) 하나만으로는 부족. ≤65면 readiness가 더 강함. 한 지표로 단정하지 않음.', grade:'B' },
+    nif:{ cutoff:-25, strongCut:-30, unit:'cmH₂O',
+          note:'NIF/MIP. < −25~−30 권장. cuff leak 동반 시 < −30이면 성공률 높음.', grade:'B' },
+    cuffleak:{ volMin:110, pctMin:15.5, unit:'mL / %',
+               note:'발관 후 후두부종(stridor) 예측. leak <110mL 또는 <15.5%면 위험→스테로이드 고려. 고위험군(장기삽관·여성·외상삽관) 권고. 단독결정 금지.', grade:'B' },
+    pf:{ cutoff:150, unit:'mmHg', note:'PaO₂/FiO₂ >150 산소화 기준.', grade:'C' }
+  },
+  sbtTrial:{
+    duration:[30,120],
+    failCriteria:[
+      'RR >35/min (5분 이상)',
+      'SpO₂ <88–90% (5분 이상)',
+      'HR >140 또는 20%↑ 지속',
+      'SBP >180 또는 <90',
+      '호흡곤란·발한·불안·흉부역설호흡'
+    ],
+    note:'SBT 30분(최대 120분) 동안 위 실패기준 없으면 통과. 대부분 실패는 ~20분 내 발현.'
+  },
+  sat:{ note:'SAT(진정중단)+SBT 짝지어 시행(coordinated)이 인공호흡 기간 단축. ABCDEF 번들 일부.' }
+};
+
+/* ── ENGINE ── */
+function ventRound(x,n){ var p=Math.pow(10,n||2); return Math.round(x*p)/p; }
+
+// 폐보호 TV: IBW(kg) → 6·7·8 mL/kg + plateau/driving 판정
+function calcVentTV(ibw, plateau, peep){
+  if(!ibw||ibw<=0) return null;
+  var r={ tv6:Math.round(ibw*6), tv7:Math.round(ibw*7), tv8:Math.round(ibw*8) };
+  if(plateau!=null){ r.plateau=plateau; r.plateauOk=(plateau<=VENT.plateauMax); }
+  if(plateau!=null&&peep!=null){ r.driving=plateau-peep; r.drivingOk=((plateau-peep)<=VENT.drivingPressureMax); }
+  return r;
+}
+// SBT readiness: 충족 체크 배열 → N/8
+function calcSbtReady(checks){
+  var total=VENT.sbtReadiness.length;
+  var met=0; for(var i=0;i<checks.length;i++){ if(checks[i]) met++; }
+  return { met:met, total:total, allMet:(met===total) };
+}
+// RSBI = RR / TV(L)
+function calcRsbi(rr, tvL){
+  if(!tvL||tvL<=0) return null;
+  var v=ventRound(rr/tvL,1);
+  var status = v<=VENT.predictors.rsbi.betterCut?'strong':(v<=VENT.predictors.rsbi.cutoff?'ok':'high');
+  return { rsbi:v, status:status };
+}
+// cuff leak: 흡기TV, 호기TV → leak mL·%
+function calcCuffLeak(insp, exp){
+  if(!insp||insp<=0) return null;
+  var ml=insp-exp;
+  var pct=ventRound((ml/insp)*100,1);
+  var risk=(ml<VENT.predictors.cuffleak.volMin || pct<VENT.predictors.cuffleak.pctMin);
+  return { leakMl:ml, leakPct:pct, risk:risk };
+}
+// extubation 종합: 지표별 충족 병렬 (단정·합산 금지)
+function calcExtubation(rsbiVal, nifVal, cuffMl, pfVal){
+  var items=[];
+  if(rsbiVal!=null) items.push({k:'RSBI', met:rsbiVal<=VENT.predictors.rsbi.cutoff});
+  if(nifVal!=null)  items.push({k:'NIF',  met:nifVal<=VENT.predictors.nif.cutoff}); // 음수: ≤ -25
+  if(cuffMl!=null)  items.push({k:'cuff leak', met:cuffMl>=VENT.predictors.cuffleak.volMin});
+  if(pfVal!=null)   items.push({k:'P/F', met:pfVal>VENT.predictors.pf.cutoff});
+  var metCount=0; for(var i=0;i<items.length;i++){ if(items[i].met) metCount++; }
+  return { items:items, metCount:metCount, total:items.length };
+}
+
+/* ============================================================
+   Vent §2~§4 — UI 렌더 (엔진은 vent_module 검증완료분)
+   ============================================================ */
+function ventNum(id){ var e=document.getElementById(id); if(!e)return null; var v=parseFloat(e.value); return isNaN(v)?null:v; }
+
+// §2 SBT readiness 체크리스트 렌더 + 카운트
+function toggleChk(cb){
+  var lbl=cb.closest ? (cb.closest('.vent-chk')||cb.closest('.crrt-chk')) : cb.parentNode;
+  if(!lbl){ lbl=cb.parentNode; }
+  if(lbl){ if(cb.checked){ lbl.className=lbl.className.indexOf('checked')<0?lbl.className+' checked':lbl.className; } else { lbl.className=lbl.className.replace(/\s*checked/g,''); } }
+}
+function renderVentSbtList(){
+  var box=document.getElementById('vent-sbt-list'); if(!box)return;
+  var html='';
+  for(var i=0;i<VENT.sbtReadiness.length;i++){
+    var it=VENT.sbtReadiness[i];
+    html+='<label class="vent-chk"><span>'+it.label+'</span><input type="checkbox" id="vchk-'+i+'" onchange="toggleChk(this);calcVentSbt()"></label>';
+  }
+  box.innerHTML=html;
+}
+function calcVentSbt(){
+  var checks=[];
+  for(var i=0;i<VENT.sbtReadiness.length;i++){
+    var e=document.getElementById('vchk-'+i);
+    checks.push(e?e.checked:false);
+  }
+  var r=calcSbtReady(checks);
+  var out=document.getElementById('vent-sbt-out'); if(!out)return;
+  var color=r.allMet?'var(--green)':'var(--orange)';
+  var html='<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface2);border-radius:10px;">';
+  html+='<div style="font-size:30px;font-weight:800;color:'+color+';font-family:var(--mono);">'+r.met+'<span style="font-size:16px;color:var(--muted);">/'+r.total+'</span></div>';
+  html+='<div style="font-size:13px;font-weight:700;color:'+color+';">'+(r.allMet?'✅ 모두 충족 — SBT 고려 가능 (참고)':(r.met+'개 충족 — 미충족 항목 확인'))+'</div>';
+  html+='</div>';
+  out.innerHTML=html;
+}
+
+// §3 예측지표 (RSBI·cuff·extubation 종합)
+function calcVentPredict(){
+  var rr=ventNum('vent-rr'), tvl=ventNum('vent-tvl'),
+      insp=ventNum('vent-insp'), exp=ventNum('vent-exp'),
+      nif=ventNum('vent-nif'), pf=ventNum('vent-pf');
+
+  // RSBI
+  var ro=document.getElementById('vent-rsbi-out');
+  var rsbiVal=null;
+  if(ro){
+    var r=calcRsbi(rr,tvl);
+    if(r){
+      rsbiVal=r.rsbi;
+      var c=r.status==='strong'?'var(--green)':(r.status==='ok'?'var(--orange)':'var(--red)');
+      var lbl=r.status==='strong'?'≤65 강한 readiness':(r.status==='ok'?'≤105 전통 기준 충족':'>105 위험');
+      ro.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:8px;"><div style="font-size:24px;font-weight:800;color:'+c+';font-family:var(--mono);">'+r.rsbi+'</div><div style="font-size:12px;"><b style="color:'+c+';">'+lbl+'</b><br><span style="color:var(--muted);">breaths/min/L · 특이도 ~64%로 단독 불충분</span></div></div>';
+    } else ro.innerHTML='';
+  }
+
+  // cuff leak
+  var co=document.getElementById('vent-cuff-out');
+  var cuffMl=null;
+  if(co){
+    var cl=calcCuffLeak(insp,exp);
+    if(cl){
+      cuffMl=cl.leakMl;
+      var cc=cl.risk?'var(--red)':'var(--green)';
+      co.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:8px;"><div style="font-size:20px;font-weight:800;color:'+cc+';font-family:var(--mono);">'+cl.leakMl+'mL / '+cl.leakPct+'%</div><div style="font-size:12px;">'+(cl.risk?'<b style="color:var(--red);">⚠️ 후두부종 위험</b> (leak &lt;110mL 또는 &lt;15.5%) — 스테로이드 고려':'<b style="color:var(--green);">leak 충분</b>')+'<br><span style="color:var(--muted);">고위험군(장기삽관·여성·외상)에서 권고 · 이 값만으로 결정하지 않음</span></div></div>';
+    } else co.innerHTML='';
+  }
+
+  // extubation 종합 (병렬)
+  var eo=document.getElementById('vent-extub-out');
+  if(eo){
+    var ex=calcExtubation(rsbiVal, nif, cuffMl, pf);
+    var html='<div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;">종합 — 충족 지표 '+ex.metCount+'/'+ex.total+' (병렬 표시, 합산 아님)</div>';
+    html+='<div style="display:flex;flex-wrap:wrap;gap:6px;">';
+    for(var i=0;i<ex.items.length;i++){
+      var it=ex.items[i];
+      var bg=it.met?'var(--green-lt,#dcfce7)':'var(--red-lt,#fee2e2)';
+      var fg=it.met?'var(--green)':'var(--red)';
+      html+='<span style="font-size:12px;font-weight:700;color:'+fg+';background:'+bg+';border-radius:6px;padding:4px 10px;">'+(it.met?'✓':'✗')+' '+it.k+'</span>';
+    }
+    html+='</div>';
+    eo.innerHTML=html;
+  }
+}
+
+// ABGA + setting → 조정 제안. 룰을 독립 평가해 배열로 모음(확장 시 push만).
+function calcVentSuggest(){
+  var out=document.getElementById('vs-out');
+  if(!out) return;
+  var S=VENT_SUGGEST;
+
+  // ABGA 값은 상단 ABGA 입력에서 가져옴(독립 재입력 불필요)
+  var ph=parseFloat((document.getElementById('abg-ph')||{}).value);
+  var co2=parseFloat((document.getElementById('abg-co2')||{}).value);
+  var hco3=parseFloat((document.getElementById('abg-hco3')||{}).value);
+
+  var tv=ventNum('vs-tv'), rr=ventNum('vs-rr'),
+      fio2=ventNum('vs-fio2'), peep=ventNum('vs-peep'),
+      plat=ventNum('vs-plateau'),
+      ht=ventNum('ibw-height'), sex=(typeof ibwSex!=='undefined'?ibwSex:'male');
+
+  var ibw=ht!=null?calcIBW(ht,sex):0;
+  var tvPerKg=(ibw>0&&tv!=null)?tv/ibw:null;
+
+  var sug=[];  // {sev:'high'|'mid'|'ok', axis, text}
+
+  // ── 룰 1: 환기 (PaCO₂·pH) ──
+  if(!isNaN(ph)&&!isNaN(co2)){
+    if(ph<S.vent.phPermissiveMin && co2>S.vent.paco2NormalHigh){
+      sug.push({sev:'high',axis:'환기',
+        text:'pH '+ph+' < '+S.vent.phPermissiveMin+' + PaCO₂ '+co2+'↑ → <b>분당환기량 증량</b>. 폐보호 위해 <b>RR 우선 증량</b>(TV는 6mL/kg 상한 유지). permissive hypercapnia 허용 범위를 벗어난 상태입니다.'});
+    } else if(co2>S.vent.paco2NormalHigh && ph>=S.vent.phPermissiveMin){
+      sug.push({sev:'mid',axis:'환기',
+        text:'PaCO₂ '+co2+'↑ but pH '+ph+' 허용범위 → <b>permissive hypercapnia 수용 가능</b>. 폐보호가 우선이면 현 setting 유지 고려.'});
+    } else if(co2<S.vent.alkPaco2 && ph>S.vent.alkPh){
+      sug.push({sev:'mid',axis:'과환기',
+        text:'PaCO₂ '+co2+'↓ + pH '+ph+'↑ (호흡성 알칼리증) → <b>RR 감량</b>(또는 TV). 과환기 교정. auto-PEEP·호흡일 확인.'});
+    } else if(co2>=S.vent.paco2NormalLow && co2<=S.vent.paco2NormalHigh){
+      sug.push({sev:'ok',axis:'환기',text:'PaCO₂ '+co2+' 정상범위 — 환기 적정.'});
+    }
+  }
+
+  // ── 룰 1b: RR · 분당환기량(MV = TV×RR) ──
+  if(rr!=null){
+    var mv = (tv!=null) ? Math.round(tv*rr/100)/10 : null;  // L/min
+    var mvTxt = mv!=null ? ' · MV ≈ '+mv+' L/min' : '';
+    if(rr>S.vent.rrHigh){
+      sug.push({sev:'high',axis:'호흡수',
+        text:'RR '+rr+' > '+S.vent.rrHigh+'/min'+mvTxt+' → 빈호흡. 환기 부족(PaCO₂↑)이거나 자발호흡 과다일 수 있습니다. ABGA·진정 깊이·통증·대사성 산증 보상 여부를 함께 확인합니다.'});
+    } else if(rr<S.vent.rrLow){
+      sug.push({sev:'mid',axis:'호흡수',
+        text:'RR '+rr+' < '+S.vent.rrLow+'/min'+mvTxt+' → 저호흡. 진정 과다·중추성 억제 가능. PaCO₂ 상승 여부 확인.'});
+    } else if(mv!=null && mv>S.vent.mvHigh){
+      sug.push({sev:'mid',axis:'호흡수',
+        text:'MV '+mv+' L/min > '+S.vent.mvHigh+' (RR '+rr+'·TV '+tv+') → 분당환기량 과다. PaCO₂ 낮으면 RR 또는 TV 감량 고려.'});
+    } else if(mv!=null && mv<S.vent.mvLow){
+      sug.push({sev:'mid',axis:'호흡수',
+        text:'MV '+mv+' L/min < '+S.vent.mvLow+' (RR '+rr+'·TV '+tv+') → 분당환기량 부족 가능. PaCO₂ 상승 여부 확인.'});
+    } else {
+      sug.push({sev:'ok',axis:'호흡수',
+        text:'RR '+rr+'/min'+mvTxt+' — 호흡수·분당환기량 적정 범위.'});
+    }
+  }
+
+  // ── 룰 2: 산소화 (P/F·FiO₂·PEEP, ladder 연동) ──
+  if(fio2!=null && fio2>0){
+    var L=VENT.peepLadder;
+    // 현재 FiO₂ step의 권장 PEEP
+    var idx=-1; for(var i=0;i<L.fio2Steps.length;i++){ if(fio2>=L.fio2Steps[i]-0.001) idx=i; }
+    if(idx>=0 && peep!=null){
+      var recLo=L.lower[idx], recHi=L.higher[idx];
+      if(peep<recLo){
+        sug.push({sev:'mid',axis:'산소화',
+          text:'FiO₂ '+fio2.toFixed(2)+'에서 PEEP '+peep+'은 ladder 하한('+recLo+') 미만 → <b>PEEP 상향 고려</b>(권장 '+recLo+'–'+recHi+'). 산소화 부족 시 FiO₂보다 PEEP 우선.'});
+      } else {
+        sug.push({sev:'ok',axis:'산소화',
+          text:'FiO₂ '+fio2.toFixed(2)+' · PEEP '+peep+' → ladder 권장(Lower '+recLo+' / Higher '+recHi+') 범위 내.'});
+      }
+    }
+    // weaning 영역
+    if(fio2<=S.oxy.weanFio2 && peep!=null && peep<=S.oxy.weanPeep){
+      sug.push({sev:'ok',axis:'weaning',
+        text:'FiO₂ ≤'+S.oxy.weanFio2+' · PEEP ≤'+S.oxy.weanPeep+' → 산소화 측면 <b>SBT readiness 영역</b>. Weaning 탭 지표 확인.'});
+    }
+  }
+
+  // ── 룰 3: 폐보호 (TV/kg) ──
+  if(tvPerKg!=null){
+    var tk=Math.round(tvPerKg*10)/10;
+    if(tvPerKg>S.protect.tvPerKgMax){
+      sug.push({sev:'high',axis:'폐보호',
+        text:'현재 TV '+tv+'mL = <b>'+tk+' mL/kg</b>(IBW '+Math.round(ibw*10)/10+'kg) > '+S.protect.tvPerKgMax+' → <b>TV 감량</b>(목표 '+S.protect.tvPerKgTarget+'mL/kg ≈ '+Math.round(ibw*S.protect.tvPerKgTarget)+'mL). 과용량은 VILI로 이어질 수 있습니다.'});
+    } else if(tvPerKg<S.protect.tvPerKgTarget-0.5){
+      sug.push({sev:'mid',axis:'폐보호',
+        text:'TV '+tv+'mL = '+tk+' mL/kg — 6 미만. 의도적 초저용량이 아니면 환기 부족 여부 확인.'});
+    } else {
+      sug.push({sev:'ok',axis:'폐보호',
+        text:'TV '+tv+'mL = '+tk+' mL/kg — 폐보호 범위(6–8).'});
+    }
+  }
+
+  // ── 룰 4: 압력 (Plateau · Driving pressure) ──
+  if(plat!=null){
+    if(plat>S.protect.plateauMax){
+      sug.push({sev:'high',axis:'압력',
+        text:'Plateau '+plat+' > '+S.protect.plateauMax+' cmH₂O → <b>TV 감량 또는 PEEP 재조정</b>을 고려합니다. 폐포 과신전이 우려됩니다.'});
+    }
+    if(peep!=null){
+      var dp=plat-peep;
+      if(dp<=0){
+        sug.push({sev:'high',axis:'압력',
+          text:'Driving P(ΔP) = '+plat+'−'+peep+' = <b>'+dp+'</b> ≤ 0 → PEEP이 Plateau 이상입니다. 물리적으로 성립하지 않는 조합이라 <b>입력값(Plateau·PEEP)을 확인</b>하세요.'});
+      } else if(dp<S.protect.drivingMin){
+        sug.push({sev:'high',axis:'압력',
+          text:'Driving P(ΔP) = '+plat+'−'+peep+' = <b>'+dp+'</b> < '+S.protect.drivingMin+' → 비정상적으로 낮습니다. 이 ΔP로는 정상 TV가 나오기 어려워 <b>측정 오류·자발호흡 간섭·입력 오류</b>가 의심됩니다. plateau는 흡기말 정지(inspiratory hold) 상태에서 측정합니다.'});
+      } else if(dp>S.protect.drivingMax){
+        sug.push({sev:'high',axis:'압력',
+          text:'Driving P(ΔP) = '+plat+'−'+peep+' = <b>'+dp+'</b> > '+S.protect.drivingMax+' → <b>TV↓ 또는 PEEP 적정화</b>로 ΔP 감소. ΔP가 plateau 단독보다 예후와 강하게 연관(Amato 2015).'});
+      } else {
+        sug.push({sev:'ok',axis:'압력',
+          text:'Driving P = '+dp+' cmH₂O ('+S.protect.drivingMin+'–'+S.protect.drivingMax+') · Plateau '+plat+' ≤ '+S.protect.plateauMax+' — 압력 적정.'});
+      }
+    }
+  }
+
+  // 렌더
+  if(sug.length===0){ out.innerHTML='<div style="font-size:12px;color:var(--muted);">ABGA·setting 입력 시 제안 표시</div>'; return; }
+  // 심각도 정렬: high → mid → ok
+  var order={high:0,mid:1,ok:2};
+  sug.sort(function(a,b){ return order[a.sev]-order[b.sev]; });
+
+  var html='';
+  for(var k=0;k<sug.length;k++){
+    var s=sug[k];
+    var col=s.sev==='high'?'var(--red)':(s.sev==='mid'?'var(--orange)':'var(--green)');
+    var bg=s.sev==='high'?'var(--red-lt,#fee2e2)':(s.sev==='mid'?'#fff7ed':'var(--green-lt,#dcfce7)');
+    var icon=s.sev==='high'?'🔴':(s.sev==='mid'?'🟡':'🟢');
+    html+='<div style="display:flex;gap:8px;padding:9px 11px;background:'+bg+';border-radius:8px;margin-bottom:6px;font-size:12.5px;line-height:1.5;">'
+      + '<span>'+icon+'</span>'
+      + '<div><b style="color:'+col+';">['+s.axis+']</b> '+s.text+'</div></div>';
+  }
+  html+='<div class="ban ban-caution" style="margin-top:8px;"><span class="ban-icon">⚠️</span><span>'+S.disclaimer+'</span></div>';
+  out.innerHTML=html;
+}
+
+// Plateau / Driving pressure 평가 — 죽어있던 calcVentTV 로직 활용
+function calcVentDP(){
+  var out=document.getElementById('vent-dp-out');
+  if(!out) return;
+  var plat=ventNum('vs-plateau'), peep=ventNum('vs-peep');
+  if(plat==null && peep==null){ out.innerHTML=''; return; }
+
+  var html='<div style="display:flex;flex-wrap:wrap;gap:8px;">';
+
+  // Plateau 판정
+  if(plat!=null){
+    var pOk=plat<=VENT.plateauMax;
+    var pc=pOk?'var(--green)':'var(--red)';
+    var pbg=pOk?'var(--green-lt,#dcfce7)':'var(--red-lt,#fee2e2)';
+    html+='<div style="flex:1;min-width:140px;padding:10px;background:'+pbg+';border-radius:8px;">'
+      + '<div style="font-size:10.5px;color:var(--muted);text-transform:uppercase;">Plateau</div>'
+      + '<div style="font-size:22px;font-weight:800;font-family:var(--mono);color:'+pc+';">'+plat+'</div>'
+      + '<div style="font-size:11px;color:'+pc+';font-weight:700;">'+(pOk?'≤30 적정':'>30 폐손상 우려')+'</div></div>';
+  }
+
+  // Driving pressure = Plateau − PEEP
+  if(plat!=null && peep!=null){
+    var dp=plat-peep;
+    var dpMin=(VENT_SUGGEST&&VENT_SUGGEST.protect)?VENT_SUGGEST.protect.drivingMin:5;
+    var dState, dLabel;
+    if(dp<=0){ dState='bad'; dLabel='≤0 입력 확인'; }
+    else if(dp<dpMin){ dState='bad'; dLabel='<'+dpMin+' 비정상·측정 확인'; }
+    else if(dp<=VENT.drivingPressureMax){ dState='ok'; dLabel='적정 ('+dpMin+'–'+VENT.drivingPressureMax+')'; }
+    else { dState='bad'; dLabel='>'+VENT.drivingPressureMax+' 예후 불리'; }
+    var dc=dState==='ok'?'var(--green)':'var(--red)';
+    var dbg=dState==='ok'?'var(--green-lt,#dcfce7)':'var(--red-lt,#fee2e2)';
+    html+='<div style="flex:1;min-width:140px;padding:10px;background:'+dbg+';border-radius:8px;">'
+      + '<div style="font-size:10.5px;color:var(--muted);text-transform:uppercase;">Driving P (ΔP)</div>'
+      + '<div style="font-size:22px;font-weight:800;font-family:var(--mono);color:'+dc+';">'+dp+'</div>'
+      + '<div style="font-size:11px;color:'+dc+';font-weight:700;">'+dLabel+'</div>'
+      + '<div style="font-size:10px;color:var(--muted);">'+plat+' − '+peep+'</div></div>';
+  }
+  html+='</div>';
+
+  if(plat!=null && peep!=null){
+    var dp2=plat-peep;
+    if(dp2<=0){
+      html+='<div class="ban ban-caution" style="margin-top:8px;"><span class="ban-icon">⚠️</span><span><b>ΔP ≤0:</b> PEEP이 Plateau 이상입니다. 성립할 수 없는 조합이라 입력값을 확인하세요.</span></div>';
+    } else if(dp2<((VENT_SUGGEST&&VENT_SUGGEST.protect)?VENT_SUGGEST.protect.drivingMin:5)){
+      html+='<div class="ban ban-caution" style="margin-top:8px;"><span class="ban-icon">⚠️</span><span><b>ΔP가 비정상적으로 낮음:</b> 이 ΔP로는 정상 TV가 나오기 어렵습니다. plateau는 흡기말 정지 상태에서 측정하며, 자발호흡 간섭·측정 오류를 확인하세요.</span></div>';
+    } else if(dp2>VENT.drivingPressureMax){
+      html+='<div class="ban ban-caution" style="margin-top:8px;"><span class="ban-icon">⚠️</span><span><b>ΔP >15:</b> TV 무작정 증량 말고 <b>TV↓ 또는 PEEP 적정화</b>로 ΔP를 낮추세요. ΔP는 plateau 단독보다 예후와 강하게 연관(Amato NEJM 2015).</span></div>';
+    }
+  }
+  out.innerHTML=html;
+}
+
+// FiO₂–PEEP ladder 렌더 + 현재 FiO₂ 구간 강조
+function renderPeepLadder(){
+  var L=VENT.peepLadder;
+  var tb=document.getElementById('peep-ladder-tbody');
+  if(!tb) return;
+  var fi=ventNum('vs-fio2');
+  // 현재 FiO₂가 속하는 step 인덱스(가장 가까운 하한 step)
+  var activeIdx=-1;
+  for(var i=0;i<L.fio2Steps.length;i++){
+    if(fi!=null && fi>=L.fio2Steps[i]-0.001) activeIdx=i;
+  }
+  var rows='';
+  for(var j=0;j<L.fio2Steps.length;j++){
+    var on=(j===activeIdx);
+    var bg=on?'background:var(--accent-lt,#e0f2fe);':'';
+    var bd=on?'border-left:3px solid var(--accent);':'border-left:3px solid transparent;';
+    rows+='<tr style="'+bg+bd+'">'
+      + '<td style="padding:7px 12px;font-family:var(--mono);font-weight:'+(on?'800':'400')+';'+(on?'color:var(--accent);':'')+'">'+L.fio2Steps[j].toFixed(1)+(on?' ◀':'')+'</td>'
+      + '<td style="padding:7px 12px;text-align:center;font-family:var(--mono);'+(on?'font-weight:800;color:var(--accent);':'')+'">'+L.lower[j]+'</td>'
+      + '<td style="padding:7px 12px;text-align:center;font-family:var(--mono);'+(on?'font-weight:800;color:var(--accent);':'')+'">'+L.higher[j]+'</td>'
+      + '</tr>';
+  }
+  tb.innerHTML=rows;
+
+  var rec=document.getElementById('peep-ladder-rec');
+  if(rec){
+    if(activeIdx>=0){
+      rec.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border-radius:8px;font-size:13px;">'
+        + '<span style="color:var(--muted);">FiO₂ '+L.fio2Steps[activeIdx].toFixed(1)+' 권장 PEEP:</span>'
+        + '<b style="color:var(--accent);font-family:var(--mono);">Lower '+L.lower[activeIdx]+'</b>'
+        + '<span style="color:var(--muted2);">/</span>'
+        + '<b style="color:var(--cyan);font-family:var(--mono);">Higher '+L.higher[activeIdx]+'</b>'
+        + ' <span style="color:var(--muted);">cmH₂O</span></div>';
+    } else rec.innerHTML='';
+  }
+}
+
+// 공용 Ventilator Setting 변경 시 의존 모듈 전부 재계산 (Single Source of Truth)
+function renderVentSummary(){
+  var out=document.getElementById('vent-summary'); if(!out) return;
+  var tv=ventNum('vs-tv'), peep=ventNum('vs-peep'), plat=ventNum('vs-plateau');
+  var ht=ventNum('ibw-height'), sex=(typeof ibwSex!=='undefined'?ibwSex:'male');
+  var ibw=ht!=null?calcIBW(ht,sex):0;
+  var S=(typeof VENT_SUGGEST!=='undefined')?VENT_SUGGEST:null;
+  var cards='';
+
+  // TV mL/kg
+  if(tv!=null && ibw>0){
+    var perKg=Math.round(tv/ibw*10)/10;
+    var c=(perKg>8)?'var(--red)':(perKg<5.5?'var(--orange)':'var(--green)');
+    var lbl=(perKg>8)?'상한 초과':(perKg<5.5?'낮음':'적정');
+    cards+='<div style="flex:1;min-width:84px;background:var(--surface2);border-radius:9px;padding:9px 8px;text-align:center;">'
+         +'<div style="font-size:9.5px;color:var(--muted);font-weight:700;text-transform:uppercase;">TV/kg</div>'
+         +'<div style="font-size:20px;font-weight:800;color:'+c+';font-family:var(--mono);line-height:1.1;">'+perKg+'</div>'
+         +'<div style="font-size:9px;color:'+c+';font-weight:700;">'+lbl+'</div></div>';
+  }
+  // Driving pressure
+  if(plat!=null && peep!=null){
+    var dp=plat-peep;
+    var dpMin=(S&&S.protect)?S.protect.drivingMin:5, dpMax=(S&&S.protect)?S.protect.drivingMax:15;
+    var dc=(dp<=0||dp<dpMin||dp>dpMax)?'var(--red)':'var(--green)';
+    var dl=(dp<=0)?'입력확인':(dp<dpMin?'비정상':(dp>dpMax?'높음':'적정'));
+    cards+='<div style="flex:1;min-width:84px;background:var(--surface2);border-radius:9px;padding:9px 8px;text-align:center;">'
+         +'<div style="font-size:9.5px;color:var(--muted);font-weight:700;text-transform:uppercase;">ΔP</div>'
+         +'<div style="font-size:20px;font-weight:800;color:'+dc+';font-family:var(--mono);line-height:1.1;">'+dp+'</div>'
+         +'<div style="font-size:9px;color:'+dc+';font-weight:700;">'+dl+'</div></div>';
+  }
+  // 제안 경고 수 (🔴 high 개수)
+  var vsOut=document.getElementById('vs-out');
+  if(vsOut){
+    var highCount=(vsOut.innerHTML.match(/🔴/g)||[]).length;
+    var wc=highCount>0?'var(--red)':'var(--green)';
+    cards+='<div style="flex:1;min-width:84px;background:var(--surface2);border-radius:9px;padding:9px 8px;text-align:center;">'
+         +'<div style="font-size:9.5px;color:var(--muted);font-weight:700;text-transform:uppercase;">주의 항목</div>'
+         +'<div style="font-size:20px;font-weight:800;color:'+wc+';font-family:var(--mono);line-height:1.1;">'+highCount+'</div>'
+         +'<div style="font-size:9px;color:'+wc+';font-weight:700;">'+(highCount>0?'확인 필요':'양호')+'</div></div>';
+  }
+
+  out.innerHTML = cards ? '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">'+cards+'</div>' : '';
+}
+
+function recalcVentAll(){
+  try{ renderPeepLadder(); }catch(e){}   // FiO₂ → ladder
+  try{ calcVentDP(); }catch(e){}         // Plateau·PEEP → driving pressure
+  try{ if(typeof cIBW==='function') cIBW(); }catch(e){}  // TV → 현재 mL/kg 평가 (+ 내부에서 제안 갱신)
+  try{ calcVentSuggest(); }catch(e){}    // ABGA + setting → 제안 (cIBW가 이미 불러도 멱등)
+  try{ if(typeof renderVentSummary==='function') renderVentSummary(); }catch(e){}  // 요약 카드 (제안 결과 읽음)
+  // RSBI(calcVentPredict)는 weaning 전용 독립 입력이라 의도적으로 제외
+}
+function initVent(){ renderVentSbtList(); calcVentSbt(); calcVentPredict(); recalcVentAll(); }
+
+
+/* ===== CRRT 모듈 주입 (v0.4) ===== */
+/* ============================================================
+   CRRT 모듈 v0.4 — DATA + ENGINE
+   지속신대체요법 용량·FF·전해질·항응고·산염기 조언자
+   additive 가산, 기존 무손상. 임상수치 전부 CRRT 객체.
+   출처: KSN CKRT 2025, KDIGO 2012, UAB/Tolwani FF, PLoS One 2020 등
+   ============================================================ */
+var CRRT = {
+  dose: {
+    standard:[20,25], highDoseNotRecommended:40, deliveredTarget:0.8,
+    highDoseException:'중증 대사이상·고암모니아혈증(>100 µmol/L)·중증 고K에서 50 mL/kg/h 고려',
+    cvvhdfNote:'CVVHDF: 전치환(pre-PBP)+후치환(post)+투석액(dialysate)+net UF',
+    src:'KSN CKRT 2025 KQ2 · Springer Crit Care 2021'
+  },
+  ff: {
+    targetMax:25, warnAt:20, dangerAt:25,
+    note:'필터 응고·수명 직결. BFR↑·전치환↑로 FF↓. 빈혈(저Hct)은 plasma flow↑로 FF 유리. dialysate는 FF 무관(확산). FF>25% → 응고·막파열 위험.',
+    hctNote:'post-filter Hct 0.40(FF~30%)이 실용 상한. CRRT는 더 보수적 권장.',
+    src:'UAB CRRT Academy 2018 · Tolwani 2018 · Deranged Physiology'
+  },
+  electrolyteBags: {
+    products: [
+      { id:'bag:hemosol_b0',  name:'Hemosol B0 / Prismasol B0', label:'K-free 용액', brands:'Hemosol B0 / Prismasol B0 / MultiBic K-free', indication:'심한 고K. K를 적극적으로 빼야 할 때', K:0, P:0,   HCO3:32, Ca:1.75, note:'무K·무P. 고K 교정 기본액.' },
+      { id:'bag:prismasol_2', name:'Prismasol 2',               label:'2K 용액',     brands:'Prismasol 2 / MultiBic 2K',                  indication:'경증 고K~정상 유지. K 완만히 하강', K:2, P:0,   HCO3:32, Ca:1.75, note:'경증 고K~정상 유지.' },
+      { id:'bag:prismasol_3', name:'MultiBic 3K',               label:'3K 용액',     brands:'MultiBic 3K',                                indication:'가장 범용. K 정상 유지가 목표', K:3, P:0,   HCO3:35, Ca:1.5,  note:'가장 범용. P 별도(무인산).' },
+      { id:'bag:prismasol_4', name:'Prismasol 4 / Multibic 4K', label:'4K 용액',     brands:'Prismasol 4 / MultiBic 4K',                  indication:'저K 위험군. K 하강 방지', K:4, P:0,   HCO3:32, Ca:1.5,  note:'저K 위험군. P 별도.' },
+      { id:'bag:phoxilium',   name:'Phoxilium',                 label:'P 함유 용액', brands:'Phoxilium',                                  indication:'저K + 저P 동시. 인 보충 필요 시', K:4, P:1.2, HCO3:30, Ca:1.25, note:'저K+저P 동시. Hemosol 대비 상대적 대사산증·저Ca.' },
+      { id:'bag:biphozyl',    name:'Biphozyl',                  label:'저HCO₃+P 용액', brands:'Biphozyl',                                indication:'RCA 중 대사알칼리증 교정 (특수)', K:4, P:1.0, HCO3:22, Ca:0,    note:'저HCO₃+P. RCA 대사알칼리증 교정용.' }
+    ],
+    hypoKincidence:'최대 24%', hypoPincidence:'27–78% (고용량일수록↑)',
+    /* P0-2: K 기반 백 선택 매트릭스 (DATA화 — suggestPremixBag이 순회).
+       순서대로 첫 매칭. kMin='초과(>)' 기준, pMax=null이면 P 무관.
+       검증: 3111 격자케이스 if-else와 100% 일치 (무회귀 동결).
+       근거: PLoS One 2020(PMC7485827) group3 백 선택, KSN CKRT 2025 */
+    selectMatrix:[
+      { kMin:6.0, pMax:null, bag:'bag:hemosol_b0',  reason:'고K 우선 교정(무K 고용량)' },
+      { kMin:4.5, pMax:3.5,  bag:'bag:phoxilium',   reason:'P 보충 동반(K4 유의)' },
+      { kMin:4.5, pMax:null, bag:'bag:prismasol_2', reason:'K2 완만 하강' },
+      { kMin:3.5, pMax:3.5,  bag:'bag:phoxilium',   reason:'K+P 동시 보충' },
+      { kMin:3.5, pMax:null, bag:'bag:prismasol_4', reason:'저K 예방' },
+      { kMin:-1,  pMax:3.5,  bag:'bag:phoxilium',   reason:'K4+P + 별도 KCl 보충 고려' },
+      { kMin:-1,  pMax:null, bag:'bag:prismasol_4', reason:'K4 + 별도 KCl 보충 고려' }
+    ],
+    selectMatrixSrc:'PLoS One 2020(PMC7485827) · KSN CKRT 2025',
+    guideline:{ rec:'고인산혈증 없으면 인 함유 투석액으로 저인산 예방 고려', grade:'조건부 권고', evidence:'매우 낮음', src:'KSN CKRT 2025' },
+    phosphateMix:[
+      { cond:'P >4 mg/dL',  mix:'Prismasol 100%',                reason:'인 보충 불필요, 고인산 주의' },
+      { cond:'P 2–4 mg/dL', mix:'Phoxilium 50% + Prismasol 50%', reason:'점진적 인 보충' },
+      { cond:'P <2 mg/dL',  mix:'Phoxilium 100%',                reason:'적극적 인 보충' }
+    ],
+    phosphateMixSrc:'PLoS One 2020(PMC7485827) · Phoxilium 효과 연구(PMC8476306) · 국내 ICU 실무',
+    legacyKclMix:{
+      note:'무K액(Hemosol B0)에 KCl mix. 현재 premix 백 전환 추세이나 백 미보유 기관 사용.',
+      caution:'Hemosol B0 첨가 시 총 K ≤4 mmol/L(라벨). 수동 mix는 농도오류·오염 위험.'
+    },
+    src:'PLoS One 2020 · EBP 2022 · Frontiers Med 2022'
+  },
+  magnesium:{ fluidConc:[1.0,1.5], note:'상용액 Mg 1–1.5 mEq/L. Phoxilium은 Mg보충 필요↓. RCA 시 citrate가 Mg chelate→소실↑.', src:'ScienceDirect 2016' },
+  calcium:{ fluidConc:3.0, hyperCaStrategy:'systemic iCa ≥1.4 mmol/L 시 Ca-free 챔버 단독 — Mg 동시 소실 주의', note:'비-RCA: 투석액 Ca ~3 mEq/L 중립~경度 양균형.', src:'ScienceDirect 2016 · EBP 2022' },
+  nafamostat:{
+    standard:'국내 CRRT 항응고 사실상 표준(특히 출혈위험군). 단반감기(~8분) serine protease 억제제 → 체외순환 국한 효과.',
+    dose:{ initial:[20,50], unit:'mg/h', titrate:'5–30 mg/h 적정(관찰연구).', start:20, bolusOption:'1 mg/kg → 1 mg/kg/h 유지' },
+    mix:{ priming:'2 vial(100mg)+5%DW 2mL→NS 1000mL', infusion:'50mg/50mL=1mg/mL (또는 200mg/50mL=4mg/mL)', adjust:'응고 시 5mg/h↑, 출혈/aPTT과연장 시 ↓' },
+    monitor:{ act:[150,250], aptt:[50,70], note:'post-filter ACT 150–250s 또는 aPTT 50–70s. aPTT가 ACT보다 용량 상관성 높음.' },
+    caution:'고K혈증(aldosterone 억제·Na-K ATPase 저하, 수시간 내)·과민반응·무과립구증. K 추세 감시. 출혈위험 heparin보다 낮음.',
+    legacyRef:{ recipe:'INAFA50 200mg(4V)+5%DW 50mL=4mg/mL. 초기1h 5ugtt→2.5ugtt. 12h내 응고 시 0.5ugtt 증량.', converted:'5ugtt≈20mg/h(초기), 2.5ugtt≈10mg/h(유지) [60gtt/mL 환산]', validation:'환산 20/10mg/h은 현행 표준(5–30, 초기20–50)과 정합. 출처 불명확 — 참조용.' },
+    src:'BMC Nephrol 2024 · Renal Replacement Ther 2025 · ClinicalTrials NCT01761994 · PLoS One 2014'
+  },
+  heparin:{ // [drug:heparin] nafamostat·citrate 미사용 시
+    priming:'5,000–10,000 IU + NS 1L',
+    bolus:'1,000–5,000 IU (체중 15–30 IU/kg, max 5,000)',
+    infusion:'25,000 IU + NS 50mL = 500 IU/mL (또는 2,000IU/1L=2IU/mL)',
+    maintenance:'5–10 IU/kg/h (≈400–700 IU/h) pre-filter',
+    target:'circuit aPTT 1.5–2.0배(45–60s) 또는 anti-Xa 0.3–0.6, 6h마다',
+    reversal:'protamine (heparin 100IU당 1mg)',
+    contraindication:'활동성 출혈·HIT·혈소판<50k·INR>1.8 → nafamostat/RCA. 반감기 90분(신부전 시 3h).',
+    src:'Anticoagulation in RRT (PMC7347059) · CRRT heparin nomogram (PMC7430360) · KDIGO 2012'
+  },
+  rca:{
+    indication:'KDIGO/KSN 우선(가용 시). 국내는 citrate 백 보급 제한으로 nafamostat 대체 흔함. 간부전·쇼크·젖산산증 축적 위험.',
+    postFilterICa:{ target:[0.25,0.35], max:0.6, unit:'mmol/L', note:'필터 효율. 0.25–0.35 표준(혈중 citrate~4–6 mmol/L).' },
+    systemicICa:{ target:[1.0,1.2], unit:'mmol/L', note:'환자 안전. CaCl₂ 정주 보충.' },
+    accumulation:{ ratioCut:2.5, warnCut:2.4, unit:'total Ca / iCa', note:'total/iCa ≥2.5 = 축적(간대사 한계). lactate≥3.4·PT연장 예측.', action:'ratio>2.4: citrate 20분 중단 후 0.5 mmol/L 감량 재시작. 또는 투석액 증량.' },
+    src:'Renal Fellow Network · Springer Crit Care 2017 · CKJ 2023 · KSN 2025'
+  },
+  acidBase:{
+    bufferChoice:'bicarbonate',
+    guideline:[
+      { cond:'AKI + 순환쇼크',       rec:'bicarbonate(>lactate)', grade:'KDIGO 1B (강한 권고)' },
+      { cond:'AKI + 간부전/젖산산증', rec:'bicarbonate(>lactate)', grade:'KDIGO 2B (조건부)' }
+    ],
+    fluidHCO3:'상용액 HCO₃ 최대 ~35 mmol/L. AKI+CRRT 대부분 산증 → 산증 교정이 흔한 주적응증.',
+    phoxiliumNote:'Phoxilium(HCO₃30)은 Hemosol 대비 상대적 대사산증·저Ca — 산증 환자 주의.',
+    biphozylNote:'RCA 난치성 대사알칼리증 시 Phoxilium→Biphozyl 전환(HCO₃ 부하↓; 연구: HCO₃27.7→25.8, BE4.0→1.8 within 24h).',
+    citrateAlkalosis:'RCA에서 citrate→bicarbonate 대사로 알칼리증 가능. pH>7.5 → overload 의심.',
+    src:'KDIGO 2012 · Frontiers Med 2022 · Biphozyl 2021'
+  }
+};
+
+/* ── ENGINE (순수 함수) ── */
+function crrtRound(x,n){ var p=Math.pow(10,n||2); return Math.round(x*p)/p; }
+
+function calcEffluentDose(pre,post,dial,netUF,weight){
+  if(!weight||weight<=0) return null;
+  return crrtRound((pre+post+dial+netUF)/weight,2);
+}
+function calcFilFraction(bfr,hct,pre,post,netUF,pbp){
+  pbp=pbp||0;
+  if(!bfr||bfr<=0||hct<0||hct>=1) return null;
+  var plasma=bfr*60*(1-hct);
+  var totalUF=pre+post+netUF+pbp;
+  var denom=plasma+pre+pbp;
+  if(denom<=0) return null;
+  return crrtRound((totalUF/denom)*100,1);
+}
+function calcDeliveredRatio(actual,prescribed){
+  if(!prescribed||prescribed<=0) return null;
+  return crrtRound(actual/prescribed,2);
+}
+function suggestPremixBag(K,P){
+  // K mmol/L, P mg/dL → bag id + reason. 임계는 CRRT.electrolyteBags.selectMatrix(DATA)에서 읽음.
+  if(K==null||P==null) return null;
+  var mx=CRRT.electrolyteBags.selectMatrix;
+  for(var i=0;i<mx.length;i++){
+    var r=mx[i];
+    if(K>r.kMin && (r.pMax==null || P<=r.pMax)) return { bag:r.bag, reason:r.reason };
+  }
+  return null;
+}
+function calcCaRatio(totalCa,systemicICa,unit){
+  if(totalCa==null||!systemicICa) return null;
+  var t = (unit==='mg/dL') ? totalCa*0.25 : totalCa; // mg/dL→mmol/L
+  return crrtRound(t/systemicICa,2);
+}
+function checkRcaTargets(postICa,systemicICa){
+  var pt=CRRT.rca.postFilterICa.target, st=CRRT.rca.systemicICa.target;
+  return {
+    post: postICa==null?null:(postICa>=pt[0]&&postICa<=pt[1]?'ok':(postICa<pt[0]?'low':'high')),
+    systemic: systemicICa==null?null:(systemicICa>=st[0]&&systemicICa<=st[1]?'ok':(systemicICa<st[0]?'low':'high'))
+  };
+}
+function nafamostatLegacyMgH(ugtt,concMgMl){ return crrtRound(ugtt*concMgMl,1); } // 60gtt/mL: ugtt≈mL/h
+/* ============================================================
+   CRRT 모듈 — UI 렌더 (엔진은 위 crrt_module 검증완료분 사용)
+   ============================================================ */
+function crrtBagById(id){
+  for(var i=0;i<CRRT.electrolyteBags.products.length;i++){
+    if(CRRT.electrolyteBags.products[i].id===id) return CRRT.electrolyteBags.products[i];
+  }
+  return null;
+}
+function crrtFFColor(ff){
+  if(ff==null) return 'var(--muted)';
+  if(ff<CRRT.ff.warnAt) return 'var(--green)';
+  if(ff<CRRT.ff.dangerAt) return 'var(--orange)';
+  return 'var(--red)';
+}
+function crrtNum(id){ var e=document.getElementById(id); if(!e)return null; var v=parseFloat(e.value); return isNaN(v)?null:v; }
+
+function calcCRRT(){
+  var pre=crrtNum('crrt-pre')||0, post=crrtNum('crrt-post')||0, dial=crrtNum('crrt-dial')||0,
+      uf=crrtNum('crrt-uf')||0, bfr=crrtNum('crrt-bfr'), hct=crrtNum('crrt-hct'), wt=crrtNum('crrt-wt'),
+      actual=crrtNum('crrt-actual');
+  var out=document.getElementById('crrt-dose-out'); if(!out)return;
+
+  var dose=calcEffluentDose(pre,post,dial,uf,wt);
+  var ff=calcFilFraction(bfr,hct,pre,post,uf,0);
+  var prescribed=pre+post+dial+uf;
+  var delivered=(actual!=null)?calcDeliveredRatio(actual,prescribed):null;
+
+  var html='';
+  // dose 카드
+  var doseColor='var(--teal)', doseNote='';
+  if(dose!=null){
+    if(dose>CRRT.dose.highDoseNotRecommended){ doseColor='var(--red)'; doseNote='⚠️ &gt;40 mL/kg/h — 통상 무이득(중증 대사이상·고암모니아 예외)'; }
+    else if(dose>=CRRT.dose.standard[0]&&dose<=CRRT.dose.standard[1]){ doseColor='var(--green)'; doseNote='✅ 권고 범위 20–25'; }
+    else if(dose<CRRT.dose.standard[0]){ doseColor='var(--orange)'; doseNote='권고 하한(20) 미만'; }
+    else { doseColor='var(--orange)'; doseNote='권고 상한(25) 초과 ~40'; }
+  }
+  html+='<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-bottom:10px;">';
+  html+='<div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center;">'
+      + '<div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;">Effluent Dose</div>'
+      + '<div style="font-size:26px;font-weight:800;color:'+doseColor+';font-family:var(--mono);">'+(dose!=null?dose:'—')+'</div>'
+      + '<div style="font-size:11px;color:var(--muted);">mL/kg/h</div>'
+      + '<div style="font-size:11px;color:'+doseColor+';font-weight:700;margin-top:4px;">'+doseNote+'</div></div>';
+  // FF 카드
+  var ffColor=crrtFFColor(ff), ffNote='';
+  if(ff!=null){
+    if(ff>=CRRT.ff.dangerAt) ffNote='🔴 &gt;25% — 응고·막파열 위험. BFR↑ 또는 전치환↑ 고려';
+    else if(ff>=CRRT.ff.warnAt) ffNote='🟠 20–25% 경계 — 모니터링';
+    else ffNote='🟢 &lt;20% 양호';
+  }
+  html+='<div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center;">'
+      + '<div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;">Filtration Fraction</div>'
+      + '<div style="font-size:26px;font-weight:800;color:'+ffColor+';font-family:var(--mono);">'+(ff!=null?ff+'%':'—')+'</div>'
+      + '<div style="font-size:11px;color:var(--muted);">목표 &lt;20–25%</div>'
+      + '<div style="font-size:11px;color:'+ffColor+';font-weight:700;margin-top:4px;">'+ffNote+'</div></div>';
+  html+='</div>';
+  // delivered
+  if(delivered!=null){
+    var dColor=delivered>=CRRT.dose.deliveredTarget?'var(--green)':'var(--orange)';
+    html+='<div class="ban '+(delivered>=CRRT.dose.deliveredTarget?'ban-info':'ban-caution')+'"><span class="ban-icon">📉</span><span><b>Delivered/Prescribed:</b> <span style="color:'+dColor+';font-weight:800;">'+delivered+'</span> (목표 &gt;0.8). down-time·필터응고로 실제 전달량은 처방의 80–85%로 감소 흔함.</span></div>';
+  }
+  html+='<div class="ban ban-info" style="margin-top:8px;"><span class="ban-icon">💡</span><span><b>FF 원리:</b> dialysate는 FF 무관(확산). 전치환↑·BFR↑로 FF↓. 빈혈(저Hct)은 plasma flow↑로 FF 유리. <b>[현장 팁]</b> BFR 130→150 전환이 FF를 응고 한계(25%) 아래로 끌어내리는 흔한 전략.</span></div>';
+  out.innerHTML=html;
+  if(typeof renderCRRTSummary==='function'){ try{ renderCRRTSummary(); }catch(e){} }
+}
+
+function calcCRRTbag(){
+  var K=crrtNum('crrt-k'), P=crrtNum('crrt-p');
+  var out=document.getElementById('crrt-bag-out'); if(!out)return;
+  var sel=suggestPremixBag(K,P);
+  if(!sel){ out.innerHTML=''; return; }
+  var bag=crrtBagById(sel.bag);
+  var html='<div style="background:var(--teal-lt,#ccfbf1);border:1.5px solid var(--teal);border-radius:10px;padding:12px;">';
+  html+='<div style="font-size:11px;color:var(--teal);font-weight:700;text-transform:uppercase;">매칭 용액 (참고)</div>';
+  html+='<div style="font-size:18px;font-weight:800;color:var(--teal);margin:2px 0;">'+(bag.label||bag.name)+'</div>';
+  html+='<div style="font-size:11px;color:var(--muted);margin-bottom:2px;">'+(bag.brands||bag.name)+'</div>';
+  html+='<div style="font-size:12px;color:var(--muted);">'+sel.reason+'</div>';
+  html+='<div style="font-size:12px;color:var(--ink,#1a2230);margin-top:6px;font-family:var(--mono);">K '+bag.K+' · P '+bag.P+' · HCO₃ '+bag.HCO3+' · Ca '+bag.Ca+' (mmol/L)</div>';
+  html+='<div style="font-size:11px;color:var(--muted);margin-top:4px;">'+bag.note+'</div>';
+  html+='</div>';
+  // P 혼합 전략 (국내 — Phoxilium/Prismasol 비율)
+  if(P!=null){
+    var mix='';
+    if(P>4)      mix='<b>P &gt;4:</b> Prismasol 100% (인 보충 불필요, 고인산 주의)';
+    else if(P>=2) mix='<b>P 2–4:</b> Phoxilium 50% + Prismasol 50% (점진적 인 보충)';
+    else          mix='<b>P &lt;2:</b> Phoxilium 100% (적극적 인 보충)';
+    html+='<div class="ban ban-info" style="margin-top:8px;"><span class="ban-icon">🧪</span><span><b>[국내 일반] 인(P) 기반 백 혼합:</b><br>'+mix+'<br><span style="color:var(--muted);font-size:11px;">Phoxilium(P 1.2)으로 hypophosphatemia·hypokalemia 동시 예방. 대형병원 흔한 비율 조절 방식.</span></span></div>';
+  }
+  // pH 기반 백 보정 (산염기 통합)
+  var pH=crrtNum('crrt-ph');
+  if(pH!=null){
+    var phMsg='', phCls='ban-info', phIcon='🧴';
+    if(pH<7.15){ phCls='ban-warn'; phIcon='🚨'; phMsg='<b>pH '+pH+' &lt;7.15 생명위협 산증:</b> HCO₃ 高함유액(Prismasol/Hemosol, HCO₃ 32) 위주 + CRRT 시작과 동시에 IV NaHCO₃ 일시 병용 고려. 안정 시 드립 중단.'; }
+    else if(pH<7.25){ phMsg='<b>pH '+pH+' 산증:</b> Prismasol/Hemosol(HCO₃ 32) 위주로 교정. Phoxilium(HCO₃ 30)은 교정력 약해 단독 부적합.'; }
+    else if(pH<=7.30){ phMsg='<b>pH '+pH+' 경증 산증:</b> Prismasol 위주. 저K·저P 동반 시 Phoxilium 일부 혼합 가능.'; }
+    else if(pH>7.50){ phCls='ban-warn'; phIcon='🔴'; phMsg='<b>pH '+pH+' &gt;7.5 알칼리증:</b> RCA 시 citrate net overload 의심. citrate 감량 또는 Phoxilium→Biphozyl(HCO₃ 22) 전환 고려.'; }
+    else { phMsg='<b>pH '+pH+' 정상~경계:</b> Phoxilium 사용 가능(저K·저P 동반 시 유리).'; }
+    html+='<div class="ban '+phCls+'" style="margin-top:8px;"><span class="ban-icon">'+phIcon+'</span><span><b>[산염기] pH 기반 백 보정:</b><br>'+phMsg+'</span></div>';
+  }
+  out.innerHTML=html;
+  if(typeof renderCRRTSummary==='function'){ try{ renderCRRTSummary(); }catch(e){} }
+}
+
+function calcCRRTrca(){
+  var post=crrtNum('crrt-postica'), sys=crrtNum('crrt-sysica'), total=crrtNum('crrt-totalca');
+  var out=document.getElementById('crrt-rca-out'); if(!out)return;
+  var t=checkRcaTargets(post,sys);
+  var ratio=calcCaRatio(total,sys,'mg/dL');
+  function colr(s){ return s==='ok'?'var(--green)':(s==null?'var(--muted)':'var(--red)'); }
+  function lbl(s){ return s==='ok'?'정상':(s==='low'?'낮음':(s==='high'?'높음':'—')); }
+  var html='<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);gap:8px;">';
+  html+='<div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:10px;color:var(--muted);">post-filter</div><div style="font-size:13px;font-weight:800;color:'+colr(t.post)+';">'+lbl(t.post)+'</div><div style="font-size:10px;color:var(--muted);">0.25–0.35</div></div>';
+  html+='<div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:10px;color:var(--muted);">systemic</div><div style="font-size:13px;font-weight:800;color:'+colr(t.systemic)+';">'+lbl(t.systemic)+'</div><div style="font-size:10px;color:var(--muted);">1.0–1.2</div></div>';
+  var rColor=(ratio==null?'var(--muted)':(ratio>=CRRT.rca.accumulation.ratioCut?'var(--red)':(ratio>=CRRT.rca.accumulation.warnCut?'var(--orange)':'var(--green)')));
+  html+='<div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:10px;color:var(--muted);">total/iCa</div><div style="font-size:13px;font-weight:800;color:'+rColor+';font-family:var(--mono);">'+(ratio!=null?ratio:'—')+'</div><div style="font-size:10px;color:var(--muted);">&lt;2.5</div></div>';
+  html+='</div>';
+  if(ratio!=null&&ratio>=CRRT.rca.accumulation.ratioCut){
+    html+='<div class="ban ban-warn" style="margin-top:8px;"><span class="ban-icon">🔴</span><span><b>citrate 축적 의심</b>(total/iCa ≥2.5) — 간대사 한계. '+CRRT.rca.accumulation.action+'</span></div>';
+  }
+  out.innerHTML=html;
+}
+
+function renderCRRTBagGuide(){
+  var out=document.getElementById('crrt-bag-guide'); if(!out) return;
+  if(typeof CRRT==='undefined'||!CRRT.electrolyteBags) return;
+  var bags=CRRT.electrolyteBags.products||[];
+  var html='<div style="display:flex;flex-direction:column;gap:7px;">';
+  for(var i=0;i<bags.length;i++){
+    var b=bags[i];
+    // P 함유 여부로 좌측 색 띠 구분 (P>0 = 청록, 무인산 = 회색, Biphozyl 특수 = 주황)
+    var accent = b.id==='bag:biphozyl' ? 'var(--orange)' : (b.P>0 ? 'var(--teal)' : 'var(--muted2)');
+    html+='<div style="border-left:3px solid '+accent+';background:var(--surface2);border-radius:7px;padding:8px 11px;">'
+        + '<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;">'
+        +   '<span style="font-size:13px;font-weight:800;color:var(--text);">'+b.label+'</span>'
+        +   '<span style="font-size:10.5px;color:var(--muted);">'+b.brands+'</span>'
+        + '</div>'
+        + '<div style="font-size:11.5px;color:var(--text2);margin:3px 0;">'+(b.indication||b.note)+'</div>'
+        + '<div style="font-size:11px;color:var(--muted);font-family:var(--mono);">K '+b.K+' · P '+b.P+' · HCO₃ '+b.HCO3+' · Ca '+b.Ca+' <span style="color:var(--muted2);">(mmol/L)</span></div>'
+        + '</div>';
+  }
+  html+='</div>';
+  // 범례 + 핵심 주의
+  html+='<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:10.5px;color:var(--muted);">'
+      + '<span><span style="display:inline-block;width:9px;height:9px;background:var(--muted2);border-radius:2px;vertical-align:middle;"></span> 무인산</span>'
+      + '<span><span style="display:inline-block;width:9px;height:9px;background:var(--teal);border-radius:2px;vertical-align:middle;"></span> 인(P) 함유</span>'
+      + '<span><span style="display:inline-block;width:9px;height:9px;background:var(--orange);border-radius:2px;vertical-align:middle;"></span> RCA 특수</span>'
+      + '</div>';
+  html+='<div class="ban ban-caution" style="margin-top:8px;"><span class="ban-icon">⚠️</span><span><b>주의:</b> Phoxilium은 HCO₃·Ca가 낮아 <b>산증(pH&lt;7.25)엔 교정력 약함</b>·저Ca 악화 가능. Biphozyl은 일반 유지용 아님 — <b>RCA 대사알칼리증 교정 전용</b>(Ca 0).</span></div>';
+  out.innerHTML=html;
+}
+
+function renderCRRTSummary(){
+  var out=document.getElementById('crrt-summary'); if(!out) return;
+  var pre=crrtNum('crrt-pre')||0, post=crrtNum('crrt-post')||0, dial=crrtNum('crrt-dial')||0,
+      uf=crrtNum('crrt-uf')||0, bfr=crrtNum('crrt-bfr'), hct=crrtNum('crrt-hct'), wt=crrtNum('crrt-wt');
+  var dose=calcEffluentDose(pre,post,dial,uf,wt);
+  var ff=calcFilFraction(bfr,hct,pre,post,uf,0);
+  var K=crrtNum('crrt-k'), P=crrtNum('crrt-p');
+
+  // dose 색상
+  var doseColor='var(--teal)';
+  if(dose!=null){
+    if(dose>CRRT.dose.highDoseNotRecommended) doseColor='var(--red)';
+    else if(dose>=CRRT.dose.standard[0]&&dose<=CRRT.dose.standard[1]) doseColor='var(--green)';
+    else doseColor='var(--orange)';
+  }
+  var ffColor=crrtFFColor(ff);
+
+  // 추천 용액
+  var sel=suggestPremixBag(K,P), bag=sel?crrtBagById(sel.bag):null;
+
+  var cards='';
+  cards+='<div style="flex:1;min-width:90px;background:var(--surface2);border-radius:9px;padding:9px 8px;text-align:center;">'
+       +'<div style="font-size:9.5px;color:var(--muted);font-weight:700;text-transform:uppercase;">Effluent</div>'
+       +'<div style="font-size:21px;font-weight:800;color:'+doseColor+';font-family:var(--mono);line-height:1.1;">'+(dose!=null?dose:'—')+'</div>'
+       +'<div style="font-size:9px;color:var(--muted);">mL/kg/h</div></div>';
+  cards+='<div style="flex:1;min-width:90px;background:var(--surface2);border-radius:9px;padding:9px 8px;text-align:center;">'
+       +'<div style="font-size:9.5px;color:var(--muted);font-weight:700;text-transform:uppercase;">FF</div>'
+       +'<div style="font-size:21px;font-weight:800;color:'+ffColor+';font-family:var(--mono);line-height:1.1;">'+(ff!=null?ff+'%':'—')+'</div>'
+       +'<div style="font-size:9px;color:var(--muted);">목표&lt;25%</div></div>';
+  if(bag){
+    cards+='<div style="flex:1.4;min-width:120px;background:var(--teal-lt,#ccfbf1);border:1px solid var(--teal);border-radius:9px;padding:9px 10px;">'
+         +'<div style="font-size:9.5px;color:var(--teal);font-weight:700;text-transform:uppercase;">추천 용액</div>'
+         +'<div style="font-size:15px;font-weight:800;color:var(--teal);line-height:1.15;">'+(bag.label||bag.name)+'</div>'
+         +'<div style="font-size:9.5px;color:var(--muted);">'+(bag.brands||'')+'</div></div>';
+  }
+  out.innerHTML='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">'+cards+'</div>';
+}
+
+function initCRRT(){
+  // 상단 환자 체중을 CRRT 체중 기본값으로 동기화 (dry weight 필요 시 개별 조정 가능)
+  try{ var cw=document.getElementById('crrt-wt'); if(cw && typeof bwt==='function') cw.value=bwt(); }catch(e){}
+  calcCRRT(); calcCRRTbag(); calcCRRTrca(); renderCRRTSummary(); renderCRRTBagGuide();
+}
 
 </script>
+
+<!-- 피드백 모달 (AJAX POST) -->
+<div id="fb-overlay" class="fb-overlay" onclick="if(event.target===this)closeFeedback()" style="display:none;">
+  <div class="fb-modal">
+    <div class="fb-modal-hd">
+      <span>💬 피드백 보내기</span>
+      <button type="button" class="fb-x" onclick="closeFeedback()" aria-label="닫기">×</button>
+    </div>
+    <div class="fb-modal-bd">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;">버그·기능 요청·임상 의견 무엇이든 환영합니다. (이메일은 선택 — 회신 필요 시에만)</div>
+      <label class="fb-lbl">유형
+        <select id="fb-type" class="fb-inp">
+          <option value="버그">🐞 버그 신고</option>
+          <option value="기능요청">✨ 기능 요청</option>
+          <option value="임상의견">🩺 임상 의견</option>
+          <option value="기타">💭 기타</option>
+        </select>
+      </label>
+      <label class="fb-lbl">내용 *
+        <textarea id="fb-msg" class="fb-inp" rows="4" placeholder="내용을 입력하세요..."></textarea>
+      </label>
+      <label class="fb-lbl">이메일 (선택)
+        <input type="email" id="fb-email" class="fb-inp" placeholder="회신 받을 이메일 (선택)" inputmode="email">
+      </label>
+      <div id="fb-status" class="fb-status"></div>
+      <button type="button" id="fb-submit" class="fb-submit" onclick="submitFeedback()">보내기</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
