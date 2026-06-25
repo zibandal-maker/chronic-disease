@@ -1,0 +1,2213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>수술 전 위험평가 · Pre-op Risk</title>
+<style>
+/* ═══ 디자인 토큰 ═══
+   시그니처: 신호등(등급) + 임상 차트지 느낌. 영역별 색은 임상 의미.
+   배경은 차가운 슬레이트(수술방·차트), 등급만 신호등으로 발광. */
+:root{
+  --bg:#f4f6f8; --panel:#ffffff; --panel2:#f0f3f6; --line:#dde3ea;
+  --ink:#1f2933; --ink-dim:#52606d; --ink-faint:#9aa5b1;
+  --accent:#2b5c8a;          /* 메인 슬레이트블루 */
+  --accent-bg:#e8f0f7;
+  /* 신호등 */
+  --green:#1a8a4a; --green-bg:#e8f6ee;
+  --amber:#c47d12; --amber-bg:#fdf3e0;
+  --red:#c0392b; --red-bg:#fdeceb;
+  /* 영역색 */
+  --c-cardiac:#c0392b; --c-cardiac-bg:#fdeceb;
+  --c-pulm:#0e8a8a;    --c-pulm-bg:#e0f5f5;
+  --c-renal:#b8742a;   --c-renal-bg:#f9efe2;
+  --c-hep:#c9a227;     --c-hep-bg:#faf5e0;
+  --c-frail:#7d5ba6;   --c-frail-bg:#f1ebf8;
+  --c-bleed:#9b1c31;   --c-bleed-bg:#fbeaee;
+  --c-global:#4a5568;  --c-global-bg:#edf0f4;
+  --shadow:0 1px 3px rgba(31,41,51,.08), 0 4px 12px rgba(31,41,51,.05);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",
+    "Malgun Gothic",sans-serif;
+  background:var(--bg); color:var(--ink); font-size:15px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+/* 헤더 */
+.appbar{
+  position:sticky; top:0; z-index:50; background:var(--panel);
+  border-bottom:1px solid var(--line); padding:12px 16px 0;
+}
+.appbar h1{
+  margin:0 0 2px; font-size:17px; font-weight:800; letter-spacing:-.02em;
+  display:flex; align-items:center; gap:8px;
+}
+.appbar h1 .pulse{
+  width:9px; height:9px; border-radius:50%; background:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-bg);
+}
+.appbar .sub{ font-size:11.5px; color:var(--ink-faint); margin-bottom:10px; }
+/* 탭 */
+.tabs{ display:flex; gap:2px; }
+.tabs button{
+  flex:1; background:none; border:none; font-family:inherit; cursor:pointer;
+  padding:9px 4px 11px; font-size:13px; font-weight:600; color:var(--ink-faint);
+  border-bottom:2.5px solid transparent; display:flex; flex-direction:column;
+  align-items:center; gap:3px; touch-action:manipulation;
+}
+.tabs button .ti{ font-size:17px; }
+.tabs button.on{ color:var(--accent); border-bottom-color:var(--accent); }
+/* 페인 */
+.pane{ display:none; padding:16px; max-width:680px; margin:0 auto; }
+.pane.on{ display:block; }
+
+/* ═══ 공통 카드 ═══ */
+.card{
+  background:var(--panel); border:1px solid var(--line); border-radius:14px;
+  box-shadow:var(--shadow); margin-bottom:12px; overflow:hidden;
+}
+.card-h{
+  padding:13px 15px; display:flex; align-items:center; gap:9px;
+  font-weight:700; font-size:14px; cursor:pointer; user-select:none;
+}
+.card-h .ico{ font-size:18px; }
+.card-h .arr{ margin-left:auto; color:var(--ink-faint); font-size:12px; transition:transform .2s; }
+.card-h.open .arr{ transform:rotate(90deg); }
+.card-b{ padding:0 15px 15px; }
+.card-b.collapsed{ display:none; }
+
+/* ═══ 입력 (플로우) ═══ */
+.gate-section{
+  background:var(--red-bg); border:1px solid #f3c0bb; border-radius:14px;
+  padding:13px 15px; margin-bottom:14px;
+}
+.gate-section .gh{
+  font-size:12px; font-weight:800; color:var(--red); letter-spacing:.02em;
+  margin-bottom:9px; display:flex; align-items:center; gap:6px;
+}
+.toggle{
+  display:flex; align-items:flex-start; gap:10px; padding:9px 0;
+  cursor:pointer; touch-action:manipulation; border-bottom:1px solid rgba(0,0,0,.05);
+}
+.toggle:last-child{ border-bottom:none; }
+.toggle .sw{
+  width:42px; height:24px; border-radius:13px; background:var(--ink-faint);
+  flex-shrink:0; position:relative; transition:background .18s; margin-top:1px;
+}
+.toggle .sw::after{
+  content:""; position:absolute; width:18px; height:18px; border-radius:50%;
+  background:#fff; top:3px; left:3px; transition:transform .18s;
+  box-shadow:0 1px 2px rgba(0,0,0,.2);
+}
+.toggle.on .sw{ background:var(--accent); }
+.toggle.on .sw.red{ background:var(--red); }
+.toggle.on .sw::after{ transform:translateX(18px); }
+.toggle .tl{ flex:1; font-size:13.5px; color:var(--ink-dim); line-height:1.4; }
+.toggle.on .tl{ color:var(--ink); font-weight:500; }
+/* 수치 입력 펼침 */
+.num-row{ margin:6px 0 2px 52px; display:none; }
+.num-row.show{ display:block; }
+.num-row input, .num-row select{
+  font-family:inherit; font-size:14px; padding:7px 10px; border:1px solid var(--line);
+  border-radius:8px; background:var(--panel2); color:var(--ink); width:120px;
+}
+.num-row label{ font-size:11px; color:var(--ink-faint); display:block; margin-bottom:3px; }
+
+/* 영역 카드 헤더 색 */
+.dom-cardiac .card-h .ico, .dom-cardiac .domtag{ color:var(--c-cardiac); }
+.dom-pulm .card-h .ico{ color:var(--c-pulm); }
+.dom-renal .card-h .ico{ color:var(--c-renal); }
+.dom-hep .card-h .ico{ color:var(--c-hep); }
+.dom-frail .card-h .ico{ color:var(--c-frail); }
+.dom-bleed .card-h .ico{ color:var(--c-bleed); }
+
+/* ═══ 등급 카드 (신호등) ═══ */
+.verdict{
+  border-radius:16px; padding:18px; margin-bottom:14px; text-align:center;
+  border:2px solid; position:relative; overflow:hidden;
+}
+.verdict .vlight{ font-size:38px; line-height:1; margin-bottom:6px; }
+.verdict .vlabel{ font-size:22px; font-weight:900; letter-spacing:-.02em; }
+.verdict .vvia{ font-size:12px; margin-top:4px; opacity:.8; }
+.verdict .vdom{ font-size:12.5px; margin-top:10px; padding-top:10px; border-top:1px solid currentColor; opacity:.9; }
+.v-low{ background:var(--green-bg); border-color:var(--green); color:var(--green); }
+.v-moderate{ background:var(--amber-bg); border-color:var(--amber); color:var(--amber); }
+.v-high{ background:var(--red-bg); border-color:var(--red); color:var(--red); }
+.verdict .vbody{ color:var(--ink); }
+
+/* 영역 결과 카드 */
+.res-card .rtier{
+  font-size:11px; font-weight:700; padding:2px 9px; border-radius:10px; margin-left:auto;
+}
+.rt-low{ background:var(--green-bg); color:var(--green); }
+.rt-moderate{ background:var(--amber-bg); color:var(--amber); }
+.rt-high{ background:var(--red-bg); color:var(--red); }
+.res-detail{ font-size:13px; color:var(--ink-dim); margin:8px 0; line-height:1.5; }
+.res-present{ font-size:12px; color:var(--ink-faint); }
+.res-present span{ display:inline-block; background:var(--panel2); padding:2px 8px;
+  border-radius:8px; margin:2px 3px 2px 0; }
+
+/* ═══ 출혈 plan (달력) ═══ */
+.bleed-card{ border-left:4px solid var(--c-bleed); }
+.hold-item{
+  padding:11px 0; border-bottom:1px solid var(--line);
+}
+.hold-item:last-child{ border-bottom:none; }
+.hold-drug{ font-weight:700; font-size:14px; display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+.hold-badge{ font-size:10.5px; padding:2px 7px; border-radius:8px; font-weight:600; }
+.badge-irrev{ background:var(--red-bg); color:var(--red); }
+.badge-rev{ background:var(--green-bg); color:var(--green); }
+.hold-timing{ font-size:13px; color:var(--ink-dim); margin-top:5px; }
+.hold-timing b{ color:var(--c-bleed); }
+.hold-note{ font-size:12px; color:var(--ink-faint); margin-top:4px; line-height:1.45; }
+.hold-note.warn{ color:var(--red); font-weight:500; }
+/* 미니 달력 */
+.cal{ display:flex; gap:3px; margin:8px 0 2px; flex-wrap:wrap; }
+.cal-day{
+  min-width:30px; text-align:center; padding:5px 2px; border-radius:7px;
+  font-size:10.5px; background:var(--panel2); border:1px solid var(--line);
+}
+.cal-day .cd-n{ font-weight:700; font-size:12px; display:block; }
+.cal-day.stop{ background:var(--red-bg); border-color:var(--red); color:var(--red); }
+.cal-day.sx{ background:var(--accent-bg); border-color:var(--accent); color:var(--accent); font-weight:700; }
+.cal-day.resume{ background:var(--green-bg); border-color:var(--green); color:var(--green); }
+.bridge-box{
+  background:var(--amber-bg); border:1px solid #ecd9a8; border-radius:10px;
+  padding:10px 12px; margin-top:10px; font-size:12.5px; color:var(--ink);
+}
+.bridge-box .bh{ font-weight:700; color:var(--amber); margin-bottom:3px; }
+.bleed-flag{
+  background:var(--red-bg); border:1px solid #f3c0bb; border-radius:9px;
+  padding:9px 11px; margin-top:9px; font-size:12.5px; color:var(--red); font-weight:500;
+}
+
+/* ═══ 도서관 ═══ */
+.searchbar{
+  display:flex; align-items:center; gap:8px; background:var(--panel);
+  border:1px solid var(--line); border-radius:12px; padding:10px 13px; margin-bottom:14px;
+  box-shadow:var(--shadow);
+}
+.searchbar input{ flex:1; border:none; background:none; font-family:inherit;
+  font-size:14px; color:var(--ink); outline:none; }
+.lib-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.lib-card{
+  background:var(--panel); border:1px solid var(--line); border-radius:13px;
+  padding:13px; cursor:pointer; text-align:left; font-family:inherit;
+  box-shadow:var(--shadow); touch-action:manipulation; transition:transform .1s;
+}
+.lib-card:active{ transform:scale(.98); }
+.lib-card .lic{ font-size:22px; }
+.lib-card .lit{ font-weight:700; font-size:13.5px; margin-top:6px; color:var(--ink); }
+.lib-card .lis{ font-size:11.5px; color:var(--ink-faint); margin-top:2px; line-height:1.4; }
+.lib-detail{ }
+.lib-back{
+  background:var(--panel2); border:1px solid var(--line); border-radius:9px;
+  padding:7px 14px; font-size:13px; cursor:pointer; font-family:inherit;
+  color:var(--ink-dim); margin-bottom:12px;
+}
+.lib-section{ margin-bottom:14px; }
+.lib-section h3{ font-size:14px; margin:0 0 7px; color:var(--ink); }
+/* 섹션 제목 + 계산기 버튼 한 줄 */
+.sec-h3{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.sec-calc-btn{
+  font-family:inherit; font-size:11px; font-weight:700; color:var(--accent);
+  background:var(--accent-bg); border:1px solid transparent; border-radius:20px;
+  padding:3px 10px; cursor:pointer; touch-action:manipulation; transition:all .15s;
+  display:inline-flex; align-items:center; gap:3px;
+}
+.sec-calc-btn:active{ transform:scale(.95); }
+.sec-calc-btn.on{ background:var(--accent); color:#fff; box-shadow:0 2px 6px rgba(43,92,138,.3); }
+.sec-calc-area{ display:none; margin-top:10px; padding:13px; background:var(--accent-bg);
+  border-radius:12px; border:1px dashed var(--accent); }
+/* ── 디자인된 표 (dtbl) — 부드러운 카드형 ── */
+.dtbl-wrap{ border:1px solid var(--line); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); margin:2px 0; }
+.dtbl{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.dtbl thead th{
+  background:linear-gradient(180deg,var(--panel2),var(--panel)); color:var(--ink-dim);
+  font-weight:700; font-size:10.5px; letter-spacing:.02em; text-transform:uppercase;
+  padding:9px 11px; text-align:left; border-bottom:2px solid var(--line); white-space:nowrap;
+}
+.dtbl thead th.c{ text-align:center; }
+.dtbl tbody td{ padding:10px 11px; border-bottom:1px solid var(--line); color:var(--ink-dim); }
+.dtbl tbody td.c{ text-align:center; }
+.dtbl tbody tr:last-child td{ border-bottom:none; }
+.dtbl tbody tr:nth-child(even){ background:rgba(43,92,138,.025); }
+.dtbl-first{ font-weight:600; color:var(--ink) !important; }
+.grade-pill{ display:inline-block; padding:2px 10px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+/* 등급 텍스트 자동 색 (LOW/MOD/HIGH 단어) */
+.dtbl td.c{ font-variant-numeric:tabular-nums; }
+/* 레거시 lib-table 유지(혹시 남은 곳) */
+.lib-table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.lib-table th,.lib-table td{ text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); }
+.lib-table th{ color:var(--ink-faint); font-weight:600; font-size:11px; }
+.lib-warn{ background:var(--red-bg); border-left:3px solid var(--red); padding:9px 11px;
+  border-radius:0 8px 8px 0; font-size:12.5px; margin:8px 0; color:var(--ink); }
+/* 약물 중단 카드 (보기 편한 형태) */
+.drug-stop-card{
+  border:1px solid var(--line); border-radius:11px; padding:12px 13px; margin-bottom:9px;
+  background:var(--panel); display:flex; align-items:center; gap:12px;
+}
+.drug-stop-card.irrev{ border-left:4px solid var(--red); }
+.drug-stop-card.rev{ border-left:4px solid var(--green); }
+.dsc-info{ flex:1; min-width:0; }
+.dsc-name{ font-weight:700; font-size:14px; color:var(--ink); }
+.dsc-mech{ font-size:11.5px; color:var(--ink-faint); margin-top:2px; }
+.dsc-badges{ margin-top:5px; }
+.dsc-badge{ display:inline-block; font-size:10px; padding:2px 7px; border-radius:7px; margin-right:4px; font-weight:600; }
+.dsc-stop{ text-align:center; flex-shrink:0; min-width:62px; }
+.dsc-stop-num{ font-size:22px; font-weight:900; line-height:1; }
+.dsc-stop-label{ font-size:10px; color:var(--ink-faint); margin-top:2px; }
+.dsc-irrev-c{ color:var(--red); }
+.dsc-rev-c{ color:var(--green); }
+.dsc-note{ font-size:11.5px; margin-top:7px; padding-top:7px; border-top:1px dashed var(--line); line-height:1.45; }
+.dsc-note.warn{ color:var(--red); font-weight:500; }
+/* 와파린 bridging 카드 */
+.bridge-risk-card{ border-radius:10px; padding:11px 13px; margin-bottom:8px; border:1px solid var(--line); }
+.brc-high{ background:var(--red-bg); border-color:#f0bbb5; }
+.brc-moderate{ background:var(--amber-bg); border-color:#ecd9a8; }
+.brc-low{ background:var(--green-bg); border-color:#b8e0c8; }
+.brc-head{ font-weight:700; font-size:13px; display:flex; align-items:center; gap:7px; }
+.brc-action{ font-size:12.5px; margin-top:5px; font-weight:600; }
+.brc-detail{ font-size:11.5px; color:var(--ink-dim); margin-top:4px; line-height:1.4; }
+/* 약물 중단 비교표 (한눈에) */
+.stop-table{ width:100%; border-collapse:collapse; font-size:12.5px; margin:4px 0; }
+.stop-table th{ text-align:left; padding:7px 8px; font-size:10.5px; color:var(--ink-faint);
+  font-weight:600; border-bottom:2px solid var(--line); white-space:nowrap; }
+.stop-table th.c, .stop-table td.c{ text-align:center; }
+.stop-table td{ padding:8px; border-bottom:1px solid var(--line); vertical-align:middle; }
+.stop-table tr.irrev{ border-left:3px solid var(--red); }
+.stop-table tr.rev{ border-left:3px solid var(--green); }
+.st-name{ font-weight:700; color:var(--ink); font-size:13px; }
+.st-mech{ font-size:10.5px; color:var(--ink-faint); margin-top:1px; }
+.st-rev{ display:inline-block; font-size:10px; padding:2px 7px; border-radius:7px; font-weight:600; white-space:nowrap; }
+.st-stopnum{ font-size:17px; font-weight:900; line-height:1; white-space:nowrap; }
+.st-irrev-c{ color:var(--red); }
+.st-rev-c{ color:var(--green); }
+.st-warn-row{ background:var(--red-bg); }
+.st-warn-mark{ color:var(--red); font-weight:700; font-size:11px; }
+.st-note-cell{ font-size:10.5px; color:var(--ink-faint); line-height:1.35; max-width:130px; }
+.st-note-cell.warn{ color:var(--red); font-weight:500; }
+
+/* ═══ 시뮬레이션 ═══ */
+.sim-mode-tabs{ display:flex; gap:8px; margin-bottom:14px; }
+.sim-mode-tabs button{
+  flex:1; padding:11px; border-radius:11px; border:1.5px solid var(--line);
+  background:var(--panel); font-family:inherit; font-size:13px; font-weight:600;
+  color:var(--ink-dim); cursor:pointer; touch-action:manipulation;
+}
+.sim-mode-tabs button.on{ border-color:var(--accent); background:var(--accent-bg); color:var(--accent); }
+.sim-patient{
+  background:var(--accent-bg); border-radius:12px; padding:13px 15px; margin-bottom:14px;
+  font-size:14px; color:var(--ink); line-height:1.5;
+}
+.sim-patient .sp-label{ font-size:11px; color:var(--accent); font-weight:700; margin-bottom:4px; }
+
+/* 푸터 출처 */
+.sources{ margin-top:20px; padding-top:14px; border-top:1px solid var(--line); }
+.sources h4{ font-size:12px; color:var(--ink-faint); margin:0 0 8px; }
+.sources a{ display:block; font-size:11.5px; color:var(--accent); text-decoration:none;
+  padding:3px 0; line-height:1.4; }
+.disclaimer{
+  background:var(--panel2); border-radius:10px; padding:11px 13px; font-size:11.5px;
+  color:var(--ink-faint); line-height:1.5; margin-top:12px;
+}
+.empty-state{ text-align:center; padding:40px 20px; color:var(--ink-faint); }
+.empty-state .es-icon{ font-size:42px; margin-bottom:12px; }
+.btn-eval{
+  width:100%; padding:14px; border-radius:12px; border:none; background:var(--accent);
+  color:#fff; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer;
+  margin-top:6px; touch-action:manipulation; box-shadow:var(--shadow);
+}
+.btn-eval:active{ opacity:.9; }
+</style>
+</head>
+<body>
+<!--PORTAL_HEADER_V1-->
+<style>
+  #portal-hdr{position:fixed;top:0;left:0;right:0;height:46px;z-index:99999;
+    display:flex;align-items:center;gap:10px;padding:0 12px;box-sizing:border-box;
+    background:rgba(248,250,252,.94);backdrop-filter:saturate(1.4) blur(10px);
+    -webkit-backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid rgba(20,40,60,.10);
+    font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;}
+  #portal-hdr a.ph-back,#portal-hdr a.ph-home{display:inline-flex;align-items:center;justify-content:center;
+    height:30px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;
+    color:#1a2530;background:#fff;border:1px solid rgba(20,40,60,.14);transition:.15s;}
+  #portal-hdr a.ph-back{padding:0 11px 0 8px;gap:3px;}
+  #portal-hdr a.ph-home{width:32px;font-size:15px;}
+  #portal-hdr a.ph-back:active,#portal-hdr a.ph-home:active{transform:scale(.96);background:#eef1f4;}
+  #portal-hdr .ph-emoji{font-size:17px;line-height:1;}
+  #portal-hdr .ph-title{font-size:14.5px;font-weight:700;color:#16202b;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;}
+  #portal-hdr .ph-tag{font-size:11px;font-weight:600;color:#5a6a78;background:#eef1f4;
+    padding:2px 7px;border-radius:999px;white-space:nowrap;}
+  #portal-hdr .ph-accent{width:3px;height:18px;border-radius:2px;background:#5a6a8a;flex:0 0 auto;}
+  #portal-hdr .ph-spacer{flex:1 1 auto;min-width:0;}
+  body{padding-top:46px !important;}
+  @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
+</style>
+<div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
+  <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
+  <a class="ph-home" href="../index.html" title="홈">🏠</a>
+  <span class="ph-accent"></span>
+  <span class="ph-emoji">📋</span>
+  <span class="ph-title">수술 전 위험평가</span>
+  <span class="ph-spacer"></span>
+  <span class="ph-tag">평가</span>
+</div>
+
+<!--/PORTAL_HEADER_V1-->
+
+
+<div class="appbar">
+  <h1><span class="pulse"></span>수술 전 위험평가</h1>
+  <div class="sub">Pre-op Risk · 2-tier 스크리닝 + 출혈약물 · 조언자 도구</div>
+  <div class="tabs">
+    <button id="tab-lib" class="on" type="button" onclick="switchTab('lib')"><span class="ti">📚</span>도서관 · 계산기</button>
+    <button id="tab-flow" type="button" onclick="switchTab('flow')"><span class="ti">⚡</span>플로우</button>
+  </div>
+</div>
+
+<div id="pane-lib" class="pane on"></div>
+<div id="pane-flow" class="pane"></div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════
+   수술 전 위험평가 — DATA LAYER  v1.0
+   모든 임상 수치의 단일 진실 소스(SSOT). ENGINE/UI에 리터럴 금지.
+   네임스페이스: preop:*  (검증 출처는 각 객체 _ref)
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Step0 Hard Gate (전역, 즉시 HIGH) ───────────────────────────── */
+var GATES = [
+  { id:"emergency", icon:"🚨", label:"응급/긴급 수술 (24시간 내)",
+    detail:"시간이 없어 정밀 평가 우회. 수술 진행하되 가능한 최적화.", _ref:"2024 AHA/ACC" },
+  { id:"active_cardiac", icon:"❤️‍🔥", label:"불안정 심장 상태",
+    detail:"불안정 협심증 / 비대상성 심부전 / 증상성 중증 판막 / 조절 안 되는 부정맥", _ref:"active cardiac condition" },
+  { id:"acute_organ", icon:"⚡", label:"진행 중 급성 장기부전",
+    detail:"ARDS / 급성 간부전 / 진행성 급성신손상 등", _ref:"" },
+  { id:"functional_override", icon:"🛏️", label:"거동불가 · 튜브영양 · 협조불가",
+    detail:"침상생활(bedridden) / tube feeding / 협조 안 되는 인지장애 / 최근 급격한 기능저하. 검사 정상이어도 생리적 예비능 고갈 → HIGH.", _ref:"임상 직관의 코드화" },
+  { id:"hepatic_severe", icon:"🟠", label:"중증 간경변 (CTP C 또는 MELD>20)",
+    detail:"비대상화·사망 고위험. 응급 외 이식 후로 연기 권고.", _ref:"AGA Clinical Practice Update" },
+  { id:"recent_stent", icon:"🩹", label:"최근 관상동맥 스텐트",
+    detail:"DES(만성CAD) <6개월 / DES(ACS·복잡PCI) <12개월 / BMS <30일. elective 연기, 출혈모듈 연동.", _ref:"2024 AHA/ACC" }
+];
+
+/* ── Tier1 Red Flags (영역별) ────────────────────────────────────── */
+/* 각 flag: id, label, domain(태그), num(펼침 수치 입력 id 또는 null) */
+var TIER1_FLAGS = {
+  cardiac: { icon:"❤️", name:"심장", color:"cardiac", flags:[
+    { id:"cardiac_symptom", label:"운동 시 흉통/호흡곤란/실신/심계항진" },
+    { id:"cardiac_history", label:"허혈성 심질환·심부전·판막질환 병력" },
+    { id:"cardiac_echo_abn", label:"심초음파 이상 (EF저하/판막/벽운동)", num:"ef" },
+    { id:"functional_low", label:"4 METs 미만 (1층 계단 못 오름)" },
+    { id:"arrhythmia", label:"부정맥 (조절 안 된 AF/서맥)" }
+  ]},
+  pulmonary: { icon:"🫁", name:"폐", color:"pulm", flags:[
+    { id:"resp_symptom", label:"만성 기침/호흡곤란/천명" },
+    { id:"resp_disease", label:"COPD/천식/ILD/수면무호흡 병력" },
+    { id:"recent_resp_infx", label:"1개월 내 호흡기 감염" },
+    { id:"hypoxia", label:"실내공기 SpO2 저하", num:"spo2" },
+    { id:"smoking_heavy", label:"현재 흡연 (특히 다량)" }
+  ]},
+  renal: { icon:"🫘", name:"신장", color:"renal", flags:[
+    { id:"renal_disease", label:"CKD 병력 / 투석" },
+    { id:"renal_lab_abn", label:"검사상 신기능 저하", num:"egfr" }
+  ]},
+  hepatic: { icon:"🟠", name:"간", color:"hep", flags:[
+    { id:"liver_disease", label:"간경변/만성 간질환 병력" },
+    { id:"liver_lab_abn", label:"검사상 간기능 이상 (빌리루빈/알부민/INR/혈소판)", num:"meld" }
+  ]},
+  frailty: { icon:"🧓", name:"전신/쇠약", color:"frail", flags:[
+    { id:"frailty", label:"고령+쇠약/최근 낙상/체중감소/보행보조" },
+    { id:"anemia", label:"빈혈", num:"hb" },
+    { id:"poor_dm_control", label:"조절 안 되는 당뇨" },
+    { id:"carotid_abn", label:"경동맥 초음파 협착 (특히 증상성)" },
+    { id:"dvt_abn", label:"하지정맥 초음파 DVT 양성" }
+  ]},
+  bleeding: { icon:"💉", name:"출혈/항혈전제", color:"bleed", flags:[
+    { id:"on_anticoagulant", label:"항응고제 복용 (와파린/DOAC)" },
+    { id:"on_antiplatelet", label:"항혈소판제 복용 (아스피린/클로피도그렐/실로스타졸 등)" },
+    { id:"bleeding_history", label:"출혈 경향/혈소판감소/응고장애" }
+  ]}
+};
+
+/* ── 수술 부위·마취법 (평가 출발점) ─────────────────────────────── */
+/* 수술 부위 — 2024 AHA/ACC 3분류 (RCRI highrisk_surgery와 정합) */
+var SURGERY_SITE = {
+  _ref:"2024 AHA/ACC Perioperative; RCRI 고위험 수술 정의(흉곽내/복강내/서혜상부 혈관)",
+  options:[
+    { id:"superficial", label:"표재성·체표", icon:"🩹", risk:"low", rcriHigh:false,
+      ex:"피부·연조직, 유방, 백내장/안과, 내시경, 보행수술", pct:"<1%" },
+    { id:"intraperitoneal", label:"복강내", icon:"🫄", risk:"intermediate", rcriHigh:true,
+      ex:"위장관·간담췌·비뇨생식 개복/복강경", pct:"1–5%" },
+    { id:"intrathoracic", label:"흉곽내", icon:"🫁", risk:"intermediate", rcriHigh:true,
+      ex:"폐·종격동·식도 (비심장)", pct:"1–5%" },
+    { id:"headneck", label:"두경부", icon:"👤", risk:"intermediate", rcriHigh:false,
+      ex:"갑상선·이비인후·구강악안면", pct:"1–5%" },
+    { id:"ortho_spine", label:"정형·척추", icon:"🦴", risk:"intermediate", rcriHigh:false,
+      ex:"관절치환·척추·주요 골절", pct:"1–5%" },
+    { id:"urologic", label:"비뇨기", icon:"💧", risk:"intermediate", rcriHigh:false,
+      ex:"전립선·신장·방광", pct:"1–5%" },
+    { id:"vascular_major", label:"대혈관·서혜상부 혈관", icon:"🩸", risk:"high", rcriHigh:true,
+      ex:"대동맥·주요 동맥, suprainguinal 혈관수술", pct:">5%" }
+  ],
+  note:"부위는 RCRI 고위험 수술 인자(흉곽내/복강내/서혜상부 혈관) + ARISCAT 절개부위에 자동 반영."
+};
+
+/* 마취법 — 출혈(neuraxial)·심폐 부담 연동 */
+var ANESTHESIA = {
+  _ref:"2024 AHA/ACC; ASRA neuraxial; BJA Education regional",
+  options:[
+    { id:"general", label:"전신마취 (GA)", icon:"😴",
+      note:"기도확보·교감신경 자극. 기준점. 폐 합병증(ARISCAT) 관련 큼.", neuraxial:false },
+    { id:"neuraxial", label:"부위마취 — 신경축 (척추/경막외)", icon:"💉",
+      note:"⚠️ 항응고/항혈소판 시 척추혈종 위험 → ASRA(보수적) 적용. 출혈 약물 중단 더 엄격.", neuraxial:true },
+    { id:"block", label:"부위마취 — 말초신경차단 (block)", icon:"🎯",
+      note:"GA·신경축 위험 회피. 심폐 부담 최소. 항응고제 영향 상대적 적음(부위별 상이).", neuraxial:false },
+    { id:"mac_local", label:"국소·진정 (MAC/Local)", icon:"💊",
+      note:"최소 침습. 표재성 수술. 전신 부담 가장 적음.", neuraxial:false }
+  ],
+  note:"신경축 마취 선택 시 출혈 약물 중단이 ASRA 기준(더 긴 중단)으로 전환."
+};
+
+/* ── 영역별 정밀 스코어 (Tier2) ──────────────────────────────────── */
+
+/* RCRI — 심장 (Lee 1999 / Ford 2010 pooled) */
+var RCRI = {
+  _ref:"Lee TH 1999 Circulation; Ford MK 2010 Ann Intern Med",
+  factors:[
+    { id:"highrisk_surgery", label:"고위험 수술 (흉곽내/복강내/서혜상부 혈관)" },
+    { id:"ihd", label:"허혈성 심질환 병력" },
+    { id:"hf", label:"울혈성 심부전 병력" },
+    { id:"cvd", label:"뇌혈관질환 병력" },
+    { id:"insulin", label:"인슐린 치료 당뇨" },
+    { id:"cr_high", label:"Cr > 2.0 mg/dL (>177 µmol/L)" }
+  ],
+  /* 점수 → MACE율 (원저 / 현대 pooled), 등급 */
+  bands:[
+    { n:0, classN:"I", lee:"0.4%", pooled:"3.9%", tier:"low" },
+    { n:1, classN:"II", lee:"0.9~1.0%", pooled:"6.0%", tier:"moderate" },
+    { n:2, classN:"III", lee:"7%", pooled:"10.1%", tier:"moderate" },
+    { n:3, classN:"IV", lee:"11%", pooled:"15.0%", tier:"high" }
+  ],
+  note:"creatinine 기준 >2.0 (MICA의 >1.5와 다름). 현대 pooled가 더 보수적(troponin 포함)."
+};
+
+/* ARISCAT — 폐 (Canet 2010, 원저 검증 완료) */
+var ARISCAT = {
+  _ref:"Canet J 2010 Anesthesiology 113:1338, PMID 21045639",
+  items:[
+    { id:"age", label:"나이", opts:[ {l:"≤50",v:0},{l:"51–80",v:3},{l:">80",v:16} ] },
+    { id:"spo2", label:"수술 전 SpO2", opts:[ {l:"≥96%",v:0},{l:"91–95%",v:8},{l:"≤90%",v:24} ] },
+    { id:"resp_infx", label:"1개월 내 호흡기 감염", opts:[ {l:"없음",v:0},{l:"있음",v:17} ] },
+    { id:"anemia", label:"빈혈 (Hb≤10)", opts:[ {l:"없음",v:0},{l:"있음",v:11} ] },
+    { id:"incision", label:"절개 부위", opts:[ {l:"말초",v:0},{l:"상복부",v:15},{l:"흉곽내",v:24} ] },
+    { id:"duration", label:"수술 시간", opts:[ {l:"≤2h",v:0},{l:"2–3h",v:16},{l:">3h",v:23} ] },
+    { id:"emergency", label:"응급 수술", opts:[ {l:"아니오",v:0},{l:"예",v:8} ] }
+  ],
+  bands:[
+    { max:25, tier:"low", ppc:"1.6%", label:"<26" },
+    { max:44, tier:"moderate", ppc:"13.3%", label:"26–44" },
+    { max:999, tier:"high", ppc:"42.1%", label:"≥45" }
+  ]
+};
+
+/* 신장 — eGFR (KDIGO 정렬) */
+var RENAL = {
+  _ref:"eGFR<60 합병증 메타분석 46연구; CKD-EPI AKI 예측",
+  bands:[
+    { min:60, tier:"low", label:"≥60" },
+    { min:45, tier:"moderate", label:"45–59", note:"위험 약 3배" },
+    { min:30, tier:"moderate", label:"30–44", note:"AKI 급증 변곡점(≤45)" },
+    { min:0, tier:"high", label:"<30 / 투석" }
+  ]
+};
+
+/* 간 — MELD + Child-Pugh */
+var HEPATIC = {
+  _ref:"Teh 2007 Gastroenterology; PMID 21061184; AGA 2019",
+  meld:[
+    { max:9, tier:"low", mort:"9%", label:"<10" },
+    { max:15, tier:"moderate", mort:"19%", label:"10–15" },
+    { max:999, tier:"high", mort:"54%", label:">15" }
+  ],
+  child:[
+    { cls:"A", tier:"low", mort:"10%" },
+    { cls:"B", tier:"moderate", mort:"17~30%" },
+    { cls:"C", tier:"high", mort:"63~80%" }
+  ],
+  note:"CTP C 또는 MELD>20은 gate(HIGH). 한국: MELD-GRAIL-Na 단기 예측 우수."
+};
+
+/* Frailty — CFS + mFI-5 */
+var FRAILTY = {
+  _ref:"Clinical Frailty Scale (Rockwood 2005); mFI-5",
+  cfs:[
+    { max:3, tier:"low", label:"1–3 (robust)" },
+    { max:5, tier:"moderate", label:"4–5 (vulnerable)" },
+    { max:9, tier:"high", label:"≥6 (frail)" }
+  ],
+  /* CFS 9단계 — 계산기용 */
+  cfsScale:[
+    { v:1, label:"매우 건강 (운동 활발, 동년배 중 최상)" },
+    { v:2, label:"건강 (질병 없음, 가끔 운동)" },
+    { v:3, label:"양호 관리 (동반질환 있으나 조절됨)" },
+    { v:4, label:"취약 (증상 있으나 독립적, 활동 느림)" },
+    { v:5, label:"경증 쇠약 (도구적 일상활동 일부 의존)" },
+    { v:6, label:"중등도 쇠약 (집안일·외출 도움 필요)" },
+    { v:7, label:"중증 쇠약 (개인관리 완전 의존, 안정적)" },
+    { v:8, label:"매우 중증 쇠약 (회복 어려움)" },
+    { v:9, label:"말기 (기대여명 <6개월)" }
+  ],
+  /* mFI-5 — 5항목 각 1점 */
+  mfi5items:[
+    { id:"dm", label:"당뇨" },
+    { id:"htn", label:"고혈압 (약물 치료)" },
+    { id:"copd", label:"COPD / 만성 폐질환" },
+    { id:"chf", label:"울혈성 심부전 (30일 내)" },
+    { id:"dependent", label:"기능적 의존 (부분/완전)" }
+  ],
+  mfi5:[
+    { n:0, tier:"low", label:"0 (robust)" },
+    { n:1, tier:"moderate", label:"1 (prefrail)" },
+    { n:2, tier:"high", label:"≥2 (frail)" }
+  ],
+  classifyCFS:function(v){ if(v<=3)return{tier:"low"}; if(v<=5)return{tier:"moderate"}; return{tier:"high"}; },
+  classifyMFI:function(n){ if(n===0)return{tier:"low"}; if(n===1)return{tier:"moderate"}; return{tier:"high"}; },
+  note:"CFS≥7(bedridden)은 gate:functional_override. mFI-5 구성: 당뇨·고혈압·COPD·CHF·기능의존."
+};
+
+/* 전신 — SORT (Surgical Outcome Risk Tool) */
+var GLOBAL = {
+  _ref:"SORT Protopapa 2014 Br J Surg PMID 25388883; 외부검증 BJS 2023 AUROC 0.91",
+  bands:[
+    { max:1, tier:"low", label:"<1%" },
+    { max:5, tier:"moderate", label:"1–5%" },
+    { max:100, tier:"high", label:"≥5%" }
+  ],
+  /* SORT 계산 항목 — 원저 β계수 (BJS 2023 full equation) */
+  sortItems:[
+    { id:"asa", label:"ASA-PS 등급", opts:[
+      {l:"I–II",v:0},{l:"III",v:1.411},{l:"IV",v:2.388},{l:"V",v:4.081} ] },
+    { id:"age", label:"나이", opts:[
+      {l:"<65",v:0},{l:"65–79",v:0.777},{l:"≥80",v:1.591} ] },
+    { id:"urgency", label:"긴급도", opts:[
+      {l:"정규(elective)",v:0},{l:"준응급(expedited)",v:1.236},{l:"응급(urgent)",v:1.657},{l:"즉시(immediate)",v:2.452} ] },
+    { id:"specialty", label:"고위험 전문과 (소화기·흉부·혈관)", opts:[
+      {l:"아니오",v:0},{l:"예",v:0.712} ] },
+    { id:"severity", label:"수술 중증도", opts:[
+      {l:"minor~major",v:0},{l:"Xmajor/complex(복잡대수술)",v:0.381} ] },
+    { id:"cancer", label:"암 (5년 내)", opts:[
+      {l:"없음",v:0},{l:"있음",v:0.667} ] }
+  ],
+  sortConstant:-7.366,
+  calcSORT:function(sum){
+    var logit = GLOBAL.sortConstant + sum;
+    var risk = Math.exp(logit) / (1 + Math.exp(logit)) * 100;
+    return Math.round(risk*10)/10;
+  },
+  classify:function(pct){
+    if(pct<1)return{tier:"low"}; if(pct<=5)return{tier:"moderate"}; return{tier:"high"};
+  },
+  note:"SORT·POSSUM 모두 mortality 과대예측 경향 → 절대수치는 상한으로 해석. 신경외과·심장·이식 제외."
+};
+
+/* ── 출혈 약물 룰셋 ──────────────────────────────────────────────── */
+
+/* 항응고제 — DOAC (PAUSE 프로토콜) */
+var DOAC = {
+  _ref:"PAUSE trial JAMA Intern Med 2019; ACCP 2022",
+  drugs:{
+    apixaban:   { name:"아픽사반(엘리퀴스)", renal:false },
+    rivaroxaban:{ name:"리바록사반(자렐토)", renal:false },
+    edoxaban:   { name:"에독사반(릭시아나)", renal:false },
+    dabigatran: { name:"다비가트란(프라닥사)", renal:true }
+  },
+  /* Xa억제제 (신기능 무관) */
+  xa:{ low:1, high:2 },   // 수술 N일 전 마지막 복용
+  /* dabigatran (CrCl 보정) */
+  dabi:{
+    crcl_ok:  { low:1, high:2 },   // CrCl≥50
+    crcl_low: { low:2, high:4 }    // CrCl<50
+  },
+  resume:{ low:"수술 후 1일", high:"수술 후 2–3일 (지혈 확인)" },
+  note:"Bridging 불요. 신경축 마취는 ASRA(72–120h) 별도 적용."
+};
+
+/* 항응고제 — Warfarin */
+var WARFARIN = {
+  _ref:"BRIDGE NEJM 2015; PERIOP2 BMJ 2021; CHEST 2022",
+  stop:"수술 5일 전 중단", resume:"수술 후 24시간 내 (지혈 시)",
+  bridge:[
+    { risk:"high", tier:"high", label:"기계판막(승모판/구형), 최근3개월 VTE, CHA₂DS₂-VASc 5–6, 최근 stroke/TIA, 류마티스 승모판",
+      action:"LMWH bridging 고려 (선택적)" },
+    { risk:"moderate", tier:"moderate", label:"CHA₂DS₂-VASc 3–4, 신형 이엽 기계 대동맥판막+위험인자",
+      action:"개별 판단" },
+    { risk:"low", tier:"low", label:"CHA₂DS₂-VASc ≤2, 신형 이엽 대동맥판막 단독, 원거리 VTE",
+      action:"Bridging 권고 안 함 (출혈만 증가)" }
+  ],
+  note:"저위험 bridging은 출혈만 늘림. 수술 후 bridging은 더 신중히(PERIOP2)."
+};
+
+/* LMWH 용량 */
+var LMWH = {
+  enoxaparin:{ name:"에녹사파린(크렉산)", tx:"1 mg/kg BID", px:"40 mg daily" },
+  dalteparin:{ name:"달테파린(프라그민)", tx:"100 IU/kg BID", px:"5000 IU daily" },
+  note:"마지막 치료용량=수술 24h 전. CrCl<30이면 LMWH 회피→UFH 전환."
+};
+
+/* 항혈소판제 (비가역/가역 분류) */
+var ANTIPLATELET = {
+  _ref:"2024 AHA/ACC; CCJM 2025; 약동학",
+  drugs:[
+    { id:"aspirin", name:"아스피린", mech:"COX-1 비가역", rev:"비가역", hl:"혈소판 8–9일", stop:"4–5일",
+      note:"2차예방·스텐트는 유지 우선. 1차예방은 중단." },
+    { id:"clopidogrel", name:"클로피도그렐", mech:"P2Y12 thienopyridine", rev:"비가역", hl:"효과 5–7일", stop:"5일",
+      note:"응급 ≥3일" },
+    { id:"prasugrel", name:"프라수그렐", mech:"P2Y12 thienopyridine", rev:"비가역", hl:"가장 김", stop:"7일",
+      note:"가장 길게" },
+    { id:"ticagrelor", name:"티카그렐러", mech:"P2Y12 직접·가역", rev:"가역", hl:"8–12h", stop:"3–5일",
+      note:"low 3일/high 5일" },
+    { id:"cilostazol", name:"실로스타졸(플레탈)", mech:"PDE3 억제", rev:"가역", hl:"~10h", stop:"2일",
+      note:"출혈 거의 안 늘림" },
+    { id:"sarpogrelate", name:"사르포그렐레이트(안플라그)", mech:"5-HT2A 길항", rev:"가역", hl:"0.6–0.8h", stop:"1–2일",
+      note:"⚠️ 가역+초단반감기 → 짧게 충분. 과하게 끊지 말 것." },
+    { id:"triflusal", name:"트리플루살(디스그렌)", mech:"COX-1 비가역+PDE", rev:"비가역", hl:"대사물 ~40h", stop:"5일",
+      note:"⚠️ 비가역+긴 대사물 → 아스피린급(5일). cilostazol처럼 짧게 끊으면 오류!" },
+    { id:"beraprost", name:"베라프로스트(베라실)", mech:"PGI2 analogue", rev:"가역", hl:"~1–1.5h", stop:"1일", note:"" },
+    { id:"dipyridamole", name:"디피리다몰(페르산틴)", mech:"PDE5 억제", rev:"가역", hl:"10–12h", stop:"보통 불요", note:"ASA병용 시 ASA 기준" }
+  ],
+  note:"비가역(혈소판 수명에 묶임)은 길게, 가역(반감기 의존)은 짧게. 저위험 indication+저출혈 수술이면 유지 고려도."
+};
+
+/* 스텐트 대기기간 */
+var STENT = {
+  _ref:"2024 AHA/ACC; CCJM 2025",
+  wait:[
+    { type:"BMS", min:"≥30일" },
+    { type:"DES (만성 관상동맥질환)", min:"≥6개월 (time-sensitive 3개월 후 가능)" },
+    { type:"DES (ACS 후)/복잡 PCI", min:"≥12개월" }
+  ],
+  rule:"불가피 시 aspirin 유지 + P2Y12만 중단. ≤30일 스텐트+항혈소판 중단 = harmful.",
+  bridge:"고위험: cangrelor/tirofiban (전문센터·다학제)"
+};
+
+/* Reversal agents (응급) */
+var REVERSAL = {
+  _ref:"ISTH SSC 2024; Anticoagulation Forum 2019",
+  agents:[
+    { drug:"다비가트란", agent:"Idarucizumab (프락스바인드)", dose:"5 g IV", note:"특이적·즉효. 1순위." },
+    { drug:"와파린", agent:"4F-PCC + 비타민K IV", dose:"INR 기반", note:"FFP는 역전제 아님." },
+    { drug:"Xa억제제", agent:"Andexanet alfa", dose:"특이적", note:"⚠️ 허혈성뇌졸중↑(6.5vs1.5%), CPB heparin 저항." },
+    { drug:"Xa억제제 (andexanet 부재)", agent:"4F-PCC", dose:"50 U/kg", note:"비특이적, 근거 제한." }
+  ],
+  note:"정규 elective엔 불필요. 응급/긴급만. 항혈소판 역전은 일상 권고 안 됨."
+};
+
+/* ── 계산 공식 (계산기용) ────────────────────────────────────────── */
+/* MELD (2016 original): 10×[0.957·ln(Cr)+0.378·ln(bili)+1.120·ln(INR)+0.643]
+   값<1.0 → 1.0, Cr 상한 4.0(투석 시 4.0), 6~40 clamp */
+function calcMELD(bili, inr, cr, dialysis){
+  function fl(x){ return (x<1.0||isNaN(x))?1.0:x; }
+  var c = fl(cr); if (dialysis) c = 4.0; if (c>4.0) c = 4.0;
+  var b = fl(bili), i = fl(inr);
+  var meld = 10*(0.957*Math.log(c) + 0.378*Math.log(b) + 1.120*Math.log(i) + 0.643);
+  meld = Math.round(meld);
+  if (meld<6) meld = 6; if (meld>40) meld = 40;
+  return meld;
+}
+/* Child-Pugh: 5인자 각 1~3점, 5~15. A:5-6 B:7-9 C:10-15 */
+var CHILDPUGH = {
+  _ref:"Pugh 1973; Child-Turcotte-Pugh",
+  items:[
+    { id:"bili", label:"총 빌리루빈 (mg/dL)", opts:[ {l:"<2",v:1},{l:"2\u20133",v:2},{l:">3",v:3} ] },
+    { id:"albumin", label:"알부민 (g/dL)", opts:[ {l:">3.5",v:1},{l:"2.8\u20133.5",v:2},{l:"<2.8",v:3} ] },
+    { id:"inr", label:"INR", opts:[ {l:"<1.7",v:1},{l:"1.7\u20132.3",v:2},{l:">2.3",v:3} ] },
+    { id:"ascites", label:"복수", opts:[ {l:"없음",v:1},{l:"경증(약물조절)",v:2},{l:"중증(난치)",v:3} ] },
+    { id:"enceph", label:"간성뇌증", opts:[ {l:"없음",v:1},{l:"Grade I\u2013II",v:2},{l:"Grade III\u2013IV",v:3} ] }
+  ],
+  classify:function(sum){
+    if (sum<=6) return { cls:"A", tier:"low" };
+    if (sum<=9) return { cls:"B", tier:"moderate" };
+    return { cls:"C", tier:"high" };
+  }
+};
+
+/* ── 통합 등급 색·라벨 ──────────────────────────────────────────── */
+var TIER_META = {
+  low:      { label:"LOW RISK", color:"#1a8a4a", bg:"#e8f6ee", icon:"🟢" },
+  moderate: { label:"MODERATE RISK", color:"#c47d12", bg:"#fdf3e0", icon:"🟡" },
+  high:     { label:"HIGH RISK", color:"#c0392b", bg:"#fdeceb", icon:"🔴" }
+};
+
+/* ── 출처 (앱 하단) ─────────────────────────────────────────────── */
+var SOURCES = [
+  { t:"2024 AHA/ACC Perioperative Guideline", u:"https://doi.org/10.1161/CIR.0000000000001285" },
+  { t:"RCRI — Lee TH et al. Circulation 1999", u:"https://pubmed.ncbi.nlm.nih.gov/10477528/" },
+  { t:"RCRI pooled — Ford MK et al. Ann Intern Med 2010", u:"https://pubmed.ncbi.nlm.nih.gov/21098314/" },
+  { t:"ARISCAT — Canet J et al. Anesthesiology 2010", u:"https://pubmed.ncbi.nlm.nih.gov/21045639/" },
+  { t:"MELD 비간수술 — Teh SH et al. Gastroenterology 2007", u:"https://pubmed.ncbi.nlm.nih.gov/17241878/" },
+  { t:"AGA Surgical Risk Update — Clin Gastroenterol Hepatol 2019", u:"https://www.cghjournal.org/article/S1542-3565(18)31075-9/fulltext" },
+  { t:"SORT — Protopapa KL et al. Br J Surg 2014", u:"https://pubmed.ncbi.nlm.nih.gov/25388883/" },
+  { t:"PAUSE trial — Douketis JD et al. JAMA Intern Med 2019", u:"https://pubmed.ncbi.nlm.nih.gov/31380891/" },
+  { t:"ACCP Perioperative Antithrombotic — CHEST 2022", u:"https://journal.chestnet.org/article/S0012-3692(22)01359-9/fulltext" },
+  { t:"BRIDGE trial — Douketis JD et al. NEJM 2015", u:"https://pubmed.ncbi.nlm.nih.gov/26095867/" },
+  { t:"ISTH DOAC Reversal Guidance 2024", u:"https://www.jthjournal.org/article/S1538-7836(24)00426-4/fulltext" }
+];
+
+
+</script>
+<script>
+/* ════════════════════════════════════════════════════════════════════
+   수술 전 위험평가 — ENGINE LAYER  v1.0
+   데이터를 참조만, 판정 로직. 수치 리터럴 금지(DATA 인용).
+   정문: recommendPreop(patient) → {tier, via, domains, results, bleeding, flags}
+   ════════════════════════════════════════════════════════════════════ */
+
+/* 등급 순위 비교 헬퍼 */
+var TIER_RANK = { low:0, moderate:1, high:2 };
+function maxTier(a, b){ return (TIER_RANK[a] >= TIER_RANK[b]) ? a : b; }
+
+/* ── 수술부위·마취법 → 스코어 자동 매핑 ─────────────────────────── */
+/* 수술 부위 → RCRI 고위험 인자 + ARISCAT 절개부위 자동 설정 */
+function applySurgeryContext(patient){
+  if (patient.surgery){
+    var site = null;
+    for (var i=0;i<SURGERY_SITE.options.length;i++){
+      if (SURGERY_SITE.options[i].id === patient.surgery){ site = SURGERY_SITE.options[i]; break; }
+    }
+    if (site){
+      /* RCRI 고위험 수술 인자 */
+      if (site.rcriHigh) patient.rcri_highrisk_surgery = true;
+      /* ARISCAT 절개부위 (수치 미입력 시 부위로 추정) */
+      if (patient.ariscat_incision == null){
+        if (site.id === "intrathoracic") patient.ariscat_incision = 24;
+        else if (site.id === "intraperitoneal") patient.ariscat_incision = 15; /* 상복부 가정 */
+        else patient.ariscat_incision = 0;
+      }
+      patient._surgeryRisk = site.risk;
+    }
+  }
+  /* 마취법 → neuraxial gate */
+  if (patient.anesthesia === "neuraxial"){
+    if (!patient.bleeding) patient.bleeding = {};
+    patient.bleeding.neuraxial = true;
+  }
+}
+
+/* ── Step0: Hard Gate ────────────────────────────────────────────── */
+/* gateState: {emergency:bool, active_cardiac:bool, ...} */
+function evalGates(gateState){
+  var fired = [];
+  for (var i=0;i<GATES.length;i++){
+    var g = GATES[i];
+    if (gateState && gateState[g.id]) fired.push(g);
+  }
+  return fired;
+}
+
+/* ── Tier1 스크리닝: flag → domain 태그 집합 ─────────────────────── */
+/* flagState: {cardiac_symptom:bool, ...} */
+function tier1Screen(flagState){
+  var domains = {};   // domainKey → true
+  if (!flagState) return [];
+  var groups = ["cardiac","pulmonary","renal","hepatic","frailty","bleeding"];
+  for (var gi=0; gi<groups.length; gi++){
+    var grp = TIER1_FLAGS[groups[gi]];
+    for (var fi=0; fi<grp.flags.length; fi++){
+      if (flagState[grp.flags[fi].id]){
+        domains[groups[gi]] = true;
+      }
+    }
+  }
+  /* 다영역 flag: 빈혈은 pulmonary+cardiac */
+  if (flagState.anemia){ domains.pulmonary = true; domains.cardiac = true; }
+  var out = [];
+  for (var k in domains){ if (domains.hasOwnProperty(k)) out.push(k); }
+  return out;
+}
+
+/* ── 영역별 스코어 ───────────────────────────────────────────────── */
+
+/* 심장 — RCRI */
+function scoreCardiac(p){
+  var n = 0, present = [];
+  for (var i=0;i<RCRI.factors.length;i++){
+    var f = RCRI.factors[i];
+    if (p["rcri_"+f.id]){ n++; present.push(f.label); }
+  }
+  if (n>3) n = 3; // ≥3 동일 밴드
+  var band = null;
+  for (var b=0;b<RCRI.bands.length;b++){ if (RCRI.bands[b].n === n){ band = RCRI.bands[b]; break; } }
+  if (!band) band = RCRI.bands[RCRI.bands.length-1];
+  var rawN = 0; for (var j=0;j<RCRI.factors.length;j++){ if (p["rcri_"+RCRI.factors[j].id]) rawN++; }
+  return { domain:"cardiac", score:rawN, tier:band.tier, present:present,
+    detail:"RCRI "+rawN+"점 (Class "+band.classN+") · MACE "+band.lee+" (원저) / "+band.pooled+" (현대)",
+    score_obj:RCRI };
+}
+
+/* 폐 — ARISCAT */
+function scorePulmonary(p){
+  var sum = 0, parts = [];
+  for (var i=0;i<ARISCAT.items.length;i++){
+    var it = ARISCAT.items[i];
+    var v = p["ariscat_"+it.id];
+    if (typeof v === "number"){ sum += v; if (v>0) parts.push(it.label); }
+  }
+  var band = ARISCAT.bands[0];
+  for (var b=0;b<ARISCAT.bands.length;b++){ if (sum <= ARISCAT.bands[b].max){ band = ARISCAT.bands[b]; break; } }
+  return { domain:"pulmonary", score:sum, tier:band.tier, present:parts,
+    detail:"ARISCAT "+sum+"점 ("+band.label+") · PPC "+band.ppc, score_obj:ARISCAT };
+}
+
+/* 신장 — eGFR */
+function scoreRenal(p){
+  var e = p.egfr;
+  if (typeof e !== "number"){
+    /* 수치 없으면 flag만으로 moderate (보수적) */
+    return { domain:"renal", score:null, tier:"moderate",
+      detail:"신기능 이상(수치 미입력) — eGFR 확인 권장", score_obj:RENAL };
+  }
+  var band = RENAL.bands[RENAL.bands.length-1];
+  for (var b=0;b<RENAL.bands.length;b++){ if (e >= RENAL.bands[b].min){ band = RENAL.bands[b]; break; } }
+  return { domain:"renal", score:e, tier:band.tier,
+    detail:"eGFR "+e+" ("+band.label+")"+(band.note?" · "+band.note:""), score_obj:RENAL };
+}
+
+/* 간 — MELD (있으면) 또는 flag */
+function scoreHepatic(p){
+  var m = p.meld;
+  if (typeof m === "number"){
+    var band = HEPATIC.meld[HEPATIC.meld.length-1];
+    for (var b=0;b<HEPATIC.meld.length;b++){ if (m <= HEPATIC.meld[b].max){ band = HEPATIC.meld[b]; break; } }
+    return { domain:"hepatic", score:m, tier:band.tier,
+      detail:"MELD "+m+" ("+band.label+") · 수술 mortality "+band.mort, score_obj:HEPATIC };
+  }
+  return { domain:"hepatic", score:null, tier:"moderate",
+    detail:"간기능 이상(MELD 미입력) — MELD/Child-Pugh 확인 권장", score_obj:HEPATIC };
+}
+
+/* 전신/쇠약 — frailty flag 기반 (CFS 수치 있으면 정밀) */
+function scoreFrailty(p){
+  var c = p.cfs;
+  if (typeof c === "number"){
+    var band = FRAILTY.cfs[FRAILTY.cfs.length-1];
+    for (var b=0;b<FRAILTY.cfs.length;b++){ if (c <= FRAILTY.cfs[b].max){ band = FRAILTY.cfs[b]; break; } }
+    return { domain:"frailty", score:c, tier:band.tier,
+      detail:"CFS "+c+" ("+band.label+")", score_obj:FRAILTY };
+  }
+  return { domain:"frailty", score:null, tier:"moderate",
+    detail:"쇠약 소견 — CFS/mFI-5 평가 권장", score_obj:FRAILTY };
+}
+
+/* 전신 mortality — SORT (간이: 수치 입력 시) */
+function scoreGlobal(p){
+  var s = p.sort_pct;
+  if (typeof s === "number"){
+    var band = GLOBAL.bands[GLOBAL.bands.length-1];
+    for (var b=0;b<GLOBAL.bands.length;b++){ if (s <= GLOBAL.bands[b].max){ band = GLOBAL.bands[b]; break; } }
+    return { domain:"global", score:s, tier:band.tier,
+      detail:"SORT 예측 30일 사망률 "+s+"% ("+band.label+")", score_obj:GLOBAL };
+  }
+  /* SORT 미입력 시: 다영역 종합 신호만, 등급은 moderate */
+  return { domain:"global", score:null, tier:"moderate",
+    detail:"다영역 위험 — SORT 종합 평가 권장 (과대예측 경향 주의)", score_obj:GLOBAL };
+}
+
+var SCORE_FN = {
+  cardiac:scoreCardiac, pulmonary:scorePulmonary, renal:scoreRenal,
+  hepatic:scoreHepatic, frailty:scoreFrailty, global:scoreGlobal
+};
+
+/* ── 출혈 약물 plan ──────────────────────────────────────────────── */
+/* bp: {drug_ac:"apixaban"|..., crcl:num, bleed:"low"|"high",
+        warfarin_risk:"high"|..., antiplatelets:[id...], neuraxial:bool, surgeryDate:"YYYY-MM-DD"} */
+function recommendBleeding(bp){
+  var plan = { holds:[], bridging:null, flags:[], notes:[] };
+  if (!bp) return plan;
+  var bleed = bp.bleed || "low";
+
+  /* DOAC */
+  if (bp.drug_ac && DOAC.drugs[bp.drug_ac]){
+    var d = DOAC.drugs[bp.drug_ac];
+    var days;
+    if (d.renal){
+      var ok = (typeof bp.crcl !== "number") || bp.crcl >= 50;
+      days = ok ? DOAC.dabi.crcl_ok[bleed] : DOAC.dabi.crcl_low[bleed];
+    } else {
+      days = DOAC.xa[bleed];
+    }
+    plan.holds.push({ drug:d.name, stopDays:days, resume:DOAC.resume[bleed],
+      rationale:"PAUSE 프로토콜"+(d.renal?" (CrCl 보정)":""), type:"doac" });
+    plan.notes.push("DOAC bridging 불요.");
+  }
+
+  /* Warfarin */
+  if (bp.warfarin_risk){
+    var wband = null;
+    for (var w=0;w<WARFARIN.bridge.length;w++){ if (WARFARIN.bridge[w].risk === bp.warfarin_risk){ wband = WARFARIN.bridge[w]; break; } }
+    plan.holds.push({ drug:"와파린", stopDays:5, resume:WARFARIN.resume,
+      rationale:WARFARIN.stop, type:"warfarin" });
+    if (wband){
+      plan.bridging = { risk:wband.risk, action:wband.action, label:wband.label };
+    }
+  }
+
+  /* 항혈소판 */
+  if (bp.antiplatelets && bp.antiplatelets.length){
+    for (var a=0;a<bp.antiplatelets.length;a++){
+      var ap = null;
+      for (var k=0;k<ANTIPLATELET.drugs.length;k++){ if (ANTIPLATELET.drugs[k].id === bp.antiplatelets[a]){ ap = ANTIPLATELET.drugs[k]; break; } }
+      if (ap){
+        plan.holds.push({ drug:ap.name, stopText:ap.stop, mech:ap.mech, rev:ap.rev,
+          note:ap.note, type:"antiplatelet" });
+      }
+    }
+  }
+
+  /* 신경축 마취 — 약물 종류 무관, 항혈전제 있으면 경고 (척추혈종) */
+  if (bp.neuraxial && plan.holds.length){
+    plan.flags.push("신경축 마취(척추/경막외): 척추혈종 위험. ASRA 기준(더 긴 중단)으로 전환 — DOAC 72–120h, 마취과 필수 협의.");
+  }
+
+  return plan;
+}
+/* ── 통합 매트릭스 (worst-domain governs) ───────────────────────── */
+function integrate(results){
+  var modCount = 0, hasHigh = false, dom = [];
+  for (var d in results){
+    if (!results.hasOwnProperty(d)) continue;
+    var t = results[d].tier;
+    if (t === "high"){ hasHigh = true; dom.push(d); }
+    else if (t === "moderate"){ modCount++; }
+  }
+  var tier;
+  if (hasHigh) tier = "high";
+  else if (modCount >= 2) tier = "high";
+  else if (modCount === 1) tier = "moderate";
+  else tier = "low";
+  /* dominant = high 영역, 없으면 moderate 영역 */
+  if (!dom.length){
+    for (var d2 in results){ if (results.hasOwnProperty(d2) && results[d2].tier==="moderate") dom.push(d2); }
+  }
+  return { tier:tier, dominant:dom };
+}
+
+/* ── 정문 함수 ──────────────────────────────────────────────────── */
+function recommendPreop(patient){
+  patient = patient || {};
+  var out = { flags:[], domains:[], results:{}, bleeding:null };
+
+  /* 0. 수술부위·마취법 → 스코어 자동 매핑 */
+  applySurgeryContext(patient);
+
+  /* 1. Hard gate */
+  var fired = evalGates(patient.gates);
+  if (fired.length){
+    out.tier = "high"; out.via = "gate";
+    for (var i=0;i<fired.length;i++) out.flags.push(fired[i]);
+    /* gate여도 출혈 plan은 산출(약물 복용 시) */
+    if (patient.bleeding) out.bleeding = recommendBleeding(patient.bleeding);
+    return out;
+  }
+
+  /* 2. Tier1 스크리닝 */
+  var domains = tier1Screen(patient.flags);
+
+  /* 출혈 plan은 flag와 무관하게 약물 정보 있으면 병렬 산출 */
+  if (patient.bleeding && (patient.bleeding.drug_ac || patient.bleeding.warfarin_risk ||
+      (patient.bleeding.antiplatelets && patient.bleeding.antiplatelets.length))){
+    out.bleeding = recommendBleeding(patient.bleeding);
+  }
+
+  if (!domains.length){
+    out.tier = "low"; out.via = "tier1_pass";
+    return out;
+  }
+
+  /* 3. global 자동 추가 (≥2 domain) */
+  if (domains.length >= 2 && domains.indexOf("bleeding") < 0){
+    if (domains.indexOf("global") < 0) domains.push("global");
+  } else if (domains.length - (domains.indexOf("bleeding")>=0?1:0) >= 2){
+    if (domains.indexOf("global") < 0) domains.push("global");
+  }
+
+  /* 4. Tier2 — 걸린 domain만 score (bleeding은 plan으로 별도) */
+  for (var di=0; di<domains.length; di++){
+    var dm = domains[di];
+    if (dm === "bleeding") continue;
+    if (SCORE_FN[dm]) out.results[dm] = SCORE_FN[dm](patient);
+  }
+
+  /* 5. 통합 */
+  var integ = integrate(out.results);
+  out.tier = integ.tier;
+  out.via = "tier2";
+  out.dominant = integ.dominant;
+  out.domains = domains;
+  return out;
+}
+
+
+</script>
+<script>
+/* ════════════════════════════════════════════════════════════════════
+   수술 전 위험평가 — CONTENT LAYER  v1.0
+   도서관 토픽(LIBRARY) + 시뮬레이션(renderSimContent)
+   DATA 인용만, 임상 수치 중복 정의 금지.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* 등급 단어 → 색 배지 (LOW/MODERATE/HIGH) */
+function _gradeBadge(text){
+  var map = {
+    "LOW":"low", "MODERATE":"moderate", "HIGH":"high", "MOD":"moderate",
+    "낮음":"low", "중간":"moderate", "높음":"high"
+  };
+  var key = String(text).toUpperCase().trim();
+  var raw = String(text).trim();
+  var t = map[key] || map[raw];
+  if (t){
+    var m = TIER_META[t];
+    return "<span class='grade-pill' style='background:"+m.bg+";color:"+m.color+"'>"+text+"</span>";
+  }
+  return text;
+}
+
+/* 디자인된 표 — 첫 컬럼 강조, 헤더 배경, zebra, 둥근 테두리. 등급셀 자동 배지 */
+function _tbl(headers, rows, opts){
+  opts = opts || {};
+  var h = "<div class='dtbl-wrap'><table class='dtbl'><thead><tr>";
+  headers.forEach(function(x,i){ h+="<th"+(i===0?"":" class='c'")+">"+x+"</th>"; });
+  h += "</tr></thead><tbody>";
+  rows.forEach(function(r){
+    h+="<tr>";
+    r.forEach(function(c,i){
+      var cell = _gradeBadge(c);
+      h+="<td"+(i===0?" class='dtbl-first'":" class='c'")+">"+cell+"</td>";
+    });
+    h+="</tr>";
+  });
+  return h + "</tbody></table></div>";
+}
+function _warn(html){ return "<div class='lib-warn'>"+html+"</div>"; }
+
+/* 섹션 — 제목 옆에 작은 계산기 버튼(선택). calcId가 있으면 펼침 영역 + 마커 생성 */
+function _sec(title, html, calcMeta){
+  var calcBtn = "", calcArea = "";
+  if (calcMeta){
+    calcBtn = " <button type='button' class='sec-calc-btn' data-calc='"+calcMeta.id+"'>🧮 계산기</button>";
+    calcArea = "<div class='sec-calc-area' data-calc-area='"+calcMeta.id+"'></div>";
+  }
+  return "<div class='lib-section'><h3 class='sec-h3'>"+title+calcBtn+"</h3>"+(html||"")+calcArea+"</div>";
+}
+
+/* render 후 호출 — data-calc 버튼에 빌더 연결 (제목 옆에서 펼침) */
+function _mountCalcs(d, map){
+  var btns = d.querySelectorAll(".sec-calc-btn");
+  for (var i=0;i<btns.length;i++){
+    (function(btn){
+      var id = btn.getAttribute("data-calc");
+      var area = d.querySelector(".sec-calc-area[data-calc-area='"+id+"']");
+      if (!area || !map[id]) return;
+      var built = false, open = false;
+      btn.onclick = function(){
+        open = !open;
+        btn.className = "sec-calc-btn"+(open?" on":"");
+        area.style.display = open ? "block" : "none";
+        if (open && !built){ map[id](area); built = true; }
+      };
+    })(btns[i]);
+  }
+}
+
+/* 항혈소판제 — 표 행 (한눈에 비교) */
+function _antiplateletRow(a){
+  var irrev = (a.rev === "비가역");
+  var rowCls = irrev ? "irrev" : "rev";
+  var revCls = irrev ? "badge-irrev" : "badge-rev";
+  var numCls = irrev ? "st-irrev-c" : "st-rev-c";
+  var stopNum = a.stop.replace(/일.*$/,"").replace(/보통.*$/,"불요");
+  var warn = (a.note && a.note.indexOf("⚠️")>=0);
+  return "<tr class='"+rowCls+(warn?" st-warn-row":"")+"'>"+
+    "<td><div class='st-name'>"+(warn?"<span class='st-warn-mark'>⚠ </span>":"")+a.name+"</div>"+
+      "<div class='st-mech'>"+a.mech+"</div></td>"+
+    "<td class='c'><span class='st-rev "+revCls+"'>"+a.rev+"</span></td>"+
+    "<td class='c'><span class='st-stopnum "+numCls+"'>"+stopNum+"</span><div style='font-size:9px;color:var(--ink-faint)'>일전</div></td>"+
+    "<td class='st-note-cell"+(warn?" warn":"")+"'>"+(a.note||a.hl)+"</td>"+
+  "</tr>";
+}
+
+/* 항응고제 DOAC — 표 행 */
+function _doacRow(id, name, renal){
+  var stop = renal ? "1~4" : "1~2";
+  var detail = renal ? "CrCl≥50: 저1·고2 / <50: 저2·고4" : "저출혈 1 · 고출혈 2";
+  return "<tr class='rev'>"+
+    "<td><div class='st-name'>"+name+"</div>"+
+      "<div class='st-mech'>"+(renal?"직접 트롬빈 억제 (신배설)":"Factor Xa 억제")+"</div></td>"+
+    "<td class='c'><span class='st-rev badge-rev'>가역</span></td>"+
+    "<td class='c'><span class='st-stopnum st-rev-c'>"+stop+"</span><div style='font-size:9px;color:var(--ink-faint)'>일전</div></td>"+
+    "<td class='st-note-cell'>"+detail+"</td>"+
+  "</tr>";
+}
+
+var LIBRARY = [
+
+{ id:"surgery_anes", icon:"🔪", title:"수술 부위 · 마취법", sub:"평가의 출발점 · 위험 분류",
+  tags:"수술 마취 부위 전신 신경축 spinal block 위험",
+  render:function(d){
+    d.innerHTML +=
+    _sec("수술 부위 위험 분류 (2024 AHA/ACC)",
+      _tbl(["부위","위험","30일 심장위험","예시"],
+        SURGERY_SITE.options.map(function(o){
+          var riskLabel = {low:"낮음",intermediate:"중간",high:"높음"}[o.risk] || o.risk;
+          return [o.icon+" "+o.label, riskLabel, o.pct, o.ex];
+        }))) +
+    "<p style='font-size:12px;color:var(--ink-dim)'>"+SURGERY_SITE.note+"</p>" +
+    _sec("마취법",
+      "<div>"+ANESTHESIA.options.map(function(o){
+        return "<div style='padding:9px 0;border-bottom:1px solid var(--line)'>"+
+          "<b style='font-size:13.5px'>"+o.icon+" "+o.label+"</b><br>"+
+          "<span style='font-size:12px;color:var(--ink-dim)'>"+o.note+"</span></div>";
+      }).join("")+"</div>") +
+    _warn("💉 <b>신경축 마취(척추/경막외)</b>는 항응고·항혈소판제 복용 시 척추혈종 위험 → "+
+      "ASRA 기준(더 긴 중단)으로 전환. 출혈 모듈과 직결.") +
+    _sec("근거","<p style='font-size:12px;color:var(--ink-faint)'>"+SURGERY_SITE._ref+" / "+ANESTHESIA._ref+"</p>");
+  }
+},
+
+{ id:"tier_system", icon:"🗂️", title:"2-tier 평가 체계", sub:"Step0 gate · Tier1 · Tier2 흐름",
+  tags:"체계 흐름 스크리닝 게이트",
+  render:function(d){
+    d.innerHTML +=
+    _sec("핵심 원리",
+      "<p style='font-size:13px;line-height:1.6;color:var(--ink-dim)'>대부분 환자는 위험을 깊게 따질 필요가 없다. "+
+      "그래서 <b>통과가 기본값</b>이고, red flag가 걸릴 때만 정밀 평가로 내려간다.</p>") +
+    _sec("3단계 흐름",
+      _tbl(["단계","역할","결과"],[
+        ["Step 0 — Hard Gate","응급/불안정심장/거동불가/스텐트/중증간경변","즉시 HIGH (우회)"],
+        ["Tier 1 — 스크리닝","영역별 red flag 토글","0개면 LOW 통과 / ≥1개면 하강"],
+        ["Tier 2 — 정밀","걸린 영역만 RCRI~SORT","worst-domain 통합 등급"]
+      ])) +
+    _sec("통합 규칙 (worst-domain governs)",
+      "<p style='font-size:13px;color:var(--ink-dim)'>점수를 <b>합산하지 않는다</b>. 각 영역 독립 산출 후 "+
+      "가장 높은 영역이 전체를 지배. 단, <b>moderate 2개 이상이면 high</b>로 상승.</p>") +
+    _warn("⚕️ 출력은 '수술 가/부'가 아니라 {등급 · 주요 영역 · 다음 조치}. 끝까지 조언자.");
+  }
+},
+
+{ id:"cardiac", icon:"❤️", title:"심장 위험 (RCRI)", sub:"6인자 · MACE율 · 4MET 분기",
+  tags:"심장 rcri mace 관상동맥 심부전 계산기",
+  render:function(d){
+    var rows = RCRI.factors.map(function(f){ return [f.label]; });
+    d.innerHTML +=
+    _sec("RCRI 6인자 (각 1점)", _tbl(["위험인자"], rows), {id:"rcri"}) +
+    _sec("점수 → MACE율 (30일)",
+      _tbl(["점수(Class)","원저 1999","현대 pooled","등급"],
+        RCRI.bands.map(function(b){
+          return [b.n+(b.n===3?"+":"")+" ("+b.classN+")", b.lee, b.pooled,
+            TIER_META[b.tier].label.split(" ")[0]];
+        }))) +
+    _warn("⚠️ creatinine 기준 <b>>2.0 mg/dL</b> (MICA의 >1.5와 다름). 혼동 주의.") +
+    _sec("4 METs 분기 (2024 가이드라인)",
+      "<p style='font-size:13px;color:var(--ink-dim)'>무증상 + <b>≥4 METs</b>(1층 계단 오르기 가능)면 "+
+      "대부분 추가 심장검사 불요. <4 METs면 biomarker(BNP·troponin) 고려.</p>") +
+    _sec("근거","<p style='font-size:12px;color:var(--ink-faint)'>"+RCRI._ref+"</p>");
+    _mountCalcs(d, { rcri: buildRCRICalc });
+  }
+},
+
+{ id:"pulmonary", icon:"🫁", title:"폐 위험 (ARISCAT)", sub:"7변수 · 점수표 · PPC율",
+  tags:"폐 ariscat ppc 호흡 spo2 계산기",
+  render:function(d){
+    var rows = ARISCAT.items.map(function(it){
+      return [it.label, it.opts.map(function(o){ return o.l+"="+o.v; }).join(" / ")];
+    });
+    d.innerHTML +=
+    _sec("ARISCAT 7변수 (가중치)", _tbl(["변수","점수"], rows), {id:"ariscat"}) +
+    _sec("점수 → PPC율 (입원 중)",
+      _tbl(["ARISCAT","등급","PPC율"],
+        ARISCAT.bands.map(function(b){ return [b.label, TIER_META[b.tier].label.split(" ")[0], b.ppc]; }))) +
+    _sec("근거","<p style='font-size:12px;color:var(--ink-faint)'>"+ARISCAT._ref+" (원저 검증 완료)</p>");
+    _mountCalcs(d, { ariscat: buildARISCATCalc });
+  }
+},
+
+{ id:"renal", icon:"🫘", title:"신장 위험", sub:"eGFR 변곡점 (60/45) · AKI",
+  tags:"신장 egfr ckd aki 투석",
+  render:function(d){
+    d.innerHTML +=
+    _sec("eGFR 등급",
+      _tbl(["eGFR","등급","비고"],
+        RENAL.bands.map(function(b){ return [b.label, TIER_META[b.tier].label.split(" ")[0], b.note||"—"]; }))) +
+    _warn("변곡점 둘: <b>eGFR&lt;60</b>(위험 3배 시작) / <b>eGFR≤45</b>(AKI 급증). "+
+      "RCRI creatinine 인자와 <b>중복 계산 주의</b>(각자 자기 영역에서만).") +
+    _sec("근거","<p style='font-size:12px;color:var(--ink-faint)'>"+RENAL._ref+"</p>");
+  }
+},
+
+{ id:"hepatic", icon:"🟠", title:"간 위험", sub:"MELD · Child-Pugh · AGA gate",
+  tags:"간 meld child pugh 간경변 mortality 계산기",
+  render:function(d){
+    d.innerHTML +=
+    _sec("MELD → 수술 mortality",
+      _tbl(["MELD","등급","mortality"],
+        HEPATIC.meld.map(function(b){ return [b.label, TIER_META[b.tier].label.split(" ")[0], b.mort]; })),
+      {id:"meld"}) +
+    _sec("Child-Pugh → mortality (복부수술)",
+      _tbl(["Class","등급","mortality"],
+        HEPATIC.child.map(function(b){ return [b.cls, TIER_META[b.tier].label.split(" ")[0], b.mort]; })),
+      {id:"childpugh"}) +
+    _warn("🚨 <b>CTP class C 또는 MELD>20</b> → 즉시 gate(HIGH). 응급 외 이식 후로 연기 권고(AGA).") +
+    _sec("한국 특이성","<p style='font-size:13px;color:var(--ink-dim)'>"+HEPATIC.note+"</p>") +
+    _sec("근거","<p style='font-size:12px;color:var(--ink-faint)'>"+HEPATIC._ref+"</p>");
+    _mountCalcs(d, { meld: buildMELDCalc, childpugh: buildChildPughCalc });
+  }
+},
+
+{ id:"frailty", icon:"🧓", title:"Frailty · 전신", sub:"CFS · mFI-5 · SORT · override",
+  tags:"쇠약 frailty cfs mfi sort 전신 거동 계산기",
+  render:function(d){
+    d.innerHTML +=
+    _sec("Clinical Frailty Scale",
+      _tbl(["CFS","등급"],
+        FRAILTY.cfs.map(function(b){ return [b.label, TIER_META[b.tier].label.split(" ")[0]]; })),
+      {id:"cfs"}) +
+    _sec("mFI-5",
+      _tbl(["mFI-5","등급"],
+        FRAILTY.mfi5.map(function(b){ return [b.label, TIER_META[b.tier].label.split(" ")[0]]; })),
+      {id:"mfi5"}) +
+    _sec("SORT (전신 30일 mortality)",
+      _tbl(["예측 사망률","등급"],
+        GLOBAL.bands.map(function(b){ return [b.label, TIER_META[b.tier].label.split(" ")[0]]; })),
+      {id:"sort"}) +
+    _warn("🛏️ <b>거동불가(CFS≥7)·tube feeding</b>은 검사 정상이어도 gate(HIGH). 생리적 예비능 고갈.") +
+    _warn("⚠️ SORT·POSSUM은 mortality <b>과대예측</b> 경향 — 절대수치는 상한으로 해석.") +
+    _sec("근거","<p style='font-size:12px;color:var(--ink-faint)'>"+FRAILTY._ref+" / "+GLOBAL._ref+"</p>");
+    _mountCalcs(d, { cfs: buildCFSCalc, mfi5: buildMFI5Calc, sort: buildSORTCalc });
+  }
+},
+
+{ id:"bleeding_ac", icon:"💉", title:"항응고제 중단", sub:"DOAC(PAUSE) · 와파린 · bridging",
+  tags:"항응고 doac 와파린 warfarin pause bridging 다비가트란 리바록사반 아픽사반 에독사반",
+  render:function(d){
+    var doacRows = "";
+    for (var k in DOAC.drugs){ if(DOAC.drugs.hasOwnProperty(k)){
+      doacRows += _doacRow(k, DOAC.drugs[k].name, DOAC.drugs[k].renal);
+    }}
+    d.innerHTML +=
+    _sec("DOAC — PAUSE 프로토콜",
+      "<table class='stop-table'><thead><tr><th>약물</th><th class='c'>가역</th><th class='c'>중단</th><th>비고</th></tr></thead>"+
+      "<tbody>"+doacRows+"</tbody></table>"+
+      "<p style='font-size:11.5px;color:var(--ink-faint);margin-top:4px'>"+DOAC.note+"</p>") +
+    _sec("와파린 — 5일 전 중단",
+      "<p style='font-size:12.5px;color:var(--ink-dim);margin-bottom:8px'>중단 <b>"+
+        "수술 5일 전</b> · 재개 "+WARFARIN.resume+"</p>"+
+      WARFARIN.bridge.map(function(b){
+        var lbl = {high:"고위험",moderate:"중등도",low:"저위험"}[b.risk];
+        return "<div class='bridge-risk-card brc-"+b.risk+"'>"+
+          "<div class='brc-head'>"+TIER_META[b.tier].icon+" "+lbl+" 혈전위험</div>"+
+          "<div class='brc-action'>→ "+b.action+"</div>"+
+          "<div class='brc-detail'>"+b.label+"</div></div>";
+      }).join("")) +
+    _warn("저위험 환자 bridging은 <b>출혈만 늘리고 혈전 안 줄인다</b>(BRIDGE/PERIOP2).") +
+    _sec("LMWH 용량 (bridging 시)",
+      "<table class='stop-table'><thead><tr><th>약물</th><th>치료(bridging)</th><th>예방</th></tr></thead><tbody>"+
+      "<tr><td class='st-name'>"+LMWH.enoxaparin.name+"</td><td>"+LMWH.enoxaparin.tx+"</td><td>"+LMWH.enoxaparin.px+"</td></tr>"+
+      "<tr><td class='st-name'>"+LMWH.dalteparin.name+"</td><td>"+LMWH.dalteparin.tx+"</td><td>"+LMWH.dalteparin.px+"</td></tr>"+
+      "</tbody></table>"+
+      "<p style='font-size:11.5px;color:var(--ink-faint);margin-top:4px'>"+LMWH.note+"</p>");
+  }
+},
+
+{ id:"bleeding_ap", icon:"🩸", title:"항혈소판제 중단", sub:"비가역/가역 · 1차약제 · 스텐트",
+  tags:"항혈소판 아스피린 클로피도그렐 실로스타졸 사르포그렐레이트 트리플루살 스텐트",
+  render:function(d){
+    d.innerHTML +=
+    "<p style='font-size:12px;color:var(--ink-dim);margin-bottom:8px'>"+
+      "<span style='color:var(--red);font-weight:600'>■ 비가역</span> = 혈소판 수명에 묶여 길게 / "+
+      "<span style='color:var(--green);font-weight:600'>■ 가역</span> = 반감기 의존 짧게</p>"+
+    "<table class='stop-table'><thead><tr><th>약물 · 기전</th><th class='c'>가역</th><th class='c'>중단</th><th>비고</th></tr></thead>"+
+    "<tbody>"+ANTIPLATELET.drugs.map(function(a){ return _antiplateletRow(a); }).join("")+"</tbody></table>" +
+    _warn("⚠️ <b>트리플루살</b>은 비가역+긴 대사물(~40h) → 아스피린급 5일. "+
+      "cilostazol·sarpogrelate처럼 짧게 끊으면 오류!") +
+    _warn("⚠️ <b>사르포그렐레이트</b>는 가역+초단반감기 → 1–2일이면 충분. 과하게 끊지 말 것.") +
+    _sec("스텐트 대기기간",
+      "<table class='stop-table'><thead><tr><th>스텐트</th><th class='c'>최소 대기</th></tr></thead><tbody>"+
+      STENT.wait.map(function(w){
+        return "<tr><td class='st-name'>"+w.type+"</td>"+
+          "<td class='c' style='color:var(--accent);font-weight:700'>"+w.min+"</td></tr>";
+      }).join("")+"</tbody></table>"+
+      "<p style='font-size:12px;color:var(--ink-dim);margin-top:6px'>"+STENT.rule+"</p>") +
+    _sec("정책","<p style='font-size:13px;color:var(--ink-dim)'>"+ANTIPLATELET.note+"</p>");
+  }
+},
+
+{ id:"reversal", icon:"🆘", title:"응급 역전", sub:"idarucizumab · andexanet · PCC",
+  tags:"역전 reversal 응급 idarucizumab andexanet pcc",
+  render:function(d){
+    d.innerHTML +=
+    _sec("역전제 (응급/긴급 수술)",
+      _tbl(["약물","역전제","용량","비고"],
+        REVERSAL.agents.map(function(a){ return [a.drug, a.agent, a.dose, a.note]; }))) +
+    _warn("정규 elective엔 불필요. 응급/긴급만. 항혈소판 역전은 일상 권고 안 됨.") +
+    _sec("근거","<p style='font-size:12px;color:var(--ink-faint)'>"+REVERSAL._ref+"</p>");
+  }
+}
+
+];
+
+
+
+/* ════════════════════════════════════════════════════════════════════
+   계산기 — 각 영역 점수 직접 산출 (독립 사용)
+   ════════════════════════════════════════════════════════════════════ */
+function _calcResult(tier, text){
+  var m = TIER_META[tier];
+  return '<div class="verdict v-'+tier+'" style="margin-top:14px;padding:14px">'+
+    '<div class="vlight" style="font-size:28px">'+m.icon+'</div>'+
+    '<div class="vlabel" style="font-size:18px">'+text+'</div>'+
+    '<div class="vvia">'+m.label+'</div></div>';
+}
+
+/* RCRI 계산기 */
+/* 영역 토픽 안에 접이식으로 계산기 삽입 — "보기엔 간단, 펼치면 자세히" */
+function _calcAccordion(d, label, buildFn){
+  var wrap = document.createElement("div");
+  wrap.style.cssText = "margin-top:14px;border:1.5px solid var(--accent);border-radius:11px;overflow:hidden";
+  var head = document.createElement("button");
+  head.type = "button";
+  head.style.cssText = "width:100%;text-align:left;padding:12px 14px;background:var(--accent-bg);border:none;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:8px;touch-action:manipulation";
+  head.innerHTML = '<span style="font-size:17px">🧮</span>'+label+'<span class="acc-arr" style="margin-left:auto;transition:transform .2s">▶</span>';
+  var body = document.createElement("div");
+  body.style.cssText = "padding:14px;display:none;background:var(--panel)";
+  var built = false, openState = false;
+  head.onclick = function(){
+    openState = !openState;
+    body.style.display = openState ? "block" : "none";
+    head.querySelector(".acc-arr").style.transform = openState ? "rotate(90deg)" : "";
+    if (openState && !built){ buildFn(body); built = true; }
+  };
+  wrap.appendChild(head); wrap.appendChild(body);
+  d.appendChild(wrap);
+}
+
+function buildRCRICalc(d){
+  var state = {};
+  var box = document.createElement("div");
+  d.appendChild(box);
+  function render(){
+    box.innerHTML = "";
+    RCRI.factors.forEach(function(f){
+      var t = document.createElement("div");
+      t.className = "toggle"+(state[f.id]?" on":"");
+      t.innerHTML = '<div class="sw"></div><div class="tl">'+f.label+'</div>';
+      t.onclick = function(){ state[f.id]=!state[f.id]; render(); };
+      box.appendChild(t);
+    });
+    var n=0; RCRI.factors.forEach(function(f){ if(state[f.id])n++; });
+    var bn = Math.min(n,3); var band=null;
+    for(var b=0;b<RCRI.bands.length;b++){ if(RCRI.bands[b].n===bn){band=RCRI.bands[b];break;} }
+    var res = document.createElement("div");
+    res.innerHTML = _calcResult(band.tier, "RCRI "+n+"점 (Class "+band.classN+")")+
+      '<div style="font-size:12.5px;color:var(--ink-dim);text-align:center;margin-top:8px">'+
+      'MACE: '+band.lee+' (원저) / '+band.pooled+' (현대 pooled)</div>';
+    box.appendChild(res);
+  }
+  render();
+}
+
+/* ARISCAT 계산기 */
+function buildARISCATCalc(d){
+  var state = {};
+  var box = document.createElement("div"); d.appendChild(box);
+  function render(){
+    box.innerHTML="";
+    ARISCAT.items.forEach(function(it){
+      var wrap=document.createElement("div"); wrap.style.margin="10px 0";
+      wrap.innerHTML='<div style="font-size:12.5px;color:var(--ink-dim);margin-bottom:5px">'+it.label+'</div>';
+      var row=document.createElement("div");
+      it.opts.forEach(function(o){
+        var on=state[it.id]===o.v;
+        var btn=document.createElement("button"); btn.type="button"; btn.textContent=o.l;
+        btn.style.cssText="padding:6px 12px;margin:0 5px 5px 0;border-radius:8px;border:1.5px solid "+
+          (on?"var(--accent)":"var(--line)")+";background:"+(on?"var(--accent-bg)":"var(--panel)")+
+          ";color:"+(on?"var(--accent)":"var(--ink-dim)")+";font-family:inherit;font-size:12.5px;cursor:pointer";
+        btn.onclick=function(){ state[it.id]=o.v; render(); };
+        row.appendChild(btn);
+      });
+      wrap.appendChild(row); box.appendChild(wrap);
+    });
+    var sum=0,done=true;
+    ARISCAT.items.forEach(function(it){ if(state[it.id]==null)done=false; else sum+=state[it.id]; });
+    if(done){
+      var band=ARISCAT.bands[0];
+      for(var b=0;b<ARISCAT.bands.length;b++){ if(sum<=ARISCAT.bands[b].max){band=ARISCAT.bands[b];break;} }
+      var res=document.createElement("div");
+      res.innerHTML=_calcResult(band.tier,"ARISCAT "+sum+"점 ("+band.label+")")+
+        '<div style="font-size:12.5px;color:var(--ink-dim);text-align:center;margin-top:8px">PPC율 '+band.ppc+'</div>';
+      box.appendChild(res);
+    } else {
+      box.appendChild(_hint("모든 항목을 선택하면 점수가 나옵니다"));
+    }
+  }
+  render();
+}
+
+/* MELD 계산기 */
+function buildMELDCalc(d){
+  var vals={bili:null,inr:null,cr:null,dialysis:false};
+  var box=document.createElement("div"); d.appendChild(box);
+  function inp(id,label,ph){
+    var w=document.createElement("div"); w.style.margin="10px 0";
+    w.innerHTML='<label style="font-size:12px;color:var(--ink-faint);display:block;margin-bottom:4px">'+label+'</label>';
+    var i=document.createElement("input"); i.type="number"; i.step="0.1"; i.placeholder=ph;
+    i.setAttribute("inputmode","decimal");
+    i.style.cssText="font-family:inherit;font-size:14px;padding:8px 11px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);width:140px";
+    i.oninput=function(){ vals[id]=i.value===""?null:parseFloat(i.value); update(); };
+    w.appendChild(i); return w;
+  }
+  box.appendChild(inp("bili","총 빌리루빈 (mg/dL)","1.0"));
+  box.appendChild(inp("inr","INR","1.0"));
+  box.appendChild(inp("cr","크레아티닌 (mg/dL)","1.0"));
+  var dt=document.createElement("div"); dt.className="toggle";
+  dt.innerHTML='<div class="sw"></div><div class="tl">최근 1주 투석 ≥2회 (Cr→4.0)</div>';
+  dt.onclick=function(){ vals.dialysis=!vals.dialysis; dt.className="toggle"+(vals.dialysis?" on":""); update(); };
+  box.appendChild(dt);
+  var resBox=document.createElement("div"); box.appendChild(resBox);
+  function update(){
+    resBox.innerHTML="";
+    if(vals.bili!=null&&vals.inr!=null&&vals.cr!=null){
+      var meld=calcMELD(vals.bili,vals.inr,vals.cr,vals.dialysis);
+      var band=HEPATIC.meld[HEPATIC.meld.length-1];
+      for(var b=0;b<HEPATIC.meld.length;b++){ if(meld<=HEPATIC.meld[b].max){band=HEPATIC.meld[b];break;} }
+      var gate = meld>20;
+      resBox.innerHTML=_calcResult(gate?"high":band.tier,"MELD "+meld)+
+        '<div style="font-size:12.5px;color:var(--ink-dim);text-align:center;margin-top:8px">수술 mortality '+band.mort+
+        (gate?'<br><b style="color:var(--red)">MELD>20 → 즉시 고위험 (이식 후 연기 권고)</b>':'')+'</div>';
+    } else { resBox.appendChild(_hint("세 값을 입력하면 MELD가 계산됩니다")); }
+  }
+  update();
+}
+
+/* Child-Pugh 계산기 */
+function buildChildPughCalc(d){
+  var state={};
+  var box=document.createElement("div"); d.appendChild(box);
+  function render(){
+    box.innerHTML="";
+    CHILDPUGH.items.forEach(function(it){
+      var wrap=document.createElement("div"); wrap.style.margin="10px 0";
+      wrap.innerHTML='<div style="font-size:12.5px;color:var(--ink-dim);margin-bottom:5px">'+it.label+'</div>';
+      var row=document.createElement("div");
+      it.opts.forEach(function(o){
+        var on=state[it.id]===o.v;
+        var btn=document.createElement("button"); btn.type="button"; btn.textContent=o.l;
+        btn.style.cssText="padding:6px 11px;margin:0 5px 5px 0;border-radius:8px;border:1.5px solid "+
+          (on?"var(--accent)":"var(--line)")+";background:"+(on?"var(--accent-bg)":"var(--panel)")+
+          ";color:"+(on?"var(--accent)":"var(--ink-dim)")+";font-family:inherit;font-size:12px;cursor:pointer";
+        btn.onclick=function(){ state[it.id]=o.v; render(); };
+        row.appendChild(btn);
+      });
+      wrap.appendChild(row); box.appendChild(wrap);
+    });
+    var sum=0,done=true;
+    CHILDPUGH.items.forEach(function(it){ if(state[it.id]==null)done=false; else sum+=state[it.id]; });
+    if(done){
+      var c=CHILDPUGH.classify(sum);
+      var mortMap={A:"10%",B:"17~30%",C:"63~80%"};
+      var res=document.createElement("div");
+      res.innerHTML=_calcResult(c.tier,"Child-Pugh "+sum+"점 · Class "+c.cls)+
+        '<div style="font-size:12.5px;color:var(--ink-dim);text-align:center;margin-top:8px">복부수술 mortality '+mortMap[c.cls]+
+        (c.cls==="C"?'<br><b style="color:var(--red)">Class C → 즉시 고위험</b>':'')+'</div>';
+      box.appendChild(res);
+    } else { box.appendChild(_hint("모든 항목을 선택하면 분류됩니다")); }
+  }
+  render();
+}
+
+function _hint(txt){
+  var h=document.createElement("div");
+  h.style.cssText="text-align:center;color:var(--ink-faint);font-size:12.5px;padding:16px";
+  h.textContent=txt; return h;
+}
+
+/* ─── Frailty 계산기 3종 ─── */
+/* CFS — 9단계 라디오 선택 */
+function buildCFSCalc(d){
+  var sel = null;
+  var box = document.createElement("div"); d.appendChild(box);
+  function render(){
+    box.innerHTML = "";
+    FRAILTY.cfsScale.forEach(function(o){
+      var on = sel===o.v;
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.innerHTML = '<b>'+o.v+'</b> &nbsp;'+o.label;
+      btn.style.cssText = "display:block;width:100%;text-align:left;padding:9px 11px;margin-bottom:5px;border-radius:8px;border:1.5px solid "+
+        (on?"var(--c-frail)":"var(--line)")+";background:"+(on?"var(--c-frail-bg)":"var(--panel)")+
+        ";color:var(--ink);font-family:inherit;font-size:12.5px;cursor:pointer;touch-action:manipulation";
+      btn.onclick = function(){ sel = o.v; render(); };
+      box.appendChild(btn);
+    });
+    if (sel!=null){
+      var c = FRAILTY.classifyCFS(sel);
+      var gate = sel>=7;
+      var res = document.createElement("div");
+      res.innerHTML = _calcResult(gate?"high":c.tier, "CFS "+sel)+
+        (gate?'<div style="font-size:12.5px;color:var(--red);text-align:center;margin-top:8px;font-weight:600">🛏️ CFS≥7 → gate(HIGH): 검사 정상이어도 고위험</div>':'');
+      box.appendChild(res);
+    }
+  }
+  render();
+}
+
+/* mFI-5 — 5항목 토글 */
+function buildMFI5Calc(d){
+  var state = {};
+  var box = document.createElement("div"); d.appendChild(box);
+  function render(){
+    box.innerHTML = "";
+    FRAILTY.mfi5items.forEach(function(it){
+      var t = document.createElement("div");
+      t.className = "toggle"+(state[it.id]?" on":"");
+      t.innerHTML = '<div class="sw"></div><div class="tl">'+it.label+'</div>';
+      t.onclick = function(){ state[it.id]=!state[it.id]; render(); };
+      box.appendChild(t);
+    });
+    var n=0; FRAILTY.mfi5items.forEach(function(it){ if(state[it.id])n++; });
+    var c = FRAILTY.classifyMFI(n);
+    var res = document.createElement("div");
+    res.innerHTML = _calcResult(c.tier, "mFI-5 "+n+"점")+
+      '<div style="font-size:12.5px;color:var(--ink-dim);text-align:center;margin-top:8px">'+
+      (n===0?"robust":n===1?"prefrail":"frail")+'</div>';
+    box.appendChild(res);
+  }
+  render();
+}
+
+/* SORT — 6변수 선택 → 사망률 */
+function buildSORTCalc(d){
+  var state = {};
+  var box = document.createElement("div"); d.appendChild(box);
+  function render(){
+    box.innerHTML = "";
+    GLOBAL.sortItems.forEach(function(it){
+      var wrap = document.createElement("div"); wrap.style.margin="10px 0";
+      wrap.innerHTML = '<div style="font-size:12.5px;color:var(--ink-dim);margin-bottom:5px">'+it.label+'</div>';
+      var row = document.createElement("div");
+      it.opts.forEach(function(o){
+        var on = state[it.id]===o.v;
+        var btn = document.createElement("button"); btn.type="button"; btn.textContent=o.l;
+        btn.style.cssText="padding:6px 11px;margin:0 5px 5px 0;border-radius:8px;border:1.5px solid "+
+          (on?"var(--accent)":"var(--line)")+";background:"+(on?"var(--accent-bg)":"var(--panel)")+
+          ";color:"+(on?"var(--accent)":"var(--ink-dim)")+";font-family:inherit;font-size:12px;cursor:pointer";
+        btn.onclick=function(){ state[it.id]=o.v; render(); };
+        row.appendChild(btn);
+      });
+      wrap.appendChild(row); box.appendChild(wrap);
+    });
+    var sum=0, done=true;
+    GLOBAL.sortItems.forEach(function(it){ if(state[it.id]==null)done=false; else sum+=state[it.id]; });
+    if(done){
+      var pct = GLOBAL.calcSORT(sum);
+      var c = GLOBAL.classify(pct);
+      var res = document.createElement("div");
+      res.innerHTML = _calcResult(c.tier, "사망률 "+pct+"%")+
+        '<div style="font-size:12px;color:var(--ink-faint);text-align:center;margin-top:8px">SORT 30일 예측 · 과대예측 경향(상한 해석)</div>';
+      box.appendChild(res);
+    } else {
+      box.appendChild(_hint("6개 변수를 모두 선택하면 사망률이 계산됩니다"));
+    }
+  }
+  render();
+}
+
+</script>
+<script>
+/* ════════════════════════════════════════════════════════════════════
+   수술 전 위험평가 — UI LAYER  v1.0
+   3탭 렌더링. 임상 수치는 DATA 인용만.
+   ════════════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+function el(tag,cls,html){ var e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
+
+/* 입력 상태 */
+var STATE = { gates:{}, flags:{}, nums:{}, surgery:null, anesthesia:null, bleed:{ bleed:"low", antiplatelets:[] } };
+
+/* ─────────── 탭 전환 ─────────── */
+window.switchTab = function(t){
+  var tabs = ["lib","flow"];
+  for (var i=0;i<tabs.length;i++){
+    $("tab-"+tabs[i]).className = (tabs[i]===t)?"on":"";
+    $("pane-"+tabs[i]).className = "pane"+((tabs[i]===t)?" on":"");
+  }
+  if (window.scrollTo) try{ window.scrollTo(0,0); }catch(e){}
+};
+
+/* ═══════════════════════════════════════════════════════
+   플로우 탭
+   ═══════════════════════════════════════════════════════ */
+function renderFlow(){
+  var p = $("pane-flow"); p.innerHTML = "";
+
+  /* 수술 정보 (최상단 — 평가 출발점) */
+  p.appendChild(buildContextCard());
+
+  /* Step0 gate 섹션 */
+  var gs = el("div","gate-section");
+  gs.appendChild(el("div","gh","🚨 즉시 고위험 — 해당 시 켜세요"));
+  for (var i=0;i<GATES.length;i++){
+    (function(g){
+      var t = el("div","toggle"+(STATE.gates[g.id]?" on":""));
+      t.innerHTML = '<div class="sw red"></div><div class="tl"><b>'+g.icon+' '+g.label+'</b><br><span style="font-size:11.5px;color:var(--ink-faint)">'+g.detail+'</span></div>';
+      t.onclick = function(){ STATE.gates[g.id] = !STATE.gates[g.id]; renderFlow(); };
+      gs.appendChild(t);
+    })(GATES[i]);
+  }
+  p.appendChild(gs);
+
+  /* gate 발동 시 즉시 결과 + 출혈만 */
+  var anyGate = false;
+  for (var k in STATE.gates){ if (STATE.gates[k]){ anyGate=true; break; } }
+
+  if (!anyGate){
+    /* Tier1 flag 카드들 */
+    var groups = ["cardiac","pulmonary","renal","hepatic","frailty","bleeding"];
+    for (var gi=0; gi<groups.length; gi++){
+      p.appendChild(buildFlagCard(groups[gi]));
+    }
+    /* 수술 정보 (출혈 위험) */
+    p.appendChild(buildSurgeryCard());
+  }
+
+  /* 평가 버튼 */
+  var btn = el("button","btn-eval",anyGate?"결과 보기 →":"위험도 평가 →");
+  btn.type="button";
+  btn.onclick = doEval;
+  p.appendChild(btn);
+
+  /* 결과 영역 */
+  var rwrap = el("div",null); rwrap.id="flow-result";
+  p.appendChild(rwrap);
+
+  p.appendChild(buildDisclaimer());
+}
+
+function buildFlagCard(grpKey){
+  var grp = TIER1_FLAGS[grpKey];
+  var card = el("div","card dom-"+grp.color);
+  var open = !!STATE["_open_"+grpKey];
+  var anyOn = false;
+  for (var f=0; f<grp.flags.length; f++){ if (STATE.flags[grp.flags[f].id]) anyOn=true; }
+  var h = el("div","card-h"+(open?" open":""));
+  h.innerHTML = '<span class="ico">'+grp.icon+'</span>'+grp.name+
+    (anyOn?' <span class="rtier rt-moderate" style="margin-left:6px">체크됨</span>':'')+
+    '<span class="arr">▶</span>';
+  h.onclick = function(){ STATE["_open_"+grpKey] = !open; renderFlow(); };
+  card.appendChild(h);
+  var b = el("div","card-b"+(open?"":" collapsed"));
+  for (var fi=0; fi<grp.flags.length; fi++){
+    (function(flag){
+      var t = el("div","toggle"+(STATE.flags[flag.id]?" on":""));
+      t.innerHTML = '<div class="sw"></div><div class="tl">'+flag.label+'</div>';
+      t.onclick = function(){ STATE.flags[flag.id] = !STATE.flags[flag.id]; renderFlow(); };
+      b.appendChild(t);
+      /* 수치 입력 펼침 */
+      if (flag.num && STATE.flags[flag.id]){
+        b.appendChild(buildNumInput(flag.num));
+      }
+    })(grp.flags[fi]);
+  }
+  /* 출혈 그룹: 약물 선택 패널 */
+  if (grpKey === "bleeding"){
+    if (STATE.flags.on_anticoagulant) b.appendChild(buildAnticoagPicker());
+    if (STATE.flags.on_antiplatelet) b.appendChild(buildAntiplateletPicker());
+  }
+  card.appendChild(b);
+  return card;
+}
+
+/* 항응고제 선택 (DOAC / warfarin) */
+function buildAnticoagPicker(){
+  var wrap = el("div",null);
+  wrap.style.cssText = "margin:8px 0 4px 0;padding:11px;background:var(--c-bleed-bg);border-radius:10px";
+  wrap.appendChild(el("div",null,'<div style="font-size:11.5px;color:var(--c-bleed);font-weight:700;margin-bottom:8px">어떤 항응고제?</div>'));
+  /* DOAC 4종 + warfarin */
+  var opts = [];
+  for (var k in DOAC.drugs){ if(DOAC.drugs.hasOwnProperty(k)) opts.push({id:k, name:DOAC.drugs[k].name, type:"doac"}); }
+  opts.push({id:"warfarin", name:"와파린", type:"warfarin"});
+  opts.forEach(function(o){
+    var on = (o.type==="doac" && STATE.bleed.drug_ac===o.id) || (o.type==="warfarin" && STATE.bleed.warfarin_risk);
+    var btn = el("button",null,o.name);
+    btn.type="button";
+    btn.style.cssText = "display:block;width:100%;text-align:left;padding:8px 11px;margin-bottom:5px;border-radius:8px;border:1.5px solid "+
+      (on?"var(--c-bleed)":"var(--line)")+";background:"+(on?"#fff":"var(--panel)")+
+      ";color:var(--ink);font-family:inherit;font-size:13px;cursor:pointer;touch-action:manipulation";
+    btn.onclick = function(){
+      if (o.type==="doac"){ STATE.bleed.drug_ac = (STATE.bleed.drug_ac===o.id)?null:o.id; STATE.bleed.warfarin_risk=null; }
+      else { STATE.bleed.warfarin_risk = STATE.bleed.warfarin_risk?null:"moderate"; STATE.bleed.drug_ac=null; }
+      renderFlow();
+    };
+    wrap.appendChild(btn);
+  });
+  /* dabigatran이면 CrCl 입력 */
+  if (STATE.bleed.drug_ac === "dabigatran"){
+    var cr = el("div",null);
+    cr.style.marginTop = "6px";
+    cr.innerHTML = '<label style="font-size:11px;color:var(--ink-faint);display:block;margin-bottom:3px">CrCl (mL/min) — 다비가트란 신배설 보정</label>';
+    var inp = el("input",null);
+    inp.type="number"; inp.placeholder="60"; inp.setAttribute("inputmode","numeric");
+    inp.value = STATE.bleed.crcl!=null?STATE.bleed.crcl:"";
+    inp.style.cssText = "font-family:inherit;font-size:14px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;width:110px";
+    inp.oninput = function(){ STATE.bleed.crcl = inp.value===""?null:parseFloat(inp.value); };
+    cr.appendChild(inp);
+    wrap.appendChild(cr);
+  }
+  /* warfarin이면 혈전위험 선택 */
+  if (STATE.bleed.warfarin_risk){
+    var wr = el("div",null);
+    wr.style.marginTop = "6px";
+    wr.innerHTML = '<label style="font-size:11px;color:var(--ink-faint);display:block;margin-bottom:5px">혈전 위험 (bridging 판단)</label>';
+    WARFARIN.bridge.forEach(function(br){
+      var on = STATE.bleed.warfarin_risk===br.risk;
+      var btn = el("button",null,{high:"고위험",moderate:"중등도",low:"저위험"}[br.risk]);
+      btn.type="button";
+      btn.style.cssText = "padding:6px 11px;margin:0 5px 5px 0;border-radius:8px;border:1.5px solid "+
+        (on?"var(--accent)":"var(--line)")+";background:"+(on?"var(--accent-bg)":"#fff")+
+        ";color:var(--ink-dim);font-family:inherit;font-size:12px;cursor:pointer";
+      btn.onclick = function(){ STATE.bleed.warfarin_risk = br.risk; renderFlow(); };
+      wr.appendChild(btn);
+    });
+    wrap.appendChild(wr);
+  }
+  return wrap;
+}
+
+/* 항혈소판제 선택 (다중) */
+function buildAntiplateletPicker(){
+  var wrap = el("div",null);
+  wrap.style.cssText = "margin:8px 0 4px 0;padding:11px;background:var(--c-bleed-bg);border-radius:10px";
+  wrap.appendChild(el("div",null,'<div style="font-size:11.5px;color:var(--c-bleed);font-weight:700;margin-bottom:8px">어떤 항혈소판제? (복수 선택)</div>'));
+  ANTIPLATELET.drugs.forEach(function(a){
+    var on = STATE.bleed.antiplatelets.indexOf(a.id) >= 0;
+    var btn = el("button",null,a.name);
+    btn.type="button";
+    btn.style.cssText = "display:inline-block;padding:7px 11px;margin:0 6px 6px 0;border-radius:8px;border:1.5px solid "+
+      (on?"var(--c-bleed)":"var(--line)")+";background:"+(on?"#fff":"var(--panel)")+
+      ";color:var(--ink);font-family:inherit;font-size:12.5px;cursor:pointer;touch-action:manipulation";
+    btn.onclick = function(){
+      var idx = STATE.bleed.antiplatelets.indexOf(a.id);
+      if (idx>=0) STATE.bleed.antiplatelets.splice(idx,1);
+      else STATE.bleed.antiplatelets.push(a.id);
+      renderFlow();
+    };
+    wrap.appendChild(btn);
+  });
+  return wrap;
+}
+
+function buildNumInput(numId){
+  /* MELD는 전용 계산 위젯 (bili/INR/Cr → 자동 계산) */
+  if (numId === "meld") return buildMELDInline();
+  var meta = {
+    ef:{ label:"EF (%)", ph:"55" },
+    spo2:{ label:"SpO2 (%, 실내공기)", ph:"96" },
+    egfr:{ label:"eGFR (mL/min/1.73㎡)", ph:"60" },
+    hb:{ label:"Hb (g/dL)", ph:"13" }
+  }[numId];
+  var row = el("div","num-row show");
+  row.innerHTML = '<label>'+meta.label+'</label>'+
+    '<input type="number" inputmode="decimal" placeholder="'+meta.ph+'" id="num-'+numId+'" value="'+(STATE.nums[numId]!=null?STATE.nums[numId]:"")+'">';
+  setTimeout(function(){
+    var inp = $("num-"+numId);
+    if (inp) inp.oninput = function(){ STATE.nums[numId] = inp.value===""?null:parseFloat(inp.value); };
+  },0);
+  return row;
+}
+
+/* MELD 인라인 계산기 (플로우 간 영역) */
+function buildMELDInline(){
+  if (!STATE.meldLab) STATE.meldLab = { bili:null, inr:null, cr:null };
+  var wrap = el("div","num-row show");
+  wrap.style.cssText = "margin:6px 0 2px 52px";
+  wrap.innerHTML = '<label style="margin-bottom:6px">MELD — lab 입력 시 자동 계산</label>';
+  var fields = [["bili","빌리루빈","1.0"],["inr","INR","1.0"],["cr","Cr","1.0"]];
+  var inrow = el("div",null);
+  inrow.style.cssText = "display:flex;gap:6px;flex-wrap:wrap";
+  fields.forEach(function(f){
+    var fw = el("div",null);
+    fw.innerHTML = '<div style="font-size:10px;color:var(--ink-faint);margin-bottom:2px">'+f[1]+'</div>';
+    var i = el("input",null);
+    i.type="number"; i.step="0.1"; i.placeholder=f[2]; i.setAttribute("inputmode","decimal");
+    i.value = STATE.meldLab[f[0]]!=null?STATE.meldLab[f[0]]:"";
+    i.style.cssText = "font-family:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);width:72px";
+    i.oninput = function(){
+      STATE.meldLab[f[0]] = i.value===""?null:parseFloat(i.value);
+      var ml = STATE.meldLab;
+      if (ml.bili!=null && ml.inr!=null && ml.cr!=null){
+        STATE.nums.meld = calcMELD(ml.bili, ml.inr, ml.cr, false);
+        var disp = $("meld-inline-result");
+        if (disp) disp.innerHTML = "→ MELD <b>"+STATE.nums.meld+"</b>";
+      }
+    };
+    fw.appendChild(i); inrow.appendChild(fw);
+  });
+  wrap.appendChild(inrow);
+  var res = el("div",null);
+  res.id = "meld-inline-result";
+  res.style.cssText = "font-size:13px;color:var(--c-hep);margin-top:7px;font-weight:600";
+  if (STATE.nums.meld!=null) res.innerHTML = "→ MELD <b>"+STATE.nums.meld+"</b>";
+  wrap.appendChild(res);
+  return wrap;
+}
+
+function buildContextCard(){
+  var card = el("div","card");
+  card.style.borderTop = "3px solid var(--accent)";
+  var open = (STATE._open_ctx !== false); /* 기본 펼침 */
+  var sel = "";
+  if (STATE.surgery){
+    var so = null;
+    for (var i=0;i<SURGERY_SITE.options.length;i++){ if(SURGERY_SITE.options[i].id===STATE.surgery){ so=SURGERY_SITE.options[i]; break; } }
+    if (so) sel = so.icon+" "+so.label;
+  }
+  var h = el("div","card-h"+(open?" open":""));
+  h.innerHTML = '<span class="ico">🔪</span>수술 · 마취 '+
+    (sel?'<span style="font-size:12px;color:var(--ink-faint);font-weight:500;margin-left:6px">'+sel+'</span>':'')+
+    '<span class="arr">▶</span>';
+  h.onclick = function(){ STATE._open_ctx = !open; renderFlow(); };
+  card.appendChild(h);
+  var b = el("div","card-b"+(open?"":" collapsed"));
+
+  /* 수술 부위 */
+  b.appendChild(el("div",null,'<div style="font-size:12px;color:var(--ink-faint);font-weight:600;margin:4px 0 8px">수술 부위</div>'));
+  var sgrid = el("div",null);
+  sgrid.style.cssText = "display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px";
+  SURGERY_SITE.options.forEach(function(o){
+    var on = STATE.surgery===o.id;
+    var riskColor = o.risk==="high"?"var(--red)":o.risk==="intermediate"?"var(--amber)":"var(--green)";
+    var btn = el("button",null,
+      '<div style="font-weight:600;font-size:12.5px">'+o.icon+' '+o.label+'</div>'+
+      '<div style="font-size:10px;color:'+riskColor+';margin-top:2px">'+o.pct+'</div>');
+    btn.type="button";
+    btn.style.cssText = "text-align:left;padding:9px 10px;border-radius:9px;border:1.5px solid "+
+      (on?"var(--accent)":"var(--line)")+";background:"+(on?"var(--accent-bg)":"var(--panel)")+
+      ";font-family:inherit;cursor:pointer;color:var(--ink);touch-action:manipulation";
+    btn.onclick = function(){ STATE.surgery = on?null:o.id; renderFlow(); };
+    sgrid.appendChild(btn);
+  });
+  b.appendChild(sgrid);
+  /* 선택된 부위 예시 */
+  if (STATE.surgery){
+    var so2 = null;
+    for (var k=0;k<SURGERY_SITE.options.length;k++){ if(SURGERY_SITE.options[k].id===STATE.surgery){ so2=SURGERY_SITE.options[k]; break; } }
+    if (so2) b.appendChild(el("div",null,'<div style="font-size:11.5px;color:var(--ink-faint);margin:-6px 0 14px;line-height:1.4">예: '+so2.ex+'</div>'));
+  }
+
+  /* 마취법 */
+  b.appendChild(el("div",null,'<div style="font-size:12px;color:var(--ink-faint);font-weight:600;margin:0 0 8px">마취법</div>'));
+  ANESTHESIA.options.forEach(function(o){
+    var on = STATE.anesthesia===o.id;
+    var t = el("div","toggle"+(on?" on":""));
+    t.innerHTML = '<div class="sw"></div><div class="tl"><b>'+o.icon+' '+o.label+'</b><br>'+
+      '<span style="font-size:11px;color:var(--ink-faint)">'+o.note+'</span></div>';
+    t.onclick = function(){ STATE.anesthesia = on?null:o.id; renderFlow(); };
+    b.appendChild(t);
+  });
+
+  card.appendChild(b);
+  return card;
+}
+
+function buildSurgeryCard(){
+  var card = el("div","card");
+  var open = !!STATE._open_surgery;
+  var h = el("div","card-h"+(open?" open":""));
+  h.innerHTML = '<span class="ico">🩸</span>출혈 위험 (수술)<span class="arr">▶</span>';
+  h.onclick = function(){ STATE._open_surgery = !open; renderFlow(); };
+  card.appendChild(h);
+  var b = el("div","card-b"+(open?"":" collapsed"));
+  /* 출혈 위험 */
+  b.appendChild(el("div",null,'<label style="font-size:11px;color:var(--ink-faint);display:block;margin:4px 0 6px">수술 출혈 위험</label>'));
+  var br = el("div",null);
+  ["low","high"].forEach(function(lv){
+    var lb = (lv==="low")?"저출혈":"고출혈";
+    var on = STATE.bleed.bleed===lv;
+    var btn = el("button",null,lb);
+    btn.type="button";
+    btn.style.cssText="padding:7px 16px;margin-right:7px;border-radius:9px;border:1.5px solid "+
+      (on?"var(--accent)":"var(--line)")+";background:"+(on?"var(--accent-bg)":"var(--panel)")+
+      ";color:"+(on?"var(--accent)":"var(--ink-dim)")+";font-family:inherit;font-size:13px;font-weight:600;cursor:pointer";
+    btn.onclick = function(){ STATE.bleed.bleed = lv; renderFlow(); };
+    br.appendChild(btn);
+  });
+  b.appendChild(br);
+  card.appendChild(b);
+  return card;
+}
+
+/* ─────────── 평가 실행 ─────────── */
+function doEval(){
+  /* 출혈 입력 수집 (flag 켜진 경우 약물 선택 UI 필요 — 간이: bleed flag면 패널) */
+  var patient = {
+    gates: STATE.gates,
+    flags: STATE.flags,
+    surgery: STATE.surgery,
+    anesthesia: STATE.anesthesia,
+    bleeding: collectBleeding()
+  };
+  /* RCRI/ARISCAT 등 수치 매핑 */
+  mapNumsToPatient(patient);
+
+  var result = recommendPreop(patient);
+  renderResult(result);
+  setTimeout(function(){
+    var rr = $("flow-result");
+    if (rr && rr.scrollIntoView) rr.scrollIntoView({behavior:"smooth", block:"start"});
+  },50);
+}
+
+function collectBleeding(){
+  var b = { bleed: STATE.bleed.bleed, neuraxial: (STATE.anesthesia==="neuraxial"), antiplatelets: [] };
+  if (STATE.bleed.drug_ac) b.drug_ac = STATE.bleed.drug_ac;
+  if (STATE.bleed.crcl != null) b.crcl = STATE.bleed.crcl;
+  if (STATE.bleed.warfarin_risk) b.warfarin_risk = STATE.bleed.warfarin_risk;
+  if (STATE.bleed.antiplatelets) b.antiplatelets = STATE.bleed.antiplatelets;
+  return b;
+}
+
+function mapNumsToPatient(patient){
+  /* eGFR / MELD / EF / SpO2 / Hb → patient */
+  if (STATE.nums.egfr != null) patient.egfr = STATE.nums.egfr;
+  if (STATE.nums.meld != null) patient.meld = STATE.nums.meld;
+  /* ARISCAT 간이: SpO2/Hb flag로 부분 산출 — 풀 입력은 도서관/시뮬에서 */
+  /* RCRI 간이: cardiac flag 기반 추정은 하지 않음(수동). 데모용 0점 */
+}
+
+/* ─────────── 결과 렌더 ─────────── */
+function renderResult(r){
+  var w = $("flow-result"); if(!w) return; w.innerHTML="";
+
+  /* 등급 카드 */
+  var meta = TIER_META[r.tier];
+  var v = el("div","verdict v-"+r.tier);
+  var viaTxt = r.via==="gate" ? "즉시 고위험 (gate 발동)" :
+               r.via==="tier1_pass" ? "Tier1 통과 — red flag 없음" :
+               "Tier2 정밀 평가";
+  v.innerHTML = '<div class="vlight">'+meta.icon+'</div>'+
+    '<div class="vlabel">'+meta.label+'</div>'+
+    '<div class="vvia">'+viaTxt+'</div>';
+  if (r.via==="gate" && r.flags.length){
+    var gl = r.flags.map(function(f){ return f.icon+" "+f.label; }).join("<br>");
+    v.innerHTML += '<div class="vdom">'+gl+'</div>';
+  } else if (r.dominant && r.dominant.length){
+    var dnames = r.dominant.map(function(d){ return domName(d); }).join(", ");
+    v.innerHTML += '<div class="vdom">주요 위험 영역: '+dnames+'</div>';
+  }
+  /* 수술·마취 맥락 */
+  if (STATE.surgery || STATE.anesthesia){
+    var ctx = [];
+    if (STATE.surgery){
+      for (var si=0;si<SURGERY_SITE.options.length;si++){ if(SURGERY_SITE.options[si].id===STATE.surgery){ ctx.push(SURGERY_SITE.options[si].icon+" "+SURGERY_SITE.options[si].label+" ("+SURGERY_SITE.options[si].pct+")"); break; } }
+    }
+    if (STATE.anesthesia){
+      for (var ai=0;ai<ANESTHESIA.options.length;ai++){ if(ANESTHESIA.options[ai].id===STATE.anesthesia){ ctx.push(ANESTHESIA.options[ai].icon+" "+ANESTHESIA.options[ai].label); break; } }
+    }
+    v.innerHTML += '<div class="vbody" style="font-size:11.5px;margin-top:8px;opacity:.85">'+ctx.join(" · ")+'</div>';
+  }
+  w.appendChild(v);
+
+  /* 영역별 결과 */
+  if (r.results){
+    for (var d in r.results){
+      if (!r.results.hasOwnProperty(d)) continue;
+      w.appendChild(buildResCard(r.results[d]));
+    }
+  }
+
+  /* 출혈 plan (위험등급과 독립 — 약 중단일은 별개 산출) */
+  if (r.bleeding && (r.bleeding.holds.length || r.bleeding.bridging)){
+    var bsep = el("div",null);
+    bsep.style.cssText = "font-size:12px;color:var(--c-bleed);font-weight:700;margin:4px 0 8px;padding-left:2px";
+    bsep.innerHTML = "💊 위험등급과 별개 — 항혈전제 중단 권고";
+    w.appendChild(bsep);
+    w.appendChild(buildBleedCard(r.bleeding));
+  }
+
+  /* next step 안내 */
+  var ns = el("div","card");
+  ns.innerHTML = '<div class="card-b" style="padding:14px 15px">'+
+    '<div style="font-weight:700;font-size:13px;margin-bottom:6px">📋 이 결과는</div>'+
+    '<div style="font-size:12.5px;color:var(--ink-dim);line-height:1.5">'+
+    '수술 가/부 판정이 아닙니다. <b>위험 등급 · 주요 영역 · 다음 조치</b>를 제시합니다. '+
+    '최종 결정은 임상 판단과 다학제 협의로.</div></div>';
+  w.appendChild(ns);
+}
+
+function domName(d){
+  return { cardiac:"❤️ 심장", pulmonary:"🫁 폐", renal:"🫘 신장",
+    hepatic:"🟠 간", frailty:"🧓 쇠약", global:"📊 전신" }[d] || d;
+}
+
+function buildResCard(res){
+  var card = el("div","card res-card");
+  var h = el("div","card-h");
+  h.innerHTML = '<span class="ico">'+domName(res.domain).split(" ")[0]+'</span>'+
+    domName(res.domain).split(" ").slice(1).join(" ")+
+    '<span class="rtier rt-'+res.tier+'">'+TIER_META[res.tier].label.split(" ")[0]+'</span>';
+  card.appendChild(h);
+  var b = el("div","card-b");
+  b.appendChild(el("div","res-detail",res.detail));
+  if (res.present && res.present.length){
+    var pr = el("div","res-present");
+    res.present.forEach(function(x){ pr.appendChild(el("span",null,x)); });
+    b.appendChild(pr);
+  }
+  card.appendChild(b);
+  return card;
+}
+
+/* ─────────── 출혈 plan 카드 (달력) ─────────── */
+function buildBleedCard(bl){
+  var card = el("div","card bleed-card");
+  card.appendChild(el("div","card-h",'<span class="ico">💉</span>출혈 약물 관리'));
+  var b = el("div","card-b");
+
+  bl.holds.forEach(function(h){
+    var item = el("div","hold-item");
+    var badge = "";
+    if (h.rev){
+      var cls = h.rev==="비가역"?"badge-irrev":"badge-rev";
+      badge = '<span class="hold-badge '+cls+'">'+h.rev+'</span>';
+    }
+    item.innerHTML = '<div class="hold-drug">'+h.drug+badge+'</div>';
+    if (h.stopDays!=null){
+      item.innerHTML += '<div class="hold-timing">수술 <b>'+h.stopDays+'일 전</b> 마지막 복용 · 재개: '+h.resume+'</div>';
+      /* 미니 달력 */
+      item.appendChild(buildMiniCal(h.stopDays, h.resumeDays||1));
+    } else if (h.stopText){
+      item.innerHTML += '<div class="hold-timing">중단: <b>'+h.stopText+'</b>'+(h.mech?' · '+h.mech:'')+'</div>';
+    }
+    if (h.note){
+      var wn = (h.note.indexOf("⚠️")>=0);
+      item.appendChild(el("div","hold-note"+(wn?" warn":""),h.note));
+    }
+    b.appendChild(item);
+  });
+
+  if (bl.bridging){
+    var bb = el("div","bridge-box");
+    bb.innerHTML = '<div class="bh">🌉 Bridging: '+bl.bridging.action+'</div>'+
+      '<div>'+bl.bridging.label+'</div>';
+    b.appendChild(bb);
+  }
+
+  bl.flags.forEach(function(f){ b.appendChild(el("div","bleed-flag","⚠️ "+f)); });
+  bl.notes.forEach(function(n){ b.appendChild(el("div","hold-note",n)); });
+
+  card.appendChild(b);
+  return card;
+}
+
+function buildMiniCal(stopDays, resumeDays){
+  var cal = el("div","cal");
+  /* stopDays 전 ~ 수술(0) ~ resumeDays 후 */
+  for (var d=stopDays; d>=1; d--){
+    cal.appendChild(el("div","cal-day stop",'<span class="cd-n">-'+d+'</span>중단'));
+  }
+  cal.appendChild(el("div","cal-day sx",'<span class="cd-n">D</span>수술'));
+  cal.appendChild(el("div","cal-day resume",'<span class="cd-n">+'+resumeDays+'</span>재개'));
+  return cal;
+}
+
+function buildDisclaimer(){
+  var d = el("div","disclaimer");
+  d.innerHTML = "⚕️ 이 도구는 <b>조언자</b>입니다. 처방·수술 가부를 결정하지 않으며, "+
+    "위험 등급과 참고 정보를 제시합니다. 모든 임상 결정은 진료의의 판단과 환자 상태를 우선합니다.";
+  return d;
+}
+
+/* ═══════════════════════════════════════════════════════
+   도서관 탭 (다음 단계에서 LIBRARY 콘텐츠 채움)
+   ═══════════════════════════════════════════════════════ */
+function renderLib(){
+  var p = $("pane-lib"); p.innerHTML="";
+  /* 검색바 */
+  var sb = el("div","searchbar");
+  sb.innerHTML = '<span>🔍</span><input id="libSearch" placeholder="도구·약물·상황 검색 (예: RCRI, 와파린, ARISCAT)">';
+  p.appendChild(sb);
+  /* 토픽 그리드 */
+  var grid = el("div","lib-grid");
+  LIBRARY.forEach(function(topic){
+    var c = el("button","lib-card");
+    c.type="button";
+    c.innerHTML = '<div class="lic">'+topic.icon+'</div><div class="lit">'+topic.title+'</div>'+
+      '<div class="lis">'+topic.sub+'</div>';
+    c.onclick = function(){ openTopic(topic.id); };
+    grid.appendChild(c);
+  });
+  p.appendChild(grid);
+  /* 출처 */
+  p.appendChild(buildSources());
+  /* 검색 */
+  setTimeout(function(){
+    var inp = $("libSearch");
+    if (inp) inp.oninput = function(){ filterLib(inp.value); };
+  },0);
+}
+
+function filterLib(q){
+  q = (q||"").toLowerCase().trim();
+  var cards = document.querySelectorAll("#pane-lib .lib-card");
+  for (var i=0;i<cards.length;i++){
+    var topic = LIBRARY[i];
+    var hay = (topic.title+" "+topic.sub+" "+(topic.tags||"")).toLowerCase();
+    cards[i].style.display = (!q || hay.indexOf(q)>=0) ? "" : "none";
+  }
+}
+
+function openTopic(id){
+  var topic = null;
+  for (var i=0;i<LIBRARY.length;i++){ if (LIBRARY[i].id===id){ topic=LIBRARY[i]; break; } }
+  if (!topic) return;
+  var p = $("pane-lib"); p.innerHTML="";
+  var back = el("button","lib-back","← 도서관");
+  back.type="button"; back.onclick = renderLib;
+  p.appendChild(back);
+  var det = el("div","lib-detail");
+  det.innerHTML = '<h2 style="font-size:18px;margin:0 0 4px">'+topic.icon+' '+topic.title+'</h2>'+
+    '<div style="font-size:13px;color:var(--ink-faint);margin-bottom:14px">'+topic.sub+'</div>';
+  topic.render(det);
+  p.appendChild(det);
+  if(window.scrollTo)try{window.scrollTo(0,0);}catch(e){}
+}
+
+function buildSources(){
+  var s = el("div","sources");
+  s.appendChild(el("h4",null,"📖 출처 · 가이드라인"));
+  SOURCES.forEach(function(src){
+    var a = el("a",null,src.t);
+    a.href = src.u; a.target="_blank"; a.rel="noopener";
+    s.appendChild(a);
+  });
+  return s;
+}
+
+
+/* ─────────── 초기화 ─────────── */
+window.__renderLib = renderLib;
+renderFlow();
+renderLib();
+
+})();
+
+</script>
+
+</body>
+</html>

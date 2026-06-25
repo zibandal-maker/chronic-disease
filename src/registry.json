@@ -192,6 +192,18 @@
       "keywords": "법정감염병 격리 감염병 신고 음압 비말 접촉 검역 결핵 TB MERS 코로나 질병관리청"
     },
     {
+      "id": "preop",
+      "title": "수술 전 위험평가",
+      "emoji": "📋",
+      "src": "preop_risk_guide.html",
+      "out": "preop.html",
+      "guideline": "수술 전 위험평가 · 2단계 스크리닝 · 출혈성 약물 관리 · 심혈관 위험",
+      "group": "A",
+      "accent": "#5a6a8a",
+      "tag": "평가",
+      "keywords": "수술전평가 수술전 위험평가 preop perioperative 마취 ASA RCRI 심혈관위험 출혈약물 항응고제 항혈소판제 와파린 아스피린 DOAC 중단 bridging 수술전검사 MET 기능평가"
+    },
+    {
       "id": "icu_calc",
       "title": "ICU 약물 계산기",
       "emoji": "💉",
