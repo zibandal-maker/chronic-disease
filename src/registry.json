@@ -120,6 +120,18 @@
       "keywords": "염증성장질환 궤양성대장염 크론병 UC 크론 IBD 생물학제제 인플릭시맙 아달리무맙 베돌리주맙 우스테키누맙"
     },
     {
+      "id": "liver",
+      "title": "만성 간질환",
+      "emoji": "🟤",
+      "src": "chronic_liver_guide.html",
+      "out": "liver.html",
+      "guideline": "만성 간질환 통합 가이드 · B형간염·지방간(MASLD/MASH)·간경변 · 심평원 급여",
+      "group": "A",
+      "accent": "#9a7b3a",
+      "tag": "소화기",
+      "keywords": "만성간질환 간질환 liver B형간염 HBV C형간염 지방간 MASLD MASH NAFLD 간경변 간섬유화 FIB-4 테노포비르 엔테카비르 비리어드 바라크루드 fibroscan 간기능 AST ALT 간경화 정맥류"
+    },
+    {
       "id": "rheum",
       "title": "류마티스·자가면역",
       "emoji": "🦴",

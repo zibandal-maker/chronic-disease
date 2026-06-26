@@ -1,0 +1,2927 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>만성 간질환 통합 가이드</title>
+<style>
+
+/* ===== 공통 셸 ===== */
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  background:#F7F5F3;color:#222;line-height:1.6;font-size:15px;-webkit-text-size-adjust:100%}
+.shell-wrap{max-width:760px;margin:0 auto;padding:0 14px 14px}
+.shell-header{background:linear-gradient(135deg,#3A2E2A,#5C4A42);color:#fff;padding:18px 16px 14px;border-radius:0 0 18px 18px;margin-bottom:10px}
+.shell-header h1{margin:0;font-size:19px;font-weight:800;letter-spacing:-.3px}
+.shell-header .sub{margin-top:4px;font-size:12px;opacity:.9}
+.disease-toggle{position:sticky;top:0;z-index:80;background:#F7F5F3;display:flex;gap:7px;padding:9px 0;margin-bottom:4px}
+.disease-toggle button{flex:1 1 auto;min-height:50px;padding:8px 6px;border:2px solid #E2DAD5;background:#fff;border-radius:13px;font-size:14px;font-weight:800;color:#6B5D55;cursor:pointer;line-height:1.25;transition:all .15s}
+.disease-toggle button .dt-emoji{font-size:17px;display:block;margin-bottom:2px}
+.disease-toggle button.on.hbv{background:#FFFBF4;border-color:#D97706;color:#B45309}
+.disease-toggle button.on.mash{background:#ECFDF5;border-color:#059669;color:#047857}
+.disease-toggle button.on.cirr{background:#FCF3F3;border-color:#B11C2A;color:#991B1B}
+.disease-pane{display:none}
+.disease-pane.on{display:block;animation:shellfade .2s ease}
+@keyframes shellfade{from{opacity:.3}to{opacity:1}}
+/* 각 질환 컨테이너는 자체 .wrap 패딩을 가지므로 셸에서 중복 패딩 제거 */
+.disease-pane .wrap{padding-left:0;padding-right:0}
+
+/* ===== 시트 방식: 카드를 목록 항목처럼 ===== */
+.disease-pane .card.sheetmode:not(.lead) .head{padding:15px}
+.disease-pane .card.sheetmode:not(.lead) .head .chev{font-size:0;transform:none!important}
+.disease-pane .card.sheetmode:not(.lead) .head .chev::after{content:"\203A";font-size:20px;font-weight:700;color:#B9A99F}
+.disease-pane .card.sheetmode:not(.lead) .head{cursor:pointer}
+
+/* ===== 공유 바텀 시트 ===== */
+.sheet-overlay{position:fixed;inset:0;background:rgba(20,12,10,.42);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:200}
+.sheet-overlay.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-width:760px;margin:0 auto;background:#fff;
+  border-radius:20px 20px 0 0;z-index:201;transform:translateY(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);
+  height:85vh;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 -8px 30px rgba(0,0,0,.18)}
+.sheet.on{transform:translateY(0)}
+.sheet-handle{flex:0 0 auto;padding:9px 0 5px;display:flex;justify-content:center;cursor:grab;touch-action:none}
+.sheet-handle .bar{width:38px;height:5px;border-radius:3px;background:#E4D9D2;border:1px solid #D8CCC4}
+.sheet-head{flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:2px 16px 11px;border-bottom:1px solid #ECE3DD}
+.sheet-head .emoji{font-size:20px}
+.sheet-head .stitle{flex:1;font-weight:800;font-size:16.5px;color:#3A2E2A}
+.sheet-head .sclose{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid #E4D9D2;background:#F7F2EE;
+  font-size:18px;color:#6B5D55;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.sheet-body{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px 26px;overscroll-behavior:contain}
+/* 시트 색상 — 활성 질환 따라 */
+.sheet.theme-hbv .stitle{color:#B45309}.sheet.theme-hbv .sclose{background:#FFFBF4;border-color:#F3D9A8}
+.sheet.theme-mash .stitle{color:#047857}.sheet.theme-mash .sclose{background:#ECFDF5;border-color:#A7E8CC}
+.sheet.theme-cirr .stitle{color:#991B1B}.sheet.theme-cirr .sclose{background:#FCF3F3;border-color:#F0C4C4}
+
+/* ===== B형간염 ===== */
+#disease-hbv, .sheet.theme-hbv{
+  --hbv-900:#5C2E0A; --hbv-800:#7C3D0F; --hbv-700:#B45309; --hbv-600:#C2630E;
+  --hbv-500:#D97706; --hbv-400:#F59E0B; --hbv-100:#FEF3E2; --hbv-50:#FFFBF4;
+  --ink:#1F1A14; --ink2:#5A4F42; --line:#E8DDCB;
+  --ok:#15803D; --ok-bg:#E8F5EC; --warn:#B91C1C; --warn-bg:#FCEEED;
+  --reimb:#1D4ED8; --reimb-bg:#EAF0FE; --paper:#FFFFFF;
+  --a1:#15803D; --a2:#4D7C0F; --b1:#B45309; --b2:#C2630E; --c1:#9A3412; --c2:#7C2D12;
+}
+#disease-hbv *, .sheet.theme-hbv *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+#disease-hbv, .sheet.theme-hbv, #disease-hbv, .sheet.theme-hbv{margin:0;padding:0}
+#disease-hbv, .sheet.theme-hbv{
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  background:var(--hbv-50);color:var(--ink);line-height:1.6;font-size:15px;
+  -webkit-text-size-adjust:100%;
+}
+#disease-hbv .wrap, .sheet.theme-hbv .wrap{max-width:760px;margin:0 auto;padding:0 14px 80px}
+#disease-hbv header, .sheet.theme-hbv header{
+  background:linear-gradient(135deg,var(--hbv-800),var(--hbv-600));
+  color:#fff;padding:20px 16px 16px;border-radius:0 0 18px 18px;margin-bottom:8px;
+}
+#disease-hbv header h1, .sheet.theme-hbv header h1{margin:0;font-size:21px;font-weight:800;letter-spacing:-.3px}
+#disease-hbv header .sub, .sheet.theme-hbv header .sub{margin-top:4px;font-size:12.5px;opacity:.92}
+#disease-hbv header .ver, .sheet.theme-hbv header .ver{margin-top:8px;font-size:11px;opacity:.8}
+#disease-hbv nav, .sheet.theme-hbv nav{position:sticky;top:62px;z-index:50;background:var(--hbv-50);
+  display:flex;gap:6px;padding:8px 0;margin-bottom:10px;border-bottom:1px solid var(--line);overflow-x:auto}
+#disease-hbv nav button, .sheet.theme-hbv nav button{
+  flex:0 0 auto;min-height:40px;padding:8px 14px;border:1px solid var(--line);
+  background:var(--paper);color:var(--ink2);border-radius:20px;font-size:14px;font-weight:600;
+  cursor:pointer;white-space:nowrap;
+}
+#disease-hbv nav button.on, .sheet.theme-hbv nav button.on{background:var(--hbv-700);color:#fff;border-color:var(--hbv-700)}
+#disease-hbv section.tab, .sheet.theme-hbv section.tab{display:none}
+#disease-hbv section.tab.on, .sheet.theme-hbv section.tab.on{display:block;animation:disease-hbv_fade .2s ease}
+@keyframes disease-hbv_fade{from{opacity:.4}to{opacity:1}}
+#disease-hbv .card, .sheet.theme-hbv .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
+#disease-hbv .card .head, .sheet.theme-hbv .card .head{padding:13px 15px;display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none}
+#disease-hbv .card .head .emoji, .sheet.theme-hbv .card .head .emoji{font-size:18px;flex:0 0 auto}
+#disease-hbv .card .head .t, .sheet.theme-hbv .card .head .t{flex:1;font-weight:700;font-size:15.5px}
+#disease-hbv .card .head .chev, .sheet.theme-hbv .card .head .chev{font-size:12px;color:var(--ink2);transition:transform .2s}
+#disease-hbv .card.open .head .chev, .sheet.theme-hbv .card.open .head .chev{transform:rotate(90deg)}
+#disease-hbv .card .body, .sheet.theme-hbv .card .body{padding:0 15px 15px;display:none}
+#disease-hbv .card.open>.body, .sheet.theme-hbv .card.open>.body{display:block}
+#disease-hbv .card.lead>.body, .sheet.theme-hbv .card.lead>.body{display:block}
+#disease-hbv .card.lead>.head, .sheet.theme-hbv .card.lead>.head{cursor:default}
+#disease-hbv .card .card.sub, .sheet.theme-hbv .card .card.sub{margin:6px 0;border-color:var(--hbv-100);background:var(--hbv-50)}
+#disease-hbv .card .card.sub .head, .sheet.theme-hbv .card .card.sub .head{padding:10px 12px}
+#disease-hbv .card .card.sub .head .t, .sheet.theme-hbv .card .card.sub .head .t{font-size:14.5px}
+#disease-hbv .grade, .sheet.theme-hbv .grade{display:inline-block;padding:1px 7px;border-radius:6px;font-size:11px;font-weight:800;color:#fff;margin-left:6px;vertical-align:middle}
+#disease-hbv .g-A1, .sheet.theme-hbv .g-A1{background:var(--a1)}
+#disease-hbv .g-A2, .sheet.theme-hbv .g-A2{background:var(--a2)}
+#disease-hbv .g-B1, .sheet.theme-hbv .g-B1{background:var(--b1)}
+#disease-hbv .g-B2, .sheet.theme-hbv .g-B2{background:var(--b2)}
+#disease-hbv .g-C1, .sheet.theme-hbv .g-C1{background:var(--c1)}
+#disease-hbv .g-C2, .sheet.theme-hbv .g-C2{background:var(--c2)}
+#disease-hbv .dual, .sheet.theme-hbv .dual{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap}
+#disease-hbv .layer, .sheet.theme-hbv .layer{flex:1 1 220px;border-radius:10px;padding:10px 12px;font-size:13.5px}
+#disease-hbv .layer.gl, .sheet.theme-hbv .layer.gl{background:var(--hbv-100);border:1px solid var(--hbv-400)}
+#disease-hbv .layer.rb, .sheet.theme-hbv .layer.rb{background:var(--reimb-bg);border:1px solid #B9CCFB}
+#disease-hbv .layer .lh, .sheet.theme-hbv .layer .lh{font-weight:800;font-size:11.5px;letter-spacing:.3px;margin-bottom:4px;text-transform:uppercase}
+#disease-hbv .layer.gl .lh, .sheet.theme-hbv .layer.gl .lh{color:var(--hbv-800)}
+#disease-hbv .layer.rb .lh, .sheet.theme-hbv .layer.rb .lh{color:var(--reimb)}
+#disease-hbv .clash, .sheet.theme-hbv .clash{background:var(--warn-bg);border:1px solid #F0B4B0;border-radius:10px;padding:9px 12px;font-size:13px;margin:8px 0;color:var(--warn)}
+#disease-hbv .clash b, .sheet.theme-hbv .clash b{color:var(--warn)}
+#disease-hbv table, .sheet.theme-hbv table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+#disease-hbv th, .sheet.theme-hbv th, #disease-hbv td, .sheet.theme-hbv td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+#disease-hbv th, .sheet.theme-hbv th{background:var(--hbv-100);font-weight:700;font-size:12px}
+#disease-hbv td .yes, .sheet.theme-hbv td .yes{color:var(--ok);font-weight:700}
+#disease-hbv td .no, .sheet.theme-hbv td .no{color:var(--warn);font-weight:700}
+#disease-hbv .chip, .sheet.theme-hbv .chip{display:inline-block;background:var(--hbv-100);color:var(--hbv-800);border-radius:6px;padding:1px 7px;font-size:12px;font-weight:600;margin:2px 3px 2px 0}
+#disease-hbv .pill-soon, .sheet.theme-hbv .pill-soon{background:#FEF9C3;color:#854D0E;border:1px solid #FDE68A;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700}
+#disease-hbv .field, .sheet.theme-hbv .field{margin:10px 0}
+#disease-hbv .field label, .sheet.theme-hbv .field label{display:block;font-size:13px;font-weight:700;margin-bottom:5px;color:var(--ink2)}
+#disease-hbv .field .opts, .sheet.theme-hbv .field .opts{display:flex;gap:6px;flex-wrap:wrap}
+#disease-hbv .field .opts button, .sheet.theme-hbv .field .opts button{min-height:40px;padding:8px 13px;border:1px solid var(--line);background:var(--paper);
+  border-radius:9px;font-size:14px;cursor:pointer;color:var(--ink)}
+#disease-hbv .field .opts button.sel, .sheet.theme-hbv .field .opts button.sel{background:var(--hbv-700);color:#fff;border-color:var(--hbv-700)}
+#disease-hbv .field input, .sheet.theme-hbv .field input{width:100%;min-height:42px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:15px}
+#disease-hbv .adv-toggle, .sheet.theme-hbv .adv-toggle{margin:12px 0;padding:11px 13px;background:var(--hbv-100);border:1px dashed var(--hbv-400);
+  border-radius:10px;font-size:13.5px;font-weight:700;color:var(--hbv-800);cursor:pointer;text-align:center}
+#disease-hbv .adv, .sheet.theme-hbv .adv{display:none}
+#disease-hbv .adv.on, .sheet.theme-hbv .adv.on{display:block}
+#disease-hbv .btn-run, .sheet.theme-hbv .btn-run{width:100%;min-height:50px;background:var(--hbv-700);color:#fff;border:0;border-radius:12px;
+  font-size:16px;font-weight:800;cursor:pointer;margin:14px 0 4px}
+#disease-hbv .btn-reset, .sheet.theme-hbv .btn-reset{width:100%;min-height:42px;background:transparent;color:var(--ink2);border:1px solid var(--line);
+  border-radius:10px;font-size:14px;cursor:pointer;margin-bottom:8px}
+#disease-hbv .result, .sheet.theme-hbv .result{margin-top:14px}
+#disease-hbv .rx, .sheet.theme-hbv .rx{border-left:4px solid var(--hbv-600);background:var(--hbv-50);border-radius:0 10px 10px 0;padding:11px 13px;margin:8px 0}
+#disease-hbv .rx .name, .sheet.theme-hbv .rx .name{font-weight:800;font-size:15px}
+#disease-hbv .rx .flags, .sheet.theme-hbv .rx .flags{margin-top:5px;font-size:12.5px}
+#disease-hbv .tag, .sheet.theme-hbv .tag{display:inline-block;border-radius:6px;padding:1px 7px;font-size:11.5px;font-weight:700;margin:2px 4px 2px 0}
+#disease-hbv .tag.ok, .sheet.theme-hbv .tag.ok{background:var(--ok-bg);color:var(--ok)}
+#disease-hbv .tag.warn, .sheet.theme-hbv .tag.warn{background:var(--warn-bg);color:var(--warn)}
+#disease-hbv .tag.gl, .sheet.theme-hbv .tag.gl{background:var(--hbv-100);color:var(--hbv-800)}
+#disease-hbv .target, .sheet.theme-hbv .target{background:var(--ok-bg);border-radius:10px;padding:9px 12px;font-size:13px;margin:8px 0}
+#disease-hbv .flagbox, .sheet.theme-hbv .flagbox{background:var(--warn-bg);border:1px solid #F0B4B0;border-radius:10px;padding:10px 12px;font-size:13px;margin:8px 0;color:var(--warn)}
+#disease-hbv .flagbox .fl, .sheet.theme-hbv .flagbox .fl{margin:3px 0}
+#disease-hbv .search-in, .sheet.theme-hbv .search-in{width:100%;min-height:46px;padding:11px 13px;border:1px solid var(--line);border-radius:11px;font-size:15px;margin-bottom:0}
+#disease-hbv #searchBar, .sheet.theme-hbv #searchBar{position:sticky;top:0;z-index:60;background:var(--hbv-50);padding:8px 0 4px}
+#disease-hbv #searchResults, .sheet.theme-hbv #searchResults{margin-top:8px}
+#disease-hbv #searchResults:empty, .sheet.theme-hbv #searchResults:empty{display:none}
+#disease-hbv .sr, .sheet.theme-hbv .sr{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin-bottom:8px}
+#disease-hbv .sr .srt, .sheet.theme-hbv .sr .srt{font-weight:700;font-size:14px;color:var(--hbv-800)}
+#disease-hbv .sr .srx, .sheet.theme-hbv .sr .srx{font-size:13px;color:var(--ink2);margin-top:3px}
+#disease-hbv mark, .sheet.theme-hbv mark{background:#FDE68A;padding:0 2px;border-radius:3px}
+#disease-hbv .note, .sheet.theme-hbv .note{font-size:12px;color:var(--ink2);margin:6px 0}
+#disease-hbv .disc, .sheet.theme-hbv .disc{font-size:12px;color:var(--ink2);background:var(--hbv-100);border-radius:10px;padding:11px 13px;margin:14px 0 0}
+#disease-hbv footer, .sheet.theme-hbv footer{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink2)}
+#disease-hbv footer a, .sheet.theme-hbv footer a{color:var(--hbv-700);word-break:break-all}
+#disease-hbv footer h4, .sheet.theme-hbv footer h4{margin:10px 0 5px;font-size:12.5px;color:var(--ink)}
+#disease-hbv footer ol, .sheet.theme-hbv footer ol{margin:0;padding-left:18px}
+#disease-hbv footer li, .sheet.theme-hbv footer li{margin:2px 0}
+#disease-hbv h3.sec, .sheet.theme-hbv h3.sec{font-size:16px;margin:18px 0 8px;color:var(--hbv-800);font-weight:800}
+#disease-hbv .kbd, .sheet.theme-hbv .kbd{font-size:12px;color:var(--ink2)}
+#disease-hbv ul.tight, .sheet.theme-hbv ul.tight{margin:6px 0;padding-left:18px}
+#disease-hbv ul.tight li, .sheet.theme-hbv ul.tight li{margin:3px 0}
+#disease-hbv .irow, .sheet.theme-hbv .irow{display:flex;gap:0;margin:7px 0;border-radius:9px;overflow:hidden;background:var(--paper);border:1px solid var(--line)}
+#disease-hbv .irow .bar, .sheet.theme-hbv .irow .bar{flex:0 0 4px}
+#disease-hbv .irow .ic, .sheet.theme-hbv .irow .ic{flex:1;padding:8px 11px}
+#disease-hbv .irow .lbl, .sheet.theme-hbv .irow .lbl{font-size:11px;font-weight:800;letter-spacing:.2px;text-transform:uppercase;margin-bottom:2px}
+#disease-hbv .irow .txt, .sheet.theme-hbv .irow .txt{font-size:13px;color:var(--ink);line-height:1.5}
+#disease-hbv .irow.danger, .sheet.theme-hbv .irow.danger{background:var(--warn-bg)}
+#disease-hbv .irow.danger .bar, .sheet.theme-hbv .irow.danger .bar{background:var(--warn)}
+#disease-hbv .irow.danger .lbl, .sheet.theme-hbv .irow.danger .lbl{color:var(--warn)}
+#disease-hbv .irow.caution, .sheet.theme-hbv .irow.caution{background:#FEF9C3}
+#disease-hbv .irow.caution .bar, .sheet.theme-hbv .irow.caution .bar{background:#CA8A04}
+#disease-hbv .irow.caution .lbl, .sheet.theme-hbv .irow.caution .lbl{color:#854D0E}
+#disease-hbv .irow.good, .sheet.theme-hbv .irow.good{background:var(--ok-bg)}
+#disease-hbv .irow.good .bar, .sheet.theme-hbv .irow.good .bar{background:var(--ok)}
+#disease-hbv .irow.good .lbl, .sheet.theme-hbv .irow.good .lbl{color:var(--ok)}
+#disease-hbv .irow.info, .sheet.theme-hbv .irow.info{background:var(--hbv-50)}
+#disease-hbv .irow.info .bar, .sheet.theme-hbv .irow.info .bar{background:var(--hbv-500)}
+#disease-hbv .irow.info .lbl, .sheet.theme-hbv .irow.info .lbl{color:var(--hbv-700)}
+#disease-hbv .irow.reimb, .sheet.theme-hbv .irow.reimb{background:var(--reimb-bg)}
+#disease-hbv .irow.reimb .bar, .sheet.theme-hbv .irow.reimb .bar{background:var(--reimb)}
+#disease-hbv .irow.reimb .lbl, .sheet.theme-hbv .irow.reimb .lbl{color:var(--reimb)}
+#disease-hbv .mtx, .sheet.theme-hbv .mtx{width:100%;border-collapse:separate;border-spacing:0;margin:8px 0;table-layout:fixed}
+#disease-hbv .mtx th, .sheet.theme-hbv .mtx th, #disease-hbv .mtx td, .sheet.theme-hbv .mtx td{padding:5px 2px;text-align:center;font-size:11px;border-bottom:1px solid var(--line)}
+#disease-hbv .mtx thead th, .sheet.theme-hbv .mtx thead th{background:var(--hbv-100);color:var(--hbv-800);font-weight:700;font-size:10px;line-height:1.2;padding:5px 1px}
+#disease-hbv .mtx td.drug, .sheet.theme-hbv .mtx td.drug{text-align:left;font-weight:700;font-size:11.5px;padding-left:5px;color:var(--ink)}
+#disease-hbv .mtx td.drug small, .sheet.theme-hbv .mtx td.drug small{display:block;font-weight:400;color:var(--ink2);font-size:10px}
+#disease-hbv .mtx tr.first td, .sheet.theme-hbv .mtx tr.first td{background:var(--hbv-50)}
+#disease-hbv .mtx .dot, .sheet.theme-hbv .mtx .dot{display:inline-block;width:15px;height:15px;line-height:15px;border-radius:50%;font-size:10px;font-weight:800;color:#fff}
+#disease-hbv .dot.g, .sheet.theme-hbv .dot.g{background:var(--ok)}
+#disease-hbv .dot.y, .sheet.theme-hbv .dot.y{background:#CA8A04}
+#disease-hbv .dot.r, .sheet.theme-hbv .dot.r{background:var(--warn)}
+#disease-hbv .dot.n, .sheet.theme-hbv .dot.n{background:#B8AB97}
+#disease-hbv .mtx-legend, .sheet.theme-hbv .mtx-legend{font-size:10.5px;color:var(--ink2);margin:4px 0 2px;display:flex;gap:10px;flex-wrap:wrap}
+#disease-hbv .mtx-legend span, .sheet.theme-hbv .mtx-legend span{display:inline-flex;align-items:center;gap:3px}
+#disease-hbv .bars, .sheet.theme-hbv .bars{display:inline-flex;gap:2px;vertical-align:middle}
+#disease-hbv .bars i, .sheet.theme-hbv .bars i{width:6px;height:11px;border-radius:1px;background:var(--line)}
+#disease-hbv .bars i.on, .sheet.theme-hbv .bars i.on{background:var(--hbv-500)}
+#disease-hbv .bars.hi i.on, .sheet.theme-hbv .bars.hi i.on{background:var(--ok)}
+#disease-hbv .bars.lo i.on, .sheet.theme-hbv .bars.lo i.on{background:var(--warn)}
+#disease-hbv .flow-stage, .sheet.theme-hbv .flow-stage{display:flex;gap:0;margin:6px 0;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--paper)}
+#disease-hbv .flow-stage .side, .sheet.theme-hbv .flow-stage .side{flex:0 0 6px}
+#disease-hbv .flow-stage.tx .side, .sheet.theme-hbv .flow-stage.tx .side{background:var(--warn)}
+#disease-hbv .flow-stage.obs .side, .sheet.theme-hbv .flow-stage.obs .side{background:#94A3B8}
+#disease-hbv .flow-stage.end .side, .sheet.theme-hbv .flow-stage.end .side{background:var(--ok)}
+#disease-hbv .flow-stage.grey .side, .sheet.theme-hbv .flow-stage.grey .side{background:repeating-linear-gradient(45deg,#CA8A04,#CA8A04 4px,#FEF9C3 4px,#FEF9C3 8px)}
+#disease-hbv .flow-stage .core, .sheet.theme-hbv .flow-stage .core{flex:1;padding:9px 12px}
+#disease-hbv .flow-stage .top, .sheet.theme-hbv .flow-stage .top{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+#disease-hbv .flow-stage .nm, .sheet.theme-hbv .flow-stage .nm{font-weight:800;font-size:14px}
+#disease-hbv .flow-stage .markers, .sheet.theme-hbv .flow-stage .markers{font-size:11.5px;color:var(--ink2);margin-top:3px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+#disease-hbv .flow-stage .desc, .sheet.theme-hbv .flow-stage .desc{font-size:12px;color:var(--ink);margin-top:4px;line-height:1.5}
+#disease-hbv .act, .sheet.theme-hbv .act{display:inline-block;font-size:10.5px;font-weight:800;padding:1px 8px;border-radius:20px;color:#fff}
+#disease-hbv .act.tx, .sheet.theme-hbv .act.tx{background:var(--warn)}
+#disease-hbv .act.obs, .sheet.theme-hbv .act.obs{background:#64748B}
+#disease-hbv .act.end, .sheet.theme-hbv .act.end{background:var(--ok)}
+#disease-hbv .act.grey, .sheet.theme-hbv .act.grey{background:#CA8A04}
+#disease-hbv .gchip, .sheet.theme-hbv .gchip{display:inline-block;padding:2px 8px;border-radius:7px;font-size:11px;font-weight:800;color:#fff}
+#disease-hbv .gchip.A1, .sheet.theme-hbv .gchip.A1, #disease-hbv .gchip.A2, .sheet.theme-hbv .gchip.A2{background:var(--ok)}
+#disease-hbv .gchip.B1, .sheet.theme-hbv .gchip.B1, #disease-hbv .gchip.B2, .sheet.theme-hbv .gchip.B2{background:var(--hbv-600)}
+#disease-hbv .gchip.C1, .sheet.theme-hbv .gchip.C1, #disease-hbv .gchip.C2, .sheet.theme-hbv .gchip.C2{background:var(--c1)}
+#disease-hbv .keybox, .sheet.theme-hbv .keybox{background:linear-gradient(135deg,var(--hbv-100),var(--hbv-50));border:1px solid var(--hbv-400);border-radius:11px;padding:11px 13px;margin:8px 0}
+#disease-hbv .keybox .kt, .sheet.theme-hbv .keybox .kt{font-size:11px;font-weight:800;text-transform:uppercase;color:var(--hbv-700);letter-spacing:.3px;margin-bottom:4px}
+#disease-hbv .keybox .kv, .sheet.theme-hbv .keybox .kv{font-size:13.5px;color:var(--ink);line-height:1.55}
+#disease-hbv .attrs, .sheet.theme-hbv .attrs{margin:8px 0}
+#disease-hbv .attr, .sheet.theme-hbv .attr{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid var(--hbv-100)}
+#disease-hbv .attr:last-child, .sheet.theme-hbv .attr:last-child{border-bottom:0}
+#disease-hbv .attr .ak, .sheet.theme-hbv .attr .ak{flex:0 0 76px;font-size:11px;font-weight:800;color:var(--hbv-700);padding-top:1px}
+#disease-hbv .attr .av, .sheet.theme-hbv .attr .av{flex:1;font-size:12.5px;color:var(--ink);line-height:1.5}
+#disease-hbv .verdict-big, .sheet.theme-hbv .verdict-big{border-radius:12px;padding:13px 15px;margin:6px 0;color:#fff;font-weight:800}
+#disease-hbv .verdict-big.ok, .sheet.theme-hbv .verdict-big.ok{background:linear-gradient(135deg,var(--ok),#16A34A)}
+#disease-hbv .verdict-big.no, .sheet.theme-hbv .verdict-big.no{background:linear-gradient(135deg,var(--warn),#DC2626)}
+#disease-hbv .verdict-big .vbt, .sheet.theme-hbv .verdict-big .vbt{font-size:18px}
+#disease-hbv .verdict-big .vbs, .sheet.theme-hbv .verdict-big .vbs{font-size:12.5px;font-weight:500;opacity:.95;margin-top:4px;line-height:1.5}
+#disease-hbv .drug-chips, .sheet.theme-hbv .drug-chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+#disease-hbv .drug-chips button, .sheet.theme-hbv .drug-chips button{flex:0 0 auto;min-height:38px;padding:7px 12px;border:1px solid var(--line);background:var(--paper);
+  border-radius:9px;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+#disease-hbv .drug-chips button .b1, .sheet.theme-hbv .drug-chips button .b1{font-size:9px;font-weight:800;color:#fff;background:var(--ok);border-radius:4px;padding:0 4px}
+#disease-hbv .drug-chips button.sel, .sheet.theme-hbv .drug-chips button.sel{background:var(--hbv-700);color:#fff;border-color:var(--hbv-700)}
+#disease-hbv .drug-chips button.sel .b1, .sheet.theme-hbv .drug-chips button.sel .b1{background:rgba(255,255,255,.3)}
+#disease-hbv .drug-panel, .sheet.theme-hbv .drug-panel{margin-top:4px}
+#disease-hbv .drug-panel:empty, .sheet.theme-hbv .drug-panel:empty{display:none}
+
+/* ===== 지방간 MASLD ===== */
+#disease-mash, .sheet.theme-mash{
+  --m-900:#064E3B; --m-800:#065F46; --m-700:#047857; --m-600:#059669;
+  --m-500:#10B981; --m-400:#34D399; --m-100:#D1FAE5; --m-50:#ECFDF5;
+  --ink:#13211C; --ink2:#4B5A53; --line:#D7E8E0;
+  --ok:#15803D; --ok-bg:#E8F5EC; --warn:#B91C1C; --warn-bg:#FCEEED;
+  --reimb:#1D4ED8; --reimb-bg:#EAF0FE; --paper:#FFFFFF;
+  --low:#15803D; --mid:#CA8A04; --high:#B91C1C;
+}
+#disease-mash *, .sheet.theme-mash *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+#disease-mash, .sheet.theme-mash, #disease-mash, .sheet.theme-mash{margin:0;padding:0}
+#disease-mash, .sheet.theme-mash{
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  background:var(--m-50);color:var(--ink);line-height:1.6;font-size:15px;-webkit-text-size-adjust:100%;
+}
+#disease-mash .wrap, .sheet.theme-mash .wrap{max-width:760px;margin:0 auto;padding:0 14px 80px}
+#disease-mash header, .sheet.theme-mash header{background:linear-gradient(135deg,var(--m-800),var(--m-600));color:#fff;padding:20px 16px 16px;border-radius:0 0 18px 18px;margin-bottom:8px}
+#disease-mash header h1, .sheet.theme-mash header h1{margin:0;font-size:20px;font-weight:800;letter-spacing:-.3px}
+#disease-mash header .sub, .sheet.theme-mash header .sub{margin-top:4px;font-size:12.5px;opacity:.92}
+#disease-mash header .ver, .sheet.theme-mash header .ver{margin-top:8px;font-size:11px;opacity:.8}
+#disease-mash #searchBar, .sheet.theme-mash #searchBar{position:sticky;top:0;z-index:60;background:var(--m-50);padding:8px 0 4px}
+#disease-mash .search-in, .sheet.theme-mash .search-in{width:100%;min-height:46px;padding:11px 13px;border:1px solid var(--line);border-radius:11px;font-size:15px}
+#disease-mash #searchResults, .sheet.theme-mash #searchResults{margin-top:8px}
+#disease-mash #searchResults:empty, .sheet.theme-mash #searchResults:empty{display:none}
+#disease-mash .sr, .sheet.theme-mash .sr{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin-bottom:8px}
+#disease-mash .sr .srt, .sheet.theme-mash .sr .srt{font-weight:700;font-size:14px;color:var(--m-800)}
+#disease-mash .sr .srx, .sheet.theme-mash .sr .srx{font-size:13px;color:var(--ink2);margin-top:3px}
+#disease-mash nav, .sheet.theme-mash nav{position:sticky;top:62px;z-index:50;background:var(--m-50);display:flex;gap:6px;padding:8px 0;margin-bottom:10px;border-bottom:1px solid var(--line)}
+#disease-mash nav button, .sheet.theme-mash nav button{flex:1 1 auto;min-height:42px;padding:8px 14px;border:1px solid var(--line);background:var(--paper);color:var(--ink2);border-radius:11px;font-size:14.5px;font-weight:700;cursor:pointer}
+#disease-mash nav button.on, .sheet.theme-mash nav button.on{background:var(--m-700);color:#fff;border-color:var(--m-700)}
+#disease-mash section.tab, .sheet.theme-mash section.tab{display:none}
+#disease-mash section.tab.on, .sheet.theme-mash section.tab.on{display:block;animation:disease-mash_fade .2s ease}
+@keyframes disease-mash_fade{from{opacity:.4}to{opacity:1}}
+#disease-mash .card, .sheet.theme-mash .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
+#disease-mash .card .head, .sheet.theme-mash .card .head{padding:13px 15px;display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none}
+#disease-mash .card .head .emoji, .sheet.theme-mash .card .head .emoji{font-size:18px;flex:0 0 auto}
+#disease-mash .card .head .t, .sheet.theme-mash .card .head .t{flex:1;font-weight:700;font-size:15.5px}
+#disease-mash .card .head .chev, .sheet.theme-mash .card .head .chev{font-size:12px;color:var(--ink2);transition:transform .2s}
+#disease-mash .card.open .head .chev, .sheet.theme-mash .card.open .head .chev{transform:rotate(90deg)}
+#disease-mash .card .body, .sheet.theme-mash .card .body{padding:0 15px 15px;display:none}
+#disease-mash .card.open>.body, .sheet.theme-mash .card.open>.body{display:block}
+#disease-mash .card.lead>.body, .sheet.theme-mash .card.lead>.body{display:block}
+#disease-mash .card.lead>.head, .sheet.theme-mash .card.lead>.head{cursor:default}
+#disease-mash .card .card.sub, .sheet.theme-mash .card .card.sub{margin:6px 0;border-color:var(--m-100);background:var(--m-50)}
+#disease-mash .card .card.sub .head, .sheet.theme-mash .card .card.sub .head{padding:10px 12px}
+#disease-mash .irow, .sheet.theme-mash .irow{display:flex;gap:0;margin:7px 0;border-radius:9px;overflow:hidden;border:1px solid var(--line);background:var(--paper)}
+#disease-mash .irow .bar, .sheet.theme-mash .irow .bar{flex:0 0 4px}
+#disease-mash .irow .ic, .sheet.theme-mash .irow .ic{flex:1;padding:8px 11px}
+#disease-mash .irow .lbl, .sheet.theme-mash .irow .lbl{font-size:11px;font-weight:800;letter-spacing:.2px;text-transform:uppercase;margin-bottom:2px}
+#disease-mash .irow .txt, .sheet.theme-mash .irow .txt{font-size:13px;color:var(--ink);line-height:1.5}
+#disease-mash .irow.danger, .sheet.theme-mash .irow.danger{background:var(--warn-bg)}
+#disease-mash .irow.danger .bar, .sheet.theme-mash .irow.danger .bar{background:var(--warn)}
+#disease-mash .irow.danger .lbl, .sheet.theme-mash .irow.danger .lbl{color:var(--warn)}
+#disease-mash .irow.caution, .sheet.theme-mash .irow.caution{background:#FEF9C3}
+#disease-mash .irow.caution .bar, .sheet.theme-mash .irow.caution .bar{background:#CA8A04}
+#disease-mash .irow.caution .lbl, .sheet.theme-mash .irow.caution .lbl{color:#854D0E}
+#disease-mash .irow.good, .sheet.theme-mash .irow.good{background:var(--ok-bg)}
+#disease-mash .irow.good .bar, .sheet.theme-mash .irow.good .bar{background:var(--ok)}
+#disease-mash .irow.good .lbl, .sheet.theme-mash .irow.good .lbl{color:var(--ok)}
+#disease-mash .irow.info, .sheet.theme-mash .irow.info{background:var(--m-50)}
+#disease-mash .irow.info .bar, .sheet.theme-mash .irow.info .bar{background:var(--m-500)}
+#disease-mash .irow.info .lbl, .sheet.theme-mash .irow.info .lbl{color:var(--m-700)}
+#disease-mash .irow.reimb, .sheet.theme-mash .irow.reimb{background:var(--reimb-bg)}
+#disease-mash .irow.reimb .bar, .sheet.theme-mash .irow.reimb .bar{background:var(--reimb)}
+#disease-mash .irow.reimb .lbl, .sheet.theme-mash .irow.reimb .lbl{color:var(--reimb)}
+#disease-mash .keybox, .sheet.theme-mash .keybox{background:linear-gradient(135deg,var(--m-100),var(--m-50));border:1px solid var(--m-400);border-radius:11px;padding:11px 13px;margin:8px 0}
+#disease-mash .keybox .kt, .sheet.theme-mash .keybox .kt{font-size:11px;font-weight:800;text-transform:uppercase;color:var(--m-700);letter-spacing:.3px;margin-bottom:4px}
+#disease-mash .keybox .kv, .sheet.theme-mash .keybox .kv{font-size:13.5px;color:var(--ink);line-height:1.55}
+#disease-mash .attrs, .sheet.theme-mash .attrs{margin:8px 0}
+#disease-mash .attr, .sheet.theme-mash .attr{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid var(--m-100)}
+#disease-mash .attr:last-child, .sheet.theme-mash .attr:last-child{border-bottom:0}
+#disease-mash .attr .ak, .sheet.theme-mash .attr .ak{flex:0 0 78px;font-size:11px;font-weight:800;color:var(--m-700);padding-top:1px}
+#disease-mash .attr .av, .sheet.theme-mash .attr .av{flex:1;font-size:12.5px;color:var(--ink);line-height:1.5}
+#disease-mash table, .sheet.theme-mash table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+#disease-mash th, .sheet.theme-mash th, #disease-mash td, .sheet.theme-mash td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+#disease-mash th, .sheet.theme-mash th{background:var(--m-100);font-weight:700;font-size:12px}
+#disease-mash .mtx, .sheet.theme-mash .mtx{width:100%;border-collapse:separate;border-spacing:0;margin:8px 0;table-layout:fixed}
+#disease-mash .mtx th, .sheet.theme-mash .mtx th, #disease-mash .mtx td, .sheet.theme-mash .mtx td{padding:5px 2px;text-align:center;font-size:11px;border:0;border-bottom:1px solid var(--line)}
+#disease-mash .mtx thead th, .sheet.theme-mash .mtx thead th{background:var(--m-100);color:var(--m-800);font-weight:700;font-size:10px;line-height:1.2}
+#disease-mash .mtx td.drug, .sheet.theme-mash .mtx td.drug{text-align:left;font-weight:700;font-size:11.5px;padding-left:5px}
+#disease-mash .mtx td.drug small, .sheet.theme-mash .mtx td.drug small{display:block;font-weight:400;color:var(--ink2);font-size:10px}
+#disease-mash .dot, .sheet.theme-mash .dot{display:inline-block;width:15px;height:15px;line-height:15px;border-radius:50%;font-size:10px;font-weight:800;color:#fff}
+#disease-mash .dot.g, .sheet.theme-mash .dot.g{background:var(--ok)}
+#disease-mash .dot.y, .sheet.theme-mash .dot.y{background:#CA8A04}
+#disease-mash .dot.r, .sheet.theme-mash .dot.r{background:var(--warn)}
+#disease-mash .dot.n, .sheet.theme-mash .dot.n{background:#B8AB97}
+#disease-mash .chip, .sheet.theme-mash .chip{display:inline-block;background:var(--m-100);color:var(--m-800);border-radius:6px;padding:1px 7px;font-size:12px;font-weight:600;margin:2px 3px 2px 0}
+#disease-mash .note, .sheet.theme-mash .note{font-size:12px;color:var(--ink2);margin:6px 0}
+#disease-mash .kbd, .sheet.theme-mash .kbd{font-size:12px;color:var(--ink2)}
+#disease-mash ul.tight, .sheet.theme-mash ul.tight{margin:6px 0;padding-left:18px}
+#disease-mash ul.tight li, .sheet.theme-mash ul.tight li{margin:3px 0}
+#disease-mash h3.sec, .sheet.theme-mash h3.sec{font-size:16px;margin:18px 0 8px;color:var(--m-800);font-weight:800}
+#disease-mash .calc-badge, .sheet.theme-mash .calc-badge{display:inline-block;background:var(--m-600);color:#fff;border-radius:6px;padding:1px 7px;font-size:10.5px;font-weight:800;vertical-align:middle;margin-left:4px}
+#disease-mash .calc-box, .sheet.theme-mash .calc-box{background:var(--m-50);border:1px solid var(--m-400);border-radius:11px;padding:11px;margin:8px 0}
+#disease-mash .calc-grid, .sheet.theme-mash .calc-grid{display:flex;flex-wrap:wrap;gap:8px}
+#disease-mash .calc-f, .sheet.theme-mash .calc-f{flex:1 1 calc(50% - 4px);min-width:0}
+#disease-mash .calc-f label, .sheet.theme-mash .calc-f label{display:block;font-size:11px;font-weight:700;color:var(--m-700);margin-bottom:3px}
+#disease-mash .calc-f input, .sheet.theme-mash .calc-f input{width:100%;min-height:42px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:15px}
+#disease-mash .calc-out, .sheet.theme-mash .calc-out{margin-top:10px;padding:10px 12px;border-radius:9px;background:var(--paper);border:1px solid var(--line);font-size:13px;color:var(--ink2);text-align:center}
+#disease-mash .calc-out.has, .sheet.theme-mash .calc-out.has{font-weight:700}
+#disease-mash .calc-out .cv, .sheet.theme-mash .calc-out .cv{font-size:26px;font-weight:800;display:block}
+#disease-mash .calc-out.low, .sheet.theme-mash .calc-out.low{background:var(--ok-bg);border-color:#A7D7B4;color:var(--low)}
+#disease-mash .calc-out.mid, .sheet.theme-mash .calc-out.mid{background:#FEF9C3;border-color:#FDE68A;color:#854D0E}
+#disease-mash .calc-out.high, .sheet.theme-mash .calc-out.high{background:var(--warn-bg);border-color:#F0B4B0;color:var(--warn)}
+#disease-mash .drug-chips, .sheet.theme-mash .drug-chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+#disease-mash .drug-chips button, .sheet.theme-mash .drug-chips button{flex:0 0 auto;min-height:38px;padding:7px 12px;border:1px solid var(--line);background:var(--paper);border-radius:9px;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer}
+#disease-mash .drug-chips button.sel, .sheet.theme-mash .drug-chips button.sel{background:var(--m-700);color:#fff;border-color:var(--m-700)}
+#disease-mash .drug-panel:empty, .sheet.theme-mash .drug-panel:empty{display:none}
+#disease-mash .field, .sheet.theme-mash .field{margin:11px 0}
+#disease-mash .field label, .sheet.theme-mash .field label{display:block;font-size:13px;font-weight:700;margin-bottom:5px;color:var(--ink2)}
+#disease-mash .field .opts, .sheet.theme-mash .field .opts{display:flex;gap:6px;flex-wrap:wrap}
+#disease-mash .field .opts button, .sheet.theme-mash .field .opts button{min-height:40px;padding:8px 13px;border:1px solid var(--line);background:var(--paper);border-radius:9px;font-size:14px;cursor:pointer;color:var(--ink)}
+#disease-mash .field .opts button.sel, .sheet.theme-mash .field .opts button.sel{background:var(--m-700);color:#fff;border-color:var(--m-700)}
+#disease-mash .field input, .sheet.theme-mash .field input{width:100%;min-height:42px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:15px}
+#disease-mash .grid2, .sheet.theme-mash .grid2{display:flex;gap:8px}
+#disease-mash .grid2>div, .sheet.theme-mash .grid2>div{flex:1}
+#disease-mash .btn-run, .sheet.theme-mash .btn-run{width:100%;min-height:50px;background:var(--m-700);color:#fff;border:0;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;margin:14px 0 4px}
+#disease-mash .btn-reset, .sheet.theme-mash .btn-reset{width:100%;min-height:42px;background:transparent;color:var(--ink2);border:1px solid var(--line);border-radius:10px;font-size:14px;cursor:pointer;margin-bottom:8px}
+#disease-mash .gauge, .sheet.theme-mash .gauge{margin:10px 0;border-radius:11px;overflow:hidden;border:1px solid var(--line)}
+#disease-mash .gauge .track, .sheet.theme-mash .gauge .track{display:flex;height:34px}
+#disease-mash .gauge .seg, .sheet.theme-mash .gauge .seg{flex:1;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;position:relative}
+#disease-mash .gauge .seg.low, .sheet.theme-mash .gauge .seg.low{background:var(--low)}
+#disease-mash .gauge .seg.mid, .sheet.theme-mash .gauge .seg.mid{background:var(--mid)}
+#disease-mash .gauge .seg.high, .sheet.theme-mash .gauge .seg.high{background:var(--high)}
+#disease-mash .gauge .seg.dim, .sheet.theme-mash .gauge .seg.dim{opacity:.32}
+#disease-mash .fib4-val, .sheet.theme-mash .fib4-val{font-size:30px;font-weight:800;text-align:center;margin:8px 0 2px}
+#disease-mash .fib4-val small, .sheet.theme-mash .fib4-val small{font-size:13px;font-weight:600;color:var(--ink2)}
+#disease-mash .riskbig, .sheet.theme-mash .riskbig{border-radius:12px;padding:13px 15px;margin:8px 0;color:#fff;font-weight:800}
+#disease-mash .riskbig.low, .sheet.theme-mash .riskbig.low{background:linear-gradient(135deg,var(--low),#16A34A)}
+#disease-mash .riskbig.mid, .sheet.theme-mash .riskbig.mid{background:linear-gradient(135deg,var(--mid),#D97706)}
+#disease-mash .riskbig.high, .sheet.theme-mash .riskbig.high{background:linear-gradient(135deg,var(--high),#DC2626)}
+#disease-mash .riskbig .rt, .sheet.theme-mash .riskbig .rt{font-size:18px}
+#disease-mash .riskbig .rs, .sheet.theme-mash .riskbig .rs{font-size:12.5px;font-weight:500;opacity:.96;margin-top:4px;line-height:1.5}
+#disease-mash .pathway, .sheet.theme-mash .pathway{margin:10px 0}
+#disease-mash .pw-node, .sheet.theme-mash .pw-node{display:flex;gap:0;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--paper);margin:5px 0}
+#disease-mash .pw-node .side, .sheet.theme-mash .pw-node .side{flex:0 0 6px}
+#disease-mash .pw-node.low .side, .sheet.theme-mash .pw-node.low .side{background:var(--low)}
+#disease-mash .pw-node.mid .side, .sheet.theme-mash .pw-node.mid .side{background:var(--mid)}
+#disease-mash .pw-node.high .side, .sheet.theme-mash .pw-node.high .side{background:var(--high)}
+#disease-mash .pw-node.step .side, .sheet.theme-mash .pw-node.step .side{background:var(--m-500)}
+#disease-mash .pw-node .core, .sheet.theme-mash .pw-node .core{flex:1;padding:9px 12px}
+#disease-mash .pw-node .nm, .sheet.theme-mash .pw-node .nm{font-weight:800;font-size:13.5px}
+#disease-mash .pw-node .dx, .sheet.theme-mash .pw-node .dx{font-size:12px;color:var(--ink2);margin-top:2px}
+#disease-mash .pw-arrow, .sheet.theme-mash .pw-arrow{text-align:center;color:var(--ink2);font-size:13px;margin:1px 0}
+#disease-mash .sld-result, .sheet.theme-mash .sld-result{border-radius:12px;padding:12px 14px;margin:8px 0;border:1px solid var(--line)}
+#disease-mash .sld-result.masld, .sheet.theme-mash .sld-result.masld{background:var(--m-100);border-color:var(--m-400)}
+#disease-mash .sld-result.metald, .sheet.theme-mash .sld-result.metald{background:#FEF9C3;border-color:#FDE68A}
+#disease-mash .sld-result.ald, .sheet.theme-mash .sld-result.ald{background:var(--warn-bg);border-color:#F0B4B0}
+#disease-mash .sld-result.none, .sheet.theme-mash .sld-result.none{background:#F1F5F9;border-color:#CBD5E1}
+#disease-mash .sld-result .st, .sheet.theme-mash .sld-result .st{font-size:16px;font-weight:800}
+#disease-mash .sld-result .ss, .sheet.theme-mash .sld-result .ss{font-size:12.5px;margin-top:4px;line-height:1.5}
+#disease-mash .checkrow, .sheet.theme-mash .checkrow{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;margin:5px 0;cursor:pointer;background:var(--paper)}
+#disease-mash .checkrow.on, .sheet.theme-mash .checkrow.on{background:var(--m-100);border-color:var(--m-500)}
+#disease-mash .checkrow .box, .sheet.theme-mash .checkrow .box{flex:0 0 22px;height:22px;border-radius:6px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+#disease-mash .checkrow.on .box, .sheet.theme-mash .checkrow.on .box{background:var(--m-600);border-color:var(--m-600)}
+#disease-mash .checkrow .lab, .sheet.theme-mash .checkrow .lab{flex:1;font-size:13.5px;font-weight:600}
+#disease-mash .checkrow .lab small, .sheet.theme-mash .checkrow .lab small{display:block;font-weight:400;color:var(--ink2);font-size:11.5px}
+#disease-mash .disc, .sheet.theme-mash .disc{font-size:12px;color:var(--ink2);background:var(--m-100);border-radius:10px;padding:11px 13px;margin:14px 0 0}
+#disease-mash footer, .sheet.theme-mash footer{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink2)}
+#disease-mash footer a, .sheet.theme-mash footer a{color:var(--m-700);word-break:break-all}
+#disease-mash footer h4, .sheet.theme-mash footer h4{margin:10px 0 5px;font-size:12.5px;color:var(--ink)}
+#disease-mash footer ol, .sheet.theme-mash footer ol{margin:0;padding-left:18px}
+#disease-mash footer li, .sheet.theme-mash footer li{margin:2px 0}
+
+/* ===== 간경변 ===== */
+#disease-cirr, .sheet.theme-cirr{
+  --c-900:#5B1A1A; --c-800:#7A2222; --c-700:#991B1B; --c-600:#B11C2A;
+  --c-500:#C0303A; --c-400:#D9606A; --c-100:#F7E0E1; --c-50:#FCF3F3;
+  --ink:#241516; --ink2:#5E4A4B; --line:#E8D5D6;
+  --ok:#15803D; --ok-bg:#E8F5EC; --warn:#9A1B1B; --warn-bg:#FBEAEA;
+  --reimb:#1D4ED8; --reimb-bg:#EAF0FE; --refer:#A15C00; --refer-bg:#FDF3E3;
+  --paper:#FFFFFF;
+}
+#disease-cirr *, .sheet.theme-cirr *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+#disease-cirr, .sheet.theme-cirr, #disease-cirr, .sheet.theme-cirr{margin:0;padding:0}
+#disease-cirr, .sheet.theme-cirr{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  background:var(--c-50);color:var(--ink);line-height:1.6;font-size:15px;-webkit-text-size-adjust:100%}
+#disease-cirr .wrap, .sheet.theme-cirr .wrap{max-width:760px;margin:0 auto;padding:0 14px 80px}
+#disease-cirr header, .sheet.theme-cirr header{background:linear-gradient(135deg,var(--c-900),var(--c-600));color:#fff;padding:20px 16px 16px;border-radius:0 0 18px 18px;margin-bottom:8px}
+#disease-cirr header h1, .sheet.theme-cirr header h1{margin:0;font-size:20px;font-weight:800;letter-spacing:-.3px}
+#disease-cirr header .sub, .sheet.theme-cirr header .sub{margin-top:4px;font-size:12.5px;opacity:.93}
+#disease-cirr header .ver, .sheet.theme-cirr header .ver{margin-top:8px;font-size:11px;opacity:.82}
+#disease-cirr #searchBar, .sheet.theme-cirr #searchBar{position:sticky;top:0;z-index:60;background:var(--c-50);padding:8px 0 4px}
+#disease-cirr .search-in, .sheet.theme-cirr .search-in{width:100%;min-height:46px;padding:11px 13px;border:1px solid var(--line);border-radius:11px;font-size:15px}
+#disease-cirr #searchResults, .sheet.theme-cirr #searchResults{margin-top:8px}
+#disease-cirr #searchResults:empty, .sheet.theme-cirr #searchResults:empty{display:none}
+#disease-cirr .sr, .sheet.theme-cirr .sr{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin-bottom:8px}
+#disease-cirr .sr .srt, .sheet.theme-cirr .sr .srt{font-weight:700;font-size:14px;color:var(--c-800)}
+#disease-cirr .sr .srx, .sheet.theme-cirr .sr .srx{font-size:13px;color:var(--ink2);margin-top:3px}
+#disease-cirr nav, .sheet.theme-cirr nav{position:sticky;top:62px;z-index:50;background:var(--c-50);display:flex;gap:6px;padding:8px 0;margin-bottom:10px;border-bottom:1px solid var(--line)}
+#disease-cirr nav button, .sheet.theme-cirr nav button{flex:1 1 auto;min-height:42px;padding:8px 12px;border:1px solid var(--line);background:var(--paper);color:var(--ink2);border-radius:11px;font-size:14px;font-weight:700;cursor:pointer}
+#disease-cirr nav button.on, .sheet.theme-cirr nav button.on{background:var(--c-700);color:#fff;border-color:var(--c-700)}
+#disease-cirr section.tab, .sheet.theme-cirr section.tab{display:none}
+#disease-cirr section.tab.on, .sheet.theme-cirr section.tab.on{display:block;animation:disease-cirr_fade .2s ease}
+@keyframes disease-cirr_fade{from{opacity:.4}to{opacity:1}}
+#disease-cirr .card, .sheet.theme-cirr .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
+#disease-cirr .card .head, .sheet.theme-cirr .card .head{padding:13px 15px;display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none}
+#disease-cirr .card .head .emoji, .sheet.theme-cirr .card .head .emoji{font-size:18px;flex:0 0 auto}
+#disease-cirr .card .head .t, .sheet.theme-cirr .card .head .t{flex:1;font-weight:700;font-size:15.5px}
+#disease-cirr .card .head .chev, .sheet.theme-cirr .card .head .chev{font-size:12px;color:var(--ink2);transition:transform .2s}
+#disease-cirr .card.open .head .chev, .sheet.theme-cirr .card.open .head .chev{transform:rotate(90deg)}
+#disease-cirr .card .body, .sheet.theme-cirr .card .body{padding:0 15px 15px;display:none}
+#disease-cirr .card.open>.body, .sheet.theme-cirr .card.open>.body{display:block}
+#disease-cirr .card.lead>.body, .sheet.theme-cirr .card.lead>.body{display:block}
+#disease-cirr .card.lead>.head, .sheet.theme-cirr .card.lead>.head{cursor:default}
+#disease-cirr .badge, .sheet.theme-cirr .badge{display:inline-block;background:var(--c-600);color:#fff;border-radius:6px;padding:1px 7px;font-size:10.5px;font-weight:800;vertical-align:middle;margin-left:4px}
+#disease-cirr .irow, .sheet.theme-cirr .irow{display:flex;gap:0;margin:7px 0;border-radius:9px;overflow:hidden;border:1px solid var(--line);background:var(--paper)}
+#disease-cirr .irow .bar, .sheet.theme-cirr .irow .bar{flex:0 0 4px}
+#disease-cirr .irow .ic, .sheet.theme-cirr .irow .ic{flex:1;padding:8px 11px}
+#disease-cirr .irow .lbl, .sheet.theme-cirr .irow .lbl{font-size:11px;font-weight:800;letter-spacing:.2px;margin-bottom:2px}
+#disease-cirr .irow .txt, .sheet.theme-cirr .irow .txt{font-size:13px;color:var(--ink);line-height:1.5}
+#disease-cirr .irow.danger, .sheet.theme-cirr .irow.danger{background:var(--warn-bg)}
+#disease-cirr .irow.danger .bar, .sheet.theme-cirr .irow.danger .bar{background:var(--warn)}
+#disease-cirr .irow.danger .lbl, .sheet.theme-cirr .irow.danger .lbl{color:var(--warn)}
+#disease-cirr .irow.caution, .sheet.theme-cirr .irow.caution{background:#FEF9C3}
+#disease-cirr .irow.caution .bar, .sheet.theme-cirr .irow.caution .bar{background:#CA8A04}
+#disease-cirr .irow.caution .lbl, .sheet.theme-cirr .irow.caution .lbl{color:#854D0E}
+#disease-cirr .irow.good, .sheet.theme-cirr .irow.good{background:var(--ok-bg)}
+#disease-cirr .irow.good .bar, .sheet.theme-cirr .irow.good .bar{background:var(--ok)}
+#disease-cirr .irow.good .lbl, .sheet.theme-cirr .irow.good .lbl{color:var(--ok)}
+#disease-cirr .irow.info, .sheet.theme-cirr .irow.info{background:var(--c-50)}
+#disease-cirr .irow.info .bar, .sheet.theme-cirr .irow.info .bar{background:var(--c-500)}
+#disease-cirr .irow.info .lbl, .sheet.theme-cirr .irow.info .lbl{color:var(--c-700)}
+#disease-cirr .irow.reimb, .sheet.theme-cirr .irow.reimb{background:var(--reimb-bg)}
+#disease-cirr .irow.reimb .bar, .sheet.theme-cirr .irow.reimb .bar{background:var(--reimb)}
+#disease-cirr .irow.reimb .lbl, .sheet.theme-cirr .irow.reimb .lbl{color:var(--reimb)}
+#disease-cirr .irow.refer, .sheet.theme-cirr .irow.refer{background:var(--refer-bg)}
+#disease-cirr .irow.refer .bar, .sheet.theme-cirr .irow.refer .bar{background:var(--refer)}
+#disease-cirr .irow.refer .lbl, .sheet.theme-cirr .irow.refer .lbl{color:var(--refer)}
+#disease-cirr .keybox, .sheet.theme-cirr .keybox{background:linear-gradient(135deg,var(--c-100),var(--c-50));border:1px solid var(--c-400);border-radius:11px;padding:11px 13px;margin:8px 0}
+#disease-cirr .keybox .kt, .sheet.theme-cirr .keybox .kt{font-size:11px;font-weight:800;color:var(--c-700);letter-spacing:.3px;margin-bottom:4px}
+#disease-cirr .keybox .kv, .sheet.theme-cirr .keybox .kv{font-size:13.5px;color:var(--ink);line-height:1.55}
+#disease-cirr .attrs, .sheet.theme-cirr .attrs{margin:8px 0}
+#disease-cirr .attr, .sheet.theme-cirr .attr{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid var(--c-100)}
+#disease-cirr .attr:last-child, .sheet.theme-cirr .attr:last-child{border-bottom:0}
+#disease-cirr .attr .ak, .sheet.theme-cirr .attr .ak{flex:0 0 78px;font-size:11px;font-weight:800;color:var(--c-700);padding-top:1px}
+#disease-cirr .attr .av, .sheet.theme-cirr .attr .av{flex:1;font-size:12.5px;color:var(--ink);line-height:1.5}
+#disease-cirr table, .sheet.theme-cirr table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+#disease-cirr th, .sheet.theme-cirr th, #disease-cirr td, .sheet.theme-cirr td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+#disease-cirr th, .sheet.theme-cirr th{background:var(--c-100);font-weight:700;font-size:12px}
+#disease-cirr .chip, .sheet.theme-cirr .chip{display:inline-block;background:var(--c-100);color:var(--c-800);border-radius:6px;padding:1px 7px;font-size:12px;font-weight:600;margin:2px 3px 2px 0}
+#disease-cirr .note, .sheet.theme-cirr .note{font-size:12px;color:var(--ink2);margin:6px 0}
+#disease-cirr ul.tight, .sheet.theme-cirr ul.tight{margin:6px 0;padding-left:18px}
+#disease-cirr ul.tight li, .sheet.theme-cirr ul.tight li{margin:3px 0}
+#disease-cirr h3.sec, .sheet.theme-cirr h3.sec{font-size:16px;margin:18px 0 8px;color:var(--c-800);font-weight:800}
+#disease-cirr .drug-chips, .sheet.theme-cirr .drug-chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+#disease-cirr .drug-chips button, .sheet.theme-cirr .drug-chips button{flex:0 0 auto;min-height:38px;padding:7px 12px;border:1px solid var(--line);background:var(--paper);border-radius:9px;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer}
+#disease-cirr .drug-chips button.sel, .sheet.theme-cirr .drug-chips button.sel{background:var(--c-700);color:#fff;border-color:var(--c-700)}
+#disease-cirr .drug-panel:empty, .sheet.theme-cirr .drug-panel:empty{display:none}
+#disease-cirr .calc-box, .sheet.theme-cirr .calc-box{background:var(--c-50);border:1px solid var(--c-400);border-radius:11px;padding:11px;margin:8px 0}
+#disease-cirr .calc-grid, .sheet.theme-cirr .calc-grid{display:flex;flex-wrap:wrap;gap:8px}
+#disease-cirr .calc-f, .sheet.theme-cirr .calc-f{flex:1 1 calc(50% - 4px);min-width:0}
+#disease-cirr .calc-f.full, .sheet.theme-cirr .calc-f.full{flex:1 1 100%}
+#disease-cirr .calc-f label, .sheet.theme-cirr .calc-f label{display:block;font-size:11px;font-weight:700;color:var(--c-700);margin-bottom:3px}
+#disease-cirr .calc-f input, .sheet.theme-cirr .calc-f input{width:100%;min-height:42px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:15px}
+#disease-cirr .calc-f select, .sheet.theme-cirr .calc-f select{width:100%;min-height:42px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:14px;background:var(--paper)}
+#disease-cirr .cp-row, .sheet.theme-cirr .cp-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--c-100)}
+#disease-cirr .cp-row:last-child, .sheet.theme-cirr .cp-row:last-child{border-bottom:0}
+#disease-cirr .cp-row .cp-lbl, .sheet.theme-cirr .cp-row .cp-lbl{flex:1 1 auto;font-size:12.5px;font-weight:700;color:var(--ink);min-width:0}
+#disease-cirr .cp-seg, .sheet.theme-cirr .cp-seg{flex:0 0 auto;display:flex;gap:4px}
+#disease-cirr .cp-seg button, .sheet.theme-cirr .cp-seg button{min-height:34px;padding:5px 9px;border:1px solid var(--line);background:var(--paper);border-radius:8px;font-size:12px;font-weight:600;color:var(--ink2);cursor:pointer;white-space:nowrap;line-height:1.2}
+#disease-cirr .cp-seg button.sel, .sheet.theme-cirr .cp-seg button.sel{background:var(--c-700);color:#fff;border-color:var(--c-700)}
+#disease-cirr .calc-out, .sheet.theme-cirr .calc-out{margin-top:10px;padding:10px 12px;border-radius:9px;background:var(--paper);border:1px solid var(--line);font-size:13px;color:var(--ink2);text-align:center}
+#disease-cirr .calc-out.has, .sheet.theme-cirr .calc-out.has{font-weight:700}
+#disease-cirr .calc-out .cv, .sheet.theme-cirr .calc-out .cv{font-size:26px;font-weight:800;display:block}
+#disease-cirr .calc-out.a, .sheet.theme-cirr .calc-out.a{background:var(--ok-bg);border-color:#A7D7B4;color:var(--ok)}
+#disease-cirr .calc-out.b, .sheet.theme-cirr .calc-out.b{background:#FEF9C3;border-color:#FDE68A;color:#854D0E}
+#disease-cirr .calc-out.c, .sheet.theme-cirr .calc-out.c{background:var(--warn-bg);border-color:#F0B4B0;color:var(--warn)}
+#disease-cirr .field, .sheet.theme-cirr .field{margin:11px 0}
+#disease-cirr .field label, .sheet.theme-cirr .field label{display:block;font-size:13px;font-weight:700;margin-bottom:5px;color:var(--ink2)}
+#disease-cirr .field .opts, .sheet.theme-cirr .field .opts{display:flex;gap:6px;flex-wrap:wrap}
+#disease-cirr .field .opts button, .sheet.theme-cirr .field .opts button{min-height:40px;padding:8px 13px;border:1px solid var(--line);background:var(--paper);border-radius:9px;font-size:14px;cursor:pointer;color:var(--ink)}
+#disease-cirr .field .opts button.sel, .sheet.theme-cirr .field .opts button.sel{background:var(--c-700);color:#fff;border-color:var(--c-700)}
+#disease-cirr .comp-grid, .sheet.theme-cirr .comp-grid{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+#disease-cirr .comp-grid button, .sheet.theme-cirr .comp-grid button{flex:1 1 calc(50% - 4px);min-height:52px;padding:10px;border:1px solid var(--line);background:var(--paper);border-radius:11px;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left}
+#disease-cirr .comp-grid button.sel, .sheet.theme-cirr .comp-grid button.sel{background:var(--c-700);color:#fff;border-color:var(--c-700)}
+#disease-cirr .comp-grid button .ce, .sheet.theme-cirr .comp-grid button .ce{font-size:17px;margin-right:5px}
+#disease-cirr .step, .sheet.theme-cirr .step{display:flex;gap:0;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--paper);margin:6px 0}
+#disease-cirr .step .num, .sheet.theme-cirr .step .num{flex:0 0 30px;background:var(--c-700);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+#disease-cirr .step .sc, .sheet.theme-cirr .step .sc{flex:1;padding:9px 12px}
+#disease-cirr .step .st, .sheet.theme-cirr .step .st{font-weight:800;font-size:13.5px}
+#disease-cirr .step .sd, .sheet.theme-cirr .step .sd{font-size:12.5px;color:var(--ink2);margin-top:2px;line-height:1.5}
+#disease-cirr .refbox, .sheet.theme-cirr .refbox{background:var(--refer-bg);border:1px solid #E8C48A;border-radius:11px;padding:11px 13px;margin:8px 0}
+#disease-cirr .refbox .rt, .sheet.theme-cirr .refbox .rt{font-size:13px;font-weight:800;color:var(--refer)}
+#disease-cirr .refbox .rd, .sheet.theme-cirr .refbox .rd{font-size:12.5px;color:var(--ink);margin-top:3px;line-height:1.5}
+#disease-cirr .btn-reset, .sheet.theme-cirr .btn-reset{width:100%;min-height:42px;background:transparent;color:var(--ink2);border:1px solid var(--line);border-radius:10px;font-size:14px;cursor:pointer;margin:10px 0 8px}
+#disease-cirr .disc, .sheet.theme-cirr .disc{font-size:12px;color:var(--ink2);background:var(--c-100);border-radius:10px;padding:11px 13px;margin:14px 0 0}
+#disease-cirr footer, .sheet.theme-cirr footer{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink2)}
+#disease-cirr footer a, .sheet.theme-cirr footer a{color:var(--c-700);word-break:break-all}
+#disease-cirr footer h4, .sheet.theme-cirr footer h4{margin:10px 0 5px;font-size:12.5px;color:var(--ink)}
+#disease-cirr footer ol, .sheet.theme-cirr footer ol{margin:0;padding-left:18px}
+#disease-cirr footer li, .sheet.theme-cirr footer li{margin:2px 0}
+</style>
+</head>
+<body>
+<!--PORTAL_HEADER_V1-->
+<style>
+  #portal-hdr{position:fixed;top:0;left:0;right:0;height:46px;z-index:99999;
+    display:flex;align-items:center;gap:10px;padding:0 12px;box-sizing:border-box;
+    background:rgba(248,250,252,.94);backdrop-filter:saturate(1.4) blur(10px);
+    -webkit-backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid rgba(20,40,60,.10);
+    font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;}
+  #portal-hdr a.ph-back,#portal-hdr a.ph-home{display:inline-flex;align-items:center;justify-content:center;
+    height:30px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;
+    color:#1a2530;background:#fff;border:1px solid rgba(20,40,60,.14);transition:.15s;}
+  #portal-hdr a.ph-back{padding:0 11px 0 8px;gap:3px;}
+  #portal-hdr a.ph-home{width:32px;font-size:15px;}
+  #portal-hdr a.ph-back:active,#portal-hdr a.ph-home:active{transform:scale(.96);background:#eef1f4;}
+  #portal-hdr .ph-emoji{font-size:17px;line-height:1;}
+  #portal-hdr .ph-title{font-size:14.5px;font-weight:700;color:#16202b;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;}
+  #portal-hdr .ph-tag{font-size:11px;font-weight:600;color:#5a6a78;background:#eef1f4;
+    padding:2px 7px;border-radius:999px;white-space:nowrap;}
+  #portal-hdr .ph-accent{width:3px;height:18px;border-radius:2px;background:#9a7b3a;flex:0 0 auto;}
+  #portal-hdr .ph-spacer{flex:1 1 auto;min-width:0;}
+  body{padding-top:46px !important;}
+  @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
+</style>
+<div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
+  <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
+  <a class="ph-home" href="../index.html" title="홈">🏠</a>
+  <span class="ph-accent"></span>
+  <span class="ph-emoji">🟤</span>
+  <span class="ph-title">만성 간질환</span>
+  <span class="ph-spacer"></span>
+  <span class="ph-tag">소화기</span>
+</div>
+
+<!--/PORTAL_HEADER_V1-->
+
+
+<div class="shell-wrap">
+  <div class="shell-header">
+    <h1>🩺 만성 간질환 통합 가이드</h1>
+    <div class="sub">B형간염 · 지방간(MASLD/MASH) · 간경변 — 전문가용 조언 도구</div>
+  </div>
+  <div class="disease-toggle" id="diseaseToggle">
+    <button data-disease="hbv" class="hbv on"><span class="dt-emoji">🟡</span>B형간염</button>
+    <button data-disease="mash" class="mash"><span class="dt-emoji">🟢</span>지방간<br>MASLD</button>
+    <button data-disease="cirr" class="cirr"><span class="dt-emoji">🔴</span>간경변</button>
+  </div>
+
+  <div class="disease-pane on" id="disease-hbv"><div class="wrap">
+
+<header>
+  <h1>🧬 만성 B형간염 처방 가이드</h1>
+  <div class="sub">전문가용 조언 도구 · 가이드라인 ⟷ 급여 이중레이어 · 삭감방어</div>
+  <div class="ver">2022/2026 KASL · 고시 제2025-177호(2025.11.1.) · v1.0</div>
+</header>
+
+<div id="hbv-searchBar">
+  <input class="search-in" id="hbv-searchIn" autocomplete="off" placeholder="🔍 바로 검색 — 약물·고시·검사·단계 (예: 간장약, ALT 80, 베믈리디, 내성, 백신, 동시양성)">
+  <div id="hbv-searchResults"></div>
+</div>
+
+<nav id="hbv-nav">
+  <button data-tab="lib" class="on">📚 도서관</button>
+  <button data-tab="sim">🎓 시뮬레이션</button>
+  <button data-tab="flow">🩺 플로우</button>
+</nav>
+
+<!-- ============ 플로우 ============ -->
+<section class="tab" id="hbv-tab-flow">
+  <div class="card lead">
+    <div class="head"><span class="emoji">🩺</span><span class="t">환자 입력 → 치료 판정</span></div>
+    <div class="body">
+      <p class="note">핵심 5개를 입력하면 즉시 1차 판정합니다. 특수상황은 아래에서 펼쳐 추가하세요. <b>본 도구는 조언용이며 처방을 강제하지 않습니다.</b></p>
+
+      <div class="field">
+        <label>HBeAg</label>
+        <div class="opts" data-k="hbeag">
+          <button data-v="pos">양성(+)</button><button data-v="neg">음성(−)</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>HBV-DNA (IU/mL)</label>
+        <input id="in-dna" type="number" inputmode="numeric" placeholder="예: 25000">
+      </div>
+      <div class="field">
+        <label>ALT (IU/L) — 급여는 AST/ALT 중 높은 값 80 기준</label>
+        <input id="in-alt" type="number" inputmode="numeric" placeholder="예: 95">
+      </div>
+      <div class="field">
+        <label>간경변 상태</label>
+        <div class="opts" data-k="cirr">
+          <button data-v="none">없음</button><button data-v="comp">대상성</button><button data-v="decomp">비대상성</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>eGFR (mL/min) — 약제 선택·용량조절</label>
+        <input id="in-egfr" type="number" inputmode="numeric" placeholder="예: 75">
+      </div>
+
+      <div class="adv-toggle" id="advToggle">＋ 특수상황 추가 (간암·임신·내성·예방요법·골질환)</div>
+      <div class="adv" id="advBox">
+        <div class="field"><label>간세포암(HCC) 동반</label>
+          <div class="opts" data-k="hcc"><button data-v="no">아니오</button><button data-v="yes">예</button></div></div>
+        <div class="field"><label>임신</label>
+          <div class="opts" data-k="preg"><button data-v="no">아니오</button><button data-v="yes">예</button></div></div>
+        <div class="field"><label>골다공증/골밀도저하 위험</label>
+          <div class="opts" data-k="bone"><button data-v="no">아니오</button><button data-v="yes">예</button></div></div>
+        <div class="field"><label>약제내성 이력 (LAM/구약제)</label>
+          <div class="opts" data-k="resist"><button data-v="no">없음</button><button data-v="lam">LAM계 내성</button></div></div>
+        <div class="field"><label>면역억제/항암 (재활성화 위험)</label>
+          <div class="opts" data-k="immuno"><button data-v="no">아니오</button><button data-v="mod">중등도·고위험</button><button data-v="ritux">rituximab 포함</button><button data-v="hsct">조혈모이식</button></div></div>
+      </div>
+
+      <button class="btn-run" id="runBtn">치료 판정 실행</button>
+      <button class="btn-reset" id="resetBtn">초기화</button>
+      <div class="result" id="result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 도서관 (기본) ============ -->
+<section class="tab on" id="hbv-tab-lib"></section>
+
+<!-- ============ 시뮬레이션 ============ -->
+<section class="tab" id="hbv-tab-sim"></section>
+
+<div class="disc">
+  ⚠️ <b>법적·임상 책임 고지.</b> 본 도구는 의사의 의사결정을 돕는 참고용 조언 도구입니다.
+  처방을 강제하지 않으며 최종 판단은 진료의에게 있습니다. 급여 수치·고시 원문은 변경될 수 있으므로
+  실제 청구 전 심평원 고시 원문을 확인하세요. 2026 KASL 개정안은 급여 미반영 상태입니다.
+</div>
+
+<footer id="hbv-footer"></footer>
+
+</div>
+
+</div>
+  <div class="disease-pane" id="disease-mash"><div class="wrap">
+
+<header>
+  <h1>🥑 대사이상지방간질환 MASLD / MASH</h1>
+  <div class="sub">전문가용 조언 도구 · 진단 분류 · 섬유화 위험층화 · 관리 경로</div>
+  <div class="ver">2025 대한간학회 MASLD 가이드라인 · v1.0</div>
+</header>
+
+<div id="mash-searchBar">
+  <input class="search-in" id="mash-searchIn" autocomplete="off" placeholder="🔍 바로 검색 — MASLD·FIB-4·섬유화·resmetirom·MetALD">
+  <div id="mash-searchResults"></div>
+</div>
+
+<nav id="mash-nav">
+  <button data-tab="lib" class="on">📚 도서관</button>
+  <button data-tab="flow">🩺 관리 플로우</button>
+</nav>
+
+<section class="tab on" id="mash-tab-lib"></section>
+<section class="tab" id="mash-tab-flow"></section>
+
+<div class="disc">
+  ⚠️ <b>조언 도구 고지.</b> 진단·관리 의사결정을 돕는 참고용입니다. 최종 판단은 진료의에게 있습니다.
+  FIB-4·Fibroscan 컷오프는 위험 층화 보조 지표이며 단독으로 진단을 확정하지 않습니다.
+  MASH 표적 치료제(resmetirom)는 국내 미도입 상태입니다(2026년 기준, 변동 가능).
+</div>
+
+<footer id="mash-footer"></footer>
+
+</div>
+
+</div>
+  <div class="disease-pane" id="disease-cirr"><div class="wrap">
+
+<header>
+  <h1>🩸 간경변증 진료 가이드</h1>
+  <div class="sub">전문가용 조언 도구 · 합병증별 투약 중심 · 급여 이중레이어</div>
+  <div class="ver">2017·2019 대한간학회 간경변증 가이드라인 · v1.0</div>
+</header>
+
+<div id="cirr-searchBar">
+  <input class="search-in" id="cirr-searchIn" autocomplete="off" placeholder="🔍 바로 검색 — 복수·정맥류·간성뇌증·SBP·MELD">
+  <div id="cirr-searchResults"></div>
+</div>
+
+<nav id="cirr-nav">
+  <button data-tab="lib" class="on">📚 도서관</button>
+  <button data-tab="flow">🩺 합병증 플로우</button>
+</nav>
+
+<section class="tab on" id="cirr-tab-lib"></section>
+<section class="tab" id="cirr-tab-flow"></section>
+
+<div class="disc">
+  ⚠️ <b>조언 도구 고지.</b> 이미 진단된 간경변 환자의 합병증 투약을 돕는 참고용입니다. 처방 강제가 아니며 최종 판단은 진료의에게 있습니다.
+  시술(EVL·TIPS·간이식 등)이 필요한 경우 시점만 안내하고 <b>3차병원 의뢰</b>로 마감합니다. 급여기준·용량은 변경될 수 있어 청구 전 확인이 필요합니다.
+</div>
+
+<footer id="cirr-footer"></footer>
+
+</div>
+
+</div>
+</div>
+
+<!-- 공유 바텀 시트 -->
+<div class="sheet-overlay" id="sheetOverlay"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true">
+  <div class="sheet-handle" id="sheetHandle"><div class="bar"></div></div>
+  <div class="sheet-head">
+    <span class="emoji" id="sheetEmoji"></span>
+    <span class="stitle" id="sheetTitle"></span>
+    <button class="sclose" id="sheetClose" aria-label="닫기">✕</button>
+  </div>
+  <div class="sheet-body" id="sheetBody"></div>
+</div>
+
+<script>
+
+/* ===== 공유 시트 제어 (전역) ===== */
+window.LiverSheet=(function(){
+  var overlay,sheet,sbody,sEmoji,sTitle;
+  function els(){
+    overlay=document.getElementById("sheetOverlay");
+    sheet=document.getElementById("sheet");
+    sbody=document.getElementById("sheetBody");
+    sEmoji=document.getElementById("sheetEmoji");
+    sTitle=document.getElementById("sheetTitle");
+  }
+  function open(opts){
+    if(!sheet)els();
+    sEmoji.textContent=opts.emoji||"";
+    sTitle.innerHTML=opts.title||"";
+    sbody.innerHTML=opts.html||"";
+    sbody.scrollTop=0;
+    sheet.className="sheet theme-"+(opts.theme||"hbv");
+    overlay.classList.add("on");
+    sheet.classList.add("on");
+    if(typeof opts.rebind==="function") opts.rebind(sbody);
+  }
+  function close(){
+    if(!sheet)els();
+    sheet.classList.remove("on");
+    overlay.classList.remove("on");
+  }
+  function init(){
+    els();
+    overlay.addEventListener("click",close);
+    document.getElementById("sheetClose").addEventListener("click",close);
+    // 핸들 드래그로 닫기
+    var handle=document.getElementById("sheetHandle");
+    var startY=0,curY=0,dragging=false;
+    function down(y){startY=y;curY=y;dragging=true;sheet.style.transition="none";}
+    function move(y){if(!dragging)return;curY=y;var dy=curY-startY;if(dy>0)sheet.style.transform="translateY("+dy+"px)";}
+    function up(){if(!dragging)return;dragging=false;sheet.style.transition="";var dy=curY-startY;sheet.style.transform="";if(dy>90)close();}
+    handle.addEventListener("touchstart",function(e){down(e.touches[0].clientY);},{passive:true});
+    handle.addEventListener("touchmove",function(e){move(e.touches[0].clientY);},{passive:true});
+    handle.addEventListener("touchend",up);
+    handle.addEventListener("mousedown",function(e){down(e.clientY);e.preventDefault();});
+    document.addEventListener("mousemove",function(e){if(dragging)move(e.clientY);});
+    document.addEventListener("mouseup",up);
+  }
+  return {open:open,close:close,init:init};
+})();
+
+/* ===== 질환 토글 ===== */
+(function(){
+  window.LiverSheet.init();
+  var toggle=document.getElementById("diseaseToggle");
+  var btns=toggle.querySelectorAll("button");
+  var panes={hbv:document.getElementById("disease-hbv"),
+             mash:document.getElementById("disease-mash"),
+             cirr:document.getElementById("disease-cirr")};
+  for(var i=0;i<btns.length;i++){
+    btns[i].addEventListener("click",function(){
+      var dz=this.getAttribute("data-disease");
+      window.LiverSheet.close();
+      for(var j=0;j<btns.length;j++) btns[j].classList.remove("on");
+      this.classList.add("on");
+      for(var k in panes){ if(panes.hasOwnProperty(k)) panes[k].classList.remove("on"); }
+      panes[dz].classList.add("on");
+      window.scrollTo(0,0);
+    });
+  }
+})();
+
+/* ===== B형간염 JS ===== */
+(function(){
+"use strict";
+var root=document.getElementById("disease-hbv");
+if(!root) return;
+function root_getEl(id){return root.querySelector("#"+id);}
+
+/* --- 시트 scope 바인딩 --- */
+function bindReimbCheckerIn(scope){
+  var grps=scope.querySelectorAll('.opts[data-rk]');
+  for(var g=0;g<grps.length;g++){(function(grp){
+    var k=grp.getAttribute('data-rk');var bs=grp.querySelectorAll('button');
+    for(var b=0;b<bs.length;b++){bs[b].addEventListener('click',function(){
+      for(var x=0;x<bs.length;x++)bs[x].classList.remove('sel');
+      this.classList.add('sel');reimbState[k]=this.getAttribute('data-v');
+      renderReimbVerdict();
+    });}
+  })(grps[g]);}
+}
+
+function __sheetRebind(scope){
+  // 약제 칩
+  var chips=scope.querySelector("#drugChips"), panel=scope.querySelector("#drugPanel");
+  if(chips&&panel){var bs=chips.querySelectorAll("button");for(var i=0;i<bs.length;i++){bs[i].addEventListener("click",function(e){e.stopPropagation();var id=this.getAttribute("data-drug"),sel=this.classList.contains("sel");for(var x=0;x<bs.length;x++)bs[x].classList.remove("sel");if(sel){panel.innerHTML="";return;}this.classList.add("sel");panel.innerHTML=renderDrugDetail(id);});}}
+  // 급여 체커
+  if(typeof bindReimbCheckerIn==="function") bindReimbCheckerIn(scope);
+}
+
+"use strict";
+/* =======================================================================
+   DATA 레이어 — 모든 임상 지식은 여기에만. ID 네임스페이스 적용.
+   ======================================================================= */
+var HBV = {};
+
+/* --- 약물 DB (성분 단위 globalId) — 상세 라이브러리 --- */
+HBV.drugs = {
+  "drug:tenofovir_df":{name:"테노포비르 DF (TDF)",brand:"비리어드",cls:"NUC(뉴클레오타이드)",first:true,barrier:"높음(高유전자장벽)",
+    age:"12세 이상(35kg↑)",renalCaution:true,decomp:true,preg:"등급 B",
+    summary:"초치료 1차. 강력한 항바이러스 효과 + 거의 내성 없음. 다제내성 HBV에도 효과. 단, 장기 신독성·골밀도 감소.",
+    mech:"뉴클레오타이드 유사체. 세포 내 인산화 후 HBV DNA polymerase/역전사효소를 경쟁적 억제, DNA 사슬 종결.",
+    dose:"300mg 1일 1회, 식사 무관. 비대상성·간이식·수직감염·예방 모두 사용 가능.",
+    resist:"내성 거의 보고 안 됨(고유전자장벽). rtA194T 등 보고 드묾. LAM/ETV/ADV 내성 HBV에도 효과 유지.",
+    cross:"라미부딘·엔테카비어·아데포비어 내성과 교차내성 없음 → 다제내성 구조요법의 핵심.",
+    ae:"근위세뇨관병증(판코니증후군)·급성신부전·저인산혈증, 골밀도 감소(96주에 TAF보다 유의). 유산증·중증 간비대(드묾).",
+    monitor:"치료 전·중 혈청 Cr·eGFR·요당·요단백. CKD면 혈청 인산. 골밀도 위험군 모니터.",
+    interact:"신독성/세뇨관분비 경쟁 약물과 병용 시 농도↑: 아시클로버·간시클로버·시도포비어·아미노글리코사이드(겐타마이신)·고용량/반복 NSAID. 아데포비어 병용 금기.",
+    contra:"고용량/반복 NSAID 사용 중·최근이면 회피. <10mL/min 비투석 지침 없음.",
+    evidence:"TDF vs TAF 96주 3상: 신기능 감소·골밀도 악화가 TDF에서 유의. 동아시아 코호트서 ETV 대비 HCC·사망 감소 경향.",
+    pmid:"Agarwal 2018 (J Hepatol); Choi 2021 (Hepatology)"},
+
+  "drug:tenofovir_af":{name:"테노포비르 AF (TAF)",brand:"베믈리디",cls:"NUC(뉴클레오타이드 전구약)",first:true,barrier:"높음",
+    age:"18세 이상",renalCaution:false,decomp:true,preg:"임상자료 제한",
+    summary:"TDF의 개량형. 동등 항바이러스 효과 + 신·골 안전성 우수. 고시 2025-177로 비대상성·간이식·예방·수직감염 급여 확대.",
+    mech:"TDF의 전구약. 혈장 안정성↑로 더 낮은 전신 테노포비르 노출 → 간세포 표적 전달, 신·골 노출 최소화.",
+    dose:"25mg 1일 1회, 식사와 함께. 신배설 의존 낮아 CrCl≥15에서 용량조절 불요(국내 허가 확인 권장).",
+    resist:"내성 거의 없음(TDF와 동일 고유전자장벽).",
+    cross:"LAM/ETV/ADV 내성과 교차내성 없음.",
+    ae:"TDF 대비 신독성·골밀도 감소 적음. LDL 등 지질 약간 상승 보고.",
+    monitor:"신기능 모니터(TDF보다 빈도 낮아도 됨). 지질.",
+    interact:"P-gp 유도제(리팜핀·세인트존스워트)와 병용 시 TAF 농도↓ → 병용 비권장.",
+    contra:"중증 신장애 데이터 제한(투석 환자 미평가).",
+    evidence:"TDF 대비 비열등 항바이러스 + 신·골 우위. 한·대만 RCT: 중등도바이러스혈증서 TAF가 경과관찰 대비 중증 임상사건 79%↓.",
+    pmid:"Buti 2016; Chan 2016 (Lancet Gastroenterol Hepatol)"},
+
+  "drug:entecavir":{name:"엔테카비르 (ETV)",brand:"바라크루드",cls:"NUC(뉴클레오사이드)",first:true,barrier:"높음",
+    age:"2세 이상(10kg↑)",renalCaution:true,decomp:true,preg:"임상자료 제한",
+    summary:"초치료 1차. 강력·고유전자장벽. 초치료 환자서 5년 내성 ~1.2%로 매우 낮음. 단 LAM 내성 환자선 내성률 급증.",
+    mech:"뉴클레오사이드 유사체(구아노신). HBV polymerase의 priming·역전사·양성가닥 합성 3단계를 모두 억제.",
+    dose:"초치료 0.5mg 1일 1회. LAM 내성/비대상성 1mg. 반드시 공복(식전 2h 또는 식후 2h) — 음식이 Cmax 44-46%·AUC 18-20%↓.",
+    resist:"초치료 내성 5년 ~1.2%. 그러나 LAM 내성(rtM204V/I+rtL180M) 기왕력 시 ETV 내성 5년 51%까지 급증. ETV 내성은 rtT184·rtS202·rtM250 추가변이 필요(3변이 모델).",
+    cross:"LAM/LdT 내성(rtM204I/V±rtL180M) 시 ETV 감수성 8-30배↓ → LAM 내성엔 부적합. ADV 내성과는 교차내성 없음.",
+    ae:"내약성 우수(두통·피로·현기증·오심). 유산증·중증 간비대(드묾, 주로 여성). 비대상성 간경변서 유산증 주의.",
+    monitor:"신기능(CrCl<50 용량조절). 간이식 후 cyclosporine·tacrolimus 병용 시 신기능 면밀.",
+    interact:"신배설 약물과 병용 시 상호 농도 영향 가능. 임상적 유의 상호작용은 적은 편.",
+    contra:"명시적 금기 적음. 신기능 따라 감량.",
+    evidence:"초치료서 LAM 대비 96주 HBV DNA 억제 우월(80% vs 39%). 비대상성서도 효과.",
+    pmid:"Chang 2006; Tenney 2009 (내성)"},
+
+  "drug:besifovir":{name:"베시포비르 (BSV)",brand:"베시보",cls:"NUC(뉴클레오타이드)",first:true,barrier:"높음",
+    age:"20세 이상",renalCaution:true,decomp:false,preg:"자료 없음",
+    summary:"국산 신약. TDF에 비열등. L-카르니틴 병용 필수(고갈 방지). 비대상성·간이식 미평가로 사용 제한.",
+    mech:"뉴클레오타이드 유사체(아데닌계). HBV 역전사효소 억제. TDF와 유사 기전.",
+    dose:"150mg + L-카르니틴 660mg 1일 1회(카르니틴 고갈 보충). 식사 무관.",
+    resist:"3상서 48주 내성 미보고(고유전자장벽). 장기 데이터 축적 중.",
+    cross:"LAM·LdT·ETV 내성 변이 보유 + 뉴클레오타이드 미경험 환자서 평가됨(ADV 6개월 병용 경험 포함).",
+    ae:"L-카르니틴 감소(보충 필요). 전반적 내약성 양호. TDF 대비 신·골 안전성 우위 주장.",
+    monitor:"신기능(GFR50↓ 금기). 카르니틴 보충 순응도.",
+    interact:"자료 제한.",
+    contra:"GFR 50mL/min 미만 금기. 비대상성 간경변(Child B·C)·간이식 미평가 → 회피.",
+    evidence:"TDF 300mg 대비 48주 비열등 3상(일동제약).",
+    pmid:"NCT01937806"},
+
+  "drug:lamivudine":{name:"라미부딘 (LAM)",brand:"제픽스",cls:"NUC(뉴클레오사이드)",first:false,barrier:"낮음(低유전자장벽)",
+    age:"2세 이상",renalCaution:true,decomp:true,preg:"등급 C(광범위 안전성 자료)",
+    summary:"1세대. 내성률 높아(5년 ~70%) 초치료 비권장. 타약제 불가시·단기 예방·간이식 등 제한적 사용(투여소견서 필요).",
+    mech:"뉴클레오사이드 유사체(시티딘). HBV 역전사효소 억제, DNA 사슬 종결.",
+    dose:"100mg 1일 1회. CrCl 따라 감량. 투석 환자 LAM정 사용 금지(통합 PI).",
+    resist:"매년 15-30%, 5년 누적 ~70% 내성. 주요 변이 rtM204V/I(YMDD motif) ± rtL180M. 내성 시 임상·생화학·조직 악화.",
+    cross:"rtM204V/I는 LdT·ETV 감수성도 저하시킴. ADV·TDF엔 감수성 유지.",
+    ae:"내약성 양호(두통·피로·현기증). 췌장염 드묾.",
+    monitor:"바이러스 돌파(HBV DNA 재상승) 감시 → 내성 시 TDF 추가/전환.",
+    interact:"TMP-SMX 병용 시 농도↑ 가능.",
+    contra:"단독 초치료 비권장(타약제 불가시만, 투여소견서 첨부).",
+    evidence:"최초 경구 NUC. 새 지평 열었으나 내성 한계로 1차 탈락.",
+    pmid:"—"},
+
+  "drug:clevudine":{name:"클레부딘 (CLV)",brand:"레보비르",cls:"NUC(뉴클레오사이드)",first:false,barrier:"낮음",
+    age:"18세 이상",renalCaution:true,decomp:false,preg:"자료 없음",
+    summary:"피리미딘계. 초치료 비권장. 장기 사용 시 미오패시(근병증) 부작용 보고. CrCl60↓ 금기.",
+    mech:"피리미딘 뉴클레오사이드 유사체. HBV 역전사효소 억제.",
+    dose:"30mg 1일 1회.",
+    resist:"rtM204I 등 LAM 유사 내성 발현.",
+    cross:"LAM 내성과 교차.",
+    ae:"장기 사용 시 미오패시(근력저하·CK상승) — 주의 깊은 모니터.",
+    monitor:"CK, 근증상.",
+    interact:"—",
+    contra:"크레아티닌 클리어런스 60mL/min 미만 금기. 초치료 비권장.",
+    evidence:"국산. 미오패시 이슈로 사용 위축.",
+    pmid:"—"},
+
+  "drug:telbivudine":{name:"텔비부딘 (LdT)",brand:"세비보",cls:"NUC(뉴클레오사이드)",first:false,barrier:"낮음",
+    age:"16세 이상",renalCaution:true,decomp:false,preg:"등급 B",
+    summary:"L-뉴클레오사이드. 강력하나 내성률 높아 초치료 비권장. 임신 안전성 등급 B로 임신 시 선택지.",
+    mech:"L-티미딘 유사체. HBV 역전사효소 억제.",
+    dose:"600mg 1일 1회. CrCl 따라 감량(30-49 q48h, 10-29 q72h, 투석 q96h).",
+    resist:"rtM204I(주로) 내성. LAM과 교차.",
+    cross:"LAM·CLV 내성과 교차.",
+    ae:"CK 상승·미오패시·말초신경병증. peg-IFN 병용 시 신경병증 위험↑(병용 금기).",
+    monitor:"CK, 신경증상.",
+    interact:"peg-IFN과 병용 시 말초신경병증 → 병용 금기.",
+    contra:"초치료 비권장.",
+    evidence:"임신 등급 B로 수직감염 예방 선택지(단 급여는 TDF/TAF).",
+    pmid:"—"},
+
+  "drug:adefovir":{name:"아데포비르 (ADV)",brand:"헵세라",cls:"NUC(뉴클레오타이드)",first:false,barrier:"중간",
+    age:"18세 이상(내성 시 소아 2세↑)",renalCaution:true,decomp:true,preg:"등급 C",
+    summary:"역가 낮음(원래 120mg서 신독성으로 10mg 감량). 단독 초치료 비권장. 구조요법(LAM내성 병용)·소아 급여에서 사용.",
+    mech:"뉴클레오타이드 유사체(아데닌). HBV 역전사효소 억제.",
+    dose:"10mg 1일 1회. CrCl 따라 감량.",
+    resist:"5년 ~29% 내성. 주요 변이 rtN236T, rtA181V/T. 역가 낮아 단독 시 내성·치료실패.",
+    cross:"rtN236T는 TDF 감수성 약간 저하 가능. LAM 내성과는 교차 없어 LAM내성 구조요법에 병용.",
+    ae:"용량의존 신독성(고용량서). 10mg서는 경미하나 장기 신기능 모니터.",
+    monitor:"신기능.",
+    interact:"신독성 약물 병용 주의.",
+    contra:"단독 초치료 비권장.",
+    evidence:"LAM 내성 구조요법의 과거 표준(현재 TDF로 대체). 소아 12-18세 초치료 급여.",
+    pmid:"—"},
+
+  "drug:peg_ifn_alpha":{name:"페그인터페론 알파-2a",brand:"페가시스 등",cls:"면역조절(IFN)",first:false,barrier:"내성 없음",
+    age:"성인",renalCaution:false,decomp:false,preg:"금기",
+    summary:"유일한 면역조절 치료. 정해진 48주로 종료(평생복용 아님). HBeAg 혈청전환·HBsAg 소실률이 NUC보다 높을 수 있음. 부작용·금기 많음.",
+    mech:"면역조절 — 항바이러스 사이토카인 유도 + 직접 항바이러스. NUC와 달리 면역 활성화로 지속반응 추구.",
+    dose:"180μg 피하주사 주 1회, 48주.",
+    resist:"내성 발생 없음(NUC와 달리).",
+    cross:"—",
+    ae:"독감유사증상·골수억제(호중구·혈소판 감소)·우울/자살사고·갑상선기능이상·자가면역 악화. 다수 부작용으로 모니터 부담.",
+    monitor:"기저·12·24·48주 HBsAg 정량(효과·조기중단 마커). CBC·갑상선·우울 평가.",
+    interact:"텔비부딘 병용 금기(말초신경병증). 골수억제 약물 주의.",
+    contra:"비대상성 간경변·임신·자가면역질환·조절안되는 정신질환·중증 심질환 금기.",
+    evidence:"48주 치료로 ~30% 지속바이러스반응, HBeAg 전환 22-27%, HBsAg 소실 4%(NUC보다 높음).",
+    pmid:"—"}
+};
+
+/* --- 약제 비교 매트릭스 시각등급 (additive) ---
+   barrier: 유전자장벽 1-3 / renal,bone: 안전도 g(좋음)·y(주의)·r(위험)·n(해당없음) / decomp,preg */
+HBV.matrix = [
+  {id:"drug:tenofovir_df",abbr:"TDF",brand:"비리어드",first:true,barrier:3,renal:"y",bone:"y",decomp:"g",preg:"g"},
+  {id:"drug:tenofovir_af",abbr:"TAF",brand:"베믈리디",first:true,barrier:3,renal:"g",bone:"g",decomp:"g",preg:"y"},
+  {id:"drug:entecavir",abbr:"ETV",brand:"바라크루드",first:true,barrier:3,renal:"y",bone:"g",decomp:"g",preg:"y"},
+  {id:"drug:besifovir",abbr:"BSV",brand:"베시보",first:true,barrier:3,renal:"r",bone:"g",decomp:"r",preg:"n"},
+  {id:"drug:lamivudine",abbr:"LAM",brand:"제픽스",first:false,barrier:1,renal:"y",bone:"g",decomp:"g",preg:"g"},
+  {id:"drug:telbivudine",abbr:"LdT",brand:"세비보",first:false,barrier:1,renal:"y",bone:"g",decomp:"r",preg:"g"},
+  {id:"drug:adefovir",abbr:"ADV",brand:"헵세라",first:false,barrier:2,renal:"y",bone:"y",decomp:"g",preg:"y"},
+  {id:"drug:clevudine",abbr:"CLV",brand:"레보비르",first:false,barrier:1,renal:"r",bone:"g",decomp:"r",preg:"n"},
+  {id:"drug:peg_ifn_alpha",abbr:"IFN",brand:"페가시스",first:false,barrier:0,renal:"g",bone:"g",decomp:"r",preg:"r"}
+];
+
+/* --- 신부전 용량표 (검증완료 FDA/BMS PI) --- */
+HBV.renalDose = {
+  "drug:entecavir":[
+    {min:50,label:"0.5mg q24h (LAM내성·비대상성 1mg q24h)"},
+    {min:30,label:"0.25mg q24h 또는 0.5mg q48h (1mg군: 0.5mg q24h / 1mg q48h)"},
+    {min:10,label:"0.15mg q24h 또는 0.5mg q72h (1mg군: 0.3mg q24h / 1mg q72h)"},
+    {min:0,label:"0.05mg q24h 또는 0.5mg q7일 (1mg군: 0.1mg / 1mg q7일). 투석 후 투여"}
+  ],
+  "drug:tenofovir_df":[
+    {min:50,label:"300mg q24h"},
+    {min:30,label:"300mg q48h"},
+    {min:10,label:"300mg q72-96h"},
+    {min:0,label:"투석: 300mg q7일 또는 약 12h 투석 후. <10 비투석 지침 없음"}
+  ],
+  "drug:telbivudine":[
+    {min:50,label:"600mg q24h"},{min:30,label:"600mg q48h"},
+    {min:10,label:"600mg q72h"},{min:0,label:"600mg q96h(투석 후)"}
+  ]
+};
+
+/* --- 통합 판독: 자연경과 단계 + 혈청표지자 (한 체계로) --- */
+HBV.phases = [
+  {id:"hbv:phase:it",ko:"면역관용기",easl:"HBeAg+ chronic infection",eag:"+",dna:"≥10⁷ (매우높음)",alt:"정상",
+   marker:"HBsAg+ · HBeAg+ · anti-HBe− · DNA 매우높음",tx:"관찰",txnote:"30-40세↑·섬유화 시 치료 고려(B2). 가족력·고령은 주의.",grade:"B2"},
+  {id:"hbv:phase:ia_eag_pos",ko:"HBeAg+ 면역활동기",easl:"HBeAg+ chronic hepatitis",eag:"+",dna:"≥20,000",alt:"상승(≥2×ULN)",
+   marker:"HBsAg+ · HBeAg+ · DNA 높음 · ALT 상승",tx:"치료",txnote:"면역제거기. 항바이러스 치료 적응증. 급여 ALT≥80.",grade:"A1"},
+  {id:"hbv:phase:inactive",ko:"비활동성 (구 inactive carrier)",easl:"HBeAg− chronic infection",eag:"−",dna:"<2,000",alt:"정상",
+   marker:"HBsAg+ · HBeAg− · anti-HBe+ · DNA 낮음 · ALT 정상",tx:"관찰",txnote:"예후 양호. 단 일시 수치일 수 있어 지속 확인 필요. 연 1-3% 자연 HBsAg 소실.",grade:"—"},
+  {id:"hbv:phase:ia_eag_neg",ko:"HBeAg− 면역활동기",easl:"HBeAg− chronic hepatitis",eag:"−",dna:"≥2,000",alt:"상승",
+   marker:"HBsAg+ · HBeAg− · anti-HBe± · DNA 중-고 · ALT 상승",tx:"치료",txnote:"전구체/코어 변이로 HBeAg− 상태서 활발한 증식. 치료 적응증.",grade:"A1"},
+  {id:"hbv:phase:hbsag_loss",ko:"HBsAg 소실기 (기능적 완치)",easl:"HBsAg− phase",eag:"−",dna:"미검출/매우낮음",alt:"정상",
+   marker:"HBsAg− · anti-HBc+ · anti-HBs±",tx:"종료 가능",txnote:"기능적 완치. cccDNA 잔존 가능하나 간손상·간암 위험 낮음. 면역억제 시 재활성화 주의.",grade:"A1"},
+  {id:"hbv:phase:grey",ko:"회색지대 / indeterminate",easl:"기존 단계 미부합",eag:"±",dna:"경계",alt:"정상~1-2×ULN",
+   marker:"단계 정의에 정확히 안 맞음(약 30%)",tx:"비침습검사/생검 후 결정",txnote:"FIB-4·APRI·Fibroscan으로 섬유화 평가 → F2↑/A2↑면 치료(A1). 간암 위험 적지 않음.",grade:"A1/B1"}
+];
+
+/* --- 혈청표지자 단독 판독(과거감염·백신·occult 등 만성단계 외) --- */
+HBV.serologyExtra = [
+  {p:"HBsAg− / anti-HBs+ / anti-HBc+",r:"과거 감염 후 회복 (자연면역). 면역억제 시 occult 재활성화 가능성 낮지만 고려."},
+  {p:"HBsAg− / anti-HBs+ / anti-HBc−",r:"백신 면역. 감염력 없음."},
+  {p:"HBsAg− / anti-HBc 단독+",r:"① 회복 후 오래됨 ② occult HBV(검사 음성이나 cccDNA 존재) ③ window period. 면역억제·항암 시 재활성화 위험군 — 예방요법 대상."},
+  {p:"HBsAg+ / anti-HBs 동시+ (드묾)",r:"동시양성. HBsAg+면 활동성 감염으로 관리. a-determinant 변이 축적 연관, 간섬유화·간경변·HCC 위험↑ → 면밀 감시."},
+  {p:"anti-HBc IgM+",r:"급성 감염 또는 만성의 급성 악화. IgM 고역가=급성, 저역가=만성 악화 시사."}
+];
+
+/* --- 고시(notice) --- */
+HBV.notices = {
+  "notice:고시2025-177":{title:"경구용 만성B형간염치료제 (고시 제2025-177호, 2025.11.1.)",
+    key:["초치료: HBeAg+ DNA≥20,000 또는 HBeAg− DNA≥2,000 + AST/ALT≥80",
+         "ALT 40-80: 간생검 또는 노829 Fibroscan·도163 MRE에서 A2↑/F2↑ 입증 필요",
+         "대상성 간경변: DNA≥2,000 (ALT 무관)",
+         "비대상성/간암: DNA 양성. besifovir 금기. TAF는 2025-177로 급여확대",
+         "간장약(UDCA·실리마린): 항바이러스제와 동시 급여 불가 — 둘 중 하나 전액본인부담",
+         "교체: 부분반응/돌파 있어야 인정. 단일약제 교체만(LAM계 순차내성 후 TDF병용 예외)"]},
+  "notice:고시2019-21":{title:"B형간염 예방요법 (고시 제2019-21호)",
+    key:["중등도·고위험 항암/면역억제: 급여, 요법중+종료후 6개월",
+         "anti-HBc+ & rituximab 포함: 급여, 요법중+종료후 12개월",
+         "HBsAg−/DNA−/anti-HBc+ & 조혈모이식: 총 18개월",
+         "저위험군: 비급여(전액본인부담)"]},
+  "notice:수직감염":{title:"수직감염 예방 (고시 제2025-177호)",
+    key:["HBsAg+ 임산부 & HBV-DNA≥200,000 IU/mL",
+         "TDF 300mg 또는 TAF 25mg 1일1회, 임신 24-32주~출산후 12주"]}
+};
+
+/* --- 급여코드 --- */
+HBV.codes = [
+  {c:"누702",n:"B형간염 바이러스 DNA 정량검사"},
+  {c:"노829",n:"간섬유화검사 (Fibroscan, VCTE)"},
+  {c:"도163",n:"자기공명 탄성도검사 (MRE)"},
+  {c:"B18.1",n:"만성 바이러스 B형간염 (상병)"},
+  {c:"B18.0",n:"델타-병원체 동반 만성 B형간염 (HDV)"},
+  {c:"K74",n:"간섬유증 및 간경변 (상병)"},
+  {c:"C22.0",n:"간세포암 (상병)"}
+];
+
+/* --- 혈청표지자 판독 --- */
+/* =======================================================================
+   ENGINE 레이어 — 순수함수. 정문계약 recommend(patient)→{drugs,targets,flags}
+   ======================================================================= */
+function evalTreatIndication(p){
+  // p: {hbeag, dna, alt, cirr, hcc}
+  var dna=p.dna, alt=p.alt;
+  var glTreat=false, glReason="", rbTreat=false, rbReason="", grade="B2";
+  if(p.cirr==="decomp" || p.hcc==="yes"){
+    glTreat=true; glReason="비대상성/간암 동반 — DNA 검출되면 치료"; grade="A1";
+    rbTreat=(dna!=null&&dna>0); rbReason="비대상성/간암: HBV-DNA 양성이면 ALT 무관 급여";
+    return {glTreat:glTreat,glReason:glReason,rbTreat:rbTreat,rbReason:rbReason,grade:grade};
+  }
+  if(p.cirr==="comp"){
+    glTreat=(dna!=null&&dna>=2000); glReason="대상성 간경변 — DNA≥2,000이면 ALT 무관 치료"; grade="B1";
+    rbTreat=(dna!=null&&dna>=2000); rbReason="대상성 간경변: DNA≥2,000 (ALT 무관) 급여";
+    return {glTreat:glTreat,glReason:glReason,rbTreat:rbTreat,rbReason:rbReason,grade:grade};
+  }
+  // 간경변 없음
+  var dnaThresh = (p.hbeag==="pos")?20000:2000;
+  var dnaOk = (dna!=null&&dna>=dnaThresh);
+  var altHigh = (alt!=null&&alt>=80);
+  // 가이드라인: ALT 2×ULN (남68/여60 근사 → 단순화: ALT≥2×ULN을 활동기로). 보수적으로 80이상 또는 섬유화로 표현
+  glTreat = dnaOk && (alt!=null&&alt>= ((p.hbeag==="pos")?68:60));
+  glReason = "면역활동기 — DNA≥"+dnaThresh.toLocaleString()+" + ALT≥2×ULN(남68/여60)";
+  grade="A1";
+  rbTreat = dnaOk && altHigh;
+  rbReason = "급여: DNA≥"+dnaThresh.toLocaleString()+" + AST/ALT≥80단위";
+  return {glTreat:glTreat,glReason:glReason,rbTreat:rbTreat,rbReason:rbReason,grade:grade,
+    greyZone:(dnaOk && alt!=null && alt>=40 && alt<80)};
+}
+
+function selectDrugs(p){
+  // 1차 약제 선택 분기
+  var out=[];
+  var renalRisk = (p.egfr!=null && p.egfr<60) || p.bone==="yes";
+  if(p.cirr==="decomp"){
+    // 비대상성: besifovir·peg-IFN 금기, ETV/TDF/TAF
+    out.push("drug:entecavir"); out.push("drug:tenofovir_af"); out.push("drug:tenofovir_df");
+  } else if(p.preg==="yes"){
+    // 임신: 안전성 B = TDF/LdT. 급여 수직감염 TDF/TAF
+    out.push("drug:tenofovir_df"); out.push("drug:tenofovir_af");
+  } else if(p.resist==="lam"){
+    // LAM내성: TDF 또는 ETV 1mg(교차내성 주의 → TDF 선호)
+    out.push("drug:tenofovir_df"); out.push("drug:tenofovir_af");
+  } else if(renalRisk){
+    // 신장위험·골질환: TDF 회피 → TAF/ETV/besifovir
+    out.push("drug:tenofovir_af"); out.push("drug:entecavir");
+    if(!(p.egfr!=null&&p.egfr<50)) out.push("drug:besifovir");
+  } else {
+    out.push("drug:tenofovir_df"); out.push("drug:tenofovir_af"); out.push("drug:entecavir");
+  }
+  return out;
+}
+
+function renalDoseFor(id,egfr){
+  var tbl=HBV.renalDose[id]; if(!tbl||egfr==null) return null;
+  for(var i=0;i<tbl.length;i++){ if(egfr>=tbl[i].min) return tbl[i].label; }
+  return tbl[tbl.length-1].label;
+}
+
+function recommend(p){
+  var ind=evalTreatIndication(p);
+  var drugs=[]; var flags=[]; var targets=[];
+  // 치료대상이면 약제
+  var ids=selectDrugs(p);
+  for(var i=0;i<ids.length;i++){
+    var d=HBV.drugs[ids[i]]; if(!d) continue;
+    var rd = d.renalCaution? renalDoseFor(ids[i],p.egfr):null;
+    drugs.push({id:ids[i],name:d.name,brand:d.brand,rank:i,
+      glOk:ind.glTreat, rbOk:ind.rbTreat, note:d.summary, renalDose:rd});
+  }
+  // 치료목표
+  targets.push("ALT 정상화 (남 34 / 여 30 IU/L 이하)");
+  targets.push("혈청 HBV-DNA 불검출");
+  if(p.hbeag==="pos") targets.push("HBeAg 혈청소실·전환");
+  targets.push("HBsAg 혈청소실·전환 (이상적 목표, A1)");
+
+  // 플래그(경고/조언)
+  if(ind.glTreat && !ind.rbTreat){
+    if(ind.greyZone){
+      flags.push({lv:"warn",t:"급여 사각지대(ALT 40-80)",d:"가이드라인은 치료 대상이나 급여는 AST/ALT≥80 요구. 노829 Fibroscan 또는 도163 MRE로 F2↑/A2↑ 입증해야 급여. 미입증 시 전액본인부담."});
+    } else {
+      flags.push({lv:"warn",t:"가이드라인 vs 급여 괴리",d:"가이드라인상 치료 권고이나 현행 급여기준 미충족 가능. 비급여(전액본인부담) 위험. "+ind.rbReason});
+    }
+  }
+  flags.push({lv:"info",t:"간장약 배타적 급여",d:"UDCA·실리마린 등 간장약은 항바이러스제와 동시 급여 불가. 둘 중 하나는 전액본인부담(삭감 단골)."});
+  if(p.cirr==="decomp"){
+    flags.push({lv:"warn",t:"비대상성 약제 제한",d:"besifovir·peg-IFN 금기. TDF는 Child-Pugh 10↑·MELD 14↑서 신손상 주의. SBP 동반 시 BB·ACEi/ARB 중단 고려."});
+  }
+  if(p.preg==="yes"){
+    flags.push({lv:"info",t:"임신",d:"안전성등급B = TDF/텔비부딘. 수직감염 급여: HBsAg+ & DNA≥200,000 → TDF 300mg or TAF 25mg, 임신 24-32주~출산후12주. 인터페론 금기."});
+  }
+  if(p.resist==="lam"){
+    flags.push({lv:"warn",t:"내성 교체 급여 3원칙",d:"① 부분반응/돌파 있어야 교체 인정(완전반응이면 불가) ② 단일약제 교체만 ③ LAM계 순차내성 후에만 TDF병용 인정. 유전자형 내성검사 시행."});
+  }
+  if(p.immuno && p.immuno!=="no"){
+    var pro="";
+    if(p.immuno==="ritux") pro="anti-HBc+ & rituximab: 요법중+종료후 12개월 급여";
+    else if(p.immuno==="hsct") pro="조혈모이식(HBsAg−/DNA−/anti-HBc+): 총 18개월 급여";
+    else pro="중등도·고위험: 요법중+종료후 6개월 급여 (저위험군 비급여)";
+    flags.push({lv:"info",t:"재활성화 예방요법",d:pro});
+  }
+  if(p.egfr!=null && p.egfr<50){
+    flags.push({lv:"warn",t:"신기능 저하 — 용량조절",d:"CrCl<50: ETV/TDF 용량·간격 조절 필요. besifovir(GFR50↓) 금기. 결과 카드의 신부전 용량 참조."});
+  }
+  // HCC 감시
+  flags.push({lv:"info",t:"HCC 감시",d:"40세↑ 또는 고위험 → 6개월마다 간초음파+AFP(A1). 국가암검진: 40세↑ & HBsAg+ 해당."});
+
+  return {indication:ind, drugs:drugs, targets:targets, flags:flags};
+}
+
+/* =======================================================================
+   UI 레이어 — 렌더만. DATA/ENGINE 읽기전용 호출.
+   ======================================================================= */
+var state={hbeag:null,cirr:null,hcc:"no",preg:"no",bone:"no",resist:"no",immuno:"no"};
+
+/* 탭 전환 */
+var navBtns=root.querySelectorAll("#hbv-nav button");
+for(var i=0;i<navBtns.length;i++){
+  navBtns[i].addEventListener("click",function(){
+    var t=this.getAttribute("data-tab");
+    for(var j=0;j<navBtns.length;j++) navBtns[j].classList.remove("on");
+    this.classList.add("on");
+    var tabs=root.querySelectorAll("section.tab");
+    for(var k=0;k<tabs.length;k++) tabs[k].classList.remove("on");
+    root_getEl("hbv-tab-"+t).classList.add("on");
+  });
+}
+
+/* 옵션 버튼(플로우) */
+function bindOpts(){
+  var groups=root.querySelectorAll(".opts");
+  for(var g=0;g<groups.length;g++){
+    (function(grp){
+      var k=grp.getAttribute("data-k");
+      var bs=grp.querySelectorAll("button");
+      for(var b=0;b<bs.length;b++){
+        bs[b].addEventListener("click",function(){
+          for(var x=0;x<bs.length;x++) bs[x].classList.remove("sel");
+          this.classList.add("sel");
+          state[k]=this.getAttribute("data-v");
+        });
+      }
+    })(groups[g]);
+  }
+}
+bindOpts();
+
+root_getEl("advToggle").addEventListener("click",function(){
+  root_getEl("advBox").classList.toggle("on");
+});
+
+/* 카드 토글(이벤트 위임, 중첩 카드 지원) */
+root.addEventListener("click",function(e){
+  var node=e.target;
+  // 클릭 지점에서 위로 올라가며 가장 가까운 .head 찾기
+  var head=null;
+  while(node && node.nodeType===1){
+    if(node.classList && node.classList.contains("head")){ head=node; break; }
+    node=node.parentNode;
+  }
+  if(!head) return;
+  var card=head.parentNode;
+  if(!card || !card.classList || !card.classList.contains("card")) return;
+  if(card.classList.contains("lead")) return; // lead 카드는 토글 안함
+  e.stopPropagation();
+  var __h=card.querySelector(".head");var __em=__h.querySelector(".emoji");var __ti=__h.querySelector(".t");var __bd=card.querySelector(".body");window.LiverSheet.open({emoji:__em?__em.textContent:"",title:__ti?__ti.innerHTML:"",html:__bd?__bd.innerHTML:"",theme:"hbv",rebind:__sheetRebind});
+});
+
+/* 실행 */
+root_getEl("runBtn").addEventListener("click",function(){
+  var dna=parseFloat(root_getEl("in-dna").value);
+  var alt=parseFloat(root_getEl("in-alt").value);
+  var egfr=parseFloat(root_getEl("in-egfr").value);
+  var p={
+    hbeag:state.hbeag, dna:isNaN(dna)?null:dna, alt:isNaN(alt)?null:alt,
+    cirr:state.cirr, egfr:isNaN(egfr)?null:egfr,
+    hcc:state.hcc, preg:state.preg, bone:state.bone, resist:state.resist, immuno:state.immuno
+  };
+  if(!p.hbeag || !p.cirr){
+    root_getEl("result").innerHTML='<div class="flagbox">HBeAg와 간경변 상태를 선택하세요.</div>';
+    return;
+  }
+  renderResult(recommend(p), p);
+});
+root_getEl("resetBtn").addEventListener("click",function(){
+  state={hbeag:null,cirr:null,hcc:"no",preg:"no",bone:"no",resist:"no",immuno:"no"};
+  var sels=root.querySelectorAll(".opts button.sel");
+  for(var i=0;i<sels.length;i++) sels[i].classList.remove("sel");
+  root_getEl("in-dna").value="";
+  root_getEl("in-alt").value="";
+  root_getEl("in-egfr").value="";
+  root_getEl("result").innerHTML="";
+});
+
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
+
+/* 시각 헬퍼 */
+function irow(kind,label,txt){ // 신호색 정보행
+  if(!txt) return "";
+  return '<div class="irow '+kind+'"><div class="bar"></div><div class="ic"><div class="lbl">'+esc(label)+'</div><div class="txt">'+txt+'</div></div></div>';
+}
+function attr(k,v){ // 약제 속성행
+  if(!v) return "";
+  return '<div class="attr"><div class="ak">'+esc(k)+'</div><div class="av">'+esc(v)+'</div></div>';
+}
+function bars(n,max,tone){ // 미니 막대 (n/max 채움)
+  var h='<span class="bars'+(tone?" "+tone:"")+'">';
+  for(var i=0;i<max;i++) h+='<i class="'+(i<n?"on":"")+'"></i>';
+  return h+'</span>';
+}
+function dot(color,ch){ return '<span class="dot '+color+'">'+(ch||"")+'</span>'; }
+function matDot(v){ // 매트릭스 안전도 색점
+  var map={g:["g","○"],y:["y","△"],r:["r","✕"],n:["n","–"]};
+  var m=map[v]||map.n; return dot(m[0],m[1]);
+}
+
+function renderResult(R,p){
+  var ind=R.indication;
+  var h="";
+  // 판정 헤더
+  var glTxt=ind.glTreat?'<span class="tag gl">가이드라인: 치료 대상</span>':'<span class="tag gl">가이드라인: 경과관찰</span>';
+  var rbTxt=ind.rbTreat?'<span class="tag ok">급여: 인정</span>':'<span class="tag warn">급여: 미충족</span>';
+  h+='<div class="card lead"><div class="head"><span class="emoji">📋</span><span class="t">치료 판정 <span class="grade g-'+ind.grade+'">'+ind.grade+'</span></span></div><div class="body">';
+  h+='<div style="margin-bottom:8px">'+glTxt+' '+rbTxt+'</div>';
+  h+='<div class="dual"><div class="layer gl"><div class="lh">🩺 가이드라인 (2022 KASL)</div>'+esc(ind.glReason)+'</div>';
+  h+='<div class="layer rb"><div class="lh">⚖️ 급여 (고시2025-177)</div>'+esc(ind.rbReason)+'</div></div>';
+  if(ind.glTreat&&!ind.rbTreat){
+    h+='<div class="clash"><b>⚠️ 가이드라인 ⟷ 급여 상충.</b> 치료 권고 대상이나 급여기준 미충족 — 삭감/전액본인부담 위험. 좌측 플래그 확인.</div>';
+  }
+  h+='<div style="margin-top:6px"><span class="pill-soon">📢 2026 개정 예정</span> <span class="kbd">중등도바이러스혈증(DNA 2,000~10⁸)은 ALT 무관 치료 확대 예정(급여 미반영).</span></div>';
+  h+='</div></div>';
+
+  // 약제
+  if(R.drugs.length && ind.glTreat){
+    h+='<h3 class="sec">💊 추천 약제 <span class="kbd">(권고 순위)</span></h3>';
+    for(var i=0;i<R.drugs.length;i++){
+      var d=R.drugs[i];
+      h+='<div class="rx"><div class="name">'+(i+1)+'. '+esc(d.name)+' <span class="kbd">('+esc(d.brand)+')</span></div>';
+      h+='<div class="flags">';
+      h+= d.glOk?'<span class="tag ok">가이드라인 ✓</span>':'';
+      h+= d.rbOk?'<span class="tag ok">급여 ✓</span>':'<span class="tag warn">급여 조건 확인</span>';
+      h+='</div>';
+      h+='<div class="note">'+esc(d.note)+'</div>';
+      if(d.renalDose){ h+='<div class="note">🔬 신기능 용량: '+esc(d.renalDose)+'</div>'; }
+      h+='</div>';
+    }
+  }
+
+  // 목표
+  h+='<div class="target"><b>🎯 치료 목표</b><ul class="tight">';
+  for(var t=0;t<R.targets.length;t++) h+='<li>'+esc(R.targets[t])+'</li>';
+  h+='</ul></div>';
+
+  // 플래그
+  if(R.flags.length){
+    h+='<h3 class="sec">⚠️ 임상·급여 플래그</h3>';
+    for(var f=0;f<R.flags.length;f++){
+      var fl=R.flags[f];
+      var box=(fl.lv==="warn")?"flagbox":"target";
+      h+='<div class="'+box+'"><b>'+esc(fl.t)+'</b><div class="fl">'+esc(fl.d)+'</div></div>';
+    }
+  }
+  root_getEl("result").innerHTML=h;
+}
+
+/* ---------- 도서관 렌더 ---------- */
+function renderLibrary(){
+  var h="";
+
+  // === 1. 통합 판독: 자연경과 흐름 + 혈청표지자 ===
+  h+='<div class="card"><div class="head"><span class="emoji">🧬</span><span class="t">판독 — 자연경과 &amp; 혈청표지자</span><span class="chev">▶</span></div><div class="body">';
+  h+='<div class="keybox"><div class="kt">핵심 함정</div><div class="kv"><b>infection</b> = 비활동(관찰) · <b>hepatitis</b> = 활동(치료). 명칭은 EASL 2017.</div></div>';
+  for(var i=0;i<HBV.phases.length;i++){var ph=HBV.phases[i];
+    var sc = (ph.tx==="치료")?"tx":(ph.tx==="관찰"?"obs":(ph.tx==="종료 가능"?"end":"grey"));
+    var ac = sc;
+    var gb = (ph.grade&&ph.grade!=="—")?' <span class="gchip '+ph.grade.replace("/","").slice(0,2)+'">'+esc(ph.grade)+'</span>':'';
+    h+='<div class="flow-stage '+sc+'"><div class="side"></div><div class="core">';
+    h+='<div class="top"><span class="nm">'+esc(ph.ko)+'</span><span class="act '+ac+'">'+esc(ph.tx)+'</span>'+gb+'</div>';
+    h+='<div class="markers">'+esc(ph.marker)+'</div>';
+    h+='<div class="desc">'+esc(ph.txnote)+'</div></div></div>';
+  }
+  h+='<div style="margin-top:12px;font-weight:800;font-size:13px;color:var(--hbv-800)">▸ 만성 단계 외 표지자 조합</div>';
+  for(var s=0;s<HBV.serologyExtra.length;s++){
+    h+=irow("info",HBV.serologyExtra[s].p,esc(HBV.serologyExtra[s].r));
+  }
+  h+='<div class="keybox" style="margin-top:10px"><div class="kt">정량검사 보조지표</div><div class="kv"><b>qHBsAg</b> 종료 예측 10-200 IU/mL · <b>HBcrAg</b> 간내 cccDNA 상관 · <b>HBV RNA</b> 전사 활성</div></div>';
+  h+='</div></div>';
+
+  // === 2. 약물 라이브러리 — 비교 매트릭스 + 약제 상세 ===
+  h+='<div class="card"><div class="head"><span class="emoji">💊</span><span class="t">약물 라이브러리 (9종)</span><span class="chev">▶</span></div><div class="body">';
+  // 비교 매트릭스 (폰 폭 고정)
+  h+='<div style="font-weight:800;font-size:13px;margin:2px 0 4px;color:var(--hbv-800)">한눈 비교</div>';
+  h+='<table class="mtx"><thead><tr><th style="width:22%;text-align:left;padding-left:5px">약제</th><th>유전자<br>장벽</th><th>신장</th><th>골</th><th>비대상</th><th>임신</th></tr></thead><tbody>';
+  for(var mi=0;mi<HBV.matrix.length;mi++){var m=HBV.matrix[mi];
+    h+='<tr'+(m.first?' class="first"':'')+'>';
+    h+='<td class="drug">'+esc(m.abbr)+(m.first?' <span style="color:var(--ok);font-size:9px">1차</span>':'')+'<small>'+esc(m.brand)+'</small></td>';
+    h+='<td>'+(m.barrier>0?bars(m.barrier,3):'<span class="kbd">—</span>')+'</td>';
+    h+='<td>'+matDot(m.renal)+'</td><td>'+matDot(m.bone)+'</td><td>'+matDot(m.decomp)+'</td><td>'+matDot(m.preg)+'</td>';
+    h+='</tr>';
+  }
+  h+='</tbody></table>';
+  h+='<div class="mtx-legend"><span>'+dot("g")+' 안전/가능</span><span>'+dot("y")+' 주의</span><span>'+dot("r")+' 위험/금기</span><span>'+dot("n")+' 자료없음</span><span>'+bars(3,3)+' 높음</span></div>';
+  h+='<div style="font-weight:800;font-size:13px;margin:12px 0 4px;color:var(--hbv-800)">▸ 약제별 상세 (탭하여 펼침)</div>';
+  // 가로 칩 그리드 (약어 + 1차 배지)
+  h+='<div class="drug-chips" id="drugChips">';
+  for(var mi2=0;mi2<HBV.matrix.length;mi2++){var mc=HBV.matrix[mi2];
+    h+='<button data-drug="'+mc.id+'">💊 '+esc(mc.abbr)+(mc.first?' <span class="b1">1차</span>':'')+'</button>';
+  }
+  h+='</div>';
+  // 펼침 상세 패널 (선택된 약제 1개 표시)
+  h+='<div class="drug-panel" id="drugPanel"></div>';
+  h+='</div></div>'; // 약물 라이브러리 카드 닫기
+
+  // === 3. 치료 종료 기준 ===
+  h+='<div class="card"><div class="head"><span class="emoji">🏁</span><span class="t">치료 종료 기준</span><span class="chev">▶</span></div><div class="body">';
+  h+=irow("info","HBeAg(+)","e항원 혈청전환 후 <b>최소 12개월</b> 추가 투여 → 중단 고려. 중단 시 40-90% 재발. HBsAg은 전환 후 6개월 간격 측정.");
+  h+=irow("info","HBeAg(−)","HBsAg 소실까지 권장이나 도달 어려움 → 혈청 HBV-DNA <b>6개월 간격 3회 이상 음성</b>이면 중단 고려.");
+  h+=irow("good","최종 목표","HBsAg 소실 후 종료(A1). 종료 시 qHBsAg <b>10-200 IU/mL</b>면 지속반응 예측(B1).");
+  h+=irow("danger","간경변","중단 시 간부전 위험 → 사실상 평생 유지. 중단해도 DNA 재검출 시 즉시 재투여.");
+  h+=irow("info","peg-IFN","48주 정해진 기간으로 종료.");
+  h+='</div></div>';
+
+  // === 4. 내성·교체 관리 ===
+  h+='<div class="card"><div class="head"><span class="emoji">🧬</span><span class="t">내성·교체 관리</span><span class="chev">▶</span></div><div class="body">';
+  h+='<div class="keybox"><div class="kt">바이러스 돌파 정의</div><div class="kv">최저 HBV-DNA 대비 <b>10배↑ 상승</b>(고시: 100배↓ 도달 후 최저치서 10배↑). → ① 순응도 확인 ② 유전자형 내성검사.</div></div>';
+  h+='<div style="font-weight:800;font-size:12px;margin:8px 0 4px;color:var(--hbv-700)">주요 내성 변이</div>';
+  h+='<table class="mtx"><tbody>';
+  h+='<tr><td class="drug" style="width:46%">rtM204V/I (±rtL180M)</td><td style="text-align:left;font-size:11px">LAM·LdT 내성. ETV 감수성도 저하</td></tr>';
+  h+='<tr><td class="drug">rtT184·rtS202·rtM250</td><td style="text-align:left;font-size:11px">ETV 내성(+rtM204, 3변이 모델)</td></tr>';
+  h+='<tr><td class="drug">rtN236T·rtA181V/T</td><td style="text-align:left;font-size:11px">ADV 내성. TDF 감수성 약간 저하</td></tr>';
+  h+='</tbody></table>';
+  h+=irow("caution","한국 급여 교체 3원칙","① <b>부분반응/돌파</b> 있어야 교체 인정(완전반응이면 불가 — 부작용·임신·순응도 예외) ② 부분반응은 <b>단일약제 교체만</b> ③ LAM·CLV·LdT 순차내성에 한해 <b>TDF 병용</b> 인정");
+  h+=irow("good","실무 교체","LAM 내성 → TDF 전환(ETV 1mg은 교차내성 주의). 다제내성 → TDF±ETV.");
+  h+='</div></div>';
+
+  // === 5. 급여 고시 원문 (그대로 유지) ===
+  h+='<div class="card"><div class="head"><span class="emoji">⚖️</span><span class="t">급여 고시 원문 요지</span><span class="chev">▶</span></div><div class="body">';
+  for(var n in HBV.notices){ if(!HBV.notices.hasOwnProperty(n))continue; var nt=HBV.notices[n];
+    h+='<div class="keybox" style="margin-bottom:8px"><div class="kt">'+esc(nt.title)+'</div><div class="kv"><ul class="tight" style="margin:2px 0">';
+    for(var x=0;x<nt.key.length;x++) h+='<li>'+esc(nt.key[x])+'</li>';
+    h+='</ul></div></div>';}
+  h+=irow("reimb","빠른 판정","급여 대상 즉시 확인은 <b>시뮬레이션 → 급여 대상 판정기</b>에서.");
+  h+='</div></div>';
+
+  // === 6. 특수상황 ===
+  h+='<div class="card"><div class="head"><span class="emoji">👥</span><span class="t">특수상황 관리</span><span class="chev">▶</span></div><div class="body">';
+  h+=irow("caution","소아","면역관용기 치료 안함. HBeAg+ DNA≥20,000 / HBeAg− DNA≥2,000 + ALT≥2×ULN 6개월↑ 시 치료. <b>급여는 초치료 adefovir만</b> ← 가이드-급여 괴리.");
+  h+=irow("info","임신부","안전성등급B = TDF/텔비부딘. 수직감염 급여: DNA≥200,000 → TDF 300mg or TAF 25mg, 24-32주~출산후 12주. IFN 금기.");
+  h+=irow("good","간암(HCC)","DNA 검출되면 ALT 무관 치료·급여. TDF/ETV 선호(재발↓·생존↑). TACE+방사선 시 재활성화 2배↑.");
+  h+=irow("info","간이식","LAM/CLV/LdT/ETV0.5/ADV/TDF/TAF(2025-177) 중 1종. cyclosporine·tacrolimus 신독성 주의.");
+  h+=irow("caution","신기능저하/CKD","TDF 회피 → TAF/ETV 용량조절. TDF 사용 시 Cr·인산·요단백 모니터.");
+  h+='</div></div>';
+
+  // === 7. 재활성화 예방요법 ===
+  h+='<div class="card"><div class="head"><span class="emoji">🛡️</span><span class="t">재활성화 예방요법</span><span class="chev">▶</span></div><div class="body">';
+  h+='<div class="keybox"><div class="kt">시작 전 필수</div><div class="kv">면역억제·항암 전 <b>HBsAg·anti-HBc 스크리닝</b>. anti-HBc 단독양성도 위험군.</div></div>';
+  h+='<table class="mtx"><thead><tr><th style="text-align:left;width:50%;padding-left:5px">대상</th><th>급여</th><th>기간</th></tr></thead><tbody>';
+  h+='<tr><td class="drug">중등도·고위험 항암</td><td>'+dot("g","○")+'</td><td style="font-size:10.5px">+6개월</td></tr>';
+  h+='<tr><td class="drug">anti-HBc+ &amp; rituximab</td><td>'+dot("g","○")+'</td><td style="font-size:10.5px"><b>+12개월</b></td></tr>';
+  h+='<tr><td class="drug">조혈모이식</td><td>'+dot("g","○")+'</td><td style="font-size:10.5px"><b>총18개월</b></td></tr>';
+  h+='<tr><td class="drug">저위험군</td><td>'+dot("r","✕")+'</td><td style="font-size:10.5px">비급여</td></tr>';
+  h+='</tbody></table>';
+  h+=irow("info","근거 우선순위","고시 2019 질의응답 기준이나 임상은 <b>2022 가이드라인 Table 9</b> 우선. 예방엔 ETV/TDF/TAF 고유전자장벽 약제 권장.");
+  h+='</div></div>';
+
+  // === 8. 백신·PEP ===
+  h+='<div class="card"><div class="head"><span class="emoji">💉</span><span class="t">백신 · 노출후예방(PEP)</span><span class="chev">▶</span></div><div class="body">';
+  h+=irow("good","일정","0-1-6개월 근육주사(삼각근). 접종 전 HBsAg·anti-HBs 확인(둘 다 음성 대상). 완료 1-2개월 후 항체검사.");
+  h+=irow("caution","무반응자","3회 후 anti-HBs &lt;10 mIU/mL(5-10%) → 재접종 1세트(최대 3회). 그래도 무반응이면 true non-responder.");
+  h+=irow("info","항체소실","기억면역으로 일반 추가접종 불요. <b>혈액투석·면역저하자</b>는 주기 모니터+추가접종.");
+  h+=irow("info","PEP(노출후)","감염원 HBsAg + 피노출자 접종력·anti-HBs로 HBIG±백신 결정.");
+  h+=irow("danger","수직 PEP","모체 HBsAg+ → 출생 <b>12h내 HBIG+백신</b> 각각 다른 부위, 2·3차 생후 1·6개월.");
+  h+='</div></div>';
+
+  // === 9. HCC 감시·합병증 ===
+  h+='<div class="card"><div class="head"><span class="emoji">🔭</span><span class="t">HCC 감시 · 간경변 합병증</span><span class="chev">▶</span></div><div class="body">';
+  h+=irow("good","HCC 감시","40세↑·고위험 → <b>6개월마다 간초음파+AFP</b>(US 1차 A1). 국가암검진 급여: 40세↑ &amp; (HBsAg+ / B·C형 만성간질환 / 간경변).");
+  h+=irow("caution","정맥류","발생예방 BB 권장안함(A1). 고위험(F2/F3·비대상성·적색징후) 초출혈예방. 급성출혈 terlipressin/octreotide+항생제+12h내 내시경.");
+  h+=irow("danger","복수·SBP","<b>SBP 발생 시 BB·ACEi/ARB 중단 고려</b>(간신증후군·급성신손상 위험).");
+  h+=irow("info","간성뇌증","lactulose, rifaximin.");
+  h+='</div></div>';
+
+  // === 10. HDV·중복감염 ===
+  h+='<div class="card"><div class="head"><span class="emoji">🦠</span><span class="t">HDV · 중복감염</span><span class="chev">▶</span></div><div class="body">';
+  h+=irow("caution","HDV(D형)","모든 HBsAg+(특히 고위험)에 anti-HDV 고려. 국내 2.1%(외국인 7.4%). 진행 가속·간암 위험↑. 치료 peg-IFN(~30%), bulevirtide 국내 미도입.");
+  h+=irow("info","HCV 동반(1.5%)","HCV 완치(DAA) 시 HBV 재활성화 주의 → HBV 모니터/예방.");
+  h+=irow("info","HIV 동반(0.1%)","TDF/TAF 포함 ART로 동시 치료. HBV 단독 NUC(특히 단독 LAM) 회피 — HIV 내성 유발.");
+  h+='</div></div>';
+
+  // === 11. 급여·상병 코드 ===
+  h+='<div class="card"><div class="head"><span class="emoji">🏷️</span><span class="t">흔한 급여·상병 코드</span><span class="chev">▶</span></div><div class="body"><table><tr><th>코드</th><th>항목</th></tr>';
+  for(var c=0;c<HBV.codes.length;c++) h+='<tr><td><b>'+esc(HBV.codes[c].c)+'</b></td><td>'+esc(HBV.codes[c].n)+'</td></tr>';
+  h+='</table></div></div>';
+
+  root_getEl("hbv-tab-lib").innerHTML=h;(function(){var __cs=root.querySelectorAll("#hbv-tab-lib .card");for(var __i=0;__i<__cs.length;__i++){if(!__cs[__i].classList.contains("lead"))__cs[__i].classList.add("sheetmode");}})();
+  bindDrugChips();
+}
+function bindDrugChips(){
+  var chips=root_getEl("drugChips");
+  var panel=root_getEl("drugPanel");
+  if(!chips||!panel) return;
+  var bs=chips.querySelectorAll("button");
+  for(var i=0;i<bs.length;i++){
+    bs[i].addEventListener("click",function(e){
+      e.stopPropagation();
+      var id=this.getAttribute("data-drug");
+      var alreadySel=this.classList.contains("sel");
+      for(var x=0;x<bs.length;x++) bs[x].classList.remove("sel");
+      if(alreadySel){ panel.innerHTML=""; return; } // 같은 칩 재클릭 → 닫기
+      this.classList.add("sel");
+      panel.innerHTML=renderDrugDetail(id);
+    });
+  }
+}
+function renderDrugDetail(id){
+  var dd=HBV.drugs[id]; if(!dd) return "";
+  var rd=HBV.renalDose[id];
+  var h='<div class="keybox"><div class="kt">'+esc(dd.name)+' · '+esc(dd.brand)+' · '+esc(dd.cls)+'</div><div class="kv">'+esc(dd.summary)+'</div></div>';
+  if(dd.ae) h+=irow("caution","주요 부작용",esc(dd.ae));
+  if(dd.contra) h+=irow("danger","금기·주의",esc(dd.contra));
+  h+='<div class="attrs">';
+  h+=attr("작용기전",dd.mech);
+  h+=attr("용법·용량",dd.dose);
+  h+=attr("내성",dd.resist);
+  h+=attr("교차내성",dd.cross);
+  h+=attr("모니터링",dd.monitor);
+  h+=attr("상호작용",dd.interact);
+  h+=attr("연령·임신",dd.age+" · 임신 "+dd.preg);
+  h+='</div>';
+  if(rd){
+    h+='<div style="margin:8px 0 2px;font-weight:800;font-size:12px;color:var(--hbv-700)">🔬 신기능별 용량 (CrCl)</div><table class="mtx"><tbody>';
+    var labels=["≥50","30-49","10-29","<10·투석"];
+    for(var ri=0;ri<rd.length;ri++){ h+='<tr><td class="drug" style="width:24%">'+labels[ri]+'</td><td style="text-align:left;font-size:11px">'+esc(rd[ri].label)+'</td></tr>'; }
+    h+='</tbody></table>';
+  }
+  h+='<div class="attrs"><div class="attr"><div class="ak">근거</div><div class="av">'+esc(dd.evidence+(dd.pmid&&dd.pmid!=="—"?" ["+dd.pmid+"]":""))+'</div></div></div>';
+  return h;
+}
+function drowDetail(label,val){
+  if(!val) return "";
+  return '<div class="note"><b>'+esc(label)+'</b>: '+esc(val)+'</div>';
+}
+renderLibrary();
+
+/* ---------- 검색 ---------- */
+var SEARCH_INDEX=buildSearchIndex();
+function buildSearchIndex(){
+  var idx=[];
+  for(var k in HBV.drugs){if(!HBV.drugs.hasOwnProperty(k))continue;var d=HBV.drugs[k];
+    idx.push({t:d.name+" ("+d.brand+")",x:d.summary,kw:(d.name+" "+d.brand+" "+d.cls+" "+d.summary+" "+d.mech+" "+d.resist+" "+d.ae+" 약물 약제 항바이러스").toLowerCase()});}
+  for(var p=0;p<HBV.phases.length;p++){var ph=HBV.phases[p];
+    idx.push({t:ph.ko,x:ph.marker+" → "+ph.tx,kw:(ph.ko+" "+ph.easl+" "+ph.marker+" "+ph.tx+" "+ph.txnote+" 단계 자연경과 표지자").toLowerCase()});}
+  for(var n in HBV.notices){if(!HBV.notices.hasOwnProperty(n))continue;var nt=HBV.notices[n];
+    idx.push({t:nt.title,x:nt.key.join(" · "),kw:(nt.title+" "+nt.key.join(" ")+" 급여 고시 삭감 alt 80 간장약").toLowerCase()});}
+  for(var s=0;s<HBV.serologyExtra.length;s++){idx.push({t:"혈청표지자: "+HBV.serologyExtra[s].p,x:HBV.serologyExtra[s].r,kw:(HBV.serologyExtra[s].p+" "+HBV.serologyExtra[s].r+" 표지자 hbsag anti-hbc anti-hbs 동시양성 occult").toLowerCase()});}
+  for(var c=0;c<HBV.codes.length;c++){idx.push({t:HBV.codes[c].c+" "+HBV.codes[c].n,x:"급여·상병 코드",kw:(HBV.codes[c].c+" "+HBV.codes[c].n+" 코드 상병").toLowerCase()});}
+  // 토픽 추가
+  idx.push({t:"신부전 용량조절",x:"CrCl50 임계. ETV 0.25/0.15/0.05, TDF q48/q72-96/q7일. 투석 후 투여",kw:"신부전 신기능 용량 crcl 투석 egfr 콩팥 renal"});
+  idx.push({t:"내성·교체 3원칙",x:"부분반응/돌파 있어야 교체. 단일약제만. 유전자형 내성검사. LAM순차내성 후 TDF병용",kw:"내성 교체 돌파 viral breakthrough 구조요법 rtm204 rtn236t resistance"});
+  idx.push({t:"치료 종료 기준",x:"HBeAg+ 혈청전환후 12개월. HBeAg- DNA 6개월간격 3회음성. HBsAg소실 후 종료(A1)",kw:"종료 중단 stop 혈청전환 hbsag 소실 qhbsag"});
+  idx.push({t:"백신 무반응자",x:"3회 후 anti-HBs<10 → 재접종 1세트. 투석·면역저하자 추가접종",kw:"백신 무반응 nonresponder 예방접종 anti-hbs vaccine pep"});
+  idx.push({t:"재활성화 예방요법",x:"중등도·고위험 6개월 / rituximab 12개월 / 조혈모이식 18개월 / 저위험 비급여",kw:"재활성화 예방 항암 면역억제 rituximab 조혈모이식 reactivation"});
+  idx.push({t:"HCC 감시",x:"40세↑ 6개월 US+AFP. 국가암검진 급여",kw:"hcc 간암 감시 surveillance afp 초음파 국가암검진"});
+  idx.push({t:"임신·수직감염",x:"DNA≥200,000 → TDF 300mg or TAF 25mg, 24-32주~출산후12주",kw:"임신 수직감염 모자감염 pregnancy 임산부 태아"});
+  return idx;
+}
+root_getEl("hbv-searchIn").addEventListener("input",function(){
+  var q=this.value.trim().toLowerCase();
+  var box=root_getEl("hbv-searchResults");
+  if(!q){box.innerHTML="";return;}
+  var hits=[];
+  for(var i=0;i<SEARCH_INDEX.length;i++){if(SEARCH_INDEX[i].kw.indexOf(q)>=0) hits.push(SEARCH_INDEX[i]);}
+  if(!hits.length){box.innerHTML='<div class="sr"><div class="srx">검색 결과 없음.</div></div>';return;}
+  var h="";
+  for(var j=0;j<hits.length;j++){
+    h+='<div class="sr"><div class="srt">'+esc(hits[j].t)+'</div><div class="srx">'+esc(hits[j].x)+'</div></div>';
+  }
+  box.innerHTML=h;
+});
+
+/* ---------- 시뮬레이션 ---------- */
+var SIM_CASES=[
+  {title:"증례 1 — 회색지대 함정",emoji:"🟡",
+   patient:"45세 남성, HBeAg(−), HBV-DNA 8,000, ALT 55, 간경변 없음, eGFR 80",
+   q:"치료·급여 판단은?",
+   a:["가이드라인: 면역활동기 기준 미달이나 ALT 40-80 회색지대 → 비침습검사로 F2↑/A2↑ 확인 시 치료(A1).",
+      "급여: AST/ALT≥80 미충족. <b>노829 Fibroscan 또는 도163 MRE에서 A2/F2 입증해야 급여</b>. 미입증 시 전액본인부담.",
+      "→ 핵심: 결과지로 섬유화 입증이 삭감방어의 열쇠."]},
+  {title:"증례 2 — 간장약 동시처방 삭감",emoji:"⚖️",
+   patient:"52세, 만성B형간염 항바이러스제(ETV) 급여 투여 중. UDCA 추가 처방",
+   q:"급여 가능한가?",
+   a:["<b>항바이러스제와 간장약(UDCA·실리마린)은 동시 급여 불가.</b>",
+      "항바이러스제를 급여로 하면 간장약은 전액본인부담, 반대도 마찬가지.",
+      "→ 무심코 둘 다 급여 청구 시 삭감. 단골 함정."]},
+  {title:"증례 3 — 신기능 저하 + 골다공증",emoji:"🦴",
+   patient:"68세 여성, 치료대상 HBeAg(−) 활동기, eGFR 42, 골다공증",
+   q:"1차 약제와 용량은?",
+   a:["신장위험(eGFR<60)+골질환 → <b>TDF 회피</b>. TAF 또는 ETV 선호. besifovir는 GFR50↓ 금기.",
+      "ETV 선택 시 CrCl 42 → <b>0.25mg q24h 또는 0.5mg q48h</b>로 감량.",
+      "TAF는 신·골 안전하고 신배설 의존 낮아 우선 고려."]},
+  {title:"증례 4 — 항암 전 재활성화 예방",emoji:"🛡️",
+   patient:"60세, 림프종, anti-HBc(+)/HBsAg(−), rituximab-CHOP 예정",
+   q:"예방요법 급여는?",
+   a:["anti-HBc(+) & <b>rituximab 포함 요법</b> → 예방적 항바이러스제 급여.",
+      "기간: 요법 시행 중 + <b>종료 후 12개월</b>까지(rituximab은 특별히 12개월).",
+      "→ 일반 중등도·고위험은 6개월, 조혈모이식은 18개월."]},
+  {title:"증례 5 — 비대상성 간경변",emoji:"🔴",
+   patient:"58세, HBV 비대상성 간경변(Child-Pugh C), HBV-DNA 양성",
+   q:"약제 선택 주의점은?",
+   a:["DNA 양성이면 ALT 무관 치료·급여(A1).",
+      "<b>besifovir·peg-IFN 금기.</b> TAF는 고시2025-177로 급여확대됨. ETV/TDF/TAF 중 선택.",
+      "TDF는 Child-Pugh 10↑·MELD 14↑서 신손상 주의. SBP 동반 시 BB·ACEi/ARB 중단 고려."]}
+];
+function renderSim(){
+  var h="";
+  // === 급여 대상 판정기 (인터랙티브) ===
+  h+='<div class="card lead"><div class="head"><span class="emoji">⚡</span><span class="t">급여 대상 판정기 — 빠른 체크</span></div><div class="body">';
+  h+='<p class="note">항목을 톡톡 누르면 지금 이 환자가 <b>급여 대상인지</b> 바로 나옵니다. 복잡한 고시를 외울 필요 없이 클릭만.</p>';
+  h+='<div class="field"><label>HBeAg</label><div class="opts" data-rk="hbeag">'+
+     '<button data-v="pos">양성(+)</button><button data-v="neg">음성(−)</button></div></div>';
+  h+='<div class="field"><label>HBV-DNA</label><div class="opts" data-rk="dna">'+
+     '<button data-v="hi">≥20,000</button><button data-v="mid">2,000~20,000</button><button data-v="lo">&lt;2,000</button><button data-v="neg">불검출/음성</button></div></div>';
+  h+='<div class="field"><label>AST/ALT (둘 중 높은 값)</label><div class="opts" data-rk="alt">'+
+     '<button data-v="hi">≥80</button><button data-v="mid">40~80</button><button data-v="lo">&lt;40 (정상)</button></div></div>';
+  h+='<div class="field"><label>간경변 / 간암</label><div class="opts" data-rk="liver">'+
+     '<button data-v="none">없음</button><button data-v="comp">대상성 간경변</button><button data-v="decomp">비대상성</button><button data-v="hcc">간세포암</button></div></div>';
+  h+='<div class="field"><label>섬유화 입증 (Fibroscan 노829 / MRE 도163)</label><div class="opts" data-rk="fib">'+
+     '<button data-v="no">없음/미시행</button><button data-v="yes">F2↑ 또는 A2↑ 입증</button></div></div>';
+  h+='<div id="reimbVerdict" style="margin-top:12px"></div>';
+  h+='</div></div>';
+
+  // === 증례 ===
+  h+='<h3 class="sec">📂 실전 증례</h3>';
+  h+='<p class="note">실제 증례 기반 교육. 각 카드를 펼쳐 판단을 확인하세요.</p>';
+  for(var i=0;i<SIM_CASES.length;i++){var c=SIM_CASES[i];
+    h+='<div class="card"><div class="head"><span class="emoji">'+c.emoji+'</span><span class="t">'+esc(c.title)+'</span><span class="chev">▶</span></div><div class="body">';
+    h+='<div class="layer gl" style="margin-bottom:8px"><div class="lh">환자</div>'+esc(c.patient)+'</div>';
+    h+='<p style="font-weight:700;margin:6px 0">❓ '+esc(c.q)+'</p>';
+    h+='<ul class="tight">';
+    for(var j=0;j<c.a.length;j++) h+='<li>'+c.a[j]+'</li>';
+    h+='</ul></div></div>';
+  }
+  root_getEl("hbv-tab-sim").innerHTML=h;
+  bindReimbChecker();
+}
+
+/* 급여 판정기 로직 */
+var reimbState={hbeag:null,dna:null,alt:null,liver:null,fib:null};
+function bindReimbChecker(){
+  var grps=root.querySelectorAll('.opts[data-rk]');
+  for(var g=0;g<grps.length;g++){(function(grp){
+    var k=grp.getAttribute('data-rk');var bs=grp.querySelectorAll('button');
+    for(var b=0;b<bs.length;b++){bs[b].addEventListener('click',function(){
+      for(var x=0;x<bs.length;x++)bs[x].classList.remove('sel');
+      this.classList.add('sel');reimbState[k]=this.getAttribute('data-v');
+      renderReimbVerdict();
+    });}
+  })(grps[g]);}
+}
+function renderReimbVerdict(){
+  var s=reimbState, box=root_getEl('reimbVerdict');
+  if(!box) return;
+  // 충분한 입력 전
+  if(!s.liver){ box.innerHTML='<div class="target">간경변/간암 항목까지 선택하면 판정이 나옵니다.</div>'; return; }
+  var verdict, reason, cls;
+  if(s.liver==="decomp"||s.liver==="hcc"){
+    if(s.dna==="neg"){ verdict="급여 불가"; cls="warn"; reason="비대상성/간암은 HBV-DNA 양성이어야 급여. 현재 불검출."; }
+    else { verdict="급여 대상 ✓"; cls="ok"; reason="비대상성 간경변/간암 + HBV-DNA 양성 → ALT 무관 급여(A1). 단 besifovir 금기."; }
+  } else if(s.liver==="comp"){
+    if(s.dna==="hi"||s.dna==="mid"){ verdict="급여 대상 ✓"; cls="ok"; reason="대상성 간경변 + HBV-DNA≥2,000 → ALT 무관 급여(B1)."; }
+    else { verdict="급여 불가"; cls="warn"; reason="대상성 간경변은 DNA≥2,000 필요. 현재 미달."; }
+  } else {
+    // 간경변 없음 — DNA 임계값 + ALT 80
+    var dnaOk = (s.hbeag==="pos") ? (s.dna==="hi") : (s.dna==="hi"||s.dna==="mid");
+    var dnaThreshTxt = (s.hbeag==="pos")?"≥20,000":"≥2,000";
+    if(!s.hbeag||!s.dna||!s.alt){ box.innerHTML='<div class="target">HBeAg·DNA·ALT를 모두 선택하면 판정이 나옵니다.</div>'; return; }
+    if(!dnaOk){ verdict="급여 불가"; cls="warn"; reason="HBeAg "+(s.hbeag==="pos"?"양성":"음성")+"은 DNA "+dnaThreshTxt+" 필요. 현재 미달 → 경과관찰."; }
+    else if(s.alt==="hi"){ verdict="급여 대상 ✓"; cls="ok"; reason="DNA "+dnaThreshTxt+" + AST/ALT≥80 충족 → 급여(A1)."; }
+    else if(s.alt==="mid"){
+      if(s.fib==="yes"){ verdict="급여 대상 ✓ (조건부)"; cls="ok"; reason="ALT 40-80이나 Fibroscan(노829)/MRE(도163)에서 F2↑/A2↑ 입증 → 급여."; }
+      else { verdict="급여 불가 (입증 필요)"; cls="warn"; reason="⚠️ 회색지대. 가이드라인은 치료 고려 대상이나 급여는 ALT≥80 또는 섬유화 입증 필요. 현재 미입증 → 전액본인부담. Fibroscan/MRE로 F2↑/A2↑ 입증하면 급여 전환."; }
+    } else { verdict="급여 불가"; cls="warn"; reason="ALT 정상(<40) → 면역활동기 아님. 경과관찰."; }
+  }
+  var h='<div class="verdict-big '+(cls==="ok"?"ok":"no")+'"><div class="vbt">'+(cls==="ok"?"✅ ":"⛔ ")+esc(verdict)+'</div><div class="vbs">'+reason+'</div></div>';
+  // 간장약 상시 경고
+  h+=irow("caution","간장약 동시처방","UDCA·실리마린은 항바이러스제와 동시 급여 불가 — 둘 중 하나 전액본인부담.");
+  box.innerHTML=h;
+}
+renderSim();
+
+/* ---------- 푸터(출처) ---------- */
+root_getEl("hbv-footer").innerHTML=
+  '<h4>📖 출처 · 근거</h4><ol>'+
+  '<li>KASL 만성 B형간염 진료 가이드라인 2022. Clin Mol Hepatol 2022;28:276-331 (PMID 35430783)</li>'+
+  '<li>안지현. 만성 B형간염 진료지침 업데이트. 대한내과학회지 2022;97:353-360</li>'+
+  '<li>KASL HBV 가이드라인 2026 (The Liver Week 2026 발표, 바이러스역가 중심 — 급여 미반영)</li>'+
+  '<li>보건복지부 고시 제2025-177호 (경구용 만성B형간염치료제, 2025.11.1.)</li>'+
+  '<li>보건복지부 고시 제2019-21호 (B형간염 예방요법)</li>'+
+  '<li>EASL 2017 CPG HBV. J Hepatol 2017;67:370-398</li>'+
+  '<li>식약처 허가사항: 비리어드·베믈리디·바라크루드·베시보 등 / FDA Viread·Baraclude PI(신부전 용량)</li>'+
+  '<li>질병관리청 예방접종 관리지침 2025</li>'+
+  '<li>국내 HDV 코호트 (APASL 2025, anti-HDV 2.1%)</li>'+
+  '<li>KASL 간경변증 가이드라인 2019(정맥류·간성뇌증)/2017(복수) · 2022 간세포암종 가이드라인</li>'+
+  '</ol>'+
+  '<p style="margin-top:10px">⚖️ 급여 수치·고시 원문은 변경될 수 있습니다. 청구 전 심평원 고시 원문 확인. '+
+  '<a href="https://www.hira.or.kr">심평원</a> · <a href="https://www.kasl.org">대한간학회</a></p>'+
+  '<p style="margin-top:6px;color:#9A8B78">만성 간질환 통합 가이드 · HBV 모듈 v1.0 · 2026</p>';
+
+})();
+
+
+/* ===== 지방간 MASLD JS ===== */
+(function(){
+"use strict";
+var root=document.getElementById("disease-mash");
+if(!root) return;
+function root_getEl(id){return root.querySelector("#"+id);}
+
+/* --- 시트 scope 바인딩 --- */
+function bindLibCalcIn(scope){
+  var ids=["lib-age","lib-plt","lib-ast","lib-alt"];
+  var out=scope.querySelector("#lib-fib4-out");
+  if(!out) return;
+  function update(){
+    var age=parseFloat(scope.querySelector("#lib-age").value);
+    var plt=parseFloat(scope.querySelector("#lib-plt").value);
+    var ast=parseFloat(scope.querySelector("#lib-ast").value);
+    var alt=parseFloat(scope.querySelector("#lib-alt").value);
+    var v=calcFIB4(age,ast,alt,plt);
+    out.className="calc-out";
+    if(v==null){ out.innerHTML="값을 모두 입력하면 자동 계산됩니다"; return; }
+    var band=fib4Band(v);
+    var bObj=null;for(var i=0;i<MASH.fib4.bands.length;i++){if(MASH.fib4.bands[i].key===band)bObj=MASH.fib4.bands[i];}
+    var ageWarn=(age<35||age>65)?'<div style="font-size:11px;margin-top:4px;font-weight:600">⚠️ '+(age<35?"35세 미만":"65세 초과")+' — FIB-4 신뢰도 저하</div>':'';
+    out.className="calc-out has "+band;
+    out.innerHTML='<span class="cv">'+v+'</span>'+esc(bObj.label)+' ('+esc(bObj.range)+')<br><span style="font-weight:600">→ '+esc(bObj.next)+'</span>'+ageWarn;
+  }
+  for(var i=0;i<ids.length;i++){ scope.querySelector("#"+ids[i]).addEventListener("input",update); }
+}
+
+function __sheetRebind(scope){
+  var chips=scope.querySelector("#drugChips"), panel=scope.querySelector("#drugPanel");
+  if(chips&&panel){var bs=chips.querySelectorAll("button");for(var i=0;i<bs.length;i++){bs[i].addEventListener("click",function(e){e.stopPropagation();var id=this.getAttribute("data-drug"),sel=this.classList.contains("sel");for(var x=0;x<bs.length;x++)bs[x].classList.remove("sel");if(sel){panel.innerHTML="";return;}this.classList.add("sel");panel.innerHTML=renderDrugDetail(id);});}}
+  // FIB-4 계산기
+  if(typeof bindLibCalcIn==="function") bindLibCalcIn(scope);
+}
+
+"use strict";
+/* =======================================================================
+   DATA 레이어 — 임상 지식은 여기에만. ID 네임스페이스.
+   ======================================================================= */
+var MASH = {};
+
+/* --- 명칭 체계 --- */
+MASH.nomenclature = [
+  {id:"sld",abbr:"SLD",ko:"지방성간질환",en:"Steatotic Liver Disease",desc:"지방간의 모든 병인을 포함하는 상위 우산 용어."},
+  {id:"masld",abbr:"MASLD",ko:"대사이상지방간질환",en:"Metabolic dysfunction-Associated SLD",desc:"지방증 + 심대사 위험인자 ≥1 + 유의한 음주 없음. 구 NAFLD(95%↑ 일치)."},
+  {id:"mash",abbr:"MASH",ko:"대사이상지방간염",en:"MA Steatohepatitis",desc:"MASLD + 지방간염(염증·간세포 풍선변성). 진행성. 구 NASH."},
+  {id:"metald",abbr:"MetALD",ko:"대사+알코올",en:"Metabolic & Alcohol related",desc:"MASLD 기준 충족 + 중등량 음주(여 140-350·남 210-420 g/주)."},
+  {id:"ald",abbr:"ALD",ko:"알코올간질환",en:"Alcohol-related LD",desc:"다량 음주(여 >350·남 >420 g/주) 우세."}
+];
+
+/* --- 5개 심대사 위험인자 (국내 2025 KASL) --- */
+MASH.riskFactors = [
+  {id:"obesity",ko:"비만/복부비만",crit:"BMI ≥23 또는 허리둘레 남>90·여>85cm"},
+  {id:"glucose",ko:"혈당이상",crit:"공복혈당 ≥100 또는 식후2h ≥140 또는 HbA1c ≥5.7% 또는 2형당뇨 또는 치료 중"},
+  {id:"bp",ko:"혈압상승",crit:"≥130/85 mmHg 또는 항고혈압제 치료 중"},
+  {id:"tg",ko:"중성지방↑",crit:"TG ≥150 mg/dL 또는 지질저하제 치료 중"},
+  {id:"hdl",ko:"HDL 저하",crit:"남 ≤40·여 ≤50 mg/dL 또는 지질저하제 치료 중"}
+];
+
+/* --- 비침습 섬유화 컷오프 (검증완료) --- */
+MASH.fib4 = {
+  low:1.3, high:2.67,
+  bands:[
+    {key:"low",label:"저위험",range:"< 1.3",mean:"진행성 섬유화(F3) 가능성 낮음 (배제 NPV 90%)",next:"1·2차 의료기관 추적·재평가"},
+    {key:"mid",label:"중간(회색지대)",range:"1.3 – 2.67",mean:"불확정. 2단계 평가 필요",next:"Fibroscan 시행"},
+    {key:"high",label:"고위험",range:"≥ 2.67",mean:"진행성 섬유화 시사 (PPV 80%)",next:"간 전문의 의뢰"}
+  ],
+  caveat:"FIB-4는 35세 미만·65세 초과에서 신뢰도 저하(위양성↑). 고령은 컷오프 2.0 고려."
+};
+MASH.vcte = {
+  bands:[
+    {key:"low",label:"저위험",range:"< 8 kPa",mean:"진행성 섬유화 가능성 낮음",next:"1차의료 추적"},
+    {key:"mid",label:"중간",range:"8 – 12 kPa",mean:"회색지대. CAP<280&8-9 저위험 / CAP≥280&10.3-12 유의섬유화 재분류 가능",next:"MRI기반 추가평가/전문의"},
+    {key:"high",label:"고위험",range:"> 12 kPa",mean:"진행성 섬유화 시사",next:"전문의, 간경변 의심시 생검"}
+  ],
+  cap:"CAP(dB/m): 지방증 정량 동시 측정. ELF 대안(<7.7 / 7.7-9.8 / >9.8)."
+};
+
+/* --- 약물 라이브러리 --- */
+MASH.drugs = {
+  "drug:resmetirom":{name:"레스메티롬",brand:"레즈디프라(Rezdiffra)",cls:"THR-β 작용제",
+    summary:"세계 첫 MASH 표적 치료제. F2-F3 비간경변 MASH 적응증. 한국 미도입(2026 기준).",
+    indication:"F2-F3 비간경변 MASH (생활습관 병행)",
+    korea:"❌ 국내 미허가·도입일정 불명확. 미 2024.3 / 유럽 2025.8 승인.",
+    mech:"갑상선호르몬 수용체 베타(THR-β) 선택 작용 → 간 국소 갑상선 효과로 지방 축적·섬유화 감소(전신 갑상선 영향 최소).",
+    dose:"체중 따라 80mg 또는 100mg 1일 1회 경구.",
+    efficacy:"MAESTRO-NASH: MASH 관해(섬유화 악화 없이) 80mg 25.9% / 100mg 29.9% vs 위약 9.7%. 섬유화 1단계↑ 개선도 우월.",
+    ae:"설사·오심·가려움·복통·구토. 약물유발 간독성·담낭 이상 시 중단.",
+    contra:"비대상성 간경변 사용 금지.",
+    evidence:"MAESTRO-NASH 3상 (NEJM 2024)"},
+  "drug:semaglutide":{name:"세마글루타이드",brand:"위고비/오젬픽",cls:"GLP-1 수용체작용제",
+    summary:"당뇨·비만약. 2025.8 미국 MASH 적응증 추가 승인. 국내는 당뇨/비만 적응증으로만 급여.",
+    indication:"MASH(미 승인) + 2형당뇨/비만",
+    korea:"당뇨/비만 적응증 급여. MASH 적응증 국내 미반영.",
+    mech:"GLP-1 수용체 작용 → 체중감소·인슐린저항성 개선 → 간 지방·염증·섬유화 간접 개선.",
+    dose:"주 1회 피하 2.4mg(MASH 임상 용량).",
+    efficacy:"ESSENCE: 72주 섬유화 악화없는 MASH 해소 우월, 섬유화 개선 36.8% vs 위약 22.4%.",
+    ae:"오심·구토·설사 등 위장관. 췌장염 드묾.",
+    contra:"갑상선수질암 병력·MEN2.",
+    evidence:"ESSENCE 3상 (NEJM 2025)"},
+  "drug:tirzepatide":{name:"터제파타이드",brand:"마운자로/젭바운드",cls:"GIP/GLP-1 이중작용제",
+    summary:"당뇨·비만약. MASH 항섬유화 신호. 국내 당뇨/비만 적응증.",
+    indication:"2형당뇨/비만 (MASH 항섬유화 신호)",
+    korea:"당뇨/비만 적응증 급여. MASH 적응증 없음.",
+    mech:"GIP+GLP-1 이중 작용 → 강력한 체중감소·대사개선.",
+    dose:"주 1회 피하 점증.",
+    efficacy:"SYNERGY-NASH: MASH 해소·섬유화 개선 신호.",
+    ae:"위장관 부작용.",
+    contra:"갑상선수질암 병력·MEN2.",
+    evidence:"SYNERGY-NASH 2b상"},
+  "drug:pioglitazone":{name:"피오글리타존",brand:"액토스 등",cls:"TZD(인슐린 감작제)",
+    summary:"2형당뇨 동반 MASH서 간지방·염증·섬유화 개선 근거. 당뇨 적응증 급여.",
+    indication:"2형당뇨 동반 MASH",
+    korea:"당뇨 적응증 급여.",
+    mech:"PPAR-γ 작용 → 인슐린 감수성↑, 간 지방·염증 감소.",
+    dose:"15-30mg 1일 1회.",
+    efficacy:"MASH 해소·섬유화 개선 메타분석. 비당뇨에도 효과 보고(off-label).",
+    ae:"체중증가·부종·심부전 악화·골절 위험·방광암 논란.",
+    contra:"심부전(NYHA III-IV)·활동성 방광암.",
+    evidence:"PIVENS, 메타분석"},
+  "drug:vitamin_e":{name:"비타민 E",brand:"—",cls:"항산화제",
+    summary:"비당뇨·조직확진 MASH서 고려. 국내 비급여(건기식 영역).",
+    indication:"비당뇨·조직확진 MASH(선택적)",
+    korea:"비급여.",
+    mech:"항산화 → 간세포 산화스트레스·염증 감소.",
+    dose:"800 IU/일(임상 용량).",
+    efficacy:"PIVENS: 비당뇨 NASH서 조직 개선. 당뇨·간경변엔 근거 부족.",
+    ae:"고용량 장기 시 출혈성 뇌졸중·전립선암 위험 논란.",
+    contra:"항응고제 병용 주의.",
+    evidence:"PIVENS"},
+  "drug:dapagliflozin":{name:"다파글리플로진",brand:"포시가",cls:"SGLT2 억제제",
+    summary:"당뇨 동반 시 간지방 감소. 당뇨 적응증 급여.",
+    indication:"2형당뇨 동반",
+    korea:"당뇨 적응증 급여.",
+    mech:"SGLT2 억제 → 체중·내장지방·간지방 감소.",
+    dose:"10mg 1일 1회.",
+    efficacy:"간지방·ALT 감소. 항섬유화 신호.",
+    ae:"성기감염·탈수·정상혈당 케톤산증(드묾).",
+    contra:"중증 신장애.",
+    evidence:"관찰·RCT 하위분석"}
+};
+
+/* --- 약제 비교 매트릭스 (현실 중심) --- */
+MASH.matrix = [
+  {id:"drug:resmetirom",abbr:"레스메티롬",brand:"레즈디프라",target:"g",korea:"r",dm:"n",wt:"n"},
+  {id:"drug:semaglutide",abbr:"세마글루타이드",brand:"위고비",target:"g",korea:"y",dm:"g",wt:"g"},
+  {id:"drug:tirzepatide",abbr:"터제파타이드",brand:"마운자로",target:"y",korea:"y",dm:"g",wt:"g"},
+  {id:"drug:pioglitazone",abbr:"피오글리타존",brand:"액토스",target:"y",korea:"y",dm:"g",wt:"r"},
+  {id:"drug:dapagliflozin",abbr:"다파글리플로진",brand:"포시가",target:"n",korea:"y",dm:"g",wt:"y"},
+  {id:"drug:vitamin_e",abbr:"비타민E",brand:"—",target:"y",korea:"r",dm:"n",wt:"n"}
+];
+
+/* --- 생활습관 (1차 치료, 가장 강력) --- */
+MASH.lifestyle = [
+  {tone:"good",lbl:"체중 감량 (핵심)",txt:"<b>7-10% 감량</b>이 MASH 관해·섬유화 개선의 가장 강력한 근거. 3-5% 지방증↓ / 7% 염증↓ / ≥10% 섬유화↓."},
+  {tone:"info",lbl:"식단",txt:"지중해식. 과당·가당음료·정제탄수 제한. 커피(간섬유화 보호 신호)."},
+  {tone:"info",lbl:"운동",txt:"유산소 + 저항운동. 체중 변화 없어도 간지방 감소 효과."},
+  {tone:"caution",lbl:"음주",txt:"절제. MetALD/ALD 영역이면 절주가 1차. 알코올은 섬유화 가속."},
+  {tone:"danger",lbl:"동반 대사질환",txt:"당뇨·이상지질혈증·고혈압 적극 관리. <b>MASLD 주사망원인 = 심혈관질환</b>."}
+];
+
+/* --- HCC·합병증 --- */
+MASH.surveillance = [
+  {tone:"good",lbl:"HCC 감시",txt:"MASLD 간경변 → 6개월마다 간초음파±AFP. <b>비경변 MASH에서도 HCC 발생 가능</b>(타 간질환보다 비경변 HCC 비율 높음) — 위험 층화 진행 중."},
+  {tone:"caution",lbl:"진행성 섬유화(F3)",txt:"간경변·간관련 사망 위험↑. 정기 비침습 재평가."},
+  {tone:"info",lbl:"심혈관·신장",txt:"MASLD는 심장-신장-대사(CKM) 증후군 핵심. CVD 위험 평가·관리 필수."}
+];
+
+/* --- 급여·상병 코드 --- */
+MASH.codes = [
+  {c:"K76.0",n:"지방간(달리 분류되지 않은)"},
+  {c:"K75.8",n:"기타 명시된 염증성 간질환(지방간염)"},
+  {c:"K74",n:"간섬유증 및 간경변"},
+  {c:"Fibroscan",n:"간섬유화검사(VCTE) — 비급여(검사 자체 급여 고시 없음, 전액 본인부담 약 2~5만원). 결과 F2↑는 다른 약제 급여의 입증 근거가 될 뿐"},
+  {c:"도163",n:"자기공명 탄성도검사(MRE)"},
+  {c:"E11",n:"2형당뇨(동반 — 약제 급여 근거)"},
+  {c:"E78",n:"이상지질혈증(동반)"}
+];
+
+/* =======================================================================
+   ENGINE 레이어 — 순수함수
+   ======================================================================= */
+function calcFIB4(age,ast,alt,plt){
+  if(!age||!ast||!alt||!plt||plt<=0||alt<=0) return null;
+  var v = (age*ast)/(plt*Math.sqrt(alt));
+  return Math.round(v*100)/100;
+}
+function fib4Band(v){
+  if(v==null) return null;
+  if(v<MASH.fib4.low) return "low";
+  if(v<MASH.fib4.high) return "mid";
+  return "high";
+}
+function classifySLD(p){
+  // p: {steatosis(bool), riskCount(int), alcohol('none'|'mod'|'high')}
+  if(!p.steatosis) return {key:"none",ko:"지방증 없음",detail:"영상/조직에서 간 지방 축적이 확인되지 않으면 SLD 분류 대상 아님."};
+  if(p.alcohol==="high") return {key:"ald",ko:"ALD 우세(알코올간질환)",detail:"다량 음주(여 >350·남 >420 g/주) 우세. 절주가 1차. 간질환 평가 병행."};
+  if(p.riskCount>=1 && p.alcohol==="mod") return {key:"metald",ko:"MetALD",detail:"대사위험 + 중등량 음주(여 140-350·남 210-420 g/주). 대사관리 + 절주 병행."};
+  if(p.riskCount>=1) return {key:"masld",ko:"MASLD",detail:"지방증 + 심대사 위험인자 ≥1 + 유의 음주 없음 → MASLD 진단 충족."};
+  return {key:"none",ko:"기준 미충족",detail:"지방증은 있으나 심대사 위험인자 0개·유의 음주 없음 → cryptogenic SLD 등 추가 평가."};
+}
+function recommend(p){
+  var sld = classifySLD(p);
+  var fib4 = calcFIB4(p.age,p.ast,p.alt,p.plt);
+  var band = fib4Band(fib4);
+  var mgmt=[], flags=[];
+
+  // 위험층화 기반 관리 경로
+  if(band==="low"){
+    mgmt.push({tone:"good",lbl:"추적",txt:"진행성 섬유화 가능성 낮음. 1·2차 의료기관에서 생활습관 관리 + 1-3년 간격 재평가(FIB-4)."});
+  } else if(band==="mid"){
+    mgmt.push({tone:"caution",lbl:"2단계 평가",txt:"FIB-4 회색지대 → <b>Fibroscan</b>으로 재층화. <8 추적 / 8-12 추가평가 / >12 전문의. (<b>Fibroscan 검사 자체는 비급여</b> — 전액 본인부담. 결과 F2↑는 다른 약제 급여의 입증 근거가 될 뿐이나 MASLD는 표적약 미도입이라 그 용도 없음)"});
+  } else if(band==="high"){
+    mgmt.push({tone:"danger",lbl:"전문의 의뢰",txt:"진행성 섬유화 시사. 간 전문의 의뢰. 간경변 평가·HCC 감시 고려."});
+  }
+  // VCTE 입력 있으면 반영
+  if(p.vcte!=null){
+    var vb = p.vcte<8?"low":(p.vcte<=12?"mid":"high");
+    var vtxt = vb==="low"?"Fibroscan <8 kPa → 진행성 섬유화 가능성 낮음, 1차의료 추적.":
+               vb==="mid"?"Fibroscan 8-12 kPa → 회색지대. CAP·MRI 기반 추가평가 또는 전문의.":
+               "Fibroscan >12 kPa → 진행성 섬유화 시사. 전문의·간경변 평가.";
+    mgmt.push({tone:vb==="low"?"good":(vb==="mid"?"caution":"danger"),lbl:"Fibroscan 결과",txt:vtxt});
+  }
+
+  // 생활습관은 모든 단계 공통 1차
+  mgmt.push({tone:"info",lbl:"1차 치료(전 단계 공통)",txt:"체중 7-10% 감량 + 지중해식 + 운동. 동반 당뇨·이상지질·고혈압 적극 관리(주사망원인=심혈관)."});
+
+  // 플래그
+  if(sld.key==="masld" || sld.key==="metald"){
+    flags.push({tone:"reimb",lbl:"표적 약물치료 현실",txt:"MASH 표적약 resmetirom 국내 미도입. 다른 약은 동반질환(당뇨·비만·이상지질) 적응증으로만 급여. <b>MASH 단독 코드로 약제 청구 시 삭감위험</b>."});
+  }
+  if(p.lean){
+    flags.push({tone:"caution",lbl:"Lean MASLD",txt:"마른 환자(BMI<23)도 MASLD 배제 말 것. 국내 비비만 지방간 흔함. 다른 위험인자로 진단 가능."});
+  }
+  if(p.age!=null && (p.age<35 || p.age>65)){
+    flags.push({tone:"caution",lbl:"FIB-4 신뢰도",txt:"35세 미만·65세 초과는 FIB-4 위양성↑. 고령은 컷오프 2.0 고려, 영상검사 병행 권장."});
+  }
+  if(sld.key==="metald" || sld.key==="ald"){
+    flags.push({tone:"caution",lbl:"음주",txt:"절주가 1차. 음주량 재평가. 알코올은 섬유화를 가속하므로 대사관리와 병행."});
+  }
+  // HCC
+  flags.push({tone:"info",lbl:"HCC 감시",txt:"간경변 동반 시 6개월 US±AFP. 비경변 진행성 섬유화도 위험 층화 고려."});
+
+  return {sld:sld, fib4:fib4, band:band, management:mgmt, flags:flags};
+}
+
+/* =======================================================================
+   UI 레이어
+   ======================================================================= */
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
+function irow(kind,label,txt){if(!txt)return"";return '<div class="irow '+kind+'"><div class="bar"></div><div class="ic"><div class="lbl">'+esc(label)+'</div><div class="txt">'+txt+'</div></div></div>';}
+function attr(k,v){if(!v)return"";return '<div class="attr"><div class="ak">'+esc(k)+'</div><div class="av">'+esc(v)+'</div></div>';}
+function dot(c,ch){return '<span class="dot '+c+'">'+(ch||"")+'</span>';}
+function matDot(v){var m={g:["g","○"],y:["y","△"],r:["r","✕"],n:["n","–"]}[v]||["n","–"];return dot(m[0],m[1]);}
+
+/* 탭 전환 */
+var navBtns=root.querySelectorAll("#mash-nav button");
+for(var i=0;i<navBtns.length;i++){
+  navBtns[i].addEventListener("click",function(){
+    var t=this.getAttribute("data-tab");
+    for(var j=0;j<navBtns.length;j++) navBtns[j].classList.remove("on");
+    this.classList.add("on");
+    var tabs=root.querySelectorAll("section.tab");
+    for(var k=0;k<tabs.length;k++) tabs[k].classList.remove("on");
+    root_getEl("mash-tab-"+t).classList.add("on");
+  });
+}
+/* 카드 토글 */
+root.addEventListener("click",function(e){
+  var node=e.target,head=null;
+  while(node&&node.nodeType===1){
+    if(node.classList&&node.classList.contains("head")){head=node;break;}
+    node=node.parentNode;
+  }
+  if(!head)return;
+  var card=head.parentNode;
+  if(!card||!card.classList||!card.classList.contains("card"))return;
+  if(card.classList.contains("lead"))return;
+  e.stopPropagation();
+  var __h=card.querySelector(".head");var __em=__h.querySelector(".emoji");var __ti=__h.querySelector(".t");var __bd=card.querySelector(".body");window.LiverSheet.open({emoji:__em?__em.textContent:"",title:__ti?__ti.innerHTML:"",html:__bd?__bd.innerHTML:"",theme:"mash",rebind:__sheetRebind});
+});
+
+/* ---------- 도서관 ---------- */
+function renderLibrary(){
+  var h="";
+
+  // 명칭 체계
+  h+='<div class="card"><div class="head"><span class="emoji">📖</span><span class="t">명칭 체계 (SLD 우산)</span><span class="chev">▶</span></div><div class="body">';
+  h+='<div class="keybox"><div class="kt">2023 다학회 합의</div><div class="kv">NAFLD→<b>MASLD</b>, NASH→<b>MASH</b>. 낙인 줄이고 대사 기전 명확화.</div></div>';
+  for(var i=0;i<MASH.nomenclature.length;i++){var n=MASH.nomenclature[i];
+    h+='<div class="attr"><div class="ak">'+esc(n.abbr)+'</div><div class="av"><b>'+esc(n.ko)+'</b> <span class="kbd">'+esc(n.en)+'</span><br>'+esc(n.desc)+'</div></div>';}
+  h+='</div></div>';
+
+  // MASLD 진단
+  h+='<div class="card"><div class="head"><span class="emoji">🩺</span><span class="t">MASLD 진단 — 5개 심대사 위험인자</span><span class="chev">▶</span></div><div class="body">';
+  h+='<div class="keybox"><div class="kt">진단 정의 (2025 KASL)</div><div class="kv">지방증(영상/조직) + 아래 <b>5개 중 ≥1</b> + 유의한 음주 없음 → MASLD</div></div>';
+  for(var r=0;r<MASH.riskFactors.length;r++){var rf=MASH.riskFactors[r];
+    h+='<div class="attr"><div class="ak">'+(r+1)+'. '+esc(rf.ko)+'</div><div class="av">'+esc(rf.crit)+'</div></div>';}
+  h+=irow("caution","국내 특수성","비만하지 않은 지방간(lean MASLD) 흔함 → <b>마른 환자도 배제 말 것</b>. BMI 23·허리 남90·여85cm는 국내 기준(국제와 다름).");
+  h+='</div></div>';
+
+  // 비침습 섬유화 평가
+  h+='<div class="card"><div class="head"><span class="emoji">📊</span><span class="t">비침습 섬유화 평가 (2단계) <span class="calc-badge">🧮 계산기</span></span><span class="chev">▶</span></div><div class="body">';
+  h+='<div class="keybox"><div class="kt">예후의 핵심 = 섬유화</div><div class="kv">MASLD 예후는 섬유화 정도가 결정. 1단계 FIB-4(혈액) → 중간이면 2단계 Fibroscan.</div></div>';
+  h+='<div style="font-weight:800;font-size:13px;margin:8px 0 4px;color:var(--m-700)">1단계 · FIB-4 (혈액) <span class="calc-badge">🧮 계산기</span></div>';
+  h+='<div class="note">FIB-4 = (나이 × AST) / (혈소판[10⁹/L] × √ALT)</div>';
+  // 독립 FIB-4 계산기 위젯
+  h+='<div class="calc-box">';
+  h+='<div class="calc-grid">';
+  h+='<div class="calc-f"><label>나이</label><input id="lib-age" type="number" inputmode="numeric" placeholder="세"></div>';
+  h+='<div class="calc-f"><label>혈소판 10⁹/L</label><input id="lib-plt" type="number" inputmode="numeric" placeholder="220"></div>';
+  h+='<div class="calc-f"><label>AST IU/L</label><input id="lib-ast" type="number" inputmode="numeric" placeholder="45"></div>';
+  h+='<div class="calc-f"><label>ALT IU/L</label><input id="lib-alt" type="number" inputmode="numeric" placeholder="60"></div>';
+  h+='</div>';
+  h+='<div id="lib-fib4-out" class="calc-out">값을 입력하면 자동 계산됩니다</div>';
+  h+='</div>';
+  for(var f=0;f<MASH.fib4.bands.length;f++){var fb=MASH.fib4.bands[f];
+    var tn=fb.key==="low"?"good":(fb.key==="mid"?"caution":"danger");
+    h+=irow(tn,fb.label+" ("+fb.range+")",esc(fb.mean)+" → <b>"+esc(fb.next)+"</b>");}
+  h+=irow("caution","연령 주의",esc(MASH.fib4.caveat));
+  h+='<div style="font-weight:800;font-size:13px;margin:12px 0 4px;color:var(--m-700)">2단계 · Fibroscan (kPa)</div>';
+  h+='<div class="note"><b>Fibroscan = VCTE</b>(Vibration-Controlled Transient Elastography) — 같은 검사. VCTE는 검사 기술명, Fibroscan은 장비 상품명. 이하 Fibroscan으로 통일.</div>';
+  for(var v=0;v<MASH.vcte.bands.length;v++){var vb=MASH.vcte.bands[v];
+    var tn2=vb.key==="low"?"good":(vb.key==="mid"?"caution":"danger");
+    h+=irow(tn2,vb.label+" ("+vb.range+")",esc(vb.mean)+" → <b>"+esc(vb.next)+"</b>");}
+  h+=irow("info","보조",esc(MASH.vcte.cap)+" 생검 고려: NIT 불확정·간경변 의심·동반진단 불확실·ALT/AST 6개월↑ 지속.");
+  h+=irow("reimb","급여 — Fibroscan은 비급여","<b>Fibroscan(VCTE) 검사 자체는 비급여입니다.</b> 급여 고시가 없음(전액 본인부담, 대략 2~5만원). <b>역설: Fibroscan 결과 F2↑가 나오면 그게 <u>다른 약제</u>의 급여 근거</b>가 되는 것이지, Fibroscan 검사비가 급여되는 게 아님. 예: B형간염은 Fibroscan F2↑로 항바이러스제 급여를 입증. <b>MASLD는 표적약이 국내 미도입이라 그 입증 용도조차 없음</b> → MASLD에서 Fibroscan은 순수 임상 판단용 비급여 검사. FIB-4는 무료 혈액지표 선별 도구.");
+  h+='</div></div>';
+
+  // 약물 라이브러리
+  h+='<div class="card"><div class="head"><span class="emoji">💊</span><span class="t">약물 라이브러리 — 현실</span><span class="chev">▶</span></div><div class="body">';
+  h+=irow("danger","핵심 현실","MASH <b>표적 치료제는 한국에 사실상 없음</b>. resmetirom 미도입. 나머지는 동반질환(당뇨·비만·이상지질) 적응증으로만 급여. <b>치료의 중심은 생활습관·동반질환 관리</b>.");
+  h+='<div style="font-weight:800;font-size:13px;margin:10px 0 4px;color:var(--m-700)">한눈 비교</div>';
+  h+='<table class="mtx"><thead><tr><th style="width:30%;text-align:left;padding-left:5px">약제</th><th>MASH<br>표적</th><th>국내<br>가용</th><th>당뇨</th><th>체중</th></tr></thead><tbody>';
+  for(var mi=0;mi<MASH.matrix.length;mi++){var m=MASH.matrix[mi];
+    h+='<tr><td class="drug">'+esc(m.abbr)+'<small>'+esc(m.brand)+'</small></td><td>'+matDot(m.target)+'</td><td>'+matDot(m.korea)+'</td><td>'+matDot(m.dm)+'</td><td>'+matDot(m.wt)+'</td></tr>';}
+  h+='</tbody></table>';
+  h+='<div class="note">○ 가능/우수 · △ 일부/주의 · ✕ 불가/미도입 · – 해당없음. (국내가용=MASH 목적 처방 가능성)</div>';
+  h+='<div style="font-weight:800;font-size:13px;margin:12px 0 4px;color:var(--m-700)">▸ 약제별 상세 (탭하여 펼침)</div>';
+  h+='<div class="drug-chips" id="drugChips">';
+  for(var dc=0;dc<MASH.matrix.length;dc++){h+='<button data-drug="'+MASH.matrix[dc].id+'">💊 '+esc(MASH.matrix[dc].abbr)+'</button>';}
+  h+='</div><div class="drug-panel" id="drugPanel"></div>';
+  h+='</div></div>';
+
+  // 생활습관
+  h+='<div class="card"><div class="head"><span class="emoji">🥗</span><span class="t">생활습관 (1차 치료)</span><span class="chev">▶</span></div><div class="body">';
+  for(var l=0;l<MASH.lifestyle.length;l++){h+=irow(MASH.lifestyle[l].tone,MASH.lifestyle[l].lbl,MASH.lifestyle[l].txt);}
+  h+='</div></div>';
+
+  // HCC·합병증
+  h+='<div class="card"><div class="head"><span class="emoji">🔭</span><span class="t">HCC 감시 · 합병증</span><span class="chev">▶</span></div><div class="body">';
+  for(var s=0;s<MASH.surveillance.length;s++){h+=irow(MASH.surveillance[s].tone,MASH.surveillance[s].lbl,MASH.surveillance[s].txt);}
+  h+='</div></div>';
+
+  // 코드
+  h+='<div class="card"><div class="head"><span class="emoji">🏷️</span><span class="t">급여·상병 코드</span><span class="chev">▶</span></div><div class="body"><table><tr><th>코드</th><th>항목</th></tr>';
+  for(var c=0;c<MASH.codes.length;c++) h+='<tr><td><b>'+esc(MASH.codes[c].c)+'</b></td><td>'+esc(MASH.codes[c].n)+'</td></tr>';
+  h+='</table></div></div>';
+
+  root_getEl("mash-tab-lib").innerHTML=h;(function(){var __cs=root.querySelectorAll("#mash-tab-lib .card");for(var __i=0;__i<__cs.length;__i++){if(!__cs[__i].classList.contains("lead"))__cs[__i].classList.add("sheetmode");}})();
+  bindDrugChips();
+  bindLibCalc();
+}
+function bindLibCalc(){
+  var ids=["lib-age","lib-plt","lib-ast","lib-alt"];
+  var out=root_getEl("lib-fib4-out");
+  if(!out) return;
+  function update(){
+    var age=parseFloat(root_getEl("lib-age").value);
+    var plt=parseFloat(root_getEl("lib-plt").value);
+    var ast=parseFloat(root_getEl("lib-ast").value);
+    var alt=parseFloat(root_getEl("lib-alt").value);
+    var v=calcFIB4(age,ast,alt,plt);
+    out.className="calc-out";
+    if(v==null){ out.innerHTML="값을 모두 입력하면 자동 계산됩니다"; return; }
+    var band=fib4Band(v);
+    var bObj=null;for(var i=0;i<MASH.fib4.bands.length;i++){if(MASH.fib4.bands[i].key===band)bObj=MASH.fib4.bands[i];}
+    var ageWarn=(age<35||age>65)?'<div style="font-size:11px;margin-top:4px;font-weight:600">⚠️ '+(age<35?"35세 미만":"65세 초과")+' — FIB-4 신뢰도 저하</div>':'';
+    out.className="calc-out has "+band;
+    out.innerHTML='<span class="cv">'+v+'</span>'+esc(bObj.label)+' ('+esc(bObj.range)+')<br><span style="font-weight:600">→ '+esc(bObj.next)+'</span>'+ageWarn;
+  }
+  for(var i=0;i<ids.length;i++){ root_getEl(ids[i]).addEventListener("input",update); }
+}
+function bindDrugChips(){
+  var chips=root_getEl("drugChips"),panel=root_getEl("drugPanel");
+  if(!chips||!panel)return;
+  var bs=chips.querySelectorAll("button");
+  for(var i=0;i<bs.length;i++){
+    bs[i].addEventListener("click",function(e){
+      e.stopPropagation();
+      var id=this.getAttribute("data-drug"),sel=this.classList.contains("sel");
+      for(var x=0;x<bs.length;x++)bs[x].classList.remove("sel");
+      if(sel){panel.innerHTML="";return;}
+      this.classList.add("sel");
+      panel.innerHTML=renderDrugDetail(id);
+    });
+  }
+}
+function renderDrugDetail(id){
+  var d=MASH.drugs[id];if(!d)return"";
+  var h='<div class="keybox"><div class="kt">'+esc(d.name)+' · '+esc(d.brand)+' · '+esc(d.cls)+'</div><div class="kv">'+esc(d.summary)+'</div></div>';
+  h+=irow("reimb","국내 상태",esc(d.korea));
+  if(d.ae) h+=irow("caution","부작용",esc(d.ae));
+  if(d.contra) h+=irow("danger","금기",esc(d.contra));
+  h+='<div class="attrs">';
+  h+=attr("적응증",d.indication);
+  h+=attr("기전",d.mech);
+  h+=attr("용법",d.dose);
+  h+=attr("효능",d.efficacy);
+  h+=attr("근거",d.evidence);
+  h+='</div>';
+  return h;
+}
+
+/* ---------- 플로우 (관리 경로) ---------- */
+var flowState={steatosis:null,alcohol:null,lean:false,risks:{}};
+function renderFlow(){
+  var h="";
+  h+='<div class="card lead"><div class="head"><span class="emoji">🩺</span><span class="t">관리 플로우 — 진단 분류 &amp; 위험 층화</span></div><div class="body">';
+  h+='<p class="note">환자 정보를 입력하면 <b>SLD 분류</b>와 <b>FIB-4 섬유화 위험</b>을 계산하고, <b>향후 관리·추적 경로</b>를 제시합니다. 처방 판정이 아닙니다.</p>';
+
+  // 지방증
+  h+='<div class="field"><label>① 간 지방증 (영상/조직)</label><div class="opts" data-k="steatosis">'+
+     '<button data-v="yes">확인됨</button><button data-v="no">없음</button></div></div>';
+  // 음주
+  h+='<div class="field"><label>② 음주량</label><div class="opts" data-k="alcohol">'+
+     '<button data-v="none">없음/소량</button><button data-v="mod">중등량<br><small>여140-350·남210-420 g/주</small></button><button data-v="high">다량<br><small>여>350·남>420</small></button></div></div>';
+  // 위험인자 체크
+  h+='<div class="field"><label>③ 심대사 위험인자 (해당 모두 탭)</label><div id="riskChecks">';
+  for(var r=0;r<MASH.riskFactors.length;r++){var rf=MASH.riskFactors[r];
+    h+='<div class="checkrow" data-risk="'+rf.id+'"><div class="box"></div><div class="lab">'+esc(rf.ko)+'<small>'+esc(rf.crit)+'</small></div></div>';}
+  h+='</div></div>';
+  // lean
+  h+='<div class="field"><label>④ 체형</label><div class="opts" data-k="lean">'+
+     '<button data-v="no">BMI ≥23</button><button data-v="yes">마름 (BMI<23, lean)</button></div></div>';
+
+  // FIB-4 입력
+  h+='<div class="keybox" style="margin:14px 0 6px"><div class="kt">FIB-4 계산기</div><div class="kv">나이·AST·ALT·혈소판을 넣으면 섬유화 위험을 자동 계산합니다.</div></div>';
+  h+='<div class="grid2"><div class="field"><label>나이</label><input id="in-age" type="number" inputmode="numeric" placeholder="세"></div>'+
+     '<div class="field"><label>혈소판 (10⁹/L)</label><input id="in-plt" type="number" inputmode="numeric" placeholder="예: 220"></div></div>';
+  h+='<div class="grid2"><div class="field"><label>AST (IU/L)</label><input id="in-ast" type="number" inputmode="numeric" placeholder="예: 45"></div>'+
+     '<div class="field"><label>ALT (IU/L)</label><input id="in-alt" type="number" inputmode="numeric" placeholder="예: 60"></div></div>';
+  h+='<div class="field"><label>Fibroscan 결과 있으면 (kPa, 선택)</label><input id="in-vcte" type="number" inputmode="decimal" placeholder="예: 9.5 (없으면 비움)"></div>';
+
+  h+='<button class="btn-run" id="runBtn">분류 &amp; 위험 층화</button>';
+  h+='<button class="btn-reset" id="resetBtn">초기화</button>';
+  h+='<div id="flowResult"></div>';
+  h+='</div></div>';
+
+  root_getEl("mash-tab-flow").innerHTML=h;
+  bindFlow();
+}
+function bindFlow(){
+  var opts=root.querySelectorAll("#mash-tab-flow .opts");
+  for(var g=0;g<opts.length;g++){(function(grp){
+    var k=grp.getAttribute("data-k"),bs=grp.querySelectorAll("button");
+    for(var b=0;b<bs.length;b++){bs[b].addEventListener("click",function(){
+      for(var x=0;x<bs.length;x++)bs[x].classList.remove("sel");
+      this.classList.add("sel");
+      var v=this.getAttribute("data-v");
+      if(k==="lean") flowState.lean=(v==="yes");
+      else flowState[k]=v;
+    });}
+  })(opts[g]);}
+  var checks=root.querySelectorAll("#riskChecks .checkrow");
+  for(var c=0;c<checks.length;c++){checks[c].addEventListener("click",function(){
+    var id=this.getAttribute("data-risk");
+    this.classList.toggle("on");
+    flowState.risks[id]=this.classList.contains("on");
+    if(this.classList.contains("on")) this.querySelector(".box").innerHTML="✓"; else this.querySelector(".box").innerHTML="";
+  });}
+  root_getEl("runBtn").addEventListener("click",runFlow);
+  root_getEl("resetBtn").addEventListener("click",resetFlow);
+}
+function runFlow(){
+  var riskCount=0;
+  for(var k in flowState.risks){ if(flowState.risks[k]) riskCount++; }
+  var age=parseFloat(root_getEl("in-age").value);
+  var ast=parseFloat(root_getEl("in-ast").value);
+  var alt=parseFloat(root_getEl("in-alt").value);
+  var plt=parseFloat(root_getEl("in-plt").value);
+  var vcte=parseFloat(root_getEl("in-vcte").value);
+  var p={
+    steatosis:(flowState.steatosis==="yes"),
+    alcohol:flowState.alcohol||"none",
+    riskCount:riskCount, lean:flowState.lean,
+    age:isNaN(age)?null:age, ast:isNaN(ast)?null:ast, alt:isNaN(alt)?null:alt, plt:isNaN(plt)?null:plt,
+    vcte:isNaN(vcte)?null:vcte
+  };
+  if(flowState.steatosis==null){
+    root_getEl("flowResult").innerHTML='<div class="irow danger"><div class="bar"></div><div class="ic"><div class="txt">간 지방증 여부를 선택하세요.</div></div></div>';
+    return;
+  }
+  renderFlowResult(recommend(p),p,riskCount);
+}
+function resetFlow(){
+  flowState={steatosis:null,alcohol:null,lean:false,risks:{}};
+  var sels=root.querySelectorAll("#mash-tab-flow .opts button.sel");
+  for(var i=0;i<sels.length;i++)sels[i].classList.remove("sel");
+  var ons=root.querySelectorAll("#riskChecks .checkrow.on");
+  for(var j=0;j<ons.length;j++){ons[j].classList.remove("on");ons[j].querySelector(".box").innerHTML="";}
+  ["in-age","in-ast","in-alt","in-plt","in-vcte"].forEach(function(id){root_getEl(id).value="";});
+  root_getEl("flowResult").innerHTML="";
+}
+function renderFlowResult(R,p,riskCount){
+  var h='<div style="margin-top:14px">';
+  // SLD 분류
+  var sk=R.sld.key;
+  h+='<div class="sld-result '+sk+'"><div class="st">'+esc(R.sld.ko)+'</div><div class="ss">'+esc(R.sld.detail)+'</div></div>';
+  if(p.steatosis){ h+='<div class="note">심대사 위험인자 '+riskCount+'개 충족'+(p.alcohol!=="none"?" · 음주: "+(p.alcohol==="mod"?"중등량":"다량"):"")+'</div>'; }
+
+  // FIB-4 계기
+  if(R.fib4!=null){
+    h+='<h3 class="sec">섬유화 위험 (FIB-4)</h3>';
+    h+='<div class="fib4-val">'+R.fib4+' <small>FIB-4</small></div>';
+    h+='<div class="gauge"><div class="track">';
+    h+='<div class="seg low'+(R.band==="low"?"":" dim")+'">저위험<br>&lt;1.3</div>';
+    h+='<div class="seg mid'+(R.band==="mid"?"":" dim")+'">중간<br>1.3-2.67</div>';
+    h+='<div class="seg high'+(R.band==="high"?"":" dim")+'">고위험<br>≥2.67</div>';
+    h+='</div></div>';
+    var bandObj=null;for(var i=0;i<MASH.fib4.bands.length;i++){if(MASH.fib4.bands[i].key===R.band)bandObj=MASH.fib4.bands[i];}
+    h+='<div class="riskbig '+R.band+'"><div class="rt">'+esc(bandObj.label)+'</div><div class="rs">'+esc(bandObj.mean)+' → '+esc(bandObj.next)+'</div></div>';
+  } else {
+    h+=irow("caution","FIB-4 미계산","나이·AST·ALT·혈소판을 모두 입력하면 섬유화 위험이 계산됩니다.");
+  }
+
+  // 관리 경로
+  h+='<h3 class="sec">관리 · 추적 경로</h3>';
+  for(var m=0;m<R.management.length;m++){h+=irow(R.management[m].tone,R.management[m].lbl,R.management[m].txt);}
+
+  // 흐름도
+  if(R.fib4!=null){
+    h+='<h3 class="sec">위험 층화 흐름</h3><div class="pathway">';
+    h+='<div class="pw-node step"><div class="side"></div><div class="core"><div class="nm">FIB-4 = '+R.fib4+'</div><div class="dx">혈액 기반 1차 선별</div></div></div>';
+    h+='<div class="pw-arrow">▼</div>';
+    if(R.band==="low"){
+      h+='<div class="pw-node low"><div class="side"></div><div class="core"><div class="nm">저위험 → 1·2차 추적</div><div class="dx">생활습관 관리 + 1-3년 FIB-4 재평가</div></div></div>';
+    } else if(R.band==="mid"){
+      h+='<div class="pw-node mid"><div class="side"></div><div class="core"><div class="nm">중간 → Fibroscan 시행</div><div class="dx">Fibroscan으로 재층화 (검사 자체는 비급여)</div></div></div>';
+      h+='<div class="pw-arrow">▼</div>';
+      h+='<div class="pw-node step"><div class="side"></div><div class="core"><div class="nm">&lt;8 추적 / 8-12 추가평가 / &gt;12 전문의</div></div></div>';
+    } else {
+      h+='<div class="pw-node high"><div class="side"></div><div class="core"><div class="nm">고위험 → 전문의 의뢰</div><div class="dx">간경변 평가 · HCC 감시 고려</div></div></div>';
+    }
+    h+='</div>';
+  }
+
+  // 플래그
+  if(R.flags.length){
+    h+='<h3 class="sec">유의 사항</h3>';
+    for(var f=0;f<R.flags.length;f++){h+=irow(R.flags[f].tone,R.flags[f].lbl,R.flags[f].txt);}
+  }
+  h+='</div>';
+  root_getEl("flowResult").innerHTML=h;
+}
+
+/* ---------- 검색 ---------- */
+var SEARCH_INDEX=buildSearchIndex();
+function buildSearchIndex(){
+  var idx=[];
+  for(var n=0;n<MASH.nomenclature.length;n++){var nm=MASH.nomenclature[n];
+    idx.push({t:nm.abbr+" "+nm.ko,x:nm.desc,kw:(nm.abbr+" "+nm.ko+" "+nm.en+" "+nm.desc+" 명칭").toLowerCase()});}
+  for(var d in MASH.drugs){if(!MASH.drugs.hasOwnProperty(d))continue;var dr=MASH.drugs[d];
+    idx.push({t:dr.name+" ("+dr.brand+")",x:dr.summary,kw:(dr.name+" "+dr.brand+" "+dr.cls+" "+dr.summary+" "+dr.korea+" 약물").toLowerCase()});}
+  for(var rf=0;rf<MASH.riskFactors.length;rf++){var r=MASH.riskFactors[rf];
+    idx.push({t:"위험인자: "+r.ko,x:r.crit,kw:(r.ko+" "+r.crit+" 심대사 위험인자 진단").toLowerCase()});}
+  idx.push({t:"FIB-4 섬유화 평가",x:"<1.3 저위험 / 1.3-2.67 중간 / ≥2.67 고위험. 35세미만·65세초과 신뢰도저하",kw:"fib-4 fib4 섬유화 fibrosis 혈액 ast alt 혈소판 위험 층화"});
+  idx.push({t:"Fibroscan (= VCTE)",x:"<8 저 / 8-12 중간 / >12 고위험 kPa. 같은 검사(VCTE=기술명, Fibroscan=장비명). 검사 자체는 비급여(전액 본인부담). 결과 F2↑는 다른 약제 급여 입증 근거",kw:"vcte fibroscan 간섬유화 kpa cap 탄성도 elastography 비급여 본인부담 급여 f2"});
+  idx.push({t:"resmetirom 레즈디프라",x:"세계 첫 MASH 표적약. F2-F3 비간경변. 한국 미도입",kw:"resmetirom 레즈디프라 rezdiffra thr 표적 미도입 maestro"});
+  idx.push({t:"MetALD 알코올 기준",x:"여 140-350 / 남 210-420 g/주. 그 이상 ALD",kw:"metald 알코올 음주 ald 절주"});
+  idx.push({t:"생활습관 체중감량",x:"7-10% 감량이 핵심. 3-5% 지방증 / 7% 염증 / ≥10% 섬유화",kw:"생활습관 체중 감량 지중해식 운동 lifestyle 7 10"});
+  idx.push({t:"lean MASLD",x:"마른 환자(BMI<23)도 배제 말 것. 국내 흔함",kw:"lean 마른 비비만 masld bmi 23 정상체중"});
+  return idx;
+}
+root_getEl("mash-searchIn").addEventListener("input",function(){
+  var q=this.value.trim().toLowerCase(),box=root_getEl("mash-searchResults");
+  if(!q){box.innerHTML="";return;}
+  var hits=[];
+  for(var i=0;i<SEARCH_INDEX.length;i++){if(SEARCH_INDEX[i].kw.indexOf(q)>=0)hits.push(SEARCH_INDEX[i]);}
+  if(!hits.length){box.innerHTML='<div class="sr"><div class="srx">검색 결과 없음.</div></div>';return;}
+  var h="";
+  for(var j=0;j<hits.length;j++){h+='<div class="sr"><div class="srt">'+esc(hits[j].t)+'</div><div class="srx">'+esc(hits[j].x)+'</div></div>';}
+  box.innerHTML=h;
+});
+
+/* ---------- 푸터 ---------- */
+root_getEl("mash-footer").innerHTML=
+  '<h4>📖 출처 · 근거</h4><ol>'+
+  '<li>2025 대한간학회 대사이상지방간질환(MASLD) 진료 가이드라인 (2025.5.28)</li>'+
+  '<li>AASLD/EASL/ALEH/APASL 다학회 명명법 합의 (Hepatology / J Hepatol 2023)</li>'+
+  '<li>MAESTRO-NASH (resmetirom 3상, NEJM 2024) · FDA Rezdiffra 라벨 2024.3 / EMA EPAR 2025.8</li>'+
+  '<li>ESSENCE (semaglutide MASH 3상, NEJM 2025.4.30 · EASL 2025)</li>'+
+  '<li>ADA Standards of Care (MASLD in T2D) · EASL-EASD-EASO CPG</li>'+
+  '<li>FIB-4 / Fibroscan(VCTE) 컷오프: AASLD NIT pathway, 비침습 간섬유화 검사 적용(대한내과학회지)</li>'+
+  '<li>간섬유화검사(Fibroscan/VCTE) 비급여 — 검사 자체 급여 고시 부재. B형간염 고시는 결과를 약값 급여 입증에 활용</li>'+
+  '</ol>'+
+  '<p style="margin-top:10px">⚖️ 수치·급여·약물 도입 상태는 변경될 수 있습니다. 청구 전 심평원 고시 확인. '+
+  '<a href="https://www.kasl.org">대한간학회</a> · <a href="https://www.hira.or.kr">심평원</a></p>'+
+  '<p style="margin-top:6px;color:#8FA89C">만성 간질환 통합 가이드 · MASLD/MASH 모듈 v1.0 · 2026</p>';
+
+renderLibrary();
+renderFlow();
+
+})();
+
+
+/* ===== 간경변 JS ===== */
+(function(){
+"use strict";
+var root=document.getElementById("disease-cirr");
+if(!root) return;
+function root_getEl(id){return root.querySelector("#"+id);}
+
+/* --- 시트 scope 바인딩 --- */
+function bindChildPughIn(scope){
+  var out=scope.querySelector("#cp-out");
+  if(!out)return;
+  var cpState={bil:"",alb:"",inr:"",asc:"",he:""};
+  function update(){
+    var r=calcChildPugh(cpState);
+    out.className="calc-out";
+    if(!r){out.innerHTML="5개 항목을 모두 선택하면 자동 계산됩니다";return;}
+    var gr=null;for(var i=0;i<CIRR.childPugh.grades.length;i++){if(CIRR.childPugh.grades[i].key===r.grade)gr=CIRR.childPugh.grades[i];}
+    out.className="calc-out has "+r.grade;
+    out.innerHTML='<span class="cv">'+r.score+'점</span>'+esc(gr.label)+' ('+esc(gr.range)+')<br><span style="font-weight:600">'+esc(gr.mean)+'</span>';
+  }
+  var segs=scope.querySelectorAll(".cp-seg");
+  for(var s=0;s<segs.length;s++){(function(seg){
+    var key=seg.getAttribute("data-cp"),bs=seg.querySelectorAll("button");
+    for(var b=0;b<bs.length;b++){bs[b].addEventListener("click",function(e){
+      e.stopPropagation();
+      for(var x=0;x<bs.length;x++)bs[x].classList.remove("sel");
+      this.classList.add("sel");
+      cpState[key]=this.getAttribute("data-val");
+      update();
+    });}
+  })(segs[s]);}
+}
+function bindMELDIn(scope){
+  var ids=["m-bil","m-inr","m-cr","m-dial"],out=scope.querySelector("#m-out");
+  if(!out)return;
+  function update(){
+    var bil=parseFloat(scope.querySelector("#m-bil").value);
+    var inr=parseFloat(scope.querySelector("#m-inr").value);
+    var cr=parseFloat(scope.querySelector("#m-cr").value);
+    var dial=scope.querySelector("#m-dial").value==="1";
+    var m=calcMELD(isNaN(bil)?null:bil,isNaN(inr)?null:inr,isNaN(cr)?null:cr,dial);
+    out.className="calc-out";
+    if(m==null){out.innerHTML="값을 입력하면 자동 계산됩니다";return;}
+    var b=meldBand(m);
+    out.className="calc-out has "+b.cls;
+    out.innerHTML='<span class="cv">'+m+'</span>MELD ('+esc(b.label)+')<br><span style="font-weight:600">'+esc(b.risk)+'</span>';
+  }
+  for(var i=0;i<ids.length;i++){scope.querySelector("#"+ids[i]).addEventListener("input",update);scope.querySelector("#"+ids[i]).addEventListener("change",update);}
+}
+
+function __sheetRebind(scope){
+  if(typeof bindChildPughIn==="function") bindChildPughIn(scope);
+  if(typeof bindMELDIn==="function") bindMELDIn(scope);
+  var chips=scope.querySelector("#drugChips"), panel=scope.querySelector("#drugPanel");
+  if(chips&&panel){var bs=chips.querySelectorAll("button");for(var i=0;i<bs.length;i++){bs[i].addEventListener("click",function(e){e.stopPropagation();var id=this.getAttribute("data-drug"),sel=this.classList.contains("sel");for(var x=0;x<bs.length;x++)bs[x].classList.remove("sel");if(sel){panel.innerHTML="";return;}this.classList.add("sel");panel.innerHTML=renderDrugDetail(id);});}}
+}
+
+"use strict";
+/* =======================================================================
+   DATA 레이어 — 임상 지식은 여기에만. ID 네임스페이스.
+   ======================================================================= */
+var CIRR = {};
+
+/* --- 정의·병태 --- */
+CIRR.overview = [
+  {tone:"info",lbl:"대상성 (compensated)",txt:"합병증(복수·정맥류출혈·간성뇌증·황달) 없는 단계. 무증상 多. 중앙생존 12년 이상. 정맥류·HCC 감시가 핵심."},
+  {tone:"danger",lbl:"비대상성 (decompensated)",txt:"합병증 발생 단계. 예후 급격히 악화(중앙생존 ~2년). 복수가 가장 흔한 첫 징후. 이식 평가 고려."},
+  {tone:"caution",lbl:"문맥압항진증",txt:"간내 혈관저항↑ + 과역동순환 → 정맥류·복수·비장종대의 공통 기전. HVPG ≥10mmHg = 임상적 유의 문맥압항진(CSPH)."},
+  {tone:"info",lbl:"자연경과",txt:"대상성→비대상성 전환율 연 5-7%. 일단 비대상성 되면 되돌리기 어려움(기저질환 치료로 일부 재대상화 가능)."}
+];
+
+/* --- Child-Pugh --- */
+CIRR.childPugh = {
+  items:[
+    {id:"bil",label:"총 빌리루빈 (mg/dL)",opts:[["<2","1"],["2–3","2"],[">3","3"]]},
+    {id:"alb",label:"알부민 (g/dL)",opts:[[">3.5","1"],["2.8–3.5","2"],["<2.8","3"]]},
+    {id:"inr",label:"INR",opts:[["<1.7","1"],["1.7–2.3","2"],[">2.3","3"]]},
+    {id:"asc",label:"복수",opts:[["없음","1"],["경증(약물조절)","2"],["중등도(난치)","3"]]},
+    {id:"he",label:"간성뇌증",opts:[["없음","1"],["Grade 1–2","2"],["Grade 3–4","3"]]}
+  ],
+  grades:[
+    {key:"a",label:"A등급",range:"5–6점",mean:"대상성. 1년 생존 ~100%, 2년 ~85%",class:"a"},
+    {key:"b",label:"B등급",range:"7–9점",mean:"기능저하. 1년 ~80%, 2년 ~60%. 이식 평가 고려",class:"b"},
+    {key:"c",label:"C등급",range:"10–15점",mean:"비대상성 진행. 1년 ~45%. 이식 적극 고려",class:"c"}
+  ],
+  caveat:"복수·간성뇌증 항목은 주관적 판단 개입 → 평가자간 변이. 객관 지표는 MELD 병용."
+};
+
+/* --- MELD (검증된 공식) --- */
+CIRR.meld = {
+  formula:"MELD = 3.78×ln(빌리루빈) + 11.2×ln(INR) + 9.57×ln(Cr) + 6.43",
+  rules:"모든 값 <1.0 → 1.0 대입. Cr >4.0 또는 최근 7일 내 투석 2회↑ → Cr=4.0. 결과 6–40 클램프.",
+  bands:[
+    {max:9,label:"6–9",risk:"90일 사망률 ~2%",cls:"a"},
+    {max:19,label:"10–19",risk:"90일 사망률 ~6%",cls:"b"},
+    {max:29,label:"20–29",risk:"90일 사망률 ~20%",cls:"c"},
+    {max:99,label:"30–40",risk:"90일 사망률 ~50%↑",cls:"c"}
+  ],
+  note:"MELD>15는 일반적으로 이식이 약물관리보다 이득. 2016.6월~ 국내 뇌사자 간이식 응급도 결정에 MELD 사용. 변형: MELD-Na(저나트륨 반영), MELD 3.0(알부민·성별 추가)."
+};
+
+/* --- 기본 검사 --- */
+CIRR.workup = [
+  {tone:"info",lbl:"영상",txt:"복부 초음파/CT/MRI — 간 표면 결절성·비장종대·측부혈관·복수. 간경변 형태 확인."},
+  {tone:"info",lbl:"혈액",txt:"CBC(혈소판↓=문맥압 간접지표), 간기능, INR, 알부민, 빌리루빈, Cr, Na. Child-Pugh·MELD 산출용."},
+  {tone:"caution",lbl:"내시경 감시",txt:"정맥류 확인·위험평가 위해 진단 시 시행(A1). 감시 간격: 대상성 2–3년, 비대상성 1–2년."},
+  {tone:"info",lbl:"기저질환",txt:"원인 규명(HBV·HCV·알코올·대사). 재대상화·HCC 위험 평가에 필수."}
+];
+
+/* --- 약물 라이브러리 (drug: 전역 ID) --- */
+CIRR.drugs = {
+  "drug:propranolol":{name:"프로프라놀롤",cls:"비선택적 베타차단제(NSBB)",comp:"정맥류",
+    indication:"큰 식도정맥류 초출혈 1차예방, 출혈 재발예방",
+    dose:"20mg 1일 2회 시작 → 목표 심박 55–60회/분까지 증량, 최대 160mg/일",
+    mech:"β1(심박출↓)+β2(내장혈관 수축) → 문맥혈류·문맥압 감소",
+    ae:"서맥·저혈압·피로·기관지수축. 난치성복수·SBP 동반 시 신중(생존 악화 논란).",
+    reimb:"급여(경구 BB).",
+    grade:"KASL A1 (큰 정맥류 1차예방)"},
+  "drug:nadolol":{name:"나돌롤",cls:"비선택적 베타차단제(NSBB)",comp:"정맥류",
+    indication:"propranolol 대체 NSBB",
+    dose:"40mg 1일 1회 시작 → 심박 목표까지 증량",
+    mech:"propranolol과 동일(반감기 길어 1일 1회)",
+    ae:"서맥·저혈압. 신배설이라 신기능 저하 시 조정.",
+    reimb:"급여.",grade:"KASL A1"},
+  "drug:carvedilol":{name:"카르베딜롤",cls:"NSBB + α1차단",comp:"정맥류",
+    indication:"작은 정맥류 진행예방·문맥압 감소, 큰 정맥류 1차예방 대안",
+    dose:"6.25mg 1일 1회 시작 → 12.5mg/일(최대 25mg, 지속 고혈압시). SBP<90 회피",
+    mech:"β차단 + α1차단으로 간내혈관 확장 → propranolol보다 문맥압 감소 우수 경향",
+    ae:"저혈압 주의(α1차단). 난치성복수 시 신중.",
+    reimb:"급여.",grade:"작은 정맥류 진행예방 근거"},
+  "drug:spironolactone":{name:"스피로노락톤",cls:"알도스테론 길항 이뇨제",comp:"복수",
+    indication:"간경변성 복수 1차 이뇨제",
+    dose:"100mg/일 시작 → 최대 400mg/일. furosemide와 100:40 비율 유지",
+    mech:"원위세뇨관 알도스테론 차단 → 나트륨 배설(간경변 복수는 2차 고알도스테론증)",
+    ae:"고칼륨혈증·여성형유방·신기능저하.",
+    reimb:"급여.",grade:"1차 치료"},
+  "drug:furosemide":{name:"푸로세미드",cls:"고리 이뇨제",comp:"복수",
+    indication:"스피로노락톤 단독 불충분 시 병용",
+    dose:"40mg/일 시작 → 최대 160mg/일. 100:40 비율",
+    mech:"헨레고리 Na-K-2Cl 억제. 단독보다 spironolactone 병용이 표준",
+    ae:"저칼륨·저나트륨·탈수·신전성 신부전.",
+    reimb:"급여.",grade:"병용 2제요법"},
+  "drug:albumin":{name:"알부민",cls:"혈장증량제",comp:"복수·SBP·간신증후군",
+    indication:"대량복수천자(LVP), SBP, 간신증후군 보조",
+    dose:"LVP: 제거 1L당 6–8g. SBP: 진단시 1.5g/kg, 3일째 1g/kg. HRS: 첫날 1g/kg, 2–15일 20–40g/일",
+    mech:"순환혈장량 유지 → 천자후순환장애·신기능악화 예방",
+    ae:"용량과다 시 폐부종(심부전·핍뇨성신부전 주의).",
+    reimb:"급여: LVP(3–5L 1병, 5L↑ 2병)·SBP(Cr>1 또는 BUN>30 또는 T.bili>4)·HRS(혈중알부민 무관 인정).",
+    grade:"KASL 권고"},
+  "drug:cefotaxime":{name:"세포탁심",cls:"3세대 세팔로스포린",comp:"SBP",
+    indication:"SBP 경험적 1차 항생제",
+    dose:"2g IV 8–12시간마다(중증도 따라). 5–7일",
+    mech:"그람음성 장내세균 표적. 배양 전 경험적 투여(PMN≥250시 즉시)",
+    ae:"과민반응·C.difficile. 신기능 따라 조정.",
+    reimb:"급여(IV 입원).",grade:"KASL 1차"},
+  "drug:ceftriaxone":{name:"세프트리악손",cls:"3세대 세팔로스포린",comp:"SBP",
+    indication:"SBP 경험적 1차(cefotaxime 대체)",
+    dose:"2g IV 1일 1회. 5–7일",
+    mech:"cefotaxime과 동급. 1일 1회 편의",
+    ae:"담즙정체·과민. 신생아 금기(해당없음).",
+    reimb:"급여.",grade:"KASL 1차"},
+  "drug:norfloxacin":{name:"노르플록사신",cls:"퀴놀론 항생제",comp:"SBP",
+    indication:"SBP 회복 후 2차예방, 고위험 1차예방",
+    dose:"400mg 1일 1회 경구(장기)",
+    mech:"장내 그람음성균 선택적 제균 → 세균전위 감소",
+    ae:"내성 유발·QT연장·건염. 장기 복용 모니터.",
+    reimb:"급여(예방).",grade:"KASL 2차예방"},
+  "drug:lactulose":{name:"락툴로스",cls:"비흡수성 이당류(삼투성 하제)",comp:"간성뇌증",
+    indication:"간성뇌증 1차 치료·재발예방",
+    dose:"1일 2–3회 연성변(하루 2–3회 배변) 목표로 적정. 급성기 고용량",
+    mech:"대장 산성화 → 암모니아(NH3→NH4+) 흡수 감소 + 완하 효과",
+    ae:"설사·복부팽만·전해질이상(과량 시 탈수→뇌증 악화 역설).",
+    reimb:"급여.",grade:"KASL 1차"},
+  "drug:rifaximin":{name:"리팍시민",cls:"비흡수성 항생제",comp:"간성뇌증",
+    indication:"간성뇌증 — 락툴로스 병용/반응 불충분 시 추가(재발예방)",
+    dose:"치료용량 1100mg/일(국내 노르믹스정 200mg×하루 6알, 또는 550mg 제제). ",
+    mech:"장내 암모니아 생성 세균 억제. 비흡수라 전신부작용 적음",
+    ae:"드묾(복부불편). 락툴로스 병용이 단독보다 재발예방 우수(Hepatol Commun 2024).",
+    reimb:"국내 허가: 간성혼수(고암모니아혈증) 보조요법. ★급여 인정조건(락툴로스 반응 등)은 청구 전 고시 확인.",
+    grade:"KASL 추가요법"},
+  "drug:l_ornithine_l_aspartate":{name:"L-오르니틴-L-아스파르트산(LOLA)",cls:"암모니아 제거 보조제",comp:"간성뇌증",
+    indication:"간성뇌증 보조(락툴로스±리팍시민에 추가)",
+    dose:"경구/정맥 제형별. 용량 제형 따라",
+    mech:"요소회로·글루타민 합성 촉진 → 암모니아 대사 촉진",
+    ae:"오심·구토. 일반적으로 양호.",
+    reimb:"제형·적응증별 확인.",grade:"보조"},
+  "drug:terlipressin":{name:"테를리프레신",cls:"혈관수축제(바소프레신 유사체)",comp:"간신증후군·정맥류출혈",
+    indication:"간신증후군 Type1, 급성 정맥류출혈",
+    dose:"HRS: 알부민 병용. 정맥류출혈: 초기 IV 후 유지. 제품 용법 따름",
+    mech:"내장혈관 수축 → 유효순환혈류↑ → 신관류 개선",
+    ae:"말초·심근 허혈·서맥·저나트륨. 허혈성질환 주의.",
+    reimb:"HRS Type1: 혈청 Cr≥2.5 시 알부민과 병용 급여. 3일후 Cr감소 있으면 10일(+5일 연장, 총15일), 감소 없으면 10일.",
+    grade:"KASL (HRS 1차)"},
+  "drug:tenofovir":{name:"테노포비르(TDF/TAF)",cls:"항바이러스(NA)",comp:"기저질환",
+    indication:"HBV 동반 간경변 — 항바이러스(재대상화 가능)",
+    dose:"TDF 300mg 또는 TAF 25mg 1일 1회",
+    mech:"HBV 역전사효소 억제 → 바이러스 억제로 섬유화·간기능 개선",
+    ae:"TDF 신독성·골밀도↓, TAF 개선됨.",
+    reimb:"간경변 동반 HBV는 DNA 양성이면 급여(→ HBV 모듈 참조).",
+    grade:"기저질환 치료"},
+  "drug:entecavir":{name:"엔테카비르",cls:"항바이러스(NA)",comp:"기저질환",
+    indication:"HBV 동반 간경변 — 항바이러스",
+    dose:"0.5mg(초치료) 1일 1회. 비대상성은 1mg",
+    mech:"HBV 중합효소 억제",
+    ae:"양호. 비대상성서 젖산산증 드묾.",
+    reimb:"간경변 동반 HBV 급여(→ HBV 모듈).",grade:"기저질환 치료"}
+};
+
+/* --- 합병증별 관리 알고리즘 --- */
+CIRR.complications = {
+  "varices":{ko:"식도정맥류",emoji:"🩸",
+    summary:"문맥압항진의 결과. 출혈 시 사망률 12–22%. 1차예방이 핵심.",
+    keypoint:"정맥류 없으면 NSBB 예방 권장 안 함(A1). 정맥류 있으면 크기·적색징후로 결정.",
+    steps:[
+      {t:"정맥류 없음",d:"NSBB 예방 권장 안 함(A1). 내시경 감시(대상성 2–3년·비대상성 1–2년)."},
+      {t:"작은 정맥류(F1)",d:"carvedilol로 진행예방 고려(특히 적색징후·Child B/C). 또는 감시."},
+      {t:"큰 정맥류(F2·F3) 1차예방",d:"NSBB(propranolol/nadolol/carvedilol) 또는 EVL. 약물 선택 시 carvedilol/propranolol."}
+    ],
+    drugs:["drug:propranolol","drug:nadolol","drug:carvedilol"],
+    referral:{when:"급성 정맥류 출혈 / EVL·EVO 필요 / 약물·내시경 실패",proc:"내시경 정맥류 결찰술(EVL)·폐쇄술(EVO)·TIPS",
+      acute:"급성출혈: 혈관수축제(terlipressin/somatostatin/octreotide) + 예방적 항생제(세프트리악손) + 수혈(Hb 7–9 목표) + 12시간 내 내시경. 즉시 3차 의뢰/전원."}
+  },
+  "ascites":{ko:"복수",emoji:"💧",
+    summary:"가장 흔한 비대상화 첫 징후. 발생 후 1년 15%·5년 50% 사망(예후 불량).",
+    keypoint:"진단천자(SAAG·PMN) 필수. 염분제한(나트륨 2g/일) + 단계적 이뇨제.",
+    steps:[
+      {t:"1단계",d:"염분 제한(Na 2g/일=소금 5g) + spironolactone 100mg/일 단독 시작."},
+      {t:"2단계",d:"반응 불충분 시 furosemide 40mg 추가. spironolactone:furosemide = 100:40 비율 유지, 점증(최대 400:160)."},
+      {t:"3단계(난치성)",d:"최대 이뇨제 무반응/부작용 → 대량복수천자(LVP)+알부민. 반복 시 TIPS 고려 → 3차 의뢰."}
+    ],
+    drugs:["drug:spironolactone","drug:furosemide","drug:albumin"],
+    referral:{when:"난치성 복수 / TIPS 평가 / 간이식 평가",proc:"반복 LVP·TIPS·간이식",
+      acute:"긴장성 복수로 호흡곤란 시 치료적 천자. 5L 이상 천자엔 알부민 보충."}
+  },
+  "sbp":{ko:"자발세균성복막염(SBP)",emoji:"🦠",
+    summary:"복수 감염. 사망률 높음. 의심 시 즉시 진단천자.",
+    keypoint:"복수 PMN ≥250/µL → 배양 안 기다리고 즉시 항생제. 알부민 병용으로 신부전·사망 감소.",
+    steps:[
+      {t:"진단",d:"진단천자 PMN ≥250/µL → SBP. 배양은 혈액배양병에 즉시 접종(동정율↑)."},
+      {t:"항생제",d:"3세대 세팔로스포린(cefotaxime 2g q8–12h 또는 ceftriaxone 2g/일) IV 경험적 시작. 5–7일."},
+      {t:"알부민 병용",d:"진단시 1.5g/kg, 3일째 1g/kg (Cr>1 또는 BUN>30 또는 T.bili>4 시)."},
+      {t:"2차예방",d:"회복 후 norfloxacin 400mg/일 장기 예방."}
+    ],
+    drugs:["drug:cefotaxime","drug:ceftriaxone","drug:albumin","drug:norfloxacin"],
+    referral:{when:"패혈증·쇼크·다제내성 의심 / 반응 불량",proc:"중환자 관리·내성균 치료",
+      acute:"IV 항생제 위해 입원. 패혈증 징후 시 3차 전원."}
+  },
+  "he":{ko:"간성뇌증(HE)",emoji:"🧠",
+    summary:"전체 간경변 10–14%, 비대상성 16–21%. 국내 응급실 간경변의 20%↑ 동반.",
+    keypoint:"유발인자 교정이 1순위(95%까지 발견). 락툴로스 1차, 리팍시민 병용/추가.",
+    steps:[
+      {t:"유발인자 교정",d:"감염(SBP)·위장관출혈·변비·탈수·전해질이상·진정제·신부전 — 찾아서 교정. 단백질 과도제한은 권장 안 함."},
+      {t:"1차 약물",d:"lactulose 적정(하루 2–3회 연성변 목표). 급성기 고용량, 유지요법으로 재발예방."},
+      {t:"추가/병용",d:"반응 불충분·재발 → rifaximin 1100mg/일 병용(락툴로스+리팍시민 우수). LOLA 보조 가능."}
+    ],
+    drugs:["drug:lactulose","drug:rifaximin","drug:l_ornithine_l_aspartate"],
+    referral:{when:"Grade 3–4(혼수)·기도위협 / 반복 재발 / 이식 평가",proc:"중환자 관리·간이식 평가",
+      acute:"의식저하 심하면 기도보호 위해 입원/전원. 유발인자 못 찾거나 불응 시 3차 의뢰."}
+  },
+  "hrs":{ko:"간신증후군(HRS)",emoji:"🫘",
+    summary:"진행된 간경변의 기능성 신부전. Type1(급성, 예후 매우 나쁨)·Type2(난치성복수 동반).",
+    keypoint:"유발인자(감염·과도이뇨·출혈) 교정 + terlipressin+알부민. 간이식이 최적.",
+    steps:[
+      {t:"감별·교정",d:"다른 신부전 원인 배제(신전성·신성). 이뇨제 중단, 알부민으로 혈장량 보충, 감염 치료."},
+      {t:"혈관수축제+알부민",d:"terlipressin + 알부민(첫날 1g/kg, 2–15일 20–40g/일). Type1 표준."},
+      {t:"반응 평가",d:"3일후 Cr 감소 있으면 10일(증상지속시 +5일, 총15일). 감소 없으면 10일."}
+    ],
+    drugs:["drug:terlipressin","drug:albumin"],
+    referral:{when:"간이식 평가 / 신대체요법 / 불응성",proc:"간이식·투석(이식 가교)",
+      acute:"Type1은 진행 빠름 → 조기 3차 의뢰. 간이식 동반 시 이식 후 예후는 나쁨."}
+  }
+};
+
+/* --- HCC 감시·기저질환 --- */
+CIRR.surveillance = [
+  {tone:"good",lbl:"HCC 감시",txt:"간경변은 HCC 고위험 → <b>6개월마다 간초음파 ± AFP</b>. 결절 발견 시 역동조영 CT/MRI → 3차 의뢰."},
+  {tone:"info",lbl:"HBV 동반",txt:"DNA 양성이면 항바이러스(entecavir/tenofovir) — 비대상성서도 간기능 개선·재대상화 가능(→ HBV 모듈)."},
+  {tone:"info",lbl:"HCV 동반",txt:"DAA로 완치 → 문맥압·섬유화 개선. 비대상성은 전문의(→ HCV 모듈, 추후)."},
+  {tone:"caution",lbl:"알코올",txt:"금주가 핵심(약물 영역 아님). 알코올성 간경변은 금주로 예후 크게 개선."},
+  {tone:"caution",lbl:"피해야 할 약",txt:"NSAID(신기능·복수악화)·아미노글리코사이드(신독성)·과도한 진정제(뇌증 유발) 주의."}
+];
+
+/* --- 급여·상병 코드 --- */
+CIRR.codes = [
+  {c:"K74",n:"간의 섬유증 및 경변"},
+  {c:"K70.3",n:"알코올성 간경변"},
+  {c:"K76.6",n:"문맥압항진증"},
+  {c:"I85.0",n:"출혈을 동반한 식도정맥류"},
+  {c:"I85.9",n:"출혈없는 식도정맥류"},
+  {c:"R18",n:"복수"},
+  {c:"K72",n:"간부전(간성뇌증 동반)"},
+  {c:"K65.2",n:"자발성 세균성 복막염"},
+  {c:"N17",n:"급성 신부전(간신증후군 관련)"}
+];
+
+/* =======================================================================
+   ENGINE 레이어 — 순수함수
+   ======================================================================= */
+function calcChildPugh(vals){
+  // vals: {bil,alb,inr,asc,he} 각 "1"|"2"|"3"
+  var keys=["bil","alb","inr","asc","he"],sum=0,filled=0;
+  for(var i=0;i<keys.length;i++){
+    var v=parseInt(vals[keys[i]],10);
+    if(v>=1&&v<=3){sum+=v;filled++;}
+  }
+  if(filled<5) return null;
+  var grade=sum<=6?"a":(sum<=9?"b":"c");
+  return {score:sum,grade:grade};
+}
+function calcMELD(bil,inr,cr,dialysis){
+  if(bil==null||inr==null||cr==null) return null;
+  var b=bil<1?1:bil, i=inr<1?1:inr, c=cr<1?1:cr;
+  if(dialysis||c>4) c=4;
+  var m=3.78*Math.log(b)+11.2*Math.log(i)+9.57*Math.log(c)+6.43;
+  m=Math.round(m);
+  if(m<6)m=6; if(m>40)m=40;
+  return m;
+}
+function meldBand(m){
+  for(var i=0;i<CIRR.meld.bands.length;i++){if(m<=CIRR.meld.bands[i].max)return CIRR.meld.bands[i];}
+  return CIRR.meld.bands[CIRR.meld.bands.length-1];
+}
+function recommendByComplication(comp){
+  var C=CIRR.complications[comp];
+  if(!C) return null;
+  return {comp:comp,data:C};
+}
+
+/* =======================================================================
+   UI 레이어
+   ======================================================================= */
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
+function irow(kind,label,txt){if(!txt)return"";return '<div class="irow '+kind+'"><div class="bar"></div><div class="ic"><div class="lbl">'+esc(label)+'</div><div class="txt">'+txt+'</div></div></div>';}
+function attr(k,v){if(!v)return"";return '<div class="attr"><div class="ak">'+esc(k)+'</div><div class="av">'+esc(v)+'</div></div>';}
+
+/* 탭 전환 */
+var navBtns=root.querySelectorAll("#cirr-nav button");
+for(var i=0;i<navBtns.length;i++){
+  navBtns[i].addEventListener("click",function(){
+    var t=this.getAttribute("data-tab");
+    for(var j=0;j<navBtns.length;j++) navBtns[j].classList.remove("on");
+    this.classList.add("on");
+    var tabs=root.querySelectorAll("section.tab");
+    for(var k=0;k<tabs.length;k++) tabs[k].classList.remove("on");
+    root_getEl("cirr-tab-"+t).classList.add("on");
+  });
+}
+/* 카드 토글 */
+root.addEventListener("click",function(e){
+  var node=e.target,head=null;
+  while(node&&node.nodeType===1){
+    if(node.classList&&node.classList.contains("head")){head=node;break;}
+    node=node.parentNode;
+  }
+  if(!head)return;
+  var card=head.parentNode;
+  if(!card||!card.classList||!card.classList.contains("card"))return;
+  if(card.classList.contains("lead"))return;
+  e.stopPropagation();
+  var __h=card.querySelector(".head");var __em=__h.querySelector(".emoji");var __ti=__h.querySelector(".t");var __bd=card.querySelector(".body");window.LiverSheet.open({emoji:__em?__em.textContent:"",title:__ti?__ti.innerHTML:"",html:__bd?__bd.innerHTML:"",theme:"cirr",rebind:__sheetRebind});
+});
+
+/* ---------- 도서관 ---------- */
+function renderLibrary(){
+  var h="";
+
+  // 정의·병태
+  h+='<div class="card"><div class="head"><span class="emoji">📖</span><span class="t">정의 · 병태 (대상성/비대상성)</span><span class="chev">▶</span></div><div class="body">';
+  for(var o=0;o<CIRR.overview.length;o++){h+=irow(CIRR.overview[o].tone,CIRR.overview[o].lbl,CIRR.overview[o].txt);}
+  h+='</div></div>';
+
+  // Child-Pugh 계산기
+  // 기본 검사 (+ 중증도 계산기 내장)
+  h+='<div class="card"><div class="head"><span class="emoji">🔬</span><span class="t">기본 검사 · 중증도 평가 <span class="badge">🧮 계산기</span></span><span class="chev">▶</span></div><div class="body">';
+  for(var w=0;w<CIRR.workup.length;w++){h+=irow(CIRR.workup[w].tone,CIRR.workup[w].lbl,CIRR.workup[w].txt);}
+
+  // Child-Pugh 계산기
+  h+='<h3 class="sec">📊 Child-Pugh 계산기</h3>';
+  h+='<div class="calc-box">';
+  for(var cp=0;cp<CIRR.childPugh.items.length;cp++){var it=CIRR.childPugh.items[cp];
+    h+='<div class="cp-row"><div class="cp-lbl">'+esc(it.label)+'</div><div class="cp-seg" data-cp="'+it.id+'">';
+    for(var op=0;op<it.opts.length;op++){h+='<button data-val="'+it.opts[op][1]+'">'+esc(it.opts[op][0])+'</button>';}
+    h+='</div></div>';
+  }
+  h+='<div id="cp-out" class="calc-out">5개 항목을 모두 선택하면 자동 계산됩니다</div></div>';
+  for(var g=0;g<CIRR.childPugh.grades.length;g++){var gr=CIRR.childPugh.grades[g];
+    var tn=gr.key==="a"?"good":(gr.key==="b"?"caution":"danger");
+    h+=irow(tn,gr.label+" ("+gr.range+")",esc(gr.mean));}
+  h+=irow("caution","주의",esc(CIRR.childPugh.caveat));
+
+  // MELD 계산기
+  h+='<h3 class="sec">🧮 MELD 계산기</h3>';
+  h+='<div class="note">'+esc(CIRR.meld.formula)+'</div>';
+  h+='<div class="calc-box"><div class="calc-grid">';
+  h+='<div class="calc-f"><label>총 빌리루빈 (mg/dL)</label><input id="m-bil" type="number" inputmode="decimal" placeholder="예: 2.5"></div>';
+  h+='<div class="calc-f"><label>INR</label><input id="m-inr" type="number" inputmode="decimal" placeholder="예: 1.6"></div>';
+  h+='<div class="calc-f"><label>크레아티닌 (mg/dL)</label><input id="m-cr" type="number" inputmode="decimal" placeholder="예: 1.2"></div>';
+  h+='<div class="calc-f"><label>투석 (7일내 2회↑)</label><select id="m-dial"><option value="0">아니오</option><option value="1">예 (Cr=4.0)</option></select></div>';
+  h+='</div><div id="m-out" class="calc-out">값을 입력하면 자동 계산됩니다</div></div>';
+  h+=irow("info","해석 기준",esc(CIRR.meld.rules));
+  h+=irow("caution","참고",esc(CIRR.meld.note));
+  h+='</div></div>';
+
+  // 합병증별 약물 라이브러리
+  h+='<div class="card"><div class="head"><span class="emoji">💊</span><span class="t">합병증별 약물 라이브러리</span><span class="chev">▶</span></div><div class="body">';
+  h+='<div class="keybox"><div class="kt">투약 중심</div><div class="kv">합병증별 1차 약물·용량·급여. 약 이상의 시술이 필요하면 🚑 3차병원 의뢰로 마감. 상세는 칩을 탭.</div></div>';
+  h+='<div class="drug-chips" id="drugChips">';
+  var order=["drug:propranolol","drug:carvedilol","drug:spironolactone","drug:furosemide","drug:albumin","drug:cefotaxime","drug:norfloxacin","drug:lactulose","drug:rifaximin","drug:terlipressin"];
+  for(var dc=0;dc<order.length;dc++){h+='<button data-drug="'+order[dc]+'">💊 '+esc(CIRR.drugs[order[dc]].name)+'</button>';}
+  h+='</div><div class="drug-panel" id="drugPanel"></div>';
+  h+='</div></div>';
+
+  // HCC·기저질환
+  h+='<div class="card"><div class="head"><span class="emoji">🔭</span><span class="t">HCC 감시 · 기저질환 · 주의약물</span><span class="chev">▶</span></div><div class="body">';
+  for(var s=0;s<CIRR.surveillance.length;s++){h+=irow(CIRR.surveillance[s].tone,CIRR.surveillance[s].lbl,CIRR.surveillance[s].txt);}
+  h+='</div></div>';
+
+  // 코드
+  h+='<div class="card"><div class="head"><span class="emoji">🏷️</span><span class="t">급여·상병 코드</span><span class="chev">▶</span></div><div class="body"><table><tr><th>코드</th><th>항목</th></tr>';
+  for(var c=0;c<CIRR.codes.length;c++) h+='<tr><td><b>'+esc(CIRR.codes[c].c)+'</b></td><td>'+esc(CIRR.codes[c].n)+'</td></tr>';
+  h+='</table></div></div>';
+
+  root_getEl("cirr-tab-lib").innerHTML=h;(function(){var __cs=root.querySelectorAll("#cirr-tab-lib .card");for(var __i=0;__i<__cs.length;__i++){if(!__cs[__i].classList.contains("lead"))__cs[__i].classList.add("sheetmode");}})();
+  bindDrugChips();
+  bindChildPugh();
+  bindMELD();
+}
+function bindChildPugh(){
+  var out=root_getEl("cp-out");
+  if(!out)return;
+  var cpState={bil:"",alb:"",inr:"",asc:"",he:""};
+  function update(){
+    var r=calcChildPugh(cpState);
+    out.className="calc-out";
+    if(!r){out.innerHTML="5개 항목을 모두 선택하면 자동 계산됩니다";return;}
+    var gr=null;for(var i=0;i<CIRR.childPugh.grades.length;i++){if(CIRR.childPugh.grades[i].key===r.grade)gr=CIRR.childPugh.grades[i];}
+    out.className="calc-out has "+r.grade;
+    out.innerHTML='<span class="cv">'+r.score+'점</span>'+esc(gr.label)+' ('+esc(gr.range)+')<br><span style="font-weight:600">'+esc(gr.mean)+'</span>';
+  }
+  var segs=root.querySelectorAll(".cp-seg");
+  for(var s=0;s<segs.length;s++){(function(seg){
+    var key=seg.getAttribute("data-cp"),bs=seg.querySelectorAll("button");
+    for(var b=0;b<bs.length;b++){bs[b].addEventListener("click",function(e){
+      e.stopPropagation();
+      for(var x=0;x<bs.length;x++)bs[x].classList.remove("sel");
+      this.classList.add("sel");
+      cpState[key]=this.getAttribute("data-val");
+      update();
+    });}
+  })(segs[s]);}
+}
+function bindMELD(){
+  var ids=["m-bil","m-inr","m-cr","m-dial"],out=root_getEl("m-out");
+  if(!out)return;
+  function update(){
+    var bil=parseFloat(root_getEl("m-bil").value);
+    var inr=parseFloat(root_getEl("m-inr").value);
+    var cr=parseFloat(root_getEl("m-cr").value);
+    var dial=root_getEl("m-dial").value==="1";
+    var m=calcMELD(isNaN(bil)?null:bil,isNaN(inr)?null:inr,isNaN(cr)?null:cr,dial);
+    out.className="calc-out";
+    if(m==null){out.innerHTML="값을 입력하면 자동 계산됩니다";return;}
+    var b=meldBand(m);
+    out.className="calc-out has "+b.cls;
+    out.innerHTML='<span class="cv">'+m+'</span>MELD ('+esc(b.label)+')<br><span style="font-weight:600">'+esc(b.risk)+'</span>';
+  }
+  for(var i=0;i<ids.length;i++){root_getEl(ids[i]).addEventListener("input",update);root_getEl(ids[i]).addEventListener("change",update);}
+}
+function bindDrugChips(){
+  var chips=root_getEl("drugChips"),panel=root_getEl("drugPanel");
+  if(!chips||!panel)return;
+  var bs=chips.querySelectorAll("button");
+  for(var i=0;i<bs.length;i++){
+    bs[i].addEventListener("click",function(e){
+      e.stopPropagation();
+      var id=this.getAttribute("data-drug"),sel=this.classList.contains("sel");
+      for(var x=0;x<bs.length;x++)bs[x].classList.remove("sel");
+      if(sel){panel.innerHTML="";return;}
+      this.classList.add("sel");
+      panel.innerHTML=renderDrugDetail(id);
+    });
+  }
+}
+function renderDrugDetail(id){
+  var d=CIRR.drugs[id];if(!d)return"";
+  var h='<div class="keybox"><div class="kt">'+esc(d.name)+' · '+esc(d.cls)+' · '+esc(d.comp)+'</div><div class="kv">'+esc(d.indication)+'</div></div>';
+  if(d.reimb) h+=irow("reimb","급여",esc(d.reimb));
+  if(d.ae) h+=irow("caution","부작용",esc(d.ae));
+  h+='<div class="attrs">';
+  h+=attr("용법",d.dose);
+  h+=attr("기전",d.mech);
+  h+=attr("권고",d.grade);
+  h+='</div>';
+  return h;
+}
+
+/* ---------- 합병증 플로우 ---------- */
+var flowComp=null;
+function renderFlow(){
+  var h="";
+  h+='<div class="card lead"><div class="head"><span class="emoji">🩺</span><span class="t">합병증 플로우 — 투약 가이드</span></div><div class="body">';
+  h+='<p class="note">이미 진단된 간경변 환자입니다. <b>어떤 합병증인지 선택</b>하면 단계별 약물·용량·급여와 🚑 3차 의뢰 시점을 제시합니다. 처방 판정이 아닙니다.</p>';
+  h+='<div class="comp-grid" id="compGrid">';
+  var keys=["varices","ascites","sbp","he","hrs"];
+  for(var i=0;i<keys.length;i++){var C=CIRR.complications[keys[i]];
+    h+='<button data-comp="'+keys[i]+'"><span class="ce">'+C.emoji+'</span>'+esc(C.ko)+'</button>';}
+  h+='</div>';
+  h+='<div id="compResult"></div>';
+  h+='<button class="btn-reset" id="compReset">초기화</button>';
+  h+='</div></div>';
+  root_getEl("cirr-tab-flow").innerHTML=h;
+  bindFlow();
+}
+function bindFlow(){
+  var btns=root.querySelectorAll("#compGrid button");
+  for(var i=0;i<btns.length;i++){btns[i].addEventListener("click",function(e){
+    e.stopPropagation();
+    for(var x=0;x<btns.length;x++)btns[x].classList.remove("sel");
+    this.classList.add("sel");
+    flowComp=this.getAttribute("data-comp");
+    renderCompResult(flowComp);
+  });}
+  root_getEl("compReset").addEventListener("click",function(){
+    flowComp=null;
+    for(var x=0;x<btns.length;x++)btns[x].classList.remove("sel");
+    root_getEl("compResult").innerHTML="";
+  });
+}
+function renderCompResult(comp){
+  var R=recommendByComplication(comp);if(!R)return;
+  var C=R.data;
+  var h='<div style="margin-top:14px">';
+  h+='<div class="keybox"><div class="kt">'+C.emoji+' '+esc(C.ko)+'</div><div class="kv">'+esc(C.summary)+'</div></div>';
+  h+=irow("info","핵심",esc(C.keypoint));
+
+  // 단계
+  h+='<h3 class="sec">단계별 접근</h3>';
+  for(var s=0;s<C.steps.length;s++){
+    h+='<div class="step"><div class="num">'+(s+1)+'</div><div class="sc"><div class="st">'+esc(C.steps[s].t)+'</div><div class="sd">'+esc(C.steps[s].d)+'</div></div></div>';
+  }
+
+  // 약물
+  h+='<h3 class="sec">약물 (탭하여 상세)</h3>';
+  h+='<div class="drug-chips" id="flowDrugChips">';
+  for(var d=0;d<C.drugs.length;d++){h+='<button data-drug="'+C.drugs[d]+'">💊 '+esc(CIRR.drugs[C.drugs[d]].name)+'</button>';}
+  h+='</div><div class="drug-panel" id="flowDrugPanel"></div>';
+
+  // 급성/응급
+  if(C.referral.acute){
+    h+=irow("danger","급성·응급 처치",esc(C.referral.acute));
+  }
+
+  // 3차 의뢰
+  h+='<div class="refbox"><div class="rt">🚑 3차병원 의뢰</div><div class="rd"><b>의뢰 시점:</b> '+esc(C.referral.when)+'<br><b>필요 시술:</b> '+esc(C.referral.proc)+' <span class="note">(투약 범위를 넘는 시술 — 본 도구는 의뢰 시점만 안내)</span></div></div>';
+
+  h+='</div>';
+  root_getEl("compResult").innerHTML=h;
+  bindFlowDrugChips();
+}
+function bindFlowDrugChips(){
+  var chips=root_getEl("flowDrugChips"),panel=root_getEl("flowDrugPanel");
+  if(!chips||!panel)return;
+  var bs=chips.querySelectorAll("button");
+  for(var i=0;i<bs.length;i++){
+    bs[i].addEventListener("click",function(e){
+      e.stopPropagation();
+      var id=this.getAttribute("data-drug"),sel=this.classList.contains("sel");
+      for(var x=0;x<bs.length;x++)bs[x].classList.remove("sel");
+      if(sel){panel.innerHTML="";return;}
+      this.classList.add("sel");
+      panel.innerHTML=renderDrugDetail(id);
+    });
+  }
+}
+
+/* ---------- 검색 ---------- */
+var SEARCH_INDEX=buildSearchIndex();
+function buildSearchIndex(){
+  var idx=[];
+  for(var d in CIRR.drugs){if(!CIRR.drugs.hasOwnProperty(d))continue;var dr=CIRR.drugs[d];
+    idx.push({t:dr.name+" ("+dr.comp+")",x:dr.indication+" · "+dr.dose,kw:(dr.name+" "+dr.cls+" "+dr.comp+" "+dr.indication+" "+dr.reimb+" 약물").toLowerCase()});}
+  for(var ck in CIRR.complications){if(!CIRR.complications.hasOwnProperty(ck))continue;var C=CIRR.complications[ck];
+    idx.push({t:C.emoji+" "+C.ko,x:C.summary+" — "+C.keypoint,kw:(C.ko+" "+C.summary+" "+C.keypoint+" 합병증").toLowerCase()});}
+  idx.push({t:"Child-Pugh 분류",x:"빌리루빈·알부민·INR·복수·간성뇌증 5항목. A 5-6 / B 7-9 / C 10-15",kw:"child-pugh childpugh ctp 중증도 분류 등급 점수 계산"});
+  idx.push({t:"MELD 점수",x:"3.78×ln(빌리루빈)+11.2×ln(INR)+9.57×ln(Cr)+6.43. 이식 응급도",kw:"meld 점수 이식 응급도 빌리루빈 inr 크레아티닌 계산 사망률"});
+  idx.push({t:"대상성/비대상성",x:"합병증 유무로 구분. 비대상성은 예후 급격 악화(중앙생존 ~2년)",kw:"대상성 비대상성 compensated decompensated 자연경과 문맥압"});
+  idx.push({t:"정맥류 1차예방",x:"정맥류 없으면 NSBB 권장 안 함(A1). 큰 정맥류는 NSBB 또는 EVL",kw:"정맥류 출혈 예방 베타차단제 nsbb propranolol carvedilol evl 내시경"});
+  idx.push({t:"SBP 진단",x:"복수 PMN ≥250/µL → 즉시 항생제(3세대 세팔로스포린)+알부민",kw:"sbp 자발세균성복막염 복막염 pmn 250 항생제 세팔로스포린 알부민"});
+  idx.push({t:"간성뇌증 치료",x:"유발인자 교정 + 락툴로스 1차 + 리팍시민 병용",kw:"간성뇌증 he 락툴로스 리팍시민 암모니아 유발인자 lactulose rifaximin"});
+  idx.push({t:"간신증후군",x:"terlipressin+알부민. Cr≥2.5 병용 급여. 간이식이 최적",kw:"간신증후군 hrs terlipressin 테를리프레신 알부민 신부전 급여"});
+  idx.push({t:"HCC 감시",x:"6개월마다 간초음파±AFP",kw:"hcc 간암 감시 초음파 afp 6개월"});
+  return idx;
+}
+root_getEl("cirr-searchIn").addEventListener("input",function(){
+  var q=this.value.trim().toLowerCase(),box=root_getEl("cirr-searchResults");
+  if(!q){box.innerHTML="";return;}
+  var hits=[];
+  for(var i=0;i<SEARCH_INDEX.length;i++){if(SEARCH_INDEX[i].kw.indexOf(q)>=0)hits.push(SEARCH_INDEX[i]);}
+  if(!hits.length){box.innerHTML='<div class="sr"><div class="srx">검색 결과 없음.</div></div>';return;}
+  var h="";
+  for(var j=0;j<hits.length;j++){h+='<div class="sr"><div class="srt">'+esc(hits[j].t)+'</div><div class="srx">'+esc(hits[j].x)+'</div></div>';}
+  box.innerHTML=h;
+});
+
+/* ---------- 푸터 ---------- */
+root_getEl("cirr-footer").innerHTML=
+  '<h4>📖 출처 · 근거</h4><ol>'+
+  '<li>2017 대한간학회 간경변증 진료 가이드라인: 복수 및 관련 합병증(복수·SBP·간신증후군)</li>'+
+  '<li>2019 대한간학회 간경변증 진료 가이드라인: 정맥류, 간성뇌증 및 관련 합병증</li>'+
+  '<li>MELD 공식: Kamath PS et al. Hepatology 2001 · UNOS/OPTN allocation. MELD-Na, MELD 3.0 변형</li>'+
+  '<li>알부민 급여: 보건복지부 고시(SBP 1.5g/kg→1g/kg, HRS 1g/kg→20-40g/일)</li>'+
+  '<li>terlipressin·rifaximin 국내 허가·급여기준 (심평원)</li>'+
+  '<li>정맥류 NSBB·carvedilol: KASL 2019, 관련 RCT</li>'+
+  '</ol>'+
+  '<p style="margin-top:10px">⚖️ 급여기준·용량·약물 도입 상태는 변경될 수 있습니다. 청구 전 심평원 고시 확인. '+
+  '<a href="https://www.kasl.org">대한간학회</a> · <a href="https://www.hira.or.kr">심평원</a></p>'+
+  '<p style="margin-top:6px;color:#A98C8D">만성 간질환 통합 가이드 · 간경변증 모듈 v1.0 · 2026</p>';
+
+renderLibrary();
+renderFlow();
+
+})();
+
+</script>
+</body>
+</html>
