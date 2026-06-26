@@ -63,8 +63,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun 
   --a1:#15803D; --a2:#4D7C0F; --b1:#B45309; --b2:#C2630E; --c1:#9A3412; --c2:#7C2D12;
 }
 #disease-hbv *, .sheet.theme-hbv *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-#disease-hbv, .sheet.theme-hbv, #disease-hbv, .sheet.theme-hbv{margin:0;padding:0}
-#disease-hbv, .sheet.theme-hbv{
+#disease-hbv, #disease-hbv{margin:0;padding:0}
+#disease-hbv{
   font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   background:var(--hbv-50);color:var(--ink);line-height:1.6;font-size:15px;
   -webkit-text-size-adjust:100%;
@@ -259,8 +259,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun 
   --low:#15803D; --mid:#CA8A04; --high:#B91C1C;
 }
 #disease-mash *, .sheet.theme-mash *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-#disease-mash, .sheet.theme-mash, #disease-mash, .sheet.theme-mash{margin:0;padding:0}
-#disease-mash, .sheet.theme-mash{
+#disease-mash, #disease-mash{margin:0;padding:0}
+#disease-mash{
   font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   background:var(--m-50);color:var(--ink);line-height:1.6;font-size:15px;-webkit-text-size-adjust:100%;
 }
@@ -423,8 +423,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun 
   --paper:#FFFFFF;
 }
 #disease-cirr *, .sheet.theme-cirr *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-#disease-cirr, .sheet.theme-cirr, #disease-cirr, .sheet.theme-cirr{margin:0;padding:0}
-#disease-cirr, .sheet.theme-cirr{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+#disease-cirr, #disease-cirr{margin:0;padding:0}
+#disease-cirr{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   background:var(--c-50);color:var(--ink);line-height:1.6;font-size:15px;-webkit-text-size-adjust:100%}
 #disease-cirr .wrap, .sheet.theme-cirr .wrap{max-width:760px;margin:0 auto;padding:0 14px 80px}
 #disease-cirr header, .sheet.theme-cirr header{background:linear-gradient(135deg,var(--c-900),var(--c-600));color:#fff;padding:20px 16px 16px;border-radius:0 0 18px 18px;margin-bottom:8px}
@@ -734,6 +734,23 @@ window.LiverSheet=(function(){
     sEmoji=document.getElementById("sheetEmoji");
     sTitle=document.getElementById("sheetTitle");
   }
+  var _lockedY=0;
+  function lockBody(){
+    _lockedY=window.pageYOffset||document.documentElement.scrollTop||0;
+    document.body.style.position="fixed";
+    document.body.style.top=(-_lockedY)+"px";
+    document.body.style.left="0";
+    document.body.style.right="0";
+    document.body.style.width="100%";
+  }
+  function unlockBody(){
+    document.body.style.position="";
+    document.body.style.top="";
+    document.body.style.left="";
+    document.body.style.right="";
+    document.body.style.width="";
+    window.scrollTo(0,_lockedY);
+  }
   function open(opts){
     if(!sheet)els();
     sEmoji.textContent=opts.emoji||"";
@@ -741,6 +758,7 @@ window.LiverSheet=(function(){
     sbody.innerHTML=opts.html||"";
     sbody.scrollTop=0;
     sheet.className="sheet theme-"+(opts.theme||"hbv");
+    lockBody();
     overlay.classList.add("on");
     sheet.classList.add("on");
     if(typeof opts.rebind==="function") opts.rebind(sbody);
@@ -749,6 +767,7 @@ window.LiverSheet=(function(){
     if(!sheet)els();
     sheet.classList.remove("on");
     overlay.classList.remove("on");
+    unlockBody();
   }
   function init(){
     els();
