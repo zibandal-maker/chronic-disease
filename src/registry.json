@@ -36,6 +36,18 @@
       "keywords": "부정맥 심방세동 AF AFib 항응고 DOAC NOAC 아픽사반 리바록사반 에독사반 다비가트란 와파린 CHADS VASC 율동조절 서맥 SVT 빈맥"
     },
     {
+      "id": "hf",
+      "title": "심부전",
+      "emoji": "❤️",
+      "src": "hf_guide.html",
+      "out": "hf.html",
+      "guideline": "심부전 진료지침 · HFrEF·HFmrEF·HFpEF · GDMT 4제 · 심평원 급여",
+      "group": "A",
+      "accent": "#c0392b",
+      "tag": "순환기",
+      "keywords": "심부전 heart failure HF HFrEF HFpEF HFmrEF GDMT 4제 ARNI 사쿠비트릴 발사르탄 엔트레스토 SGLT2 베타차단 MRA 스피로노락톤 다파글리플로진 엠파글리플로진 EF 박출률 BNP NT-proBNP 이뇨제"
+    },
+    {
       "id": "dm",
       "title": "당뇨병",
       "emoji": "🍬",
@@ -130,6 +142,30 @@
       "accent": "#9a7b3a",
       "tag": "소화기",
       "keywords": "만성간질환 간질환 liver B형간염 HBV C형간염 지방간 MASLD MASH NAFLD 간경변 간섬유화 FIB-4 테노포비르 엔테카비르 비리어드 바라크루드 fibroscan 간기능 AST ALT 간경화 정맥류"
+    },
+    {
+      "id": "ckd",
+      "title": "만성콩팥병",
+      "emoji": "🫘",
+      "src": "ckd_guide.html",
+      "out": "ckd.html",
+      "guideline": "만성콩팥병(CKD) 처방가이드 · eGFR 단계별 · 심평원 급여",
+      "group": "A",
+      "accent": "#1a8a72",
+      "tag": "신장",
+      "keywords": "만성콩팥병 CKD 신장 콩팥 eGFR 사구체여과율 단백뇨 알부민뇨 ACR SGLT2 피네레논 케렌디아 다파글리플로진 신장보호 RAAS ACEi ARB 신부전 크레아티닌 빈혈 ESA"
+    },
+    {
+      "id": "dialysis",
+      "title": "투석",
+      "emoji": "💧",
+      "src": "dialysis_guide.html",
+      "out": "dialysis.html",
+      "guideline": "투석 학습 가이드 · 혈액투석·CRRT · Kt/V·혈관접근·신성빈혈 · KDIGO",
+      "group": "A",
+      "accent": "#2c6fb0",
+      "tag": "신장",
+      "keywords": "투석 dialysis 혈액투석 HD 복막투석 PD CRRT Kt/V URR 혈관접근 동정맥루 AVF 카테터 신성빈혈 ESA 적혈구생성자극제 CKD-MBD 인 칼슘 부갑상선 KDIGO 한외여과"
     },
     {
       "id": "rheum",

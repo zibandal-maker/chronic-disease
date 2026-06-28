@@ -1,0 +1,2430 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="color-scheme" content="light only">
+<title>심부전 처방가이드 — HFrEF·HFmrEF·HFpEF</title>
+<style>
+/* ============================================================
+   심부전 처방가이드 — UI 스타일 (style.css)
+   심장 적색 테마. 시각 충실도: 표현형 3색바·COR배지·LOE점·급여아이콘·게이지.
+   Sheet 패턴(sheet_pattern_spec v1.0): .sheet.theme-hf 미러링.
+   ============================================================ */
+:root{
+  color-scheme:light only;
+  --hf-primary:#C0392B; --hf-accent:#E74C3C; --hf-soft:#FADBD8; --hf-deep:#922B21; --hf-ink:#3A1512;
+  --hf-rEF:#C0392B; --hf-mrEF:#E67E22; --hf-pEF:#16A085;
+  --hf-loeA:#27AE60; --hf-loeB:#F39C12; --hf-loeC:#95A5A6;
+  --hf-cover:#27AE60; --hf-cond:#F39C12; --hf-noncover:#C0392B;
+  --hf-bg:#FFF9F8; --hf-card:#FFFFFF; --hf-line:#F0DDD8; --hf-mut:#8A7A75;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{color-scheme:light only;background:#FFF9F8}
+body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  background:var(--hf-bg); color:var(--hf-ink); line-height:1.55; -webkit-text-size-adjust:100%}
+.wrap{max-width:760px;margin:0 auto;padding:0 0 80px}
+
+/* 헤더 */
+.hf-hd{background:linear-gradient(135deg,var(--hf-primary),var(--hf-deep));color:#fff;padding:20px 16px 16px;
+  border-radius:0 0 18px 18px;box-shadow:0 4px 18px rgba(192,57,43,.22)}
+.hf-hd h1{margin:0;font-size:21px;font-weight:800;letter-spacing:-.3px}
+.hf-hd .sub{margin-top:5px;font-size:12.5px;opacity:.92}
+.hf-hd .gl{margin-top:9px;display:flex;gap:6px;flex-wrap:wrap}
+.hf-hd .gl span{background:rgba(255,255,255,.18);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600}
+
+/* 검색 */
+.hf-search{position:sticky;top:0;z-index:50;background:var(--hf-bg);padding:10px 12px;border-bottom:1px solid var(--hf-line)}
+.hf-search input{width:100%;padding:11px 14px;border:1.5px solid var(--hf-line);border-radius:12px;font-size:15px;
+  background:#fff;color:var(--hf-ink)}
+.hf-search input:focus{outline:none;border-color:var(--hf-accent)}
+.search-res{margin-top:8px;max-height:300px;overflow-y:auto}
+.search-res .sr{padding:10px 12px;background:#fff;border:1px solid var(--hf-line);border-radius:10px;margin-bottom:6px;cursor:pointer}
+.search-res .sr:active{background:var(--hf-soft)}
+.search-res .sr .t{font-weight:700;font-size:14px}
+.search-res .sr .d{font-size:12px;color:var(--hf-mut);margin-top:2px}
+.search-empty{padding:16px;text-align:center;color:var(--hf-mut);font-size:13px}
+
+/* 탭 */
+.hf-tabs{display:flex;gap:4px;padding:10px 12px;position:sticky;top:0;z-index:40;background:var(--hf-bg)}
+.hf-tabs button{flex:1;padding:10px 4px;border:none;border-radius:11px;background:#fff;color:var(--hf-mut);
+  font-size:12.5px;font-weight:700;cursor:pointer;border:1.5px solid var(--hf-line);min-height:44px}
+.hf-tabs button.on{background:var(--hf-primary);color:#fff;border-color:var(--hf-primary)}
+
+.sec{display:none;padding:6px 12px}
+.sec.on{display:block}
+.sec-intro{font-size:13px;color:var(--hf-mut);margin:6px 2px 12px;line-height:1.5}
+
+/* 도서관 분야 허브 */
+.lib-hub{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0 6px}
+.hubcard{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;
+  padding:13px 13px;border:1.5px solid var(--hf-line);border-radius:14px;background:#fff;cursor:pointer;min-height:84px}
+.hubcard:active{background:var(--hf-soft)}
+.hubcard.on{border-color:var(--hf-primary);background:var(--hf-soft);box-shadow:0 2px 10px rgba(192,57,43,.12)}
+.hubcard .he{font-size:22px}
+.hubcard .ht{font-weight:800;font-size:14px;color:var(--hf-deep)}
+.hubcard .hd{font-size:11px;color:var(--hf-mut);line-height:1.35}
+.lib-panel-head{font-size:15px;font-weight:800;color:var(--hf-primary);margin:14px 2px 8px;
+  padding-bottom:6px;border-bottom:2px solid var(--hf-soft)}
+.lib-grp{font-size:12.5px;font-weight:800;color:var(--hf-deep);margin:14px 2px 6px}
+.gdmt-note{background:#FBF3F1;border:1px solid var(--hf-line);border-radius:11px;padding:11px 13px;font-size:12.5px;color:var(--hf-ink);line-height:1.5;margin-bottom:8px}
+.cmp-hint{font-size:11.5px;color:var(--hf-mut);margin:2px 2px 4px}
+/* 약물 비교표 */
+.cmp-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--hf-line);border-radius:12px;margin-bottom:6px;background:#fff}
+.cmp-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.cmp-tbl thead th{background:var(--hf-soft);color:var(--hf-deep);font-size:11px;font-weight:700;padding:7px 6px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--hf-line)}
+.cmp-tbl tbody tr{cursor:pointer;border-bottom:1px solid var(--hf-line)}
+.cmp-tbl tbody tr:last-child{border-bottom:none}
+.cmp-tbl tbody tr:active{background:var(--hf-soft)}
+.cmp-tbl td{padding:8px 6px;vertical-align:middle}
+.cmp-nm{font-weight:700;color:var(--hf-ink);min-width:96px;line-height:1.25}
+.cmp-emoji{margin-right:3px}
+.cmp-en{font-weight:500;font-size:9.5px;color:var(--hf-mut)}
+.cmp-ph{white-space:nowrap}
+.cmp-dose{white-space:nowrap;font-size:11px}
+.cmp-s{color:var(--hf-mut)} .cmp-arrow{color:var(--hf-accent);margin:0 2px} .cmp-t{color:var(--hf-primary);font-weight:700}
+.cmp-rec{white-space:nowrap}
+.cmp-reimb{text-align:center;font-size:13px}
+.cmp-chev{color:var(--hf-primary);font-weight:700;font-size:16px;text-align:center}
+
+/* GDMT 4축 버튼 */
+.pillar-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.pbtn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 8px;border:1.5px solid var(--hf-line);border-radius:13px;background:#fff;cursor:pointer;min-height:74px}
+.pbtn:active{background:var(--hf-soft)}
+.pbtn.on{border-color:var(--hf-primary);background:linear-gradient(135deg,var(--hf-primary),var(--hf-deep));box-shadow:0 3px 12px rgba(192,57,43,.25)}
+.pbtn.on .pb-lb,.pbtn.on .pb-sub{color:#fff}
+.pb-em{font-size:22px}
+.pb-lb{font-weight:800;font-size:14px;color:var(--hf-deep)}
+.pb-sub{font-size:10.5px;color:var(--hf-mut)}
+
+/* 리스트 행(검사·동반질환·급여) */
+.row-list{display:flex;flex-direction:column;gap:7px}
+.lrow{display:flex;align-items:center;gap:10px;padding:13px 13px;background:#fff;border:1px solid var(--hf-line);border-radius:12px;cursor:pointer}
+.lrow:active{background:var(--hf-soft)}
+.lrow-em{font-size:20px;flex:0 0 auto}
+.lrow-main{flex:1;line-height:1.35;min-width:0}
+.lrow-main b{font-size:14px;color:var(--hf-ink)}
+.lrow-sub{display:block;font-size:11.5px;color:var(--hf-mut);margin-top:2px}
+.lrow-chev{flex:0 0 auto;color:var(--hf-primary);font-weight:700;font-size:18px}
+
+/* 핵심/주의 박스 (kbox) */
+.kbox{border-radius:11px;padding:11px 13px;margin:9px 0;font-size:12.5px;line-height:1.5}
+.kbox b{display:block;margin-bottom:3px;font-size:12.5px}
+.kbox div{color:var(--hf-ink)}
+.kbox-green{background:#E9F7EF;border:1px solid #A9DFBF}.kbox-green b{color:#1E8449}
+.kbox-blue{background:#EBF5FB;border:1px solid #AED6F1}.kbox-blue b{color:#1B4F72}
+.kbox-amber{background:#FEF9E7;border:1px solid #F7DC6F}.kbox-amber b{color:#B9770E}
+.kbox-red{background:#FDEDEC;border:1.5px solid #E6B0AA}.kbox-red b{color:#C0392B}
+
+/* 검사 정상치 막대 */
+.lab-ranges{display:flex;flex-direction:column;gap:5px;margin:6px 0 10px}
+.lab-range{display:flex;align-items:center;gap:9px;padding:7px 10px;background:#FAFAFA;border-radius:9px;font-size:12.5px}
+.lr-dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto}
+.lr-band{flex:1;font-weight:600}
+.lr-val{font-weight:700;color:var(--hf-ink)}
+
+/* 동반질환 단계 */
+.algo-summary{font-size:13px;font-weight:600;color:var(--hf-deep);background:var(--hf-soft);border-radius:10px;padding:10px 12px;margin:4px 0 8px;line-height:1.5}
+.algo-steps{margin-top:8px}
+.algo-step{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--hf-line)}
+.algo-step:first-child{border-top:none}
+.as-num{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--hf-primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.as-txt{flex:1;font-size:12.5px;line-height:1.5}
+.algo-steps-title{font-size:12px;font-weight:800;color:var(--hf-deep);margin:10px 0 2px}
+.algo-sec{margin-top:12px;border-top:1px solid var(--hf-line);padding-top:10px}
+.algo-sec-h{font-size:13px;font-weight:800;color:var(--hf-primary);margin-bottom:6px}
+.algo-sec-list{margin:0;padding-left:0;list-style:none}
+.algo-sec-list li{position:relative;padding:5px 0 5px 14px;font-size:12.5px;line-height:1.5;border-bottom:1px dashed var(--hf-line)}
+.algo-sec-list li:last-child{border-bottom:none}
+.algo-sec-list li:before{content:"·";position:absolute;left:3px;color:var(--hf-accent);font-weight:800}
+.algo-sec-list li.hi{background:#FEF9E7;border-radius:6px;padding:5px 8px;font-weight:600;border-bottom:none}
+.algo-sec-list li.hi:before{content:"";}
+.algo-sec-text{font-size:12.5px;line-height:1.55;color:var(--hf-ink);background:#FAFAFA;border-radius:9px;padding:9px 11px}
+
+/* 급여 시트 */
+.reimb-summary{font-size:13px;font-weight:600;color:var(--hf-deep);background:var(--hf-soft);border-radius:10px;padding:10px 12px;margin-bottom:8px;line-height:1.5}
+.gate-title{font-size:12.5px;font-weight:800;color:var(--hf-deep);margin:10px 0 4px}
+
+/* 코드표 */
+.code-wrap{border:1px solid var(--hf-line);border-radius:12px;overflow:hidden;margin-bottom:8px;background:#fff}
+.code-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.code-tbl tr{border-bottom:1px solid var(--hf-line)}
+.code-tbl tr:last-child{border-bottom:none}
+.code-tbl td{padding:9px 10px;vertical-align:top}
+.code-c{font-weight:800;color:var(--hf-primary);white-space:nowrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;min-width:62px}
+.code-l{color:var(--hf-ink)}
+.code-n{font-size:11px;color:var(--hf-mut)}
+.codechip{display:inline-block;background:var(--hf-soft);color:var(--hf-deep);font-weight:700;padding:2px 9px;border-radius:7px;font-size:12px;font-family:ui-monospace,Menlo,monospace}
+
+/* 시트 내부 미러링 (새 요소) */
+.sheet.theme-hf .kbox{border-radius:11px;padding:11px 13px;margin:9px 0;font-size:12.5px;line-height:1.5}
+.sheet.theme-hf .kbox b{display:block;margin-bottom:3px}
+.sheet.theme-hf .kbox-green{background:#E9F7EF;border:1px solid #A9DFBF}.sheet.theme-hf .kbox-green b{color:#1E8449}
+.sheet.theme-hf .kbox-blue{background:#EBF5FB;border:1px solid #AED6F1}.sheet.theme-hf .kbox-blue b{color:#1B4F72}
+.sheet.theme-hf .kbox-amber{background:#FEF9E7;border:1px solid #F7DC6F}.sheet.theme-hf .kbox-amber b{color:#B9770E}
+.sheet.theme-hf .kbox-red{background:#FDEDEC;border:1.5px solid #E6B0AA}.sheet.theme-hf .kbox-red b{color:#C0392B}
+.sheet.theme-hf .lab-ranges{display:flex;flex-direction:column;gap:5px;margin:6px 0 10px}
+.sheet.theme-hf .lab-range{display:flex;align-items:center;gap:9px;padding:7px 10px;background:#FAFAFA;border-radius:9px;font-size:12.5px}
+.sheet.theme-hf .lr-dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto}
+.sheet.theme-hf .lr-band{flex:1;font-weight:600}.sheet.theme-hf .lr-val{font-weight:700}
+.sheet.theme-hf .algo-summary{font-size:13px;font-weight:600;color:var(--hf-deep);background:var(--hf-soft);border-radius:10px;padding:10px 12px;margin:4px 0 8px;line-height:1.5}
+.sheet.theme-hf .algo-step{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--hf-line)}
+.sheet.theme-hf .algo-step:first-child{border-top:none}
+.sheet.theme-hf .as-num{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--hf-primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.sheet.theme-hf .as-txt{flex:1;font-size:12.5px;line-height:1.5}
+.sheet.theme-hf .algo-steps-title{font-size:12px;font-weight:800;color:var(--hf-deep);margin:10px 0 2px}
+.sheet.theme-hf .algo-sec{margin-top:12px;border-top:1px solid var(--hf-line);padding-top:10px}
+.sheet.theme-hf .algo-sec-h{font-size:13px;font-weight:800;color:var(--hf-primary);margin-bottom:6px}
+.sheet.theme-hf .algo-sec-list{margin:0;padding-left:0;list-style:none}
+.sheet.theme-hf .algo-sec-list li{position:relative;padding:5px 0 5px 14px;font-size:12.5px;line-height:1.5;border-bottom:1px dashed var(--hf-line)}
+.sheet.theme-hf .algo-sec-list li:last-child{border-bottom:none}
+.sheet.theme-hf .algo-sec-list li:before{content:"·";position:absolute;left:3px;color:var(--hf-accent);font-weight:800}
+.sheet.theme-hf .algo-sec-list li.hi{background:#FEF9E7;border-radius:6px;padding:5px 8px;font-weight:600;border-bottom:none}
+.sheet.theme-hf .algo-sec-list li.hi:before{content:"";}
+.sheet.theme-hf .algo-sec-text{font-size:12.5px;line-height:1.55;color:var(--hf-ink);background:#FAFAFA;border-radius:9px;padding:9px 11px}
+.sheet.theme-hf .reimb-summary{font-size:13px;font-weight:600;color:var(--hf-deep);background:var(--hf-soft);border-radius:10px;padding:10px 12px;margin-bottom:8px;line-height:1.5}
+.sheet.theme-hf .gate-title{font-size:12.5px;font-weight:800;color:var(--hf-deep);margin:10px 0 4px}
+.sheet.theme-hf .codechip{display:inline-block;background:var(--hf-soft);color:var(--hf-deep);font-weight:700;padding:2px 9px;border-radius:7px;font-size:12px}
+
+/* 카드 (Sheet 대상 = sheetmode) */
+.card{background:var(--hf-card);border:1px solid var(--hf-line);border-radius:14px;margin-bottom:10px;overflow:hidden;
+  position:relative}
+.card.ph-rEF{border-left:5px solid var(--hf-rEF)}
+.card.ph-mrEF{border-left:5px solid var(--hf-mrEF)}
+.card.ph-pEF{border-left:5px solid var(--hf-pEF)}
+.card.ph-multi{border-left:5px solid;border-image:linear-gradient(180deg,var(--hf-rEF),var(--hf-mrEF),var(--hf-pEF)) 1}
+.card .head{display:flex;align-items:center;gap:9px;padding:13px 14px}
+.card .head .emoji{font-size:19px;flex:0 0 auto}
+.card .head .t{flex:1;font-weight:700;font-size:14.5px;line-height:1.35}
+.card .head .t small{display:block;font-weight:500;font-size:11.5px;color:var(--hf-mut);margin-top:2px}
+.card .head .chev{flex:0 0 auto;color:var(--hf-mut);font-size:13px;transition:transform .2s}
+.card.open .head .chev{transform:rotate(90deg)}
+.card .body{padding:0 14px 14px;display:none}
+.card.open .body{display:block}
+.card.lead .body{display:block} /* lead=인라인 항상 표시 */
+
+/* 배지 (COR/LOE/급여) */
+.badges{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-top:5px}
+.bdg{display:inline-flex;align-items:center;gap:3px;border-radius:20px;padding:2px 8px;font-size:11px;font-weight:700;line-height:1.6}
+.bdg-cor-I{background:#FDEDEC;color:#C0392B}
+.bdg-cor-IIa{background:#FEF5E7;color:#CA6F1E}
+.bdg-cor-IIb{background:#FEF9E7;color:#B7950B}
+.bdg-cor-III{background:#EBEDEF;color:#566573}
+.loe-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.bdg-loe{background:#F4F6F7;color:#566573}
+.bdg-cover{background:#E9F7EF;color:#1E8449}
+.bdg-cond{background:#FEF5E7;color:#B9770E}
+.bdg-noncover{background:#FDEDEC;color:#C0392B}
+.bdg-ph-rEF{background:#FDEDEC;color:var(--hf-rEF)}
+.bdg-ph-mrEF{background:#FEF5E7;color:var(--hf-mrEF)}
+.bdg-ph-pEF{background:#E8F8F5;color:var(--hf-pEF)}
+
+/* 상세 블록 (접힘영역) */
+.drow{display:flex;gap:8px;padding:7px 0;border-top:1px solid var(--hf-line);font-size:13px}
+.drow:first-child{border-top:none}
+.drow .lbl{flex:0 0 76px;color:var(--hf-mut);font-weight:600;font-size:12px}
+.drow .val{flex:1}
+.drow .val ul{margin:2px 0;padding-left:16px}
+.drow .val li{margin:2px 0}
+.dose-line{display:flex;align-items:center;gap:8px;margin:4px 0}
+.dose-bar{flex:1;height:8px;border-radius:5px;background:#F0E6E3;position:relative;overflow:hidden}
+.dose-bar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--hf-accent),var(--hf-primary));border-radius:5px}
+.tag-start{font-size:11px;color:var(--hf-mut)} .tag-target{font-size:11px;color:var(--hf-primary);font-weight:700}
+
+/* 경고박스 */
+.warnbox{background:#FDEDEC;border:1.5px solid var(--hf-noncover);border-radius:10px;padding:10px 12px;margin:8px 0;font-size:12.5px;color:#922B21}
+.warnbox b{color:var(--hf-noncover)}
+.infobox{background:#EBF5FB;border:1px solid #AED6F1;border-radius:10px;padding:10px 12px;margin:8px 0;font-size:12.5px;color:#1B4F72}
+.conflictbox{background:#FEF9E7;border:1.5px solid var(--hf-cond);border-radius:10px;padding:10px 12px;margin:8px 0;font-size:12.5px;color:#7E5109}
+
+/* 급여 게이트 트리 */
+.gate{margin:6px 0}
+.gate .gnode{margin-left:0}
+.gate .gop{font-size:11px;font-weight:800;color:var(--hf-mut);margin:3px 0}
+.gate .gleaf{display:flex;align-items:flex-start;gap:7px;padding:5px 8px;border-radius:8px;margin:3px 0;font-size:12.5px;background:#FAFAFA}
+.gate .gleaf .ic{flex:0 0 auto;font-size:13px}
+.gate .pass{background:#E9F7EF}
+.gate .fail{background:#FDEDEC}
+.gate .excl{background:#FEF9E7}
+.gate .group{border-left:2px solid var(--hf-line);padding-left:9px;margin:4px 0 4px 4px}
+
+/* 게이지 (eGFR/K) */
+.gauge{margin:8px 0}
+.gauge .glabel{font-size:12px;color:var(--hf-mut);display:flex;justify-content:space-between}
+.gauge .gtrack{height:12px;border-radius:7px;margin-top:4px;position:relative;
+  background:linear-gradient(90deg,#C0392B 0%,#E67E22 25%,#27AE60 50%,#27AE60 75%,#E67E22 100%)}
+.gauge .gmark{position:absolute;top:-3px;width:3px;height:18px;background:#222;border-radius:2px;box-shadow:0 0 0 2px #fff}
+
+/* 4-pillar 인포그래픽 */
+.pillars{display:flex;gap:8px;margin:10px 0}
+.pillar{flex:1;text-align:center}
+.pillar .col{height:70px;border-radius:9px 9px 0 0;background:#F0E6E3;position:relative;overflow:hidden;display:flex;align-items:flex-end}
+.pillar .col i{width:100%;background:linear-gradient(180deg,var(--hf-accent),var(--hf-primary));transition:height .4s}
+.pillar .nm{font-size:10.5px;font-weight:700;margin-top:5px;color:var(--hf-deep)}
+.pillar .em{font-size:16px}
+
+/* 플로우/시뮬 입력 */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.fld{display:flex;flex-direction:column;gap:3px}
+.fld label{font-size:11.5px;color:var(--hf-mut);font-weight:600}
+.fld input,.fld select{padding:9px 10px;border:1.5px solid var(--hf-line);border-radius:9px;font-size:14px;background:#fff;min-height:40px}
+.fld input:focus,.fld select:focus{outline:none;border-color:var(--hf-accent)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.chip{padding:7px 12px;border:1.5px solid var(--hf-line);border-radius:20px;background:#fff;font-size:12.5px;cursor:pointer;min-height:38px}
+.chip.sel{background:var(--hf-primary);color:#fff;border-color:var(--hf-primary)}
+.btn{display:inline-block;padding:11px 18px;background:var(--hf-primary);color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;min-height:44px}
+.btn:active{background:var(--hf-deep)}
+.btn-ghost{background:#fff;color:var(--hf-primary);border:1.5px solid var(--hf-primary)}
+
+/* 결과 카드 */
+.result{margin-top:12px}
+.ph-banner{border-radius:12px;padding:12px 14px;color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;gap:8px}
+.rec-item{background:#fff;border:1px solid var(--hf-line);border-radius:11px;padding:10px 12px;margin:7px 0}
+.rec-item .rh{display:flex;align-items:center;gap:7px}
+.rec-item .rh .nm{flex:1;font-weight:700;font-size:14px}
+.rec-item .role{font-size:12px;color:var(--hf-mut);margin-top:3px}
+.rec-cls{display:inline-block;background:var(--hf-soft);color:var(--hf-deep);font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:10px;margin-right:2px;vertical-align:middle}
+.rec-alts{font-size:11px;color:var(--hf-mut);margin-top:4px;padding:4px 8px;background:#FAFAFA;border-radius:7px}
+
+/* 치료 축 카드 */
+.axis-grp-title{font-size:13px;font-weight:800;color:var(--hf-deep);margin:14px 2px 7px}
+.axis-grp-title .agt-sub{font-size:11px;font-weight:500;color:var(--hf-mut)}
+.axis-card{background:#fff;border:1px solid var(--hf-line);border-radius:13px;margin-bottom:8px;overflow:hidden}
+.axis-head{display:flex;align-items:center;gap:10px;padding:12px 13px;cursor:pointer}
+.axis-head:active{background:var(--hf-soft)}
+.axis-em{font-size:20px;flex:0 0 auto}
+.axis-tt{flex:1;min-width:0}
+.axis-t{font-weight:800;font-size:14px;color:var(--hf-ink)}
+.axis-sel{display:inline-block;background:var(--hf-soft);color:var(--hf-deep);font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;margin-left:4px;vertical-align:middle}
+.axis-s{margin-top:4px;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.axis-rep{font-size:12px;color:var(--hf-mut)}
+.axis-chev{flex:0 0 auto;color:var(--hf-primary);font-size:15px;transition:transform .2s}
+.axis-card.open .axis-chev{transform:rotate(180deg)}
+.axis-body{display:none;padding:0 13px 12px;border-top:1px solid var(--hf-line)}
+.axis-card.open .axis-body{display:block}
+.axis-note{font-size:12px;color:var(--hf-deep);background:var(--hf-soft);border-radius:8px;padding:8px 10px;margin:10px 0 6px;line-height:1.5}
+.opt-row{display:flex;align-items:flex-start;gap:8px;padding:9px 0;border-top:1px dashed var(--hf-line);cursor:pointer}
+.opt-row:first-of-type{border-top:none}
+.opt-row:active{background:#FAFAFA}
+.opt-rank{flex:0 0 auto;font-size:10px;font-weight:700;padding:2px 7px;border-radius:9px;background:#EEE;color:#777;margin-top:1px}
+.opt-rank.opt-1{background:var(--hf-primary);color:#fff}
+.opt-main{flex:1;min-width:0}
+.opt-nm{font-weight:700;font-size:13.5px;color:var(--hf-ink)}
+.opt-badges{font-weight:400}
+.opt-role{font-size:11.5px;color:var(--hf-mut);margin-top:2px;line-height:1.4}
+.opt-warn{font-size:11px;color:var(--hf-noncover);margin-top:3px}
+.opt-caut{font-size:11px;color:var(--hf-cond);margin-top:2px}
+.opt-chev{flex:0 0 auto;color:var(--hf-primary);font-weight:700;font-size:16px}
+.rec-item .reimb-line{font-size:12px;margin-top:5px}
+
+/* 점수 계산기 */
+.score-box{background:#fff;border:1px solid var(--hf-line);border-radius:12px;padding:12px;margin:8px 0}
+.score-total{font-size:30px;font-weight:800;text-align:center;margin:6px 0}
+.score-band{text-align:center;font-weight:700;font-size:13px;padding:5px;border-radius:8px;color:#fff}
+
+/* 출처 */
+.sources{margin-top:14px;padding:12px;background:#fff;border:1px solid var(--hf-line);border-radius:12px}
+.sources h3{margin:0 0 8px;font-size:14px}
+.sources a{color:var(--hf-primary);font-size:12.5px;word-break:break-all}
+.sources li{margin:5px 0;font-size:12.5px}
+.rct-link{font-size:12px;color:var(--hf-primary);text-decoration:none}
+.disclaimer{margin-top:12px;padding:12px;background:#FBF6F5;border-radius:10px;font-size:11.5px;color:var(--hf-mut);line-height:1.5}
+
+/* ===== Sheet (sheet_pattern_spec v1.0) ===== */
+.card.sheetmode:not(.lead) .head{cursor:pointer}
+.card.sheetmode:not(.lead) .head .chev{font-size:0;transform:none!important}
+.card.sheetmode:not(.lead) .head .chev::after{content:"\203A";font-size:20px;font-weight:700;color:var(--hf-primary)}
+.card.sheetmode:not(.lead) .body{display:none!important}
+
+.sheet-overlay{position:fixed;inset:0;background:rgba(40,12,10,.42);opacity:0;pointer-events:none;
+  transition:opacity .25s ease;z-index:200}
+.sheet-overlay.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-width:760px;margin:0 auto;background:#fff;
+  border-radius:20px 20px 0 0;z-index:201;transform:translateY(100%);
+  transition:transform .28s cubic-bezier(.32,.72,0,1);
+  height:85vh;max-height:85vh;display:flex;flex-direction:column;
+  will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden;
+  box-shadow:0 -8px 30px rgba(0,0,0,.18)}
+.sheet.on{transform:translateY(0)}
+.sheet-handle{flex:0 0 auto;padding:9px 0 5px;display:flex;justify-content:center;cursor:grab;touch-action:none}
+.sheet-handle .bar{width:38px;height:5px;border-radius:3px;background:#E4D9D2;border:1px solid #D8CCC4}
+.sheet-head{flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:2px 16px 11px;border-bottom:1px solid var(--hf-line)}
+.sheet-head .sback{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid #E4D9D2;
+  background:#F7F2EE;font-size:24px;color:var(--hf-primary);cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding-bottom:3px}
+.sheet-head .sback:active{background:var(--hf-soft)}
+.sheet-head .emoji{font-size:20px}
+.sheet-head .stitle{flex:1;font-weight:800;font-size:16.5px;color:var(--hf-ink)}
+.sheet-head .sclose{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid #E4D9D2;
+  background:#F7F2EE;font-size:18px;color:#6B5D55;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.sheet-body{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px 26px;overscroll-behavior:contain}
+
+/* Sheet 내부 서식 미러링 (컨테이너 스코프 CSS가 시트엔 안 먹으므로 복제) */
+.sheet.theme-hf .drow{display:flex;gap:8px;padding:7px 0;border-top:1px solid var(--hf-line);font-size:13px}
+.sheet.theme-hf .drow:first-child{border-top:none}
+.sheet.theme-hf .drow .lbl{flex:0 0 76px;color:var(--hf-mut);font-weight:600;font-size:12px}
+.sheet.theme-hf .drow .val{flex:1}
+.sheet.theme-hf .drow .val ul{margin:2px 0;padding-left:16px}
+.sheet.theme-hf .badges{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-top:5px}
+.sheet.theme-hf .bdg{display:inline-flex;align-items:center;gap:3px;border-radius:20px;padding:2px 8px;font-size:11px;font-weight:700}
+.sheet.theme-hf .bdg-cor-I{background:#FDEDEC;color:#C0392B}
+.sheet.theme-hf .bdg-cor-IIa{background:#FEF5E7;color:#CA6F1E}
+.sheet.theme-hf .bdg-cor-IIb{background:#FEF9E7;color:#B7950B}
+.sheet.theme-hf .bdg-loe{background:#F4F6F7;color:#566573}
+.sheet.theme-hf .loe-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.sheet.theme-hf .bdg-cover{background:#E9F7EF;color:#1E8449}
+.sheet.theme-hf .bdg-cond{background:#FEF5E7;color:#B9770E}
+.sheet.theme-hf .bdg-noncover{background:#FDEDEC;color:#C0392B}
+.sheet.theme-hf .bdg-ph-rEF{background:#FDEDEC;color:var(--hf-rEF)}
+.sheet.theme-hf .bdg-ph-mrEF{background:#FEF5E7;color:var(--hf-mrEF)}
+.sheet.theme-hf .bdg-ph-pEF{background:#E8F8F5;color:var(--hf-pEF)}
+.sheet.theme-hf .dose-line{display:flex;align-items:center;gap:8px;margin:4px 0}
+.sheet.theme-hf .dose-bar{flex:1;height:8px;border-radius:5px;background:#F0E6E3;position:relative;overflow:hidden}
+.sheet.theme-hf .dose-bar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--hf-accent),var(--hf-primary));border-radius:5px}
+.sheet.theme-hf .tag-start{font-size:11px;color:var(--hf-mut)}
+.sheet.theme-hf .tag-target{font-size:11px;color:var(--hf-primary);font-weight:700}
+.sheet.theme-hf .warnbox{background:#FDEDEC;border:1.5px solid var(--hf-noncover);border-radius:10px;padding:10px 12px;margin:8px 0;font-size:12.5px;color:#922B21}
+.sheet.theme-hf .infobox{background:#EBF5FB;border:1px solid #AED6F1;border-radius:10px;padding:10px 12px;margin:8px 0;font-size:12.5px;color:#1B4F72}
+.sheet.theme-hf .conflictbox{background:#FEF9E7;border:1.5px solid var(--hf-cond);border-radius:10px;padding:10px 12px;margin:8px 0;font-size:12.5px;color:#7E5109}
+.sheet.theme-hf .gate .gleaf{display:flex;align-items:flex-start;gap:7px;padding:5px 8px;border-radius:8px;margin:3px 0;font-size:12.5px;background:#FAFAFA}
+.sheet.theme-hf .gate .gop{font-size:11px;font-weight:800;color:var(--hf-mut);margin:3px 0}
+.sheet.theme-hf .gate .pass{background:#E9F7EF}
+.sheet.theme-hf .gate .fail{background:#FDEDEC}
+.sheet.theme-hf .gate .excl{background:#FEF9E7}
+.sheet.theme-hf .gate .group{border-left:2px solid var(--hf-line);padding-left:9px;margin:4px 0 4px 4px}
+.sheet.theme-hf .gauge .gtrack{height:12px;border-radius:7px;margin-top:4px;position:relative;background:linear-gradient(90deg,#C0392B 0%,#E67E22 25%,#27AE60 50%,#27AE60 75%,#E67E22 100%)}
+.sheet.theme-hf .gauge .gmark{position:absolute;top:-3px;width:3px;height:18px;background:#222;border-radius:2px;box-shadow:0 0 0 2px #fff}
+.sheet.theme-hf .rct-link{font-size:12px;color:var(--hf-primary);text-decoration:none}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hf-hd">
+    <h1>❤️ 심부전 처방가이드</h1>
+    <div class="sub">HFrEF · HFmrEF · HFpEF · 1·2차 의료기관 전문가용 의사결정 조언자</div>
+    <div class="gl"><span>KSHF 2022</span><span>ESC 2023 update</span><span>HIRA 급여</span><span id="buildTag">build —</span></div>
+  </div>
+
+  <div class="hf-search">
+    <input id="searchInput" type="search" placeholder="🔍 약물·급여·검사·동반질환 검색 (성분명·브랜드·약어)">
+    <div class="search-res" id="searchRes"></div>
+  </div>
+
+  <div class="hf-tabs">
+    <button data-sec="sec-lib" class="on">📚 도서관</button>
+    <button data-sec="sec-flow">🔄 플로우</button>
+    <button data-sec="sec-sim">🧪 시뮬</button>
+  </div>
+
+  <div id="sec-lib" class="sec on"></div>
+  <div id="sec-flow" class="sec"></div>
+  <div id="sec-sim" class="sec"></div>
+
+  <div style="padding:0 12px"><div class="sources" id="sources"></div></div>
+</div>
+
+<!-- Sheet -->
+<div class="sheet-overlay" id="sheetOverlay"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true">
+  <div class="sheet-handle" id="sheetHandle"><div class="bar"></div></div>
+  <div class="sheet-head">
+    <button class="sback" id="sheetBack" aria-label="뒤로" style="display:none">‹</button>
+    <span class="emoji" id="sheetEmoji"></span>
+    <span class="stitle" id="sheetTitle"></span>
+    <button class="sclose" id="sheetClose" aria-label="닫기">✕</button>
+  </div>
+  <div class="sheet-body" id="sheetBody"></div>
+</div>
+
+<script>
+/* ============================================================
+   심부전 처방가이드 — DATA 레이어 (data.js)
+   임상지식 전부의 유일 거주지. 엔진·UI에 하드코딩 금지.
+   ID: 전역공유=prefix없음(drug:/comorbid:/lab:/notice:), 질환한정=hf:prefix
+   근거: KSHF 2022 + ESC 2023 focused update | 급여: HIRA 원문(2026.6 재검증)
+   ============================================================ */
+var HF_DATA = (function(){
+"use strict";
+
+/* ---------- 0. 메타/색 ---------- */
+var META = {
+  key:"hf", version:"hf-1.0",
+  color:{primary:"#C0392B",accent:"#E74C3C",soft:"#FADBD8",deep:"#922B21",ink:"#3A1512",
+         rEF:"#C0392B",mrEF:"#E67E22",pEF:"#16A085",
+         loeA:"#27AE60",loeB:"#F39C12",loeC:"#95A5A6",
+         cover:"#27AE60",cond:"#F39C12",noncover:"#C0392B"}
+};
+
+/* ---------- 1. 표현형 ---------- */
+var PHENOTYPES = {
+  rEF:{id:"rEF",label:"HFrEF",label_full:"박출률 감소 심부전",lvef:"≤40%",emoji:"🫀",color:"#C0392B",
+       criteria:"LVEF ≤ 40%"},
+  mrEF:{id:"mrEF",label:"HFmrEF",label_full:"박출률 경도감소 심부전",lvef:"41–49%",emoji:"🫀",color:"#E67E22",
+        criteria:"LVEF 41–49% + 증상/징후 + (구조이상 OR NT-proBNP>125 또는 BNP>35). ★LVEF만으로 진단 금지"},
+  pEF:{id:"pEF",label:"HFpEF",label_full:"박출률 보존 심부전",lvef:"≥50%",emoji:"🫀",color:"#16A085",
+       criteria:"LVEF ≥ 50% + 증상/징후 + 충만압 상승/구조이상 객관적 증거(NP상승 등)"}
+};
+
+/* ---------- 2. 계열 (class:) ---------- */
+var CLASSES = {
+  "class:arni":{id:"class:arni",label:"ARNI",label_full:"안지오텐신수용체-네프릴리신억제제",
+    members:["drug:sacubitril_valsartan"]},
+  "class:acei":{id:"class:acei",label:"ACE억제제",atc_prefix:"C09AA",
+    members:["drug:enalapril","drug:ramipril"]},
+  "class:arb":{id:"class:arb",label:"ARB",atc_prefix:"C09CA",
+    members:["drug:candesartan","drug:valsartan","drug:losartan"]},
+  "class:bb_hf":{id:"class:bb_hf",label:"베타차단제(심부전)",
+    members:["drug:bisoprolol","drug:carvedilol","drug:nebivolol","drug:metoprolol"],
+    note:"심부전 근거 BB만. metoprolol은 succinate(서방형)만 근거"},
+  "class:mra_steroidal":{id:"class:mra_steroidal",label:"스테로이드성 MRA",
+    members:["drug:spironolactone","drug:eplerenone"]},
+  "class:mra_nonsteroidal":{id:"class:mra_nonsteroidal",label:"비스테로이드성 MRA",
+    members:["drug:finerenone"],note:"급여·기전이 스테로이드성과 완전히 별개"},
+  "class:sglt2i":{id:"class:sglt2i",label:"SGLT2 억제제",atc_prefix:"A10BK",
+    members:["drug:dapagliflozin","drug:empagliflozin"],
+    note:"통합레지스트리 약물ID 직접참조. dm/htn 가이드와 동일 ID"},
+  "class:loop_diuretic":{id:"class:loop_diuretic",label:"고리이뇨제",atc_prefix:"C03CA",
+    members:["drug:furosemide","drug:torsemide","drug:bumetanide"]},
+  "class:if_inhibitor":{id:"class:if_inhibitor",label:"If 채널억제제",
+    members:["drug:ivabradine"]},
+  "class:sgc_stimulator":{id:"class:sgc_stimulator",label:"sGC 자극제",
+    members:["drug:vericiguat"]},
+  "class:vasodilator":{id:"class:vasodilator",label:"혈관확장제",
+    members:["drug:hydralazine","drug:isosorbide_dinitrate"]},
+  "class:cardiac_glycoside":{id:"class:cardiac_glycoside",label:"강심배당체",
+    members:["drug:digoxin"]},
+  "class:k_binder":{id:"class:k_binder",label:"칼륨결합제",
+    members:["drug:patiromer","drug:sodium_zirconium_cyclosilicate"]},
+  "class:iv_iron":{id:"class:iv_iron",label:"정맥철분제",
+    members:["drug:ferric_carboxymaltose"]}
+};
+
+/* ---------- 3. 약물 상세 DB (도서관 핵심) ---------- */
+/* 필드: id,label_ko,label_en,brand,cls,phenotype[],cor,loe,role,
+   start,target,titrate,ci[],caution[],monitor[],ae[],renal,key_rct[],reimb,hf_note */
+var DRUGS = {
+  "drug:sacubitril_valsartan":{
+    id:"drug:sacubitril_valsartan",label_ko:"사쿠비트릴/발사르탄",label_en:"Sacubitril/Valsartan",
+    brand:"엔트레스토",cls:"class:arni",phenotype:["rEF"],cor:"I",loe:"A",emoji:"💊",
+    role:"HFrEF 1차. ACEI/ARB보다 우선 고려(KSHF 2022, ACC 2022)",
+    start:"50mg bid (ACEI/ARB 미사용·저용량·저혈압 위험시) 또는 100mg bid",
+    target:"200mg bid",
+    titrate:"내약성 따라 2–4주 간격 2배 증량 → 목표 200mg bid",
+    ci:["ACEI 병용(36시간 washout 필수)","ARB 동시병용","ACEI/ARB 혈관부종 병력","임부·수유부","중증 간장애(Child-Pugh C)"],
+    caution:["증상성 저혈압","고칼륨혈증","신기능 악화","NT-proBNP는 분해 안되나 BNP는 상승(해석주의)"],
+    monitor:["혈압","K+","eGFR/Cr","증상성 저혈압 여부"],
+    ae:["저혈압","고칼륨혈증","신기능 악화","혈관부종(드묾)","어지럼"],
+    renal:"eGFR<30 신중. 중증 신장애 시작용량 50mg bid",
+    key_rct:["25176015"],reimb:"hf:reimb:arni",
+    hf_note:"ACEI 중단 후 36시간 이내 시작 금지. 마지막 투여 후 36시간 내 ACEI 재개 금지",
+    mechanism:"네프릴리신 억제 → 나트륨이뇨펩티드(BNP·ANP) 분해 억제로 혈관확장·이뇨·항섬유화 ↑ + ARB(발사르탄)로 RAAS 차단. 두 경로 동시 작용이 핵심.",
+    evidence:"PARADIGM-HF(8,442명): 1차 종결점(심혈관사망+심부전입원) HR 0.80, 20% 감소(NNT 21). 심혈관사망·전체사망·돌연사 모두 감소. 저용량으로 감량해도 enalapril 대비 이득 유지.",
+    practical:"ACEI에서 전환 시 마지막 복용 36시간 후 시작(혈관부종 위험). 저혈압·고령·신장애는 50mg bid로 시작해 2–4주마다 증량. 목표 도달 못해도 저용량 유지가 중단보다 낫다."},
+
+  "drug:enalapril":{
+    id:"drug:enalapril",label_ko:"에날라프릴",label_en:"Enalapril",brand:"레니프릴 등",
+    cls:"class:acei",phenotype:["rEF"],cor:"I",loe:"A",emoji:"💊",
+    role:"HFrEF 1차(ARNI 대체/불가시). RAS 차단 기둥",
+    start:"2.5mg bid",target:"10–20mg bid",
+    titrate:"2주 간격 2배 증량, 혈압·신기능·K+ 허용범위 내",
+    ci:["혈관부종 병력","임부","양측 신동맥협착","ARNI/알리스키렌 병용"],
+    caution:["저혈압","고칼륨혈증","신기능 악화","마른기침"],
+    monitor:["혈압","K+","eGFR/Cr (시작 1–2주 후)"],
+    ae:["마른기침","저혈압","고칼륨혈증","신기능 악화","혈관부종"],
+    renal:"eGFR<30 감량·신중",key_rct:[],reimb:null,
+    hf_note:"ARNI로 전환시 마지막 복용 36시간 후 시작",
+    mechanism:"ACE 억제 → 안지오텐신 II 생성 차단으로 혈관확장·후부하 감소, 알도스테론·교감신경 활성 억제, 좌심실 역리모델링. 브라디키닌 축적(마른기침 원인).",
+    evidence:"SOLVD-Treatment(2,569명): 전체사망 16% 감소. CONSENSUS(중증): 사망 27% 감소. ACEI는 HFrEF 예후개선의 역사적 기반.",
+    practical:"저용량 시작 후 1–2주 간격 증량, 혈압·K+·Cr 확인. 마른기침 시 ARB 전환. ARNI 가능하면 ARNI 우선(PARADIGM서 enalapril 대비 우월). 초기 Cr 상승 30%까지는 용인."},
+
+  "drug:ramipril":{
+    id:"drug:ramipril",label_ko:"라미프릴",label_en:"Ramipril",brand:"트리테이스 등",
+    cls:"class:acei",phenotype:["rEF"],cor:"I",loe:"A",emoji:"💊",
+    role:"HFrEF 1차(ARNI 대체). RAS 차단 기둥",
+    start:"1.25–2.5mg qd",target:"10mg/일(분복 가능)",
+    titrate:"2–4주 간격 증량",ci:["혈관부종 병력","임부","양측 신동맥협착","ARNI 병용"],
+    caution:["저혈압","고칼륨혈증","신기능 악화","마른기침"],
+    monitor:["혈압","K+","eGFR/Cr"],ae:["마른기침","저혈압","고칼륨혈증","신기능악화"],
+    renal:"eGFR<30 감량",key_rct:[],reimb:null,hf_note:"",
+    mechanism:"ACE 억제(에날라프릴과 동일 계열). 안지오텐신 II 차단으로 후부하·리모델링 개선.",
+    evidence:"AIRE(심근경색 후 심부전): 전체사망 27% 감소. ACEI 계열 효과 일관.",
+    practical:"1일 1–2회. 마른기침·혈관부종 시 중단. ARNI 전환 시 36시간 washout. eGFR<30 감량."},
+
+  "drug:candesartan":{
+    id:"drug:candesartan",label_ko:"칸데사르탄",label_en:"Candesartan",brand:"아타칸 등",
+    cls:"class:arb",phenotype:["rEF"],cor:"I",loe:"A",emoji:"💊",
+    role:"HFrEF 1차(ACEI 불내성·ARNI 불가시). CHARM 근거",
+    start:"4–8mg qd",target:"32mg qd",titrate:"2주 간격 2배 증량",
+    ci:["임부","양측 신동맥협착","ARNI 병용"],
+    caution:["저혈압","고칼륨혈증","신기능 악화"],monitor:["혈압","K+","eGFR/Cr"],
+    ae:["저혈압","고칼륨혈증","신기능악화"],renal:"eGFR<30 신중",key_rct:[],reimb:null,
+    hf_note:"ACEI 마른기침 불내성 시 대안. ARNI와 병용 금지",
+    mechanism:"안지오텐신 II 수용체(AT1) 직접 차단 → ACEI와 달리 브라디키닌 축적 없어 마른기침 적음.",
+    evidence:"CHARM-Alternative(ACEI 불내성 2,028명): 심혈관사망/심부전입원 23% 감소(HR 0.77). CHARM-Added: ACEI에 추가 시 추가 이득.",
+    practical:"ACEI 마른기침 불내성의 1차 대안. ARNI와 병용 금지. 혈관부종 병력은 신중. K+·신기능 모니터."},
+
+  "drug:bisoprolol":{
+    id:"drug:bisoprolol",label_ko:"비소프롤롤",label_en:"Bisoprolol",brand:"콩코르 등",
+    cls:"class:bb_hf",phenotype:["rEF"],cor:"I",loe:"A",emoji:"💊",
+    role:"HFrEF 1차 기둥. 안정시 시작(급성 울혈 X)",
+    start:"1.25mg qd",target:"10mg qd",
+    titrate:"2주 이상 간격 증량(1.25→2.5→3.75→5→7.5→10)",
+    ci:["급성 비대상성 심부전","고도 방실차단(2·3도)","증상성 서맥","중증 천식 급성기"],
+    caution:["저혈압","서맥(HR<50)","초기 일시적 증상악화 가능","당뇨 저혈당 증상 차폐"],
+    monitor:["HR","혈압","울혈 징후"],ae:["서맥","저혈압","피로","사지냉감","어지럼"],
+    renal:"신기능 조절 불필요",key_rct:["10023943"],reimb:null,
+    hf_note:"euvolemic 상태에서 저용량 시작·서서히 증량. 급성 악화시 중단보다 감량 우선",
+    mechanism:"선택적 β1 차단 → 교감신경 과활성 억제, 심박수·심근산소소비 ↓, 부정맥 역치 ↑, 장기적 좌심실 역리모델링.",
+    evidence:"CIBIS-II(2,647명): 전체사망 34% 감소(HR 0.66), 돌연사 44% 감소. 베타차단제 중 전체사망 NNT 약 8로 우수.",
+    practical:"반드시 euvolemic(울혈 해소) 상태에서 최소용량 시작. 초기 일시적 피로·서맥은 흔하며 대개 적응. 급성 악화 시 중단보다 감량 우선. 1일 1회로 순응도 좋음."},
+
+  "drug:carvedilol":{
+    id:"drug:carvedilol",label_ko:"카르베딜롤",label_en:"Carvedilol",brand:"딜라트렌 등",
+    cls:"class:bb_hf",phenotype:["rEF"],cor:"I",loe:"A",emoji:"💊",
+    role:"HFrEF 1차 기둥. α/β 차단(혈압강하 큼)",
+    start:"3.125mg bid",target:"25mg bid (체중>85kg는 50mg bid)",
+    titrate:"2주 이상 간격 2배 증량",
+    ci:["급성 비대상성 심부전","고도 방실차단","증상성 서맥","중증 천식"],
+    caution:["저혈압(α차단)","서맥","음식과 복용(흡수)"],monitor:["HR","혈압","울혈"],
+    ae:["저혈압","어지럼","서맥","피로"],renal:"조절 불필요",key_rct:["12390947"],reimb:null,
+    hf_note:"식사와 함께 복용(기립저혈압 완화)",
+    mechanism:"비선택적 β + α1 차단 → 후부하 감소(α 차단) 추가. 항산화 효과도 보고됨.",
+    evidence:"COPERNICUS(중증 HFrEF 2,289명, LVEF<25%): 전체사망 35% 감소(HR 0.65). 중증에서도 안전·유효.",
+    practical:"α 차단으로 기립저혈압 위험 → 반드시 식사와 함께 복용. 체중>85kg는 목표 50mg bid. bid 용법이라 비소프롤롤보다 순응도는 불리."},
+
+  "drug:metoprolol":{
+    id:"drug:metoprolol",label_ko:"메토프롤롤",label_en:"Metoprolol",brand:"베타록 등",
+    cls:"class:bb_hf",phenotype:["rEF"],cor:"I",loe:"A",emoji:"💊",
+    role:"HFrEF 1차 기둥. ★서방형(succinate)만 심부전 근거",
+    start:"12.5–25mg qd (succinate)",target:"200mg qd (succinate)",
+    titrate:"2주 간격 증량",ci:["급성 비대상성 심부전","고도 방실차단","증상성 서맥"],
+    caution:["★tartrate(속방형)는 심부전 근거 없음","서맥","저혈압"],
+    monitor:["HR","혈압","울혈"],ae:["서맥","피로","저혈압"],renal:"조절 불필요",
+    key_rct:["10937931"],reimb:null,
+    hf_note:"심부전에는 metoprolol succinate(CR/XL 서방형)만 사용. tartrate 사용 금지",
+    mechanism:"선택적 β1 차단. 교감신경 과활성 억제로 심박수·심근부담 감소, 역리모델링. ★서방형(succinate)만 해당.",
+    evidence:"MERIT-HF(3,991명, succinate): 전체사망 34% 감소(HR 0.66), 돌연사·심부전사망 모두 감소. 단 속방형(tartrate)은 근거 없음.",
+    practical:"반드시 succinate(서방형) 처방—tartrate는 심부전 적응 아님. euvolemic 상태 저용량 시작. 목표 200mg까지 2주 간격 증량."},
+
+  "drug:nebivolol":{
+    id:"drug:nebivolol",label_ko:"네비볼롤",label_en:"Nebivolol",brand:"네비레트 등",
+    cls:"class:bb_hf",phenotype:["rEF"],cor:"IIa",loe:"B",emoji:"💊",
+    role:"고령 HFrEF(SENIORS). NO 매개 혈관확장",
+    start:"1.25mg qd",target:"10mg qd",titrate:"1–2주 간격 증량",
+    ci:["급성 비대상성","고도 방실차단","증상성 서맥"],caution:["서맥","저혈압"],
+    monitor:["HR","혈압"],ae:["서맥","피로","두통"],renal:"eGFR<30 감량",
+    key_rct:[],reimb:null,hf_note:"고령 환자에서 근거(SENIORS trial)",
+    mechanism:"선택적 β1 차단 + NO 매개 혈관확장. 고령에서 내약성 양호.",
+    evidence:"SENIORS(고령 ≥70세 2,128명): 사망/심혈관입원 14% 감소(HR 0.86). 고령·HFpEF 포함 집단서 입증.",
+    practical:"고령 환자에 유용. 혈관확장으로 말초순환 이점. 1일 1회. 서맥·저혈압 모니터."},
+
+  "drug:spironolactone":{
+    id:"drug:spironolactone",label_ko:"스피로노락톤",label_en:"Spironolactone",brand:"알닥톤 등",
+    cls:"class:mra_steroidal",phenotype:["rEF"],cor:"I",loe:"A",emoji:"💊",
+    role:"HFrEF 1차 기둥(steroidal MRA). RALES 근거",
+    start:"25mg qd (K+<5.0, eGFR>30시)",target:"25–50mg qd",
+    titrate:"4–8주 후 K+·신기능 보며 증량",
+    ci:["K+ > 5.0","eGFR < 30","애디슨병","임부(상대적)"],
+    caution:["고칼륨혈증(특히 RAS차단 병용)","여성형유방(남)","신기능악화"],
+    monitor:["K+(시작 1주·4주·이후 정기)","eGFR/Cr","여성형유방 증상"],
+    ae:["고칼륨혈증","여성형유방","유방통","월경불순"],
+    renal:"eGFR 30–50 신중·감량, <30 금기",key_rct:["10471456"],reimb:null,
+    hf_note:"여성형유방 시 eplerenone 전환 고려. K-binder로 유지 가능",
+    mechanism:"비선택적 무기질코르티코이드 수용체 길항 → 알도스테론의 나트륨저류·심근섬유화·혈관경직 차단. 칼륨 보존.",
+    evidence:"RALES(중증 HFrEF 1,663명): 전체사망 30% 감소(HR 0.70), 심부전입원 35% 감소. 단 여성형유방 약 10%.",
+    practical:"K+<5.0·eGFR>30에서 25mg 시작, 1·4주 K+ 확인. 여성형유방·유방통 시 eplerenone 전환. 저용량(12.5mg)도 효과 있어 K+ 경계 시 활용."},
+
+  "drug:eplerenone":{
+    id:"drug:eplerenone",label_ko:"에플레레논",label_en:"Eplerenone",brand:"인스프라 등",
+    cls:"class:mra_steroidal",phenotype:["rEF"],cor:"I",loe:"A",emoji:"💊",
+    role:"HFrEF 기둥(선택적 MRA). EMPHASIS 근거. 내분비 부작용 적음",
+    start:"25mg qd",target:"50mg qd",titrate:"4주 후 증량",
+    ci:["K+ > 5.0","eGFR < 30","강한 CYP3A4 억제제 병용"],
+    caution:["고칼륨혈증","신기능악화"],monitor:["K+","eGFR/Cr"],
+    ae:["고칼륨혈증","어지럼"],renal:"eGFR 30–50 감량, <30 금기",
+    key_rct:["21678313"],reimb:null,
+    hf_note:"spironolactone 여성형유방 시 대안(선택적이라 내분비 부작용 적음)",
+    mechanism:"선택적 무기질코르티코이드 수용체 길항. spironolactone과 달리 안드로겐·프로게스테론 수용체 친화도 낮아 여성형유방 등 내분비 부작용 적음.",
+    evidence:"EMPHASIS-HF(경증 HFrEF 2,737명, NYHA II): 1차 종결점(심혈관사망+심부전입원) 37% 감소(HR 0.63). 효과는 무작위 26일 후부터 유의.",
+    practical:"spironolactone 여성형유방 시 1차 대안. K+<5.0·eGFR>30 개시, K+ 정기 추적. CYP3A4 강억제제 병용 주의."},
+
+  "drug:dapagliflozin":{
+    id:"drug:dapagliflozin",label_ko:"다파글리플로진",label_en:"Dapagliflozin",brand:"포시가 등(제네릭)",
+    cls:"class:sglt2i",phenotype:["rEF","mrEF","pEF"],cor:"I",loe:"A",emoji:"💊",
+    role:"全 표현형 1차 기둥(ESC 2023). 신·심 보호",
+    start:"10mg qd",target:"10mg qd(고정)",titrate:"적정 불필요(고정용량)",
+    ci:["1형 당뇨","DKA 병력 반복","eGFR<20(개시 주의)"],
+    caution:["초기 2주 eGFR 일시 저하(정상)","생식기 감염","당뇨 환자 euglycemic DKA","혈량저하시 주의"],
+    monitor:["eGFR(baseline·1–2주·정기)","생식기 감염 증상","혈당(당뇨시)"],
+    ae:["생식기 진균감염","요로감염","혈량저하","드물게 euglycemic DKA"],
+    renal:"eGFR 25–75 적응(DAPA-CKD). HF는 eGFR≥20 권고",
+    key_rct:["31535829","36114137"],reimb:"hf:reimb:sglt2i",
+    hf_note:"비당뇨 심부전도 효과. 2025.2 LVEF>40 급여확대",
+    mechanism:"근위세뇨관 SGLT2 억제 → 요당·요나트륨 배설. 삼투성 이뇨, 사구체 과여과 완화, 심근 에너지대사 개선 등 복합 기전(당강하는 부수적).",
+    evidence:"DAPA-HF(HFrEF 4,744명, 당뇨무관): 1차 종결점 26% 감소(HR 0.74, NNT 21). DELIVER로 LVEF>40까지 확장.",
+    practical:"비당뇨도 적응. 개시 후 2주 eGFR 일시 저하는 가역적—중단 금물. 생식기 위생교육. 수술·금식 시 euglycemic DKA 위험으로 중단 고려(sick day rule)."},
+
+  "drug:empagliflozin":{
+    id:"drug:empagliflozin",label_ko:"엠파글리플로진",label_en:"Empagliflozin",brand:"자디앙",
+    cls:"class:sglt2i",phenotype:["rEF","mrEF","pEF"],cor:"I",loe:"A",emoji:"💊",
+    role:"全 표현형 1차 기둥(ESC 2023). 신·심 보호",
+    start:"10mg qd",target:"10mg qd(고정)",titrate:"적정 불필요",
+    ci:["1형 당뇨","DKA 반복","eGFR<20 개시주의"],
+    caution:["초기 eGFR dip(정상)","생식기 감염","euglycemic DKA"],
+    monitor:["eGFR","생식기 감염","혈당(당뇨시)"],
+    ae:["생식기 진균감염","요로감염","혈량저하"],
+    renal:"eGFR 20–45+ 적응(EMPA-KIDNEY). HF eGFR≥20",
+    key_rct:["34184057","34459213","36066557"],reimb:"hf:reimb:sglt2i",
+    hf_note:"EMPULSE: 급성 심부전 입원중 조기 시작 유익. 비당뇨도 효과",
+    mechanism:"다파글리플로진과 동일 계열. SGLT2 억제 → 이뇨·신보호·심근대사 개선.",
+    evidence:"EMPEROR-Reduced(HFrEF 3,730명): 25% 감소(HR 0.75). EMPEROR-Preserved(HFpEF)서 21% 감소로 최초 HFpEF 예후 개선 입증. EMPULSE: 급성기 조기 시작도 유익.",
+    practical:"전 표현형 적응. 입원 중(안정화 후) 조기 시작 가능(EMPULSE). eGFR≥20 개시. 생식기감염·sick day rule 교육."},
+
+  "drug:finerenone":{
+    id:"drug:finerenone",label_ko:"피네레논",label_en:"Finerenone",brand:"케렌디아",
+    cls:"class:mra_nonsteroidal",phenotype:["mrEF","pEF"],cor:"IIa",loe:"B",emoji:"💊",
+    role:"HFmrEF/HFpEF(FINEARTS-HF, 2024). 당뇨성 CKD 신·심 보호. ★HF 단독 비급여",
+    start:"eGFR≥60: 20mg qd / eGFR 25–<60: 10mg qd",target:"20mg qd",
+    titrate:"4주 후 K+≤4.8이고 eGFR 안정시 10→20mg 증량",
+    ci:["K+ > 5.0(개시)","eGFR < 25(개시)","애디슨병","강한 CYP3A4 억제제(이트라코나졸 등)","자몽주스"],
+    caution:["고칼륨혈증(스테로이드성 MRA보다는 낮음)","eGFR<15 중단"],
+    monitor:["K+(개시 4주·정기)","eGFR"],ae:["고칼륨혈증","저혈압","저나트륨혈증"],
+    renal:"eGFR 25–<60: 10mg, ≥60: 20mg. <15 중단",
+    key_rct:["39520455"],reimb:"hf:reimb:finerenone",
+    hf_note:"★★심부전(NYHA II-IV)은 DKD 급여경로에서도 제외 → HF 환자는 어느 경로로도 급여 불가. 삭감 고위험",
+    mechanism:"비스테로이드성·선택적 MRA. steroidal MRA보다 심장·신장 조직 분포가 균형적이고 고칼륨혈증 위험이 상대적으로 낮음. 항섬유화·항염증.",
+    evidence:"FINEARTS-HF(HFmrEF/HFpEF 6,001명): 심혈관사망+심부전악화 16% 감소(HR 0.84). FIDELIO/FIGARO(당뇨성 CKD): 신·심 보호 입증.",
+    practical:"★HFmrEF/HFpEF 근거 있으나 국내 급여는 HF 단독 비급여+DKD경로도 NYHA II-IV 제외 → 심부전 환자 급여 불가. K+>5.0·eGFR<25 개시 금기, eGFR<15 중단."},
+
+  "drug:ivabradine":{
+    id:"drug:ivabradine",label_ko:"이바브라딘",label_en:"Ivabradine",brand:"프로코라란",
+    cls:"class:if_inhibitor",phenotype:["rEF"],cor:"IIa",loe:"B",emoji:"💊",
+    role:"동율동 HR≥70bpm, BB 최대내약 후에도 빈맥. 순수 HR 감소(SHIFT)",
+    start:"5mg bid (고령 2.5mg bid)",target:"7.5mg bid",
+    titrate:"2주 후 안정시 HR 보며 조절(목표 50–60)",
+    ci:["심방세동(동율동에서만 작용)","안정시 HR<70","급성 비대상성 HF","중증 간장애","페이스메이커 의존"],
+    caution:["서맥","광시증(phosphene)","강한 CYP3A4 억제제 병용"],
+    monitor:["HR","심전도(동율동 확인)"],ae:["서맥","광시증(시야 번쩍임)","혈압변동","심방세동"],
+    renal:"eGFR<15 자료제한",key_rct:["21108219"],reimb:"hf:reimb:ivabradine",
+    hf_note:"반드시 동율동에서만. AF면 효과 없음. BB 최대내약 용량 우선",
+    mechanism:"동방결절 If 전류(funny current) 선택적 억제 → 순수 심박수 감소(수축력·혈압 영향 없음). 동율동에서만 작용.",
+    evidence:"SHIFT(LVEF≤35%, 동율동 HR≥70, 6,505명): 1차 종결점 18% 감소(HR 0.82), 주로 심부전 입원 감소(HR 0.74). NNT 26.",
+    practical:"BB 최대내약 후에도 HR≥70 동율동일 때 추가. AF면 무효. 광시증(phosphene)·서맥 모니터. 목표 안정시 HR 50–60."},
+
+  "drug:vericiguat":{
+    id:"drug:vericiguat",label_ko:"베리시구앗",label_en:"Vericiguat",brand:"베르쿠보",
+    cls:"class:sgc_stimulator",phenotype:["rEF"],cor:"IIb",loe:"B",emoji:"💊",
+    role:"최근 악화(입원/IV이뇨제) 경험한 HFrEF. sGC 자극(VICTORIA)",
+    start:"2.5mg qd",target:"10mg qd",titrate:"2주 간격 2배 증량(2.5→5→10)",
+    ci:["임부","다른 sGC자극제 병용","PDE5억제제(실데나필 등) 병용","수축기혈압<100"],
+    caution:["저혈압","실신","식사와 복용(흡수)"],monitor:["혈압"],
+    ae:["저혈압","빈혈","어지럼"],renal:"eGFR<15·투석 자료제한",
+    key_rct:["33039447"],reimb:null,
+    hf_note:"최근 악화 고위험군 대상. 식사와 함께 복용",
+    mechanism:"soluble guanylate cyclase(sGC) 직접 자극 → cGMP 증가로 혈관확장·심근보호. NO 비의존 경로.",
+    evidence:"VICTORIA(최근 악화 HFrEF 5,050명): 1차 종결점 10% 감소(HR 0.90). ★단 VICTOR(2025): 최근 악화 없으면 효과 없음. NT-proBNP 낮을수록 이득 큼.",
+    practical:"최근 입원/IV이뇨제 경험한 고위험 HFrEF에 추가. 식사와 복용(흡수↑). PDE5억제제·다른 sGC자극제 병용 금기. 수축기혈압<100 주의."},
+
+  "drug:hydralazine":{
+    id:"drug:hydralazine",label_ko:"하이드랄라진",label_en:"Hydralazine",brand:"-",
+    cls:"class:vasodilator",phenotype:["rEF"],cor:"IIa",loe:"B",emoji:"💊",
+    role:"흑인 HFrEF(ISDN 병용, A-HeFT) 또는 ACEI/ARB 불내성. 후부하 경감",
+    start:"25–37.5mg tid (ISDN과 병용)",target:"75mg tid",titrate:"증상·혈압 보며 증량",
+    ci:["과민반응"],caution:["저혈압","두통","루푸스양 증후군(고용량 장기)","빈맥"],
+    monitor:["혈압","ANA(장기 고용량시)"],ae:["두통","빈맥","저혈압","루푸스양 반응"],
+    renal:"조절 불필요",key_rct:[],reimb:null,
+    hf_note:"isosorbide dinitrate와 고정 병용. ACEI/ARB 불내성 대안",
+    mechanism:"직접 동맥 평활근 이완 → 후부하 감소. ISDN과 병용 시 흑인 HFrEF에서 예후 개선(A-HeFT)."},
+
+  "drug:isosorbide_dinitrate":{
+    id:"drug:isosorbide_dinitrate",label_ko:"이소소르비드 디나이트레이트",label_en:"Isosorbide Dinitrate",brand:"-",
+    cls:"class:vasodilator",phenotype:["rEF"],cor:"IIa",loe:"B",emoji:"💊",
+    role:"흑인 HFrEF(하이드랄라진 병용). 전부하 경감",
+    start:"20–30mg tid",target:"40mg tid",titrate:"증상 보며 증량",
+    ci:["PDE5억제제 병용","중증 저혈압"],caution:["두통","저혈압","내성(무니트레이트 간격 필요)"],
+    monitor:["혈압","두통"],ae:["두통","저혈압","어지럼"],renal:"조절 불필요",
+    key_rct:[],reimb:null,hf_note:"하이드랄라진과 병용. 야간 nitrate-free 간격 권장",
+    mechanism:"NO 공여 → 정맥확장으로 전부하 감소. hydralazine과 고정 병용. 야간 nitrate-free 간격으로 내성 예방."},
+
+  "drug:digoxin":{
+    id:"drug:digoxin",label_ko:"디곡신",label_en:"Digoxin",brand:"디고신",
+    cls:"class:cardiac_glycoside",phenotype:["rEF"],cor:"IIb",loe:"B",emoji:"💊",
+    role:"GDMT에도 증상지속 동율동 HFrEF, 또는 AF 심박수조절 보조",
+    start:"0.125mg qd (고령·신장애 0.0625mg)",target:"혈중농도 0.5–0.9 ng/mL",
+    titrate:"혈중농도 보며 조절(좁은 치료역)",
+    ci:["2·3도 방실차단(페이스메이커 없이)","WPW+AF","비후성 심근증 유출로폐색"],
+    caution:["좁은 치료역","저칼륨혈증시 독성↑","신기능 따라 축적","약물상호작용(아미오다론·베라파밀 등)"],
+    monitor:["디곡신 혈중농도","K+","Mg","신기능","심전도"],
+    ae:["오심","시야 황변","부정맥","서맥","혼란(독성)"],
+    renal:"신기능 저하시 감량 필수(축적)",key_rct:[],reimb:null,
+    hf_note:"좁은 치료역. 목표 0.5–0.9 ng/mL(낮게 유지). K+ 정상 유지 중요",
+    mechanism:"Na-K-ATPase 억제 → 세포내 Ca↑로 수축력 증가 + 미주신경 항진으로 심박수 감소. 예후 중립(증상·입원 감소). 좁은 치료역(0.5–0.9 ng/mL)."},
+
+  "drug:furosemide":{
+    id:"drug:furosemide",label_ko:"푸로세미드",label_en:"Furosemide",brand:"라식스 등",
+    cls:"class:loop_diuretic",phenotype:["rEF","mrEF","pEF"],cor:"I",loe:"C",emoji:"💧",
+    role:"울혈·체액저류 증상완화(全 표현형). ★예후개선 아닌 증상조절",
+    start:"20–40mg qd",target:"euvolemia 도달 최소용량",titrate:"체중·울혈 보며 적정",
+    ci:["무뇨","과민반응"],caution:["전해질이상(저K·저Na·저Mg)","탈수·저혈압","신기능악화","이독성(고용량)"],
+    monitor:["체중","K+/Na/Mg","eGFR/Cr","울혈 징후","혈압"],
+    ae:["저칼륨혈증","저나트륨혈증","탈수","신기능악화","이독성"],
+    renal:"신기능 저하시 증량 필요(eGFR<30 고용량)",key_rct:[],reimb:null,
+    hf_note:"최소 유효용량으로 euvolemia 유지. 예후약(GDMT) 아님—증상조절용",
+    mechanism:"고리(Henle 상행각) Na-K-2Cl 공동수송체 억제 → 강력한 나트륨·수분 배설로 울혈 완화. ★증상조절용이며 예후개선 약은 아님."},
+
+  "drug:torsemide":{
+    id:"drug:torsemide",label_ko:"토라세미드",label_en:"Torsemide",brand:"토렘 등",
+    cls:"class:loop_diuretic",phenotype:["rEF","mrEF","pEF"],cor:"I",loe:"C",emoji:"💧",
+    role:"고리이뇨제(생체이용률 높고 일정). 울혈 증상조절",
+    start:"5–10mg qd",target:"euvolemia 최소용량",titrate:"울혈 보며 적정",
+    ci:["무뇨","과민반응"],caution:["전해질이상","탈수","신기능악화"],
+    monitor:["체중","전해질","eGFR","울혈"],ae:["저칼륨혈증","탈수","신기능악화"],
+    renal:"신기능 저하시 증량",key_rct:[],reimb:null,
+    hf_note:"furosemide보다 흡수 일정(장부종시 유리). TRANSFORM-HF서 사망률 차이 없음",
+    mechanism:"고리이뇨제(furosemide 동일 기전). 생체이용률이 높고 일정해 장부종 환자에서 흡수 유리. TRANSFORM-HF서 사망률은 furosemide와 차이 없음."},
+
+  "drug:bumetanide":{
+    id:"drug:bumetanide",label_ko:"부메타니드",label_en:"Bumetanide",brand:"-",
+    cls:"class:loop_diuretic",phenotype:["rEF","mrEF","pEF"],cor:"I",loe:"C",emoji:"💧",
+    role:"고리이뇨제(강력, 1mg≈furosemide 40mg). 울혈조절",
+    start:"0.5–1mg qd",target:"euvolemia 최소용량",titrate:"울혈 보며 적정",
+    ci:["무뇨","과민반응"],caution:["전해질이상","탈수"],
+    monitor:["체중","전해질","eGFR"],ae:["저칼륨혈증","탈수","근경련"],
+    renal:"신기능저하시 증량",key_rct:[],reimb:null,hf_note:"흡수 안정적",
+    mechanism:"고리이뇨제. 1mg이 furosemide 약 40mg에 해당하는 강력한 이뇨. 흡수가 안정적."},
+
+  "drug:ferric_carboxymaltose":{
+    id:"drug:ferric_carboxymaltose",label_ko:"페릭 카르복시말토오스",label_en:"Ferric Carboxymaltose",brand:"페린젝트",
+    cls:"class:iv_iron",phenotype:["rEF","mrEF"],cor:"I",loe:"A",emoji:"🩸",
+    role:"철결핍 동반 증상성 HFrEF/HFmrEF. 증상·운동능·삶의질 개선(FAIR-HF·IRONMAN)",
+    start:"500–1000mg IV (0주·4주)",target:"ferritin>100 & TSAT>20%",
+    titrate:"체중·Hb 기반 용량, 3–6개월마다 재평가·보충",
+    ci:["철과잉","비철결핍성 빈혈","활동성 감염","과민반응"],
+    caution:["저인산혈증(FCM 특유, 드묾)","주사부위 반응","과민반응"],
+    monitor:["ferritin","TSAT","Hb","인(반복투여시)"],
+    ae:["저인산혈증","주사부위 반응","오심","일과성 저혈압"],
+    renal:"신기능 무관",key_rct:["19920054","37926238"],reimb:"hf:reimb:iv_iron",
+    hf_note:"철결핍=ferritin<100 또는 (100–299 & TSAT<20%). 경구철분 반응 기다리지 말 것",
+    mechanism:"정맥 철 보충 → 철결핍 교정으로 산소운반·골격근 대사·심근 에너지 개선. 빈혈 유무와 무관하게 증상·운동능 개선."},
+
+  "drug:patiromer":{
+    id:"drug:patiromer",label_ko:"파티로머",label_en:"Patiromer",brand:"-",
+    cls:"class:k_binder",phenotype:["rEF","mrEF","pEF"],cor:"IIb",loe:"B",emoji:"🧂",
+    role:"만성 고칼륨혈증으로 RAASi/MRA 유지곤란시. RAASi 지속 보조(DIAMOND)",
+    start:"8.4g qd",target:"K+ 4.0–5.0 유지",titrate:"K+ 보며 1주 간격 조절",
+    ci:["장폐색","과민반응"],caution:["다른 경구약과 3시간 간격(흡수)","저마그네슘혈증","변비"],
+    monitor:["K+","Mg"],ae:["변비","저마그네슘혈증","설사"],renal:"-",
+    key_rct:["35900838"],reimb:null,
+    hf_note:"만성 HK는 patiromer, 급성은 SZC 선호. MRA 감량보다 K-binder 우선(RAASi 유지)",
+    mechanism:"비흡수성 양이온교환 중합체 → 장관에서 칼륨 결합·배설. RAASi/MRA 유지 위해 만성 고칼륨혈증 조절(DIAMOND)."},
+
+  "drug:sodium_zirconium_cyclosilicate":{
+    id:"drug:sodium_zirconium_cyclosilicate",label_ko:"소듐 지르코늄 시클로실리케이트",label_en:"SZC",brand:"-",
+    cls:"class:k_binder",phenotype:["rEF","mrEF","pEF"],cor:"IIb",loe:"B",emoji:"🧂",
+    role:"고칼륨혈증(급성 빠른 교정). RAASi 유지 보조",
+    start:"10g tid (교정기 최대 3일) → 유지 5–10g qd",target:"K+ 정상화",titrate:"K+ 보며 조절",
+    ci:["과민반응"],caution:["부종(Na 흡수)","다른약 2시간 간격"],
+    monitor:["K+","부종"],ae:["부종","저칼륨혈증(과교정)"],renal:"-",
+    key_rct:[],reimb:null,
+    hf_note:"Na 함유→부종 악화 가능(심부전 주의). 급성 HK 빠른 교정에 유리",
+    mechanism:"무기질 결정구조가 장관에서 칼륨을 선택적으로 포획 → 빠른 칼륨 강하. 급성 고칼륨혈증에 유리(단 Na 함유로 부종 주의)."}
+};
+
+/* ---------- 4. 급여 게이트 (hf:reimb:) — HIRA 원문 AND/OR ---------- */
+var REIMB = {
+  "hf:reimb:arni":{
+    id:"hf:reimb:arni",drug:"drug:sacubitril_valsartan",notice:"고시 제2023-120호 (2023.7.1)",
+    title:"사쿠비트릴/발사르탄(엔트레스토) 급여기준",
+    summary:"LVEF≤40% + NYHA II-IV + 표준치료 병용",
+    gate:{op:"AND",conds:[
+      {k:"phenotype/lvef",txt:"좌심실 수축기능 저하 만성심부전, LVEF ≤ 40%",test:"lvef<=40"},
+      {k:"nyha",txt:"NYHA class II ~ IV",test:"nyha in [2,3,4]"},
+      {k:"std_tx",txt:"표준치료(베타차단제, aldosterone antagonist 등)와 병용",test:"std_therapy"}
+    ]},
+    changed:"★2023.7.1 개정: 종전 'ACEI/ARB 4주 이상 선행 병용' 요건 폐지 → 1차부터 즉시 병용 가능. 종전 LVEF≤35%→40%로 확대",
+    conflict:"적응증은 HFmrEF/HFpEF(EF 41~60%)까지 확대됐으나, 급여는 LVEF≤40%만 인정(가이드라인-급여 괴리)",
+    revalidate:"코딩 직전 HIRA 약제 세부기준 원문 재확인(LVEF 컷·표준치료 정의)",
+    defense:["진단명 I50 계열 + LVEF≤40% 명시(에코 판독지 첨부 권장)", "NYHA class II-IV 기록", "베타차단제·MRA 등 표준치료 병용 기록 필수(병용 없으면 삭감 위험)", "2023.7.1 이후 ACEI/ARB 4주 선행 요건 폐지 — 1차부터 병용 가능"]},
+
+  "hf:reimb:sglt2i":{
+    id:"hf:reimb:sglt2i",drug:"class:sglt2i",notice:"고시(2024.2 LVEF≤40) + 고시(2025.2 LVEF>40 확대)",
+    title:"다파/엠파글리플로진 만성심부전 급여기준",
+    summary:"증상·징후 + (LVEF≤40 OR LVEF>40+NP상승 OR 12개월내 악화입원). 비당뇨 포함",
+    gate:{op:"AND",conds:[
+      {k:"symptom",txt:"심부전의 증상 및 징후 존재",test:"hf_symptom"},
+      {op:"OR",conds:[
+        {k:"lvef40",txt:"LVEF ≤ 40% (2024.2~, 표준치료 안정용량 병용)",test:"lvef<=40"},
+        {op:"AND",conds:[
+          {k:"lvef40plus",txt:"LVEF > 40% (2025.2~ 확대)",test:"lvef>40"},
+          {op:"OR",conds:[
+            {k:"ntprobnp",txt:"NT-proBNP ≥ 125 pg/mL",test:"ntprobnp>=125"},
+            {k:"bnp",txt:"BNP ≥ 35 pg/mL",test:"bnp>=35"}
+          ]}
+        ]},
+        {k:"recent_adm",txt:"12개월 이내 심부전 악화로 응급실 방문 또는 입원",test:"hf_admission_12mo"}
+      ]}
+    ]},
+    changed:"2024.2 LVEF≤40 신설 → 2025.2 LVEF>40 비당뇨까지 확대",
+    conflict:null,
+    revalidate:"2024·2025 고시 정확번호·시행일 확인",
+    defense:["LVEF≤40%면 표준치료 안정용량 병용 기록", "LVEF>40%면 NT-proBNP≥125 또는 BNP≥35 수치 첨부, 또는 12개월내 HF 입원/응급실 기록", "비당뇨 환자도 인정(당뇨 상병 불필요)", "증상·징후 기록 필수"]},
+
+  "hf:reimb:finerenone":{
+    id:"hf:reimb:finerenone",drug:"drug:finerenone",notice:"고시 제2024-20호 (2024.2.1) — DKD 경로",
+    title:"피네레논(케렌디아) 급여기준",
+    summary:"★HF 단독=비급여. DKD경로도 NYHA II-IV 만성HF 제외 → HF환자 급여 불가",
+    gate:{op:"AND",conds:[
+      {k:"t2dm",txt:"제2형 당뇨 (상병 E11/E13/E14, 말기신장병코드 제외)",test:"t2dm"},
+      {k:"ckd",txt:"만성신장병 (N18.2/18.3/18.4/18.9 또는 E11.2)",test:"ckd"},
+      {k:"raasi_max",txt:"ACE-I 또는 ARB 최대허용(내약)용량 4주 이상 안정투여 중",test:"raasi_max_4wk"},
+      {k:"uacr",txt:"uACR > 300 mg/g (또는 urine dipstick ≥ 1+)",test:"uacr>300"},
+      {k:"egfr_band",txt:"25 ≤ eGFR < 75 mL/min/1.73㎡",test:"25<=egfr<75"},
+      {k:"not_hf",txt:"★지속증상 만성 심부전(NYHA II~IV)이 아닐 것",test:"nyha not in [2,3,4]",exclusion:true}
+    ]},
+    stop:"eGFR < 15 으로 감소시 투여 중단",
+    changed:"2024.2.1 신설(고시 제2024-20호)",
+    conflict:"★★FINEARTS-HF로 HFmrEF/HFpEF 근거 확립됐으나, 국내 급여는 HF 단독 비급여 + DKD경로도 NYHA II-IV 제외. 즉 심부전 환자는 어느 경로로도 급여 불가",
+    revalidate:"고시2024-20 이후 HF 적응증 급여화 여부 확인(중요)",
+    defense:["★심부전(NYHA II-IV) 환자는 어느 경로로도 급여 불가 — 처방 시 전액 삭감 위험", "DKD 경로: 제2형당뇨 + CKD(N18.2-9) + ACE-I/ARB 최대용량 4주 + uACR>300 + 25≤eGFR<75 전부 충족", "NYHA II-IV 만성 심부전은 명시적 제외(고시 원문)", "eGFR<15 시 투여 중단"]},
+
+  "hf:reimb:ivabradine":{
+    id:"hf:reimb:ivabradine",drug:"drug:ivabradine",notice:"HIRA 약제기준",
+    title:"이바브라딘(프로코라란) 급여기준",
+    summary:"동율동 + HR≥70 + BB 최대내약/불내성 + LVEF≤35% NYHA II-IV",
+    gate:{op:"AND",conds:[
+      {k:"sinus",txt:"동율동(sinus rhythm)",test:"sinus_rhythm"},
+      {k:"hr70",txt:"안정시 심박수 ≥ 70 bpm",test:"hr>=70"},
+      {k:"bb_max",txt:"베타차단제 최대내약용량 사용 중 또는 불내성/금기",test:"bb_max_or_intol"},
+      {k:"lvef35",txt:"LVEF ≤ 35%, NYHA II-IV",test:"lvef<=35"}
+    ]},
+    changed:null,conflict:null,
+    revalidate:"이바브라딘 급여 LVEF컷·HR 기준 HIRA 원문 재확인",
+    defense:["동율동 심전도 기록 필수 — AF면 삭감", "안정시 HR≥70 기록", "베타차단제 최대내약용량 사용/불내성/금기 기록", "LVEF≤35%, NYHA II-IV"]},
+
+  "hf:reimb:iv_iron":{
+    id:"hf:reimb:iv_iron",drug:"drug:ferric_carboxymaltose",notice:"HIRA 약제기준",
+    title:"정맥 철분제(페릭 카르복시말토오스) 급여",
+    summary:"철결핍 진단 충족시(ferritin/TSAT 기준)",
+    gate:{op:"AND",conds:[
+      {k:"iron_def",txt:"철결핍: ferritin<100 또는 (ferritin 100–299 & TSAT<20%)",test:"iron_deficiency"}
+    ]},
+    changed:null,conflict:"심부전 적응증 국내 급여 범위는 빈혈/철결핍 기준 따름",
+    revalidate:"IV iron 심부전 급여 인정범위·재고 HIRA 원문 재확인",
+    defense:["철결핍 진단: ferritin<100 또는 (ferritin 100–299 & TSAT<20%) 수치 첨부", "심부전 증상(NYHA) 기록", "빈혈 유무 무관하게 철결핍 기준 충족 시 인정"]}
+};
+
+/* ---------- 5. 권고문 (HF_RECS) — COR×LOE, 표현형, 출처 ---------- */
+var RECS = [
+  {id:"hf:rec:rEF_arni",ph:["rEF"],cor:"I",loe:"A",
+   txt:"증상성 HFrEF에서 ARNI를 1차로 권고(ACEI/ARB보다 우선 고려)",
+   drugs:["drug:sacubitril_valsartan"],src:["25176015"],gl:"KSHF2022/ESC2023"},
+  {id:"hf:rec:rEF_acei",ph:["rEF"],cor:"I",loe:"A",
+   txt:"ARNI 불가시 ACEI(또는 불내성시 ARB)로 RAS 차단",
+   drugs:["drug:enalapril","drug:ramipril","drug:candesartan"],src:[],gl:"KSHF2022/ESC2021"},
+  {id:"hf:rec:rEF_bb",ph:["rEF"],cor:"I",loe:"A",
+   txt:"안정된 HFrEF에 근거 있는 베타차단제 권고",
+   drugs:["drug:bisoprolol","drug:carvedilol","drug:metoprolol"],src:["10023943","10937931","12390947"],gl:"KSHF2022"},
+  {id:"hf:rec:rEF_mra",ph:["rEF"],cor:"I",loe:"A",
+   txt:"HFrEF에 MRA(steroidal) 권고(K+<5.0, eGFR>30)",
+   drugs:["drug:spironolactone","drug:eplerenone"],src:["10471456","21678313"],gl:"KSHF2022"},
+  {id:"hf:rec:rEF_sglt2i",ph:["rEF"],cor:"I",loe:"A",
+   txt:"HFrEF에 SGLT2i 권고(당뇨 무관)",
+   drugs:["drug:dapagliflozin","drug:empagliflozin"],src:["31535829","34184057"],gl:"ESC2023"},
+  {id:"hf:rec:mrEF_sglt2i",ph:["mrEF"],cor:"I",loe:"A",
+   txt:"★ESC2023 신규: HFmrEF에 SGLT2i를 기둥치료로 권고",
+   drugs:["drug:dapagliflozin","drug:empagliflozin"],src:["36114137","34459213"],gl:"ESC2023"},
+  {id:"hf:rec:pEF_sglt2i",ph:["pEF"],cor:"I",loe:"A",
+   txt:"★ESC2023 신규: HFpEF에 SGLT2i 강력 권고",
+   drugs:["drug:dapagliflozin","drug:empagliflozin"],src:["34459213","36114137"],gl:"ESC2023"},
+  {id:"hf:rec:mrEF_other",ph:["mrEF"],cor:"IIb",loe:"B",
+   txt:"HFmrEF에 ACEI/ARB/ARNI/MRA/BB 고려 가능(이차)",
+   drugs:["drug:candesartan","drug:spironolactone"],src:[],gl:"ESC2023"},
+  {id:"hf:rec:pEF_comorbid",ph:["pEF"],cor:"I",loe:"C",
+   txt:"HFpEF는 원인·동반질환 적극 관리(BP<130/80, AF, DM, 비만, OSA)",
+   drugs:[],src:[],gl:"ESC2023"},
+  {id:"hf:rec:diuretic",ph:["rEF","mrEF","pEF"],cor:"I",loe:"C",
+   txt:"체액저류시 고리이뇨제로 울혈 증상완화(예후개선 아님)",
+   drugs:["drug:furosemide","drug:torsemide"],src:[],gl:"KSHF2022"},
+  {id:"hf:rec:ivabradine",ph:["rEF"],cor:"IIa",loe:"B",
+   txt:"동율동 HR≥70, BB 최대내약 후에도 빈맥시 이바브라딘 추가",
+   drugs:["drug:ivabradine"],src:["21108219"],gl:"KSHF2022"},
+  {id:"hf:rec:vericiguat",ph:["rEF"],cor:"IIb",loe:"B",
+   txt:"최근 악화(입원/IV이뇨제) HFrEF에 베리시구앗 고려",
+   drugs:["drug:vericiguat"],src:["33039447"],gl:"ESC2023"},
+  {id:"hf:rec:hyd_isdn",ph:["rEF"],cor:"IIa",loe:"B",
+   txt:"흑인 HFrEF 또는 ACEI/ARB 불내성시 hydralazine+ISDN",
+   drugs:["drug:hydralazine","drug:isosorbide_dinitrate"],src:[],gl:"KSHF2022"},
+  {id:"hf:rec:digoxin",ph:["rEF"],cor:"IIb",loe:"B",
+   txt:"GDMT에도 증상지속 동율동 HFrEF에 디곡신 고려",
+   drugs:["drug:digoxin"],src:[],gl:"KSHF2022"},
+  {id:"hf:rec:iron",ph:["rEF","mrEF"],cor:"I",loe:"A",
+   txt:"철결핍 동반 증상성 HFrEF/HFmrEF에 IV 철분(증상·삶의질 개선)",
+   drugs:["drug:ferric_carboxymaltose"],src:["19920054","37926238"],gl:"ESC2023"},
+  {id:"hf:rec:hk_binder",ph:["rEF","mrEF","pEF"],cor:"IIb",loe:"B",
+   txt:"고칼륨혈증으로 RAASi 유지곤란시 K-binder로 RAASi 지속 고려",
+   drugs:["drug:patiromer","drug:sodium_zirconium_cyclosilicate"],src:["35900838"],gl:"ACC2022"}
+];
+
+/* ---------- 5b. 치료 축 (AXES) — 대분류 묶음 + 선택방식 ----------
+   select: "one"=축 내 1개만 선택(택일), "choice"=상황별 선택
+   classes: 우선순위 순서(첫째가 1차)
+   pillar: GDMT 필수 기둥 여부 */
+var AXES = [
+  {id:"axis:ras",emoji:"💊",title:"RAS 차단",sub:"ARNI·ACEI·ARB 중 택일",
+   select:"one",ph:["rEF"],pillar:true,
+   classes:["class:arni","class:acei","class:arb"],
+   note:"ARNI 1차(불가시 ACEI, 마른기침 불내성시 ARB). 셋 중 하나만 — 절대 병용 금지"},
+  {id:"axis:bb",emoji:"💊",title:"베타차단제",sub:"심부전 근거 BB 중 택일",
+   select:"one",ph:["rEF"],pillar:true,
+   classes:["class:bb_hf"],
+   note:"근거 있는 BB 1종(bisoprolol·carvedilol·metoprolol succinate·nebivolol). euvolemic 시작"},
+  {id:"axis:mra",emoji:"💊",title:"MRA",sub:"스테로이드성 MRA 중 택일",
+   select:"one",ph:["rEF"],pillar:true,
+   classes:["class:mra_steroidal"],
+   note:"spironolactone 또는 eplerenone 1종. K+<5.0·eGFR>30"},
+  {id:"axis:sglt2i",emoji:"💊",title:"SGLT2 억제제",sub:"다파·엠파 중 택일",
+   select:"one",ph:["rEF","mrEF","pEF"],pillar:true,
+   classes:["class:sglt2i"],
+   note:"dapagliflozin 또는 empagliflozin 1종. 전 표현형 1차"},
+  {id:"axis:congestion",emoji:"💧",title:"울혈 조절",sub:"고리이뇨제(증상조절)",
+   select:"one",ph:["rEF","mrEF","pEF"],pillar:false,
+   classes:["class:loop_diuretic"],
+   note:"체액저류 시 1종으로 euvolemia 유지. 예후약 아님(증상조절)"},
+  {id:"axis:rate",emoji:"⚡",title:"심박수 조절",sub:"이바브라딘·디곡신",
+   select:"one",ph:["rEF"],pillar:false,
+   classes:["class:if_inhibitor","class:cardiac_glycoside"],
+   mutex_note:"이바브라딘(동율동 전용)과 디곡신은 심박수 조절 목적이 겹침 — 상황 따라 택일",
+   note:"동율동 HR≥70 & BB 최대내약: 이바브라딘 / AF 동반 심박수조절·난치성: 디곡신"},
+  {id:"axis:refractory",emoji:"💊",title:"난치성 추가",sub:"베리시구앗·혈관확장제",
+   select:"choice",ph:["rEF"],pillar:false,
+   classes:["class:sgc_stimulator","class:vasodilator"],
+   note:"최근 악화: 베리시구앗(VICTORIA) / 흑인·ACEI불내성: hydralazine+ISDN"},
+  {id:"axis:iron",emoji:"🩸",title:"철결핍 교정",sub:"IV 철분",
+   select:"one",ph:["rEF","mrEF"],pillar:false,
+   classes:["class:iv_iron"],
+   note:"철결핍(ferritin<100 또는 100–299&TSAT<20%) 시 IV ferric carboxymaltose"},
+  {id:"axis:kbinder",emoji:"🧂",title:"칼륨 관리",sub:"K-binder",
+   select:"one",ph:["rEF","mrEF","pEF"],pillar:false,
+   classes:["class:k_binder"],
+   note:"고칼륨혈증으로 RAASi/MRA 유지곤란 시. 만성 patiromer / 급성 SZC"}
+];
+
+/* ---------- 6. 진단 점수 (HF_SCORES) ---------- */
+var SCORES = {
+  h2fpef:{id:"h2fpef",title:"H₂FPEF Score",emoji:"🔬",
+    subtitle:"HFpEF 진단 가능성(비침습 임상·에코)",
+    cutoff:[{min:6,label:"높음(HFpEF 가능성 高)",color:"#C0392B"},
+            {min:2,label:"중간(추가검사 필요)",color:"#E67E22"},
+            {min:0,label:"낮음(배제 경향)",color:"#16A085"}],
+    items:[
+      {k:"heavy",label:"Heavy: BMI > 30 kg/㎡",pts:2},
+      {k:"htn",label:"Hypertensive: 항고혈압제 ≥ 2종",pts:1},
+      {k:"af",label:"Atrial Fibrillation(발작성/지속성)",pts:3},
+      {k:"ph",label:"Pulmonary HTN: 도플러 PASP > 35 mmHg",pts:1},
+      {k:"elder",label:"Elder: 나이 > 60세",pts:1},
+      {k:"filling",label:"Filling: 도플러 E/e' > 9",pts:1}
+    ],max:9,src:"Reddy/Borlaug, Circulation 2018"},
+  hfapeff:{id:"hfapeff",title:"HFA-PEFF Score",emoji:"🔬",
+    subtitle:"HFpEF 진단(기능·형태·바이오마커)",
+    cutoff:[{min:5,label:"확진(HFpEF 가능성 高)",color:"#C0392B"},
+            {min:2,label:"중간(기능검사 추가)",color:"#E67E22"},
+            {min:0,label:"낮음(배제)",color:"#16A085"}],
+    items:[
+      {k:"func",label:"기능(Functional): e' 감소 / TR velocity",pts:2,note:"0/1/2점"},
+      {k:"morph",label:"형태(Morphological): LAVI / LVMI / RWT",pts:2,note:"0/1/2점"},
+      {k:"biom",label:"바이오마커(NP): 동율동/AF별 컷오프",pts:2,note:"0/1/2점"}
+    ],max:6,src:"HFA-PEFF, Eur Heart J 2019"}
+};
+
+/* ---------- 7. 동반질환 알고리즘 (HF_ALGOS) ---------- */
+var ALGOS = {
+  ckd:{id:"ckd",emoji:"🫘",title:"CKD 동반 GDMT",comorbid:"comorbid:ckd",
+    summary:"신기능에 따라 GDMT를 조절하되, 대부분의 약제는 CKD에서 더 큰 이득을 준다.",
+    keypoint:"SGLT2i는 eGFR≥20에서 개시 가능하며 신보호 효과가 핵심. 초기 eGFR 일시 저하는 가역적이므로 중단하지 말 것.",
+    warn:"MRA는 eGFR<30 금기·K+>5.0 금기. finerenone은 eGFR≥25 개시하나 심부전이면 급여 불가.",
+    rules:[
+      "SGLT2i: eGFR ≥ 20에서 개시 가능. 초기 2주 eGFR 일시 저하는 정상(중단 사유 아님)",
+      "ACEI/ARB/ARNI: eGFR<30 신중·감량, 저혈압·K+ 모니터",
+      "MRA(steroidal): eGFR>30 & K+<5.0에서 개시. 30–50 감량·신중, <30 금기",
+      "finerenone: eGFR≥25 & K+<5.0(단 HF면 급여 제외). eGFR<15 중단",
+      "모니터: eGFR·K+ baseline → 1–2주 → 정기"
+    ],
+    detail:[{"h": "🔢 eGFR 구간별 GDMT 조정", "rows": ["eGFR ≥ 60: 모든 GDMT 표준용량 가능", "eGFR 30–59: SGLT2i·RAASi·MRA 유지, 용량·K+ 면밀 모니터. MRA 감량 고려", "eGFR 20–29: SGLT2i 유지/개시 가능(신보호 지속), MRA 금기, RAASi 신중·감량", "eGFR < 20: SGLT2i 개시 권고 근거 제한적(기존 복용은 투석 전까지 지속 가능), RAASi 최소화"]}, {"h": "⚠️ 흔한 함정", "rows": ["SGLT2i·RAASi 개시 후 eGFR 10–30% 저하는 혈역학적·가역적 → 중단하면 신·심 보호 손실", "조영제·NSAID·탈수 겹치면 급성신손상 위험 ↑ → sick day rule 교육", "이뇨제 과다로 인한 전신성 저관류가 신기능 악화의 흔한 원인(약물 탓으로 오인 말 것)"]}, {"h": "📊 근거", "text": "DAPA-CKD·EMPA-KIDNEY: SGLT2i가 CKD 진행·심혈관 사건 감소. 심부전+CKD 중첩 환자에서 SGLT2i 이득 가장 큼."}]},
+  hyperkalemia:{id:"hyperkalemia",emoji:"🧂",title:"고칼륨혈증 관리",lab:"lab:potassium",
+    summary:"RAASi/MRA를 끊기 전에 칼륨결합제로 유지하는 것이 예후에 유리하다.",
+    keypoint:"MRA·RAASi는 예후 개선 약제. K+ 상승 시 무조건 중단보다 K-binder로 유지가 우선(DIAMOND, COR IIb).",
+    warn:"K+ > 5.5 또는 증상(부정맥·근력저하) 시에는 즉시 RAASi/MRA 감량·중단 + 응급 처치 고려.",
+    rules:[
+      "K+ > 5.0: 식이조절·K+ 상승약물 점검(NSAID·trimethoprim 등)",
+      "RAASi/MRA 중단·감량보다 K-binder로 RAASi 유지 우선(DIAMOND, COR IIb)",
+      "만성 HK: patiromer / 급성·빠른교정: SZC(단 Na함유→부종 주의)",
+      "MRA는 가능한 유지(예후약). K+ 5.0–5.5는 감량+모니터, >5.5 또는 증상시 중단",
+      "목표 K+ 4.0–5.0 유지"
+    ],
+    detail:[{"h": "🔢 K+ 수치별 대응", "rows": ["K+ 5.0–5.5: RAASi/MRA 유지 + 식이조절·유발약물 점검 + 1–2주 재검", "K+ 5.5–6.0: MRA 감량 또는 K-binder 시작, RAASi 유지 시도, 단기 재검", "K+ > 6.0 또는 심전도 변화: 응급(칼슘글루코네이트·인슐린/포도당·β2작용제) + RAASi 일시중단"]}, {"h": "💊 K-binder 선택", "rows": ["patiromer: 만성 관리용, 8.4g qd 시작, 효과 발현 ~7시간, 변비·저Mg 주의, 타약과 3시간 간격", "SZC(sodium zirconium): 급성·빠른 교정(~1시간), 10g tid 최대 3일→유지, Na 함유로 부종 주의", "★구형 SPS(폴리스티렌설폰산)는 장괴사 위험·효과 느려 만성 유지엔 부적합"]}, {"h": "⚠️ 함정", "text": "용혈 검체는 위성 고칼륨(재검). RAASi 중단은 단기 K+는 낮추나 장기 예후를 해친다 — K-binder로 RAASi 유지가 DIAMOND의 핵심 메시지."}]},
+  iron:{id:"iron",emoji:"🩸",title:"철결핍 관리",comorbid:"comorbid:iron_deficiency",
+    summary:"빈혈이 없어도 철결핍이면 IV 철분이 증상·삶의질을 개선한다.",
+    keypoint:"철결핍 = ferritin<100, 또는 ferritin 100–299 & TSAT<20%. 경구철분 효과를 기다리지 말고 IV 철분.",
+    warn:"전 심부전 환자에서 baseline·연 1회 철 상태 스크리닝 필수(증상 없어도).",
+    rules:[
+      "철결핍 정의: ferritin < 100 μg/L, 또는 ferritin 100–299 & TSAT < 20%",
+      "대상: 증상성 HFrEF/HFmrEF + 철결핍",
+      "치료: IV 철분(ferric carboxymaltose) 500–1000mg. 경구철분 반응 기다리지 말 것",
+      "목표: ferritin > 100 & TSAT > 20%. 3–6개월마다 재평가",
+      "전 HF 환자 baseline·연1회 ferritin/TSAT 스크리닝"
+    ],
+    detail:[{"h": "🔬 진단 기준 (빈혈 무관)", "rows": ["철결핍 확정: ferritin < 100 μg/L", "또는 ferritin 100–299 μg/L & TSAT < 20%", "대상: 증상성 HFrEF/HFmrEF(LVEF ≤ 45%), NYHA II–III", "★ferritin은 급성기 반응물질 — 염증·감염 시 상승하여 철결핍 가릴 수 있음(TSAT 병행)"]}, {"h": "💉 투여·용량", "rows": ["FCM(페릭카르복시말토오스): 1회 최대 1000mg/주, 체중·Hb 기반 산정", "초기 보충: 0주·(필요시)4–6주 분할 투여로 결핍 교정", "정맥 투여 선호(경구는 흡수 불량·소화기 부작용으로 심부전서 효과 제한적)"]}, {"h": "🔁 재평가·재투여", "rows": ["추적: IV 철분 후 4–6개월마다 ferritin/TSAT 재검", "재투여 기준(IRONMAN): ferritin < 100, 또는 ferritin 100–300 & TSAT < 20%", "중단 기준: ferritin > 400 또는 TSAT ≥ 25%(과부하 방지)", "대개 1–2회 투여로 충분, 일부만 반복 필요"]}, {"h": "📊 근거", "text": "FAIR-HF·CONFIRM-HF·AFFIRM-AHF·IRONMAN·HEART-FID: 증상·운동능·삶의질·심부전 입원 개선. ESC 2023 IV FCM 권고(증상성 HFrEF). 단일 투여로도 심근 철 축적이 1년 지속."}]},
+  af:{id:"af",emoji:"⚡",title:"심방세동 동반",comorbid:"comorbid:af",
+    summary:"뇌졸중 예방(항응고)과 심박수 조절이 두 축. 이바브라딘은 무효.",
+    keypoint:"CHA₂DS₂-VASc 점수로 항응고 결정(DOAC 우선). 심박수는 안정시 <110 목표.",
+    warn:"★이바브라딘은 동율동에서만 작용 → AF에서는 효과 없음. rate-limiting CCB(베라파밀·딜티아젬)는 HFrEF에서 회피.",
+    rules:[
+      "뇌졸중 위험: CHA₂DS₂-VASc(남≥1·여≥2) → 항응고(DOAC 우선)",
+      "출혈위험: HAS-BLED 평가(항응고 중단 근거 아님, 교정가능인자 관리)",
+      "심박수 조절: 안정시 HR<110 목표, 베타차단제 우선(rate-limiting CCB은 HFrEF 주의)",
+      "digoxin: 심박수조절 보조(특히 저혈압·BB 한계시)",
+      "★이바브라딘은 동율동에서만 작용(AF면 효과 없음)"
+    ],
+    detail:[{"h": "🛡️ 항응고 (CHA₂DS₂-VASc)", "rows": ["C 울혈성심부전 1 · H 고혈압 1 · A₂ 나이≥75 2 · D 당뇨 1 · S₂ 뇌졸중/TIA 2 · V 혈관질환 1 · A 나이65–74 1 · Sc 여성 1", "심부전은 자동 1점 → 남성 대부분 항응고 적응", "DOAC 우선(와파린 대비 두개내출혈↓). 판막성 AF·기계판막은 와파린", "HAS-BLED는 출혈 고위험 식별·교정용이지 항응고 보류 사유 아님"]}, {"h": "💓 심박수 조절", "rows": ["목표: 안정시 HR < 110(관용적), 증상 지속 시 더 엄격히", "1차: 베타차단제(심부전 예후약 겸용)", "보조: digoxin(저혈압·BB 한계 시), 목표농도 0.5–0.9 ng/mL", "★non-DHP CCB(베라파밀·딜티아젬)은 음성수축력으로 HFrEF 금기"]}, {"h": "⚠️ 함정", "text": "이바브라딘은 동율동 전용 → AF에선 무효. 리듬조절(전극도자절제술)은 HFrEF 동반 AF에서 선택적으로 예후 개선 보고(CASTLE-AF)."}]},
+  t2dm:{id:"t2dm",emoji:"🩸",title:"제2형 당뇨 동반",comorbid:"comorbid:t2dm",
+    summary:"SGLT2i가 혈당·심·신을 동시에 잡는 1차. 일부 당뇨약은 심부전 악화.",
+    keypoint:"SGLT2i는 전 표현형 1차(당뇨 유무 무관). 심부전 동반 당뇨에서 최우선.",
+    warn:"★TZD(피오글리타존)·saxagliptin은 심부전 입원 위험 증가 → 회피. finerenone은 심부전이면 급여 불가.",
+    rules:[
+      "SGLT2i 우선(심·신 보호 + 혈당). 全 표현형 1차",
+      "★finerenone: 심부전(NYHA II-IV)이면 DKD 급여경로에서도 제외 → 급여 불가",
+      "metformin: eGFR≥30 유지 가능(안정시)",
+      "TZD(피오글리타존)·saxagliptin: 심부전 입원 위험 → 회피",
+      "혈당목표 개별화(저혈당 회피)"
+    ],
+    detail:[{"h": "💊 당뇨약 심부전 영향", "rows": ["SGLT2i: 1차(심·신 보호 + 혈당) — 전 표현형 권고", "metformin: 안정 시 eGFR≥30까지 유지 가능, 안전", "GLP-1 RA: 체중·혈당 이점, 심부전 자체 예후 근거는 제한적", "★TZD(피오글리타존): 수분저류로 심부전 악화 → 금기", "★saxagliptin(DPP-4i): 심부전 입원 증가(SAVOR-TIMI) → 회피"]}, {"h": "⚖️ finerenone 함정", "text": "당뇨성 CKD에서 신·심 보호 근거(FIDELIO/FIGARO)가 있으나, 국내 급여는 HF 단독 비급여 + DKD 경로도 NYHA II-IV 만성 심부전 제외 → 심부전 환자는 사실상 급여 불가. 처방 시 삭감 위험 인지."}, {"h": "🎯 혈당 목표", "text": "개별화(일반 HbA1c 7% 전후), 저혈당은 부정맥·교감신경 항진 유발하므로 엄격한 강하보다 안전 우선."}]}
+};
+
+/* ---------- 8. 검사/고시 ---------- */
+var LABS = {
+  "lab:lvef":{id:"lab:lvef",key:"LVEF",label:"좌심실 박출률",unit:"%",emoji:"🫀",
+    method:"심초음파(Simpson biplane 권장), 심장 MRI",
+    ranges:[{band:"정상",val:"≥ 50%",color:"#16A085"},{band:"경도감소(mrEF)",val:"41–49%",color:"#E67E22"},{band:"감소(rEF)",val:"≤ 40%",color:"#C0392B"}],
+    clinical:"심부전 표현형 분류의 핵심. GDMT 적응·급여(ARNI≤40, SGLT2i 전구간)의 분기점.",
+    caution:"측정자·기법 간 변이 큼. 경계값은 재측정·MRI 고려. 단일 LVEF로 mrEF/pEF 진단 불가(증상·NP·구조 병행).",
+    code:"심초음파 나-766 (경흉부)",
+    pearls:["GDMT 시작 3–6개월 후 재평가로 LVEF 회복(HFimpEF) 확인 — 회복돼도 GDMT 지속(TRED-HF: 중단 시 40% 재발)", "LVEF≤35% + 증상 지속 시 ICD/CRT 적응 평가", "급여 분기: ARNI는 LVEF≤40%, SGLT2i는 전 구간(LVEF>40은 NP 또는 입원력 필요)"]},
+  "lab:nt_probnp":{id:"lab:nt_probnp",key:"NT-proBNP",label:"N말단 프로BNP",unit:"pg/mL",emoji:"🧪",
+    method:"정맥혈 면역검사",
+    ranges:[{band:"심부전 가능성 낮음",val:"< 125 (만성)",color:"#16A085"},{band:"회색지대",val:"125–600",color:"#E67E22"},{band:"심부전 가능성 높음",val:"> 600 (연령보정)",color:"#C0392B"}],
+    clinical:"심부전 감별진단·중증도·예후. HFmrEF/HFpEF 진단 컷 >125. SGLT2i 급여(LVEF>40) 게이트에도 사용.",
+    caution:"신기능저하·고령·AF·비만(역상관)에서 변동. ★ARNI에 분해되지 않아 ARNI 사용 중 추적에 적합.",
+    code:"누406 나트륨이뇨펩티드(급여)",
+    pearls:["연령보정 급성 컷: <50세 >450, 50–75세 >900, >75세 >1800", "NP 목표 기반 적정(guided therapy)은 일상 권고 아님", "ARNI 사용 중에도 분해 안 되어 BNP보다 추적 지표로 우월"]},
+  "lab:bnp":{id:"lab:bnp",key:"BNP",label:"뇌나트륨이뇨펩티드",unit:"pg/mL",emoji:"🧪",
+    method:"정맥혈 면역검사",
+    ranges:[{band:"심부전 가능성 낮음",val:"< 35 (만성)",color:"#16A085"},{band:"회색지대",val:"35–100",color:"#E67E22"},{band:"심부전 가능성 높음",val:"> 100",color:"#C0392B"}],
+    clinical:"감별진단·예후. 만성 진단 컷 >35, 급성 >100. SGLT2i 급여 게이트(BNP≥35).",
+    caution:"★ARNI(neprilysin 억제)에 분해 억제되어 상승 → ARNI 사용 시 해석 혼선. 이 경우 NT-proBNP 권장.",
+    code:"누406 나트륨이뇨펩티드(급여)",
+    pearls:["ARNI 사용 시 상승 → 해석 주의, NT-proBNP로 전환 권장", "비만에서 위음성(낮게), 신부전·고령·AF에서 상승", "급성 진단 컷 >100, 만성 제외 컷 <35"]},
+  "lab:egfr":{id:"lab:egfr",key:"eGFR",label:"추정사구체여과율",unit:"mL/min/1.73㎡",emoji:"🫘",
+    method:"혈청 크레아티닌 + CKD-EPI 2021",
+    ranges:[{band:"정상/경도(G1–2)",val:"≥ 60",color:"#16A085"},{band:"중등도(G3)",val:"30–59",color:"#E67E22"},{band:"고도/말기(G4–5)",val:"< 30",color:"#C0392B"}],
+    clinical:"GDMT 용량·금기의 핵심 분기. SGLT2i≥20 개시, MRA<30 금기, finerenone≥25 개시·<15 중단.",
+    caution:"GDMT 개시 후 초기 eGFR 저하(특히 SGLT2i·RAASi)는 흔하며 대개 가역적—과민 중단 주의.",
+    code:"누310 크레아티닌(급여)",
+    pearls:["GDMT 개시 1–2주 후 첫 재검, 안정되면 3–6개월마다", "SGLT2i·RAASi 개시 후 ≤30% 저하는 용인·가역적", "급성 변화 시 탈수·조영제·NSAID·이뇨제 과다 배제"]},
+  "lab:potassium":{id:"lab:potassium",key:"K⁺",label:"혈청 칼륨",unit:"mmol/L",emoji:"🧂",
+    method:"정맥혈(용혈 주의)",
+    ranges:[{band:"정상",val:"3.5–5.0",color:"#16A085"},{band:"경계",val:"5.0–5.5",color:"#E67E22"},{band:"고칼륨(위험)",val:"> 5.5",color:"#C0392B"}],
+    clinical:"RAASi·MRA 개시/유지의 안전 지표. >5.0 MRA 개시 보류, K-binder로 RAASi 유지 고려.",
+    caution:"용혈 검체는 위양성. RAASi 시작·증량 1–2주 후 재검. 저칼륨(<3.5)도 부정맥·디곡신 독성 위험.",
+    code:"누301 전해질(급여)",
+    pearls:["RAASi/MRA 시작·증량 1–2주 후 필수 재검", "K-binder로 RAASi 유지가 중단보다 예후 유리(DIAMOND)", "저칼륨(<3.5)도 위험 — 부정맥·디곡신 독성"]},
+  "lab:ferritin":{id:"lab:ferritin",key:"Ferritin",label:"페리틴",unit:"μg/L",emoji:"🩸",
+    method:"정맥혈",
+    ranges:[{band:"철결핍 확실",val:"< 100",color:"#C0392B"},{band:"TSAT 동반평가",val:"100–299",color:"#E67E22"},{band:"철결핍 아님",val:"≥ 300",color:"#16A085"}],
+    clinical:"심부전 철결핍 진단 핵심. <100 또는 (100–299 & TSAT<20%)면 IV 철분 적응(I-A).",
+    caution:"급성기 반응물질—염증·감염 시 상승하여 철결핍 가릴 수 있음. TSAT 병행 해석.",
+    code:"누104-1 페리틴(급여)",
+    pearls:["급성기 반응물질 — CRP 동반 상승 시 철결핍 과소평가", "심부전 철결핍 컷(<100)은 일반 빈혈 기준과 다름", "IV 철분 후 >400이면 재투여 보류"]},
+  "lab:tsat":{id:"lab:tsat",key:"TSAT",label:"트랜스페린 포화도",unit:"%",emoji:"🩸",
+    method:"혈청철/총철결합능 × 100",
+    ranges:[{band:"철결핍",val:"< 20%",color:"#C0392B"},{band:"정상",val:"20–45%",color:"#16A085"},{band:"과부하 의심",val:"> 45%",color:"#E67E22"}],
+    clinical:"ferritin 100–299 구간에서 철결핍 확정에 결정적. <20%면 철결핍.",
+    caution:"일중 변동·식이 영향. 공복 채혈 권장.",
+    code:"누103 철·총철결합능(급여)",
+    pearls:["ferritin 100–299 구간서 <20%면 철결핍 확정", "공복·일중 변동 — 반복 측정 확인", "IV 철분 후 ≥25%면 재투여 보류"]},
+  "lab:uacr":{id:"lab:uacr",key:"uACR",label:"요알부민/크레아티닌비",unit:"mg/g",emoji:"🫘",
+    method:"무작위뇨(spot urine)",
+    ranges:[{band:"정상(A1)",val:"< 30",color:"#16A085"},{band:"중등도증가(A2)",val:"30–300",color:"#E67E22"},{band:"고도증가(A3)",val:"> 300",color:"#C0392B"}],
+    clinical:"당뇨성 신장질환 평가·finerenone 급여(uACR>300) 게이트.",
+    caution:"운동·발열·월경·요로감염 시 일시 상승. 2–3회 중 2회 양성으로 확정.",
+    code:"누621 요알부민(급여)",
+    pearls:["finerenone 급여 게이트(>300) 핵심", "운동·발열·요로감염·월경 시 일시 상승 — 2–3회 중 2회로 확정", "당뇨성 신증 조기 발견·진행 추적"]}
+};
+
+/* ---------- 8b. 자주 쓰는 코드 (CODES) — 상병·검사·처치 ---------- */
+var CODES = {
+  diag:{title:"심부전 상병코드 (KCD)",emoji:"🏷️",
+    items:[
+      {code:"I50.0",label:"울혈성 심부전",note:"가장 광범위 사용"},
+      {code:"I50.1",label:"좌심실부전",note:""},
+      {code:"I50.9",label:"상세불명 심부전",note:"표현형 미확정 시"},
+      {code:"I50.20",label:"수축기 심부전(상세불명)",note:"HFrEF 계열"},
+      {code:"I50.22",label:"만성 수축기 심부전",note:"만성 HFrEF"},
+      {code:"I50.30",label:"이완기 심부전(상세불명)",note:"HFpEF 계열"},
+      {code:"I50.32",label:"만성 이완기 심부전",note:"만성 HFpEF"},
+      {code:"I50.42",label:"만성 수축기+이완기 심부전",note:"혼합형"},
+      {code:"I11.0",label:"고혈압성 심장병, 심부전 동반",note:"고혈압 원인 시"},
+      {code:"I13.0",label:"고혈압성 심장·신장병, 심부전 동반",note:"고혈압+CKD"}
+    ]},
+  comorbid_code:{title:"동반질환 상병코드",emoji:"🔗",
+    items:[
+      {code:"E11.-",label:"제2형 당뇨병",note:"SGLT2i·finerenone 급여 관련"},
+      {code:"N18.2",label:"만성콩팥병 2기",note:""},
+      {code:"N18.3",label:"만성콩팥병 3기",note:"finerenone 급여대상 구간"},
+      {code:"N18.4",label:"만성콩팥병 4기",note:""},
+      {code:"N18.9",label:"만성콩팥병 상세불명",note:""},
+      {code:"I48.-",label:"심방세동 및 조동",note:"항응고·심박수조절"},
+      {code:"E87.5",label:"고칼륨혈증",note:"K-binder 관련"},
+      {code:"D50.-",label:"철결핍성 빈혈",note:"IV 철분 관련"},
+      {code:"E83.1",label:"철대사 장애",note:"철결핍(빈혈 미동반)"}
+    ]},
+  test_code:{title:"주요 검사·처치 수가",emoji:"🧪",
+    items:[
+      {code:"누406",label:"나트륨이뇨펩티드(BNP/NT-proBNP)",note:"심부전 감별·예후, 급여"},
+      {code:"나-766",label:"경흉부 심초음파",note:"LVEF·구조 평가"},
+      {code:"누310",label:"크레아티닌",note:"eGFR 산출"},
+      {code:"누301",label:"전해질(Na·K·Cl)",note:"K⁺ 모니터"},
+      {code:"누104-1",label:"페리틴",note:"철결핍 평가"},
+      {code:"누103",label:"철/총철결합능(TSAT)",note:"철결핍 평가"},
+      {code:"누621",label:"요알부민",note:"uACR 산출"},
+      {code:"바-101",label:"심전도(ECG)",note:"동율동·AF·QRS 평가"}
+    ]}
+};
+
+var NOTICES = {
+  "notice:고시2023-120":{id:"notice:고시2023-120",label:"고시 제2023-120호",date:"2023.7.1",
+    about:"엔트레스토 급여 LVEF≤40 확대, ACEI/ARB 선행요건 폐지"},
+  "notice:고시2024-20":{id:"notice:고시2024-20",label:"고시 제2024-20호",date:"2024.2.1",
+    about:"피네레논(케렌디아) DKD 급여 신설"}
+};
+
+/* ---------- 9. 출처 (HF_SOURCES) ---------- */
+var SOURCES = [
+  {id:"kshf2022",label:"대한심부전학회/대한심장학회 — 심부전 진료지침 2022 전면개정판",
+   url:"https://www.kshf.or.kr/heart/heart_04_04.php"},
+  {id:"esc2023",label:"2023 Focused Update of the 2021 ESC Guidelines for Acute and Chronic Heart Failure (Eur Heart J)",
+   url:"https://doi.org/10.1093/eurheartj/ehad195"},
+  {id:"hira",label:"건강보험심사평가원 — 요양급여의 적용기준 및 방법에 관한 세부사항(약제)",
+   url:"https://www.hira.or.kr/rc/drug/insuadtcrtr/bbsBltList.do"},
+  {id:"arni_reimb",label:"엔트레스토 급여기준 고시 제2023-120호(2023.7.1)",
+   url:"https://sondoctor.co.kr/1311/"},
+  {id:"fine_reimb",label:"케렌디아(피네레논) 급여기준 고시 제2024-20호(2024.2.1)",
+   url:"https://sondoctor.co.kr/1360"},
+  {id:"mfds",label:"식품의약품안전처 의약품안전나라 — 엔트레스토 허가사항",
+   url:"https://nedrug.mfds.go.kr/pbp/CCBBB01/getItemDetail?itemSeq=201602113"}
+];
+
+/* RCT 출처 (pmid → 표시명) */
+var RCT = {
+  "25176015":{name:"PARADIGM-HF",jr:"N Engl J Med 2014",topic:"ARNI vs enalapril HFrEF"},
+  "10023943":{name:"CIBIS-II",jr:"Lancet 1999",topic:"bisoprolol HFrEF"},
+  "10937931":{name:"MERIT-HF",jr:"Lancet 1999",topic:"metoprolol CR/XL HFrEF"},
+  "12390947":{name:"COPERNICUS",jr:"Circulation 2002",topic:"carvedilol 중증 HFrEF"},
+  "10471456":{name:"RALES",jr:"N Engl J Med 1999",topic:"spironolactone 중증 HFrEF"},
+  "21678313":{name:"EMPHASIS-HF",jr:"N Engl J Med 2011",topic:"eplerenone 경증 HFrEF"},
+  "31535829":{name:"DAPA-HF",jr:"N Engl J Med 2019",topic:"dapagliflozin HFrEF"},
+  "34184057":{name:"EMPEROR-Reduced",jr:"N Engl J Med 2020",topic:"empagliflozin HFrEF"},
+  "34459213":{name:"EMPEROR-Preserved",jr:"N Engl J Med 2021",topic:"empagliflozin HFpEF"},
+  "36114137":{name:"DELIVER",jr:"N Engl J Med 2022",topic:"dapagliflozin HFmrEF/pEF"},
+  "39520455":{name:"FINEARTS-HF",jr:"N Engl J Med 2024",topic:"finerenone HFmrEF/pEF"},
+  "21108219":{name:"SHIFT",jr:"Lancet 2010",topic:"ivabradine HFrEF"},
+  "33039447":{name:"VICTORIA",jr:"N Engl J Med 2020",topic:"vericiguat 악화 HFrEF"},
+  "19920054":{name:"FAIR-HF",jr:"N Engl J Med 2009",topic:"IV iron 철결핍 HF"},
+  "37926238":{name:"IRONMAN",jr:"Lancet 2022",topic:"ferric derisomaltose HF"},
+  "36356631":{name:"STRONG-HF",jr:"Lancet 2022",topic:"퇴원후 집중 적정화"},
+  "36066557":{name:"EMPULSE",jr:"Nat Med 2022",topic:"급성 HF empagliflozin"},
+  "35900838":{name:"DIAMOND",jr:"Eur Heart J 2022",topic:"patiromer RAASi 유지"}
+};
+
+return {META:META,PHENOTYPES:PHENOTYPES,CLASSES:CLASSES,DRUGS:DRUGS,REIMB:REIMB,AXES:AXES,
+        RECS:RECS,SCORES:SCORES,ALGOS:ALGOS,LABS:LABS,CODES:CODES,NOTICES:NOTICES,SOURCES:SOURCES,RCT:RCT};
+})();
+
+</script>
+<script>
+/* ============================================================
+   심부전 처방가이드 — ENGINE 레이어 (engine.js)
+   값 복제 금지, ID 참조만. 정문 recommend(patient) 노출.
+   DATA(HF_DATA)에만 의존. UI 비의존.
+   ============================================================ */
+var HF_ENGINE = (function(D){
+"use strict";
+
+/* COR/LOE 순위 가중치 */
+var COR_RANK={"I":0,"IIa":1,"IIb":2,"III":3};
+var LOE_RANK={"A":0,"B":1,"C":2};
+
+/* ---------- 표현형 분류 ---------- */
+function classifyPhenotype(p){
+  // p.lvef (숫자) 필수. 보조: p.np_elevated, p.structural
+  if(p==null||p.lvef==null) return null;
+  var ef=Number(p.lvef);
+  if(ef<=40) return "rEF";
+  if(ef>=50) return "pEF";
+  // 41–49 = mrEF (지침상 추가조건 필요하나, 분류 자체는 EF 기준)
+  return "mrEF";
+}
+
+/* ---------- 권고 순위 정렬 ---------- */
+function rankRecommendations(phenotype, ctx){
+  ctx=ctx||{};
+  var out=[];
+  for(var i=0;i<D.RECS.length;i++){
+    var r=D.RECS[i];
+    if(r.ph.indexOf(phenotype)<0) continue;
+    out.push(r);
+  }
+  out.sort(function(a,b){
+    var c=(COR_RANK[a.cor]-COR_RANK[b.cor]); if(c) return c;
+    var l=(LOE_RANK[a.loe]-LOE_RANK[b.loe]); if(l) return l;
+    return 0;
+  });
+  return out;
+}
+
+/* ---------- 급여 게이트 평가 ----------
+   재귀적으로 AND/OR 트리 평가. 각 leaf의 test를 patient로 검사.
+   반환: {covered, tree:평가결과, missing:[불충족조건txt], notes} */
+function evalReimbursement(reimbId, patient){
+  var rule=D.REIMB[reimbId];
+  if(!rule) return null;
+  var missing=[];
+  function evalNode(node){
+    if(node.op){ // 그룹
+      var results=node.conds.map(evalNode);
+      var pass;
+      if(node.op==="AND") pass=results.every(function(x){return x.pass;});
+      else pass=results.some(function(x){return x.pass;});
+      return {op:node.op,pass:pass,children:results};
+    }
+    // leaf
+    var ok=evalTest(node.test,patient,node.exclusion);
+    if(!ok && !node.exclusion) missing.push(node.txt);
+    if(!ok && node.exclusion) missing.push("[제외조건 위반] "+node.txt);
+    return {leaf:true,pass:ok,txt:node.txt,k:node.k,exclusion:!!node.exclusion};
+  }
+  var tree=evalNode(rule.gate);
+  return {id:reimbId,covered:tree.pass,tree:tree,missing:missing,
+          rule:rule,unknown:hasUnknown(patient,rule)};
+}
+
+/* 환자값 부족으로 판정 불가한지 (보수적 표시용) */
+function hasUnknown(patient,rule){
+  // 핵심 키들이 비어있으면 unknown 플래그
+  return false; // UI에서 입력값 기반으로 처리, 엔진은 false-as-fail 기본
+}
+
+/* leaf test 평가기 — DSL 문자열을 patient 속성으로 해석 */
+function evalTest(test,p,isExclusion){
+  p=p||{};
+  switch(test){
+    // 표현형/EF
+    case "lvef<=40": return num(p.lvef)!=null && p.lvef<=40;
+    case "lvef>40":  return num(p.lvef)!=null && p.lvef>40;
+    case "lvef<=35": return num(p.lvef)!=null && p.lvef<=35;
+    // NYHA
+    case "nyha in [2,3,4]": return [2,3,4].indexOf(num(p.nyha))>=0;
+    case "nyha not in [2,3,4]": return !([2,3,4].indexOf(num(p.nyha))>=0);
+    // 표준치료/병용
+    case "std_therapy": return !!p.std_therapy;       // BB/MRA 등 표준치료 병용
+    case "raasi_max_4wk": return !!p.raasi_max_4wk;
+    // 증상·입원
+    case "hf_symptom": return !!p.hf_symptom;
+    case "hf_admission_12mo": return !!p.hf_admission_12mo;
+    // 바이오마커
+    case "ntprobnp>=125": return num(p.ntprobnp)!=null && p.ntprobnp>=125;
+    case "bnp>=35": return num(p.bnp)!=null && p.bnp>=35;
+    // 동반질환
+    case "t2dm": return !!p.t2dm;
+    case "ckd": return !!p.ckd;
+    case "uacr>300": return num(p.uacr)!=null && p.uacr>300;
+    case "25<=egfr<75": return num(p.egfr)!=null && p.egfr>=25 && p.egfr<75;
+    // 부정맥/HR
+    case "sinus_rhythm": return !!p.sinus_rhythm;
+    case "hr>=70": return num(p.hr)!=null && p.hr>=70;
+    case "bb_max_or_intol": return !!p.bb_max_or_intol;
+    // 철결핍
+    case "iron_deficiency": return isIronDeficient(p);
+    default: return false;
+  }
+}
+function num(x){return (x==null||x==="")?null:Number(x);}
+function isIronDeficient(p){
+  var f=num(p.ferritin), t=num(p.tsat);
+  if(f!=null && f<100) return true;
+  if(f!=null && t!=null && f>=100 && f<300 && t<20) return true;
+  return false;
+}
+
+/* ---------- 정문 recommend(patient) → {drugs[],targets[],flags[]} ---------- */
+function recommend(patient){
+  patient=patient||{};
+  var ph=classifyPhenotype(patient);
+  var flags=[];
+  if(!ph){ return {phenotype:null,axes:[],drugs:[],targets:[],flags:[{lv:"info",msg:"LVEF를 입력하면 표현형별 권고를 표시합니다."}],recs:[]}; }
+
+  var recs=rankRecommendations(ph,patient);
+  // 권고문에서 표현형 적용 약물 집합 + 각 약물의 COR/LOE 최상위 매핑
+  var drugRec={};
+  for(var i=0;i<recs.length;i++){
+    var r=recs[i];
+    for(var j=0;j<r.drugs.length;j++){
+      var did=r.drugs[j];
+      if(!drugRec[did]) drugRec[did]={cor:r.cor,loe:r.loe}; // 최상위(이미 정렬됨)
+    }
+  }
+
+  // 축 단위로 묶기
+  var axes=[];
+  for(var a=0;a<D.AXES.length;a++){
+    var ax=D.AXES[a];
+    if(ax.ph.indexOf(ph)<0) continue;
+    // 이 축의 계열들에서 권고된 약물 수집(우선순위 순서)
+    var members=[];
+    for(var c=0;c<ax.classes.length;c++){
+      var clsId=ax.classes[c];
+      var clsObj=D.CLASSES[clsId]; if(!clsObj) continue;
+      var clsMembers=clsObj.members||[];
+      for(var m=0;m<clsMembers.length;m++){
+        var did2=clsMembers[m];
+        if(!drugRec[did2]) continue; // 이 표현형에 권고 안 된 약 제외
+        var dd=D.DRUGS[did2]; if(!dd) continue;
+        var mem={id:did2,label:dd.label_ko,cls:clsId,clsLabel:clsObj.label,
+                 cor:drugRec[did2].cor,loe:drugRec[did2].loe,role:dd.role,
+                 reimb:null,ci_hit:[],caution:[]};
+        if(dd.reimb){
+          var ev=evalReimbursement(dd.reimb,patient);
+          if(ev) mem.reimb={covered:ev.covered,missing:ev.missing,id:dd.reimb,conflict:ev.rule.conflict};
+        }
+        checkSafety(dd,patient,mem);
+        members.push(mem);
+      }
+    }
+    if(!members.length) continue; // 권고 약물 없으면 축 생략
+    var primary=members[0];
+    axes.push({
+      id:ax.id,emoji:ax.emoji,title:ax.title,sub:ax.sub,select:ax.select,
+      pillar:!!ax.pillar,note:ax.note,mutex_note:ax.mutex_note||null,
+      cor:primary.cor,loe:primary.loe,
+      primary:primary,members:members,count:members.length
+    });
+  }
+
+  // 평면 drugs[](하위호환): 각 축의 대표만
+  var drugs=axes.map(function(ax){
+    var p=ax.primary;
+    return {id:p.id,label:p.label,cls:p.cls,cor:p.cor,loe:p.loe,role:p.role,
+            reimb:p.reimb,ci_hit:p.ci_hit,caution:p.caution,
+            alts:ax.members.slice(1).map(function(m){return m.label;})};
+  });
+
+  // 표적(목표)
+  var targets=[];
+  if(ph==="rEF"){
+    targets.push({k:"GDMT",txt:"4 pillar(RAS차단·BB·MRA·SGLT2i) 조기 병용·목표용량 적정"});
+    targets.push({k:"euvolemia",txt:"이뇨제로 울혈 조절(증상)"});
+  } else if(ph==="mrEF"){
+    targets.push({k:"SGLT2i",txt:"SGLT2i 기둥치료(I-A)"});
+    targets.push({k:"comorbid",txt:"동반질환·울혈 관리"});
+  } else {
+    targets.push({k:"SGLT2i",txt:"SGLT2i(I-A) + 원인·동반질환 적극관리"});
+    targets.push({k:"bp",txt:"BP<130/80, AF·DM·비만·OSA 관리"});
+  }
+
+  buildFlags(patient,ph,flags);
+
+  return {phenotype:ph,phenotypeInfo:D.PHENOTYPES[ph],axes:axes,drugs:drugs,targets:targets,flags:flags,recs:recs};
+}
+
+function checkSafety(dd,p,item){
+  var egfr=num(p.egfr), k=num(p.potassium);
+  // MRA: K+>5.0 또는 eGFR<30
+  if(dd.cls==="class:mra_steroidal"){
+    if(k!=null && k>5.0) item.ci_hit.push("K+>5.0 (MRA 개시 금기)");
+    if(egfr!=null && egfr<30) item.ci_hit.push("eGFR<30 (MRA 금기)");
+    else if(egfr!=null && egfr<50) item.caution.push("eGFR 30–50: 감량·신중");
+  }
+  // SGLT2i: eGFR<20 개시주의
+  if(dd.cls==="class:sglt2i"){
+    if(egfr!=null && egfr<20) item.caution.push("eGFR<20: 개시 주의");
+  }
+  // ACEI/ARB/ARNI: K+>5.5 주의
+  if(dd.cls==="class:acei"||dd.cls==="class:arb"||dd.cls==="class:arni"){
+    if(k!=null && k>5.5) item.caution.push("K+>5.5: RAS차단 주의");
+    if(egfr!=null && egfr<30) item.caution.push("eGFR<30: 신중·감량");
+  }
+  // finerenone
+  if(dd.id==="drug:finerenone"){
+    if(k!=null && k>5.0) item.ci_hit.push("K+>5.0 (개시 금기)");
+    if(egfr!=null && egfr<25) item.ci_hit.push("eGFR<25 (개시 금기)");
+  }
+}
+
+function buildFlags(p,ph,flags){
+  var egfr=num(p.egfr), k=num(p.potassium), hr=num(p.hr);
+  // finerenone 급여 함정
+  if(p.t2dm && (ph==="mrEF"||ph==="pEF")){
+    flags.push({lv:"warn",msg:"⚠️ finerenone: 심부전(NYHA II-IV)이면 DKD 급여경로에서도 제외 → 급여 불가(삭감 고위험)"});
+  }
+  // 고칼륨혈증
+  if(k!=null && k>5.0){
+    flags.push({lv:"warn",msg:"🧂 K+ "+k+": MRA/RAASi 주의. K-binder로 RAASi 유지 고려(중단보다 우선)"});
+  }
+  // eGFR
+  if(egfr!=null && egfr<20){
+    flags.push({lv:"warn",msg:"🫘 eGFR<20: SGLT2i 개시 주의, MRA 금기, RAS차단 신중"});
+  } else if(egfr!=null && egfr<30){
+    flags.push({lv:"info",msg:"🫘 eGFR<30: MRA 금기, ACEI/ARB/ARNI 감량·신중"});
+  }
+  // 철결핍
+  if(isIronDeficient(p)){
+    flags.push({lv:"info",msg:"🩸 철결핍 충족: IV 철분(ferric carboxymaltose) 권고 대상(I-A)"});
+  }
+  // 빈맥+동율동
+  if(ph==="rEF" && p.sinus_rhythm && hr!=null && hr>=70){
+    flags.push({lv:"info",msg:"⚡ 동율동 HR≥70: BB 최대내약 후에도 빈맥시 이바브라딘 추가 고려(IIa)"});
+  }
+  // ARNI BNP 주의
+  flags.push({lv:"info",msg:"🧪 ARNI 사용시 BNP는 상승(neprilysin 억제)—NT-proBNP로 추적 권장"});
+}
+
+/* ---------- 점수 계산기 ---------- */
+function scoreH2FPEF(sel){ // sel: {heavy,htn,af,ph,elder,filling} bool
+  var items=D.SCORES.h2fpef.items, total=0, detail=[];
+  for(var i=0;i<items.length;i++){
+    var it=items[i], on=!!sel[it.k];
+    if(on) total+=it.pts;
+    detail.push({k:it.k,label:it.label,pts:it.pts,on:on});
+  }
+  return {total:total,detail:detail,band:bandOf(D.SCORES.h2fpef.cutoff,total)};
+}
+function scoreHFAPEFF(vals){ // vals: {func:0/1/2, morph:0/1/2, biom:0/1/2}
+  var total=(num(vals.func)||0)+(num(vals.morph)||0)+(num(vals.biom)||0);
+  return {total:total,band:bandOf(D.SCORES.hfapeff.cutoff,total)};
+}
+function bandOf(cutoffs,total){
+  for(var i=0;i<cutoffs.length;i++){ if(total>=cutoffs[i].min) return cutoffs[i]; }
+  return cutoffs[cutoffs.length-1];
+}
+
+/* eGFR(CKD-EPI 2021) 보조 계산 */
+function egfrCKDEPI(scr,age,female){
+  scr=Number(scr);age=Number(age);
+  if(!scr||!age) return null;
+  var k=female?0.7:0.9, a=female?-0.241:-0.302;
+  var min=Math.min(scr/k,1), max=Math.max(scr/k,1);
+  var e=142*Math.pow(min,a)*Math.pow(max,-1.200)*Math.pow(0.9938,age)*(female?1.012:1);
+  return Math.round(e*10)/10;
+}
+
+return {classifyPhenotype:classifyPhenotype,rankRecommendations:rankRecommendations,
+        evalReimbursement:evalReimbursement,recommend:recommend,
+        scoreH2FPEF:scoreH2FPEF,scoreHFAPEFF:scoreHFAPEFF,
+        egfrCKDEPI:egfrCKDEPI,isIronDeficient:isIronDeficient};
+})(HF_DATA);
+
+/* 통합 정문 노출 */
+var HF = {
+  recommend: function(patient){ return HF_ENGINE.recommend(patient); },
+  REGISTRY_VERSION: "hf-1.0",
+  localMap: {
+    // 로컬→전역 매핑(통합시 rename만). SGLT2i는 전역 drug ID 직접사용.
+    "arni":"class:arni","sglt2i":"class:sglt2i",
+    "mra_s":"class:mra_steroidal","mra_ns":"class:mra_nonsteroidal"
+  }
+};
+
+</script>
+<script>
+/* ============================================================
+   심부전 처방가이드 — UI 렌더러 (ui.js)
+   DATA(HF_DATA)+ENGINE(HF_ENGINE) 의존. 4섹션 + Sheet 패턴.
+   ============================================================ */
+(function(D,E){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s);};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+/* ---------- 배지 헬퍼 ---------- */
+function corBadge(cor){return '<span class="bdg bdg-cor-'+cor+'">'+cor+'</span>';}
+function loeBadge(loe){var c={A:'var(--hf-loeA)',B:'var(--hf-loeB)',C:'var(--hf-loeC)'}[loe];
+  return '<span class="bdg bdg-loe"><span class="loe-dot" style="background:'+c+'"></span>LOE '+loe+'</span>';}
+function phBadge(ph){var info=D.PHENOTYPES[ph];if(!info)return'';
+  return '<span class="bdg bdg-ph-'+ph+'">'+info.label+'</span>';}
+function reimbBadge(cov){
+  if(cov===true) return '<span class="bdg bdg-cover">✅ 급여</span>';
+  if(cov===false) return '<span class="bdg bdg-noncover">❌ 비급여</span>';
+  return '<span class="bdg bdg-cond">⚠️ 조건부</span>';}
+
+/* 용량 적정 바 */
+function doseBar(start,target){
+  return '<div class="dose-line"><span class="tag-start">시작</span>'+
+    '<div class="dose-bar"><i style="width:35%"></i></div>'+
+    '<span class="tag-target">목표</span></div>'+
+    '<div style="font-size:12px;display:flex;justify-content:space-between"><span>'+esc(start)+'</span><span style="color:var(--hf-primary);font-weight:700">'+esc(target)+'</span></div>';
+}
+
+/* RCT 링크 */
+function rctLinks(pmids){
+  if(!pmids||!pmids.length) return '';
+  return pmids.map(function(id){var r=D.RCT[id]||{name:id};
+    return '<a class="rct-link" target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/'+id+'/">'+esc(r.name)+' ↗</a>';
+  }).join(' · ');
+}
+
+/* ---------- 약물 카드 (도서관) ---------- */
+function drugCardHTML(dd){
+  var phCls = dd.phenotype.length>1?'ph-multi':'ph-'+dd.phenotype[0];
+  var phb = dd.phenotype.map(phBadge).join(' ');
+  var reimb = dd.reimb?D.REIMB[dd.reimb]:null;
+  var rb = reimb?reimbBadge(reimb.summary&&/비급여|불가/.test(reimb.summary)?false:null):'';
+  var head='<div class="head"><span class="emoji">'+esc(dd.emoji)+'</span>'+
+    '<div class="t">'+esc(dd.label_ko)+' <small>'+esc(dd.label_en)+(dd.brand?' · '+esc(dd.brand):'')+'</small></div>'+
+    '<span class="chev">›</span></div>';
+  var body='<div class="body">'+
+    '<div class="badges">'+corBadge(dd.cor)+loeBadge(dd.loe)+phb+'</div>'+
+    '<div class="drow"><span class="lbl">역할</span><div class="val">'+esc(dd.role)+'</div></div>'+
+    '<div class="drow"><span class="lbl">용량적정</span><div class="val">'+doseBar(dd.start,dd.target)+
+      '<div style="font-size:12px;color:var(--hf-mut);margin-top:4px">'+esc(dd.titrate)+'</div></div></div>'+
+    rowList('금기',dd.ci)+
+    rowList('주의',dd.caution)+
+    rowList('모니터',dd.monitor)+
+    rowList('부작용',dd.ae)+
+    (dd.renal?'<div class="drow"><span class="lbl">신기능</span><div class="val">'+esc(dd.renal)+'</div></div>':'')+
+    (dd.hf_note?'<div class="infobox">💡 '+esc(dd.hf_note)+'</div>':'')+
+    reimbBlock(dd)+
+    (dd.key_rct&&dd.key_rct.length?'<div class="drow"><span class="lbl">근거</span><div class="val">'+rctLinks(dd.key_rct)+'</div></div>':'')+
+    '</div>';
+  return '<div class="card sheetmode '+phCls+'" data-drug="'+esc(dd.id)+'">'+head+body+'</div>';
+}
+function rowList(lbl,arr){
+  if(!arr||!arr.length) return '';
+  return '<div class="drow"><span class="lbl">'+lbl+'</span><div class="val"><ul>'+
+    arr.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div></div>';
+}
+
+/* 약물 카드 body 내용만 (시트 주입용) */
+function drugBodyHTML(dd){
+  var phb = dd.phenotype.map(phBadge).join(' ');
+  return '<div class="badges">'+corBadge(dd.cor)+loeBadge(dd.loe)+phb+'</div>'+
+    '<div class="drow"><span class="lbl">역할</span><div class="val">'+esc(dd.role)+'</div></div>'+
+    (dd.mechanism?'<div class="kbox kbox-blue"><b>⚙️ 작용 기전</b><div>'+esc(dd.mechanism)+'</div></div>':'')+
+    '<div class="drow"><span class="lbl">용량적정</span><div class="val">'+doseBar(dd.start,dd.target)+
+      '<div style="font-size:12px;color:var(--hf-mut);margin-top:4px">'+esc(dd.titrate)+'</div></div></div>'+
+    (dd.evidence?'<div class="kbox kbox-green"><b>📊 핵심 근거</b><div>'+esc(dd.evidence)+'</div></div>':'')+
+    (dd.practical?'<div class="kbox kbox-amber"><b>🩺 실전 팁</b><div>'+esc(dd.practical)+'</div></div>':'')+
+    rowList('금기',dd.ci)+rowList('주의',dd.caution)+rowList('모니터',dd.monitor)+rowList('부작용',dd.ae)+
+    (dd.renal?'<div class="drow"><span class="lbl">신기능</span><div class="val">'+esc(dd.renal)+'</div></div>':'')+
+    (dd.hf_note?'<div class="infobox">💡 '+esc(dd.hf_note)+'</div>':'')+
+    reimbBlock(dd)+
+    (dd.key_rct&&dd.key_rct.length?'<div class="drow"><span class="lbl">근거</span><div class="val">'+rctLinks(dd.key_rct)+'</div></div>':'');
+}
+
+/* 약물 비교표 (행 클릭 → 시트) — 긴 나열 대신 한눈 비교 */
+function drugCompareTable(drugIds){
+  var rows=drugIds.map(function(id){
+    var dd=D.DRUGS[id]; if(!dd)return'';
+    var phb=dd.phenotype.map(function(p){return '<span class="bdg bdg-ph-'+p+'" style="padding:1px 5px;font-size:9.5px">'+D.PHENOTYPES[p].label+'</span>';}).join(' ');
+    var reimbIcon='';
+    if(dd.reimb){var r=D.REIMB[dd.reimb];
+      if(r&&r.summary&&/비급여|불가/.test(r.summary)) reimbIcon='❌';
+      else reimbIcon='✅';}
+    return '<tr data-drug="'+esc(dd.id)+'">'+
+      '<td class="cmp-nm"><span class="cmp-emoji">'+esc(dd.emoji)+'</span>'+esc(dd.label_ko)+'<br><span class="cmp-en">'+esc(dd.label_en)+'</span></td>'+
+      '<td class="cmp-ph">'+phb+'</td>'+
+      '<td class="cmp-dose"><span class="cmp-s">'+esc(dd.start.split(' ')[0])+'</span><span class="cmp-arrow">→</span><span class="cmp-t">'+esc(dd.target.split(' ')[0])+'</span></td>'+
+      '<td class="cmp-rec">'+corBadge(dd.cor)+'<span class="loe-dot" style="background:'+({A:'var(--hf-loeA)',B:'var(--hf-loeB)',C:'var(--hf-loeC)'}[dd.loe])+';margin-left:3px"></span></td>'+
+      '<td class="cmp-reimb">'+reimbIcon+'</td>'+
+      '<td class="cmp-chev">›</td>'+
+      '</tr>';
+  }).join('');
+  return '<div class="cmp-wrap"><table class="cmp-tbl">'+
+    '<thead><tr><th>약물</th><th>표현형</th><th>시작→목표</th><th>등급</th><th>급여</th><th></th></tr></thead>'+
+    '<tbody>'+rows+'</tbody></table></div>';
+}
+
+/* 검사 상세 시트 HTML (시각 박스: 정상치 막대·임상의의·주의) */
+function labBodyHTML(l){
+  var h='';
+  if(l.ranges&&l.ranges.length){
+    h+='<div class="lab-ranges">';
+    l.ranges.forEach(function(r){
+      h+='<div class="lab-range"><span class="lr-dot" style="background:'+r.color+'"></span>'+
+        '<span class="lr-band">'+esc(r.band)+'</span><span class="lr-val">'+esc(r.val)+'</span></div>';
+    });
+    h+='</div>';
+  }
+  if(l.method) h+='<div class="drow"><span class="lbl">검사법</span><div class="val">'+esc(l.method)+'</div></div>';
+  if(l.clinical) h+='<div class="kbox kbox-blue"><b>🎯 임상적 의의</b><div>'+esc(l.clinical)+'</div></div>';
+  if(l.caution) h+='<div class="kbox kbox-amber"><b>⚠️ 해석 주의</b><div>'+esc(l.caution)+'</div></div>';
+  if(l.pearls&&l.pearls.length){
+    h+='<div class="algo-sec"><div class="algo-sec-h">💡 임상 포인트</div><ul class="algo-sec-list">';
+    l.pearls.forEach(function(p){h+='<li>'+esc(p)+'</li>';});
+    h+='</ul></div>';
+  }
+  if(l.code) h+='<div class="drow"><span class="lbl">수가코드</span><div class="val"><span class="codechip">'+esc(l.code)+'</span></div></div>';
+  return h;
+}
+
+/* 동반질환 알고리즘 상세 시트 HTML (요약·핵심·경고 박스 + 단계) */
+function algoBodyHTML(a){
+  var h='';
+  if(a.summary) h+='<div class="algo-summary">'+esc(a.summary)+'</div>';
+  if(a.keypoint) h+='<div class="kbox kbox-green"><b>💡 핵심</b><div>'+esc(a.keypoint)+'</div></div>';
+  if(a.warn) h+='<div class="kbox kbox-red"><b>⚠️ 주의</b><div>'+esc(a.warn)+'</div></div>';
+  h+='<div class="algo-steps-title">단계별 접근</div>';
+  h+='<div class="algo-steps">';
+  a.rules.forEach(function(r,i){
+    h+='<div class="algo-step"><span class="as-num">'+(i+1)+'</span><span class="as-txt">'+esc(r)+'</span></div>';
+  });
+  h+='</div>';
+  /* 심화 섹션 */
+  if(a.detail&&a.detail.length){
+    a.detail.forEach(function(sec){
+      h+='<div class="algo-sec"><div class="algo-sec-h">'+esc(sec.h)+'</div>';
+      if(sec.rows&&sec.rows.length){
+        h+='<ul class="algo-sec-list">';
+        sec.rows.forEach(function(r){
+          var cls=(r.indexOf("★")===0||r.indexOf("★")>=0)?' class="hi"':'';
+          h+='<li'+cls+'>'+esc(r)+'</li>';
+        });
+        h+='</ul>';
+      }
+      if(sec.text) h+='<div class="algo-sec-text">'+esc(sec.text)+'</div>';
+      h+='</div>';
+    });
+  }
+  return h;
+}
+
+/* 급여 상세 시트 HTML (요약 박스 + 게이트 트리 + 괴리 경고) */
+function reimbBodyHTML(rule){
+  var h='<div class="reimb-summary">'+esc(rule.summary)+'</div>'+
+    '<div class="drow"><span class="lbl">고시</span><div class="val">'+esc(rule.notice)+'</div></div>'+
+    '<div class="gate-title">📋 급여 인정 조건</div>'+gateTreeHTML(rule.gate);
+  if(rule.stop) h+='<div class="kbox kbox-red"><b>⛔ 투여 중단</b><div>'+esc(rule.stop)+'</div></div>';
+  if(rule.changed) h+='<div class="kbox kbox-blue"><b>📌 개정 이력</b><div>'+esc(rule.changed)+'</div></div>';
+  if(rule.conflict) h+='<div class="kbox kbox-amber"><b>⚖️ 가이드라인–급여 괴리</b><div>'+esc(rule.conflict)+'</div></div>';
+  if(rule.defense&&rule.defense.length){
+    h+='<div class="algo-sec"><div class="algo-sec-h">🛡️ 삭감 방어 체크리스트</div><ul class="algo-sec-list">';
+    rule.defense.forEach(function(d){
+      var cls=(d.indexOf("★")>=0)?' class="hi"':'';
+      h+='<li'+cls+'>'+esc(d)+'</li>';
+    });
+    h+='</ul></div>';
+  }
+  return h;
+}
+
+/* 코드 표 HTML (자주 쓰는 코드) */
+function codeTableHTML(group){
+  var rows=group.items.map(function(it){
+    return '<tr><td class="code-c">'+esc(it.code)+'</td><td class="code-l">'+esc(it.label)+
+      (it.note?'<br><span class="code-n">'+esc(it.note)+'</span>':'')+'</td></tr>';
+  }).join('');
+  return '<div class="code-wrap"><table class="code-tbl"><tbody>'+rows+'</tbody></table></div>';
+}
+
+/* 급여 블록 (약물카드 내) */
+function reimbBlock(dd){
+  if(!dd.reimb) return '';
+  var rule=D.REIMB[dd.reimb]; if(!rule) return '';
+  var h='<div class="drow"><span class="lbl">💰 급여</span><div class="val">'+
+    '<b>'+esc(rule.title)+'</b><br><span style="font-size:12px;color:var(--hf-mut)">'+esc(rule.notice)+'</span>'+
+    '<div style="margin-top:5px;font-size:12.5px">'+esc(rule.summary)+'</div>'+
+    gateTreeHTML(rule.gate)+
+    (rule.stop?'<div style="font-size:12px;color:var(--hf-noncover);margin-top:4px">⛔ 중단: '+esc(rule.stop)+'</div>':'')+
+    (rule.changed?'<div class="infobox" style="margin-top:6px">📌 '+esc(rule.changed)+'</div>':'')+
+    (rule.conflict?'<div class="conflictbox">⚠️ 가이드라인-급여 괴리: '+esc(rule.conflict)+'</div>':'')+
+    '</div></div>';
+  return h;
+}
+
+/* 급여 블록 (rule 직접 — 급여 카드용) */
+function gateBlockHTML(rule){
+  if(!rule) return '';
+  return '<div class="drow"><span class="lbl">💰 급여</span><div class="val">'+
+    '<span style="font-size:12px;color:var(--hf-mut)">'+esc(rule.notice)+'</span>'+
+    gateTreeHTML(rule.gate)+
+    (rule.stop?'<div style="font-size:12px;color:var(--hf-noncover);margin-top:4px">⛔ 중단: '+esc(rule.stop)+'</div>':'')+
+    (rule.changed?'<div class="infobox" style="margin-top:6px">📌 '+esc(rule.changed)+'</div>':'')+
+    (rule.conflict?'<div class="conflictbox">⚠️ 가이드라인-급여 괴리: '+esc(rule.conflict)+'</div>':'')+
+    '</div></div>';
+}
+
+/* 급여 게이트 트리 (정적 렌더 — 조건 구조 표시) */
+function gateTreeHTML(node,depth){
+  depth=depth||0;
+  if(node.op){
+    var opl=node.op==="AND"?"모두 충족(AND)":"하나 충족(OR)";
+    var inner=node.conds.map(function(c){return gateTreeHTML(c,depth+1);}).join('');
+    return '<div class="'+(depth>0?'group':'')+'"><div class="gop">'+opl+'</div>'+inner+'</div>';
+  }
+  var ic=node.exclusion?'🚫':'•';
+  return '<div class="gleaf'+(node.exclusion?' excl':'')+'"><span class="ic">'+ic+'</span><span>'+esc(node.txt)+'</span></div>';
+}
+
+/* 평가된 게이트 트리 (환자값 반영 — 플로우/시뮬용) */
+function gateEvalHTML(tree){
+  if(tree.op){
+    var opl=tree.op==="AND"?"모두 충족(AND)":"하나 충족(OR)";
+    var inner=tree.children.map(gateEvalHTML).join('');
+    return '<div class="group"><div class="gop">'+opl+' '+(tree.pass?'✅':'❌')+'</div>'+inner+'</div>';
+  }
+  var cls=tree.exclusion?(tree.pass?'pass':'excl'):(tree.pass?'pass':'fail');
+  var ic=tree.pass?'✅':(tree.exclusion?'🚫':'❌');
+  return '<div class="gleaf '+cls+'"><span class="ic">'+ic+'</span><span>'+esc(tree.txt)+'</span></div>';
+}
+
+/* ================= Sheet 제어 ================= */
+var Sheet=(function(){
+  var ov,sh,sb,se,st,sbk,_stack=[];
+  function els(){ov=$("#sheetOverlay");sh=$("#sheet");sb=$("#sheetBody");se=$("#sheetEmoji");st=$("#sheetTitle");sbk=$("#sheetBack");}
+  function lockBody(){
+    document.documentElement.style.overflow="hidden";
+    document.body.style.overflow="hidden";
+  }
+  function unlockBody(){
+    document.documentElement.style.overflow="";
+    document.body.style.overflow="";
+  }
+  /* 현재 프레임을 화면에 그림(애니메이션 없이 내용만 교체) */
+  function paint(o){
+    se.textContent=o.emoji||"";st.innerHTML=o.title||"";sb.innerHTML=o.html||"";sb.scrollTop=0;
+    if(sbk) sbk.style.display=_stack.length>1?"flex":"none";
+    if(typeof o.rebind==="function")o.rebind(sb);
+  }
+  /* 새 시트 열기(스택 초기화) */
+  function open(o){if(!sh)els();
+    _stack=[o];
+    sh.className="sheet theme-hf";
+    sh.style.position="fixed";sh.style.left="0";sh.style.right="0";sh.style.bottom="0";
+    sh.style.zIndex="2147483000";
+    ov.style.position="fixed";ov.style.left="0";ov.style.top="0";ov.style.right="0";ov.style.bottom="0";
+    ov.style.zIndex="2147482999";
+    paint(o);
+    sh.style.transition="none";sh.style.transform="translateY(100%)";
+    lockBody();ov.classList.add("on");
+    void sh.offsetHeight;
+    sh.style.transition="";sh.style.transform="";
+    sh.classList.add("on");
+  }
+  /* 하위 화면으로 진입(스택 push, 뒤로가기 가능) */
+  function push(o){if(!sh||!sh.classList.contains("on")){open(o);return;}
+    /* 현재 프레임의 실제 DOM 상태(선택된 축·약목록 등)를 보존 */
+    if(_stack.length){var cur=_stack[_stack.length-1];cur.html=sb.innerHTML;}
+    _stack.push(o);
+    sb.style.opacity="0";
+    setTimeout(function(){paint(o);sb.style.transition="opacity .18s";sb.style.opacity="1";
+      setTimeout(function(){sb.style.transition="";},200);},60);
+  }
+  /* 상위 화면으로 복귀 */
+  function back(){if(_stack.length<=1)return;
+    _stack.pop();
+    var prev=_stack[_stack.length-1];
+    sb.style.opacity="0";
+    setTimeout(function(){paint(prev);sb.style.transition="opacity .18s";sb.style.opacity="1";
+      setTimeout(function(){sb.style.transition="";},200);},60);
+  }
+  function close(){if(!sh)els();sh.classList.remove("on");ov.classList.remove("on");unlockBody();_stack=[];}
+  function init(){els();
+    ov.addEventListener("click",close);
+    $("#sheetClose").addEventListener("click",close);
+    if(sbk) sbk.addEventListener("click",back);
+    var h=$("#sheetHandle"),sy=0,cy=0,drag=false;
+    function d(y){sy=y;cy=y;drag=true;sh.style.transition="none";}
+    function m(y){if(!drag)return;cy=y;var dy=cy-sy;if(dy>0)sh.style.transform="translateY("+dy+"px)";}
+    function u(){if(!drag)return;drag=false;sh.style.transition="";var dy=cy-sy;sh.style.transform="";if(dy>90)close();}
+    h.addEventListener("touchstart",function(e){d(e.touches[0].clientY);},{passive:true});
+    h.addEventListener("touchmove",function(e){m(e.touches[0].clientY);},{passive:true});
+    h.addEventListener("touchend",u);
+    h.addEventListener("mousedown",function(e){d(e.clientY);e.preventDefault();});
+    document.addEventListener("mousemove",function(e){if(drag)m(e.clientY);});
+    document.addEventListener("mouseup",u);
+  }
+  return {open:open,push:push,back:back,close:close,init:init};
+})();
+
+/* 카드 → 시트 (lead 제외) */
+document.addEventListener("click",function(e){
+  var node=e.target,head=null;
+  while(node&&node.nodeType===1){if(node.classList&&node.classList.contains("head")){head=node;break;}node=node.parentNode;}
+  if(!head)return;
+  var card=head.parentNode;
+  if(!card||!card.classList||!card.classList.contains("card"))return;
+  if(card.classList.contains("lead"))return;
+  e.stopPropagation();
+  var em=head.querySelector(".emoji"),ti=head.querySelector(".t"),bd=card.querySelector(".body");
+  Sheet.push({emoji:em?em.textContent:"",title:ti?ti.innerHTML:"",html:bd?bd.innerHTML:"",rebind:sheetRebind});
+});
+
+/* 시트 재바인딩 (innerHTML 복제→이벤트 유실 복구) */
+function sheetRebind(scope){
+  // 약물 카드엔 위젯 없음. 동반질환/계산기 시트는 계산기 재바인딩.
+  if(typeof bindCalcIn==="function") bindCalcIn(scope);
+}
+
+/* 비교표 행 → 시트 */
+document.addEventListener("click",function(e){
+  var node=e.target,tr=null;
+  while(node&&node.nodeType===1){if(node.tagName==="TR"&&node.getAttribute("data-drug")){tr=node;break;}node=node.parentNode;}
+  if(!tr)return;
+  e.stopPropagation();
+  var dd=D.DRUGS[tr.getAttribute("data-drug")]; if(!dd)return;
+  Sheet.push({emoji:dd.emoji,
+    title:esc(dd.label_ko)+' <small style="font-weight:500;font-size:12px;color:var(--hf-mut)">'+esc(dd.label_en)+(dd.brand?' · '+esc(dd.brand):'')+'</small>',
+    html:drugBodyHTML(dd),rebind:sheetRebind});
+});
+
+/* 범용 리스트 항목(검사·동반질환·급여) → 시트 */
+document.addEventListener("click",function(e){
+  var node=e.target,row=null;
+  while(node&&node.nodeType===1){if(node.getAttribute&&node.getAttribute("data-sheet")){row=node;break;}node=node.parentNode;}
+  if(!row)return;
+  e.stopPropagation();
+  var kind=row.getAttribute("data-sheet"),id=row.getAttribute("data-id");
+  if(kind==="lab"){var l=D.LABS[id];if(!l)return;
+    Sheet.push({emoji:l.emoji,title:esc(l.key)+' <small style="font-weight:500;font-size:12px;color:var(--hf-mut)">'+esc(l.label)+(l.unit?' ('+esc(l.unit)+')':'')+'</small>',html:labBodyHTML(l),rebind:sheetRebind});}
+  else if(kind==="algo"){var a=D.ALGOS[id];if(!a)return;
+    Sheet.push({emoji:a.emoji,title:esc(a.title),html:algoBodyHTML(a),rebind:sheetRebind});}
+  else if(kind==="reimb"){var r=D.REIMB[id];if(!r)return;
+    Sheet.push({emoji:"💰",title:esc(r.title),html:reimbBodyHTML(r),rebind:sheetRebind});}
+});
+
+/* 치료 축 카드: 헤더 클릭 → 펼침/접힘 토글 */
+document.addEventListener("click",function(e){
+  var node=e.target,head=null;
+  while(node&&node.nodeType===1){if(node.classList&&node.classList.contains("axis-head")){head=node;break;}node=node.parentNode;}
+  if(!head)return;
+  var card=head.parentNode;
+  if(!card||!card.classList||!card.classList.contains("axis-card"))return;
+  card.classList.toggle("open");
+});
+
+/* 축 내 약 행 클릭 → 약 상세 시트(인라인 컨텍스트라 open) */
+document.addEventListener("click",function(e){
+  var node=e.target,row=null;
+  while(node&&node.nodeType===1){if(node.getAttribute&&node.getAttribute("data-sheet-drug")){row=node;break;}node=node.parentNode;}
+  if(!row)return;
+  e.stopPropagation();
+  var dd=D.DRUGS[row.getAttribute("data-sheet-drug")]; if(!dd)return;
+  Sheet.open({emoji:dd.emoji,
+    title:esc(dd.label_ko)+' <small style="font-weight:500;font-size:12px;color:var(--hf-mut)">'+esc(dd.label_en)+(dd.brand?' · '+esc(dd.brand):'')+'</small>',
+    html:drugBodyHTML(dd),rebind:sheetRebind});
+});
+
+// expose for other parts
+window.__hfUI = {drugCardHTML:drugCardHTML,drugCompareTable:drugCompareTable,drugBodyHTML:drugBodyHTML,
+  labBodyHTML:labBodyHTML,algoBodyHTML:algoBodyHTML,reimbBodyHTML:reimbBodyHTML,codeTableHTML:codeTableHTML,
+  gateTreeHTML:gateTreeHTML,gateEvalHTML:gateEvalHTML,gateBlockHTML:gateBlockHTML,
+  corBadge:corBadge,loeBadge:loeBadge,phBadge:phBadge,reimbBadge:reimbBadge,rctLinks:rctLinks,
+  esc:esc,$:$,$$:$$,Sheet:Sheet,rowList:rowList};
+})(HF_DATA,HF_ENGINE);
+
+</script>
+<script>
+/* ============================================================
+   심부전 처방가이드 — UI 섹션 렌더 (ui2.js)
+   ============================================================ */
+(function(D,E,UI){
+"use strict";
+var esc=UI.esc,$=UI.$,$$=UI.$$;
+
+/* ============ 1. 도서관 ============ */
+var LIB_CATS=[
+  {id:"gdmt",emoji:"\uD83D\uDC8A",label:"GDMT \uD575\uC2EC\uC57D\uC81C",desc:"4 pillar(ARNI/ACEI\u00B7ARB\u00B7BB\u00B7MRA\u00B7SGLT2i)",
+   classes:["class:arni","class:acei","class:arb","class:bb_hf","class:mra_steroidal","class:sglt2i"]},
+  {id:"adjunct",emoji:"\u2795",label:"\uBD80\uAC00\uC57D\uC81C",desc:"\uC774\uBC14\uBE0C\uB77C\uB518\u00B7\uBC20\uB9AC\uC2DC\uAD6C\uC557\u00B7\uD608\uAD00\uD655\uC7A5\uC81C\u00B7\uB514\uACE1\uC2E0\u00B7\uBE44\uC2A4\uD14C\uB85C\uC774\uB4DC MRA",
+   classes:["class:mra_nonsteroidal","class:if_inhibitor","class:sgc_stimulator","class:vasodilator","class:cardiac_glycoside"]},
+  {id:"volume",emoji:"\uD83D\uDCA7",label:"\uC774\uB1E8\u00B7\uC804\uD574\uC9C8\u00B7\uCCA0",desc:"\uACE0\uB9AC\uC774\uB1E8\uC81C\u00B7\uCE7C\uB968\uACB0\uD569\uC81C\u00B7\uC815\uB9E5\uCCA0\uBD84",
+   classes:["class:loop_diuretic","class:k_binder","class:iv_iron"]},
+  {id:"labs",emoji:"\uD83E\uDDEA",label:"\uAC80\uC0AC",desc:"LVEF\u00B7NP\u00B7eGFR\u00B7K+\u00B7\uCCA0\u00B7uACR",classes:[],kind:"labs"},
+  {id:"comorbid",emoji:"\uD83D\uDD17",label:"\uB3D9\uBC18\uC9C8\uD658 \uC54C\uACE0\uB9AC\uC998",desc:"CKD\u00B7\uACE0\uCE7C\uB968\uD608\uC99D\u00B7\uCCA0\uACB0\uD589\u00B7AF\u00B7\uB2F9\uB1E8",classes:[],kind:"algos"},
+  {id:"reimb",emoji:"\uD83D\uDCB0",label:"\uAE09\uC5EC \uD55C\uB208\uC5D0",desc:"\uC5D4\uD2B8\uB808\uC2A4\uD1A0\u00B7SGLT2i\u00B7\uD53C\uB124\uB808\uB17C \uAE09\uC5EC \uAC8C\uC774\uD2B8",classes:[],kind:"reimb"},
+  {id:"codes",emoji:"\uD83C\uDFF7\uFE0F",label:"\uC790\uC8FC \uC4F0\uB294 \uCF54\uB4DC",desc:"\uC0C1\uBCD1(I50)\u00B7\uB3D9\uBC18\uC9C8\uD658\u00B7\uAC80\uC0AC \uC218\uAC00\uCF54\uB4DC",classes:[],kind:"codes"}
+];
+var _libCat=null;
+
+function renderLibrary(){
+  var el=$("#sec-lib"); if(!el)return;
+  var h='<div class="sec-intro">\uBD84\uC57C\uB97C \uACE0\uB974\uBA74 \uD574\uB2F9 \uCE74\uB4DC\uB9CC \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4. \uCE74\uB4DC\uB97C \uD0ED\uD558\uBA74 \uC0C1\uC138\uAC00 \uBC14\uD150\uC2DC\uD2B8\uB85C \uC5F4\uB9BD\uB2C8\uB2E4. \uD45C\uD604\uD615 \uC0C9(\uC88C\uCE21 \uBC14): <b style="color:var(--hf-rEF)">HFrEF</b> \u00B7 <b style="color:var(--hf-mrEF)">HFmrEF</b> \u00B7 <b style="color:var(--hf-pEF)">HFpEF</b></div>';
+  h+='<div class="lib-hub" id="libHub">'+LIB_CATS.map(function(c){
+    return '<button class="hubcard" data-cat="'+c.id+'">'+
+      '<span class="he">'+c.emoji+'</span>'+
+      '<span class="ht">'+esc(c.label)+'</span>'+
+      '<span class="hd">'+esc(c.desc)+'</span></button>';
+  }).join('')+'</div>';
+  el.innerHTML=h;
+  bindLibHub();
+}
+
+function bindLibHub(){
+  var hub=$('#libHub'); if(!hub)return;
+  hub.addEventListener('click',function(e){
+    var b=e.target.closest('.hubcard'); if(!b)return;
+    var cat=b.getAttribute('data-cat');
+    var catObj=null; for(var i=0;i<LIB_CATS.length;i++){if(LIB_CATS[i].id===cat){catObj=LIB_CATS[i];break;}}
+    if(!catObj)return;
+    _libCat=cat; _pillar=null;
+    UI.Sheet.open({emoji:catObj.emoji,title:esc(catObj.label),html:libPanelHTML(catObj),rebind:function(scope){bindLibSheet(scope);}});
+  });
+}
+
+/* \uBD84\uC57C \uC2DC\uD2B8 \uB0B4\uBD80 \uC0C1\uD638\uC791\uC6A9 \uBC14\uC778\uB529 (4\uCD95 \uBC84\uD2BC \uB4F1) */
+function bindLibSheet(scope){
+  var wrap=scope.querySelector('.pillar-btns');
+  if(wrap){
+    wrap.addEventListener('click',function(e){
+      var b=e.target.closest('.pbtn'); if(!b)return;
+      var key=b.getAttribute('data-pillar');
+      if(_pillar===key){_pillar=null;} else {_pillar=key;}
+      var btns=wrap.querySelectorAll('.pbtn');
+      for(var i=0;i<btns.length;i++){btns[i].classList.toggle('on',btns[i].getAttribute('data-pillar')===_pillar);}
+      var box=scope.querySelector('#pillarDrugs');
+      if(box) box.innerHTML=pillarDrugsHTML();
+    });
+  }
+}
+
+function libPanelHTML(cat){
+  if(!cat) return '';
+  var h='';
+
+  if(cat.kind==="labs"){
+    h+='<div class="cmp-hint">\uD56D\uBAA9\uC744 \uD0ED\uD558\uBA74 \uC815\uC0C1\uCE58\u00B7\uC784\uC0C1\uC758\uC758\u00B7\uD574\uC11D\uC8FC\uC758\uAC00 \uC2DC\uD2B8\uB85C \uC5F4\uB9BD\uB2C8\uB2E4.</div>';
+    h+='<div class="row-list">';
+    Object.keys(D.LABS).forEach(function(id){var l=D.LABS[id];
+      h+='<div class="lrow" data-sheet="lab" data-id="'+esc(id)+'">'+
+        '<span class="lrow-em">'+esc(l.emoji)+'</span>'+
+        '<span class="lrow-main"><b>'+esc(l.key)+'</b> <span class="lrow-sub">'+esc(l.label)+(l.unit?' ('+esc(l.unit)+')':'')+'</span></span>'+
+        '<span class="lrow-chev">\u203A</span></div>';
+    });
+    h+='</div>';
+  } else if(cat.kind==="algos"){
+    h+='<div class="cmp-hint">\uC9C8\uD658\uC744 \uD0ED\uD558\uBA74 \uD575\uC2EC\u00B7\uC8FC\uC758\u00B7\uB2E8\uACC4\uBCC4 \uC54C\uACE0\uB9AC\uC998\uC774 \uC2DC\uD2B8\uB85C \uC5F4\uB9BD\uB2C8\uB2E4.</div>';
+    h+='<div class="row-list">';
+    Object.keys(D.ALGOS).forEach(function(id){var a=D.ALGOS[id];
+      h+='<div class="lrow" data-sheet="algo" data-id="'+esc(id)+'">'+
+        '<span class="lrow-em">'+esc(a.emoji)+'</span>'+
+        '<span class="lrow-main"><b>'+esc(a.title)+'</b>'+(a.summary?'<span class="lrow-sub">'+esc(a.summary)+'</span>':'')+'</span>'+
+        '<span class="lrow-chev">\u203A</span></div>';
+    });
+    h+='</div>';
+  } else if(cat.kind==="reimb"){
+    h+='<div class="cmp-hint">\uC57D\uC81C\uB97C \uD0ED\uD558\uBA74 \uAE09\uC5EC \uAC8C\uC774\uD2B8\u00B7\uAD34\uB9AC \uACBD\uACE0\uAC00 \uC2DC\uD2B8\uB85C \uC5F4\uB9BD\uB2C8\uB2E4.</div>';
+    h+='<div class="row-list">';
+    Object.keys(D.REIMB).forEach(function(id){var r=D.REIMB[id];
+      var cov='\u2705'; if(r.summary&&/\uBE44\uAE09\uC5EC|\uBD88\uAC00/.test(r.summary)) cov='\u274C';
+      else if(r.conflict) cov='\u26A0\uFE0F';
+      h+='<div class="lrow" data-sheet="reimb" data-id="'+esc(id)+'">'+
+        '<span class="lrow-em">'+cov+'</span>'+
+        '<span class="lrow-main"><b>'+esc(r.title)+'</b><span class="lrow-sub">'+esc(r.notice)+'</span></span>'+
+        '<span class="lrow-chev">\u203A</span></div>';
+    });
+    h+='</div>';
+  } else if(cat.kind==="codes"){
+    h+='<div class="cmp-hint">\uC2EC\uBD80\uC804 \uC9C4\uB8CC\uC5D0\uC11C \uC790\uC8FC \uC4F0\uB294 \uC0C1\uBCD1\u00B7\uC218\uAC00 \uCF54\uB4DC\uC785\uB2C8\uB2E4. (\uCC38\uACE0\uC6A9, \uCCAD\uAD6C \uC804 HIRA \uC6D0\uBB38 \uD655\uC778)</div>';
+    Object.keys(D.CODES).forEach(function(k){var g=D.CODES[k];
+      h+='<div class="lib-grp">'+g.emoji+' '+esc(g.title)+'</div>';
+      h+=UI.codeTableHTML(g);
+    });
+  } else {
+    // \uC57D\uBB3C \uBD84\uC57C: 4\uCD95 \uBC84\uD2BC \u2192 \uC120\uD0DD \uC2DC \uD574\uB2F9 \uACC4\uC5F4 \uBE44\uAD50\uD45C
+    var byClass={};
+    Object.keys(D.DRUGS).forEach(function(id){var d=D.DRUGS[id];(byClass[d.cls]=byClass[d.cls]||[]).push(d);});
+    if(cat.id==="gdmt"){
+      h+='<div class="gdmt-note">\uD83D\uDCA1 <b>4 \uAE30\uB465(ARNI/ACEI \u00B7 BB \u00B7 MRA \u00B7 SGLT2i)</b>\uC744 \uC21C\uCC28\uAC00 \uC544\uB2CC <b>\uC870\uAE30 \uBCD1\uC6A9</b>\uC73C\uB85C \uC2DC\uC791. \uCD95\uC744 \uD0ED\uD558\uBA74 \uD574\uB2F9 \uACC4\uC5F4 \uC57D\uBB3C\uC774 \uB098\uD0C0\uB0A9\uB2C8\uB2E4.</div>';
+      h+=pillarButtonsHTML();
+      h+='<div id="pillarDrugs">'+pillarDrugsHTML()+'</div>';
+    } else {
+      // adjunct/volume: \uACC4\uC5F4\uBCC4 \uBE44\uAD50\uD45C \uC804\uCCB4 \uD45C\uC2DC
+      h+='<div class="cmp-hint">\uD45C\uC5D0\uC11C \uC57D\uBB3C\uC744 \uD0ED\uD558\uBA74 \uC0C1\uC138\uAC00 \uBC14\uD150\uC2DC\uD2B8\uB85C \uC5F4\uB9BD\uB2C8\uB2E4.</div>';
+      cat.classes.forEach(function(cls){
+        var arr=byClass[cls]; if(!arr)return;
+        var ci=D.CLASSES[cls];
+        h+='<div class="lib-grp">'+esc(ci.label)+
+          (ci.note?' <span style="font-weight:500;color:var(--hf-mut)">\u00B7 '+esc(ci.note)+'</span>':'')+'</div>';
+        h+=UI.drugCompareTable(arr.map(function(d){return d.id;}));
+      });
+    }
+  }
+  return h;
+}
+
+/* GDMT 4\uCD95 \uBC84\uD2BC */
+var PILLARS=[
+  {key:"arni_acei",emoji:"\uD83D\uDC8A",label:"ARNI/ACEI",sub:"RAS \uCC28\uB2E8",classes:["class:arni","class:acei","class:arb"]},
+  {key:"bb",emoji:"\uD83D\uDC8A",label:"BB",sub:"\uBCA0\uD0C0\uCC28\uB2E8\uC81C",classes:["class:bb_hf"]},
+  {key:"mra",emoji:"\uD83D\uDC8A",label:"MRA",sub:"\uC54C\uB3C4\uC2A4\uD14C\uB860 \uAE38\uD56D",classes:["class:mra_steroidal"]},
+  {key:"sglt2i",emoji:"\uD83D\uDC8A",label:"SGLT2i",sub:"\uC2EC\u00B7\uC2E0 \uBCF4\uD638",classes:["class:sglt2i"]}
+];
+var _pillar=null;
+function pillarButtonsHTML(){
+  return '<div class="pillar-btns">'+PILLARS.map(function(p){
+    return '<button class="pbtn" data-pillar="'+p.key+'"><span class="pb-em">'+p.emoji+'</span>'+
+      '<span class="pb-lb">'+esc(p.label)+'</span><span class="pb-sub">'+esc(p.sub)+'</span></button>';
+  }).join('')+'</div>';
+}
+function pillarDrugsHTML(){
+  if(!_pillar) return '<div class="cmp-hint">\uC704 \uCD95\uC744 \uD0ED\uD558\uBA74 \uD574\uB2F9 \uACC4\uC5F4 \uC57D\uBB3C \uBE44\uAD50\uD45C\uAC00 \uB098\uD0C0\uB0A9\uB2C8\uB2E4.</div>';
+  var p=null; for(var i=0;i<PILLARS.length;i++){if(PILLARS[i].key===_pillar){p=PILLARS[i];break;}}
+  if(!p) return '';
+  var byClass={};
+  Object.keys(D.DRUGS).forEach(function(id){var d=D.DRUGS[id];(byClass[d.cls]=byClass[d.cls]||[]).push(d);});
+  var h='<div class="cmp-hint">\uD45C\uC5D0\uC11C \uC57D\uBB3C\uC744 \uD0ED\uD558\uBA74 \uC0C1\uC138\uAC00 \uC2DC\uD2B8\uB85C \uC5F4\uB9BD\uB2C8\uB2E4.</div>';
+  p.classes.forEach(function(cls){
+    var arr=byClass[cls]; if(!arr)return;
+    var ci=D.CLASSES[cls];
+    h+='<div class="lib-grp">'+esc(ci.label)+
+      (ci.note?' <span style="font-weight:500;color:var(--hf-mut)">\u00B7 '+esc(ci.note)+'</span>':'')+'</div>';
+    h+=UI.drugCompareTable(arr.map(function(d){return d.id;}));
+  });
+  return h;
+}
+
+function pillarsHTML(){
+  var ps=[{em:"💊",nm:"ARNI/ACEI",h:90},{em:"💊",nm:"BB",h:90},{em:"💊",nm:"MRA",h:90},{em:"💊",nm:"SGLT2i",h:90}];
+  return '<div class="pillars">'+ps.map(function(p){
+    return '<div class="pillar"><div class="col"><i style="height:'+p.h+'%"></i></div><div class="em">'+p.em+'</div><div class="nm">'+p.nm+'</div></div>';
+  }).join('')+'</div>';
+}
+
+/* ============ 2. 플로우 (lead 인라인) ============ */
+function renderFlow(){
+  var el=$("#sec-flow"); if(!el)return;
+  el.innerHTML='<div class="sec-intro">환자 정보를 입력하면 표현형 분류 → 권고 순위 → 급여 판정을 한 번에 보여줍니다.</div>'+
+    '<div class="card lead"><div class="head"><span class="emoji">🔄</span><div class="t">환자 입력</div></div>'+
+    '<div class="body">'+patientFormHTML('flow')+
+    '<button class="btn" id="flowRun" style="margin-top:8px">권고 생성 ▶</button>'+
+    '<div id="flowResult" class="result"></div></div></div>';
+  bindFlow();
+}
+
+function patientFormHTML(ns){
+  return '<div class="form-grid">'+
+    fld(ns,'lvef','LVEF (%)','number','예: 35')+
+    fld(ns,'nyha','NYHA','select',null,[['','-'],['1','I'],['2','II'],['3','III'],['4','IV']])+
+    fld(ns,'egfr','eGFR','number','mL/min')+
+    fld(ns,'potassium','K+ (mmol/L)','number','예: 4.5')+
+    fld(ns,'ntprobnp','NT-proBNP','number','pg/mL')+
+    fld(ns,'bnp','BNP','number','pg/mL')+
+    fld(ns,'hr','심박수 (bpm)','number','예: 78')+
+    fld(ns,'ferritin','Ferritin','number','μg/L')+
+    fld(ns,'tsat','TSAT (%)','number','예: 18')+
+    fld(ns,'uacr','uACR','number','mg/g')+
+    '</div>'+
+    '<div style="font-size:11.5px;color:var(--hf-mut);margin:4px 0">해당 항목 선택(다중):</div>'+
+    '<div class="chips" id="'+ns+'Chips">'+
+    chip(ns,'sinus_rhythm','동율동')+chip(ns,'std_therapy','표준치료 병용(BB/MRA)')+
+    chip(ns,'bb_max_or_intol','BB 최대내약/불내성')+chip(ns,'hf_symptom','증상·징후')+
+    chip(ns,'hf_admission_12mo','12개월내 악화입원')+chip(ns,'t2dm','제2형 당뇨')+
+    chip(ns,'ckd','만성신장병')+chip(ns,'raasi_max_4wk','ACEI/ARB 최대4주')+'</div>';
+}
+function fld(ns,k,label,type,ph,opts){
+  if(type==='select'){
+    return '<div class="fld"><label>'+esc(label)+'</label><select data-k="'+k+'" id="'+ns+'_'+k+'">'+
+      opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>';}).join('')+'</select></div>';
+  }
+  return '<div class="fld"><label>'+esc(label)+'</label><input type="'+type+'" inputmode="decimal" data-k="'+k+'" id="'+ns+'_'+k+'" placeholder="'+esc(ph||'')+'"></div>';
+}
+function chip(ns,k,label){return '<button class="chip" data-chip="'+k+'">'+esc(label)+'</button>';}
+
+function collectPatient(ns){
+  var p={};
+  $$('#sec-'+(ns==='flow'?'flow':'sim')+' [data-k]').forEach(function(inp){
+    var k=inp.getAttribute('data-k'),v=inp.value;
+    if(v!=='') p[k]=v;
+  });
+  $$('#'+ns+'Chips .chip.sel').forEach(function(c){p[c.getAttribute('data-chip')]=true;});
+  return p;
+}
+
+function bindFlow(){
+  var chips=$('#flowChips');
+  if(chips){chips.addEventListener('click',function(e){
+    var b=e.target.closest('.chip'); if(b){b.classList.toggle('sel');}
+  });}
+  var btn=$('#flowRun');
+  if(btn){btn.addEventListener('click',function(){
+    var p=collectPatient('flow');
+    $('#flowResult').innerHTML=resultHTML(E.recommend(p),p);
+  });}
+}
+
+/* 결과 렌더 */
+function resultHTML(res,patient){
+  if(!res.phenotype){
+    return '<div class="infobox">'+esc(res.flags[0].msg)+'</div>';
+  }
+  var info=res.phenotypeInfo;
+  var h='<div class="ph-banner" style="background:'+info.color+'">'+info.emoji+' '+esc(info.label)+' · '+esc(info.label_full)+' (LVEF '+esc(info.lvef)+')</div>';
+
+  // 플래그
+  res.flags.forEach(function(f){
+    var cls=f.lv==='warn'?'warnbox':(f.lv==='info'?'infobox':'infobox');
+    h+='<div class="'+cls+'">'+esc(f.msg)+'</div>';
+  });
+
+  // 표적
+  h+='<div style="font-size:12.5px;font-weight:800;color:var(--hf-deep);margin:10px 2px 4px">🎯 치료 표적</div>';
+  res.targets.forEach(function(t){h+='<div class="rec-item"><b>'+esc(t.k)+'</b> · '+esc(t.txt)+'</div>';});
+
+  // 치료 축 (대분류 → 클릭하면 약 펼침)
+  var pillars=res.axes.filter(function(a){return a.pillar;});
+  var adjuncts=res.axes.filter(function(a){return !a.pillar;});
+
+  if(pillars.length){
+    h+='<div class="axis-grp-title">🏛️ GDMT 기둥 <span class="agt-sub">각 축에서 1제 선택 · 조기 병용</span></div>';
+    pillars.forEach(function(ax){h+=axisCardHTML(ax);});
+  }
+  if(adjuncts.length){
+    h+='<div class="axis-grp-title">➕ 부가 치료 <span class="agt-sub">증상·상황별 선택</span></div>';
+    adjuncts.forEach(function(ax){h+=axisCardHTML(ax);});
+  }
+  h+='<div class="disclaimer">⚕️ 본 도구는 전문가용 의사결정 <b>조언자</b>이며 처방을 강제하지 않습니다. 같은 축 안의 약은 원칙적으로 택일하며, 모든 급여 판정은 입력값 기반 참고이니 실제 청구 전 HIRA 원문·환자 개별상황을 확인하세요.</div>';
+  return h;
+}
+
+/* 치료 축 카드 (헤더=대분류, 펼치면 약 목록) */
+function axisCardHTML(ax){
+  var p=ax.primary;
+  var selBadge = ax.select==="one"?'<span class="axis-sel">택일</span>':(ax.select==="choice"?'<span class="axis-sel">상황별</span>':'');
+  // 헤더: 대분류명 + 대표약 + COR/LOE + 옵션 수
+  var head='<div class="axis-head"><span class="axis-em">'+esc(ax.emoji)+'</span>'+
+    '<div class="axis-tt"><div class="axis-t">'+esc(ax.title)+' '+selBadge+'</div>'+
+    '<div class="axis-s">'+UI.corBadge(p.cor)+UI.loeBadge(p.loe)+' <span class="axis-rep">'+esc(p.label)+(ax.count>1?' 외 '+(ax.count-1)+'제':'')+'</span></div></div>'+
+    '<span class="axis-chev">▾</span></div>';
+  // 본문(펼침): 약 목록 + note + mutex
+  var body='<div class="axis-body">';
+  if(ax.note) body+='<div class="axis-note">'+esc(ax.note)+'</div>';
+  if(ax.mutex_note) body+='<div class="kbox kbox-amber" style="margin:6px 0"><b>⚠️ 기능 중복</b><div>'+esc(ax.mutex_note)+'</div></div>';
+  ax.members.forEach(function(m,idx){
+    var tag = idx===0?'<span class="opt-rank opt-1">1차</span>':'<span class="opt-rank">대안</span>';
+    var rb='';
+    if(m.reimb){
+      rb=' '+UI.reimbBadge(m.reimb.covered);
+    }
+    var safety='';
+    if(m.ci_hit&&m.ci_hit.length) safety+='<div class="opt-warn">🚫 '+m.ci_hit.map(esc).join(', ')+'</div>';
+    if(m.caution&&m.caution.length) safety+='<div class="opt-caut">⚠ '+m.caution.map(esc).join(', ')+'</div>';
+    body+='<div class="opt-row" data-sheet-drug="'+esc(m.id)+'">'+tag+
+      '<div class="opt-main"><div class="opt-nm">'+esc(m.label)+rb+
+      ' <span class="opt-badges">'+UI.corBadge(m.cor)+UI.loeBadge(m.loe)+'</span></div>'+
+      '<div class="opt-role">'+esc(m.role)+'</div>'+safety+
+      (m.reimb&&m.reimb.conflict?'<div class="conflictbox" style="margin-top:3px;font-size:11.5px">⚠️ '+esc(m.reimb.conflict)+'</div>':'')+
+      '</div><span class="opt-chev">›</span></div>';
+  });
+  body+='</div>';
+  return '<div class="axis-card" data-axis="'+esc(ax.id)+'">'+head+body+'</div>';
+}
+
+/* ============ 3. 교육 ============ */
+/* ============ 4. 시뮬레이션 (lead 인라인) ============ */
+function renderSim(){
+  var el=$("#sec-sim"); if(!el)return;
+  el.innerHTML='<div class="sec-intro">가상 환자 파라미터를 조절하며 권고·급여가 실시간으로 바뀌는 것을 확인하고, HFpEF 진단 점수를 계산합니다.</div>'+
+    // 실시간 recommend
+    '<div class="card lead"><div class="head"><span class="emoji">🧪</span><div class="t">실시간 권고 시뮬</div></div>'+
+    '<div class="body">'+patientFormHTML('sim')+'<div id="simResult" class="result"></div></div></div>'+
+    // H2FPEF
+    '<div class="card lead ph-pEF"><div class="head"><span class="emoji">🔬</span><div class="t">H₂FPEF 계산기 <small>HFpEF 진단 가능성</small></div></div>'+
+    '<div class="body" id="h2fpefBox"></div></div>'+
+    // HFA-PEFF
+    '<div class="card lead ph-pEF"><div class="head"><span class="emoji">🔬</span><div class="t">HFA-PEFF 계산기 <small>기능·형태·바이오마커</small></div></div>'+
+    '<div class="body" id="hfapeffBox"></div></div>'+
+    // eGFR
+    '<div class="card lead"><div class="head"><span class="emoji">🫘</span><div class="t">eGFR 계산기 <small>CKD-EPI 2021</small></div></div>'+
+    '<div class="body" id="egfrBox"></div></div>';
+  bindSim();
+  renderH2FPEF();
+  renderHFAPEFF();
+  renderEgfr();
+}
+
+function bindSim(){
+  var chips=$('#simChips');
+  if(chips)chips.addEventListener('click',function(e){var b=e.target.closest('.chip');if(b){b.classList.toggle('sel');simUpdate();}});
+  $$('#sec-sim [data-k]').forEach(function(inp){
+    inp.addEventListener('input',simUpdate); inp.addEventListener('change',simUpdate);
+  });
+}
+function simUpdate(){
+  var p=collectPatient('sim');
+  $('#simResult').innerHTML=resultHTML(E.recommend(p),p);
+}
+
+function renderH2FPEF(){
+  var box=$('#h2fpefBox'); if(!box)return;
+  var sc=D.SCORES.h2fpef;
+  var h='<div class="chips" id="h2Chips">'+sc.items.map(function(it){
+    return '<button class="chip" data-h2="'+it.k+'">'+esc(it.label)+' (+'+it.pts+')</button>';
+  }).join('')+'</div><div class="score-box"><div class="score-total" id="h2Total">0</div>'+
+    '<div class="score-band" id="h2Band" style="background:#16A085">계산</div>'+
+    '<div style="font-size:11px;color:var(--hf-mut);text-align:center;margin-top:6px">출처: '+esc(sc.src)+'</div></div>';
+  box.innerHTML=h;
+  box.querySelector('#h2Chips').addEventListener('click',function(e){
+    var b=e.target.closest('.chip'); if(!b)return; b.classList.toggle('sel'); h2calc();
+  });
+}
+function h2calc(){
+  var sel={};
+  $$('#h2Chips .chip.sel').forEach(function(c){sel[c.getAttribute('data-h2')]=true;});
+  var r=E.scoreH2FPEF(sel);
+  $('#h2Total').textContent=r.total+' / 9';
+  var b=$('#h2Band'); b.textContent=r.band.label; b.style.background=r.band.color;
+}
+
+function renderHFAPEFF(){
+  var box=$('#hfapeffBox'); if(!box)return;
+  var sc=D.SCORES.hfapeff;
+  var h=sc.items.map(function(it){
+    return '<div class="fld" style="margin-bottom:8px"><label>'+esc(it.label)+' ('+esc(it.note)+')</label>'+
+      '<select data-pf="'+it.k+'"><option value="0">0점</option><option value="1">1점</option><option value="2">2점</option></select></div>';
+  }).join('');
+  h+='<div class="score-box"><div class="score-total" id="pfTotal">0</div>'+
+    '<div class="score-band" id="pfBand" style="background:#16A085">계산</div>'+
+    '<div style="font-size:11px;color:var(--hf-mut);text-align:center;margin-top:6px">출처: '+esc(sc.src)+'</div></div>';
+  box.innerHTML=h;
+  $$('[data-pf]',box).forEach(function(s){s.addEventListener('change',pfcalc);});
+}
+function pfcalc(){
+  var v={};
+  $$('#hfapeffBox [data-pf]').forEach(function(s){v[s.getAttribute('data-pf')]=s.value;});
+  var r=E.scoreHFAPEFF(v);
+  $('#pfTotal').textContent=r.total+' / 6';
+  var b=$('#pfBand'); b.textContent=r.band.label; b.style.background=r.band.color;
+}
+
+function renderEgfr(){
+  var box=$('#egfrBox'); if(!box)return;
+  box.innerHTML='<div class="form-grid">'+
+    '<div class="fld"><label>혈청 Cr (mg/dL)</label><input type="number" inputmode="decimal" id="eg_cr" placeholder="예: 1.2"></div>'+
+    '<div class="fld"><label>나이</label><input type="number" inputmode="decimal" id="eg_age" placeholder="예: 65"></div>'+
+    '<div class="fld"><label>성별</label><select id="eg_sex"><option value="0">남성</option><option value="1">여성</option></select></div>'+
+    '</div><div class="score-box"><div class="score-total" id="egOut">–</div>'+
+    '<div style="text-align:center;font-size:12px;color:var(--hf-mut)">mL/min/1.73㎡</div></div>';
+  ['eg_cr','eg_age','eg_sex'].forEach(function(id){
+    var e=$('#'+id,box); e.addEventListener('input',egCalc); e.addEventListener('change',egCalc);
+  });
+}
+function egCalc(){
+  var cr=$('#eg_cr').value,age=$('#eg_age').value,sex=$('#eg_sex').value==='1';
+  var v=E.egfrCKDEPI(cr,age,sex);
+  $('#egOut').textContent=v==null?'–':v;
+}
+
+/* 시트 내부 계산기 재바인딩용 (Sheet에서 호출) */
+window.bindCalcIn=function(scope){
+  // 현재 계산기는 모두 lead(인라인)라 시트 복제 대상 아님. 안전 no-op + 미래 확장 대비.
+  return;
+};
+
+/* ============ 검색 ============ */
+function buildSearchIndex(){
+  var idx=[];
+  Object.keys(D.DRUGS).forEach(function(id){var d=D.DRUGS[id];
+    idx.push({type:'약물',id:id,title:d.label_ko,
+      kw:(d.label_ko+' '+d.label_en+' '+(d.brand||'')+' '+(d.role||'')+' '+(d.cls||'')).toLowerCase(),
+      desc:d.label_en+(d.brand?' · '+d.brand:'')+' · '+(D.CLASSES[d.cls]?D.CLASSES[d.cls].label:''),
+      drug:id});
+  });
+  Object.keys(D.REIMB).forEach(function(id){var r=D.REIMB[id];
+    idx.push({type:'급여',id:id,title:r.title,kw:(r.title+' '+r.summary+' '+r.notice).toLowerCase(),desc:r.summary,reimb:id});
+  });
+  Object.keys(D.ALGOS).forEach(function(id){var a=D.ALGOS[id];
+    idx.push({type:'동반질환',id:id,title:a.title,kw:(a.title+' '+a.rules.join(' ')).toLowerCase(),desc:a.rules[0]||'',algo:id});
+  });
+  Object.keys(D.LABS).forEach(function(id){var l=D.LABS[id];
+    idx.push({type:'검사',id:id,title:l.key,kw:(l.key+' '+l.label+' '+(l.note||'')).toLowerCase(),desc:l.label});
+  });
+  D.RECS.forEach(function(r){
+    idx.push({type:'권고',id:r.id,title:r.txt,kw:(r.txt+' '+r.cor+' '+r.loe).toLowerCase(),desc:'COR '+r.cor+' · LOE '+r.loe});
+  });
+  return idx;
+}
+var SEARCH_IDX=null;
+function doSearch(q){
+  if(!SEARCH_IDX) SEARCH_IDX=buildSearchIndex();
+  q=q.trim().toLowerCase();
+  var box=$('#searchRes');
+  if(!q){box.innerHTML='';return;}
+  var hits=SEARCH_IDX.filter(function(it){return it.kw.indexOf(q)>=0;}).slice(0,20);
+  if(!hits.length){box.innerHTML='<div class="search-empty">검색 결과 없음</div>';return;}
+  box.innerHTML=hits.map(function(it){
+    return '<div class="sr" data-open="'+esc(it.drug||it.reimb||it.algo||'')+'" data-type="'+it.type+'">'+
+      '<div class="t">['+it.type+'] '+esc(it.title)+'</div><div class="d">'+esc(it.desc)+'</div></div>';
+  }).join('');
+}
+function bindSearch(){
+  var inp=$('#searchInput'); if(!inp)return;
+  inp.addEventListener('input',function(){doSearch(this.value);});
+  $('#searchRes').addEventListener('click',function(e){
+    var sr=e.target.closest('.sr'); if(!sr)return;
+    var id=sr.getAttribute('data-open');
+    var dd=D.DRUGS[id];
+    if(dd){ // 약물 시트 열기
+      var tmp=document.createElement('div'); tmp.innerHTML=UI.drugCardHTML(dd);
+      var bd=tmp.querySelector('.body');
+      UI.Sheet.open({emoji:dd.emoji,title:esc(dd.label_ko)+' <small style="font-weight:500;font-size:12px;color:var(--hf-mut)">'+esc(dd.label_en)+'</small>',
+        html:bd.innerHTML,rebind:function(){}});
+    }
+  });
+}
+
+/* ============ 탭 ============ */
+function bindTabs(){
+  $$('.hf-tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      $$('.hf-tabs button').forEach(function(x){x.classList.remove('on');});
+      $$('.sec').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      $('#'+b.getAttribute('data-sec')).classList.add('on');
+      window.scrollTo(0,0);
+    });
+  });
+}
+
+/* ============ 초기화 ============ */
+function init(){
+  UI.Sheet.init();
+  renderLibrary(); renderFlow(); renderSim();
+  renderSources();
+  bindTabs(); bindSearch();
+}
+function renderSources(){
+  var el=$("#sources"); if(!el)return;
+  var h='<h3>📚 출처 및 근거</h3><ul>';
+  D.SOURCES.forEach(function(s){
+    h+='<li><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.label)+' ↗</a></li>';
+  });
+  h+='</ul><h3 style="margin-top:10px;font-size:13px">🔬 랜드마크 RCT (PubMed)</h3><div style="font-size:11.5px;line-height:1.9">';
+  Object.keys(D.RCT).forEach(function(id){var r=D.RCT[id];
+    h+='<a class="rct-link" href="https://pubmed.ncbi.nlm.nih.gov/'+id+'/" target="_blank" rel="noopener">'+esc(r.name)+'</a> <span style="color:var(--hf-mut)">('+esc(r.jr)+')</span> · ';
+  });
+  h+='</div><div class="disclaimer">본 가이드는 KSHF 2022 및 ESC 2023 focused update를 기반으로 하며, 급여기준은 HIRA 고시 원문을 참조했습니다. 급여 수치·약물 재고는 변동될 수 있으므로 실제 적용 전 최신 원문 확인이 필요합니다. 전문가용 <b>조언 도구</b>로서 임상 판단을 대체하지 않습니다.</div>';
+  el.innerHTML=h;
+}
+
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+else init();
+
+})(HF_DATA,HF_ENGINE,window.__hfUI);
+
+</script>
+<script>try{var bt=document.getElementById("buildTag");if(bt)bt.textContent="build "+'06/28 00:20';}catch(e){}</script>
+</body>
+</html>

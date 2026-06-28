@@ -1,0 +1,2968 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>투석 학습 가이드 — 0층부터 여는 투석실</title>
+<style>
+/* ============ 디자인 토큰 (신장 보라 + 혈액/투석액 액센트) ============ */
+:root{
+  --kidney:#7C3AED; --kidney-deep:#5B21B6; --kidney-light:#EDE9FE; --kidney-accent:#A78BFA;
+  --blood:#DC2626; --dialysate:#0D9488; --warn:#D97706;
+  --grade-strong:#059669; --grade-mid:#D97706; --grade-weak:#6B7280;
+  --ink:#1E1B2E; --ink-soft:#4C4763; --line:#E5E1F0; --paper:#FBFAFE; --card:#FFFFFF;
+  --mono:'SF Mono',ui-monospace,'Menlo','Consolas',monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Pretendard','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.65;font-size:15px}
+a{color:var(--kidney-deep)}
+
+/* ============ 헤더 ============ */
+header.top{background:linear-gradient(135deg,var(--kidney-deep),var(--kidney));color:#fff;padding:22px 18px 18px}
+header.top .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+header.top h1{margin:6px 0 4px;font-size:21px;font-weight:800;letter-spacing:-.01em}
+header.top p{margin:0;font-size:13px;opacity:.9}
+header.top .principle{margin-top:12px;padding:9px 12px;background:rgba(255,255,255,.13);border-radius:9px;font-size:12.5px;border-left:3px solid var(--kidney-accent)}
+
+/* ============ 레이아웃 ============ */
+.wrap{max-width:920px;margin:0 auto;padding:0 0 60px}
+@media(min-width:780px){
+  .wrap{display:grid;grid-template-columns:208px 1fr;gap:0;padding:0 16px 60px;align-items:start}
+  .nav-col{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:14px 8px 14px 0}
+  .content-col{padding:14px 0 0 18px;border-left:1px solid var(--line)}
+}
+
+/* ============ 레이어 네비 (건물 단면 메타포) ============ */
+.nav-col{padding:12px}
+.nav-title{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink-soft);text-transform:uppercase;margin:4px 6px 8px}
+.tower{display:flex;flex-direction:column-reverse;gap:3px}/* column-reverse: L0를 바닥에 */
+.floor{display:flex;align-items:center;gap:8px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--card);cursor:pointer;transition:.13s;font-size:12.5px}
+.floor:hover{border-color:var(--kidney-accent);background:var(--kidney-light)}
+.floor.active{background:var(--kidney);color:#fff;border-color:var(--kidney-deep)}
+.floor .fid{font-family:var(--mono);font-size:10px;min-width:30px;opacity:.7}
+.floor.active .fid{opacity:.9}
+.floor .ficon{font-size:15px}
+.floor .ftitle{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tower-base{font-family:var(--mono);font-size:9.5px;color:var(--grade-weak);text-align:center;margin-top:6px;letter-spacing:.08em}
+.nav-mobile-hint{display:none}
+@media(max-width:779px){
+  .nav-col{padding:10px 14px;border-bottom:1px solid var(--line);background:var(--card)}
+  .tower{flex-direction:row;overflow-x:auto;flex-wrap:nowrap;gap:6px;padding-bottom:4px}
+  .floor{flex:0 0 auto;flex-direction:column;min-width:62px;text-align:center;padding:8px 6px}
+  .floor .ftitle{display:none}
+  .floor .fid{min-width:auto}
+  .tower-base{display:none}
+}
+
+/* ============ 콘텐츠 카드 ============ */
+.layer-card{display:none}
+.layer-card.shown{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.lc-head{padding:4px 0 14px;border-bottom:2px solid var(--kidney-light);margin-bottom:16px}
+.lc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--kidney);display:flex;align-items:center;gap:8px}
+.lc-eyebrow .num{background:var(--kidney-light);padding:1px 7px;border-radius:5px;font-weight:700}
+.lc-head h2{margin:8px 0 5px;font-size:22px;font-weight:800;letter-spacing:-.015em;line-height:1.25}
+.lc-head .sub{color:var(--ink-soft);font-size:13.5px}
+
+/* core: 핵심 펼침 (항상 열림) */
+.core{background:linear-gradient(180deg,var(--kidney-light),#fff);border:1px solid var(--line);border-left:4px solid var(--kidney);border-radius:11px;padding:15px 16px;margin-bottom:14px;font-size:15px}
+.core strong{color:var(--kidney-deep)}
+.core .core-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--kidney);text-transform:uppercase;display:block;margin-bottom:7px}
+
+/* analogy */
+.analogy{background:#FFF8F3;border:1px dashed var(--warn);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:13.5px;color:#7C4A12}
+.analogy .a-tag{font-weight:700;margin-right:6px}
+
+/* 아코디언 detail (접힘 기본) */
+.detail-acc{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:10px;background:var(--card)}
+.detail-acc summary{padding:12px 14px;font-weight:600;font-size:14px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:9px;color:var(--ink)}
+.detail-acc summary::-webkit-details-marker{display:none}
+.detail-acc summary .chev{margin-left:auto;transition:.2s;color:var(--kidney);font-size:13px}
+.detail-acc[open] summary .chev{transform:rotate(90deg)}
+.detail-acc summary:hover{background:var(--kidney-light)}
+.detail-body{padding:0 14px 13px;font-size:13.5px;color:var(--ink-soft);white-space:pre-line;border-top:1px solid var(--line);padding-top:11px}
+
+/* 수치 칩 */
+.numbers{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.numchip{border:1px solid var(--line);border-radius:9px;padding:8px 11px;background:var(--card);min-width:0;font-size:12.5px}
+.numchip .nlabel{color:var(--ink-soft);font-size:11px;display:block}
+.numchip .nval{font-family:var(--mono);font-weight:700;font-size:14px;color:var(--kidney-deep)}
+.numchip .ngrade{font-size:10px;padding:1px 5px;border-radius:4px;margin-left:5px;color:#fff;vertical-align:middle}
+.numchip .nnote{color:var(--ink-soft);font-size:11px;margin-top:3px;line-height:1.4}
+.g-권고,.g-1A,.g-1B,.g-1C{background:var(--grade-strong)}
+.g-2C,.g-2D,.g-1D,.g-B{background:var(--grade-mid)}
+.g-관찰,.g-의견,.g-참고,.g-경고{background:var(--grade-weak)}
+
+/* 트라이얼 카드 */
+.trials{margin:14px 0}
+.trial{border:1px solid var(--line);border-left:3px solid var(--dialysate);border-radius:9px;padding:11px 13px;margin-bottom:8px;background:var(--card);font-size:13px}
+.trial .tname{font-weight:700;color:var(--ink)}
+.trial .tyear{font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+.trial .tteach{margin:5px 0 6px;color:var(--ink-soft);font-size:12.5px}
+.trial a{font-size:11.5px;font-family:var(--mono);margin-right:12px;text-decoration:none}
+
+/* viz 슬롯 (다음 단계에서 주입) */
+.viz-slot{border:1.5px dashed var(--kidney-accent);border-radius:11px;padding:16px;margin:14px 0;text-align:center;background:var(--kidney-light);color:var(--kidney-deep);font-size:13px}
+.viz-slot .vtag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:5px;opacity:.7}
+
+/* 급여 박스 */
+.reimb{border:1px solid var(--line);border-radius:11px;margin:14px 0;overflow:hidden}
+.reimb-head{background:#F0FDFA;padding:10px 14px;font-weight:700;font-size:13.5px;color:var(--dialysate);border-bottom:1px solid var(--line)}
+.reimb-body{padding:12px 14px;font-size:13px}
+.reimb .skeleton{color:var(--ink-soft)}
+.reimb .gl{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:12.5px}
+.reimb .gl b{color:var(--kidney-deep)}
+.reimb .conflict{margin-top:10px;background:#FEF2F2;border:1px solid #FCA5A5;border-radius:8px;padding:9px 11px;color:var(--blood);font-size:12.5px}
+.reimb .unverified{margin-top:9px;font-size:11px;color:var(--warn);font-style:italic}
+
+/* 출처 */
+.refs-foot{margin-top:30px;padding:18px 16px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.refs-foot h3{margin:0 0 10px;font-size:14px;font-family:var(--mono);letter-spacing:.05em;color:var(--ink-soft)}
+.refs-foot ul{margin:0;padding-left:18px;font-size:12px;color:var(--ink-soft);columns:1}
+.refs-foot li{margin-bottom:4px;break-inside:avoid}
+.disclaimer{margin-top:14px;font-size:11.5px;color:var(--grade-weak);text-align:center;line-height:1.6}
+
+/* 접근성 */
+:focus-visible{outline:2.5px solid var(--kidney);outline-offset:2px;border-radius:4px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="eyebrow">Dialysis Learning Guide · 0층부터 여는 투석실</div>
+  <h1>투석, 블랙박스를 연다</h1>
+  <p>아무 배경지식 없이도 — 물리 0층에서 임상 숫자까지 쌓아올리는 학습 도구</p>
+  <div class="principle" id="globalPrinciple">관통 원리: <b>수치를 정상까지 밀어붙이지 않는다</b> — Kt/V 1.2, Hb 11.5 미만, PTH 약간 높게. 단 단백질은 충분히.</div>
+</header>
+
+<div class="wrap">
+  <nav class="nav-col">
+    <div class="nav-title">▲ 위층=임상 / 아래층=기전</div>
+    <div class="tower" id="tower"></div>
+    <div class="tower-base">▼ 0층: 물리 (확산·대류·UF)</div>
+  </nav>
+
+  <main class="content-col" id="content">
+    <!-- 레이어 카드들이 여기 렌더됨 -->
+  </main>
+</div>
+
+<!-- DATA 모듈 (조립 시 인라인 치환) -->
+<script>/* ============================================================
+   투석 학습 가이드 — DATA 레이어: 임상시험 레지스트리
+   DIALYSIS_TRIALS  (전역 pmid: ID)
+   ※ 모든 PMID PubMed 직접 검증 완료 (2026-06-27)
+   ※ 하드코딩 금지 원칙: 본문 어디서도 이 값들을 문자열로 복제하지 말 것.
+      ENGINE/UI는 pmid: ID로만 인용.
+   ============================================================ */
+
+var DIALYSIS_TRIALS = {
+  "pmid:hemo2002": {
+    id: "pmid:hemo2002",
+    pmid: "12490682",
+    doi: "10.1056/NEJMoa021583",
+    name_ko: "HEMO 연구",
+    name_en: "HEMO Study",
+    journal: "N Engl J Med", year: 2002,
+    design: "RCT (2x2 factorial)", n: 1846,
+    question_ko: "주3회 투석에서 용량(Kt/V)·막(flux)을 더 올리면 생존이 좋아지나?",
+    keyfindings_ko: [
+      "표준 vs 고용량(spKt/V), 저flux vs 고flux 2x2 비교",
+      "표준군 spKt/V 1.32(eKt/V 1.16) / 고용량군 spKt/V 1.71(eKt/V 1.53)",
+      "고용량 투석은 전체사망·입원·삶의질에 유의한 이득 없음(사망 RR 0.96)",
+      "고flux도 전체사망 유의차 없음(RR 0.92)"
+    ],
+    teaching_ko: "주3회에서 1.2를 넘기면 더 올려도 소용없다 — '충분함'의 하한 근거. spKt/V-eKt/V 갭(1.32→1.16, 1.71→1.53)이 리바운드의 실데이터",
+    layers: ["L6"], grade_context: "랜드마크 RCT"
+  },
+
+  "pmid:fhn_daily2010": {
+    id: "pmid:fhn_daily2010",
+    pmid: "21091062",
+    doi: "10.1056/NEJMoa1001593",
+    name_ko: "FHN 주간(Daily) 시험",
+    name_en: "FHN Daily Trial — In-center hemodialysis 6x vs 3x/week",
+    journal: "N Engl J Med", year: 2010,
+    design: "RCT", n: 245,
+    question_ko: "투석 빈도를 주6회로 늘리면(센터 단시간) 결과가 좋아지나?",
+    keyfindings_ko: [
+      "빈도증가군 주5.2회, 주간 stdKt/V 3.54 vs 통상 2.49",
+      "공동1차결과 둘 다 개선: 사망/좌심실질량↑ HR 0.61, 사망/신체건강저하 HR 0.70",
+      "단, 혈관접근 관련 시술 더 많음 HR 1.71",
+      "고혈압·고인산혈증 조절 개선"
+    ],
+    teaching_ko: "빈도를 올려 주간 stdKt/V를 키우는 건 세션당 Kt/V를 올리는 것과 물리적으로 다르다 — 대신 혈관접근 부담↑",
+    layers: ["L6"], grade_context: "랜드마크 RCT"
+  },
+
+  "pmid:fhn_nocturnal2011": {
+    id: "pmid:fhn_nocturnal2011",
+    pmid: "21775973",
+    doi: "10.1038/ki.2011.213",
+    name_ko: "FHN 야간(Nocturnal) 시험",
+    name_en: "FHN Nocturnal Trial — home nocturnal 6x vs conventional 3x/week",
+    journal: "Kidney Int", year: 2011,
+    design: "RCT", n: 87,
+    question_ko: "가정 야간투석(주6회, 세션 6~8시간)이 통상투석보다 나은가?",
+    keyfindings_ko: [
+      "야간군 주간 stdKt/V 1.82배·치료시간 2.45배",
+      "공동1차결과 유의차 미도달: 사망/LV질량 HR 0.68, 사망/신체건강 HR 0.91",
+      "인·혈압 조절은 개선, 혈관접근 사건 증가 경향",
+      "긴 세션 → 구획평형 충분 → 우레아 리바운드 작음(생리적)"
+    ],
+    teaching_ko: "느리고 긴 투석일수록 리바운드가 작아 더 생리적 — 단 임상 하드결과 입증은 제한적",
+    layers: ["L5", "L6"], grade_context: "RCT (소규모)"
+  },
+
+  "pmid:ideal2010": {
+    id: "pmid:ideal2010",
+    pmid: "20581422",
+    doi: "10.1056/NEJMoa1000552",
+    name_ko: "IDEAL 시험",
+    name_en: "IDEAL — Initiating Dialysis Early and Late",
+    journal: "N Engl J Med", year: 2010,
+    design: "RCT", n: 828,
+    question_ko: "투석을 일찍(eGFR 10~14) 시작하면 늦게(5~7)보다 좋은가?",
+    keyfindings_ko: [
+      "호주·뉴질랜드 32센터, 조기개시 vs 지연개시 무작위 배정",
+      "조기개시가 사망·심혈관·감염·투석합병증에서 우월하지 않음",
+      "지연군 다수도 증상 기반으로 결국 더 일찍 시작하게 됨"
+    ],
+    teaching_ko: "투석 개시는 eGFR 숫자가 아니라 요독 증상으로 — 일찍 시작해도 더 오래 살지 않는다",
+    layers: ["L7"], grade_context: "랜드마크 RCT (개시시점 유일 대규모)"
+  }
+};
+
+</script>
+<script>/* ============================================================
+   투석 학습 가이드 — DATA 레이어: 임계값 단일 소스
+   DIALYSIS_NUMBERS
+   ※ 앱 전체에서 모든 수치는 여기서만 정의. ENGINE/UI 하드코딩 절대 금지.
+   ※ 각 수치 = {value, unit, source(가이드라인), grade, layer, note}
+   ※ source 표기는 원 가이드라인 등급 그대로. HIRA는 [원문재검증] 플래그.
+   ============================================================ */
+
+var DIALYSIS_NUMBERS = {
+
+  /* ---------- L6 Adequacy (KDOQI HD Adequacy 2015) ---------- */
+  "num:spktv_target": {
+    value: 1.4, unit: "", lab: "lab:spktv",
+    label_ko: "목표 spKt/V (주3회)",
+    source: "KDOQI HD Adequacy 2015", grade: "권고", layer: "L6",
+    note: "리바운드 감안한 처방 목표. 실제 전달은 낮아지므로 안전마진"
+  },
+  "num:spktv_min": {
+    value: 1.2, unit: "", lab: "lab:spktv",
+    label_ko: "최소 전달 spKt/V (주3회)",
+    source: "KDOQI HD Adequacy 2015 / HEMO", grade: "권고", layer: "L6",
+    note: "HEMO에서 이 선 넘으면 추가 이득 없음 — 하한 근거"
+  },
+  "num:urr_target": {
+    value: 70, unit: "%", lab: "lab:urr",
+    label_ko: "목표 URR", source: "KDOQI 2015", grade: "권고", layer: "L6",
+    note: "최소 65%. 간단하나 UF·우레아생성 미반영"
+  },
+  "num:urr_min": {
+    value: 65, unit: "%", lab: "lab:urr",
+    label_ko: "최소 URR", source: "KDOQI 2015", grade: "권고", layer: "L6"
+  },
+  "num:ektv_gap": {
+    value: 0.2, unit: "", lab: "lab:ektv",
+    label_ko: "spKt/V→eKt/V 평균 갭",
+    source: "약동학(2구획)", grade: "관찰", layer: "L5",
+    note: "리바운드로 eKt/V는 sp보다 약 0.2 낮음. HEMO 실데이터: 1.32→1.16, 1.71→1.53"
+  },
+  "num:rebound_pct": {
+    value: 15, unit: "%", lab: "lab:ktv",
+    label_ko: "리바운드에 의한 Kt/V 저하",
+    source: "약동학(2구획)", grade: "관찰", layer: "L5",
+    note: "평균 30분에 BUN 17%↑, 일부 45%까지. Kt/V 약 15% 저하"
+  },
+
+  /* ---------- L10 IDH / UF rate ---------- */
+  "num:ufr_danger": {
+    value: 13, unit: "mL/kg/hr", lab: "lab:ufr",
+    label_ko: "UF rate 위험 역치",
+    source: "관찰연구(IDH·사망 연관)", grade: "관찰", layer: "L10",
+    note: ">13에서 IDH·심근스터닝·사망 위험↑. 11.5에서도 빈번 IDH 보고"
+  },
+  "num:idwg_max": {
+    value: 5, unit: "% 체중", lab: "",
+    label_ko: "투석간 체중증가(IDWG) 권장 상한",
+    source: "임상 관행", grade: "의견", layer: "L10",
+    note: "초과 시 필요 UFR↑ → IDH 위험"
+  },
+
+  /* ---------- L8 Anemia (KDIGO 2026) ---------- */
+  "num:hb_esa_start": {
+    value: [9, 10], unit: "g/dL", lab: "lab:hb",
+    label_ko: "ESA 시작 고려 Hb",
+    source: "KDIGO 2026 Anemia", grade: "2D", layer: "L8",
+    note: "투석환자 Hb ≤9.0~10.0 (Rec 3.2.1). 교정가능 원인 먼저 해결"
+  },
+  "num:hb_target_max": {
+    value: 11.5, unit: "g/dL", lab: "lab:hb",
+    label_ko: "ESA 유지 목표 Hb 상한",
+    source: "KDIGO 2026 Anemia", grade: "1D", layer: "L8",
+    note: "성인 11.5 미만 목표(Rec 3.3.1). 과교정 시 심혈관 위험"
+  },
+  "num:hb_overcorrect": {
+    value: 13, unit: "g/dL", lab: "lab:hb",
+    label_ko: "Hb 과교정 위험선",
+    source: "ESA 약전/KDIGO", grade: "경고", layer: "L8",
+    note: "초과 시 심혈관·사망 위험↑"
+  },
+  "num:hb_hira_gate": {
+    value: 10, unit: "g/dL", lab: "lab:hb",
+    label_ko: "HIRA EPO 급여/적정성 지표 Hb",
+    source: "HIRA 적정성평가", grade: "급여", layer: "L8",
+    note: "[원문재검증] Hb<10 비율 모니터링 지표. EPO 급여 트리거"
+  },
+  "num:transfusion_threshold": {
+    value: 7, unit: "g/dL", lab: "lab:hb",
+    label_ko: "수혈 고려 Hb (안정 입원성인)",
+    source: "KDIGO 2026 Anemia", grade: "임의역치 지양", layer: "L8",
+    note: "안정 입원 <7, 심장수술전 <7.5, 정형/심혈관질환 <8. 임의역치 아닌 증상기반 원칙"
+  },
+
+  /* ---------- L9 CKD-MBD (KDIGO 2017) ---------- */
+  "num:dialysate_ca": {
+    value: [1.25, 1.50], unit: "mmol/L", lab: "lab:calcium",
+    label_ko: "투석액 칼슘 농도",
+    source: "KDIGO 2017 CKD-MBD", grade: "2C", layer: "L9"
+  },
+
+  /* ---------- L13 Nutrition (KDOQI 2020) ---------- */
+  "num:protein_intake": {
+    value: [1.0, 1.2], unit: "g/kg/일", lab: "",
+    label_ko: "단백 섭취 (투석환자)",
+    source: "KDOQI Nutrition 2020", grade: "1C", layer: "L13",
+    note: "투석세션당 아미노산 5~8g 손실 보충. 일반 CKD와 반대(증량)"
+  },
+  "num:sodium_max": {
+    value: 2.3, unit: "g/일", lab: "",
+    label_ko: "나트륨 섭취 상한",
+    source: "KDOQI Nutrition 2020", grade: "1C", layer: "L13",
+    note: "100 mmol/일. 갈증→수분→IDWG 연쇄 차단"
+  },
+  "num:energy_intake": {
+    value: [25, 35], unit: "kcal/kg/일", lab: "",
+    label_ko: "에너지 섭취",
+    source: "KDOQI Nutrition 2020", grade: "1C", layer: "L13"
+  },
+
+  /* ---------- L11 Vascular Access (Rule of 6s) ---------- */
+  "num:avf_diameter": {
+    value: 6, unit: "mm", lab: "",
+    label_ko: "성숙 누공 최소 직경",
+    source: "KDOQI 2006 Rule of 6s", grade: "B", layer: "L11",
+    note: "2019 업데이트는 정량기준 버리고 임상판단 권고(병기)"
+  },
+  "num:avf_depth": {
+    value: 6, unit: "mm", lab: "",
+    label_ko: "성숙 누공 최대 깊이",
+    source: "KDOQI 2006 Rule of 6s", grade: "B", layer: "L11"
+  },
+  "num:avf_flow": {
+    value: 600, unit: "mL/min", lab: "lab:access_flow",
+    label_ko: "성숙 누공 최소 혈류",
+    source: "KDOQI 2006 Rule of 6s", grade: "B", layer: "L11"
+  },
+  "num:avf_weeks": {
+    value: 6, unit: "주", lab: "",
+    label_ko: "성숙 평가 시점",
+    source: "KDOQI 2006 Rule of 6s", grade: "B", layer: "L11",
+    note: "6주 후 미충족 시 비성숙 평가(영상검사)"
+  },
+  "num:avf_cannulation_length": {
+    value: 6, unit: "cm", lab: "",
+    label_ko: "천자 가능 길이",
+    source: "KDOQI 2006 Rule of 6s", grade: "B", layer: "L11"
+  },
+  "num:avf_maturation_time": {
+    value: [6, 12], unit: "주", lab: "",
+    label_ko: "누공 성숙 소요기간",
+    source: "KDOQI VA 2019", grade: "관찰", layer: "L11",
+    note: "1.5~3개월. 그래서 투석 시작 전 미리 조성"
+  },
+
+  /* ---------- L7 Initiation (KDIGO 2024 / IDEAL) ---------- */
+  "num:egfr_initiation": {
+    value: [5, 10], unit: "mL/min/1.73m²", lab: "lab:egfr",
+    label_ko: "투석 개시 흔한 GFR 범위",
+    source: "KDIGO 2024", grade: "참고", layer: "L7",
+    note: "트리거 아님. 증상 기반 개시. '흔히, 항상은 아니게' 이 범위"
+  },
+  "num:egfr_access_plan": {
+    value: [15, 20], unit: "mL/min/1.73m²", lab: "lab:egfr",
+    label_ko: "접근로 계획 시작 GFR",
+    source: "KDIGO 2024", grade: "권고", layer: "L7",
+    note: "또는 2년내 신대체 위험 40% 초과 시. 개시보다 훨씬 미리"
+  }
+};
+
+</script>
+<script>/* ============================================================
+   투석 학습 가이드 — DATA 레이어: 기전 본문 (PART A: L0~L5)
+   DIALYSIS_CONCEPTS_A
+   ※ 표기 정책: 학술 핵심어 영어(urea, middle molecule, Kt/V...).
+              일반어(혈액·투석액·혈압)는 한글. 처음 1회만 짧은 한글 보조.
+   ============================================================ */
+
+var DIALYSIS_CONCEPTS_A = {
+
+  "L0": {
+    id: "L0", icon: "🫘", title_ko: "왜 투석이 필요한가",
+    subtitle_ko: "콩팥이 하는 일과, 투석이 대신할 수 있는 것·없는 것",
+    concept_ids: ["concept:why_dialysis"],
+    core_ko:
+      "콩팥은 크게 4가지 일을 한다 — ①노폐물 배출(urea·creatinine 같은 대사 찌꺼기) "+
+      "②물·전해질 균형 ③EPO(erythropoietin) 생산으로 적혈구 만들기 ④비타민 D 활성화로 뼈·칼슘 관리. "+
+      "콩팥이 망가지면 이 4가지가 모두 무너진다. 그런데 **투석은 앞의 2가지(노폐물·물전해질)만 대신**하고, "+
+      "뒤의 2가지(EPO·비타민 D)는 기계가 못 하므로 **약으로 따로 보충**한다. "+
+      "이 한 가지 사실이 투석 환자 관리 전체의 출발점이다 — 왜 빈혈약(L8)과 뼈약(L9)이 늘 따라붙는지가 여기서 결정된다.",
+    detail_ko: [
+      {h:"요독 증후군(uremic syndrome)이란 무엇인가",
+        t:"콩팥이 노폐물과 물을 못 빼면, 빠져나가야 할 독소와 수분이 몸에 그대로 쌓인다. "+
+        "그 결과 나타나는 증상 묶음이 요독 증후군이다. 대표적으로 식욕부진·오심·구토 같은 소화기 증상, "+
+        "가려움, 온몸의 권태감, 집중이 안 되고 멍해지는 인지저하, 그리고 물이 빠지지 않아 생기는 부종이 있다.\n"+
+        "이게 중요한 이유는 — 투석을 '언제 시작하느냐'를 결정하는 기준이 바로 이 증상이기 때문이다(L7). "+
+        "콩팥 수치(eGFR)가 특정 숫자에 도달했다고 시작하는 게 아니라, 환자가 실제로 요독 증상을 보일 때 시작한다."},
+      {h:"투석이 못 하는 일 → 약이 필요한 이유",
+        t:"투석기는 EPO도 비타민 D도 만들지 못한다. 그래서 투석 환자는 거의 예외 없이 두 종류의 약을 함께 쓴다.\n"+
+        "첫째, 빈혈약(ESA, L8) — 콩팥이 EPO를 못 만들어 적혈구가 부족해지니, EPO를 약으로 넣어준다.\n"+
+        "둘째, 뼈·미네랄약(인결합제·활성 비타민 D, L9) — 콩팥이 비타민 D를 활성화 못 해 칼슘·인 대사가 무너지니, 이를 약으로 보정한다.\n"+
+        "즉 L8과 L9에서 다룰 모든 약은 'L0에서 투석이 대신 못 하는 기능'을 메우기 위한 것이다. "+
+        "이 연결을 기억하면 빈혈·뼈 관리가 따로 떨어진 주제가 아니라 한 뿌리에서 나온 것임이 보인다."},
+      {h:"신대체요법(renal replacement therapy) 3가지",
+        t:"망가진 콩팥의 노폐물·물 제거 기능을 대신하는 방법은 세 가지다.\n"+
+        "①혈액투석(HD, hemodialysis) — 피를 몸 밖으로 빼내 기계로 거른다. 가장 흔하다.\n"+
+        "②복막투석(PD, peritoneal dialysis) — 배 안의 복막을 천연 필터로 써서 집에서 매일 한다.\n"+
+        "③신이식(transplant) — 새 콩팥을 이식한다.\n"+
+        "핵심 차이: 이식만이 콩팥의 4가지 기능을 전부 회복시킨다. HD·PD는 2가지 기능만 대신하는 '부분 대체'다. "+
+        "그래서 가능하면 이식이 최선이고, 투석은 이식 전이나 이식이 어려울 때의 방법이다."}
+    ],
+    analogy_ko: "콩팥을 '4가지 일을 동시에 하는 만능 정수+호르몬 공장'이라고 하자. "+
+      "투석기는 그중 '정수(노폐물·물 거르기)' 기능만 빌려주는 외장 필터다. "+
+      "공장(EPO·비타민 D 생산)은 멈춰 있으므로, 그 제품은 약으로 따로 배달받아야 한다.",
+    numbers: [],
+    viz: "viz:kidney_functions",
+    refs: ["ref:kdigo_ckd2024"]
+  },
+
+  "L1": {
+    id: "L1", icon: "🌊", title_ko: "투석을 움직이는 물리 3법칙",
+    subtitle_ko: "diffusion·ultrafiltration·convection — 투석실 블랙박스 안은 이 3개가 전부다",
+    concept_ids: ["concept:diffusion","concept:ultrafiltration","concept:convection","concept:osmosis","concept:solvent_drag"],
+    core_ko:
+      "투석실의 모든 기계와 숫자는 결국 딱 3가지 물리 현상 위에 서 있다. "+
+      "**①diffusion(확산)** — 농도차로 용질이 저절로 퍼지는 것. "+
+      "**②ultrafiltration(한외여과, UF)** — 압력으로 물을 짜내는 것. "+
+      "**③convection(대류)** — 짜낸 물이 용질을 끌고 가는 것(solvent drag). "+
+      "이 3개만 이해하면 HD와 CRRT의 차이까지 한 번에 풀린다. 한 줄 요약: **HD는 diffusion이 주력, HF·CRRT는 convection이 주력**.",
+    detail_ko: [
+      {h:"① diffusion (확산) — 농도차로 저절로 퍼진다",
+        t:"용질(녹아있는 물질)은 농도가 높은 곳에서 낮은 곳으로 저절로 이동한다. 커피에 설탕을 넣고 젓지 않아도 "+
+        "시간이 지나면 고르게 퍼지는 것과 똑같은 원리다.\n"+
+        "투석에 적용하면: 환자 혈액에는 urea(요소, 노폐물)가 가득하고 투석액에는 urea가 0이다. "+
+        "둘 사이를 막(membrane)으로 막아두면, urea는 농도가 높은 혈액 쪽에서 낮은 투석액 쪽으로 저절로 넘어간다. "+
+        "기계가 빨아들이는 게 아니라 물리 법칙으로 알아서 빠지는 것이다.\n"+
+        "이 확산의 속도는 네 가지로 결정된다 — 분자가 작을수록, 막이 얇을수록, 온도가 높을수록, 그리고 양쪽 농도차가 클수록 빨라진다. "+
+        "여기서 결정적인 점: diffusion은 작은 분자(urea는 약 60 Da로 매우 작다)에는 매우 강하지만, 큰 분자에는 약하다. "+
+        "무거운 분자는 느리게 움직여서 막에 부딪히는 횟수가 적기 때문이다. 이 약점이 바로 ③ convection이 필요한 이유가 된다."},
+      {h:"② ultrafiltration (한외여과, UF) — 압력으로 물을 짜낸다",
+        t:"diffusion이 '용질'을 옮기는 거라면, UF는 '물 자체'를 빼내는 것이다. 막 양쪽에 압력차를 걸어 "+
+        "물을 강제로 밀어낸다. 이게 투석에서 '체중을 뺀다(제수분)'고 말하는 것의 정체다.\n"+
+        "왜 물을 빼야 하나? 콩팥이 망가지면 소변으로 물을 못 내보내, 몸이 붓고 혈압이 오르고 심하면 폐에 물이 찬다. "+
+        "UF가 이 남는 물을 직접 제거한다.\n"+
+        "UF 속도를 정하는 공식은 단순하다 — UF량 = TMP × KUF. 여기서 TMP(경막압)는 막 양쪽의 압력차(혈액 쪽 압력 − 투석액 쪽 압력)이고, "+
+        "KUF는 막이 물을 얼마나 잘 통과시키는지를 나타내는 계수로 막의 두께와 구멍(기공) 크기로 정해진다. "+
+        "즉 압력을 더 걸거나, 물이 잘 통하는 막을 쓰면 물이 더 빠진다. 이 'UF 속도'가 나중에 투석 중 저혈압(L10)의 핵심 변수가 된다."},
+      {h:"③ convection (대류, solvent drag) — 물이 용질을 끌고 간다",
+        t:"UF로 물이 막을 통과할 때, 그 물살에 용질이 휩쓸려 함께 빠져나간다. 이것이 convection이다.\n"+
+        "diffusion과 비교하면 차이가 분명하다 — diffusion에서는 용질이 농도차를 따라 '혼자' 움직이지만, "+
+        "convection에서는 물이 용질을 '끌고' 간다. 그래서 영어로 solvent drag(용매가 끌고 감)라고 부른다.\n"+
+        "결정적 장점: 물살은 작은 분자든 큰 분자든 비슷한 속도로 쓸어가기 때문에, diffusion이 잘 못 빼던 "+
+        "**큰 분자(middle molecule)까지 제거**할 수 있다. diffusion의 약점을 정확히 보완하는 것이다.\n"+
+        "이 convection이 혈액여과(HF)·혈액투석여과(HDF)·CRRT의 핵심 메커니즘이다. CRRT에서 빠져나온 액체(effluent, 여과액)의 양으로 "+
+        "투석 용량을 재는 이유가 바로 이것 — CRRT는 diffusion보다 convection으로 일하기 때문이다."},
+      {h:"왜 'middle molecule'이 그렇게 중요한가",
+        t:"노폐물은 크기에 따라 나뉜다. urea(60 Da) 같은 작은 분자는 diffusion으로 잘 빠진다. "+
+        "그런데 β2-microglobulin(11,000 Da)처럼 중간 크기 분자(middle molecule, 대략 500~60,000 Da)는 diffusion으로는 잘 안 빠진다. "+
+        "문제는 이 middle molecule들이 요독 독성에 실제로 기여한다는 점이다 — 면역 이상, 만성 염증 같은 합병증과 연관된다.\n"+
+        "수치로 보면 차이가 뚜렷하다. convection을 쓰는 HDF의 β2-microglobulin 청소율은 약 87 mL/min인데, "+
+        "diffusion 위주의 high-flux HD는 약 49 mL/min에 그친다. 거의 두 배 차이다.\n"+
+        "이 사실이 중요한 이유: 흔히 'Kt/V(urea 기준 투석 용량)만 맞추면 충분하다'고 생각하지만, Kt/V는 작은 urea만 본다. "+
+        "middle molecule은 그 숫자 밖에 있다. 이 맹점이 L6에서 다시 핵심으로 등장한다."},
+      {h:"보조 개념 — osmosis (삼투)",
+        t:"네 번째로 알아둘 보조 원리. osmosis는 물이 농도가 낮은 쪽에서 높은 쪽으로 반투막을 건너 이동하는 현상이다(용질이 아니라 물이 움직인다). "+
+        "복막투석(PD)에서 이 원리를 쓴다 — 투석액에 포도당을 넣어 농도를 높이면, 삼투압으로 몸의 물이 복막을 건너 투석액 쪽으로 끌려 나온다. "+
+        "정리하면: HD는 주로 압력(UF)으로 물을 빼고, PD는 주로 osmosis(삼투)로 물을 뺀다. 같은 '물 빼기'라도 동력이 다르다."}
+    ],
+    analogy_ko: "세 가지를 방 비우기에 비유하면 — diffusion은 붐비는 방의 사람들이 문 열린 빈 옆방으로 저절로 흩어지는 것(농도차). "+
+      "ultrafiltration은 방에 바람을 세게 불어 사람을 밀어내는 것(압력). "+
+      "convection은 그 바람이 사람과 그들의 짐까지 함께 쓸어 나가는 것(물이 용질을 끌고 감). "+
+      "큰 짐(middle molecule)은 바람(convection)이라야 옮길 수 있다.",
+    numbers: [],
+    viz: "viz:diffusion",
+    viz_secondary: "viz:solvent_drag",
+    refs: ["ref:statpearls_hd","ref:deranged_physiology","ref:ndt_b2m_meta"]
+  },
+
+  "L2": {
+    id: "L2", icon: "🧬", title_ko: "왜 그 기계가 그렇게 생겼나",
+    subtitle_ko: "hollow fiber 다발과 countercurrent — 표면적과 농도차를 극대화하는 설계",
+    concept_ids: ["concept:hollow_fiber","concept:countercurrent","concept:tmp","concept:kuf"],
+    core_ko:
+      "투석기(dialyzer)의 생김새에는 이유가 있다. 속이 빈 가느다란 관(hollow fiber, 중공사) 수천 개를 다발로 묶어 "+
+      "원통 안에 채운 구조다. 혈액은 이 관 안쪽을 지나고, 투석액은 관 바깥 공간을 흐른다. "+
+      "여기에 두 가지 영리한 설계가 숨어 있다 — **①섬유 다발로 막 표면적을 극대화**해 diffusion을 늘리고, "+
+      "**②countercurrent(역류) 방식으로 혈액과 투석액을 반대 방향**으로 흘려 농도차를 처음부터 끝까지 유지한다.",
+    detail_ko: [
+      {h:"hollow fiber 구조 — 왜 수천 개의 가는 관인가",
+        t:"한 가닥의 hollow fiber는 안지름이 약 200 마이크로미터(머리카락 두께 수준), 벽 두께는 약 30 마이크로미터에 불과하다. "+
+        "재질은 polysulfone 같은 합성 막이다.\n"+
+        "왜 굵은 관 하나가 아니라 가는 관 수천 개일까? 답은 표면적이다. diffusion은 막 면적이 넓을수록 많이 일어나는데, "+
+        "같은 부피라도 가는 관 여러 개로 나누면 전체 표면적이 비약적으로 커진다. "+
+        "수천 개 다발로 막 면적을 극대화하는 것은, 곧 urea가 혈액에서 투석액으로 건너갈 '통로'를 최대한 넓게 만드는 것이다."},
+      {h:"countercurrent (역류) — 가장 영리한 설계",
+        t:"혈액과 투석액을 서로 **반대 방향**으로 흘리는 것을 countercurrent라 한다. 이게 왜 중요한지는 반대 경우와 비교하면 분명하다.\n"+
+        "만약 둘을 같은 방향(병류, cocurrent)으로 흘리면 어떻게 될까? 처음엔 농도차가 크지만, 관을 따라가다 보면 "+
+        "중간쯤에서 혈액과 투석액의 urea 농도가 같아진다(평형). 농도차가 0이 되면 diffusion은 거기서 멈춘다. 나머지 구간이 낭비되는 것이다.\n"+
+        "반대 방향으로 흘리면 이 문제가 사라진다. 혈액이 흐르는 내내, 그 지점의 투석액은 항상 더 깨끗한(농도 낮은) 상태로 마주 흘러온다. "+
+        "그래서 농도차가 처음부터 끝까지 유지되고, diffusion이 관 전체에서 끊김 없이 계속된다.\n"+
+        "이 효과를 더 끌어올리기 위해 투석액은 보통 혈류 속도의 약 1.5배로 흘려보낸다 — 항상 신선한 투석액이 충분히 공급되도록."},
+      {h:"TMP와 KUF — UF를 조절하는 하드웨어 변수",
+        t:"L1에서 본 UF(물 빼기)를 기계 수준에서 조절하는 두 변수다.\n"+
+        "TMP(transmembrane pressure, 경막압) = 혈액 쪽 압력 − 투석액 쪽 압력. 이 압력차가 물을 막 너머로 밀어내는 힘이다. "+
+        "TMP를 높이면 물이 더 빠진다.\n"+
+        "KUF(ultrafiltration coefficient) = 막이 물을 통과시키는 능력. 막 두께와 구멍 크기로 정해진다. "+
+        "특히 high-flux 막은 KUF가 크고 구멍이 넓어서, 물뿐 아니라 middle molecule까지 통과시킨다 — L1의 convection이 실제로 일어나는 무대가 바로 이 막이다."}
+    ],
+    analogy_ko: "countercurrent는 거꾸로 도는 에스컬레이터를 걷는 것과 같다. 같은 방향이면 금세 따라잡혀 제자리(평형)가 되지만, "+
+      "반대 방향이면 끝까지 '차이'가 유지된다. 그 차이가 곧 diffusion을 끝까지 밀어주는 동력이다.",
+    numbers: [],
+    viz: "viz:countercurrent",
+    refs: ["ref:sciencedirect_countercurrent","ref:clinicaltree_dialysate"]
+  },
+
+  "L3": {
+    id: "L3", icon: "💧", title_ko: "투석액(dialysate)은 왜 그 조성인가",
+    subtitle_ko: "단순한 물이 아니다 — 빼고 싶은 건 0, 주고 싶은 건 채운 정밀 설계액",
+    concept_ids: ["concept:dialysate"],
+    core_ko:
+      "투석액(dialysate)은 그냥 물이 아니라, 사람 몸의 세포외액을 본떠 만든 정밀 설계 용액이다. "+
+      "핵심 발상은 농도차의 '방향'을 미리 설계하는 것이다 — **몸에서 빼고 싶은 물질은 투석액 농도를 0(또는 낮게)** 두어 빠져나가게 하고, "+
+      "**몸에 넣어주고 싶은 물질은 투석액에 더 높게** 채워 거꾸로 들어가게 한다. "+
+      "그래서 투석은 단순히 '빼기'만 하는 게 아니라, 한 막에서 동시에 일어나는 **양방향 교환**이다.",
+    detail_ko: [
+      {h:"성분마다 다른 설계 의도",
+        t:"투석액의 각 성분은 농도가 제각각인데, 거기엔 분명한 이유가 있다.\n"+
+        "• Na(나트륨)·Cl(염소): 몸과 비슷한 생리 농도로 맞춘다 — 빼지도 넣지도 않고 균형 유지.\n"+
+        "• Mg(마그네슘)·phosphate(인): 생리 농도보다 낮게 둔다 — 농도차로 몸에서 빠져나가게.\n"+
+        "• bicarbonate(중탄산): 생리 농도보다 높게 둔다 — 거꾸로 몸으로 들어가게. 투석 환자에게 흔한 대사성 산증(acidosis)을 치료하기 위해서다.\n"+
+        "• K(칼륨)·Ca(칼슘): 여러 농도의 투석액을 준비해 둔다 — 환자 상태에 맞춰 제거 속도를 조절한다. 예를 들어 고칼륨혈증 환자에겐 투석액 K를 낮춰 더 많이 빼낸다."},
+      {h:"양방향 교환 — 빼기와 넣기가 동시에",
+        t:"한 막을 사이에 두고 물질들이 양쪽으로 동시에 오간다. urea 같은 노폐물은 혈액 → 투석액으로 나가고(제거), "+
+        "bicarbonate처럼 투석액에 더 많은 물질은 투석액 → 혈액으로 들어온다(보충).\n"+
+        "이게 투석을 단순한 '필터'가 아니라 '교환기'로 이해해야 하는 이유다. 무엇을 뺄지뿐 아니라 무엇을 넣어줄지도 투석액 조성으로 설계한다."},
+      {h:"투석액 온도 — 잘 안 보이는 숨은 변수",
+        t:"투석액 온도를 체온보다 살짝 낮게(예: 35.5°C) 설정하는 데에도 이유가 있다. 약간 찬 투석액이 몸을 돌면 "+
+        "혈관이 살짝 수축하는데(혈관수축), 이 수축이 혈관의 긴장도를 높여 물을 뺄 때(UF) 혈압이 떨어지는 것을 막아준다.\n"+
+        "그래서 투석 중 저혈압(IDH, L10)이 잦은 환자에게 '투석액 온도를 낮춘다'는 처방이 나오는 것이다 — 이 작은 온도 조정이 그 근거다."}
+    ],
+    analogy_ko: "투석액은 정교하게 준비된 '협상 상대'다. 내가 버리고 싶은 물건(urea)은 상대가 빈손으로 와서(농도 0) 받아주고, "+
+      "내가 받고 싶은 물건(bicarbonate)은 상대가 넉넉히 들고 와서(농도 높음) 건네준다. 그래서 한 번의 만남에서 버리기와 받기가 동시에 일어난다.",
+    numbers: ["num:dialysate_ca"],
+    viz: "viz:dialysate_table",
+    refs: ["ref:sciencedirect_dialysate","ref:clinicaltree_dialysate"]
+  },
+
+  "L4": {
+    id: "L4", icon: "🩸", title_ko: "항응고 — 피가 몸 밖으로 나가는 문제",
+    subtitle_ko: "체외 회로에서 피가 굳지 않게: heparin과 citrate",
+    concept_ids: ["concept:citrate_anticoag"],
+    drug_ids: ["drug:heparin","drug:citrate"],
+    core_ko:
+      "혈액투석은 피를 몸 밖으로 빼내 튜브와 투석기로 이루어진 체외 회로(extracorporeal circuit)를 돌린다. "+
+      "그런데 피는 몸 밖의 인공 표면에 닿으면 굳으려는 성질이 있다. 그래서 회로가 막히지 않도록 항응고가 반드시 필요하다. "+
+      "가장 흔히 쓰는 것이 **heparin(헤파린, 전신 항응고)**이고, 출혈 위험이 크거나 CRRT를 할 때는 **citrate(시트레이트, 국소 항응고)**를 쓴다.",
+    detail_ko: [
+      {h:"체외 회로의 흐름 — 어디서 굳음을 막나",
+        t:"피의 여정을 따라가 보자. 혈관 접근로(누공 등)에서 동맥선(arterial line)을 통해 피가 몸 밖으로 나온다 → "+
+        "여기서 항응고제를 주입한다 → 투석기를 지나며 투석액과 물질을 교환한다 → 정맥선(venous line)을 통해 다시 몸으로 돌아간다.\n"+
+        "이 회로를 도는 내내 피가 굳지 않아야 한다. 한 곳이라도 응고가 시작되면 투석기가 막히고(clotting), 그러면 그 안의 피를 버려야 하며 투석이 중단된다."},
+      {h:"heparin (헤파린) — 가장 흔한 전신 항응고",
+        t:"투석 시작할 때 한 번에 일정량을 주입하고(bolus, 초기 부하량), 이후 투석 내내 조금씩 지속 주입한다. "+
+        "효과가 확실하고 익숙해서 표준으로 쓰인다.\n"+
+        "단점은 '전신' 항응고라는 점이다. 회로뿐 아니라 환자 몸 전체의 피가 묽어지므로, 최근 수술을 했거나 출혈 위험이 있는 환자에게는 위험할 수 있다."},
+      {h:"citrate 국소 항응고(RCA) — 회로 안에서만 막는다",
+        t:"이 한계를 푸는 영리한 방법이 citrate를 이용한 국소 항응고(regional citrate anticoagulation, RCA)다. "+
+        "원리: citrate가 응고에 꼭 필요한 칼슘을 회로 안에서 붙잡아 묶어버린다(응고 차단). 그리고 피가 몸으로 돌아가기 직전에 칼슘을 다시 보충해 준다. "+
+        "그러면 회로 안에서만 항응고가 되고, 몸 전체는 정상 응고 상태로 유지된다 — 출혈 위험이 거의 없다.\n"+
+        "이 장점 때문에 citrate는 CRRT(중환자 지속 투석)의 표준 항응고로 자리잡았다(ICU 모듈의 citrate vs heparin 선택과 연결된다). "+
+        "다만 citrate가 몸에 쌓이면 대사 이상을 일으킬 수 있어 모니터링이 필요하다."},
+      {h:"LMWH — 또 다른 선택지",
+        t:"저분자량 헤파린(LMWH, low molecular weight heparin; enoxaparin 등)을 투석 시작 전 한 번의 bolus로 주는 방법도 있다. "+
+        "주입이 간편하다는 장점이 있어 일부 환자·상황에서 쓰인다."}
+    ],
+    analogy_ko: "체외 회로는 '몸 밖으로 잠깐 빠져나온 혈액 고속도로'다. heparin은 도로 전체에 결빙방지제를 뿌리는 것이고(전신, 몸까지 영향), "+
+      "citrate는 그 도로 구간에만 뿌렸다가 출구에서 회수하는 것이다(국소, 몸은 그대로). 그래서 출혈 위험 환자에겐 citrate가 안전하다.",
+    numbers: [],
+    viz: "viz:circuit",
+    refs: ["ref:nct_lmwh","ref:icu_bridge"]
+  },
+
+  "L5": {
+    id: "L5", icon: "📉", title_ko: "urea rebound — Kt/V 이해의 마지막 퍼즐",
+    subtitle_ko: "투석 직후 urea가 왜 다시 올라가나: 몸은 단일 통이 아니다",
+    concept_ids: ["concept:urea_rebound","concept:two_pool"],
+    core_ko:
+      "투석이 끝나면 신기한 일이 벌어진다 — 혈액 urea 농도가 **다시 올라간다(rebound, 반등)**. "+
+      "이유는 몸이 하나의 균일한 통이 아니라 여러 칸으로 나뉘어 있기 때문이다. 혈류가 적은 조직(근육·뼈)에 숨어 있던 urea가 "+
+      "투석이 끝난 뒤 천천히 혈관으로 다시 새어 나온다. "+
+      "이 현상이 바로 **투석 처방 목표를 spKt/V 1.4로 잡는 진짜 이유**다(L6와 직결). 표면의 숫자가 아니라 이 동역학을 알아야 Kt/V가 제대로 이해된다.",
+    detail_ko: [
+      {h:"메커니즘 — 몸은 2개의 구획(two-pool)이다",
+        t:"투석기는 혈관 속을 도는 피의 urea만 빠르게 빼낸다. 그런데 몸의 urea가 전부 혈관에 있는 게 아니다. "+
+        "피부·근육·뼈처럼 혈류가 적은 조직에도 urea가 퍼져 있는데, 이쪽은 혈관으로 빠져나오는 속도가 느리다. "+
+        "그래서 몸을 '혈관 구획(빨리 청소됨)'과 '조직 구획(느리게 청소됨)' 2개로 나눠 봐야 한다 — 이걸 two-pool(2구획) 모델이라 한다.\n"+
+        "투석 중에는 혈관 urea만 쑥 빠지고 조직 urea는 미처 따라 나오지 못한다. 그러다 투석이 끝나 '청소'가 멈추면, "+
+        "조직에 남아 있던 urea가 30~60분에 걸쳐 천천히 혈관으로 재분포한다. 그래서 혈중 농도가 다시 오른다. "+
+        "평균적으로 투석 30분 뒤 혈중 urea(BUN)가 약 17% 올라가고, 어떤 환자는 45%까지 튀기도 한다."},
+      {h:"spKt/V vs eKt/V — 같은 투석, 다른 점수",
+        t:"이 rebound 때문에 투석 용량을 재는 숫자가 둘로 갈린다.\n"+
+        "spKt/V(single-pool, 단일풀): urea가 몸에 균일하게 퍼져 있다고 단순 가정하고 투석 직후 계산한 값. 실제보다 후하게 나온다.\n"+
+        "eKt/V(equilibrated, 평형): rebound가 끝난 뒤의 실제 값. 투석 직후가 아니라 30~60분 기다렸다가 채혈해야 정확히 잰다.\n"+
+        "둘의 관계는 경험적으로 **eKt/V ≈ spKt/V − 0.2**다. 즉 투석 직후 점수보다 진짜 점수가 약 0.2 낮다.\n"+
+        "실제 데이터로 확인된다 — HEMO 연구에서 표준군은 spKt/V 1.32였는데 eKt/V는 1.16이었고, 고용량군은 1.71 → 1.53이었다. 둘 다 약 0.16~0.18 떨어졌다."},
+      {h:"그래서 왜 목표가 1.4인가",
+        t:"이제 퍼즐이 맞춰진다. 투석을 처방할 때 spKt/V로 1.4를 목표로 잡는다. 그러면 rebound로 0.2가 떨어져도 "+
+        "실제 eKt/V는 약 1.2가 되어, 최소 기준선 1.2를 지킬 수 있다.\n"+
+        "즉 **목표 1.4는 rebound를 미리 감안한 안전 마진**이다. '1.4를 원해서'가 아니라 '실제로 1.2를 확보하려고' 1.4로 처방하는 것이다. "+
+        "처방값(1.4)과 실제 전달값(1.2)이 따로 노는 이 구조를 이해하면, 다른 사람이 그냥 외운 숫자를 너는 원리로 설명할 수 있다."},
+      {h:"긴 투석·CRRT가 더 생리적인 이유",
+        t:"여기서 한 걸음 더 나간다. 투석 시간이 길수록 투석을 하는 '도중에' 조직과 혈관 사이 평형이 더 일어난다. "+
+        "그러면 투석이 끝났을 때 조직에 남은 urea가 적어 rebound가 작아진다(spKt/V와 eKt/V 차이가 줄어든다).\n"+
+        "그래서 느리고 긴 투석(예: 야간 투석, FHN nocturnal)이 더 '생리적'이라고 말한다.\n"+
+        "이 논리의 극단이 CRRT다. CRRT는 24시간 내내 아주 천천히 빼기 때문에 조직과 혈관이 늘 평형 상태를 유지한다 — "+
+        "rebound가 거의 없다. 네가 CRRT 숫자를 이해하기 어려웠던 지점이 여기서 풀린다. CRRT는 'rebound 없는 연속 투석'인 것이다(BRIDGE에서 다시 다룬다)."}
+    ],
+    analogy_ko: "욕조 한가운데에 물이 천천히 통하는 칸막이가 있다고 하자. 한쪽(혈관)의 물만 빠르게 퍼내면 그쪽은 금방 비지만, "+
+      "퍼내기를 멈추는 순간 칸막이 너머(조직)에서 물이 천천히 새어 들어와 수위가 도로 올라온다 — 이게 rebound다. "+
+      "반대로 아주 천천히 퍼내면(긴 투석·CRRT) 양쪽 수위가 늘 비슷하게 유지돼 도로 차오르지 않는다.",
+    numbers: ["num:ektv_gap","num:rebound_pct"],
+    trial_ids: ["pmid:hemo2002","pmid:fhn_nocturnal2011"],
+    viz: "viz:rebound",
+    refs: ["ref:pmid_rebound","ref:wikipedia_ktv","ref:icu_bridge"]
+  }
+};
+
+</script>
+<script>/* ============================================================
+   투석 학습 가이드 — DATA 레이어: 기전 본문 (PART B: L6~L13 + CRRT브릿지)
+   DIALYSIS_CONCEPTS_B
+   ※ 관통 철학: "수치를 정상까지 밀어붙이지 않는다"
+   ※ 표기: 약물명·학술어 영어 우선(sevelamer, cinacalcet, Kt/V...), 일반어 한글
+   ============================================================ */
+
+var DIALYSIS_CONCEPTS_B = {
+
+  "L6": {
+    id: "L6", icon: "📏", title_ko: "투석 용량 — Kt/V는 무엇을 재는가",
+    subtitle_ko: "분율 청소율(fractional clearance)의 정의와, 목표 1.4·최소 1.2의 근거",
+    concept_ids: ["concept:adequacy"],
+    core_ko:
+      "**Kt/V = 분율 청소율(fractional clearance)**, 즉 K·t를 V로 나눈 값이다. K는 투석기의 urea 청소율(분당 깨끗이 거르는 혈액량), "+
+      "t는 투석 시간, V는 urea가 분포하는 몸의 용적이다. K×t는 '한 세션 동안 깨끗이 청소된 혈액의 총 부피'이고, "+
+      "이를 몸 용적 V로 나눠 체격에 맞춰 보정한다. 목표는 spKt/V 1.4, 최소 전달은 1.2. "+
+      "왜 이 두 숫자인지는 외울 게 아니라 두 개의 대규모 임상시험(HEMO·FHN)에서 나온 결론이다.",
+    detail_ko: [
+      {h:"Kt/V를 직관으로 — 왜 V로 나누나",
+        t:"Kt/V = 1.4라는 건 '한 세션에 체내 urea 용적의 1.4배에 해당하는 혈액을 깨끗이 청소했다'는 뜻이다.\n"+
+        "여기서 V로 나누는 게 핵심이다 — 체격 보정 때문이다. 몸집이 큰 사람은 urea가 퍼진 용적 V가 크므로, "+
+        "같은 K·t(같은 청소량)로도 Kt/V가 작게 나온다. 반대로 작은 사람은 같은 청소로도 Kt/V가 크게 나온다.\n"+
+        "이 발상은 CRRT를 mL/kg/hr(체중당)로 보는 것과 정확히 같다. 큰 몸은 더 많이 청소해야 같은 '비율'에 도달한다는 것 — "+
+        "투석 용량을 절대량이 아니라 '몸 대비 비율'로 보는 것이 Kt/V의 본질이다."},
+      {h:"URR — Kt/V의 더 간단한 형제",
+        t:"URR(urea reduction ratio, urea 감소율) = (투석 전 BUN − 투석 후 BUN) / 투석 전 BUN. 목표 70%(최소 65%)다.\n"+
+        "투석 전후 urea가 몇 % 줄었나만 보면 되니 계산이 매우 간단하다. 하지만 한계가 있다 — UF로 물이 빠지면서 농축되는 효과나, "+
+        "투석 중에도 몸에서 계속 생기는 urea를 반영하지 못한다.\n"+
+        "흥미로운 점: 더 정교한 Kt/V가 항상 임상적으로 우월한 건 아니다. 일부 대규모 코호트에서 URR의 사망 예측력이 Kt/V와 대등했다. "+
+        "'정밀한 지표가 곧 더 나은 지표는 아니다'라는 교훈이다."},
+      {h:"HEMO 연구의 교훈 — 1.2를 넘으면 끝",
+        t:"HEMO(2002, n=1846)는 주3회 투석에서 용량을 더 올리면 좋아지는지 물었다. 결과는 분명했다 — "+
+        "spKt/V가 1.2를 넘으면 그 이상 올려도(고용량군) 전체 사망·입원·삶의 질이 나아지지 않았다(사망 위험비 0.96, 차이 없음).\n"+
+        "즉 '많을수록 좋다'가 아니라 '일정 선을 넘으면 추가 이득이 없다'는 것이다. 이 1.2가 '충분함(adequacy)'의 하한선 근거가 되었다. "+
+        "막의 종류(high-flux vs low-flux)도 전체 사망에는 유의한 차이가 없었다(위험비 0.92)."},
+      {h:"FHN의 반전 — 빈도는 용량과 다르다",
+        t:"HEMO가 '주3회에서 용량을 더 올려도 소용없다'였다면, FHN Daily(2010)는 '그럼 빈도를 늘리면?'을 물었다.\n"+
+        "주6회로 투석 빈도를 늘리자 주간 stdKt/V가 3.54로 통상군 2.49보다 크게 높아졌고, 좌심실 질량과 신체 건강 두 지표 모두 개선됐다(위험비 0.61, 0.70). "+
+        "단 공짜는 아니었다 — 혈관 접근로 관련 시술이 더 많아졌다(위험비 1.71).\n"+
+        "왜 HEMO는 음성, FHN은 양성일까? 세션당 Kt/V를 올리는 것과, 빈도를 늘려 '주간 누적' stdKt/V를 올리는 것은 물리적으로 다르기 때문이다 — "+
+        "urea rebound와 시간평균 농도 때문이다(L5). 같은 'Kt/V를 올린다'도 방식에 따라 결과가 갈린다."},
+      {h:"stdKt/V — 빈도를 반영하는 지표",
+        t:"세션당 Kt/V는 한 번의 투석만 본다. 그래서 주3회와 주6회를 공정하게 비교할 수 없다. "+
+        "이를 위해 한 주 전체로 표준화한 stdKt/V(standardized Kt/V)를 쓴다. FHN에서 빈도 효과를 잡아낼 수 있었던 게 바로 이 지표 덕분이다. "+
+        "'왜 세션 Kt/V 말고 또 다른 지표가 필요한가'의 답이다."},
+      {h:"Kt/V의 맹점 — 여기가 신장내과의 본질이다",
+        t:"Kt/V는 작은 분자인 urea(60 Da)만 잰다. 그래서 이 숫자가 놓치는 것들이 있다 — phosphate(인), middle molecule(β2-microglobulin 등), 수분 상태(volume), 영양.\n"+
+        "특히 phosphate가 대표적이다. 목표 Kt/V를 달성한 표준 투석으로도 체내 인을 충분히 빼지 못한다. 인은 뼈와 세포에 거대한 저장고를 둔 3구획 분포를 하기 때문이다 — "+
+        "혈액 인만 잠깐 빠질 뿐 저장고의 인은 그대로다.\n"+
+        "그래서 'Kt/V만 맞추면 된다'는 루틴이 실제로 놓치는 영역이 분명히 있다. 이게 L1의 middle molecule, L9의 인·뼈 관리와 직접 이어진다 — "+
+        "투석을 '루틴'으로 도는 것과 '본질'을 아는 것의 차이가 바로 이 맹점을 의식하느냐다."}
+    ],
+    analogy_ko: "Kt/V는 '청소한 물의 양 ÷ 방의 크기'다. 같은 양을 청소해도 방(체격 V)이 크면 비율은 낮게 나온다. "+
+      "그런데 이 지표는 바닥의 '먼지(urea)'만 센다 — 가구 뒤에 쌓인 큰 짐(phosphate·middle molecule)은 세지 못한다. 그래서 방이 '깨끗하다'는 점수가 전부는 아니다.",
+    numbers: ["num:spktv_target","num:spktv_min","num:urr_target","num:urr_min"],
+    trial_ids: ["pmid:hemo2002","pmid:fhn_daily2010"],
+    viz: "viz:ktv",
+    refs: ["ref:kdoqi_adequacy2015","ref:hemo_nejm","ref:fhn_nejm"]
+  },
+
+  "L7": {
+    id: "L7", icon: "🚦", title_ko: "언제 시작하고, 무엇을 선택하나",
+    subtitle_ko: "숫자가 아니라 증상으로 — IDEAL 연구가 바꾼 패러다임",
+    concept_ids: ["concept:eskd_lifeplan"],
+    proc_ids: ["proc:hd","proc:pd","proc:transplant"],
+    core_ko:
+      "투석 개시는 **eGFR 숫자가 아니라 요독 증상**으로 판단한다. 이건 현대 신장학에서 가장 중요한 패러다임 전환이다. "+
+      "IDEAL 연구가 보여줬다 — 일찍 시작(eGFR 10~14)해도 늦게(5~7) 시작하는 것보다 더 오래 살지 않는다. "+
+      "그래서 GFR 5~10은 '참고 구간'일 뿐 시작 방아쇠가 아니다. 비전문의가 환자에게 설명할 때 가장 중요한 한 가지가 바로 이것이다.",
+    detail_ko: [
+      {h:"개시 방아쇠 — 요독 증후군 (숫자가 아니라 증상)",
+        t:"투석을 실제로 시작하게 만드는 것은 다음 증상들이다.\n"+
+        "• 요독 증상: 식욕부진·오심·구토, 가려움, 권태, 인지저하\n"+
+        "• 약으로 조절되지 않는 용적 과부하(폐부종)\n"+
+        "• 약으로 조절되지 않는 고칼륨혈증(hyperkalemia)·대사성 산증\n"+
+        "• 요독성 심막염(pericarditis)·요독성 뇌병증(encephalopathy) — 이 둘은 응급 적응증이다\n"+
+        "반대로 증상이 없으면 eGFR이 5 미만으로 떨어져도 안전하게 미룰 수 있다(intent-to-defer, 지연 의도). "+
+        "환자에게는 이렇게 설명하면 된다 — '수치가 됐다고 바로 시작하는 게 아니라, 몸에 요독 증상이 나타날 때 시작합니다. 일찍 시작해도 더 오래 사시는 게 아니라는 게 연구로 밝혀졌거든요.'"},
+      {h:"접근로는 미리 — 두 개의 타이밍을 분리하라",
+        t:"비전문의가 가장 헷갈리는 지점이다. 투석 '시작'은 증상을 보고 하지만, 혈관 접근로(누공)는 훨씬 미리 만들어야 한다. "+
+        "누공은 만든 뒤 쓸 수 있게 익는 데(성숙) 1.5~3개월이 걸리기 때문이다.\n"+
+        "그래서 타이밍이 둘로 나뉜다 — 접근로 만들기는 GFR 15~20(또는 2년 내 신대체 위험 40% 초과) 시점에 미리, 투석 시작은 증상이 나타날 때 나중에. "+
+        "이 분리를 이해하면 '아직 투석도 안 하는데 왜 벌써 누공을 만드냐'는 환자의 질문에 정확히 답할 수 있다 — '관을 만들어 두고 익히는 데 몇 달이 걸려서, 미리 준비해 두는 겁니다.'"},
+      {h:"모달리티 선택 — ESKD Life-Plan",
+        t:"과거에는 'Fistula First(누공을 무조건 먼저)'가 도그마였다. 지금은 환자별 '평생 계획(ESKD Life-Plan)'으로 바뀌었다. "+
+        "첫 접근로가 무엇이냐뿐 아니라 그 다음(what's next)까지 미리 설계한다.\n"+
+        "예를 들어 동반질환 없는 젊은 환자라면 평생 계획이 '①생체 신이식 → ②복막투석(PD) → ③가정 혈액투석' 순서일 수 있다. "+
+        "환자의 남은 삶 전체를 보고 접근로와 모달리티의 순서를 짜는 것이다."},
+      {h:"HD vs PD vs 이식 — 환자에게 어떻게 설명하나",
+        t:"• 혈액투석(HD): 주3회 센터 방문, 누공/그라프트/카테터 필요. 가장 흔하다.\n"+
+        "• 복막투석(PD): 매일 집에서, 복막 카테터 사용, 자율성이 높다.\n"+
+        "• 이식(transplant): 가능하면 최선 — 콩팥의 4가지 기능을 모두 회복한다. 투석 전에 미리 하는 선제적 이식이 이상적이다.\n"+
+        "생존 비교는 해석에 주의가 필요하다. PD 환자가 보통 더 젊고 건강해서 단순 비교가 어렵다(선택 편향). "+
+        "임상적으로 비슷한 군끼리 비교하면(누공 쓰는 HD vs PD) 개시 90일 후 누공-HD가 약간의 생존 이점을 보이지만, 이는 관찰연구라 단정하기 어렵다."}
+    ],
+    analogy_ko: "투석 개시는 '연료 게이지 숫자'가 아니라 '차가 실제로 털털거리기 시작할 때'다. "+
+      "다만 정비소 예약(누공 만들기)은 게이지가 1/4쯤 남았을 때 미리 잡아둔다 — 예약이 잡히는 데 시간이 걸리기 때문이다.",
+    numbers: ["num:egfr_initiation","num:egfr_access_plan","num:avf_maturation_time"],
+    trial_ids: ["pmid:ideal2010"],
+    viz: "viz:initiation_checklist",
+    refs: ["ref:ideal_nejm","ref:kdigo_ckd2024","ref:kdoqi_va2019"]
+  },
+
+  "L8": {
+    id: "L8", icon: "🔴", title_ko: "신성빈혈 — 정상까지 올리지 않는다",
+    subtitle_ko: "콩팥 EPO 생산↓가 원인. KDIGO 2026 최신 반영",
+    concept_ids: ["concept:renal_anemia"],
+    drug_ids: ["drug:epoetin_alfa","drug:darbepoetin","drug:roxadustat","drug:iron_sucrose","drug:ferric_carboxymaltose"],
+    comorbid_ids: ["comorbid:renal_anemia"],
+    core_ko:
+      "콩팥은 EPO(erythropoietin)를 만들어 적혈구 생산을 자극한다. 콩팥이 망가지면 EPO가 줄어 빈혈이 온다 — "+
+      "이게 L0에서 말한 '투석이 대신 못 하는 기능' 중 하나다. 치료는 ESA(EPO 약)로 하되, 핵심 원칙은 **정상까지 올리지 않는 것**(목표 Hb 11.5 g/dL 미만)이다. "+
+      "Hb를 너무 높이면(과교정) 오히려 심혈관 사건과 사망이 늘기 때문이다 — '덜 교정하는 게 안전하다'는 역설이 빈혈 관리를 관통한다.",
+    detail_ko: [
+      {h:"ESA 시작과 목표 (KDIGO 2026)",
+        t:"시작: 투석 환자에서 Hb가 9~10 g/dL 이하로 떨어지면 ESA 시작을 고려한다. 단 시작 전에 철결핍 같은 교정 가능한 원인부터 해결한다.\n"+
+        "유지 목표: Hb 11.5 g/dL 미만. 정상(보통 13~15)까지 올리지 않는다. 특히 13을 넘기면 심혈관 위험이 분명히 커진다.\n"+
+        "2026년 새 포인트: 교정 가능한 원인을 해결한 뒤에도 Hb를 더 올려야 한다면, HIF-PHI보다 ESA를 1차로 선호한다."},
+      {h:"HIF-PHI — 경구 신약(roxadustat 등)",
+        t:"HIF-PHI(hypoxia-inducible factor prolyl hydroxylase inhibitor)는 먹는 약이다. HIF라는 전사인자를 안정화시켜 몸이 스스로 EPO를 더 만들게 자극한다. "+
+        "ESA와 비슷한 수준으로 Hb를 올릴 수 있다.\n"+
+        "단 roxadustat은 주의사항이 많다 — 시작 후 첫 3개월간 갑상선 기능을 모니터링하고, 3~4개월 안에 적혈구 반응이 없으면 중단한다. "+
+        "심혈관·혈전색전 사건, 혈관접근로 혈전, 새로 진단된 암이 생기면 중단한다. 위험군에서는 아예 피한다(KDIGO 2026)."},
+      {h:"철분(iron) — ESA의 짝",
+        t:"빈혈 치료는 EPO만으로 안 된다. 적혈구를 만들 재료인 철이 충분해야 한다. ferritin과 TSAT(transferrin 포화도)를 기준으로 정맥 철분(iron sucrose, ferric carboxymaltose)을 보충한다. "+
+        "철을 충분히 주면 같은 Hb를 더 적은 ESA 용량으로 유지할 수 있다(DRIVE 연구)."},
+      {h:"수혈 — 임의 숫자가 아니라 증상 기반",
+        t:"수혈도 'Hb 몇이면 무조건'이 아니라 증상과 상황으로 판단한다. 대략적 기준 — 혈역학이 안정된 입원 성인은 Hb 7 미만, "+
+        "심장수술 전은 7.5 미만, 정형외과 수술 전이나 심혈관질환이 있으면 8 미만. "+
+        "이식을 원하는 환자는 동종감작(이식 거부 위험을 높임)을 피하려 수혈을 자제한다."},
+      {h:"투여 경로 — 피하가 더 효율적",
+        t:"실무 포인트. ESA는 피하주사가 정맥주사보다 적은 용량으로 같은 Hb를 유지한다(피하가 효율적). "+
+        "그래서 피하에서 정맥으로 바꿀 때는 용량을 늘려야 한다 — epoetin alfa는 약 30% 증량, epoetin beta는 약 2배가 필요하다."},
+      {h:"💰 HIRA 급여 맥락",
+        t:"[코딩 직전 원문 재검증 필요] 한국은 HIRA 적정성평가에서 'Hb 10 g/dL 미만 환자 비율'을 모니터링 지표로 쓴다. "+
+        "EPO 급여의 흔한 방아쇠가 Hb 10 미만이다. 약전 주의: Hb 12를 넘기면 심혈관 위험이 커진다. "+
+        "가이드라인(목표 11.5 미만)과 급여(10 미만 트리거)는 대체로 정합하지만, 과교정 시 삭감에 주의한다."}
+    ],
+    analogy_ko: "빈혈 교정은 '연료를 가득 채우는 것'이 아니라 '시동이 걸릴 만큼만 채우는 것'이다. "+
+      "가득(Hb 13 이상) 채우면 오히려 엔진(심혈관)이 상한다. 그래서 일부러 정상보다 낮은 선에서 멈춘다.",
+    numbers: ["num:hb_esa_start","num:hb_target_max","num:hb_overcorrect","num:hb_hira_gate","num:transfusion_threshold"],
+    viz: "viz:hb_target_band",
+    refs: ["ref:kdigo_anemia2026","ref:nephjc_anemia","ref:hira_quality"]
+  },
+
+  "L9": {
+    id: "L9", icon: "🦴", title_ko: "CKD-MBD — 뼈·미네랄·혈관석회화",
+    subtitle_ko: "phosphate↑·비타민D↓ → 부갑상선 자극 → 뼈 녹고 혈관 굳는다",
+    concept_ids: ["concept:ckd_mbd","concept:shpt"],
+    drug_ids: ["drug:sevelamer","drug:lanthanum","drug:calcium_acetate","drug:cinacalcet","drug:etelcalcetide","drug:calcitriol"],
+    comorbid_ids: ["comorbid:shpt","comorbid:ckd_mbd"],
+    core_ko:
+      "콩팥이 망가지면 두 가지가 동시에 일어난다 — phosphate(인) 배설이 줄어 고인산혈증이 오고, 활성 비타민 D 생성이 줄어 저칼슘혈증이 온다. "+
+      "이 둘이 부갑상선을 자극해 **이차성 부갑상선기능항진증(SHPT, secondary hyperparathyroidism)**을 일으키고, 결국 뼈가 녹고 혈관이 석회화된다. "+
+      "처방의 두 원칙: **칼슘 기반 인결합제는 제한**하고, **PTH(부갑상선호르몬)는 정상까지 누르지 않는다**(무형성 골질환 방지). 빈혈과 똑같은 '덜 교정' 철학이다.",
+    detail_ko: [
+      {h:"연쇄 메커니즘 — 도미노처럼 무너진다",
+        t:"순서대로 따라가 보자. 인 배설↓ → 혈중 인↑. 활성 비타민 D 생성↓ → 장에서 칼슘 흡수↓ → 혈중 칼슘↓. "+
+        "이 '인↑ + 칼슘↓'가 부갑상선을 자극한다 → PTH↑(SHPT). "+
+        "PTH는 혈중 칼슘을 올리려고 뼈에서 칼슘을 빼낸다 → 뼈가 약해진다. 동시에 빠져나온 인·칼슘이 혈관 벽에 침착된다 → 혈관 석회화.\n"+
+        "여기서 L6과 직접 이어진다 — Kt/V가 못 보는 phosphate가 이 연쇄의 첫 도미노다. 투석으로는 인이 충분히 안 빠지기 때문에 식이·약으로 따로 관리해야 한다(L13)."},
+      {h:"인 강하 — 선제적으로 쓰지 않는다",
+        t:"인결합제(phosphate binder)는 음식의 인이 흡수되지 못하게 장에서 붙잡는 약이다. 단 인이 진행성으로/지속적으로 높을 때만 쓰고, 미리 예방적으로 쓰지 않는다.\n"+
+        "약 선택이 중요하다 — 칼슘 기반 결합제(calcium acetate)는 칼슘 부하를 늘려 혈관 석회화를 악화시킬 수 있다. 그래서 KDIGO 2017은 칼슘 기반 결합제를 제한하고, "+
+        "비칼슘 결합제(sevelamer, lanthanum)를 선호한다. calcium acetate는 1차로 쓰되 칼슘 부하에 주의한다."},
+      {h:"PTH 조절 — 정상까지 누르지 않는다",
+        t:"투석 환자 SHPT에서 PTH를 낮추려면 calcimimetic(cinacalcet 경구, etelcalcetide 정맥)을 쓴다. 이 약은 부갑상선의 칼슘 수용체를 자극해 'PTH를 그만 만들라'는 신호를 준다. "+
+        "여기에 calcitriol(활성 비타민 D)이나 비타민 D 유사체를 병용한다.\n"+
+        "핵심 원칙: PTH를 정상 범위까지 완전히 누르지 않는다. 너무 누르면 뼈 교체가 멈춘 무형성 골질환(adynamic bone disease)이 생기기 때문이다 — "+
+        "이건 L8 빈혈의 '덜 교정이 안전' 철학과 똑같은 패턴이다. 투석 관리 전체를 관통하는 '정상까지 밀어붙이지 않는다'가 여기서도 작동한다."},
+      {h:"투석액 칼슘 — 투석으로도 조절한다",
+        t:"투석액의 칼슘 농도를 1.25~1.50 mmol/L로 둔다. L3에서 본 양방향 교환을 떠올리면 — 투석액 칼슘 농도를 조절해 "+
+        "투석 중 칼슘을 더 빼거나 덜 빼는 식으로 칼슘 균형까지 다룰 수 있다. 약뿐 아니라 투석액도 미네랄 관리의 도구다."}
+    ],
+    analogy_ko: "SHPT는 '도미노'다. 인↑·칼슘↓가 첫 패를 밀면 부갑상선이 과로하고(PTH↑), PTH가 뼈에서 칼슘을 빼내 혈관에 쌓는다. "+
+      "그런데 칼슘제로 막으려다 오히려 혈관에 칼슘을 더 붓는 함정이 있다 — 그래서 비칼슘 결합제를 선호한다.",
+    numbers: ["num:dialysate_ca"],
+    viz: "viz:shpt_cascade",
+    refs: ["ref:kdigo_mbd2017"]
+  },
+
+  "L10": {
+    id: "L10", icon: "📉", title_ko: "투석 중 저혈압(IDH) — 투석실 최다 합병증",
+    subtitle_ko: "UF가 plasma refill보다 빠르면 혈관이 빈다",
+    concept_ids: ["concept:idh","concept:dry_weight","concept:plasma_refill"],
+    comorbid_ids: ["comorbid:idh"],
+    core_ko:
+      "투석은 혈관에서 물을 빼낸다(UF). 그런데 조직에서 혈관으로 물이 다시 채워지는 속도(plasma refill, 혈장 재충전)보다 "+
+      "빼는 속도가 빠르면, 혈관 안이 비어 **혈압이 떨어진다**. 이것이 투석 중 저혈압(IDH, intradialytic hypotension)이고, 외래 투석에서 가장 흔한 합병증이다. "+
+      "여기가 네가 투석실에서 실제로 가장 자주 마주칠 사건이다.",
+    detail_ko: [
+      {h:"메커니즘 — UF 속도 vs plasma refill",
+        t:"투석으로 물을 빼면 혈관 안 물이 줄어든다. 그러면 조직 사이 공간에 있던 물이 혈관으로 스며들어 채운다(plasma refill). "+
+        "이 두 속도의 균형이 핵심이다 — refill이 UF를 따라잡으면 혈관이 안 비어 혈압이 유지되지만, UF가 refill을 추월하면 혈관이 비어 혈압이 급락한다.\n"+
+        "위험 역치는 UF rate(시간·체중당 빼는 속도)가 약 13 mL/kg/hr를 넘을 때다(11.5에서도 잦은 IDH가 보고된다). "+
+        "이 'mL/kg/hr'가 L1에서 본 체중 보정이고, CRRT의 effluent dose 단위와 정확히 같은 발상이다."},
+      {h:"왜 위험한가 — 단순 불편이 아니다",
+        t:"IDH를 '투석 중 잠깐 어지러운 것' 정도로 보면 안 된다. 혈관 내 고갈 → 저혈압 → 관상동맥 혈류 감소 → 심근 허혈/스터닝(stunning, 일시적 심근 기능저하)으로 이어진다. "+
+        "이게 반복되면 심실 재형성(remodeling)과 심부전으로 진행한다. 실제로 잦고 심한 IDH는 사망 위험 증가와 연관된다. "+
+        "매 투석마다 조금씩 심장을 상하게 하는 것이라, '그냥 흔한 일'로 넘기면 안 되는 이유다."},
+      {h:"dry weight(건체중) — 정량 지표 없는 임상 판단",
+        t:"환자에게서 물을 어디까지 뺄지의 목표가 dry weight(건체중)다. 두 정의가 있다 — '절대적' 건체중은 신장병 없는 사람 기준의 이상 체액량이고, "+
+        "'기능적' 건체중은 저혈압 없이 유지 가능한 최소 세포외액 상태의 체중이다(임상에선 후자를 쓴다).\n"+
+        "문제는 이걸 재는 정량 지표가 없다는 점이다. 그래서 투석 전 혈압과 그 변화, 근경련, 폐 울혈로 인한 호흡곤란, 말초 부종, 두근거림, 두통·어지럼, 발한, 투석 후 피로 등을 "+
+        "종합해 임상적으로 판단한다. 바로 이 부분이 신장내과의 '암묵지'를 대표하는 영역이다 — 숫자로 안 떨어지는, 경험으로 읽는 판단."},
+      {h:"관리 — 여러 층으로 접근한다",
+        t:"IDH를 줄이는 방법은 한 가지가 아니라 여러 층이다.\n"+
+        "• 투석간 체중증가(IDWG)를 줄이도록 교육 — 물·소금을 덜 먹으면 뺄 물이 줄어 UF rate가 낮아진다(L13)\n"+
+        "• 목표 체중을 자주 재평가\n"+
+        "• 투석액 조성·온도 조정 — 온도를 약간 낮추면 혈관수축으로 혈압을 보존한다(L3)\n"+
+        "• 대류요법(HDF)으로 열 손실을 늘려 혈압 보존\n"+
+        "• 세션 시간·빈도를 늘려 시간당 필요한 UF rate를 낮추기 — 같은 물을 더 천천히 빼면 refill이 따라잡는다"},
+      {h:"CRRT와의 연결",
+        t:"왜 중환자실에서 불안정한 환자에게 IHD(일반 투석) 대신 CRRT를 쓸까? 바로 이 IDH 때문이다. "+
+        "CRRT는 24시간 연속으로 천천히 빼 시간당 UF rate를 낮게 유지한다. 그래서 혈압이 안정적이다. "+
+        "패혈증·다장기부전처럼 혈역학이 불안정한 환자에게 CRRT가 선호되는 핵심 근거가 이것이다(BRIDGE에서 다시)."}
+    ],
+    analogy_ko: "IDH는 '빨대로 주스를 너무 빨리 빠는 것'이다. 컵(조직)에서 빨대 끝(혈관)으로 주스가 차오르는 속도(plasma refill)보다 "+
+      "빨리 빨면, 빨대 끝이 공기를 빨아(혈압↓) 꼬르륵거린다. 천천히 빨면 컵에서 계속 채워져 공기가 안 들어온다.",
+    numbers: ["num:ufr_danger","num:idwg_max"],
+    viz: "viz:ufr_bp",
+    refs: ["ref:cjasn_idh","ref:ki_volume","ref:icu_bridge"]
+  },
+
+  "L11": {
+    id: "L11", icon: "🔗", title_ko: "혈관접근 — 분당 수백 mL를 뽑는 통로",
+    subtitle_ko: "AVF > AVG > CVC (합병증 적은 순). Rule of 6s와 LOOK·LISTEN·FEEL",
+    concept_ids: ["concept:maturation","concept:thrill","concept:bruit","concept:rule_of_6s"],
+    proc_ids: ["proc:avf","proc:avg","proc:cvc","proc:angioplasty","proc:thrombectomy"],
+    core_ko:
+      "혈액투석을 하려면 분당 수백 mL의 피를 뽑아야 하는데, 보통 혈관으로는 불가능하다. 그래서 고유량 통로를 따로 만든다. "+
+      "세 종류가 있고 우열이 분명하다 — **①AVF(자가 동정맥루)** 최선 → **②AVG(인조혈관 그라프트)** → **③CVC(중심정맥 카테터)** 최악(감염·혈전 위험 최고). "+
+      "합병증이 적은 순서가 곧 선호 순서다.",
+    detail_ko: [
+      {h:"세 가지 접근 — 우열의 이유",
+        t:"• AVF(arteriovenous fistula, 동정맥루): 환자 자신의 동맥과 정맥을 직접 연결한 것. 가장 좋다 — 장기 개통률이 높고 감염·혈전이 적다. "+
+        "단점은 만든 뒤 쓸 수 있게 익는 데(성숙) 1.5~3개월이 걸린다는 점.\n"+
+        "• AVG(arteriovenous graft, 인조혈관): 합성 도관으로 동맥과 정맥을 잇는다. 빨리 쓸 수 있지만 혈전·감염 위험이 AVF보다 높다.\n"+
+        "• CVC(central venous catheter, 카테터): 큰 정맥에 관을 꽂는다. 즉시 쓸 수 있지만 감염·혈전 위험이 가장 높다. 1년 미만 기대여명 같은 제한된 상황에서 쓴다."},
+      {h:"성숙 판정 — Rule of 6s (외우기)",
+        t:"AVF가 충분히 익었는지(성숙) 판정하는 기억하기 쉬운 규칙이 Rule of 6s다 — 직경 >6 mm, 깊이 <6 mm, 혈류 >600 mL/min, "+
+        "수술 6주 후 평가, 천자 가능 길이 >6 cm. 6주 후 이 기준을 못 채우면 비성숙으로 보고 영상검사(fistulogram)를 한다.\n"+
+        "주의: 2019 KDOQI 가이드라인은 이 정량 기준을 버리고 '임상 판단'을 권고한다. 그래도 Rule of 6s는 직관적이어서 학습용 출발점으로 좋다 — "+
+        "숫자로 감을 잡은 뒤, 실제로는 종합 판단이라는 점을 함께 기억하면 된다."},
+      {h:"감시 — 손으로 LOOK·LISTEN·FEEL",
+        t:"접근로 유지의 핵심은 매 투석마다 손으로 살피는 것이다 — 보고(LOOK), 청진기로 듣고(LISTEN), 손으로 만진다(FEEL).\n"+
+        "정상 소견: 문합부(동맥-정맥 연결부)에 부드럽고 연속적인 thrill(떨림 진동)이 만져지고, 청진하면 biphasic bruit(이중성 잡음)가 들린다. "+
+        "혈관은 쉽게 만져지고 눌리며, 팔을 들면 collapse(납작해짐)한다 — 이건 중심정맥에 협착이 없다는 뜻이다."},
+      {h:"경고 신호 — 비전문의가 잡아야 할 것",
+        t:"다음이 보이면 협착이나 혈전을 의심한다 — 팔 부종, thrill·bruit의 변화, 투석 후 출혈이 오래 멈추지 않음. "+
+        "특히 thrill이 약해지면(혈류 감소) 또는 연속적이던 것이 박동성(콩콩 뛰는 느낌)으로 바뀌면(유출부 협착) 위험 신호다.\n"+
+        "원인은 대개 신생내막 증식(neointimal hyperplasia)이다 — 혈관 안쪽 벽이 두꺼워지며 점점 좁아지고(협착) 결국 막힌다(혈전). "+
+        "치료는 좁아진 곳을 풍선으로 넓히는 혈관성형술(angioplasty)이나 혈전을 제거하는 thrombectomy다. 조기에 잡으면 접근로를 살릴 수 있다."}
+    ],
+    analogy_ko: "혈관접근은 '투석기에 연결하는 수도관'이다. AVF는 자기 살로 만든 튼튼한 본관, AVG는 합성 호스, CVC는 임시 고무관이다. "+
+      "thrill(떨림)은 관에 물이 콸콸 흐르는 진동 — 이게 약해지면 어딘가 막히기 시작한 것이다.",
+    numbers: ["num:avf_diameter","num:avf_depth","num:avf_flow","num:avf_weeks","num:avf_cannulation_length"],
+    viz: "viz:rule6s",
+    refs: ["ref:kdoqi_va2019","ref:ajkd_rule6s"]
+  },
+
+  "L12": {
+    id: "L12", icon: "💊", title_ko: "투석 환자 약물용량 — '무조건 감량'은 틀렸다",
+    subtitle_ko: "이 약이 투석으로 빠지나(dialyzability)를 판단한다",
+    concept_ids: ["concept:dialyzability","concept:protein_binding","concept:vd","concept:supplemental_dose"],
+    drug_ids: ["drug:gentamicin","drug:vancomycin","drug:ceftazidime"],
+    core_ko:
+      "'투석 환자니까 약은 무조건 줄인다'는 흔한 오해다. 항상 맞는 게 아니다. 핵심은 **이 약이 투석으로 빠지느냐(dialyzability)**를 판단하는 것이다. "+
+      "잘 빠지는 약은 줄이는 게 아니라 오히려 투석 후 '보충'해야 한다 — 투석이 약까지 함께 빼버리기 때문이다.",
+    detail_ko: [
+      {h:"빠지는 약의 4가지 물성 (L1 물리의 응용)",
+        t:"약이 투석으로 잘 빠지는지는 네 가지 성질로 결정된다. 이건 L1의 확산 원리를 약에 그대로 적용한 것이다.\n"+
+        "• 분자 크기가 작을수록 → 막을 잘 통과한다(urea처럼)\n"+
+        "• 단백 결합(protein binding)이 낮을수록 → 잘 빠진다. 혈장 단백에 달라붙은 약은 덩치가 커져 막을 못 넘는다\n"+
+        "• 분포용적(Vd, volume of distribution)이 작을수록 → 잘 빠진다. 약이 혈관에 머물러 있어야 투석기가 잡는다. 조직 깊이 퍼진 약은 못 잡는다\n"+
+        "• 수용성이 높을수록 → 잘 빠진다"},
+      {h:"대표 예시 — 잘 빠지는 약 vs 안 빠지는 약",
+        t:"• 잘 빠짐: gentamicin·lithium은 분자가 작고 단백 결합이 낮으며 Vd가 작다(3박자) → 투석으로 잘 빠진다 → 투석 후 보충이 필요하다.\n"+
+        "• 안 빠짐: digoxin·amiodarone은 Vd가 매우 크다(조직에 깊이 분포) → 혈관 안 약이 적어 투석기가 거의 못 잡는다 → 보충이 불필요하다.\n"+
+        "특히 흥미로운 건 vancomycin이다 — 예전 low-flux 막에서는 '안 빠진다'고 알려졌지만, 요즘 high-flux 막에서는 30~49%나 빠지고 투석 후 16~36%의 rebound도 있다. "+
+        "즉 같은 약이라도 막의 종류(flux)에 따라 dialyzability가 달라진다. '안 빠지는 약'이라는 옛 상식이 막 기술 발전으로 바뀐 사례다."},
+      {h:"보충 용량과 타이밍 — 언제 주느냐가 중요하다",
+        t:"약이 얼마나 빠지는지는 그 순간의 혈중 농도에 비례한다. 그래서 약을 투여한 시점과 투석 시작 사이의 간격이 제거량을 좌우한다. "+
+        "투석 세션은 약물 투여 간격의 '끝'에 시작하는 게 이상적이고, 잘 빠지는 항생제는 **투석 후에 투여**하는 게 원칙이다.\n"+
+        "예: ceftazidime은 매 투석 후 1 g을 주는 게 표준이다(FDA·국제 권고). 무뇨 환자에서 반감기 33.6시간이던 약이 투석 중에는 3.3시간으로 짧아지므로, 투석이 끝난 뒤 새로 채워주는 것이다."},
+      {h:"주의 — 투석이 Vd를 흔든다",
+        t:"한 가지 더. 투석은 혈관 내 용적과 단백 결합을 급격히 바꿔 약의 겉보기 Vd에 일시적으로 영향을 준다. "+
+        "그래서 만성신부전 데이터로 만든 용량 권고가 실제와 어긋날 수 있다 — Vd·단백 결합·투석 타이밍을 함께 고려해야 한다. "+
+        "가능하면 약물 혈중 농도를 직접 측정하는 게 가장 안전하다(vancomycin 등)."}
+    ],
+    analogy_ko: "투석은 '체(sieve, 거름망)'다. 작고 가벼운 알갱이(작은 분자·저단백결합·저Vd 약)는 체에 걸러져 빠져나가고, "+
+      "큰 덩어리(digoxin·amiodarone)는 체 위에 남는다. 빠져나간 만큼 다시 채워야(보충) 약효가 유지된다.",
+    numbers: [],
+    viz: "viz:dialyzability_matrix",
+    refs: ["ref:renal_pharmacy","ref:statpearls_vd"]
+  },
+
+  "L13": {
+    id: "L13", icon: "🍽️", title_ko: "투석 환자 식이 — 제한과 역설",
+    subtitle_ko: "Na·K·phosphate·물은 제한, 단 단백질은 오히려 충분히",
+    concept_ids: ["concept:idwg","concept:organic_inorganic_phosphate"],
+    core_ko:
+      "원리는 간단하다 — 콩팥이 못 빼는 것은 식이로 줄인다(나트륨·칼륨·인·수분). 그런데 한 가지 역설이 있다 — "+
+      "**단백질은 오히려 충분히** 먹어야 한다(1.0~1.2 g/kg/일). 일반 만성신부전(단백 제한)과 정반대인데, 투석이 아미노산까지 빼버리기 때문이다(세션당 5~8 g 손실). "+
+      "'제한'이 기본이지만 단백질만은 예외라는 이 대비를 이해하는 게 핵심이다.",
+    detail_ko: [
+      {h:"단백질 — 늘려라 (반직관)",
+        t:"투석 전 만성신부전 환자는 콩팥 부담을 줄이려 단백질을 제한한다. 그런데 투석 환자는 반대로 충분히(1.0~1.2 g/kg/일) 먹어야 한다.\n"+
+        "이유는 두 가지다 — 첫째, 투석 한 세션마다 아미노산이 5~8 g씩 빠져나가니 이를 보충해야 한다. 둘째, 영양실조(단백에너지 소모, PEW)를 막아야 한다.\n"+
+        "단 고품질 단백을 권한다 — 육류·가금·생선·계란. 가공육(핫도그·통조림)은 나트륨·인이 높아 피한다. '단백은 늘리되 가공식품은 아니다'가 요령이다."},
+      {h:"나트륨(Na) — 2.3 g/일 미만",
+        t:"나트륨 제한이 중요한 이유는 연쇄 효과 때문이다 — 나트륨을 많이 먹으면 갈증이 나고 → 물을 더 마시게 되고 → 투석간 체중증가(IDWG)와 혈압이 오른다. "+
+        "즉 나트륨 제한은 단순히 짜게 안 먹는 게 아니라, L10의 IDH·UF rate 문제를 입구에서 막는 것이다.\n"+
+        "소금통만 치우는 게 아니라 가공식품 라벨의 나트륨까지 봐야 한다 — 안 짜 보이는 음식에도 나트륨이 숨어 있다."},
+      {h:"칼륨(K) — 개별화로 바뀌었다 (최신)",
+        t:"과거에는 칼륨을 일률적으로 제한했지만, 지금은 개별화한다. 이유: 과일·채소·통곡물의 칼륨은 생체이용률(실제 흡수율)이 생각보다 낮아서 무리하게 제한할 필요가 없고, "+
+        "이 음식들은 다른 건강 이점이 많다.\n"+
+        "그래서 고칼륨혈증이 있으면 식이부터 줄이기 전에 다른 원인을 먼저 확인한다 — 변비, 인슐린 부족, 미치료 대사성 산증, 투석 부족, 약물. "+
+        "다만 칼륨은 위험하다 — 과하면 치명적 부정맥과 사망을 일으킬 수 있다. 필요하면 칼륨결합제로 식단을 더 넓힐 수 있다."},
+      {h:"인(phosphate) — 무기인(첨가물)이 진짜 문제다",
+        t:"투석은 인을 효과적으로 제거하지 못한다(L6의 맹점). 그래서 식이 제한이 필요한데, 핵심은 인의 '종류'다.\n"+
+        "유기인(organic phosphate, 자연식품의 인)은 흡수율이 낮은 반면, 무기인(inorganic phosphate, 가공식품 첨가물)은 흡수율이 훨씬 높다. "+
+        "즉 같은 양이라도 가공식품 첨가물의 인이 진짜 문제다. 그래서 가공식품을 피하고, 식품 라벨에서 'PHOS'가 들어간 첨가물(disodium phosphate 등)을 확인하는 게 핵심이다. "+
+        "이게 L9의 CKD-MBD(뼈·혈관석회화)와 직접 이어진다 — 식이로 인을 줄이는 것이 뼈와 혈관을 지키는 일이다."},
+      {h:"수분 — IDWG로 관리한다",
+        t:"수분은 'mL로 몇 잔'처럼 정하기보다 투석간 체중증가(IDWG, interdialytic weight gain)로 본다. "+
+        "투석과 투석 사이에 늘어난 체중이 곧 쌓인 물이기 때문이다. IDWG가 체중의 5%까지 가면 다음 투석에서 빼야 할 물이 많아 UF rate가 위험해진다(L10).\n"+
+        "참고로 빈도가 높은 가정 혈액투석은 자주 물을 빼므로 수분 제한이 더 느슨하다 — 매일 빼면 한 번에 쌓이는 물이 적기 때문이다."}
+    ],
+    analogy_ko: "투석 식이는 '들어오는 것과 빠지는 것의 수지 균형'이다. 콩팥이 못 빼는 Na·K·인·물은 입구에서 막고, "+
+      "투석이 빼버리는 단백질은 오히려 더 넣는다. 그리고 인은 '자연산'보다 '가공 첨가물'이 훨씬 잘 흡수돼 더 위험하다.",
+    numbers: ["num:protein_intake","num:sodium_max","num:energy_intake","num:idwg_max"],
+    viz: "viz:diet_balance",
+    refs: ["ref:kdoqi_nutrition2020","ref:niddk_diet","ref:nkf_diet"]
+  },
+
+  "BRIDGE": {
+    id: "BRIDGE", icon: "🔄", title_ko: "CRRT 브릿지 — HD와 같은 물리, 다른 속도",
+    subtitle_ko: "effluent dose ↔ UF rate ↔ Kt/V: ICU 모듈 숫자를 같은 언어로",
+    concept_ids: ["concept:convection","concept:ultrafiltration"],
+    proc_ids: ["proc:crrt","proc:hdf"],
+    core_ko:
+      "CRRT(continuous renal replacement therapy, 지속 신대체요법)는 멀어 보이지만 사실 HD와 같은 물리 법칙(L1) 위에 있다. "+
+      "차이는 딱 하나 — CRRT는 24시간 내내 **아주 천천히 연속으로** 뺀다. 이 '천천히, 연속'이라는 차이에서 두 가지 결과가 나온다 — "+
+      "**①urea rebound가 거의 없고(늘 평형)** **②혈역학이 안정적(IDH 회피)**. 이 두 가지가 ICU에서 CRRT를 쓰는 이유 전부다.",
+    detail_ko: [
+      {h:"같은 언어로 번역하기 — effluent ↔ Kt/V",
+        t:"HD에서 배운 개념들을 CRRT 언어로 그대로 옮길 수 있다.\n"+
+        "• HD의 Kt/V ↔ CRRT의 effluent dose(여과액 양, 보통 20~25 mL/kg/hr)\n"+
+        "• HD의 UF rate(mL/kg/hr) ↔ CRRT의 fluid removal(물 제거 속도)\n"+
+        "• 둘 다 체중당(mL/kg/hr)으로 본다 — 큰 사람일수록 절대량이 커야 같은 '비율'이 된다(L6의 V 보정과 동일)\n"+
+        "즉 effluent dose를 'Kt/V를 24시간 연속으로 펼친 것'으로 이해하면, 그동안 막연했던 CRRT 숫자가 익숙한 개념으로 풀린다."},
+      {h:"왜 연속인가 ① — rebound가 없다 (L5)",
+        t:"IHD(일반 투석)는 짧은 시간에 빠르게 빼므로 urea rebound가 크다(투석 후 조직 urea가 도로 새어 나옴). "+
+        "반면 CRRT는 24시간 내내 천천히 빼므로 조직과 혈관이 늘 평형을 유지한다 — rebound가 거의 없다.\n"+
+        "그래서 같은 누적 청소량이라도 CRRT가 더 '생리적'이다. 이건 L5에서 본 'FHN nocturnal이 더 생리적'이라는 논리를 극단까지 밀어붙인 것이다. "+
+        "느리고 길수록 rebound가 작다 → CRRT는 가장 느리고 가장 긴(연속) 투석이다."},
+      {h:"왜 연속인가 ② — 혈역학 안정 (L10)",
+        t:"불안정한 중환자에게 IHD의 빠른 UF는 IDH와 심근 스터닝을 유발할 수 있다(L10). "+
+        "CRRT는 시간당 UF rate를 낮춰 같은 물을 훨씬 천천히 빼므로 혈압이 보존된다. "+
+        "그래서 패혈증·다장기부전처럼 혈역학이 불안정한 환자에게 CRRT가 선호된다. 항응고는 출혈 위험을 피하려 citrate 국소 항응고가 표준이다(L4)."},
+      {h:"대류 우위 — middle molecule (L1)",
+        t:"CRRT와 HDF는 convection(대류, solvent drag)을 주로 쓴다. 그래서 diffusion만으로는 잘 못 빼던 middle molecule을 더 잘 제거한다. "+
+        "L1에서 본 '확산의 약점을 대류가 보완한다'가 ICU 환경에서 그대로 작동하는 것이다. HD=diffusion, CRRT=convection이라는 한 줄이 처음부터 끝까지 관통한다."}
+    ],
+    analogy_ko: "HD는 '강력한 청소기로 30분간 몰아치기', CRRT는 '약한 청소기로 24시간 계속 돌리기'다. "+
+      "같은 청소 원리(diffusion·convection)지만, 천천히 하면 먼지가 도로 안 날리고(rebound↓) 집이 안 흔들린다(혈압 안정).",
+    numbers: ["num:ufr_danger"],
+    trial_ids: ["pmid:fhn_nocturnal2011"],
+    viz: "viz:hd_crrt_compare",
+    refs: ["ref:icu_bridge","ref:kdigo_aki2012"]
+  },
+
+  "L15": {
+    id: "L15", icon: "🎛️", title_ko: "CRRT 시뮬레이터 — 파라미터를 직접 돌려본다",
+    subtitle_ko: "이 값을 바꾸면 무엇이 바뀌나: effluent dose·FF·희석을 실시간으로",
+    concept_ids: ["concept:effluent_dose","concept:filtration_fraction","concept:dilution_factor","concept:pre_post_dilution","concept:nuf"],
+    proc_ids: ["proc:crrt","proc:cvvh","proc:cvvhd","proc:cvvhdf"],
+    drug_ids: ["drug:citrate","drug:heparin"],
+    core_ko:
+      "CRRT는 '그냥 돌리는' 게 아니라, 조절하는 값이 몇 개뿐이고 그것들이 물리 공식으로 서로 묶여 있다. "+
+      "**혈류(BFR)·투석액(Qd)·보충액(Qr)·순제거(Qnet)**를 바꾸면 effluent dose, filtration fraction(FF, 응고 위험), 희석이 어떻게 변하는지 — "+
+      "아래 시뮬레이터로 직접 돌려보면 '이 값을 왜 이렇게 두는지'가 손에 잡힌다. "+
+      "핵심 한 줄: **effluent dose(20~25 mL/kg/hr)는 Kt/V를 24시간 연속으로 펼친 것**이고(BRIDGE), FF는 BFR에 반비례한다.",
+    detail_ko: [
+      {h:"파라미터가 서로 어떻게 묶이나 (공식)",
+        t:"몇 개 안 되는 값이 이렇게 연결된다.\n"+
+        "• Plasma flow Qp = BFR × 60 × (1−Hct) — 혈장이 분당 얼마나 필터에 도달하는지\n"+
+        "• Effluent = Qd + Qr + Qnet — 빠져나온 총 여과액. 이걸 체중으로 나눈 게 dose(mL/kg/hr)\n"+
+        "• Dilution factor = Qp / (Qp + 전희석Qr) — 전희석 보충액이 혈액을 묽혀 실제 dose를 깎는다\n"+
+        "• FF = 총한외여과 / (Qp + 전희석Qr) — 필터에서 짜내는 비율. 25% 넘으면 혈액농축으로 응고\n"+
+        "이 공식들이 시뮬레이터 안에서 실시간으로 돈다. 슬라이더를 움직이면 즉시 결과가 바뀐다."},
+      {h:"왜 BFR(혈류)을 올리나 — 흔한 오해 교정",
+        t:"많은 사람이 'BFR을 올리면 dose가 올라간다'고 생각하는데, 사실 small solute에서 dose를 결정하는 건 effluent(Qd+Qr)이지 BFR이 아니다. "+
+        "그럼 BFR은 왜 올릴까? **FF를 낮춰 필터를 오래 쓰려고**다. BFR↑ → Qp↑ → FF↓ → 응고 위험↓. "+
+        "즉 BFR은 '청소량'이 아니라 '필터 수명'을 위한 손잡이다. 시뮬레이터에서 BFR만 내려보면 FF가 치솟고 응고 경고가 뜨는 걸 직접 볼 수 있다."},
+      {h:"전희석 vs 후희석 보충액 — CRRT 처방의 핵심 감각",
+        t:"보충액(Qr)을 필터 '앞'에 넣느냐 '뒤'에 넣느냐가 정반대 효과를 낸다.\n"+
+        "• 전희석(pre): 필터 전 혈액을 묽혀 응고를 막는다(FF↓). 하지만 농도가 묽어져 청소 효율이 떨어진다(실제 dose↓).\n"+
+        "• 후희석(post): 필터 뒤에 넣어 희석이 없다(dose 살림). 하지만 필터 안 혈액이 농축돼 FF↑(응고 위험↑).\n"+
+        "이 트레이드오프 — '응고를 막을까(전희석) vs dose를 살릴까(후희석)' — 의 균형 감각이 CRRT 처방의 핵심이다. 시뮬레이터에서 전희석을 올리면 dose가 깎이는 걸(희석계수) 숫자로 확인하라."},
+      {h:"왜 20~25면 충분한가 — ATN·RENAL",
+        t:"effluent dose를 무작정 올리고 싶을 수 있지만, 두 대규모 RCT가 '더 올려도 소용없다'를 증명했다.\n"+
+        "ATN(2008): CVVHDF 35 vs 20 mL/kg/hr — 60일 사망률 차이 없음.\n"+
+        "RENAL(2009): 후희석 CVVHDF 40 vs 25 — 90일 사망률 동일(고용량군은 저인산혈증만 더 많음).\n"+
+        "그래서 KDIGO는 전달 목표 20~25, 처방은 downtime(회로 중단) 감안해 25~30을 권한다. "+
+        "고암모니아(>100)·중증 대사이상 같은 예외에서만 더 올린다. 이것도 L6 HEMO의 '1.2 넘으면 끝'과 같은 결론이다."},
+      {h:"순제거(Qnet)와 NUF — 혈역학의 손잡이",
+        t:"Qnet은 환자에게서 실제로 빼는 순수한 물의 양이다. 이걸 체중으로 나눈 NUF rate가 2 mL/kg/hr를 넘으면 혈역학에 부담을 준다. "+
+        "CRRT가 IHD보다 혈압에 안전한 이유가 바로 이 NUF를 낮게(천천히) 유지하기 때문이다(L10). "+
+        "시뮬레이터에서 Qnet을 올리면 NUF 경고가 뜨는 걸 볼 수 있다 — 생명위협 용적과부하가 아니면 천천히 빼는 게 원칙."}
+    ],
+    analogy_ko: "CRRT 처방은 '믹서의 다이얼 몇 개를 맞추는 것'이다. 혈류는 모터 속도(빠르면 안 엉김=FF↓), "+
+      "보충액 전/후 투입은 재료를 갈기 전에 넣느냐 후에 넣느냐(전=묽어짐, 후=진함), "+
+      "순제거는 따라내는 양(많이 따르면 컵이 흔들림=혈역학 부담). 다이얼이 서로 물려 있어 하나를 돌리면 나머지가 따라 움직인다.",
+    numbers: [],
+    trial_ids: [],
+    crrt_trials: ["pmid:atn2008","pmid:renal2009"],
+    viz: "viz:crrt_simulator",
+    viz_secondary: "viz:crrt_flow",
+    refs: ["ref:crrt_dose","ref:crrt_prescribe","ref:kdigo_aki2012","ref:atn_nejm","ref:renal_nejm"]
+  }
+};
+
+</script>
+<script>/* ============================================================
+   투석 학습 가이드 — DATA 레이어: 약물 dialyzability + 치료약
+   DIALYSIS_DRUGS
+   ※ 전역 drug: ID 사용. 기존 레지스트리 재사용분 + 신규분 구분 표기.
+   ※ dialyzability: 4물성(MW/단백결합/Vd/수용성) → 제거율 → 보충 필요·타이밍
+   ※ 핵심 뉘앙스: 제거율은 막 종류(low-flux vs high-flux)에 좌우된다.
+   ※ 모든 약물 특성은 이 객체가 단독 소유. 타 모듈은 drug: ID로만 인용(하드코딩 금지).
+   ============================================================ */
+
+var DIALYSIS_DRUGS = {
+
+  /* ===== L8 빈혈 치료약 ===== */
+  "drug:epoetin_alfa": {
+    id: "drug:epoetin_alfa", registry: "new",
+    name_ko: "Epoetin alfa 에포에틴알파", name_en: "Epoetin alfa", class_id: "class:esa",
+    role_ko: "적혈구형성자극제(ESA) — 콩팥 EPO 결핍 보충",
+    layer: "L8",
+    notes_ko: [
+      "피하<정맥보다 적은 용량으로 일정 Hb 유지(피하 효율적)",
+      "피하→정맥 전환 시 약 30% 증량 필요",
+      "Hb 12 초과 시 심혈관·사망 위험 — 과교정 금지"
+    ],
+    reimb_id: "notice:epo_급여"
+  },
+  "drug:darbepoetin": {
+    id: "drug:darbepoetin", registry: "new",
+    name_ko: "Darbepoetin 다르베포에틴", name_en: "Darbepoetin alfa", class_id: "class:esa",
+    role_ko: "장시간형 ESA — 투여 간격 김",
+    layer: "L8",
+    notes_ko: ["반감기 길어 주1회~격주 투여 가능"],
+    reimb_id: "notice:epo_급여"
+  },
+  "drug:roxadustat": {
+    id: "drug:roxadustat", registry: "new",
+    name_ko: "Roxadustat 록사두스타트", name_en: "Roxadustat", class_id: "class:hif_phi",
+    role_ko: "경구 HIF-PHi — HIF 안정화로 내인성 EPO 생산 자극",
+    layer: "L8",
+    notes_ko: [
+      "ESA와 비슷한 Hb 도달(2026 KDIGO는 ESA를 1차 선호)",
+      "첫 3개월 갑상선기능 모니터링",
+      "3~4개월내 적혈구 반응 없으면 중단",
+      "심혈관·혈전색전·혈관접근 혈전·신규 암 발생 시 중단",
+      "위험군엔 회피(KDIGO 2026 Table 6)"
+    ]
+  },
+  "drug:iron_sucrose": {
+    id: "drug:iron_sucrose", registry: "new",
+    name_ko: "Iron sucrose 철수크로스", name_en: "Iron sucrose",
+    role_ko: "정맥 철분 — ferritin·TSAT 기반 보충, ESA 용량 절감", layer: "L8"
+  },
+  "drug:ferric_carboxymaltose": {
+    id: "drug:ferric_carboxymaltose", registry: "new",
+    name_ko: "Ferric carboxymaltose 페릭카르복시말토스", name_en: "Ferric carboxymaltose",
+    role_ko: "정맥 철분 — 고용량 1회 투여 가능", layer: "L8"
+  },
+
+  /* ===== L9 CKD-MBD 치료약 ===== */
+  "drug:sevelamer": {
+    id: "drug:sevelamer", registry: "new",
+    name_ko: "Sevelamer 세벨라머", name_en: "Sevelamer", class_id: "class:phosphate_binder",
+    role_ko: "비칼슘 인결합제 — 칼슘부하 없이 인 강하(혈관석회화 회피)",
+    layer: "L9", binder_type: "non-calcium",
+    reimb_id: "notice:phosphate_binder_급여"
+  },
+  "drug:lanthanum": {
+    id: "drug:lanthanum", registry: "new",
+    name_ko: "Lanthanum 란타넘", name_en: "Lanthanum carbonate", class_id: "class:phosphate_binder",
+    role_ko: "비칼슘 인결합제 — 강력한 인 결합",
+    layer: "L9", binder_type: "non-calcium",
+    reimb_id: "notice:phosphate_binder_급여"
+  },
+  "drug:calcium_acetate": {
+    id: "drug:calcium_acetate", registry: "new",
+    name_ko: "Calcium acetate 칼슘아세테이트", name_en: "Calcium acetate", class_id: "class:phosphate_binder",
+    role_ko: "칼슘기반 인결합제 — 1차로 쓰되 칼슘부하·고칼슘혈증 주의",
+    layer: "L9", binder_type: "calcium",
+    notes_ko: ["KDIGO 2017: 칼슘기반 결합제 사용 제한(혈관석회화)"],
+    reimb_id: "notice:phosphate_binder_급여"
+  },
+  "drug:cinacalcet": {
+    id: "drug:cinacalcet", registry: "new",
+    name_ko: "Cinacalcet 시나칼셋", name_en: "Cinacalcet", class_id: "class:calcimimetic",
+    role_ko: "경구 칼시미메틱 — 부갑상선 칼슘수용체 자극해 PTH 강하",
+    layer: "L9",
+    notes_ko: ["PTH를 정상까지 누르지 않음(무형성골 방지)"],
+    reimb_id: "notice:calcimimetic_급여"
+  },
+  "drug:etelcalcetide": {
+    id: "drug:etelcalcetide", registry: "new",
+    name_ko: "Etelcalcetide 에텔칼세타이드", name_en: "Etelcalcetide", class_id: "class:calcimimetic",
+    role_ko: "정맥 칼시미메틱 — 투석 종료 시 정맥 투여(순응도↑)",
+    layer: "L9",
+    reimb_id: "notice:calcimimetic_급여"
+  },
+  "drug:calcitriol": {
+    id: "drug:calcitriol", registry: "reuse",
+    name_ko: "Calcitriol 칼시트리올", name_en: "Calcitriol", class_id: "class:vitd_analog",
+    role_ko: "활성 비타민D — 콩팥이 못 만드는 활성형 보충, PTH 강하",
+    layer: "L9",
+    notes_ko: ["고칼슘·고인혈증 주의. 기존 레지스트리 ID 재사용"]
+  },
+
+  /* ===== L12 dialyzability 예시약 (제거율/보충 학습용) ===== */
+  "drug:vancomycin": {
+    id: "drug:vancomycin", registry: "reuse",
+    name_ko: "Vancomycin 반코마이신", name_en: "Vancomycin",
+    role_ko: "글리코펩티드 항생제 — dialyzability의 대표 학습 사례",
+    layer: "L12",
+    reuse_note: "기존 항균제 앱 레지스트리 ID 공유. 투석 앱은 dialyzability 속성만 가산",
+    dialyzability: {
+      mw_da: 1449, protein_binding_pct: [10, 55], vd_l_kg: 0.6,
+      removal_lowflux: "minimal", removal_highflux_pct: [30, 49],
+      rebound_pct: [16, 36],
+      supplement: true, timing_ko: "고flux면 투석 마지막 1~2시간 또는 투석 후 투여",
+      teaching_ko: "고전적으로 '안 빠진다'고 알려졌으나 고flux 막에서는 30~49% 제거 + 리바운드 16~36%. "+
+        "→ dialyzability는 막 종류(flux)에 좌우된다. 혈중농도(trough 15~20) 모니터 필수"
+    }
+  },
+  "drug:gentamicin": {
+    id: "drug:gentamicin", registry: "reuse",
+    name_ko: "Gentamicin 겐타마이신", name_en: "Gentamicin",
+    role_ko: "아미노글리코사이드 — 잘 빠지는 약의 대표",
+    layer: "L12",
+    reuse_note: "기존 항균제 앱 레지스트리 ID 공유. dialyzability 속성만 가산",
+    dialyzability: {
+      mw_da: 478, protein_binding_pct: [0, 10], vd_l_kg: 0.25,
+      removal_highflux_pct: [50, 98],
+      supplement: true, timing_ko: "투석 후 투여(보충)",
+      teaching_ko: "작은 분자·저단백결합·저Vd 3박자 → 잘 빠짐. 투석 후 보충 필요. 혈중농도 모니터"
+    }
+  },
+  "drug:ceftazidime": {
+    id: "drug:ceftazidime", registry: "new",
+    name_ko: "Ceftazidime 세프타지딤", name_en: "Ceftazidime",
+    role_ko: "세팔로스포린 — 투석 후 보충 투여의 표준 예",
+    layer: "L12",
+    dialyzability: {
+      mw_da: 547, protein_binding_pct: [10, 17], vd_l_kg: 0.23,
+      removal_highflux_pct: [50, 60],
+      supplement: true, timing_ko: "매 투석 후 1g(FDA/국제 권고)",
+      teaching_ko: "반감기가 무뇨 33.6h→투석 중 3.3h로 단축. 매 투석 후 1g 보충이 표준"
+    }
+  },
+  "drug:digoxin_ref": {
+    id: "drug:digoxin_ref", registry: "reference_only",
+    name_ko: "Digoxin 디곡신(참고)", name_en: "Digoxin",
+    role_ko: "안 빠지는 약의 대표 — 보충 불필요",
+    layer: "L12",
+    dialyzability: {
+      mw_da: 781, protein_binding_pct: [20, 30], vd_l_kg: 5.6,
+      removal_highflux_pct: [0, 5],
+      supplement: false, timing_ko: "투석 후 보충 불필요",
+      teaching_ko: "Vd가 매우 큼(5.6 L/kg, 조직에 깊이 분포) → 혈관내 약이 적어 투석기가 못 잡음. "+
+        "큰 Vd 약(아미오다론도 유사)은 투석으로 제거 안 됨"
+    }
+  },
+
+  /* ===== L4 항응고 ===== */
+  "drug:heparin": {
+    id: "drug:heparin", registry: "reuse",
+    name_ko: "Heparin 헤파린", name_en: "Heparin",
+    role_ko: "체외회로 전신 항응고 — bolus+유지", layer: "L4",
+    notes_ko: ["기존 레지스트리 ID 재사용. 출혈위험 환자엔 부담"]
+  },
+  "drug:citrate": {
+    id: "drug:citrate", registry: "new",
+    name_ko: "Citrate 시트레이트", name_en: "Citrate",
+    role_ko: "국소 항응고(RCA) — 회로 내 칼슘 결합, 복귀 전 칼슘 보충",
+    layer: "L4",
+    notes_ko: ["CRRT 표준 항응고. 전신 출혈위험 최소화. 시트레이트 축적 모니터", "ICU 모듈 공유 ID"]
+  }
+};
+
+</script>
+<script>/* ============================================================
+   투석 학습 가이드 — DATA 레이어: ID 등록 + 급여 + 시각화
+   3개 객체: DIALYSIS_NEW_IDS / DIALYSIS_REIMB / DIALYSIS_VIZ
+   ※ additive only. 기존 /mnt/project 레지스트리 ID 변경 0건.
+   ※ HIRA 급여는 골격만 — 코딩 직전 원문 직접 재검증(메모리≠현실).
+   ============================================================ */
+
+/* ---------- (1) 신규 전역 ID 등록분 (통합 시 레지스트리에 가산) ---------- */
+var DIALYSIS_NEW_IDS = {
+  // 약물 신규(13): 위 data_drugs.js 참조. vancomycin·gentamicin·calcitriol·heparin은 reuse
+  drugs_new: ["drug:epoetin_alfa","drug:darbepoetin","drug:roxadustat",
+    "drug:iron_sucrose","drug:ferric_carboxymaltose","drug:sevelamer","drug:lanthanum",
+    "drug:calcium_acetate","drug:cinacalcet","drug:etelcalcetide","drug:ceftazidime","drug:citrate"],
+  drugs_reuse: ["drug:vancomycin","drug:gentamicin","drug:calcitriol","drug:heparin"],
+
+  // 계열(5)
+  classes_new: ["class:esa","class:hif_phi","class:phosphate_binder",
+    "class:calcimimetic","class:vitd_analog"],
+
+  // 검사/지표(14): egfr는 reuse
+  labs_new: ["lab:hb","lab:ktv","lab:spktv","lab:ektv","lab:stdktv","lab:urr",
+    "lab:phosphate","lab:calcium","lab:pth","lab:albumin","lab:ferritin","lab:tsat",
+    "lab:ufr","lab:access_flow"],
+  labs_reuse: ["lab:egfr","lab:creatinine","lab:potassium"],
+
+  // 시술/모달리티(10)
+  procs_new: ["proc:hd","proc:pd","proc:hdf","proc:crrt","proc:transplant",
+    "proc:avf","proc:avg","proc:cvc","proc:angioplasty","proc:thrombectomy"],
+
+  // 동반질환(5): ckd는 reuse
+  comorbid_new: ["comorbid:eskd","comorbid:shpt","comorbid:renal_anemia",
+    "comorbid:idh","comorbid:ckd_mbd"],
+  comorbid_reuse: ["comorbid:ckd"],
+
+  // 개념(학습앱 신규 네임스페이스, 27)
+  concepts_new: ["concept:why_dialysis","concept:diffusion","concept:convection",
+    "concept:ultrafiltration","concept:osmosis","concept:solvent_drag","concept:countercurrent",
+    "concept:hollow_fiber","concept:dialysate","concept:tmp","concept:kuf",
+    "concept:citrate_anticoag","concept:urea_rebound","concept:two_pool","concept:adequacy",
+    "concept:dry_weight","concept:plasma_refill","concept:dialyzability","concept:protein_binding",
+    "concept:vd","concept:supplemental_dose","concept:maturation","concept:thrill","concept:bruit",
+    "concept:rule_of_6s","concept:idwg","concept:organic_inorganic_phosphate","concept:eskd_lifeplan",
+    "concept:renal_anemia","concept:shpt","concept:ckd_mbd","concept:idh",
+    "concept:effluent_dose","concept:filtration_fraction","concept:dilution_factor",
+    "concept:pre_post_dilution","concept:nuf","concept:plasma_flow","concept:rca"],
+
+  // 임상시험(4): 전부 PubMed 검증 완료
+  trials_new: ["pmid:hemo2002","pmid:fhn_daily2010","pmid:fhn_nocturnal2011","pmid:ideal2010"],
+
+  // 고시(4): HIRA 원문재검증 필요
+  notices_new: ["notice:hd_정액수가","notice:epo_급여",
+    "notice:phosphate_binder_급여","notice:calcimimetic_급여"]
+};
+
+/* ---------- (2) HIRA 급여 (골격 — 코딩 직전 원문 재검증 필수) ---------- */
+var DIALYSIS_REIMB = {
+  _meta: {
+    verified: false,
+    warning_ko: "⚠️ 아래 급여 내용은 골격이며 미검증 상태. 코딩 직전 HIRA 고시 원문 직접 재검증 필수. " +
+      "메모리·웹검색은 grep 확인 전까지 미검증으로 간주.",
+    sources_to_check: ["HIRA 요양급여비용 고시", "HIRA 적정성평가 세부지침",
+      "sondoctor.co.kr", "sattimd.com"]
+  },
+  "notice:hd_정액수가": {
+    id: "notice:hd_정액수가", layer: "L7", verified: false,
+    title_ko: "혈액투석 정액수가",
+    skeleton_ko: "외래 혈액투석은 정액수가(투석+검사+약제 일부 포함) 적용. " +
+      "투석 횟수·환자 조건별 산정 기준 [원문재검증]",
+    conflict_flag: false
+  },
+  "notice:epo_급여": {
+    id: "notice:epo_급여", layer: "L8", verified: false,
+    title_ko: "조혈제(EPO) 급여기준",
+    skeleton_ko: "투석환자 신성빈혈에 EPO 급여. 흔한 트리거 Hb<10. " +
+      "HIRA 적정성평가가 'Hb<10 환자 비율' 모니터 [원문재검증]",
+    guideline_value_ko: "KDIGO 2026: ESA 시작 Hb≤9~10, 유지 목표 Hb<11.5",
+    conflict_flag: false,
+    conflict_note_ko: "가이드라인(목표<11.5)과 급여(Hb<10 트리거)는 대체로 정합. 단 과교정 급여 삭감 주의"
+  },
+  "notice:phosphate_binder_급여": {
+    id: "notice:phosphate_binder_급여", layer: "L9", verified: false,
+    title_ko: "인결합제 급여기준",
+    skeleton_ko: "고인산혈증에 인결합제 급여. 칼슘/비칼슘 결합제별 기준·혈청 인 역치 [원문재검증]",
+    guideline_value_ko: "KDIGO 2017: 칼슘기반 결합제 제한, 비칼슘(세벨라머·란타넘) 선호",
+    conflict_flag: true,
+    conflict_note_ko: "⚠️ 잠재 상충: 가이드라인은 비칼슘 선호하나, 급여는 흔히 칼슘기반 1차·비칼슘 2차(고가) 단계 요구 가능 [원문재검증]"
+  },
+  "notice:calcimimetic_급여": {
+    id: "notice:calcimimetic_급여", layer: "L9", verified: false,
+    title_ko: "칼시미메틱 급여기준",
+    skeleton_ko: "투석환자 SHPT에 시나칼셋·에텔칼세타이드 급여. PTH 역치·인·칼슘 조건 [원문재검증]",
+    guideline_value_ko: "KDIGO 2017: PTH 강하에 칼시미메틱±칼시트리올",
+    conflict_flag: false
+  }
+};
+
+/* ---------- (3) 인터랙티브 시각화 파라미터 (8종, ES5 순수 JS) ---------- */
+var DIALYSIS_VIZ = {
+  "viz:diffusion": {
+    id: "viz:diffusion", layer: "L1", type: "animation",
+    title_ko: "확산 — 농도차로 입자가 퍼진다",
+    controls: [{key:"gradient", label_ko:"농도차", min:0, max:100, default:70, unit:"%"}],
+    output_ko: "농도차가 클수록 입자 이동(우레아 제거) 빠름",
+    render: "particles_cross_membrane"
+  },
+  "viz:solvent_drag": {
+    id: "viz:solvent_drag", layer: "L1", type: "animation",
+    title_ko: "대류 — 물이 용질을 끌고 간다",
+    controls: [{key:"flow", label_ko:"물 흐름(UF)", type:"toggle", default:true}],
+    output_ko: "물 흐름 ON 시 큰 분자도 함께 제거(middle molecule)",
+    render: "water_drags_solute"
+  },
+  "viz:countercurrent": {
+    id: "viz:countercurrent", layer: "L2", type: "comparison",
+    title_ko: "역류 vs 병류 — 농도차 유지 비교",
+    controls: [{key:"direction", label_ko:"흐름 방향", type:"toggle",
+      options_ko:["역류(반대)","병류(같은방향)"], default:"역류"}],
+    output_ko: "역류는 내내 농도차 유지(확산 지속), 병류는 중간 평형(확산 정지)",
+    render: "concentration_curves"
+  },
+  "viz:rebound": {
+    id: "viz:rebound", layer: "L5", type: "graph",
+    title_ko: "우레아 리바운드 — spKt/V vs eKt/V",
+    controls: [
+      {key:"K", label_ko:"투석 속도 K", min:100, max:400, default:300, unit:"mL/min"},
+      {key:"V", label_ko:"분포용적 V", min:25, max:50, default:40, unit:"L"}
+    ],
+    output_ko: "투석종료 후 30~60분 BUN 상승곡선. sp-e 갭(약 0.2) 시각화",
+    render: "rebound_curve",
+    data_refs: ["num:ektv_gap","num:rebound_pct"]
+  },
+  "viz:ktv": {
+    id: "viz:ktv", layer: "L6", type: "calculator",
+    title_ko: "Kt/V 실시간 계산",
+    controls: [
+      {key:"K", label_ko:"청소율 K", min:150, max:350, default:250, unit:"mL/min"},
+      {key:"t", label_ko:"시간 t", min:120, max:360, default:240, unit:"min"},
+      {key:"V", label_ko:"용적 V", min:25, max:50, default:40, unit:"L"}
+    ],
+    formula: "Kt/V = (K * t) / (V * 1000)",
+    output_ko: "K·t·V 변화 시 Kt/V 실시간. 목표선 1.4 / 최소선 1.2 표시",
+    render: "ktv_live",
+    data_refs: ["num:spktv_target","num:spktv_min"]
+  },
+  "viz:ufr_bp": {
+    id: "viz:ufr_bp", layer: "L10", type: "tradeoff",
+    title_ko: "UF rate vs 혈압 — plasma refill 트레이드오프",
+    controls: [{key:"ufr", label_ko:"UF rate", min:5, max:20, default:10, unit:"mL/kg/hr"}],
+    output_ko: "UFR이 refill 추월 시 혈압 급락(IDH). 위험선 13 표시",
+    render: "ufr_refill_curves",
+    data_refs: ["num:ufr_danger"]
+  },
+  "viz:rule6s": {
+    id: "viz:rule6s", layer: "L11", type: "evaluator",
+    title_ko: "누공 성숙 판정 (Rule of 6s)",
+    controls: [
+      {key:"diameter", label_ko:"직경", min:2, max:12, default:5, unit:"mm"},
+      {key:"depth", label_ko:"깊이", min:1, max:12, default:7, unit:"mm"},
+      {key:"flow", label_ko:"혈류", min:200, max:1200, default:500, unit:"mL/min"},
+      {key:"weeks", label_ko:"경과", min:0, max:16, default:6, unit:"주"}
+    ],
+    output_ko: "굵기>6 & 깊이<6 & 혈류>600 & 6주 충족 시 '성숙'. 미충족 시 영상검사 권고",
+    render: "rule6s_check",
+    data_refs: ["num:avf_diameter","num:avf_depth","num:avf_flow","num:avf_weeks"]
+  },
+  "viz:shpt_cascade": {
+    id: "viz:shpt_cascade", layer: "L9", type: "diagram",
+    title_ko: "SHPT 연쇄 (정적 다이어그램)",
+    output_ko: "인↑·칼슘↓ → 부갑상선 자극 → PTH↑ → 뼈 녹음·혈관 석회화",
+    render: "shpt_flow_static"
+  },
+  // 보조 정적 도해(상호작용 없음)
+  "viz:kidney_functions": {id:"viz:kidney_functions", layer:"L0", type:"diagram",
+    title_ko:"콩팥 4기능 — 투석이 대신하는 2칸", render:"kidney_4func_static"},
+  "viz:dialysate_table": {id:"viz:dialysate_table", layer:"L3", type:"diagram",
+    title_ko:"투석액 성분 — 방향 화살표", render:"dialysate_components_static"},
+  "viz:circuit": {id:"viz:circuit", layer:"L4", type:"diagram",
+    title_ko:"체외 회로 — 항응고 위치", render:"circuit_static"},
+  "viz:initiation_checklist": {id:"viz:initiation_checklist", layer:"L7", type:"diagram",
+    title_ko:"투석 개시 트리거 체크리스트", render:"initiation_static"},
+  "viz:hb_target_band": {id:"viz:hb_target_band", layer:"L8", type:"diagram",
+    title_ko:"Hb 목표 밴드 — 시작·목표·과교정", render:"hb_band_static",
+    data_refs:["num:hb_esa_start","num:hb_target_max","num:hb_overcorrect"]},
+  "viz:dialyzability_matrix": {id:"viz:dialyzability_matrix", layer:"L12", type:"diagram",
+    title_ko:"dialyzability 4물성 매트릭스", render:"dialyzability_static"},
+  "viz:diet_balance": {id:"viz:diet_balance", layer:"L13", type:"diagram",
+    title_ko:"식이 수지균형 — 제한 vs 단백질 증량", render:"diet_balance_static"},
+  "viz:hd_crrt_compare": {id:"viz:hd_crrt_compare", layer:"BRIDGE", type:"diagram",
+    title_ko:"HD vs CRRT — 같은 물리, 다른 속도", render:"hd_crrt_static"},
+  "viz:crrt_simulator": {id:"viz:crrt_simulator", layer:"L15", type:"simulator",
+    title_ko:"CRRT 파라미터 시뮬레이터", render:"crrt_simulator",
+    output_ko:"BFR·Qd·Qr·Qnet을 바꾸면 effluent dose·FF·희석이 실시간 변화"},
+  "viz:crrt_flow": {id:"viz:crrt_flow", layer:"L15", type:"flow",
+    title_ko:"CRRT 처방 7단계 Flow", render:"crrt_flow",
+    output_ko:"개시→모달리티→세팅→항응고→모니터링→조정→중단"}
+};
+
+</script>
+<script>/* ============================================================
+   CRRT 시뮬레이터 모듈 — DATA 레이어 (자기완결, 이식 단위)
+   CRRT_DATA
+   ※ ICU 계산기 이식 시 이 파일 그대로 복사.
+   ※ 모든 공식 상수·임계값·trial을 단독 소유. 엔진/UI 하드코딩 금지.
+   ============================================================ */
+
+var CRRT_DATA = {
+
+  /* ---- 공식 상수·임계값 (const:) ---- */
+  consts: {
+    "const:kdigo_dose_target": { value: [20, 25], unit: "mL/kg/hr",
+      label: "KDIGO 전달 목표 dose", source: "KDIGO 2012 AKI",
+      note: "ATN·RENAL — 고용량(35~40) 사망률 개선 없음" },
+    "const:dose_prescribe": { value: [25, 30], unit: "mL/kg/hr",
+      label: "처방 dose(downtime 감안)", source: "PMC7965247",
+      note: "회로 downtime 10~15% 보정해 목표보다 높게 처방" },
+    "const:ff_warn": { value: 25, unit: "%",
+      label: "Filtration Fraction 경고선", source: "Springer CCM / Annals IC",
+      note: "FF >20~25% 혈액농축으로 필터 응고 위험" },
+    "const:nuf_warn": { value: 2, unit: "mL/kg/hr",
+      label: "순한외여과(NUF) 위험선", source: "Springer CCM",
+      note: "NUF >2 혈역학 부담 — 생명위협 용적과부하 외 회피" },
+    "const:bfr_low": { value: 100, unit: "mL/min",
+      label: "혈류 하한", source: "PMC7965247",
+      note: "<100 정체(stasis)로 응고 위험" },
+    "const:bfr_high": { value: 250, unit: "mL/min",
+      label: "혈류 상한", source: "PMC7965247",
+      note: ">250 접근로 부담·회로수명↓" },
+    "const:flow_fraction_sat": { value: 0.4, unit: "",
+      label: "flow fraction 포화 역치", source: "CRRT Academy",
+      note: "Qd/Qb ≤0.4면 effluent urea 거의 100% 포화" },
+    "const:citrate_accum_ratio": { value: 2.5, unit: "",
+      label: "시트레이트 축적 지표", source: "임상 관행",
+      note: "총Ca/iCa 비 >2.5 시 citrate 축적 의심" }
+  },
+
+  /* ---- 모달리티 정의 ---- */
+  modalities: {
+    "CVVH": { id: "proc:cvvh", name_ko: "CVVH (지속 정맥-정맥 혈액여과)",
+      mechanism: "convection(대류)", uses: { qd: false, qr: true },
+      desc_ko: "투석액 없이 보충액만. 대류로 middle molecule 제거 강조." },
+    "CVVHD": { id: "proc:cvvhd", name_ko: "CVVHD (지속 정맥-정맥 혈액투석)",
+      mechanism: "diffusion(확산)", uses: { qd: true, qr: false },
+      desc_ko: "투석액만. 확산으로 small solute(urea) 위주." },
+    "CVVHDF": { id: "proc:cvvhdf", name_ko: "CVVHDF (지속 정맥-정맥 혈액투석여과)",
+      mechanism: "diffusion + convection", uses: { qd: true, qr: true },
+      desc_ko: "투석액+보충액 병용. 가장 흔함, 균형형." }
+  },
+
+  /* ---- 입력 파라미터 기본값·범위 ---- */
+  params: {
+    weight: { default: 70, min: 30, max: 150, step: 1, unit: "kg", label_ko: "체중" },
+    hct: { default: 30, min: 15, max: 55, step: 1, unit: "%", label_ko: "Hematocrit" },
+    bfr: { default: 150, min: 50, max: 300, step: 10, unit: "mL/min", label_ko: "혈류 (Qb)" },
+    qd: { default: 1000, min: 0, max: 3000, step: 100, unit: "mL/hr", label_ko: "투석액 (Qd)" },
+    qr_pre: { default: 0, min: 0, max: 3000, step: 100, unit: "mL/hr", label_ko: "보충액 전희석 (Qr pre)" },
+    qr_post: { default: 500, min: 0, max: 3000, step: 100, unit: "mL/hr", label_ko: "보충액 후희석 (Qr post)" },
+    qnet: { default: 100, min: 0, max: 500, step: 10, unit: "mL/hr", label_ko: "순제거 (Qnet)" }
+  },
+
+  /* ---- 연쇄 효과 설명 (파라미터 → 결과) ---- */
+  chains: {
+    bfr: { up_ko: "혈류↑ → FF↓(응고 위험↓)", tradeoff_ko: "단, 접근로 부담↑ / >250 회로수명↓" },
+    qd: { up_ko: "투석액↑ → dose↑·청소↑", tradeoff_ko: "투석액 소비↑ / flow fraction 관리" },
+    qr_pre: { up_ko: "전희석 보충액↑ → FF↓(응고 위험↓)", tradeoff_ko: "단, 희석으로 실제 dose↓ (효율 손해)" },
+    qr_post: { up_ko: "후희석 보충액↑ → dose↑(희석 없음)", tradeoff_ko: "단, FF↑(응고 위험↑)" },
+    qnet: { up_ko: "순제거↑ → 물 더 뺌", tradeoff_ko: "단, 혈역학 부담 / NUF >2 위험" },
+    hct: { up_ko: "Hct↑ → 혈장유량↓ → FF↑", tradeoff_ko: "응고 위험↑" }
+  },
+
+  /* ---- 핵심 임상시험 (pmid:) — PubMed 검증 완료 ---- */
+  trials: {
+    "pmid:atn2008": { pmid: "18492867", doi: "10.1056/NEJMoa0802639",
+      name_ko: "ATN 연구", journal: "N Engl J Med", year: 2008, n: 1124,
+      finding_ko: "CVVHDF 35 vs 20 mL/kg/hr — 60일 사망률 차이 없음(53.6% vs 51.5%)",
+      teaching_ko: "고용량이 사망률·신회복·장기부전 개선 못 함 → 20이면 충분의 근거" },
+    "pmid:renal2009": { pmid: "19846848", doi: "10.1056/NEJMoa0902413",
+      name_ko: "RENAL 연구", journal: "N Engl J Med", year: 2009, n: 1508,
+      finding_ko: "후희석 CVVHDF 40 vs 25 mL/kg/hr — 90일 사망률 동일(44.7% 양군)",
+      teaching_ko: "고용량군 저인산혈증만 더 많음. 25면 충분, 더 올릴 이유 없음" }
+  },
+
+  /* ---- 상세 처방 Flow (7단계) ---- */
+  flow: [
+    { step: 1, title_ko: "개시 결정", icon: "🚦",
+      body_ko: "임상 판단으로 결정(early RRT 이득 불명, STARRT-AKI). " +
+        "생명위협 적응증(난치성 고칼륨·산증·용적과부하·요독증상) 또는 AKI에서 신기능이 대사·수분 요구를 못 따라갈 때.",
+      detail_ko: ["조기 개시가 지연 개시보다 우월하다는 근거 약함",
+        "혈역학 불안정(패혈증·다장기부전) → IHD 대신 CRRT 선호"] },
+    { step: 2, title_ko: "모달리티 선택", icon: "⚙️",
+      body_ko: "CVVHDF(확산+대류, 가장 흔함·균형) / CVVH(대류, middle molecule) / CVVHD(확산, small solute).",
+      detail_ko: ["대부분 CVVHDF로 시작",
+        "기관·프로토콜에 따라 모달리티 선호 다름"] },
+    { step: 3, title_ko: "초기 세팅 (70kg 예시)", icon: "🎛️",
+      body_ko: "Effluent dose 처방 25 mL/kg/hr(전달 20 목표). BFR 120~150. Qd 1000 + Qr 500~1000(HDF). Qnet=수분 목표(보통 0~150).",
+      detail_ko: ["시뮬레이터로 이 세팅이 어떤 dose·FF를 만드는지 직접 확인",
+        "downtime 감안해 처방을 전달목표보다 높게"] },
+    { step: 4, title_ko: "항응고 선택", icon: "🩸",
+      body_ko: "Citrate(RCA) 표준 — 출혈위험↓, 회로 안에서만 작용. Heparin — citrate 금기 시. 무항응고 — 출혈 고위험.",
+      detail_ko: ["Citrate: iCa·총Ca·HCO3 4~6시간 모니터",
+        "Citrate 축적: 총Ca/iCa 비 >2.5 시 의심"] },
+    { step: 5, title_ko: "모니터링", icon: "📊",
+      body_ko: "전해질 6~8h, 산염기. Citrate 시 칼슘 4~6h. 필터 수명·FF(응고 조짐). 실제 전달 dose(처방 대비, downtime).",
+      detail_ko: ["effluent는 실제 dose를 약 20% 과대평가(필터 효율 저하)",
+        "ADQI: 회로수명·청소율·전달dose·카테터·사망 감사"] },
+    { step: 6, title_ko: "조정 트리거", icon: "🔧",
+      body_ko: "dose 미달→effluent↑/downtime↓. FF>25%·잦은 응고→BFR↑ 또는 pre 보충액↑. 고암모니아(>100)→effluent 50. 혈역학 불안정→Qnet↓.",
+      detail_ko: ["시뮬레이터로 조정 전후 결과 비교 가능",
+        "고암모니아·중증 대사이상은 예외적 고용량 정당화"] },
+    { step: 7, title_ko: "중단", icon: "🏁",
+      body_ko: "신기능 회복·임상 판단으로 결정. 정해진 공식 없음.",
+      detail_ko: ["소변량 회복·크레아티닌 추세 참고", "중단도 개시처럼 임상 판단"] }
+  ]
+};
+
+</script>
+<script>/* ============================================================
+   CRRT 시뮬레이터 모듈 — ENGINE 레이어 (이식 핵심)
+   crrtCompute(params, DATA) → 결과 객체
+   ※ 자기완결 정문. L15도 ICU 계산기도 이 함수만 호출.
+   ※ 공식 상수는 DATA(CRRT_DATA.consts)에서 조회 — 하드코딩 금지.
+   ※ 검증된 관계식:
+       Qp = BFR×60×(1−Hct)
+       Effluent = Qd + Qr_pre + Qr_post + Qnet
+       Dilution = Qp/(Qp+Qr_pre)
+       FF = TotalUF/(Qp+Qr_pre)
+   ============================================================ */
+
+function crrtCompute(params, DATA) {
+  var C = DATA.consts;
+  // 상수 추출(값은 DATA 단독 소유)
+  var doseTarget = C["const:kdigo_dose_target"].value;   // [20,25]
+  var ffWarn = C["const:ff_warn"].value;                  // 25
+  var nufWarn = C["const:nuf_warn"].value;                // 2
+  var bfrLow = C["const:bfr_low"].value;                  // 100
+  var bfrHigh = C["const:bfr_high"].value;                // 250
+  var flowSat = C["const:flow_fraction_sat"].value;       // 0.4
+
+  var weight = +params.weight, hct = +params.hct, bfr = +params.bfr;
+  var modality = params.modality || "CVVHDF";
+  var uses = DATA.modalities[modality].uses;
+  // 모달리티에 따라 비활성 입력은 0 처리
+  var qd = uses.qd ? +params.qd : 0;
+  var qrPre = uses.qr ? +params.qr_pre : 0;
+  var qrPost = uses.qr ? +params.qr_post : 0;
+  var qnet = +params.qnet;
+
+  // --- 1. Plasma flow rate (mL/hr) ---
+  var qp = bfr * 60 * (1 - hct / 100);
+
+  // --- 2. Effluent rate & dose ---
+  var effluent = qd + qrPre + qrPost + qnet;         // mL/hr
+  var doseRaw = weight > 0 ? effluent / weight : 0;  // mL/kg/hr (희석 전)
+
+  // --- 3. Dilution factor (pre 보충액이 희석) ---
+  var dilution = (qp + qrPre) > 0 ? qp / (qp + qrPre) : 1;
+  var doseActual = doseRaw * dilution;               // 실제 dose
+
+  // --- 4. Filtration Fraction ---
+  var totalUF = qrPre + qrPost + qnet;               // 막을 통한 총 한외여과
+  var ff = (qp + qrPre) > 0 ? (totalUF / (qp + qrPre)) * 100 : 0;
+
+  // --- 5. NUF rate (순한외여과 / 체중) ---
+  var nufRate = weight > 0 ? qnet / weight : 0;      // mL/kg/hr
+
+  // --- 6. flow fraction (확산 포화, CVVHD/HDF) ---
+  var flowFraction = (bfr * 60) > 0 ? qd / (bfr * 60) : 0;
+
+  // --- 플래그(경고) 생성 ---
+  var flags = [];
+  if (ff > ffWarn) flags.push({ level: "danger", key: "ff",
+    text: "Filtration Fraction " + ff.toFixed(0) + "% > " + ffWarn + "% — 혈액농축으로 필터 응고 위험. BFR↑ 또는 전희석 보충액↑으로 낮추세요." });
+  if (nufRate > nufWarn) flags.push({ level: "danger", key: "nuf",
+    text: "NUF " + nufRate.toFixed(1) + " > " + nufWarn + " mL/kg/hr — 혈역학 부담. 생명위협 용적과부하가 아니면 Qnet↓." });
+  if (bfr < bfrLow) flags.push({ level: "warn", key: "bfr_low",
+    text: "혈류 " + bfr + " < " + bfrLow + " mL/min — 정체로 응고 위험↑." });
+  if (bfr > bfrHigh) flags.push({ level: "warn", key: "bfr_high",
+    text: "혈류 " + bfr + " > " + bfrHigh + " mL/min — 접근로 부담·회로수명↓." });
+  // dose 평가
+  var doseStatus;
+  if (doseActual < doseTarget[0]) { doseStatus = "low";
+    flags.push({ level: "warn", key: "dose_low",
+      text: "실제 dose " + doseActual.toFixed(1) + " < " + doseTarget[0] + " mL/kg/hr — 목표 미달. effluent↑ 또는 downtime↓." }); }
+  else if (doseActual <= doseTarget[1]) { doseStatus = "target"; }
+  else { doseStatus = "high";
+    flags.push({ level: "info", key: "dose_high",
+      text: "dose " + doseActual.toFixed(1) + " > " + doseTarget[1] + " — ATN·RENAL상 고용량 추가이득 없음(고암모니아 등 예외)." }); }
+  // 전희석 희석 손실 안내
+  if (qrPre > 0 && dilution < 0.95) flags.push({ level: "info", key: "dilution",
+    text: "전희석으로 dose가 " + Math.round((1 - dilution) * 100) + "% 희석됨(" + doseRaw.toFixed(1) + "→" + doseActual.toFixed(1) + "). 응고는 줄지만 효율 손해." });
+
+  return {
+    // 핵심 출력
+    plasmaFlow: qp,                       // mL/hr
+    effluent: effluent,                   // mL/hr
+    doseRaw: doseRaw,                     // mL/kg/hr (희석 전)
+    doseActual: doseActual,              // mL/kg/hr (희석 후, 실제)
+    dilutionFactor: dilution,           // 0~1
+    ff: ff,                              // %
+    nufRate: nufRate,                   // mL/kg/hr
+    flowFraction: flowFraction,         // 0~1
+    doseStatus: doseStatus,             // low/target/high
+    flags: flags,
+    // 입력 에코(UI 편의)
+    modality: modality,
+    inputs: { weight: weight, hct: hct, bfr: bfr, qd: qd, qrPre: qrPre, qrPost: qrPost, qnet: qnet }
+  };
+}
+
+</script>
+<script>/* ============================================================
+   CRRT 시뮬레이터 — UI 위젯 (순수 ES5)
+   mountCrrtSimulator(slot, CRRT_DATA, crrtCompute)
+   ※ UI만 환경별 교체 가능. ENGINE/DATA는 그대로 이식.
+   ============================================================ */
+(function (global) {
+  var KIDNEY = '#7C3AED', DEEP = '#5B21B6', LIGHT = '#EDE9FE', BLOOD = '#DC2626',
+      DIALYSATE = '#0D9488', WARN = '#D97706', INK = '#1E1B2E', SOFT = '#6B7280',
+      LINE = '#E5E1F0', GREEN = '#059669';
+
+  global.mountCrrtSimulator = function (slot, DATA, compute) {
+    var state = {
+      weight: DATA.params.weight.default, hct: DATA.params.hct.default,
+      modality: 'CVVHDF', bfr: DATA.params.bfr.default, qd: DATA.params.qd.default,
+      qr_pre: DATA.params.qr_pre.default, qr_post: DATA.params.qr_post.default,
+      qnet: DATA.params.qnet.default
+    };
+
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'background:#fff;border:1px solid ' + LINE + ';border-radius:12px;padding:14px;margin:14px 0';
+
+    // 모달리티 토글
+    var modBar = document.createElement('div');
+    modBar.style.cssText = 'display:flex;gap:6px;margin-bottom:12px';
+    ['CVVH', 'CVVHD', 'CVVHDF'].forEach(function (m) {
+      var b = document.createElement('button');
+      b.textContent = m;
+      b.style.cssText = 'flex:1;padding:8px 4px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;font-family:inherit;border:1px solid ' + LINE + ';background:#fff;color:' + SOFT;
+      b.addEventListener('click', function () { state.modality = m; render(); });
+      b._mod = m; modBar.appendChild(b);
+    });
+    wrap.appendChild(modBar);
+
+    var modDesc = document.createElement('div');
+    modDesc.style.cssText = 'font-size:11.5px;color:' + SOFT + ';margin-bottom:12px;text-align:center;min-height:16px';
+    wrap.appendChild(modDesc);
+
+    // 출력 패널
+    var outPanel = document.createElement('div');
+    outPanel.style.cssText = 'background:' + LIGHT + ';border-radius:10px;padding:12px;margin-bottom:14px';
+    wrap.appendChild(outPanel);
+
+    // 슬라이더 컨테이너
+    var sliderBox = document.createElement('div');
+    wrap.appendChild(sliderBox);
+
+    // 플래그 영역
+    var flagBox = document.createElement('div');
+    flagBox.style.cssText = 'margin-top:10px';
+    wrap.appendChild(flagBox);
+
+    slot.innerHTML = ''; slot.appendChild(wrap);
+
+    // 슬라이더 정의
+    var sliderDefs = [
+      { key: 'weight', chain: null }, { key: 'hct', chain: 'hct' },
+      { key: 'bfr', chain: 'bfr' }, { key: 'qd', chain: 'qd' },
+      { key: 'qr_pre', chain: 'qr_pre' }, { key: 'qr_post', chain: 'qr_post' },
+      { key: 'qnet', chain: 'qnet' }
+    ];
+    var sliderEls = {};
+    sliderDefs.forEach(function (sd) {
+      var pdef = DATA.params[sd.key];
+      var row = document.createElement('div');
+      row.style.cssText = 'margin:9px 0';
+      var lab = document.createElement('label');
+      lab.style.cssText = 'font-size:12px;display:flex;justify-content:space-between;color:' + INK;
+      var val = document.createElement('span');
+      val.style.cssText = 'font-family:monospace;font-weight:700;color:' + DEEP;
+      lab.appendChild(document.createTextNode(pdef.label_ko));
+      lab.appendChild(val);
+      var inp = document.createElement('input');
+      inp.type = 'range'; inp.min = pdef.min; inp.max = pdef.max; inp.step = pdef.step;
+      inp.value = state[sd.key];
+      inp.style.cssText = 'width:100%;accent-color:' + KIDNEY + ';margin-top:3px';
+      inp.addEventListener('input', function () { state[sd.key] = +inp.value; render(); });
+      var chain = document.createElement('div');
+      chain.style.cssText = 'font-size:10.5px;color:' + SOFT + ';margin-top:2px;line-height:1.4';
+      row.appendChild(lab); row.appendChild(inp); row.appendChild(chain);
+      sliderBox.appendChild(row);
+      sliderEls[sd.key] = { row: row, val: val, inp: inp, chain: chain, def: pdef, chainKey: sd.chain };
+    });
+
+    function gauge(label, value, unit, lo, hi, color, sub) {
+      var pct = Math.min(100, Math.max(0, (value / hi) * 100));
+      var h = '<div style="margin-bottom:8px">';
+      h += '<div style="display:flex;justify-content:space-between;font-size:11px;color:' + INK + '"><span>' + label + '</span>' +
+        '<span style="font-family:monospace;font-weight:800;font-size:14px;color:' + color + '">' + value + ' ' + unit + '</span></div>';
+      h += '<div style="height:10px;border-radius:5px;background:' + LINE + ';position:relative;overflow:hidden;margin-top:3px">' +
+        '<div style="height:100%;width:' + pct + '%;background:' + color + ';border-radius:5px;transition:width .15s,background .15s"></div>';
+      if (lo != null) h += '<div style="position:absolute;top:-1px;bottom:-1px;width:2px;background:' + GREEN + ';left:' + ((lo / hi) * 100) + '%"></div>';
+      h += '</div>';
+      if (sub) h += '<div style="font-size:10px;color:' + SOFT + ';margin-top:2px">' + sub + '</div>';
+      h += '</div>';
+      return h;
+    }
+
+    function render() {
+      // 모달리티 버튼 상태
+      var uses = DATA.modalities[state.modality].uses;
+      modDesc.textContent = DATA.modalities[state.modality].name_ko + ' · ' + DATA.modalities[state.modality].mechanism;
+      for (var i = 0; i < modBar.children.length; i++) {
+        var b = modBar.children[i], on = b._mod === state.modality;
+        b.style.background = on ? KIDNEY : '#fff';
+        b.style.color = on ? '#fff' : SOFT;
+        b.style.borderColor = on ? DEEP : LINE;
+      }
+      // 슬라이더 활성/비활성(모달리티)
+      sliderDefs.forEach(function (sd) {
+        var el = sliderEls[sd.key];
+        var disabled = (sd.key === 'qd' && !uses.qd) || ((sd.key === 'qr_pre' || sd.key === 'qr_post') && !uses.qr);
+        el.row.style.opacity = disabled ? '0.35' : '1';
+        el.inp.disabled = disabled;
+        el.val.textContent = state[sd.key] + ' ' + el.def.unit;
+        // 연쇄 설명
+        if (sd.chainKey && DATA.chains[sd.chainKey] && !disabled) {
+          var c = DATA.chains[sd.chainKey];
+          el.chain.innerHTML = '↑ ' + c.up_ko + ' <span style="color:' + WARN + '">· ' + c.tradeoff_ko + '</span>';
+        } else el.chain.innerHTML = '';
+      });
+
+      // 계산
+      var r = compute(state, DATA);
+      var doseColor = r.doseStatus === 'target' ? GREEN : (r.doseStatus === 'low' ? BLOOD : WARN);
+      var ffColor = r.ff > DATA.consts['const:ff_warn'].value ? BLOOD : (r.ff > 18 ? WARN : GREEN);
+      var nufColor = r.nufRate > DATA.consts['const:nuf_warn'].value ? BLOOD : GREEN;
+
+      var oh = '';
+      oh += gauge('Effluent dose (실제)', r.doseActual.toFixed(1), 'mL/kg/hr', 20, 30, doseColor,
+        '목표 20~25(초록선) · 처방 25~30 · ' + (r.doseStatus === 'target' ? '✓ 목표대' : r.doseStatus === 'low' ? '✗ 미달' : '△ 고용량'));
+      oh += gauge('Filtration Fraction', r.ff.toFixed(0), '%', null, 40, ffColor,
+        '> ' + DATA.consts['const:ff_warn'].value + '% 응고 위험');
+      oh += gauge('NUF rate', r.nufRate.toFixed(2), 'mL/kg/hr', null, 4, nufColor,
+        '> ' + DATA.consts['const:nuf_warn'].value + ' 혈역학 부담');
+      // 보조 수치
+      oh += '<div style="display:flex;gap:10px;font-size:10.5px;color:' + SOFT + ';margin-top:4px;flex-wrap:wrap">' +
+        '<span>Plasma flow: <b style="font-family:monospace;color:' + INK + '">' + Math.round(r.plasmaFlow) + '</b> mL/hr</span>' +
+        '<span>Effluent: <b style="font-family:monospace;color:' + INK + '">' + r.effluent + '</b> mL/hr</span>' +
+        (r.dilutionFactor < 0.999 ? '<span>희석계수: <b style="font-family:monospace;color:' + WARN + '">' + r.dilutionFactor.toFixed(2) + '</b></span>' : '') +
+        '</div>';
+      outPanel.innerHTML = oh;
+
+      // 플래그
+      var fh = '';
+      r.flags.forEach(function (f) {
+        var col = f.level === 'danger' ? BLOOD : (f.level === 'warn' ? WARN : SOFT);
+        var bg = f.level === 'danger' ? '#FEF2F2' : (f.level === 'warn' ? '#FFF8F3' : '#F9FAFB');
+        var icon = f.level === 'danger' ? '🚨' : (f.level === 'warn' ? '⚠️' : 'ℹ️');
+        fh += '<div style="background:' + bg + ';border-left:3px solid ' + col + ';border-radius:6px;padding:7px 10px;margin-bottom:5px;font-size:11.5px;color:' + INK + '">' + icon + ' ' + f.text + '</div>';
+      });
+      flagBox.innerHTML = fh || '<div style="font-size:11.5px;color:' + GREEN + ';text-align:center;padding:6px">✓ 모든 파라미터 안전 범위</div>';
+    }
+
+    render();
+  };
+})(typeof window !== 'undefined' ? window : this);
+</script>
+<script>/* ============================================================
+   투석 학습 가이드 — ENGINE 레이어
+   ※ 비협상 원칙: 엔진은 로직만. 임상 수치·약물명·기준값을 자체 보유 금지.
+      모든 값은 DATA(DIALYSIS_*)를 ID로 조회해서 얻는다.
+   ※ 정문 계약(통합 호환):
+        explain(topic)       → 학습앱 주력. 레이어/토픽 구조화 콘텐츠
+        recommend(patient)   → 통합엔진 호환. {drugs[],targets[],flags[]}
+   ※ 보조: lookupDialyzability / checkMaturation / initiationFlags
+   ※ DATA 주입은 생성자에서 받음(테스트 가능·결합도↓). 전역 의존 안 함.
+   ============================================================ */
+
+function DialysisEngine(DATA) {
+  // DATA = { trials, numbers, conceptsA, conceptsB, drugs, viz, reimb }
+  // 내부에서 conceptsA+B를 단일 맵으로 병합 (값 복제 아님 — 참조 보관)
+  this.D = DATA;
+  this.concepts = {};
+  var self = this;
+  ["conceptsA", "conceptsB"].forEach(function (k) {
+    var src = DATA[k] || {};
+    Object.keys(src).forEach(function (L) { self.concepts[L] = src[L]; });
+  });
+}
+
+/* ---------- 내부 헬퍼: 수치 포맷 (값은 DATA에서, 포맷만 엔진이) ---------- */
+DialysisEngine.prototype._fmtNumber = function (numId) {
+  var n = this.D.numbers[numId];
+  if (!n) return null;
+  var v = n.value;
+  var valStr = Array.isArray(v) ? (v[0] + "~" + v[1]) : ("" + v);
+  return {
+    id: numId,
+    label: n.label_ko,
+    text: valStr + (n.unit ? (" " + n.unit) : ""),
+    source: n.source, grade: n.grade, note: n.note || null,
+    lab: n.lab || null
+  };
+};
+
+/* ---------- 내부 헬퍼: 참조 ID 배열 → 표시객체 배열 ---------- */
+DialysisEngine.prototype._resolveCrrtTrials = function (ids) {
+  var crrtData = (typeof CRRT_DATA !== "undefined") ? CRRT_DATA : (this.D.crrt || null);
+  if (!crrtData || !crrtData.trials) return [];
+  return (ids || []).map(function (id) {
+    var t = crrtData.trials[id];
+    return t ? {
+      id: id, pmid: t.pmid, doi: t.doi, name: t.name_ko, year: t.year,
+      teaching: t.teaching_ko, finding: t.finding_ko,
+      url: "https://doi.org/" + t.doi,
+      pubmed: "https://pubmed.ncbi.nlm.nih.gov/" + t.pmid + "/"
+    } : { id: id, missing: true };
+  });
+};
+
+DialysisEngine.prototype._resolveTrials = function (ids) {
+  var D = this.D;
+  return (ids || []).map(function (id) {
+    var t = D.trials[id];
+    return t ? {
+      id: id, pmid: t.pmid, doi: t.doi, name: t.name_ko,
+      year: t.year, teaching: t.teaching_ko,
+      url: "https://doi.org/" + t.doi,
+      pubmed: "https://pubmed.ncbi.nlm.nih.gov/" + t.pmid + "/"
+    } : { id: id, missing: true };
+  });
+};
+
+DialysisEngine.prototype._resolveDrugs = function (ids) {
+  var D = this.D;
+  return (ids || []).map(function (id) {
+    var d = D.drugs[id];
+    return d ? { id: id, name: d.name_ko, role: d.role_ko, class: d.class_id || null } : { id: id, missing: true };
+  });
+};
+
+/* ============================================================
+   정문 1: explain(topic) — 학습앱 주력
+   topic = 레이어 ID("L1","L6","BRIDGE") 또는 concept: ID
+   반환: { found, title, core, detail[], analogy, numbers[], trials[],
+           drugs[], reimb[], viz, refs[], grade }
+   ============================================================ */
+DialysisEngine.prototype.explain = function (topic) {
+  var node = this._findNode(topic);
+  if (!node) return { found: false, topic: topic, message: "해당 토픽을 찾을 수 없음" };
+
+  var self = this;
+  // 수치 해석 (DATA 조회)
+  var nums = (node.numbers || []).map(function (id) { return self._fmtNumber(id); })
+    .filter(function (x) { return x; });
+
+  // 이 레이어에 걸린 급여 항목 수집
+  var reimb = [];
+  Object.keys(this.D.reimb).forEach(function (k) {
+    if (k === "_meta") return;
+    if (self.D.reimb[k].layer === node.id) reimb.push(self._fmtReimb(k));
+  });
+
+  return {
+    found: true,
+    id: node.id, icon: node.icon || null,
+    title: node.title_ko, subtitle: node.subtitle_ko || null,
+    core: node.core_ko,
+    detail: node.detail_ko || [],
+    analogy: node.analogy_ko || null,
+    numbers: nums,
+    trials: this._resolveTrials(node.trial_ids),
+    crrt_trials: this._resolveCrrtTrials(node.crrt_trials),
+    drugs: this._resolveDrugs(node.drug_ids),
+    reimb: reimb,
+    viz: node.viz ? this._resolveViz(node.viz) : null,
+    viz_secondary: node.viz_secondary ? this._resolveViz(node.viz_secondary) : null,
+    refs: node.refs || [],
+    // grade: 이 레이어 수치들이 인용한 가이드라인 등급 집합
+    grades: this._collectGrades(node)
+  };
+};
+
+DialysisEngine.prototype._findNode = function (topic) {
+  // 1) 레이어 ID 직접 매칭
+  if (this.concepts[topic]) return this.concepts[topic];
+  // 2) concept: ID → 그 concept을 포함하는 레이어
+  var self = this, hit = null;
+  Object.keys(this.concepts).forEach(function (L) {
+    var c = self.concepts[L];
+    if ((c.concept_ids || []).indexOf(topic) >= 0) hit = c;
+  });
+  return hit;
+};
+
+DialysisEngine.prototype._resolveViz = function (vizId) {
+  var v = this.D.viz[vizId];
+  if (!v) return { id: vizId, missing: true };
+  return {
+    id: vizId, type: v.type, title: v.title_ko,
+    controls: v.controls || [], output: v.output_ko || null,
+    formula: v.formula || null, render: v.render
+  };
+};
+
+DialysisEngine.prototype._fmtReimb = function (noticeId) {
+  var r = this.D.reimb[noticeId];
+  return {
+    id: noticeId, title: r.title_ko, verified: r.verified,
+    skeleton: r.skeleton_ko,
+    guideline: r.guideline_value_ko || null,
+    conflict: !!r.conflict_flag,
+    conflict_note: r.conflict_note_ko || null,
+    warning: this.D.reimb._meta.warning_ko
+  };
+};
+
+DialysisEngine.prototype._collectGrades = function (node) {
+  var self = this, grades = {};
+  (node.numbers || []).forEach(function (id) {
+    var n = self.D.numbers[id];
+    if (n && n.source) grades[n.source] = n.grade || "";
+  });
+  return Object.keys(grades).map(function (src) { return { source: src, grade: grades[src] }; });
+};
+
+/* ============================================================
+   보조 1: lookupDialyzability(drugId)
+   약물이 투석으로 빠지나 → 제거율·보충·타이밍 (DATA 조회)
+   ============================================================ */
+DialysisEngine.prototype.lookupDialyzability = function (drugId) {
+  var d = this.D.drugs[drugId];
+  if (!d) return { found: false, drugId: drugId };
+  if (!d.dialyzability) {
+    return { found: true, drugId: drugId, name: d.name_ko, hasData: false,
+      note: "이 약물은 dialyzability 데이터 미수록(치료약 분류)" };
+  }
+  var dz = d.dialyzability;
+  // 제거 등급 판정 (로직만 — 역치는 데이터에서 온 값으로 비교)
+  var removalPct = dz.removal_highflux_pct || null;
+  var tier = "unknown";
+  if (removalPct) {
+    var mid = (removalPct[0] + removalPct[1]) / 2;
+    tier = mid >= 50 ? "high" : (mid >= 20 ? "moderate" : "low");
+  } else if (dz.removal_lowflux === "minimal") {
+    tier = "low";
+  }
+  return {
+    found: true, drugId: drugId, name: d.name_ko, hasData: true,
+    properties: {
+      mw_da: dz.mw_da, protein_binding_pct: dz.protein_binding_pct, vd_l_kg: dz.vd_l_kg
+    },
+    removal_highflux_pct: removalPct,
+    removal_tier: tier,
+    rebound_pct: dz.rebound_pct || null,
+    supplement: dz.supplement,
+    timing: dz.timing_ko || null,
+    teaching: dz.teaching_ko || null
+  };
+};
+
+/* ============================================================
+   보조 2: checkMaturation(d, depth, flow, weeks) — Rule of 6s
+   역치는 DATA(num:)에서 조회, 엔진은 비교 로직만
+   ============================================================ */
+DialysisEngine.prototype.checkMaturation = function (diameter, depth, flow, weeks) {
+  var D = this.D.numbers;
+  var thrDia = D["num:avf_diameter"].value;   // 6 (>)
+  var thrDep = D["num:avf_depth"].value;       // 6 (<)
+  var thrFlow = D["num:avf_flow"].value;       // 600 (>)
+  var thrWk = D["num:avf_weeks"].value;        // 6 (평가시점)
+
+  var criteria = [
+    { key: "diameter", label: "직경 >" + thrDia + "mm", pass: diameter > thrDia, value: diameter },
+    { key: "depth", label: "깊이 <" + thrDep + "mm", pass: depth < thrDep, value: depth },
+    { key: "flow", label: "혈류 >" + thrFlow + "mL/min", pass: flow > thrFlow, value: flow }
+  ];
+  var allPass = criteria.every(function (c) { return c.pass; });
+  var evaluable = weeks >= thrWk;
+
+  var verdict;
+  if (!evaluable) verdict = "평가시기 이름 (" + thrWk + "주 후 평가)";
+  else if (allPass) verdict = "성숙 — 천자 가능 기준 충족";
+  else verdict = "비성숙 — 영상검사(fistulogram) 권고";
+
+  return {
+    criteria: criteria, allPass: allPass, evaluable: evaluable,
+    weeks: weeks, verdict: verdict,
+    caveat: "※ 2019 KDOQI는 Rule of 6s 정량기준 대신 임상판단 권고. 본 판정은 학습용 출발점",
+    source: D["num:avf_diameter"].source
+  };
+};
+
+/* ============================================================
+   보조 3: initiationFlags(symptoms) — 투석 개시 판단 보조
+   증상 트리거 평가 (조언자 역할 — 처방 아님)
+   ============================================================ */
+DialysisEngine.prototype.initiationFlags = function (symptoms) {
+  // symptoms = { uremic_symptoms, fluid_overload, hyperkalemia, acidosis,
+  //              pericarditis, encephalopathy, egfr }
+  symptoms = symptoms || {};
+  var urgent = [], consider = [];
+
+  if (symptoms.pericarditis) urgent.push("요독성 심막염 — 응급 적응증");
+  if (symptoms.encephalopathy) urgent.push("요독성 뇌병증 — 응급 적응증");
+  if (symptoms.hyperkalemia) urgent.push("난치성 고칼륨혈증");
+  if (symptoms.fluid_overload) consider.push("약물 난치성 용적 과부하(폐부종)");
+  if (symptoms.acidosis) consider.push("난치성 대사성 산증");
+  if (symptoms.uremic_symptoms) consider.push("요독 증상(식욕부진·오심·가려움·인지저하)");
+
+  var egfrNote = null;
+  if (typeof symptoms.egfr === "number") {
+    var rng = this.D.numbers["num:egfr_initiation"].value; // [5,10]
+    egfrNote = symptoms.egfr + " mL/min/1.73m² — GFR은 참고치일 뿐 트리거 아님 (흔한 개시 " +
+      rng[0] + "~" + rng[1] + ", 무증상이면 더 지연 가능)";
+  }
+
+  return {
+    urgent: urgent, consider: consider,
+    hasUrgent: urgent.length > 0,
+    hasTrigger: urgent.length > 0 || consider.length > 0,
+    egfrNote: egfrNote,
+    principle: "투석 개시는 eGFR 숫자가 아니라 요독 증상으로 판단 (IDEAL 시험)",
+    advisory: "본 도구는 조언자. 실제 개시 결정은 신장내과 전문의 상의",
+    trial: this._resolveTrials(["pmid:ideal2010"])[0]
+  };
+};
+
+/* ============================================================
+   정문 2: recommend(patient) — 통합엔진 호환 (최소 구현)
+   학습앱이라 처방 추천은 제한적. 빈혈/MBD 급여 게이트 수준.
+   반환: { drugs[], targets[], flags[] }  (헌장 계약 형식)
+   ============================================================ */
+DialysisEngine.prototype.recommend = function (patient) {
+  patient = patient || {};
+  var D = this.D, self = this;
+  var drugs = [], targets = [], flags = [];
+
+  // --- 빈혈 게이트 (Hb) ---
+  if (typeof patient.hb === "number") {
+    var hbStart = D.numbers["num:hb_esa_start"].value;   // [9,10]
+    var hbMax = D.numbers["num:hb_target_max"].value;    // 11.5
+    var hbOver = D.numbers["num:hb_overcorrect"].value;  // 13
+    targets.push({ id: "lab:hb", label: "Hb 목표", text: "< " + hbMax + " g/dL",
+      source: D.numbers["num:hb_target_max"].source, grade: D.numbers["num:hb_target_max"].grade });
+    if (patient.hb <= hbStart[1]) {
+      drugs.push({ id: "drug:epoetin_alfa", reason: "Hb ≤" + hbStart[1] + " — ESA 시작 고려(교정가능 원인 해결 후)" });
+      flags.push({ level: "info", text: "ESA 시작 구간. 철결핍 등 먼저 확인" });
+    }
+    if (patient.hb > hbOver) {
+      flags.push({ level: "warn", text: "Hb > " + hbOver + " 과교정 — 심혈관 위험, ESA 감량/중단 고려" });
+    }
+  }
+
+  // --- MBD 게이트 (인) ---
+  if (typeof patient.phosphate === "number" && patient.phosphate_elevated) {
+    drugs.push({ id: "drug:sevelamer", reason: "지속/진행성 고인산혈증 — 비칼슘 인결합제 선호" });
+    flags.push({ level: "info", text: "칼슘기반 결합제는 제한(혈관석회화). 급여 단계 확인 필요",
+      reimb: "notice:phosphate_binder_급여" });
+  }
+
+  // --- adequacy 목표 (항상) ---
+  targets.push({ id: "lab:spktv", label: "투석 적정도", text: "목표 spKt/V ≥ " +
+    D.numbers["num:spktv_target"].value + " (최소 " + D.numbers["num:spktv_min"].value + ")",
+    source: D.numbers["num:spktv_target"].source, grade: D.numbers["num:spktv_target"].grade });
+
+  // --- HIRA 미검증 경고 (급여 관련 플래그 있으면) ---
+  var hasReimbFlag = flags.some(function (f) { return f.reimb; });
+  if (hasReimbFlag) {
+    flags.push({ level: "warn", text: D.reimb._meta.warning_ko });
+  }
+
+  return {
+    drugs: drugs, targets: targets, flags: flags,
+    _advisory: "학습 가이드의 recommend는 통합 호환용 최소 구현. 실제 처방은 전문의 판단",
+    _contract: "recommend(patient)→{drugs[],targets[],flags[]}"
+  };
+};
+
+/* ---------- 레이어 목록 (UI 네비게이션용) ---------- */
+DialysisEngine.prototype.listLayers = function () {
+  var self = this;
+  var order = ["L0","L1","L2","L3","L4","L5","L6","L7","L8","L9","L10","L11","L12","L13","BRIDGE","L15"];
+  return order.filter(function (L) { return self.concepts[L]; }).map(function (L) {
+    var c = self.concepts[L];
+    return { id: L, icon: c.icon, title: c.title_ko, subtitle: c.subtitle_ko || null };
+  });
+};
+
+</script>
+<script>/* 투석 학습 가이드 — 출처 레지스트리 (하단 게재용) */
+var DIALYSIS_REFS = {
+  "ref:kdigo_ckd2024":{label:"KDIGO 2024 CKD Evaluation & Management Guideline",url:"https://kdigo.org/guidelines/ckd-evaluation-and-management/"},
+  "ref:statpearls_hd":{label:"StatPearls — Hemodialysis (NBK563296)",url:"https://www.ncbi.nlm.nih.gov/books/NBK563296/"},
+  "ref:deranged_physiology":{label:"Deranged Physiology — Principles of Dialysis",url:"https://derangedphysiology.com/"},
+  "ref:ndt_b2m_meta":{label:"NDT — β2-microglobulin clearance in HF-HD vs convective (meta-analysis)",url:"https://academic.oup.com/ndt/article/33/6/1025/4666452"},
+  "ref:sciencedirect_countercurrent":{label:"ScienceDirect — Countercurrent dialysate flow",url:"https://www.sciencedirect.com/"},
+  "ref:clinicaltree_dialysate":{label:"Clinical Tree — Dialysate composition",url:"https://clinicalgate.com/"},
+  "ref:sciencedirect_dialysate":{label:"ScienceDirect — Dialysate solutes & buffers",url:"https://www.sciencedirect.com/"},
+  "ref:nct_lmwh":{label:"ClinicalTrials NCT01356615 — LMWH vs UFH for HD anticoagulation",url:"https://clinicaltrials.gov/study/NCT01356615"},
+  "ref:icu_bridge":{label:"내부 연결 — ICU 약물계산기 CRRT 모듈",url:""},
+  "ref:pmid_rebound":{label:"Urea rebound & two-pool kinetics (PubMed)",url:"https://pubmed.ncbi.nlm.nih.gov/"},
+  "ref:wikipedia_ktv":{label:"Kt/V — definition & equilibrated Kt/V",url:"https://en.wikipedia.org/wiki/Kt/V"},
+  "ref:kdoqi_adequacy2015":{label:"KDOQI 2015 Hemodialysis Adequacy Update",url:"https://www.ajkd.org/article/S0272-6386(15)01019-7/fulltext"},
+  "ref:hemo_nejm":{label:"HEMO Study — Eknoyan et al. NEJM 2002 (DOI 10.1056/NEJMoa021583)",url:"https://doi.org/10.1056/NEJMoa021583"},
+  "ref:fhn_nejm":{label:"FHN Daily — Chertow et al. NEJM 2010 (DOI 10.1056/NEJMoa1001593)",url:"https://doi.org/10.1056/NEJMoa1001593"},
+  "ref:ideal_nejm":{label:"IDEAL — Cooper et al. NEJM 2010 (DOI 10.1056/NEJMoa1000552)",url:"https://doi.org/10.1056/NEJMoa1000552"},
+  "ref:kdigo_ckd2024b":{label:"KDIGO 2024 CKD — dialysis initiation",url:"https://kdigo.org/guidelines/ckd-evaluation-and-management/"},
+  "ref:kdoqi_va2019":{label:"KDOQI 2019 Vascular Access Update",url:"https://www.ajkd.org/article/S0272-6386(19)31137-0/fulltext"},
+  "ref:kdigo_anemia2026":{label:"KDIGO 2026 Anemia in CKD Guideline",url:"https://kdigo.org/wp-content/uploads/2026/01/KDIGO-2026-Anemia-in-CKD-Guideline.pdf"},
+  "ref:nephjc_anemia":{label:"NephJC — 2026 KDIGO Anemia commentary",url:"http://www.nephjc.com/news/kdigo-anemia"},
+  "ref:hira_quality":{label:"HIRA 혈액투석 적정성평가",url:"https://www.hira.or.kr/"},
+  "ref:kdigo_mbd2017":{label:"KDIGO 2017 CKD-MBD Update",url:"https://kdigo.org/guidelines/ckd-mbd/"},
+  "ref:cjasn_idh":{label:"CJASN — Intradialytic hypotension",url:"https://cjasn.asnjournals.org/"},
+  "ref:ki_volume":{label:"Kidney Int Reports — Volume balance & UF rate",url:"https://www.kireports.org/"},
+  "ref:ajkd_rule6s":{label:"AJKD 2006 — Rule of 6s (vascular access)",url:"https://www.ajkd.org/article/S0272-6386(06)00646-9/fulltext"},
+  "ref:renal_pharmacy":{label:"Renal Pharmacy Consultants — Drug Dialyzability",url:"https://renalpharmacyconsultants.com/dialyzability/"},
+  "ref:statpearls_vd":{label:"StatPearls — Volume of Distribution (NBK545280)",url:"https://www.ncbi.nlm.nih.gov/books/NBK545280/"},
+  "ref:kdoqi_nutrition2020":{label:"KDOQI 2020 Nutrition in CKD",url:"https://www.ajkd.org/article/S0272-6386(20)30726-5/fulltext"},
+  "ref:niddk_diet":{label:"NIDDK — Eating & Nutrition for Hemodialysis",url:"https://www.niddk.nih.gov/health-information/kidney-disease/kidney-failure/hemodialysis/eating-nutrition"},
+  "ref:nkf_diet":{label:"NKF — Hemodialysis and Your Diet",url:"https://www.kidney.org/kidney-topics/hemodialysis-and-your-diet"},
+  "ref:kdigo_aki2012":{label:"KDIGO 2012 AKI Guideline (CRRT dose)",url:"https://kdigo.org/guidelines/acute-kidney-injury/"},
+  "ref:crrt_dose":{label:"CRRT Dose: Quality Indicator (PMC7965247)",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC7965247/"},
+  "ref:crrt_prescribe":{label:"How I prescribe CRRT — Critical Care (Springer)",url:"https://link.springer.com/article/10.1186/s13054-020-03448-7"},
+  "ref:atn_nejm":{label:"ATN Study — Palevsky et al. NEJM 2008 (DOI 10.1056/NEJMoa0802639)",url:"https://doi.org/10.1056/NEJMoa0802639"},
+  "ref:renal_nejm":{label:"RENAL Study — RENAL Investigators NEJM 2009 (DOI 10.1056/NEJMoa0902413)",url:"https://doi.org/10.1056/NEJMoa0902413"}
+};
+
+/* ============================================================
+   투석 학습 가이드 — VIZ 렌더러 (순수 ES5, CDN 없음, iOS Safari 호환)
+   mountViz(cardEl, engine, DATA): 카드 내 .viz-slot[data-viz]에 위젯 주입
+   ※ 임계값은 DATA(num:)에서 읽음. 렌더러는 그리기/상호작용 로직만.
+   ※ requestAnimationFrame 폴백, reduced-motion 존중, devicePixelRatio 대응.
+   ============================================================ */
+(function (global) {
+  var RAF = global.requestAnimationFrame || function (cb) { return setTimeout(function () { cb(Date.now()); }, 16); };
+  var CAF = global.cancelAnimationFrame || global.clearTimeout;
+  var reduceMotion = global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var KIDNEY = '#7C3AED', BLOOD = '#DC2626', DIALYSATE = '#0D9488', DEEP = '#5B21B6',
+      LIGHT = '#EDE9FE', WARN = '#D97706', INK = '#1E1B2E', SOFT = '#6B7280', LINE = '#E5E1F0';
+
+  // 활성 애니메이션 추적(레이어 전환 시 정리)
+  var activeAnims = [];
+  function stopAll() { activeAnims.forEach(function (id) { CAF(id); }); activeAnims = []; }
+
+  /* ---- 캔버스 헬퍼 (HiDPI) ---- */
+  function makeCanvas(w, h) {
+    var c = document.createElement('canvas');
+    var dpr = global.devicePixelRatio || 1;
+    c.width = w * dpr; c.height = h * dpr;
+    c.style.width = w + 'px'; c.style.height = h + 'px';
+    c.style.maxWidth = '100%'; c.style.borderRadius = '8px';
+    var ctx = c.getContext('2d'); ctx.scale(dpr, dpr);
+    c._w = w; c._h = h;
+    return c;
+  }
+  function slider(label, min, max, val, step, unit, onInput) {
+    var wrap = document.createElement('div'); wrap.style.cssText = 'margin:8px 0;text-align:left';
+    var lab = document.createElement('label');
+    lab.style.cssText = 'font-size:12px;color:' + INK + ';display:flex;justify-content:space-between;font-family:inherit';
+    var valSpan = document.createElement('span');
+    valSpan.style.cssText = 'font-family:monospace;font-weight:700;color:' + DEEP;
+    valSpan.textContent = val + (unit || '');
+    lab.appendChild(document.createTextNode(label)); lab.appendChild(valSpan);
+    var inp = document.createElement('input');
+    inp.type = 'range'; inp.min = min; inp.max = max; inp.value = val; inp.step = step || 1;
+    inp.style.cssText = 'width:100%;accent-color:' + KIDNEY + ';margin-top:4px';
+    inp.addEventListener('input', function () {
+      valSpan.textContent = inp.value + (unit || ''); onInput(parseFloat(inp.value));
+    });
+    wrap.appendChild(lab); wrap.appendChild(inp);
+    return { el: wrap, set: function (v) { inp.value = v; valSpan.textContent = v + (unit || ''); } };
+  }
+  function panel() {
+    var p = document.createElement('div');
+    p.style.cssText = 'background:#fff;border:1px solid ' + LINE + ';border-radius:11px;padding:14px;margin:14px 0';
+    return p;
+  }
+  function caption(txt) {
+    var c = document.createElement('div');
+    c.style.cssText = 'font-size:12px;color:' + SOFT + ';margin-top:8px;line-height:1.5';
+    c.innerHTML = txt; return c;
+  }
+  function numVal(DATA, id) { var n = DATA.numbers[id]; return n ? n.value : null; }
+
+  /* ============ viz:diffusion — 확산 애니메이션 ============ */
+  function diffusion(slot, E, DATA) {
+    var p = panel();
+    var W = 300, H = 150, c = makeCanvas(W, H), ctx = c.getContext('2d');
+    p.appendChild(c);
+    var gradient = 70;
+    var s = slider('농도차 (혈액-투석액)', 0, 100, 70, 1, '%', function (v) { gradient = v; });
+    p.appendChild(s.el);
+    p.appendChild(caption('농도차가 클수록 우레아(보라 입자)가 막을 더 빠르게 건너 투석액 쪽으로 이동합니다. <b>확산 = 농도차로 저절로 퍼짐.</b>'));
+    slot.innerHTML = ''; slot.appendChild(p);
+
+    var particles = [];
+    for (var i = 0; i < 40; i++) particles.push({ x: 20 + Math.random() * 110, y: 15 + Math.random() * 120, side: 0 });
+    function frame() {
+      ctx.clearRect(0, 0, W, H);
+      // 좌(혈액)/우(투석액) 배경
+      ctx.fillStyle = '#FEF2F2'; ctx.fillRect(0, 0, W / 2 - 3, H);
+      ctx.fillStyle = '#F0FDFA'; ctx.fillRect(W / 2 + 3, 0, W / 2, H);
+      // 막
+      ctx.fillStyle = KIDNEY; ctx.fillRect(W / 2 - 3, 0, 6, H);
+      ctx.fillStyle = SOFT; ctx.font = '10px sans-serif';
+      ctx.fillText('혈액', 10, 14); ctx.fillText('투석액', W / 2 + 12, 14);
+      var rate = gradient / 100;
+      particles.forEach(function (pt) {
+        if (!reduceMotion) {
+          pt.x += (Math.random() - 0.45) * 2 + (pt.side === 0 ? rate * 1.2 : 0);
+          pt.y += (Math.random() - 0.5) * 2;
+        }
+        if (pt.x > W / 2 && pt.side === 0 && Math.random() < rate) pt.side = 1;
+        if (pt.y < 8) pt.y = 8; if (pt.y > H - 8) pt.y = H - 8;
+        if (pt.x < 8) pt.x = 8; if (pt.x > W - 8) pt.x = W - 8;
+        ctx.beginPath(); ctx.arc(pt.x, pt.y, 3, 0, 6.28);
+        ctx.fillStyle = pt.side === 0 ? KIDNEY : DIALYSATE; ctx.fill();
+      });
+      if (!reduceMotion) activeAnims.push(RAF(frame));
+    }
+    frame();
+  }
+
+  /* ============ viz:countercurrent — 역류 vs 병류 ============ */
+  function countercurrent(slot, E, DATA) {
+    var p = panel();
+    var W = 300, H = 160, c = makeCanvas(W, H), ctx = c.getContext('2d');
+    p.appendChild(c);
+    var counter = true;
+    var btn = document.createElement('button');
+    btn.style.cssText = 'width:100%;padding:9px;margin:8px 0;border:1px solid ' + KIDNEY + ';background:' + LIGHT + ';color:' + DEEP + ';border-radius:8px;font-weight:600;cursor:pointer;font-family:inherit';
+    function setBtn() { btn.textContent = counter ? '현재: 역류(반대 방향) — 탭하여 병류로' : '현재: 병류(같은 방향) — 탭하여 역류로'; }
+    setBtn();
+    btn.addEventListener('click', function () { counter = !counter; setBtn(); draw(); });
+    var cap = caption('');
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      // 혈액(위)·투석액(아래) 채널
+      ctx.fillStyle = SOFT; ctx.font = '10px sans-serif';
+      ctx.fillText('혈액 →', 8, 18); ctx.fillText(counter ? '← 투석액' : '투석액 →', 8, H - 8);
+      // 농도곡선: 역류면 차이 유지, 병류면 중간 수렴
+      var n = 50;
+      for (var ch = 0; ch < 2; ch++) {
+        ctx.beginPath();
+        for (var i = 0; i <= n; i++) {
+          var x = 20 + (i / n) * (W - 40);
+          var t = i / n;
+          var blood = ch === 0;
+          var conc;
+          if (counter) {
+            conc = blood ? (1 - t * 0.55) : (0.05 + t * 0.55);  // 평행 갭 유지
+          } else {
+            conc = blood ? (1 - t * 0.45) : (0.05 + t * 0.45);  // 중간 수렴
+            if (!blood) conc = 0.05 + t * 0.45;
+          }
+          var y = blood ? (60 - conc * 40) : (100 + (1 - conc) * 40 - 40 + conc * 0);
+          y = blood ? (70 - conc * 45) : (90 + conc * 45);
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = ch === 0 ? BLOOD : DIALYSATE; ctx.lineWidth = 2.5; ctx.stroke();
+      }
+      // 갭 표시
+      ctx.fillStyle = counter ? DIALYSATE : WARN; ctx.font = 'bold 10px sans-serif';
+      ctx.fillText(counter ? '농도차 내내 유지 ✓ 확산 지속' : '중간서 평형 → 확산 멈춤', 60, H / 2 + 3);
+      cap.innerHTML = counter
+        ? '<b>역류:</b> 피가 흐르는 내내 양쪽 농도차가 유지돼 확산이 끝까지 계속됩니다.'
+        : '<b>병류:</b> 중간쯤 양쪽 농도가 같아져(평형) 확산이 멈춥니다. 그래서 실제 투석기는 역류를 씁니다.';
+    }
+    slot.innerHTML = ''; slot.appendChild(p); p.appendChild(btn); p.appendChild(cap); draw();
+  }
+
+  /* ============ viz:rebound — 우레아 리바운드 ============ */
+  function rebound(slot, E, DATA) {
+    var p = panel();
+    var W = 300, H = 170, c = makeCanvas(W, H), ctx = c.getContext('2d');
+    p.appendChild(c);
+    var gap = numVal(DATA, 'num:ektv_gap') || 0.2;
+    var reboundPct = numVal(DATA, 'num:rebound_pct') || 15;
+    var K = 300, V = 40;
+    var sK = slider('투석 속도 K', 100, 400, 300, 10, ' mL/min', function (v) { K = v; draw(); });
+    var sV = slider('분포용적 V', 25, 50, 40, 1, ' L', function (v) { V = v; draw(); });
+    var cap = caption('');
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      // 축
+      ctx.strokeStyle = LINE; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(35, 10); ctx.lineTo(35, H - 22); ctx.lineTo(W - 10, H - 22); ctx.stroke();
+      ctx.fillStyle = SOFT; ctx.font = '9px sans-serif';
+      ctx.fillText('BUN', 4, 14); ctx.fillText('투석중', 45, H - 10); ctx.fillText('종료', 150, H - 10); ctx.fillText('+60분', 230, H - 10);
+      // K/V 비율이 클수록 리바운드 큼
+      var ratio = (K / 1000) / V; // 대략적 지표
+      var rb = Math.min(0.45, reboundPct / 100 + ratio * 8); // 리바운드 폭
+      function Y(frac) { return 20 + (1 - frac) * (H - 50); }
+      // 투석 중 하강 (1 → 0.3)
+      ctx.beginPath(); ctx.strokeStyle = KIDNEY; ctx.lineWidth = 2.5;
+      ctx.moveTo(40, Y(1));
+      var endX = 150, endFrac = 0.3;
+      ctx.lineTo(endX, Y(endFrac)); ctx.stroke();
+      // 리바운드 상승 (0.3 → 0.3+rb)
+      ctx.beginPath(); ctx.strokeStyle = BLOOD; ctx.lineWidth = 2.5; ctx.setLineDash([4, 3]);
+      ctx.moveTo(endX, Y(endFrac));
+      ctx.quadraticCurveTo(190, Y(endFrac + rb * 0.7), 250, Y(endFrac + rb)); ctx.stroke(); ctx.setLineDash([]);
+      // sp vs e 표시
+      ctx.fillStyle = KIDNEY; ctx.beginPath(); ctx.arc(endX, Y(endFrac), 4, 0, 6.28); ctx.fill();
+      ctx.fillStyle = BLOOD; ctx.beginPath(); ctx.arc(250, Y(endFrac + rb), 4, 0, 6.28); ctx.fill();
+      ctx.fillStyle = KIDNEY; ctx.font = 'bold 9px sans-serif'; ctx.fillText('측정 spKt/V', endX - 20, Y(endFrac) - 8);
+      ctx.fillStyle = BLOOD; ctx.fillText('실제 eKt/V(평형)', 175, Y(endFrac + rb) + 14);
+      cap.innerHTML = '투석 직후(보라점)와 평형(빨강점)의 차이가 <b>리바운드</b>. K/V가 클수록(빠르고 작은 사람) 리바운드가 큼. ' +
+        '평균 eKt/V ≈ spKt/V − ' + gap + '. 그래서 목표를 1.4로 잡아 실제 1.2를 확보합니다.';
+    }
+    slot.innerHTML = ''; slot.appendChild(p); p.appendChild(sK.el); p.appendChild(sV.el); p.appendChild(cap); draw();
+  }
+
+  /* ============ viz:ktv — Kt/V 실시간 계산 ============ */
+  function ktv(slot, E, DATA) {
+    var p = panel();
+    var target = numVal(DATA, 'num:spktv_target') || 1.4;
+    var min = numVal(DATA, 'num:spktv_min') || 1.2;
+    var K = 250, t = 240, V = 40;
+    var readout = document.createElement('div');
+    readout.style.cssText = 'text-align:center;font-family:monospace;font-size:30px;font-weight:800;margin:6px 0;color:' + DEEP;
+    var bar = document.createElement('div');
+    bar.style.cssText = 'height:24px;border-radius:12px;background:' + LINE + ';position:relative;overflow:hidden;margin:10px 0';
+    var fill = document.createElement('div');
+    fill.style.cssText = 'height:100%;border-radius:12px;transition:width .15s,background .15s';
+    bar.appendChild(fill);
+    // 목표/최소 마커
+    function marker(frac, color, txt) {
+      var m = document.createElement('div');
+      m.style.cssText = 'position:absolute;top:-2px;bottom:-2px;width:2px;background:' + color + ';left:' + (frac * 100) + '%';
+      m.title = txt; bar.appendChild(m);
+    }
+    var verdict = document.createElement('div');
+    verdict.style.cssText = 'text-align:center;font-size:13px;font-weight:700;margin-top:4px';
+    function calc() {
+      var v = (K * t) / (V * 1000);
+      readout.textContent = 'Kt/V = ' + v.toFixed(2);
+      var scale = 2.2;
+      fill.style.width = Math.min(100, (v / scale) * 100) + '%';
+      var ok = v >= target, mid = v >= min;
+      fill.style.background = ok ? '#059669' : (mid ? WARN : BLOOD);
+      verdict.style.color = fill.style.background;
+      verdict.textContent = ok ? '✓ 목표 달성 (≥' + target + ')' : (mid ? '△ 최소 충족 (≥' + min + '), 목표 미달' : '✗ 미달 (<' + min + ')');
+    }
+    var sK = slider('청소율 K', 150, 350, 250, 10, ' mL/min', function (v) { K = v; calc(); });
+    var st = slider('투석 시간 t', 120, 360, 240, 10, ' min', function (v) { t = v; calc(); });
+    var sV = slider('분포용적 V', 25, 50, 40, 1, ' L', function (v) { V = v; calc(); });
+    slot.innerHTML = ''; slot.appendChild(p);
+    p.appendChild(readout); p.appendChild(bar);
+    marker(min / 2.2, WARN, '최소'); marker(target / 2.2, '#059669', '목표');
+    p.appendChild(verdict); p.appendChild(sK.el); p.appendChild(st.el); p.appendChild(sV.el);
+    p.appendChild(caption('Kt/V = (K × t) / (V×1000). 슬라이더로 세 변수를 바꿔 보세요. ' +
+      '주황선=최소 ' + min + ', 초록선=목표 ' + target + '. V(체격)가 크면 같은 K·t로도 Kt/V가 낮아집니다.'));
+    calc();
+  }
+
+  /* ============ viz:ufr_bp — UFR-혈압 트레이드오프 ============ */
+  function ufrBp(slot, E, DATA) {
+    var p = panel();
+    var W = 300, H = 150, c = makeCanvas(W, H), ctx = c.getContext('2d');
+    p.appendChild(c);
+    var danger = numVal(DATA, 'num:ufr_danger') || 13;
+    var ufr = 10;
+    var s = slider('UF rate', 5, 20, 10, 0.5, ' mL/kg/hr', function (v) { ufr = v; draw(); });
+    var cap = caption('');
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      // refill 한계선(수평) vs UF(현재)
+      ctx.strokeStyle = LINE; ctx.beginPath(); ctx.moveTo(35, 10); ctx.lineTo(35, H - 20); ctx.lineTo(W - 10, H - 20); ctx.stroke();
+      ctx.fillStyle = SOFT; ctx.font = '9px sans-serif'; ctx.fillText('혈압', 6, 14); ctx.fillText('시간 →', W - 45, H - 6);
+      // 위험 구간 음영
+      var dx = 35 + (danger / 20) * (W - 45);
+      // 혈압 곡선: ufr<danger면 평탄, 초과면 급락
+      ctx.beginPath(); ctx.lineWidth = 2.5;
+      var over = ufr > danger;
+      ctx.strokeStyle = over ? BLOOD : '#059669';
+      for (var i = 0; i <= 50; i++) {
+        var x = 40 + (i / 50) * (W - 55), tt = i / 50;
+        var bp;
+        if (ufr <= danger) bp = 0.85 - tt * 0.1;
+        else { var drop = (ufr - danger) / (20 - danger); bp = 0.85 - tt * tt * drop * 0.7; }
+        var y = 15 + (1 - bp) * (H - 40);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      // 위험선
+      ctx.fillStyle = WARN; ctx.font = 'bold 9px sans-serif';
+      ctx.fillText('위험역치 ' + danger, W - 90, 20);
+      cap.innerHTML = over
+        ? '<b style="color:' + BLOOD + '">UFR ' + ufr + ' > ' + danger + ':</b> plasma refill이 못 따라가 혈관이 비고 혈압이 급락(IDH). 심근 스터닝·사망 위험.'
+        : '<b style="color:#059669">UFR ' + ufr + ' ≤ ' + danger + ':</b> refill이 UF를 따라잡아 혈압 안정. 안전 구간.';
+    }
+    slot.innerHTML = ''; slot.appendChild(p); p.appendChild(s.el); p.appendChild(cap); draw();
+  }
+
+  /* ============ viz:rule6s — 누공 성숙 판정 ============ */
+  function rule6s(slot, E, DATA) {
+    var p = panel();
+    var d = 5, dep = 7, fl = 500, wk = 6;
+    var out = document.createElement('div');
+    out.style.cssText = 'text-align:center;padding:12px;border-radius:10px;font-weight:700;font-size:14px;margin:8px 0';
+    var detail = document.createElement('div');
+    detail.style.cssText = 'font-size:12px;margin:8px 0;line-height:1.8';
+    function evalNow() {
+      var r = E.checkMaturation(d, dep, fl, wk);
+      var rows = r.criteria.map(function (cc) {
+        return '<div style="display:flex;justify-content:space-between"><span>' + cc.label + '</span><span style="color:' +
+          (cc.pass ? '#059669' : BLOOD) + ';font-weight:700">' + (cc.pass ? '✓ ' : '✗ ') + cc.value + '</span></div>';
+      }).join('');
+      detail.innerHTML = rows;
+      var pass = r.allPass && r.evaluable;
+      out.style.background = pass ? '#ECFDF5' : (r.evaluable ? '#FEF2F2' : LIGHT);
+      out.style.color = pass ? '#059669' : (r.evaluable ? BLOOD : DEEP);
+      out.textContent = r.verdict;
+    }
+    var sd = slider('직경', 2, 12, 5, 0.5, ' mm', function (v) { d = v; evalNow(); });
+    var sde = slider('깊이', 1, 12, 7, 0.5, ' mm', function (v) { dep = v; evalNow(); });
+    var sf = slider('혈류', 200, 1200, 500, 50, ' mL/min', function (v) { fl = v; evalNow(); });
+    var sw = slider('경과 주수', 0, 16, 6, 1, ' 주', function (v) { wk = v; evalNow(); });
+    slot.innerHTML = ''; slot.appendChild(p);
+    p.appendChild(out); p.appendChild(detail);
+    p.appendChild(sd.el); p.appendChild(sde.el); p.appendChild(sf.el); p.appendChild(sw.el);
+    p.appendChild(caption('Rule of 6s: 굵기>6 · 깊이<6 · 혈류>600 · 6주 후 평가. ' +
+      '<i>※ 2019 KDOQI는 이 정량기준 대신 임상판단을 권고 — 학습용 출발점입니다.</i>'));
+    evalNow();
+  }
+
+  /* ============ viz:shpt_cascade — SHPT 연쇄 (정적 SVG) ============ */
+  function shptCascade(slot) {
+    var svg = '<svg viewBox="0 0 300 200" style="width:100%;max-width:320px;display:block;margin:auto">' +
+      box(20, 10, '인 ↑', BLOOD) + box(160, 10, '활성 비타민D ↓', DIALYSATE) +
+      arrow(75, 38, 110, 65) + arrow(210, 38, 150, 65) +
+      box(95, 65, '혈중 칼슘 ↓', WARN) +
+      arrow(150, 93, 150, 110) +
+      box(95, 110, '부갑상선 자극 → PTH ↑', KIDNEY) +
+      arrow(110, 138, 70, 160) + arrow(190, 138, 230, 160) +
+      box(15, 160, '뼈 칼슘 ↓ (약화)', '#92400E') + box(185, 160, '혈관 석회화', '#7F1D1D') +
+      '</svg>';
+    function box(x, y, t, col) {
+      return '<rect x="' + x + '" y="' + y + '" rx="6" width="120" height="26" fill="#fff" stroke="' + col + '" stroke-width="1.5"/>' +
+        '<text x="' + (x + 60) + '" y="' + (y + 17) + '" font-size="11" fill="' + col + '" text-anchor="middle" font-weight="600">' + t + '</text>';
+    }
+    function arrow(x1, y1, x2, y2) {
+      return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + SOFT + '" stroke-width="1.5" marker-end="url(#ah)"/>';
+    }
+    var p = panel();
+    p.innerHTML = '<svg width="0" height="0"><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="' + SOFT + '"/></marker></defs></svg>' + svg;
+    p.appendChild(caption('CKD-MBD의 도미노: 인↑·비타민D↓ → 칼슘↓ → 부갑상선 과로(PTH↑) → 뼈가 녹고 혈관이 굳습니다. ' +
+      '칼슘제로 막으려다 오히려 혈관에 칼슘을 더 붓는 함정 → 비칼슘 결합제 선호.'));
+    slot.innerHTML = ''; slot.appendChild(p);
+  }
+
+  /* ============ 공통 SVG 헬퍼 ============ */
+  function svgBox(x, y, w, h, t, col, fill) {
+    return '<rect x="' + x + '" y="' + y + '" rx="6" width="' + w + '" height="' + h + '" fill="' + (fill || '#fff') + '" stroke="' + col + '" stroke-width="1.5"/>' +
+      '<text x="' + (x + w / 2) + '" y="' + (y + h / 2 + 4) + '" font-size="11" fill="' + col + '" text-anchor="middle" font-weight="600">' + t + '</text>';
+  }
+  function svgArrow(x1, y1, x2, y2, col) {
+    return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + (col || SOFT) + '" stroke-width="1.5" marker-end="url(#ah)"/>';
+  }
+  function svgWrap(inner, vb) {
+    return '<svg width="0" height="0"><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="' + SOFT + '"/></marker></defs></svg>' +
+      '<svg viewBox="' + (vb || '0 0 300 200') + '" style="width:100%;max-width:340px;display:block;margin:auto">' + inner + '</svg>';
+  }
+  function renderStatic(slot, inner, vb, cap) {
+    var p = panel();
+    p.innerHTML = svgWrap(inner, vb);
+    if (cap) p.appendChild(caption(cap));
+    slot.innerHTML = ''; slot.appendChild(p);
+  }
+
+  /* ---- L0: 콩팥 4기능 (투석이 대신하는 2칸) ---- */
+  function kidneyFunctions(slot) {
+    var fns = [
+      { t: '노폐물 배출', sub: 'urea·creatinine', covered: true },
+      { t: '물·전해질 균형', sub: 'volume·Na·K', covered: true },
+      { t: 'EPO 생산', sub: '적혈구→빈혈약', covered: false },
+      { t: '비타민 D 활성화', sub: '뼈·칼슘→뼈약', covered: false }
+    ];
+    var inner = '<text x="150" y="16" font-size="12" fill="' + DEEP + '" text-anchor="middle" font-weight="700">콩팥의 4가지 기능</text>';
+    fns.forEach(function (f, i) {
+      var x = (i % 2) * 145 + 8, y = Math.floor(i / 2) * 70 + 30;
+      var col = f.covered ? DIALYSATE : WARN, fill = f.covered ? '#F0FDFA' : '#FFF8F3';
+      inner += '<rect x="' + x + '" y="' + y + '" rx="7" width="138" height="58" fill="' + fill + '" stroke="' + col + '" stroke-width="1.5"/>';
+      inner += '<text x="' + (x + 69) + '" y="' + (y + 22) + '" font-size="11" fill="' + col + '" text-anchor="middle" font-weight="700">' + f.t + '</text>';
+      inner += '<text x="' + (x + 69) + '" y="' + (y + 38) + '" font-size="9" fill="' + SOFT + '" text-anchor="middle">' + f.sub + '</text>';
+      inner += '<text x="' + (x + 69) + '" y="' + (y + 51) + '" font-size="8.5" fill="' + col + '" text-anchor="middle" font-weight="600">' +
+        (f.covered ? '✓ 투석이 대신' : '✗ 약으로 보충') + '</text>';
+    });
+    renderStatic(slot, inner, '0 0 300 175',
+      '투석(초록 2칸)은 노폐물·물 거르기만 대신합니다. 호르몬 기능(주황 2칸)은 못 해서 빈혈약(L8)·뼈약(L9)으로 따로 메웁니다.');
+  }
+
+  /* ---- L1: solvent drag (대류) ---- */
+  function solventDrag(slot) {
+    var inner = '<text x="150" y="14" font-size="11" fill="' + DEEP + '" text-anchor="middle" font-weight="700">convection — 물살이 용질을 끌고 간다</text>';
+    // 막
+    inner += '<line x1="150" y1="30" x2="150" y2="160" stroke="' + KIDNEY + '" stroke-width="5"/>';
+    inner += '<text x="60" y="44" font-size="9" fill="' + SOFT + '" text-anchor="middle">혈액(압력 ↑)</text>';
+    inner += '<text x="235" y="44" font-size="9" fill="' + SOFT + '" text-anchor="middle">투석액</text>';
+    // 물살 화살표(굵게) + 용질(작은/큰 원)
+    for (var i = 0; i < 3; i++) {
+      var y = 70 + i * 32;
+      inner += '<line x1="55" y1="' + y + '" x2="245" y2="' + y + '" stroke="' + DIALYSATE + '" stroke-width="2" marker-end="url(#ah)" opacity="0.55"/>';
+      inner += '<circle cx="90" cy="' + y + '" r="4" fill="' + KIDNEY + '"/>';      // 작은 분자
+      inner += '<circle cx="115" cy="' + y + '" r="7" fill="' + BLOOD + '"/>';       // 큰 분자(middle molecule)
+    }
+    renderStatic(slot, inner, '0 0 300 175',
+      '압력으로 생긴 물살(틸 화살표)이 작은 분자(보라)뿐 아니라 <b>큰 분자(빨강, middle molecule)</b>까지 함께 쓸어 막을 통과시킵니다. diffusion이 못 빼던 큰 분자를 convection이 빼는 원리.');
+  }
+
+  /* ---- L3: 투석액 성분 방향 화살표 ---- */
+  function dialysateTable(slot) {
+    var rows = [
+      { n: 'Na · Cl', dir: 0, note: '생리농도 유지' },
+      { n: 'bicarbonate', dir: 1, note: '몸으로(산증 치료)' },
+      { n: 'K · Ca', dir: -1, note: '농도로 제거량 조절' },
+      { n: 'Mg · phosphate', dir: -1, note: '낮게→몸에서 제거' },
+      { n: 'urea · 노폐물', dir: -1, note: '투석액으로 제거' }
+    ];
+    var inner = '<text x="150" y="13" font-size="11" fill="' + DEEP + '" text-anchor="middle" font-weight="700">투석액 ↔ 혈액 양방향 교환</text>';
+    inner += '<text x="48" y="30" font-size="9" fill="' + BLOOD + '" text-anchor="middle" font-weight="700">혈액</text>';
+    inner += '<text x="252" y="30" font-size="9" fill="' + DIALYSATE + '" text-anchor="middle" font-weight="700">투석액</text>';
+    inner += '<line x1="150" y1="34" x2="150" y2="250" stroke="' + KIDNEY + '" stroke-width="3"/>';
+    rows.forEach(function (r, i) {
+      var y = 54 + i * 42;        // 행 간격 30→42로 확대
+      inner += '<text x="150" y="' + (y - 11) + '" font-size="10.5" fill="' + INK + '" text-anchor="middle" font-weight="700">' + r.n + '</text>';
+      if (r.dir === -1) inner += '<line x1="138" y1="' + y + '" x2="55" y2="' + y + '" stroke="' + BLOOD + '" stroke-width="2" marker-end="url(#ah)"/>';
+      else if (r.dir === 1) inner += '<line x1="162" y1="' + y + '" x2="245" y2="' + y + '" stroke="' + DIALYSATE + '" stroke-width="2" marker-end="url(#ah)"/>';
+      else { inner += '<line x1="150" y1="' + y + '" x2="92" y2="' + y + '" stroke="' + SOFT + '" stroke-width="1.2"/><line x1="150" y1="' + y + '" x2="208" y2="' + y + '" stroke="' + SOFT + '" stroke-width="1.2"/>'; }
+      inner += '<text x="150" y="' + (y + 14) + '" font-size="8.5" fill="' + SOFT + '" text-anchor="middle">' + r.note + '</text>';
+    });
+    renderStatic(slot, inner, '0 0 300 258',
+      '빼고 싶은 것(urea·인)은 투석액 농도를 낮춰 혈액→투석액으로(빨강 화살표), 주고 싶은 것(bicarbonate)은 투석액에 채워 거꾸로(틸 화살표). 한 막에서 동시에 일어나는 양방향 교환.');
+  }
+
+  /* ---- L4: 체외 회로 + 항응고 위치 ---- */
+  function circuit(slot) {
+    var inner = '<text x="150" y="14" font-size="11" fill="' + DEEP + '" text-anchor="middle" font-weight="700">체외 회로 — 피의 여정</text>';
+    // 몸
+    inner += '<rect x="10" y="60" rx="10" width="55" height="90" fill="#FEF2F2" stroke="' + BLOOD + '" stroke-width="1.5"/>';
+    inner += '<text x="37" y="108" font-size="10" fill="' + BLOOD + '" text-anchor="middle" font-weight="700">환자</text>';
+    // 투석기
+    inner += '<rect x="200" y="55" rx="6" width="50" height="100" fill="' + LIGHT + '" stroke="' + KIDNEY + '" stroke-width="1.5"/>';
+    inner += '<text x="225" y="100" font-size="9" fill="' + DEEP + '" text-anchor="middle" font-weight="700">투석기</text>';
+    inner += '<text x="225" y="113" font-size="8" fill="' + SOFT + '" text-anchor="middle">dialyzer</text>';
+    // 동맥선(나감) 위
+    inner += '<line x1="65" y1="78" x2="200" y2="78" stroke="' + BLOOD + '" stroke-width="2" marker-end="url(#ah)"/>';
+    inner += '<text x="120" y="72" font-size="8" fill="' + BLOOD + '" text-anchor="middle">동맥선(빼냄)</text>';
+    // 항응고 주입 지점
+    inner += '<circle cx="110" cy="78" r="9" fill="#fff" stroke="' + WARN + '" stroke-width="1.8"/>';
+    inner += '<text x="110" y="81" font-size="8" fill="' + WARN + '" text-anchor="middle" font-weight="700">+</text>';
+    inner += '<text x="110" y="98" font-size="8" fill="' + WARN + '" text-anchor="middle" font-weight="600">항응고</text>';
+    inner += '<text x="110" y="108" font-size="7.5" fill="' + SOFT + '" text-anchor="middle">heparin/citrate</text>';
+    // 정맥선(돌아옴) 아래
+    inner += '<line x1="200" y1="135" x2="65" y2="135" stroke="' + DIALYSATE + '" stroke-width="2" marker-end="url(#ah)"/>';
+    inner += '<text x="130" y="150" font-size="8" fill="' + DIALYSATE + '" text-anchor="middle">정맥선(돌아옴)</text>';
+    renderStatic(slot, inner, '0 0 300 175',
+      '피가 동맥선으로 나가며 <b>항응고제(주황 +)</b>를 받고, 투석기를 거쳐 정맥선으로 돌아옵니다. heparin은 전신, citrate는 회로 안에서만 작용해 출혈 위험을 줄입니다.');
+  }
+
+  /* ---- L7: 투석 개시 트리거 체크리스트 ---- */
+  function initiationChecklist(slot) {
+    var p = panel();
+    var urgent = ['요독성 심막염(pericarditis)', '요독성 뇌병증(encephalopathy)', '난치성 고칼륨혈증'];
+    var consider = ['요독 증상(식욕부진·오심·가려움·인지저하)', '난치성 용적 과부하(폐부종)', '난치성 대사성 산증'];
+    var h = '<div style="font-weight:700;color:' + DEEP + ';font-size:13px;margin-bottom:8px">개시는 eGFR이 아니라 증상으로</div>';
+    h += '<div style="background:#FEF2F2;border-radius:8px;padding:9px 11px;margin-bottom:8px"><div style="font-size:11px;font-weight:700;color:' + BLOOD + ';margin-bottom:4px">🚨 응급 적응증</div>';
+    urgent.forEach(function (u) { h += '<div style="font-size:11.5px;color:' + INK + ';padding:1px 0">• ' + u + '</div>'; });
+    h += '</div>';
+    h += '<div style="background:#FFF8F3;border-radius:8px;padding:9px 11px;margin-bottom:8px"><div style="font-size:11px;font-weight:700;color:' + WARN + ';margin-bottom:4px">⚠ 개시 고려</div>';
+    consider.forEach(function (c) { h += '<div style="font-size:11.5px;color:' + INK + ';padding:1px 0">• ' + c + '</div>'; });
+    h += '</div>';
+    h += '<div style="background:' + LIGHT + ';border-radius:8px;padding:9px 11px;font-size:11px;color:' + DEEP + '">📊 GFR 5~10은 <b>참고 구간</b>일 뿐 — 무증상이면 5 미만도 지연 가능(IDEAL)</div>';
+    p.innerHTML = h;
+    p.appendChild(caption('투석 시작 결정 트리. 위(빨강)는 즉시 투석, 가운데(주황)는 개시 고려. eGFR 숫자는 방아쇠가 아니라 참고치입니다.'));
+    slot.innerHTML = ''; slot.appendChild(p);
+  }
+
+  /* ---- L8: Hb 목표 밴드 ---- */
+  function hbTargetBand(slot, E, DATA) {
+    var start = numVal(DATA, 'num:hb_esa_start'); // [9,10]
+    var maxH = numVal(DATA, 'num:hb_target_max'); // 11.5
+    var over = numVal(DATA, 'num:hb_overcorrect'); // 13
+    var lo = 6, hi = 16, W = 280;
+    function px(v) { return ((v - lo) / (hi - lo)) * W; }
+    var inner = '<text x="140" y="14" font-size="11" fill="' + DEEP + '" text-anchor="middle" font-weight="700">Hb 목표 밴드 (g/dL)</text>';
+    // 띠
+    inner += '<rect x="0" y="30" width="' + px(start[1]) + '" height="22" fill="#FEE2E2"/>';   // 너무 낮음
+    inner += '<rect x="' + px(start[1]) + '" y="30" width="' + (px(maxH) - px(start[1])) + '" height="22" fill="#D1FAE5"/>'; // 목표대
+    inner += '<rect x="' + px(maxH) + '" y="30" width="' + (px(over) - px(maxH)) + '" height="22" fill="#FEF3C7"/>'; // 경계
+    inner += '<rect x="' + px(over) + '" y="30" width="' + (W - px(over)) + '" height="22" fill="#FEE2E2"/>'; // 과교정
+    // 눈금
+    [start[1], maxH, over].forEach(function (v) {
+      inner += '<line x1="' + px(v) + '" y1="26" x2="' + px(v) + '" y2="56" stroke="' + INK + '" stroke-width="1.2"/>';
+      inner += '<text x="' + px(v) + '" y="68" font-size="9" fill="' + INK + '" text-anchor="middle" font-weight="700">' + v + '</text>';
+    });
+    inner += '<text x="' + (px(start[1]) / 2) + '" y="45" font-size="8" fill="' + BLOOD + '" text-anchor="middle">시작 고려</text>';
+    inner += '<text x="' + ((px(start[1]) + px(maxH)) / 2) + '" y="45" font-size="8" fill="#059669" text-anchor="middle" font-weight="700">목표대</text>';
+    inner += '<text x="' + ((px(over) + W) / 2) + '" y="45" font-size="8" fill="' + BLOOD + '" text-anchor="middle">과교정 위험</text>';
+    renderStatic(slot, inner, '0 0 290 80',
+      'Hb ' + start[0] + '~' + start[1] + ' 이하면 ESA 시작 고려, 목표는 ' + maxH + ' 미만(초록). ' + over + ' 초과(빨강)는 심혈관 위험. <b>정상까지 올리지 않는다</b>가 핵심.');
+  }
+
+  /* ---- L12: dialyzability 4물성 매트릭스 ---- */
+  function dialyzabilityMatrix(slot) {
+    var rows = [
+      { p: '분자 크기', removed: '작다', kept: '크다' },
+      { p: '단백 결합', removed: '낮다', kept: '높다' },
+      { p: '분포용적 Vd', removed: '작다', kept: '크다' },
+      { p: '예시', removed: 'gentamicin', kept: 'digoxin' }
+    ];
+    var inner = '<text x="150" y="14" font-size="11" fill="' + DEEP + '" text-anchor="middle" font-weight="700">투석으로 잘 빠지나?</text>';
+    inner += '<text x="155" y="34" font-size="9.5" fill="#059669" text-anchor="middle" font-weight="700">✓ 잘 빠짐(보충 필요)</text>';
+    inner += '<text x="255" y="34" font-size="9.5" fill="' + BLOOD + '" text-anchor="middle" font-weight="700">✗ 안 빠짐</text>';
+    rows.forEach(function (r, i) {
+      var y = 48 + i * 30;
+      inner += '<text x="8" y="' + (y + 14) + '" font-size="10" fill="' + INK + '" font-weight="600">' + r.p + '</text>';
+      inner += '<rect x="105" y="' + y + '" rx="5" width="95" height="22" fill="#ECFDF5" stroke="#059669" stroke-width="1"/>';
+      inner += '<text x="152" y="' + (y + 15) + '" font-size="9.5" fill="#059669" text-anchor="middle">' + r.removed + '</text>';
+      inner += '<rect x="208" y="' + y + '" rx="5" width="84" height="22" fill="#FEF2F2" stroke="' + BLOOD + '" stroke-width="1"/>';
+      inner += '<text x="250" y="' + (y + 15) + '" font-size="9.5" fill="' + BLOOD + '" text-anchor="middle">' + r.kept + '</text>';
+    });
+    renderStatic(slot, inner, '0 0 300 175',
+      '작은 분자·낮은 단백결합·작은 Vd → 투석으로 잘 빠져 <b>투석 후 보충 필요</b>(gentamicin). 큰 Vd 약은 조직에 숨어 안 빠짐(digoxin). L1 확산 원리를 약에 적용한 것.');
+  }
+
+  /* ---- L13: 식이 수지균형 ---- */
+  function dietBalance(slot) {
+    var inner = '<text x="150" y="14" font-size="11" fill="' + DEEP + '" text-anchor="middle" font-weight="700">식이 — 제한 vs 증량</text>';
+    // 제한 (왼쪽, 빨강)
+    var restrict = ['나트륨 < 2.3 g', '칼륨 (개별화)', '인 (무기인 회피)', '수분 (IDWG)'];
+    inner += '<rect x="8" y="28" rx="8" width="135" height="140" fill="#FEF2F2" stroke="' + BLOOD + '" stroke-width="1.5"/>';
+    inner += '<text x="75" y="46" font-size="10.5" fill="' + BLOOD + '" text-anchor="middle" font-weight="700">⬇ 제한</text>';
+    restrict.forEach(function (r, i) { inner += '<text x="75" y="' + (68 + i * 22) + '" font-size="9.5" fill="' + INK + '" text-anchor="middle">' + r + '</text>'; });
+    // 증량 (오른쪽, 초록)
+    inner += '<rect x="157" y="28" rx="8" width="135" height="140" fill="#ECFDF5" stroke="#059669" stroke-width="1.5"/>';
+    inner += '<text x="224" y="46" font-size="10.5" fill="#059669" text-anchor="middle" font-weight="700">⬆ 증량(역설)</text>';
+    inner += '<text x="224" y="74" font-size="10" fill="' + INK + '" text-anchor="middle" font-weight="600">단백질</text>';
+    inner += '<text x="224" y="92" font-size="9.5" fill="' + INK + '" text-anchor="middle">1.0~1.2 g/kg/일</text>';
+    inner += '<text x="224" y="118" font-size="8.5" fill="' + SOFT + '" text-anchor="middle">투석이 아미노산</text>';
+    inner += '<text x="224" y="130" font-size="8.5" fill="' + SOFT + '" text-anchor="middle">5~8g/세션 빼므로</text>';
+    inner += '<text x="224" y="150" font-size="8.5" fill="#059669" text-anchor="middle" font-weight="600">고품질 단백 권장</text>';
+    renderStatic(slot, inner, '0 0 300 178',
+      '콩팥이 못 빼는 Na·K·인·물은 제한(빨강). 단 투석이 빼버리는 <b>단백질은 오히려 증량</b>(초록) — 일반 CKD와 정반대인 핵심 역설.');
+  }
+
+  /* ---- BRIDGE: HD vs CRRT ---- */
+  function hdCrrtCompare(slot) {
+    var inner = '<text x="150" y="14" font-size="11" fill="' + DEEP + '" text-anchor="middle" font-weight="700">같은 물리, 다른 속도</text>';
+    // HD
+    inner += '<rect x="8" y="26" rx="8" width="135" height="150" fill="' + LIGHT + '" stroke="' + KIDNEY + '" stroke-width="1.5"/>';
+    inner += '<text x="75" y="44" font-size="11" fill="' + DEEP + '" text-anchor="middle" font-weight="700">HD</text>';
+    inner += '<text x="75" y="60" font-size="8.5" fill="' + SOFT + '" text-anchor="middle">빠르게 4시간</text>';
+    // 급격한 곡선
+    inner += '<polyline points="20,90 50,150 130,150" fill="none" stroke="' + BLOOD + '" stroke-width="2"/>';
+    inner += '<polyline points="130,150 135,120" fill="none" stroke="' + BLOOD + '" stroke-width="2" stroke-dasharray="3,2"/>';
+    inner += '<text x="75" y="168" font-size="8.5" fill="' + BLOOD + '" text-anchor="middle">rebound 큼·혈압 흔들림</text>';
+    // CRRT
+    inner += '<rect x="157" y="26" rx="8" width="135" height="150" fill="#F0FDFA" stroke="' + DIALYSATE + '" stroke-width="1.5"/>';
+    inner += '<text x="224" y="44" font-size="11" fill="' + DIALYSATE + '" text-anchor="middle" font-weight="700">CRRT</text>';
+    inner += '<text x="224" y="60" font-size="8.5" fill="' + SOFT + '" text-anchor="middle">천천히 24시간</text>';
+    // 완만한 곡선
+    inner += '<polyline points="170,90 285,150" fill="none" stroke="' + DIALYSATE + '" stroke-width="2"/>';
+    inner += '<text x="224" y="168" font-size="8.5" fill="' + DIALYSATE + '" text-anchor="middle">rebound 없음·혈압 안정</text>';
+    renderStatic(slot, inner, '0 0 300 185',
+      'HD는 강력하게 몰아치고(rebound·IDH), CRRT는 천천히 연속으로 뺍니다(늘 평형·혈압 보존). effluent dose ↔ Kt/V, 둘 다 같은 물리(diffusion·convection)입니다.');
+  }
+
+  /* ---- L15: CRRT 시뮬레이터 (외부 모듈 위임) ---- */
+  function crrtSimulator(slot) {
+    if (typeof global.mountCrrtSimulator === 'function' &&
+        typeof global.CRRT_DATA !== 'undefined' && typeof global.crrtCompute === 'function') {
+      global.mountCrrtSimulator(slot, global.CRRT_DATA, global.crrtCompute);
+    } else {
+      slot.innerHTML = '<div style="font-size:12px;color:' + SOFT + ';padding:12px">CRRT 시뮬레이터 모듈 로드 실패</div>';
+    }
+  }
+
+  /* ---- L15: CRRT 처방 Flow ---- */
+  function crrtFlow(slot) {
+    var flow = (global.CRRT_DATA && global.CRRT_DATA.flow) || [];
+    var p = panel();
+    var h = '<div style="font-weight:700;color:' + DEEP + ';font-size:13px;margin-bottom:10px">CRRT 처방 7단계</div>';
+    flow.forEach(function (f, i) {
+      h += '<details style="border:1px solid ' + LINE + ';border-radius:8px;margin-bottom:6px;overflow:hidden">' +
+        '<summary style="padding:10px 12px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:' + INK + '">' +
+        '<span style="background:' + LIGHT + ';color:' + DEEP + ';font-family:monospace;font-weight:700;border-radius:5px;padding:2px 7px;font-size:11px">' + f.step + '</span>' +
+        f.icon + ' ' + f.title_ko + '<span style="margin-left:auto;color:' + KIDNEY + ';font-size:12px">▾</span></summary>' +
+        '<div style="padding:0 12px 12px;font-size:12px;color:' + INK + ';line-height:1.6">' + f.body_ko;
+      if (f.detail_ko && f.detail_ko.length) {
+        h += '<div style="margin-top:6px;padding-top:6px;border-top:1px dashed ' + LINE + '">';
+        f.detail_ko.forEach(function (d) { h += '<div style="font-size:11px;color:' + SOFT + ';padding:1px 0">· ' + d + '</div>'; });
+        h += '</div>';
+      }
+      h += '</div></details>';
+    });
+    p.innerHTML = h;
+    p.appendChild(caption('실전 처방 절차. 각 단계를 펼쳐 상세 보기. 3·6단계는 위 시뮬레이터로 직접 확인하세요.'));
+    slot.innerHTML = ''; slot.appendChild(p);
+  }
+
+  /* ============ 정적 도해 폴백 (혹시 누락 시) ============ */
+  function staticDiagram(slot, vizMeta) {
+    var p = panel();
+    p.style.background = LIGHT;
+    p.innerHTML = '<div style="font-family:monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:' + KIDNEY + ';margin-bottom:6px">도해 · ' + (vizMeta.type || '') + '</div>' +
+      '<div style="font-weight:700;color:' + DEEP + ';font-size:14px">' + (vizMeta.title_ko || '') + '</div>' +
+      (vizMeta.output_ko ? '<div style="font-size:12.5px;color:' + INK + ';margin-top:6px;line-height:1.5">' + vizMeta.output_ko + '</div>' : '');
+    slot.innerHTML = ''; slot.appendChild(p);
+  }
+
+  /* ---- 라우팅 ---- */
+  var RENDERERS = {
+    'viz:diffusion': diffusion,
+    'viz:countercurrent': countercurrent,
+    'viz:rebound': rebound,
+    'viz:ktv': ktv,
+    'viz:ufr_bp': ufrBp,
+    'viz:rule6s': rule6s,
+    'viz:shpt_cascade': function (slot) { shptCascade(slot); },
+    'viz:kidney_functions': function (slot) { kidneyFunctions(slot); },
+    'viz:solvent_drag': function (slot) { solventDrag(slot); },
+    'viz:dialysate_table': function (slot) { dialysateTable(slot); },
+    'viz:circuit': function (slot) { circuit(slot); },
+    'viz:initiation_checklist': function (slot) { initiationChecklist(slot); },
+    'viz:hb_target_band': hbTargetBand,
+    'viz:dialyzability_matrix': function (slot) { dialyzabilityMatrix(slot); },
+    'viz:diet_balance': function (slot) { dietBalance(slot); },
+    'viz:hd_crrt_compare': function (slot) { hdCrrtCompare(slot); },
+    'viz:crrt_simulator': function (slot) { crrtSimulator(slot); },
+    'viz:crrt_flow': function (slot) { crrtFlow(slot); }
+  };
+
+  global.mountViz = function (cardEl, E, DATA) {
+    if (!cardEl) return;
+    stopAll();
+    var slots = cardEl.querySelectorAll('.viz-slot');
+    for (var i = 0; i < slots.length; i++) {
+      var slot = slots[i];
+      if (slot._mounted) continue; // 1회만
+      var vid = slot.getAttribute('data-viz');
+      var fn = RENDERERS[vid];
+      try {
+        if (fn) { fn(slot, E, DATA); }
+        else { staticDiagram(slot, (DATA.viz && DATA.viz[vid]) || {}); }
+        slot._mounted = true;
+      } catch (e) {
+        slot.innerHTML = '<div style="font-size:12px;color:' + SOFT + '">시각화를 불러올 수 없습니다.</div>';
+      }
+    }
+  };
+})(typeof window !== 'undefined' ? window : this);
+</script>
+
+<script>
+/* ============ UI 컨트롤러 ============ */
+(function(){
+  // DATA 조립 (모듈 전역 변수들을 엔진 입력으로)
+  var DATA = {
+    trials: typeof DIALYSIS_TRIALS!=='undefined'?DIALYSIS_TRIALS:{},
+    numbers: typeof DIALYSIS_NUMBERS!=='undefined'?DIALYSIS_NUMBERS:{},
+    conceptsA: typeof DIALYSIS_CONCEPTS_A!=='undefined'?DIALYSIS_CONCEPTS_A:{},
+    conceptsB: typeof DIALYSIS_CONCEPTS_B!=='undefined'?DIALYSIS_CONCEPTS_B:{},
+    drugs: typeof DIALYSIS_DRUGS!=='undefined'?DIALYSIS_DRUGS:{},
+    viz: typeof DIALYSIS_VIZ!=='undefined'?DIALYSIS_VIZ:{},
+    reimb: typeof DIALYSIS_REIMB!=='undefined'?DIALYSIS_REIMB:{}
+  };
+  var E = new DialysisEngine(DATA);
+  var REFS = typeof DIALYSIS_REFS!=='undefined'?DIALYSIS_REFS:{};
+
+  function esc(s){return (''+s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  // 마크다운 약식: **bold** 만
+  function md(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');}
+
+  var layers = E.listLayers();
+  var tower = document.getElementById('tower');
+  var content = document.getElementById('content');
+
+  // 네비 빌드
+  layers.forEach(function(L){
+    var el=document.createElement('button');
+    el.className='floor'; el.setAttribute('data-id',L.id);
+    el.innerHTML='<span class="fid">'+esc(L.id)+'</span><span class="ficon">'+esc(L.icon)+'</span><span class="ftitle">'+esc(L.title)+'</span>';
+    el.addEventListener('click',function(){show(L.id);});
+    tower.appendChild(el);
+  });
+
+  // 카드 빌드 (전부 미리 렌더, 표시만 토글)
+  layers.forEach(function(L){
+    var r=E.explain(L.id);
+    var card=document.createElement('section');
+    card.className='layer-card'; card.id='card-'+L.id;
+    card.innerHTML=renderCard(r);
+    content.appendChild(card);
+  });
+  // 출처 푸터
+  var foot=document.createElement('div');
+  foot.className='refs-foot'; foot.innerHTML=renderRefs();
+  content.appendChild(foot);
+
+  function renderCard(r){
+    if(!r.found) return '<p>콘텐츠 없음</p>';
+    var h='';
+    h+='<div class="lc-head"><div class="lc-eyebrow"><span class="num">'+esc(r.id)+'</span> '+esc(r.icon||'')+' LAYER</div>'+
+       '<h2>'+esc(r.title)+'</h2>'+(r.subtitle?'<div class="sub">'+esc(r.subtitle)+'</div>':'')+'</div>';
+    // core
+    h+='<div class="core"><span class="core-tag">핵심</span>'+md(r.core)+'</div>';
+    // analogy
+    if(r.analogy) h+='<div class="analogy"><span class="a-tag">🔆 비유</span>'+esc(r.analogy)+'</div>';
+    // numbers
+    if(r.numbers&&r.numbers.length){
+      h+='<div class="numbers">';
+      r.numbers.forEach(function(n){
+        h+='<div class="numchip"><span class="nlabel">'+esc(n.label)+'</span>'+
+           '<span class="nval">'+esc(n.text)+'</span>'+
+           '<span class="ngrade g-'+esc(n.grade)+'">'+esc(n.grade)+'</span>'+
+           (n.note?'<div class="nnote">'+esc(n.note)+'</div>':'')+'</div>';
+      });
+      h+='</div>';
+    }
+    // viz 슬롯 (다음 단계 주입)
+    if(r.viz){
+      h+='<div class="viz-slot" data-viz="'+esc(r.viz.id)+'"><span class="vtag">인터랙티브 · '+esc(r.viz.type)+'</span>'+esc(r.viz.title)+
+         (r.viz.output?'<div style="font-size:11.5px;margin-top:5px;opacity:.8">'+esc(r.viz.output)+'</div>':'')+'</div>';
+    }
+    // 보조 viz (L1 solvent_drag, L15 flow 등)
+    if(r.viz_secondary){
+      h+='<div class="viz-slot" data-viz="'+esc(r.viz_secondary.id)+'"><span class="vtag">'+esc(r.viz_secondary.type)+'</span>'+esc(r.viz_secondary.title)+
+         (r.viz_secondary.output?'<div style="font-size:11.5px;margin-top:5px;opacity:.8">'+esc(r.viz_secondary.output)+'</div>':'')+'</div>';
+    }
+    // detail 아코디언
+    (r.detail||[]).forEach(function(d){
+      h+='<details class="detail-acc"><summary>'+esc(d.h)+'<span class="chev">▶</span></summary>'+
+         '<div class="detail-body">'+md(d.t)+'</div></details>';
+    });
+    // trials
+    if(r.trials&&r.trials.length){
+      h+='<div class="trials">';
+      r.trials.forEach(function(t){
+        if(t.missing) return;
+        h+='<div class="trial"><span class="tname">'+esc(t.name)+'</span> <span class="tyear">'+esc(t.year)+'</span>'+
+           '<div class="tteach">'+esc(t.teaching)+'</div>'+
+           '<a href="'+esc(t.pubmed)+'" target="_blank" rel="noopener">PubMed '+esc(t.pmid)+'</a>'+
+           '<a href="'+esc(t.url)+'" target="_blank" rel="noopener">DOI</a></div>';
+      });
+      h+='</div>';
+    }
+    // CRRT trials (L15)
+    if(r.crrt_trials&&r.crrt_trials.length){
+      h+='<div class="trials">';
+      r.crrt_trials.forEach(function(t){
+        if(t.missing) return;
+        h+='<div class="trial"><span class="tname">'+esc(t.name)+'</span> <span class="tyear">'+esc(t.year)+'</span>'+
+           '<div class="tteach">'+esc(t.finding||t.teaching)+'</div>'+
+           '<a href="'+esc(t.pubmed)+'" target="_blank" rel="noopener">PubMed '+esc(t.pmid)+'</a>'+
+           '<a href="'+esc(t.url)+'" target="_blank" rel="noopener">DOI</a></div>';
+      });
+      h+='</div>';
+    }
+    (r.reimb||[]).forEach(function(rb){
+      h+='<div class="reimb"><div class="reimb-head">💰 '+esc(rb.title)+(rb.verified?'':' <span style="font-weight:400;font-size:11px">(미검증)</span>')+'</div>'+
+         '<div class="reimb-body"><div class="skeleton">'+esc(rb.skeleton)+'</div>'+
+         (rb.guideline?'<div class="gl"><b>가이드라인:</b> '+esc(rb.guideline)+'</div>':'')+
+         (rb.conflict?'<div class="conflict">⚠️ '+esc(rb.conflict_note)+'</div>':'')+
+         (!rb.verified?'<div class="unverified">'+esc(rb.warning)+'</div>':'')+
+         '</div></div>';
+    });
+    return h;
+  }
+
+  function renderRefs(){
+    var h='<h3>📚 출처 · 논문 링크</h3><ul>';
+    Object.keys(REFS).forEach(function(k){
+      var rf=REFS[k];
+      h+='<li>'+(rf.url?'<a href="'+esc(rf.url)+'" target="_blank" rel="noopener">'+esc(rf.label)+'</a>':esc(rf.label))+'</li>';
+    });
+    h+='</ul><div class="disclaimer">본 도구는 <b>학습·조언 목적</b>이며 처방을 대신하지 않습니다. '+
+       '실제 임상 결정은 신장내과 전문의와 상의하십시오. · HIRA 급여는 코딩 직전 원문 재검증 대상(미검증 표시).</div>';
+    return h;
+  }
+
+  var current=null;
+  function show(id){
+    if(current) {
+      var oc=document.getElementById('card-'+current); if(oc) oc.classList.remove('shown');
+      var of=tower.querySelector('.floor[data-id="'+current+'"]'); if(of) of.classList.remove('active');
+    }
+    var c=document.getElementById('card-'+id); if(c) c.classList.add('shown');
+    var f=tower.querySelector('.floor[data-id="'+id+'"]'); if(f) f.classList.add('active');
+    current=id;
+    // viz 주입 (렌더러가 로드돼 있으면)
+    if(typeof mountViz==='function') mountViz(c, E, DATA);
+    // 콘텐츠 영역만 상단으로(아코디언 토글은 스크롤 금지 — 헌장)
+    if(window.innerWidth<780){ window.scrollTo({top:document.querySelector('.content-col').offsetTop-10,behavior:'auto'}); }
+  }
+
+  // 초기: L0
+  show('L0');
+})();
+</script>
+</body>
+</html>
