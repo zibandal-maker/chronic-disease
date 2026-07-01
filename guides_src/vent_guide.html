@@ -240,6 +240,64 @@ h1,h2,h3,p,ul{margin:0;}
 .wave-card{background:#fbfdfe; border:1px solid var(--line); border-radius:9px; padding:5px 6px 2px;}
 .wave-cv{display:block; width:100%; max-width:100%;}
 .sim-out{margin-bottom:14px;}
+.sim-modelnote{font-size:11px; line-height:1.5; color:#92704a; background:#fdf6ec; border:1px solid #f0dcc0; border-radius:8px; padding:8px 10px; margin-top:8px;}
+.sim-modelnote b{color:#7a5a30;}
+
+/* ── ABGA 해석기 ── */
+.ab-knobs{padding:0 14px;}
+.ab-knobgrp{margin-bottom:8px; border:1px solid var(--line); border-radius:11px; overflow:hidden; background:var(--surface);}
+.ab-grphead{width:100%; border:0; background:none; padding:11px 13px; text-align:left; cursor:pointer; font-family:inherit;
+  display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:600; color:var(--ink);}
+.ab-chev{color:var(--teal-d); transition:transform .2s;}
+.ab-grphead.open .ab-chev{transform:rotate(180deg);}
+.ab-grpinner{padding:4px 13px 12px;}
+.ab-knob{margin-bottom:11px;}
+.ab-knhead{display:flex; align-items:center; gap:8px; margin-bottom:4px;}
+.ab-knhead label{font-size:12px; color:var(--ink2); flex:0 0 54px; font-weight:600;}
+.ab-numin{width:66px; border:1px solid var(--line); border-radius:7px; padding:5px 7px; font-size:13px; font-family:inherit; color:var(--ink); text-align:right;}
+.ab-numin:focus{outline:2px solid var(--teal); outline-offset:-1px;}
+.ab-unit{font-size:11px; color:var(--ink2);}
+.ab-range{width:100%; accent-color:var(--teal);}
+.ab-chronic{display:flex; align-items:center; gap:7px; padding:10px 14px; font-size:12px; color:var(--ink2);}
+.ab-cbtn{border:1px solid var(--line); background:var(--surface); border-radius:7px; padding:5px 12px; font-size:12px; cursor:pointer; color:var(--ink2); font-family:inherit;}
+.ab-cbtn.on{background:var(--teal); color:#fff; border-color:var(--teal); font-weight:600;}
+.ab-result{padding:0 14px; margin:6px 0 14px;}
+.ab-card{border:1px solid var(--line); border-radius:12px; padding:13px; margin-bottom:10px; background:var(--surface); box-shadow:var(--shadow);}
+.ab-card.oxy{background:#f0f9ff; border-color:#bae6fd;}
+.abc-title{font-size:12.5px; font-weight:700; color:var(--ink); margin-bottom:9px;}
+.abi-step{font-size:12.5px; padding:7px 10px; background:#f3f7f8; border-radius:7px; margin-bottom:5px; line-height:1.45;}
+.abi-step b{color:var(--ink);}
+.abi-step .ac{color:#b91c1c; font-weight:600;} .abi-step .al{color:#7c3aed; font-weight:600;}
+.abi-step .ok{color:#047857; font-weight:600;} .abi-step .no{color:#b91c1c; font-weight:600;}
+.ox-row{display:flex; justify-content:space-between; font-size:12.5px; padding:5px 0; border-bottom:1px solid rgba(0,0,0,.04);}
+.ox-row b{color:var(--ink);} .ox-row b.ok{color:#047857;} .ox-row b.no{color:#b91c1c;}
+.ox-interp{font-size:12px; line-height:1.55; color:#0c4a6e; margin-top:8px; padding:8px 10px; background:rgba(255,255,255,.6); border-radius:7px;}
+.ab-flags{margin-top:8px;}
+.ab-presets{padding:14px; border-top:1px solid var(--line); margin-top:6px;}
+.ab-plabel{font-size:12px; font-weight:700; color:var(--ink2); margin-bottom:10px;}
+.ab-pgrid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+.ab-pchip{text-align:left; border:1px solid var(--line); border-left:3px solid var(--teal); border-radius:10px; background:var(--surface);
+  padding:9px 11px; cursor:pointer; font-family:inherit; display:flex; flex-direction:column; gap:1px;}
+.ab-pchip.c-teal{border-left-color:var(--teal);} .ab-pchip.c-amber{border-left-color:var(--amber);}
+.ab-pchip.c-purple{border-left-color:var(--purple);} .ab-pchip.c-crimson{border-left-color:#dc2626;}
+.ab-pchip.c-indigo{border-left-color:var(--indigo);}
+.ab-pchip .pc-ic{font-size:17px;} .ab-pchip .pc-lb{font-size:12.5px; font-weight:700; color:var(--ink);}
+.ab-pchip .pc-sb{font-size:10.5px; color:var(--ink2); line-height:1.3;}
+.ab-pstory{font-size:12px; line-height:1.6; color:var(--ink); margin-top:12px; padding:11px 13px; background:var(--teal-bg); border-radius:9px;}
+.ab-pstory:empty{display:none;}
+.ab-warn{margin:14px; padding:12px 14px; background:#fef2f2; border:1px solid #fca5a5; border-radius:11px;}
+.aw-title{font-size:12.5px; font-weight:700; color:#b91c1c; margin-bottom:7px;}
+.ab-warn ul{margin:0; padding-left:17px;}
+.ab-warn li{font-size:11.5px; line-height:1.5; color:#7f1d1d; margin-bottom:3px;}
+.ab-split{display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:0 14px; margin-bottom:14px;}
+.ab-half{border:1px solid var(--line); border-radius:12px; padding:12px; background:var(--surface); box-shadow:var(--shadow);}
+.ah-title{font-size:12px; font-weight:700; color:var(--ink); margin-bottom:9px;}
+.ah-metric{display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:6px;}
+.ah-metric b{font-size:13px;} .m-ok{color:#047857;} .m-warn{color:#b45309;} .m-danger{color:#b91c1c;}
+.ah-sub{font-size:10.5px; color:var(--ink2); margin-top:6px;}
+.ah-big{font-size:16px; font-weight:700; color:var(--teal-d); margin-bottom:4px;}
+.ah-delta{font-size:12px; color:var(--ink2); font-weight:400; margin-left:4px;}
+.ah-interp{font-size:12px; color:var(--ink); margin-top:6px; padding:6px 9px; background:#f3f7f8; border-radius:7px;}
 .sim-grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:8px;}
 .sg-gauge{}
 .sg-top{display:flex; justify-content:space-between; font-size:11px; color:var(--ink2); margin-bottom:3px;}
@@ -375,16 +433,10 @@ h1,h2,h3,p,ul{margin:0;}
   </div>
   <div class="sim-chips" id="simA-profiles"></div>
   <div class="sim-pane" id="simA-body"></div>
+  <div class="sim-modelnote" style="margin:14px;">⚠️ <b>단순화 교육 모델</b> — 폐를 <b>단일 구획(균질 R·C)</b>으로 가정합니다. 실제 COPD·ARDS는 부위마다 시간상수가 다른 <b>불균질 폐(2구획 이상)</b>이고, PEEP에 따른 <b>recruitment</b>(폐포 열림)나 흡기정지 시 실제 Pplat도 이보다 복잡합니다. <b>개념의 방향</b>을 익히는 도구이며, 실제 환자의 절대 수치를 대체하지 않습니다.</div>
 </div>
 <!-- 시뮬레이터: ABGA -->
-<div id="pane-abga" class="pane">
-  <div class="sim-head">
-    <h2>🧪 ABGA 시뮬레이터</h2>
-    <p>산-염기 케이스를 4단계로 해석하고, 환기로 목표 pH·PaCO₂에 도달한다.</p>
-  </div>
-  <div class="sim-chips" id="simB-cases"></div>
-  <div class="sim-pane" id="simB-body"></div>
-</div>
+<div id="pane-abga" class="pane"></div>
 
 <!-- 탭바 -->
 <div class="tabbar">
@@ -400,6 +452,7 @@ function switchTab(t){
     document.getElementById('tab-'+tabs[i]).classList.toggle('on', tabs[i]===t);
     document.getElementById('pane-'+tabs[i]).classList.toggle('on', tabs[i]===t);
   }
+  if(t==='abga' && window.ABGA && !document.getElementById('ab-body')) window.ABGA.init();
   window.scrollTo(0,0);
 }
 /* ===== data_refs.js ===== */
@@ -528,7 +581,14 @@ var REFS = {
   'ref:wean_difficult':{ title:'발관 실패 예측·어려운 이탈 관리', src:'Indian J Crit Care (PMC2760915)', year:2009, url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC2760915/' },
   'ref:sbt_cardiac':{ title:'SBT-유발 심부전(weaning-induced pulmonary edema)', src:'Crit Care / 생리 리뷰', year:2023, url:'https://publications.ersnet.org/content/errev/32/168/220196' },
   'ref:vidd':       { title:'인공호흡기 유발 횡격막 기능부전(VIDD)·횡격막보호', src:'AARC/생리 리뷰', year:2024, url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC11285503/' },
-  'ref:trach_timing':{ title:'기관절개 시점 — 지연 이탈 전환', src:'ICU 이탈 리뷰', year:2024, url:'https://respiratory-therapy.com/disorders-diseases/critical-care/icu-ventilation/6-considerations-ventilator-weaning-sbt-extubation/' }
+  'ref:trach_timing':{ title:'기관절개 시점 — 지연 이탈 전환', src:'ICU 이탈 리뷰', year:2024, url:'https://respiratory-therapy.com/disorders-diseases/critical-care/icu-ventilation/6-considerations-ventilator-weaning-sbt-extubation/' },
+
+  // ── 산소화 (A-a gradient·P/F) ──
+  'ref:aagrad_statpearls':{ title:'Physiology, Alveolar to Arterial Oxygen Gradient', src:'StatPearls (NBK545153)', year:2023, url:'https://www.ncbi.nlm.nih.gov/books/NBK545153/' },
+  'ref:alveolar_gas':{ title:'Alveolar Gas Equation (PAO2=FiO2×(Patm−PH2O)−PaCO2/RQ)', src:'StatPearls (NBK482268)', year:2024, url:'https://www.ncbi.nlm.nih.gov/books/NBK482268/' },
+  'ref:aa_ucsf':    { title:'Classification of Respiratory Failure — A-a·P/F', src:'UCSF Hospital Handbook', year:2024, url:'https://hospitalhandbook.ucsf.edu/02-classification-respiratory-failure/02-classification-respiratory-failure' },
+  'ref:pf_berlin':  { title:'P/F ratio·산소화 지표(ARDS Berlin 300/200/100)', src:'Deranged Physiology', year:2024, url:'https://derangedphysiology.com/main/cicm-primary-exam/respiratory-system/Chapter-135/oxygen-tension-based-indices-oxygenation' },
+  'ref:aa_merck':   { title:'Alveolar O₂ Pressure Equations', src:'Merck Manual Professional', year:2024, url:'https://www.merckmanuals.com/professional/multimedia/table/equations-for-calculating-alveolar-oxygen-pressure-and-alveolar-to-arterial-oxygen-gradient' }
 };
 
 /* ===== physics_engine.js ===== */
@@ -610,9 +670,12 @@ function deriveTiming(settings, profile) {
     Ti = (settings.ti != null) ? settings.ti : Ttot * (1 / (1 + ieRatio));
     Te = Ttot - Ti;
   }
+  // 불가능한 timing 감지: Ti가 호흡주기를 넘으면(호기 시간 소멸)
+  var impossible = (Ti >= Ttot - 0.05);   // 50ms 미만 호기 = 사실상 불가
   return {
-    Ttot: Ttot, Ti: Math.max(0.01, Ti), Te: Math.max(0.01, Te),
-    ieActual: (Ttot - Ti) / Ti  // 실제 1:ieActual
+    Ttot: Ttot, Ti: Math.max(0.01, Ti), Te: Math.max(0.01, Ttot - Ti),
+    ieActual: (Ttot - Ti) / Ti,  // 실제 1:ieActual
+    rawTi: Ti, impossibleTiming: impossible
   };
 }
 
@@ -632,7 +695,7 @@ function simulateBreath(settings, profile) {
   var t = [], paw = [], flow = [], vol = [];
   var i, time, V, F, P;
 
-  // ── 흡기 ──
+  // ── 흡기 (FRC 기준 상대용적으로 적분, paw는 baseline 확정 후) ──
   if (settings.mode === 'VC') {
     var flowLs = (settings.flow != null)
       ? settings.flow / 60
@@ -641,51 +704,78 @@ function simulateBreath(settings, profile) {
       V = flowLs * time * 1000;             // mL (선형)
       if (V > settings.tv) V = settings.tv;
       F = flowLs * 60;                       // L/min 사각
-      P = V / C + R * flowLs + PEEP;         // 탄성 + 저항 + PEEP
-      t.push(time); vol.push(V); flow.push(F); paw.push(P);
+      t.push(time); vol.push(V); flow.push(F); paw.push(0);
     }
   } else { // PC: 압력 사각, flow 지수감쇠
-    var Pset = settings.pinsp;               // PEEP 위 구동압
-    var dP = Pset;                            // 구동압 = Pinsp(설정 above PEEP)
+    var Pset = settings.pinsp;
+    var dP = Pset;
     for (time = 0; time <= Ti + 1e-9; time += DT) {
       var ex = Math.exp(-time / tau);
       F = (dP / R) * ex * 60;                // L/min 지수감쇠
-      V = (dP * C) * (1 - ex);               // mL 점근 (= ΔP·C·(1−e))
-      P = Pset + PEEP;                        // 사각 압력 (above + PEEP)
-      t.push(time); vol.push(V); flow.push(F); paw.push(P);
+      V = (dP * C) * (1 - ex);               // mL 점근
+      t.push(time); vol.push(V); flow.push(F); paw.push(0);
     }
   }
 
-  var inspEndV = vol[vol.length - 1];        // 흡기말 폐용적 (mL, FRC 기준)
+  var inspEndV = vol[vol.length - 1];        // 흡기말 폐용적 (FRC 기준 증가분)
   var deliveredTV = inspEndV;
+  var inspEndIdx = vol.length - 1;
 
-  // ── 호기 (양 모드 공통): V(t)=V0·e^(−t/τ) ──
+  // ── 호기: V(t)=V0·e^(−t/τ) ──
   var V0 = inspEndV;
+  var expFlowEnd = 0;
   for (time = DT; time <= Te + 1e-9; time += DT) {
     var exE = Math.exp(-time / tau);
     V = V0 * exE;
     F = -(V0 / 1000 / tau) * exE * 60;       // L/min 음수(호기)
-    P = PEEP + (V / C);                       // 잔여탄성압 (근사)
-    t.push(Ti + time); vol.push(V); flow.push(F); paw.push(P);
+    expFlowEnd = F;
+    t.push(Ti + time); vol.push(V); flow.push(F); paw.push(0);
   }
 
   // ── auto-PEEP: 정상상태 breath-stacking 누적 모델 ──
-  //  단일호흡이 아니라 평형상태의 trapped volume을 등비급수로 푼다.
   //  매 호흡: 들숨 TV 추가 → 날숨에 비율 k=e^(−Te/τ) 만큼만 잔존.
-  //  평형 trapped Vtrap: Vtrap = TV·k/(1−k)   (k<1)
-  //  (호기말 폐용적이 FRC+Vtrap에서 시작 가정 시 수렴값)
+  //  평형 trapped Vtrap = TV·k/(1−k)
   var k = Math.exp(-Te / tau);               // 호기 후 잔존 비율
   var Vtrap = (k < 0.999) ? (deliveredTV * k / (1 - k)) : deliveredTV * 50;
   var autoPEEP = Vtrap / C;                    // cmH2O
   var peepTotal = PEEP + autoPEEP;
+
+  // ── baseline 반영(GPT 지적): 파형을 정상상태로 올림 ──
+  //  volume 시작점 = Vtrap, pressure baseline = PEEP + autoPEEP.
+  //  절대 폐용적 = Vtrap + 상대용적 → 탄성압 = 절대용적/C.
+  for (i = 0; i < vol.length; i++) {
+    var absV = vol[i] + Vtrap;               // 정상상태 baseline 포함 절대용적
+    vol[i] = absV;
+    var fLs = Math.abs(flow[i]) / 60;
+    var inInsp = (i <= inspEndIdx);
+    if (settings.mode === 'VC') {
+      paw[i] = inInsp ? (absV / C + R * fLs + PEEP)
+                      : (absV / C - R * fLs + PEEP);
+    } else { // PC
+      paw[i] = inInsp ? (settings.pinsp + PEEP)
+                      : (absV / C - R * fLs + PEEP);
+    }
+    if (paw[i] < PEEP) paw[i] = PEEP;
+  }
+
+  // 호기말 유량 미복귀(|F|>1 L/min) = 동적 과팽창의 시각 신호
+  var flowNotReturned = Math.abs(expFlowEnd) > 1.0;
+
+  // PC 점근 TV (Pinsp×C) — flow 0 미도달 판정용
+  var asymptoticTV = (settings.mode === 'PC') ? (settings.pinsp * C) : null;
 
   return {
     waveform: { t: t, paw: paw, flow: flow, volume: vol },
     tau: tau, Ti: Ti, Te: Te, Ttot: Ttot,
     deliveredTV: deliveredTV,
     residualVolume: Vtrap,
+    Vtrap: Vtrap,
     autoPEEP: autoPEEP,
-    peepTotal: peepTotal
+    peepTotal: peepTotal,
+    asymptoticTV: asymptoticTV,
+    flowNotReturned: flowNotReturned,
+    impossibleTiming: tm.impossibleTiming,
+    rawTi: tm.rawTi
   };
 }
 
@@ -735,9 +825,23 @@ function computeMechanics(profile, settings, thresholds) {
   if (pip > TH.PIP_WARN)
     flags.push({ level: 'warn', code: 'pip_high',
       msg: 'PIP ' + pip.toFixed(1) + ' > ' + TH.PIP_WARN + ' — 저항/과팽창 점검(Pplat과 비교)', refId: 'ref:merck_vent' });
-  if (settings.mode === 'PC' && sim.deliveredTV < usedTV * 0.95 && sim.Ti < 3 * sim.tau)
+
+  // PC: flow가 흡기 중 0에 못 닿음 → 전달 TV가 점근값(Pinsp×C)에 미달
+  if (settings.mode === 'PC' && sim.asymptoticTV != null &&
+      sim.deliveredTV < sim.asymptoticTV * 0.95 && sim.Ti < 3 * sim.tau)
     flags.push({ level: 'info', code: 'pc_short_ti',
-      msg: 'PC: Ti(' + sim.Ti.toFixed(2) + 's) < 3τ(' + (3*sim.tau).toFixed(2) + 's) — flow 0 미도달, TV 미달', refId: 'ref:dp_flowwave' });
+      msg: 'PC: Ti(' + sim.Ti.toFixed(2) + 's) < 3τ(' + (3*sim.tau).toFixed(2) + 's) — flow 0 미도달. 전달 TV ' + Math.round(sim.deliveredTV) + ' < 점근 ' + Math.round(sim.asymptoticTV) + 'mL', refId: 'ref:dp_flowwave' });
+
+  // 불가능한 timing: 흡기시간이 호흡주기를 넘어섬(호기 소멸)
+  if (sim.impossibleTiming)
+    flags.push({ level: 'danger', code: 'impossible_timing',
+      msg: '설정 불가 — 흡기시간(Ti ' + (sim.rawTi != null ? sim.rawTi.toFixed(2) : '?') + 's)이 호흡주기를 넘습니다. ' +
+        (settings.mode === 'VC' ? 'flow↑ 또는 RR·TV↓' : 'RR↓ 또는 I:E↓') + ' 필요(역비환기 위험)', refId: 'ref:merck_vent' });
+
+  // 호기말 유량 미복귀 = 동적 과팽창 진행(파형으로도 표시)
+  if (sim.flowNotReturned && sim.autoPEEP >= 1)
+    flags.push({ level: 'warn', code: 'flow_not_returned',
+      msg: '호기말 유량이 0으로 못 돌아옴 — 공기가 갇히는 중(파형 확인). 호기시간↑ 필요', refId: 'ref:pmc4613406' });
 
   return {
     pip: round1(pip),
@@ -754,6 +858,10 @@ function computeMechanics(profile, settings, thresholds) {
     minuteVentilation: round1(mv),
     complianceUsed: C,
     resistanceUsed: R,
+    Vtrap: Math.round(sim.Vtrap),
+    flowNotReturned: sim.flowNotReturned,
+    impossibleTiming: sim.impossibleTiming,
+    asymptoticTV: sim.asymptoticTV != null ? Math.round(sim.asymptoticTV) : null,
     waveform: sim.waveform,
     flags: flags
   };
@@ -1050,6 +1158,172 @@ function round1(x){ return Math.round(x * 10) / 10; }
 function round2(x){ return Math.round(x * 100) / 100; }
 
 /* ── exports (빌드 시 strip) ── */
+
+/* ===== oxygenation_engine.js ===== */
+/* ════════════════════════════════════════════════════════════════════
+ *  기계환기 교육 — 산소화 엔진  oxygenation_engine.js  v1.0
+ * ════════════════════════════════════════════════════════════════════
+ *  산-염기 엔진과 독립된 "산소화 축". 순수함수. 기존 엔진 무손상.
+ *  정문: computeOxygenation({pao2,fio2,paco2,age,patm?,ph2o?,rq?})
+ *  근거: 폐포기체방정식 PAO2=FiO2×(Patm−PH2O)−PaCO2/RQ [StatPearls NBK482268]
+ *        예상 A-a=(age/4)+4 [UCSF/Cornell] · P/F Berlin 300/200/100
+ *  하드코딩 금지: 임상상수는 OXY_CONST DATA에만.
+ * ════════════════════════════════════════════════════════════════════ */
+'use strict';
+
+var OXY_CONST = {
+  PATM_SEA: 760,          // mmHg 해수면 대기압
+  PH2O: 47,               // mmHg 포화수증기압(37℃)
+  RQ_DEFAULT: 0.8,        // 호흡지수(정상식이)
+  AA_NORMAL_MAX: 15,      // 실내공기 젊은 성인 정상 상한
+  PF_ARDS_MILD: 300,      // Berlin: 경증 ARDS 경계
+  PF_ARDS_MOD: 200,       // 중등증
+  PF_ARDS_SEVERE: 100,    // 중증
+  AA_FIO2_RISE_PER10: 6   // FiO2 10%↑당 A-a 5-7 상승(참고)
+};
+
+/* 예상 정상 A-a gradient (나이 보정, 보수적) */
+function expectedAaGradient(age) {
+  if (age == null) return null;
+  return age / 4 + 4;                 // (age/4)+4  [UCSF, Cornell]
+}
+
+/* 폐포 산소분압 PAO2 */
+function alveolarPO2(fio2Frac, paco2, patm, ph2o, rq) {
+  return fio2Frac * (patm - ph2o) - paco2 / rq;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ *  정문: computeOxygenation
+ *    입력: { pao2, fio2(%), paco2, age?, patm?, ph2o?, rq? }
+ *    출력: { pAO2, aaGradient, expectedAa, aaExcess, aaHigh,
+ *            pfRatio, ardsGrade, interpretation, flags[] }
+ * ──────────────────────────────────────────────────────────────────── */
+function computeOxygenation(input, consts) {
+  var K = consts || OXY_CONST;
+  var patm = (input.patm != null) ? input.patm : K.PATM_SEA;
+  var ph2o = (input.ph2o != null) ? input.ph2o : K.PH2O;
+  var rq   = (input.rq != null) ? input.rq : K.RQ_DEFAULT;
+  var fio2Frac = input.fio2 / 100;               // % → 분율
+  var paco2 = input.paco2;
+  var pao2 = input.pao2;
+
+  var pAO2 = alveolarPO2(fio2Frac, paco2, patm, ph2o, rq);
+  var aaGradient = pAO2 - pao2;
+  var expectedAa = expectedAaGradient(input.age);
+  var aaExcess = (expectedAa != null) ? (aaGradient - expectedAa) : null;
+  var aaHigh = (expectedAa != null) ? (aaGradient > expectedAa + 5)   // 여유 5
+                                    : (aaGradient > K.AA_NORMAL_MAX);
+  var pfRatio = pao2 / fio2Frac;
+
+  // ARDS Berlin 등급(P/F, PEEP≥5 가정 — 교육용)
+  var ardsGrade = null;
+  if (pfRatio <= K.PF_ARDS_SEVERE) ardsGrade = 'severe';
+  else if (pfRatio <= K.PF_ARDS_MOD) ardsGrade = 'moderate';
+  else if (pfRatio <= K.PF_ARDS_MILD) ardsGrade = 'mild';
+
+  // 저산소 원인 방향 (진단 단정 없이 방향만)
+  var interpretation;
+  var hypoxemic = pao2 < 80;
+  if (!hypoxemic) {
+    interpretation = aaHigh
+      ? '산소화는 유지되나 A-a 상승 — 보상된 가스교환 장애 가능'
+      : '산소화·A-a 정상 범위';
+  } else if (!aaHigh) {
+    interpretation = 'A-a 정상 + 저산소 → 폐 자체보다 환기저하(PaCO₂↑) 또는 저FiO₂/고도 방향. 산소 투여에 잘 반응.';
+  } else {
+    interpretation = 'A-a 상승 + 저산소 → V/Q 불일치·shunt·확산장애 방향. shunt면 산소 반응 저하.';
+  }
+
+  var flags = [];
+  if (expectedAa != null && aaHigh)
+    flags.push({ level: 'warn', code: 'aa_high',
+      msg: 'A-a ' + round1(aaGradient) + ' > 예상 ' + round1(expectedAa) + ' — 가스교환 장애(V/Q·shunt·확산)', refId: 'ref:aagrad_statpearls' });
+  if (ardsGrade)
+    flags.push({ level: ardsGrade === 'severe' ? 'danger' : 'warn', code: 'pf_low',
+      msg: 'P/F ' + round1(pfRatio) + ' — ARDS ' + (ardsGrade === 'severe' ? '중증' : ardsGrade === 'moderate' ? '중등증' : '경증') + ' 범위(Berlin)', refId: 'ref:pf_berlin' });
+  if (input.fio2 > 60 && pao2 < 60)
+    flags.push({ level: 'danger', code: 'refractory_hypoxemia',
+      msg: '고FiO₂(' + input.fio2 + '%)에도 저산소 — shunt 의심, 산소 반응 저하 가능', refId: 'ref:aa_ucsf' });
+  if (pAO2 < pao2)
+    flags.push({ level: 'info', code: 'pao2_gt_pAO2',
+      msg: 'PaO₂가 계산 PAO₂보다 높음 — 입력값·FiO₂ 재확인(측정오차/보충산소)', refId: 'ref:alveolar_gas' });
+
+  return {
+    pAO2: round1(pAO2),
+    aaGradient: round1(aaGradient),
+    expectedAa: expectedAa != null ? round1(expectedAa) : null,
+    aaExcess: aaExcess != null ? round1(aaExcess) : null,
+    aaHigh: aaHigh,
+    pfRatio: round1(pfRatio),
+    ardsGrade: ardsGrade,
+    interpretation: interpretation,
+    flags: flags
+  };
+}
+
+function round1(x) { return Math.round(x * 10) / 10; }
+
+/* ===== coupling_engine.js ===== */
+/* ════════════════════════════════════════════════════════════════════
+ *  기계환기 교육 — 폐역학↔ABGA 연동 다리  coupling_engine.js  v1.0
+ * ════════════════════════════════════════════════════════════════════
+ *  ★ 새 생리모델 없음. 검증된 두 정문만 연결하는 얇은 배선.
+ *     physics: computeMechanics → minuteVentilation(VE)
+ *     acidbase: projectABGA(current,{newVE}) → newPaCO2/newPH
+ *              interpretABGA(...) → 장애 해석
+ *  ⚠️ 정상상태 단순 모델(VE 반비례). 방향만 신뢰. 절대수치 신뢰 금지.
+ * ════════════════════════════════════════════════════════════════════ */
+'use strict';
+
+/* 강한 경고 텍스트(DATA — UI가 그대로 표시) */
+var COUPLE_WARNING = {
+  title: '정상상태 단순 연동 모델 — "경향"만 봅니다',
+  points: [
+    'PaCO₂를 분환기량(VE) 반비례로 추정 — 실제는 폐포환기 기준',
+    '사강(Vd/Vt) 변화·불균질 폐·자발호흡·시간 지연 반영 안 됨',
+    '중증 COPD/천식·저TV 전략에서 오차 큼',
+    '방향(TV↓ → PaCO₂↑)은 맞지만 절대 수치는 신뢰 금지',
+    '실제 환자 결정에 쓰지 말 것 — 개념 학습 전용'
+  ]
+};
+
+/* ────────────────────────────────────────────────────────────────────
+ *  coupleVentToABGA
+ *    ventResult : computeMechanics 출력 (minuteVentilation 사용)
+ *    patient    : { baselinePaCO2, baselineVE, hco3, chronic? }
+ *    deps       : { projectABGA, interpretABGA } (엔진 정문 주입)
+ *  → { newVE, projectedPaCO2, projectedPH, interp, warning }
+ * ──────────────────────────────────────────────────────────────────── */
+function coupleVentToABGA(ventResult, patient, deps) {
+  var projectABGA = deps.projectABGA;
+  var interpretABGA = deps.interpretABGA;
+  var newVE = ventResult.minuteVentilation;
+
+  var proj = projectABGA(
+    { paco2: patient.baselinePaCO2, hco3: patient.hco3, ve: patient.baselineVE },
+    { newVE: newVE }
+  );
+
+  var interp = interpretABGA({
+    pH: proj.newPH,
+    paco2: proj.newPaCO2,
+    hco3: patient.hco3,
+    chronic: patient.chronic || false
+  });
+
+  return {
+    newVE: round1(newVE),
+    baselineVE: patient.baselineVE,
+    projectedPaCO2: proj.newPaCO2,
+    projectedPH: proj.newPH,
+    deltaPaCO2: round1(proj.newPaCO2 - patient.baselinePaCO2),
+    interp: interp,
+    warning: COUPLE_WARNING
+  };
+}
+
+function round1(x) { return Math.round(x * 10) / 10; }
 
 /* ===== data_library_part1.js ===== */
 /* ════════════════════════════════════════════════════════════════════
@@ -2332,17 +2606,17 @@ var LUNG_PROFILES = [
   },
   {
     id:'sim:profile:copd', icon:'🌀', color:'amber',
-    label:'COPD 악화', sub:'기도 저항↑ — 시간상수 김',
-    crs:60, rawR:25, crsRange:[50,70], rRange:[15,30],
+    label:'COPD 악화', sub:'폐기종 — 컴플라이언스↑ + 저항↑ (과팽창)',
+    crs:78, rawR:24, crsRange:[65,95], rRange:[16,32],
     defaults:{ mode:'VC', tv:450, rr:12, peep:5, fio2:40, flow:60, ie:3, pinsp:15 },
-    note:'R↑↑ → τ 김(~1.5s). RR↑가 함정(auto-PEEP↑). I:E 늘려 호기 확보.'
+    note:'폐기종은 탄성조직 파괴로 컴플라이언스가 오히려 높다(탄성반동 소실). 저항↑와 겹쳐 공기가 갇히고 과팽창(hyperinflation). τ 김(~1.9s). RR↑가 함정(auto-PEEP↑). I:E 늘려 호기 확보.'
   },
   {
     id:'sim:profile:asthma', icon:'💨', color:'amber',
-    label:'중증 천식', sub:'저항 극단 — auto-PEEP 최우선',
-    crs:65, rawR:40, crsRange:[50,80], rRange:[25,50],
+    label:'중증 천식', sub:'저항 극단 · 컴플라이언스 정상 (flow limitation)',
+    crs:58, rawR:45, crsRange:[48,68], rRange:[32,60],
     defaults:{ mode:'VC', tv:420, rr:10, peep:0, fio2:60, flow:50, ie:4, pinsp:15 },
-    note:'R↑↑↑ → τ 매우 김. ZEEP 가깝게, RR 낮게. auto-PEEP·과팽창이 진짜 적.'
+    note:'천식은 컴플라이언스 정상(P-V 곡선 평행이동만·기울기 불변) — COPD와 결정적 차이. 대신 저항이 극단이라 flow limitation·극단적 peak pressure. ZEEP 가깝게, RR 낮게. auto-PEEP·과팽창이 진짜 적.'
   },
   {
     id:'sim:profile:edema', icon:'💧', color:'teal',
@@ -2408,98 +2682,136 @@ var SIM_CHALLENGES = [
 
 /* THRESHOLDS는 physics_engine DEFAULT_THRESHOLDS 사용(중복 정의 금지) */
 
-/* ===== data_sim_abga.js ===== */
+/* ===== data_abga_knobs.js ===== */
 /* ════════════════════════════════════════════════════════════════════
- *  기계환기 교육 — ABGA 시뮬 DATA  data_sim_abga.js  v1.0
+ *  ABGA 해석기 노브 사양  data_abga_knobs.js  v1.0
  * ════════════════════════════════════════════════════════════════════
- *  interpretABGA(abga) / projectABGA(cur, change) 정문에 먹일 케이스.
- *  자유탐색: 케이스 로드 → 해석 카드. 챌린지: 환기로 목표 PaCO₂ 도달.
- *  케이스는 도서관·엣지에서 쓴 실제 상황 재활용 + 시뮬 목표 명시.
- *  수치는 acidbase_engine 검증 케이스와 정합(원문 재확인 완료).
+ *  하드코딩 금지: 슬라이더 범위·단위가 전부 여기 DATA에.
+ *  grp: core(항상 열림)·lyte(전해질 접기)·oxy(산소화 접기)
  * ════════════════════════════════════════════════════════════════════ */
 'use strict';
 
-/* ── 해석 케이스 (자유탐색용) ──
- *  abga: interpretABGA 입력. story: 환자 한 줄. expect: 정답 해석(학습용). */
-var ABGA_CASES = [
-  {
-    id:'sim:abga:normal', icon:'🫁', color:'teal',
-    label:'정상', sub:'기준선',
-    abga:{ pH:7.40, paco2:40, hco3:24 },
-    story:'건강한 기준선. 모든 해석의 출발점.',
-    expect:'정상 산-염기.'
-  },
-  {
-    id:'sim:abga:met_acidosis', icon:'🔋', color:'purple',
-    label:'대사성 산증 (DKA)', sub:'고음이온차 — 보상 과호흡',
-    abga:{ pH:7.26, paco2:25, hco3:11, na:138, cl:100, albumin:4.0 },
-    story:'DKA 환자. 케톤산이 쌓여 미친 듯이 과호흡(Kussmaul)으로 버틴다.',
-    expect:'고음이온차 대사성 산증 + 적절한 호흡 보상(Winter). 삽관 시 이 과호흡을 이어받아야.'
-  },
-  {
-    id:'sim:abga:resp_acidosis_acute', icon:'🌀', color:'amber',
-    label:'급성 호흡성 산증', sub:'환기 저하 — CO₂ 저류',
-    abga:{ pH:7.24, paco2:62, hco3:26, chronic:false },
-    story:'진정 과다·기도 폐쇄로 환기가 떨어진 환자. CO₂가 급히 쌓였다.',
-    expect:'급성 호흡성 산증. HCO₃ 거의 정상(신장 보상 전). 환기 늘리면 회복.'
-  },
-  {
-    id:'sim:abga:resp_acidosis_chronic', icon:'🌀', color:'amber',
-    label:'만성 호흡성 산증 (COPD)', sub:'신장이 이미 보상',
-    abga:{ pH:7.34, paco2:60, hco3:32, chronic:true },
-    story:'만성 COPD. 수년간 CO₂가 높아 신장이 중탄산을 비축해 pH를 거의 메웠다.',
-    expect:'만성 호흡성 산증 + 신장 보상. 정상 CO₂를 목표로 삼으면 안 됨(이게 이 환자의 기준).'
-  },
-  {
-    id:'sim:abga:resp_alkalosis', icon:'💨', color:'teal',
-    label:'호흡성 알칼리증', sub:'과환기',
-    abga:{ pH:7.52, paco2:28, hco3:23, chronic:false },
-    story:'불안·통증·과도한 기계 환기로 과호흡. CO₂가 너무 빠졌다.',
-    expect:'급성 호흡성 알칼리증. 분환기량을 줄이면 회복.'
-  },
-  {
-    id:'sim:abga:mixed', icon:'⚔️', color:'crimson',
-    label:'혼합 장애', sub:'대사산증 + 호흡산증',
-    abga:{ pH:7.21, paco2:40, hco3:15, na:140, cl:104, albumin:4.0 },
-    story:'대사성 산증인데 PaCO₂가 안 떨어진다 — 호흡이 보상을 못 하거나 함께 나빠진 것.',
-    expect:'대사성 산증 + 호흡성 산증 혼합. Winter 예상 PaCO₂(≈30)보다 실제 40이 높음 = 호흡 보상 부족.'
-  }
+var ABGA_KNOBS = [
+  { id:'abga:knob:ph',    key:'pH',      lab:'pH',       min:6.8, max:7.8, step:0.01, unit:'',      grp:'core' },
+  { id:'abga:knob:paco2', key:'paco2',   lab:'PaCO₂',    min:10,  max:120, step:1,    unit:'mmHg',  grp:'core' },
+  { id:'abga:knob:hco3',  key:'hco3',    lab:'HCO₃',     min:4,   max:50,  step:1,    unit:'mEq/L', grp:'core' },
+  { id:'abga:knob:na',    key:'na',      lab:'Na⁺',      min:110, max:170, step:1,    unit:'mEq/L', grp:'lyte' },
+  { id:'abga:knob:cl',    key:'cl',      lab:'Cl⁻',      min:70,  max:130, step:1,    unit:'mEq/L', grp:'lyte' },
+  { id:'abga:knob:alb',   key:'albumin', lab:'Albumin',  min:1.0, max:5.5, step:0.1,  unit:'g/dL',  grp:'lyte' },
+  { id:'abga:knob:pao2',  key:'pao2',    lab:'PaO₂',     min:30,  max:600, step:1,    unit:'mmHg',  grp:'oxy'  },
+  { id:'abga:knob:fio2',  key:'fio2',    lab:'FiO₂',     min:21,  max:100, step:1,    unit:'%',     grp:'oxy'  },
+  { id:'abga:knob:age',   key:'age',     lab:'나이',      min:1,   max:100, step:1,    unit:'세',    grp:'oxy'  }
 ];
 
-/* ── 챌린지 (환기로 목표 도달) ──
- *  cur: 현재 상태(projectABGA 입력). target: 도달 목표 PaCO₂.
- *  start VE에서 노브로 분환기량을 바꿔 목표 PaCO₂에 맞추는 게임.
- *  엔진 projectABGA로 desiredVE 계산 → UI가 근접도 판정. */
-var ABGA_CHALLENGES = [
+var KNOB_GROUPS = [
+  { id:'core', label:'핵심 (pH·PaCO₂·HCO₃)', open:true },
+  { id:'lyte', label:'+ 전해질 (AG·Δ비)', open:false },
+  { id:'oxy',  label:'+ 산소화 (A-a·P/F)', open:false }
+];
+
+/* ===== data_abga_presets.js ===== */
+/* ════════════════════════════════════════════════════════════════════
+ *  ABGA 프리셋 (예제 = 시작점)  data_abga_presets.js  v1.0
+ * ════════════════════════════════════════════════════════════════════
+ *  클릭 시 해석기 전체 노브에 로드 → 거기서 자유 변형.
+ *  vals: 전 파라미터(core+lyte+oxy). 없는 값은 로드 시 기본치.
+ *  기존 sim:abga:* ID 계승 + 산소화 케이스 신규.
+ * ════════════════════════════════════════════════════════════════════ */
+'use strict';
+
+var ABGA_PRESETS = [
+  // ── 산-염기 중심 ──
+  { id:'abga:preset:normal', icon:'✅', color:'teal',
+    label:'정상', sub:'기준점',
+    vals:{ pH:7.40, paco2:40, hco3:24, na:140, cl:104, albumin:4.0, pao2:95, fio2:21, age:40 },
+    story:'정상 동맥혈가스. 모든 비교의 출발점. 여기서 한 값씩 바꿔 장애를 만들어 보세요.' },
+
+  { id:'abga:preset:dka', icon:'🔋', color:'purple',
+    label:'DKA', sub:'고음이온차 대사산증 + 호흡보상',
+    vals:{ pH:7.22, paco2:26, hco3:11, na:140, cl:100, albumin:4.0, pao2:108, fio2:21, age:35 },
+    story:'당뇨병성 케톤산증. Kussmaul 호흡으로 CO₂를 내뿜어 보상 중(PaO₂도 과호흡으로 상승, A-a 정상 — 폐는 멀쩡). AG를 열어 고음이온차를, Winter로 보상 적절성을 확인하세요.' },
+
+  { id:'abga:preset:copd_chronic', icon:'🌀', color:'amber',
+    label:'만성 COPD', sub:'만성 호흡산증(신장 보상)',
+    vals:{ pH:7.34, paco2:60, hco3:32, na:140, cl:98, albumin:4.0, pao2:60, fio2:28, age:68 }, chronic:true,
+    story:'만성 COPD. PaCO₂ 높지만 신장이 HCO₃를 32까지 올려 보상. "만성" 토글로 보상공식이 달라집니다. 산소화도 열어 만성 저산소를 확인.' },
+
+  { id:'abga:preset:copd_acute', icon:'💨', color:'amber',
+    label:'COPD 급성악화', sub:'만성 위에 급성 겹침',
+    vals:{ pH:7.21, paco2:80, hco3:31, na:139, cl:97, albumin:3.8, pao2:52, fio2:35, age:70 }, chronic:true,
+    story:'만성 COPD 급성 악화. 보상된 HCO₃ 위에 PaCO₂가 급히 더 치솟아 pH가 무너짐. 만성+급성 혼합 — 환기 보조가 급합니다.' },
+
+  { id:'abga:preset:sepsis', icon:'🔥', color:'crimson',
+    label:'패혈증 혼합', sub:'대사산증 + 호흡산증',
+    vals:{ pH:7.15, paco2:46, hco3:15, na:138, cl:104, albumin:3.0, pao2:70, fio2:40, age:62 },
+    story:'패혈증 쇼크. 젖산 산증(고음이온차)인데 지친 호흡근이 보상을 못 해 PaCO₂가 예상보다 높음. 저알부민도 보정. 산소화까지 나빠진 복합.' },
+
+  { id:'abga:preset:vomiting', icon:'🤮', color:'teal',
+    label:'구토', sub:'대사알칼리증',
+    vals:{ pH:7.52, paco2:48, hco3:38, na:140, cl:90, albumin:4.0, pao2:92, fio2:21, age:45 },
+    story:'반복 구토로 위산(H⁺·Cl⁻) 소실 → 대사성 알칼리증. Cl 저하 주목. 호흡이 PaCO₂를 올려 보상하나 한계(~55)가 있습니다.' },
+
+  { id:'abga:preset:salicylate', icon:'💊', color:'purple',
+    label:'살리실산 중독', sub:'호흡알칼리증 + 대사산증',
+    vals:{ pH:7.44, paco2:22, hco3:15, na:140, cl:103, albumin:4.0, pao2:96, fio2:21, age:28 },
+    story:'아스피린 과량. 호흡중추 자극(호흡알칼리증) + 대사 독성(고음이온차 산증) 동시. pH 거의 정상이지만 두 장애가 맞물린 고전적 혼합 — 숫자만 보면 놓칩니다.' },
+
+  // ── 산소화 중심 (신규) ──
+  { id:'abga:preset:ards_hypoxemia', icon:'🫧', color:'crimson',
+    label:'중증 ARDS 저산소', sub:'P/F<100, shunt',
+    vals:{ pH:7.32, paco2:48, hco3:24, na:140, cl:104, albumin:3.2, pao2:65, fio2:80, age:55 },
+    story:'중증 ARDS. 산소화를 열어보세요 — P/F<100, A-a 크게 상승. 고FiO₂에도 저산소(shunt). PaCO₂도 permissive로 약간 상승.' },
+
+  { id:'abga:preset:hypoventilation', icon:'😴', color:'indigo',
+    label:'순수 환기저하', sub:'PaCO₂↑, A-a 정상',
+    vals:{ pH:7.20, paco2:70, hco3:27, na:140, cl:102, albumin:4.0, pao2:58, fio2:21, age:50 },
+    story:'약물 과다 등 급성 순수 환기저하. 핵심 감별 — 저산소인데 A-a는 정상(폐 자체는 멀쩡). 산소화를 열어 A-a 정상을 확인. PaCO₂ 상승만으로 저산소가 설명됩니다(폐포기체방정식).' },
+
+  { id:'abga:preset:pe_vq', icon:'🩸', color:'crimson',
+    label:'폐색전 (V/Q)', sub:'A-a↑, PaCO₂ 정상~저하',
+    vals:{ pH:7.48, paco2:30, hco3:22, na:140, cl:104, albumin:4.0, pao2:65, fio2:21, age:58 },
+    story:'폐색전 방향. 과호흡으로 PaCO₂ 낮고(호흡알칼리증), 그런데 저산소 + A-a 상승. 사강 증가·V/Q 불일치. 산소화를 열어 A-a 상승을 확인하세요.' },
+
+  { id:'abga:preset:copd_o2', icon:'🌫️', color:'amber',
+    label:'COPD + 저산소', sub:'만성 CO₂저류 + 산소화',
+    vals:{ pH:7.35, paco2:58, hco3:31, na:140, cl:98, albumin:3.9, pao2:55, fio2:24, age:72 }, chronic:true,
+    story:'만성 COPD 실전 복합. CO₂ 저류(만성 보상) + 저산소. 산소화를 열면 A-a 상승(V/Q 불일치) 확인. 산소를 너무 올리면 CO₂ 저류 악화 딜레마.' }
+];
+
+/* ===== data_couple_scenarios.js ===== */
+/* ════════════════════════════════════════════════════════════════════
+ *  폐-ABGA 연동 시나리오  data_couple_scenarios.js  v1.0
+ * ════════════════════════════════════════════════════════════════════
+ *  한 가상환자 = 폐(profileId의 crs/rawR) + 대사(patient).
+ *  폐역학 노브 → VE → coupling → 예상 ABGA. 한 화면에서 동시 관찰.
+ *  profileId는 기존 LUNG_PROFILES 참조(가산·무손상).
+ * ════════════════════════════════════════════════════════════════════ */
+'use strict';
+
+var COUPLE_SCENARIOS = [
   {
-    id:'sim:abch:dka_match', icon:'🔋', color:'purple',
-    title:'DKA — 보상 환기 이어받기',
-    brief:'삽관한 DKA 환자. 과호흡으로 PaCO₂ 28을 유지하던 환자다. 그 보상을 기계로 이어받아라.',
-    cur:{ paco2:45, hco3:11, ve:8 },
-    targetPaCO2:28,
-    targetLabel:'목표 PaCO₂ ≈ 28 (Winter 예상)',
-    hint:'HCO₃ 11이면 Winter 예상 PaCO₂ = 1.5×11+8 ≈ 24.5. 분환기량을 크게 올려야.',
-    teach:'대사산증 보상 환자는 정상 CO₂가 아니라 "환자가 하던 보상"이 목표. 분환기량을 못 따라가면 pH 추락.'
+    id:'sim:couple:permissive', icon:'🔥', color:'teal',
+    title:'permissive hypercapnia',
+    profileId:'sim:profile:ards',
+    patient:{ baselinePaCO2:40, baselineVE:7.9, hco3:24, age:60 },
+    startSettings:{ mode:'VC', tv:420, rr:22, peep:12, fio2:80, flow:60, ie:2 },
+    teach:'TV를 줄이면(폐보호) 구동압↓·Pplat↓로 폐는 안전해지지만, VE↓ → PaCO₂↑ → pH↓. "폐를 지키려다 산증이 온다"는 trade-off를 한 화면에서 보세요. TV 420→280을 직접 돌려보면 구동압과 pH가 반대로 움직입니다.'
   },
   {
-    id:'sim:abch:permissive', icon:'🔥', color:'teal',
-    title:'중증 ARDS — permissive 범위로',
-    brief:'폐보호 위해 분환기량을 줄여야 하는 ARDS. CO₂ 60을 견딜 만한 선으로.',
-    cur:{ paco2:40, hco3:24, ve:9 },
-    targetPaCO2:60,
-    targetLabel:'목표 PaCO₂ ≈ 60 (permissive, pH≥7.2 유지)',
-    hint:'폐보호로 분환기량을 줄이면 CO₂가 오른다. 60까지는 허용(pH 견디면).',
-    teach:'중증 ARDS는 CO₂ 정상화보다 폐보호. permissive hypercapnia — 분환기량을 낮추는 게 정답.'
+    id:'sim:couple:copd_trap', icon:'🌀', color:'amber',
+    title:'COPD — RR의 딜레마',
+    profileId:'sim:profile:copd',
+    patient:{ baselinePaCO2:55, baselineVE:7.0, hco3:30, age:68, chronic:true },
+    startSettings:{ mode:'VC', tv:450, rr:14, peep:5, fio2:40, flow:70, ie:3 },
+    teach:'CO₂가 높다고 RR을 올리면 — 단순모델상 PaCO₂는 떨어지지만, 파형에서 auto-PEEP이 치솟습니다. "CO₂ 숫자"와 "공기 갇힘"이 충돌하는 지점. 만성 COPD라 정상 PaCO₂가 목표가 아님도 함께 확인하세요.'
   },
   {
-    id:'sim:abch:correct_resp', icon:'🌀', color:'amber',
-    title:'급성 호흡성 산증 교정',
-    brief:'CO₂ 62로 산증인 환자. 정상으로 끌어내려라.',
-    cur:{ paco2:62, hco3:26, ve:6 },
-    targetPaCO2:40,
-    targetLabel:'목표 PaCO₂ ≈ 40',
-    hint:'환기는 PaCO₂에 반비례. 필요 VE = 현재VE × (현재62 ÷ 목표40).',
-    teach:'급성 호흡성 산증은 환기를 늘려 교정. desired VE 공식이 그대로 적용.'
+    id:'sim:couple:ards_rescue', icon:'🫧', color:'crimson',
+    title:'중증 ARDS — 셋 다 안 되는 순간',
+    profileId:'sim:profile:ards',
+    patient:{ baselinePaCO2:55, baselineVE:6.5, hco3:26, age:55 },
+    startSettings:{ mode:'VC', tv:360, rr:24, peep:14, fio2:90, flow:60, ie:2 },
+    teach:'baby lung. 구동압을 지키면 CO₂가 쌓이고, CO₂를 낮추려 VE를 올리면 구동압·Pplat이 위험. 산소화(P/F)까지 나쁜 삼중고 — 무엇을 포기할지의 줄타기를 숫자로 목격하세요. 한계에선 ECCO₂R/ECMO가 답이 되는 이유.'
   }
 ];
 
@@ -2793,7 +3105,8 @@ var ABGA_CHALLENGES = [
       out.innerHTML =
         '<div class="w-bignum">목표 분환기량 '+r.desiredVE+' L/min</div>'+
         '<div class="w-note">현재 '+ve+' → '+r.desiredVE+' L/min ('+num(Math.abs(r.veChange))+' '+dir+' 함). '+
-        '환기는 PaCO₂에 반비례합니다.</div>';
+        '환기는 PaCO₂에 반비례합니다.</div>'+
+        '<div class="w-note" style="margin-top:6px;">⚠️ 정상상태 단순 모델 — 실제는 폐포환기 기준이라 사강↑(중증 폐쇄성·저TV)에서 오차가 큽니다.</div>';
     }
     ctrl.appendChild(slider({label:'현재 분환기량', id:'w8-ve', min:3, max:20, step:0.5, val:8, unit:'L/min'}, update));
     ctrl.appendChild(slider({label:'현재 PaCO₂', id:'w8-cur', min:25, max:90, step:1, val:60, unit:'mmHg'}, update));
@@ -3404,8 +3717,6 @@ var ABGA_CHALLENGES = [
 
   var PROFILES = (typeof LUNG_PROFILES !== 'undefined') ? LUNG_PROFILES : [];
   var CHALLENGES = (typeof SIM_CHALLENGES !== 'undefined') ? SIM_CHALLENGES : [];
-  var ABCASES = (typeof ABGA_CASES !== 'undefined') ? ABGA_CASES : [];
-  var ABCHALL = (typeof ABGA_CHALLENGES !== 'undefined') ? ABGA_CHALLENGES : [];
   var TH = (typeof DEFAULT_THRESHOLDS !== 'undefined') ? DEFAULT_THRESHOLDS :
     { PPLAT_MAX:30, DP_WARN:14, PIP_WARN:40, AUTOPEEP_WARN:5 };
 
@@ -3486,13 +3797,30 @@ var ABGA_CHALLENGES = [
     ctx.fillStyle='#90a0ad'; ctx.font='9px sans-serif'; ctx.textAlign='center';
     ctx.fillText('0', padL, H-3);
     ctx.fillText(num(tMax)+'s', W-padR-6, H-3);
+
+    // 호기말 유량 미복귀 강조(동적 과팽창 시각 신호)
+    if(opts.markNotReturned){
+      var lastY=Y(arr[n-1]), lastX=X(t[n-1]);
+      // 0선까지 빨간 점선 + 라벨
+      ctx.strokeStyle='rgba(220,38,38,0.6)'; ctx.lineWidth=1.5;
+      ctx.beginPath();
+      var dash=3, gap=2, y0=Y(0), yy=lastY;
+      var dir=(y0>yy)?1:-1, dist=Math.abs(y0-yy), drawn=0;
+      var cx=W-padR-2;
+      while(drawn<dist){ var seg=Math.min(dash,dist-drawn);
+        ctx.moveTo(cx, yy+dir*drawn); ctx.lineTo(cx, yy+dir*(drawn+seg)); drawn+=dash+gap; }
+      ctx.stroke();
+      ctx.fillStyle='#dc2626'; ctx.font='bold 8px sans-serif'; ctx.textAlign='right';
+      ctx.fillText('갇힘', W-padR-5, lastY+(dir>0?-3:9));
+    }
   }
 
   // 세 채널을 각각의 캔버스에 그림
-  function drawWaves(canvases, wf){
+  function drawWaves(canvases, wf, sim){
     if(!wf || !wf.t) return;
+    var notRet = sim && sim.flowNotReturned;
     drawChannel(canvases.paw,  wf.t, wf.paw,    {color:'#6366f1', zero:false, floorZero:true, title:'압력 Paw', unit:'cmH₂O'});
-    drawChannel(canvases.flow, wf.t, wf.flow,   {color:'#0891b2', zero:true,  title:'유량 Flow', unit:'L/min'});
+    drawChannel(canvases.flow, wf.t, wf.flow,   {color:'#0891b2', zero:true,  title:'유량 Flow', unit:'L/min', markNotReturned:notRet});
     drawChannel(canvases.vol,  wf.t, wf.volume, {color:'#10b981', zero:false, floorZero:true, title:'용적 Vol', unit:'mL'});
   }
 
@@ -3601,7 +3929,7 @@ var ABGA_CHALLENGES = [
   function recomputeA(canvases,out){
     var p=simA.profile, s=simA.settings;
     var m=computeMechanics({crs:p.crs, rawR:p.rawR}, s);
-    drawWaves(canvases, m.waveform);
+    drawWaves(canvases, m.waveform, m);
 
     var html='';
     html+='<div class="sim-grid2">'+
@@ -3659,145 +3987,350 @@ var ABGA_CHALLENGES = [
     root.appendChild(list);
   }
 
-  /* ════════════════════════════════════════════════════════════════
-   *  축B — ABGA 시뮬레이터
-   * ════════════════════════════════════════════════════════════════ */
-  var simB = { case:null, mode:'explore', challenge:null, ve:8 };
-
-  function renderCaseChips(){
-    var wrap=$('simB-cases'); if(!wrap) return;
-    wrap.innerHTML='';
-    ABCASES.forEach(function(c){
-      var chip=el('button','sim-chip'+(simB.case&&simB.case.id===c.id?' on':''));
-      chip.type='button';
-      chip.innerHTML='<span class="chip-ic">'+c.icon+'</span><span>'+esc(c.label)+'</span>';
-      chip.onclick=function(){ loadCase(c); };
-      wrap.appendChild(chip);
-    });
-  }
-
-  function loadCase(c){ simB.case=c; simB.mode='explore'; simB.challenge=null; buildB(); }
-
-  function loadABChallenge(ch){
-    simB.challenge=ch; simB.mode='challenge'; simB.case=null; simB.ve=ch.cur.ve;
-    buildB();
-  }
-
-  function buildB(){
-    var root=$('simB-body'); if(!root) return;
-    root.innerHTML='';
-    var modeRow=el('div','sim-modetoggle');
-    modeRow.innerHTML=
-      '<button type="button" class="smt'+(simB.mode==='explore'?' on':'')+'" data-m="explore">🔬 해석</button>'+
-      '<button type="button" class="smt'+(simB.mode==='challenge'?' on':'')+'" data-m="challenge">🎯 챌린지</button>';
-    modeRow.onclick=function(e){ var m=e.target.getAttribute('data-m'); if(!m) return;
-      if(m==='challenge') openABChallengeList();
-      else { simB.mode='explore'; simB.challenge=null; renderCaseChips(); root.innerHTML=''; if(simB.case) buildB(); } };
-    root.appendChild(modeRow);
-
-    if(simB.mode==='explore'){
-      if(!simB.case){ root.appendChild(el('div','sim-note','위에서 케이스를 골라 4단계 해석을 보세요.')); return; }
-      var c=simB.case;
-      root.appendChild(el('div','sim-note','🩺 '+esc(c.story)));
-      var ab=interpretABGA(c.abga);
-      root.appendChild(renderInterpret(ab, c.abga));
-      var exp=el('div','sim-teach','🎓 '+esc(c.expect));
-      root.appendChild(exp);
-    } else if(simB.challenge){
-      var ch=simB.challenge;
-      var br=el('div','sim-brief');
-      br.innerHTML='<div class="sb-title">'+ch.icon+' '+esc(ch.title)+'</div>'+
-        '<div class="sb-text">'+esc(ch.brief)+'</div>'+
-        '<div class="sb-target">🎯 '+esc(ch.targetLabel)+'</div>';
-      root.appendChild(br);
-      // VE 노브
-      var box=el('div','sim-knobs');
-      var row=el('div','sim-slider');
-      row.innerHTML='<label>분환기량 VE <b id="kv-ve">'+simB.ve+'</b> L/min</label>';
-      var inp=el('input'); inp.type='range'; inp.min=3; inp.max=24; inp.step=0.5; inp.value=simB.ve;
-      var out=el('div','sim-out');
-      inp.oninput=function(){ simB.ve=parseFloat(this.value); $('kv-ve').textContent=this.value; recomputeB(out); };
-      row.appendChild(inp); box.appendChild(row);
-      root.appendChild(box); root.appendChild(out);
-      recomputeB(out);
-    }
-  }
-
-  function recomputeB(out){
-    var ch=simB.challenge;
-    // 현재 VE에서 예상 PaCO₂ 역산: PaCO₂ ∝ 1/VE → 현재PaCO₂ = baselinePaCO₂ × (baselineVE/VE)
-    var predicted = ch.cur.paco2 * (ch.cur.ve / simB.ve);
-    var diff = Math.abs(predicted - ch.targetPaCO2);
-    var ok = diff <= 3;
-    var html='<div class="sim-grid2">'+
-      gauge('예상 PaCO₂', predicted, 100, 999, 'mmHg')+
-      gauge('목표', ch.targetPaCO2, 100, 999, 'mmHg')+'</div>';
-    // pH 추정(HCO₃ 고정 가정, HH)
-    var pH = 6.1 + Math.log( ch.cur.hco3 / (0.03*predicted) ) / Math.LN10;
-    html+='<div class="sim-stats"><span>예상 PaCO₂ '+num(predicted)+'</span><span>예상 pH '+num(pH)+'</span>'+
-      '<span>VE '+simB.ve+' L/min</span></div>';
-    html+='<div class="sim-verdict '+(ok?'sv-ok':'sv-no')+'">'+
-      (ok?'✅ 목표 도달! (±3 이내)':'❌ 차이 '+num(diff)+' mmHg — VE 조정')+'</div>';
-    if(ok) html+='<div class="sim-teach">🎓 '+esc(ch.teach)+'</div>';
-    else html+='<div class="sim-hint">💡 '+esc(ch.hint)+'</div>';
-    out.innerHTML=html;
-  }
-
-  function renderInterpret(r, abga){
-    var box=el('div','sim-interpret');
-    var comp='';
-    if(r.compensation){
-      comp='<div class="si-step"><b>3. 보상:</b> '+esc(r.compensation.formula||'')+' → 예상 '+
-        (r.compensation.target==='paco2'?'PaCO₂':'HCO₃')+' '+
-        r.compensation.expectedRange[0]+'~'+r.compensation.expectedRange[1]+
-        ' (측정 '+r.compensation.measured+') · '+
-        (r.compensation.appropriate?'<span class="ok">적절</span>':'<span class="danger">벗어남</span>')+'</div>';
-    }
-    var ag='';
-    if(r.anionGap && r.anionGap.ag!=null){
-      ag='<div class="si-step"><b>AG:</b> '+r.anionGap.ag+
-        (r.anionGap.correctedAG!==r.anionGap.ag?' (보정 '+r.anionGap.correctedAG+')':'')+
-        ' · '+(r.anionGap.deltaInterp||(r.anionGap.high?'상승':'정상'))+'</div>';
-    }
-    box.innerHTML=
-      '<div class="si-step"><b>1. pH:</b> '+(r.phDirection==='acidemia'?'산혈증':(r.phDirection==='alkalemia'?'알칼리혈증':'정상'))+
-      ' ('+abga.pH+')</div>'+
-      '<div class="si-step"><b>2. 1차 장애:</b> '+esc(r.primaryLabel)+'</div>'+
-      comp+
-      '<div class="si-step"><b>4. 혼합:</b> '+(r.mixed?'<span class="danger">'+esc(r.mixedDetail)+'</span>':'<span class="ok">단순 장애</span>')+'</div>'+
-      ag;
-    return box;
-  }
-
-  function openABChallengeList(){
-    var root=$('simB-body'); root.innerHTML='';
-    var back=el('button','sim-back','‹ 해석으로'); back.type='button';
-    back.onclick=function(){ simB.mode='explore'; simB.challenge=null; renderCaseChips(); root.innerHTML=''; if(simB.case) buildB(); };
-    root.appendChild(back);
-    root.appendChild(el('div','sim-note','🎯 환기 노브(VE)로 목표 PaCO₂에 도달하세요.'));
-    var list=el('div','sim-chlist');
-    ABCHALL.forEach(function(ch){
-      var card=el('button','sim-chcard'); card.type='button';
-      card.innerHTML='<span class="cc-ic">'+ch.icon+'</span><div><div class="cc-t">'+esc(ch.title)+'</div>'+
-        '<div class="cc-b">'+esc(ch.brief)+'</div></div>';
-      card.onclick=function(){ loadABChallenge(ch); };
-      list.appendChild(card);
-    });
-    root.appendChild(list);
-  }
-
   /* ════ 초기화 ════ */
   function initSim(){
     renderProfileChips();
-    renderCaseChips();
     if(PROFILES.length) loadProfile(PROFILES[0]);
-    if(ABCASES.length) loadCase(ABCASES[0]);
   }
 
-  window.SIM = { init:initSim, loadProfile:loadProfile, loadCase:loadCase };
+  window.SIM = { init:initSim, loadProfile:loadProfile };
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initSim);
   else initSim();
+})();
+
+/* ===== abga_ui.js ===== */
+/* ════════════════════════════════════════════════════════════════════
+ *  ABGA 해석기 UI (재설계)  abga_ui.js  v1.0
+ * ════════════════════════════════════════════════════════════════════
+ *  해석기 중심: 노브 직접조절 → 실시간 완전해석(산-염기+전해질+산소화).
+ *  프리셋 = 시작점(하단 목록 클릭 → 노브 로드). 챌린지 제거.
+ *  탭2 = 폐-ABGA 연동(coupling). 강한 경고문 필수.
+ *  엔진 정문만: interpretABGA·computeOxygenation·computeMechanics·coupleVentToABGA
+ * ════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  function $(id){ return document.getElementById(id); }
+  function el(tag,cls,html){ var e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function num(v){ return Math.round(v*10)/10; }
+
+  var KNOBS = (typeof ABGA_KNOBS !== 'undefined') ? ABGA_KNOBS : [];
+  var GROUPS = (typeof KNOB_GROUPS !== 'undefined') ? KNOB_GROUPS : [];
+  var PRESETS = (typeof ABGA_PRESETS !== 'undefined') ? ABGA_PRESETS : [];
+  var SCENARIOS = (typeof COUPLE_SCENARIOS !== 'undefined') ? COUPLE_SCENARIOS : [];
+  var LPROF = (typeof LUNG_PROFILES !== 'undefined') ? LUNG_PROFILES : [];
+  var REFSDB = (typeof REFS !== 'undefined') ? REFS : {};
+  var CW = (typeof COUPLE_WARNING !== 'undefined') ? COUPLE_WARNING : { title:'', points:[] };
+
+  var COLOR_CLASS = { indigo:'c-indigo', teal:'c-teal', amber:'c-amber', purple:'c-purple', crimson:'c-crimson' };
+
+  // 해석기 상태(전 파라미터)
+  var vals = { pH:7.40, paco2:40, hco3:24, na:140, cl:104, albumin:4.0, pao2:95, fio2:21, age:40, chronic:false };
+  var openGroups = { core:true, lyte:false, oxy:false };
+  var mode = 'interp';   // 'interp' | 'couple'
+
+  /* ════ 탭 ════ */
+  function build(){
+    var pane = $('pane-abga');
+    if(!pane) return;
+    pane.innerHTML='';
+    pane.appendChild(headEl());
+    var tog=el('div','sim-modetog');
+    tog.innerHTML=
+      '<button id="ab-t1" class="smt'+(mode==='interp'?' on':'')+'" type="button">🔬 해석기</button>'+
+      '<button id="ab-t2" class="smt'+(mode==='couple'?' on':'')+'" type="button">🔗 폐-ABGA 연동</button>';
+    pane.appendChild(tog);
+    var body=el('div'); body.id='ab-body'; pane.appendChild(body);
+    $('ab-t1').onclick=function(){ mode='interp'; build(); };
+    $('ab-t2').onclick=function(){ mode='couple'; build(); };
+    if(mode==='interp') buildInterp(body); else buildCouple(body);
+  }
+  function headEl(){
+    var h=el('div','sim-head');
+    h.innerHTML = mode==='interp'
+      ? '<h2>🧪 ABGA 해석기</h2><p>값을 직접 조절하면 산-염기·전해질·산소화를 실시간 해석합니다. 하단 예제를 누르면 시작점으로 불러옵니다.</p>'
+      : '<h2>🔗 폐-ABGA 연동</h2><p>폐역학 노브를 돌리면 파형과 예상 ABGA가 함께 움직입니다. 단순 모델의 "경향"만 봅니다.</p>';
+    return h;
+  }
+
+  /* ════════════════════════════════════════════════════
+   *  탭1 — 해석기
+   * ════════════════════════════════════════════════════ */
+  function buildInterp(body){
+    var resultBox=el('div','ab-result');   // 해석 카드(노브 위에 고정 노출)
+    var knobBox=el('div','ab-knobs');
+    body.appendChild(knobBox);
+    body.appendChild(resultBox);
+
+    // 그룹별 노브(접기)
+    GROUPS.forEach(function(g){
+      var sec=el('div','ab-knobgrp');
+      var open = openGroups[g.id];
+      var head=el('button','ab-grphead'+(open?' open':''));
+      head.type='button';
+      head.innerHTML='<span>'+esc(g.label)+'</span><span class="ab-chev">▾</span>';
+      var inner=el('div','ab-grpinner'); inner.style.display=open?'block':'none';
+      head.onclick=function(){ openGroups[g.id]=!openGroups[g.id];
+        inner.style.display=openGroups[g.id]?'block':'none';
+        head.classList.toggle('open', openGroups[g.id]); };
+      KNOBS.filter(function(k){return k.grp===g.id;}).forEach(function(k){
+        inner.appendChild(knobRow(k, resultBox));
+      });
+      sec.appendChild(head); sec.appendChild(inner);
+      knobBox.appendChild(sec);
+    });
+
+    // chronic 토글(호흡장애 보상)
+    var chr=el('div','ab-chronic');
+    chr.innerHTML='<span>호흡장애 보상:</span>'+
+      '<button class="ab-cbtn'+(!vals.chronic?' on':'')+'" data-c="0" type="button">급성</button>'+
+      '<button class="ab-cbtn'+(vals.chronic?' on':'')+'" data-c="1" type="button">만성</button>';
+    chr.onclick=function(e){ var c=e.target.getAttribute('data-c'); if(c==null)return;
+      vals.chronic=(c==='1');
+      var bs=chr.querySelectorAll('.ab-cbtn'); for(var i=0;i<bs.length;i++) bs[i].classList.toggle('on', bs[i].getAttribute('data-c')===c);
+      renderInterp(resultBox); };
+    knobBox.appendChild(chr);
+
+    // 프리셋 목록(하단)
+    body.appendChild(presetList(resultBox));
+    // 출처
+    body.appendChild(refBlock(['ref:winters','ref:hh','ref:msd','ref:aagrad_statpearls','ref:alveolar_gas','ref:pf_berlin']));
+
+    renderInterp(resultBox);
+  }
+
+  function knobRow(k, resultBox){
+    var row=el('div','ab-knob');
+    var head=el('div','ab-knhead');
+    head.innerHTML='<label>'+esc(k.lab)+'</label>'+
+      '<input class="ab-numin" id="in-'+k.key+'" type="number" min="'+k.min+'" max="'+k.max+'" step="'+k.step+'" value="'+vals[k.key]+'"> <span class="ab-unit">'+esc(k.unit)+'</span>';
+    var rng=el('input'); rng.type='range'; rng.min=k.min; rng.max=k.max; rng.step=k.step; rng.value=vals[k.key]; rng.className='ab-range'; rng.id='rng-'+k.key;
+    function sync(v){ v=parseFloat(v); if(isNaN(v)) return;
+      if(v<k.min)v=k.min; if(v>k.max)v=k.max;
+      vals[k.key]=v;
+      $('rng-'+k.key).value=v; $('in-'+k.key).value=v;
+      renderInterp(resultBox);
+    }
+    rng.oninput=function(){ sync(this.value); };
+    head.querySelector('#in-'+k.key).oninput=function(){ sync(this.value); };
+    row.appendChild(head); row.appendChild(rng);
+    return row;
+  }
+
+  function renderInterp(box){
+    box.innerHTML='';
+    // 산-염기
+    var ab=interpretABGA({pH:vals.pH, paco2:vals.paco2, hco3:vals.hco3,
+      na: openGroups.lyte?vals.na:null, cl: openGroups.lyte?vals.cl:null,
+      albumin: openGroups.lyte?vals.albumin:null, chronic:vals.chronic});
+    box.appendChild(acidBaseCard(ab));
+    // 산소화(그룹 열렸을 때만)
+    if(openGroups.oxy){
+      var ox=computeOxygenation({pao2:vals.pao2, fio2:vals.fio2, paco2:vals.paco2, age:vals.age});
+      box.appendChild(oxyCard(ox));
+    }
+  }
+
+  function acidBaseCard(r){
+    var c=el('div','ab-card');
+    var comp=r.compensation;
+    var ag=r.anionGap;
+    var html='<div class="abc-title">🧪 산-염기 해석</div>';
+    html+='<div class="abi-step"><b>1. pH</b> '+
+      (r.phDirection==='acidemia'?'<span class="ac">산혈증</span>':(r.phDirection==='alkalemia'?'<span class="al">알칼리혈증</span>':'정상'))+'</div>';
+    html+='<div class="abi-step"><b>2. 1차 장애</b> '+esc(r.primaryLabel)+'</div>';
+    if(comp){
+      html+='<div class="abi-step"><b>3. 보상</b> '+esc(comp.formula)+' → 예상 '+
+        (comp.target==='paco2'?'PaCO₂':'HCO₃')+' '+comp.expectedRange[0]+'~'+comp.expectedRange[1]+
+        ' (측정 '+comp.measured+') · '+(comp.appropriate?'<span class="ok">적절</span>':'<span class="no">벗어남</span>')+'</div>';
+    }
+    html+='<div class="abi-step"><b>4. 혼합</b> '+
+      (r.mixed?'<span class="no">'+esc(r.mixedDetail)+'</span>':'<span class="ok">단순 장애</span>')+'</div>';
+    if(ag){
+      html+='<div class="abi-step"><b>AG</b> '+num(ag.ag)+
+        (ag.correctedAG!=null&&ag.correctedAG!==ag.ag?' (보정 '+num(ag.correctedAG)+')':'')+
+        (ag.high?' <span class="no">고음이온차</span>':'')+
+        (ag.deltaInterp?' · Δ비 '+ag.deltaRatio+' ('+esc(ag.deltaInterp)+')':'')+'</div>';
+    }
+    c.innerHTML=html;
+    if(r.flags&&r.flags.length) c.appendChild(flagList(r.flags));
+    return c;
+  }
+
+  function oxyCard(o){
+    var c=el('div','ab-card oxy');
+    var html='<div class="abc-title">🫁 산소화 해석</div>';
+    html+='<div class="ox-row"><span>PAO₂(폐포)</span><b>'+o.pAO2+'</b></div>';
+    html+='<div class="ox-row"><span>A-a 차이</span><b class="'+(o.aaHigh?'no':'ok')+'">'+o.aaGradient+
+      (o.expectedAa!=null?' (예상 '+o.expectedAa+')':'')+'</b></div>';
+    html+='<div class="ox-row"><span>P/F 비</span><b class="'+(o.ardsGrade?'no':'ok')+'">'+o.pfRatio+
+      (o.ardsGrade?' ('+(o.ardsGrade==='severe'?'중증':o.ardsGrade==='moderate'?'중등증':'경증')+')':'')+'</b></div>';
+    html+='<div class="ox-interp">'+esc(o.interpretation)+'</div>';
+    c.innerHTML=html;
+    if(o.flags&&o.flags.length) c.appendChild(flagList(o.flags));
+    return c;
+  }
+
+  function flagList(flags){
+    var w=el('div','ab-flags');
+    flags.forEach(function(f){
+      var cls=f.level==='danger'?'f-danger':(f.level==='warn'?'f-warn':'f-info');
+      w.appendChild(el('div','w-flag '+cls, esc(f.msg)));
+    });
+    return w;
+  }
+
+  function presetList(resultBox){
+    var wrap=el('div','ab-presets');
+    wrap.appendChild(el('div','ab-plabel','📋 예제 — 누르면 값을 불러와 해석기에서 변형'));
+    var grid=el('div','ab-pgrid');
+    PRESETS.forEach(function(p){
+      var b=el('button','ab-pchip '+(COLOR_CLASS[p.color]||''),
+        '<span class="pc-ic">'+p.icon+'</span><span class="pc-lb">'+esc(p.label)+'</span><span class="pc-sb">'+esc(p.sub)+'</span>');
+      b.type='button';
+      b.onclick=function(){ loadPreset(p, resultBox); };
+      grid.appendChild(b);
+    });
+    wrap.appendChild(grid);
+    // 프리셋 스토리 표시 영역
+    var story=el('div','ab-pstory'); story.id='ab-pstory'; wrap.appendChild(story);
+    return wrap;
+  }
+
+  function loadPreset(p, resultBox){
+    var v=p.vals;
+    for(var key in v){ if(v.hasOwnProperty(key)) vals[key]=v[key]; }
+    vals.chronic = p.chronic || false;
+    // 산소화·전해질 값이 있으면 그룹 자동 열기
+    openGroups.lyte=true; openGroups.oxy=true;
+    build();  // 재구성(노브 값 반영)
+    var st=$('ab-pstory');
+    if(st) st.innerHTML='<b>'+esc(p.label)+'</b> — '+esc(p.story);
+    window.scrollTo(0,0);
+  }
+
+  /* ════════════════════════════════════════════════════
+   *  탭2 — 폐-ABGA 연동
+   * ════════════════════════════════════════════════════ */
+  var couple = { scenario:null, profile:null, settings:null, patient:null };
+
+  function buildCouple(body){
+    // 강한 경고(상단 고정)
+    body.appendChild(warnBanner());
+    // 시나리오 선택
+    if(!couple.scenario){
+      var intro=el('div','sim-note','🔗 시나리오를 고르면 폐역학 노브와 예상 ABGA가 연결됩니다.');
+      body.appendChild(intro);
+      var grid=el('div','ab-pgrid');
+      SCENARIOS.forEach(function(s){
+        var b=el('button','ab-pchip '+(COLOR_CLASS[s.color]||''),
+          '<span class="pc-ic">'+s.icon+'</span><span class="pc-lb">'+esc(s.title)+'</span>');
+        b.type='button';
+        b.onclick=function(){ startScenario(s); };
+        grid.appendChild(b);
+      });
+      body.appendChild(grid);
+      return;
+    }
+    // 시나리오 로드됨
+    var s=couple.scenario;
+    var head=el('div','sim-chalhead '+(COLOR_CLASS[s.color]||''));
+    head.innerHTML='<button id="cpl-back" class="sim-back" type="button">‹ 다른 시나리오</button>'+
+      '<div class="sch-title">'+s.icon+' '+esc(s.title)+'</div>'+
+      '<div class="sch-brief">'+esc(s.teach)+'</div>';
+    body.appendChild(head);
+    $('cpl-back').onclick=function(){ couple.scenario=null; build(); };
+
+    // 폐역학 노브
+    var knobWrap=el('div','sim-knobs'); body.appendChild(knobWrap);
+    var splitBox=el('div','ab-split'); body.appendChild(splitBox);
+
+    var knobList = couple.settings.mode==='VC'
+      ? ['tv','rr','peep','fio2','flow','ie'] : ['pinsp','rr','peep','fio2','ie'];
+    var KSPEC={ tv:{lab:'TV',min:200,max:800,step:10,unit:'mL'}, rr:{lab:'RR',min:4,max:40,step:1,unit:'/min'},
+      peep:{lab:'PEEP',min:0,max:24,step:1,unit:'cmH₂O'}, fio2:{lab:'FiO₂',min:21,max:100,step:1,unit:'%'},
+      flow:{lab:'유량',min:30,max:120,step:5,unit:'L/min'}, ie:{lab:'I:E(1:?)',min:1,max:6,step:1,unit:''},
+      pinsp:{lab:'Pinsp',min:5,max:40,step:1,unit:'cmH₂O'} };
+    knobList.forEach(function(key){
+      var sp=KSPEC[key];
+      var row=el('div','sim-slider');
+      row.innerHTML='<label>'+sp.lab+' <b id="cv-'+key+'">'+couple.settings[key]+'</b> '+sp.unit+'</label>';
+      var inp=el('input'); inp.type='range'; inp.min=sp.min; inp.max=sp.max; inp.step=sp.step; inp.value=couple.settings[key];
+      inp.oninput=function(){ couple.settings[key]=parseFloat(this.value);
+        var b=$('cv-'+key); if(b)b.textContent=this.value; recompCouple(splitBox); };
+      row.appendChild(inp); knobWrap.appendChild(row);
+    });
+    body.appendChild(refBlock(['ref:winters','ref:medmastery','ref:amato','ref:emcrit_ards']));
+    recompCouple(splitBox);
+  }
+
+  function startScenario(s){
+    couple.scenario=s;
+    var prof=null;
+    for(var i=0;i<LPROF.length;i++) if(LPROF[i].id===s.profileId) prof=LPROF[i];
+    couple.profile=prof;
+    couple.settings={}; for(var k in s.startSettings) couple.settings[k]=s.startSettings[k];
+    couple.patient=s.patient;
+    build();
+  }
+
+  function recompCouple(box){
+    box.innerHTML='';
+    var p=couple.profile, s=couple.settings, pt=couple.patient;
+    var vent=computeMechanics({crs:p.crs, rawR:p.rawR}, s);
+    var r=coupleVentToABGA(vent, pt, {projectABGA:projectABGA, interpretABGA:interpretABGA});
+
+    // 좌: 폐 지표
+    var left=el('div','ab-half');
+    left.innerHTML='<div class="ah-title">🫁 폐역학</div>'+
+      metric('Pplat', vent.pplat, 30, 'cmH₂O')+
+      metric('구동압 ΔP', vent.drivingPressure, 14, 'cmH₂O')+
+      metric('auto-PEEP', vent.autoPEEP, 5, 'cmH₂O')+
+      '<div class="ah-sub">VE '+vent.minuteVentilation+' L/min · P/F 참고</div>';
+    // 우: 예상 ABGA
+    var right=el('div','ab-half');
+    var delta=r.deltaPaCO2>0?'+'+r.deltaPaCO2:r.deltaPaCO2;
+    right.innerHTML='<div class="ah-title">🧪 예상 ABGA</div>'+
+      '<div class="ah-big">PaCO₂ '+r.projectedPaCO2+'<span class="ah-delta">('+delta+')</span></div>'+
+      '<div class="ah-big">pH '+r.projectedPH+'</div>'+
+      '<div class="ah-interp">'+esc(r.interp.primaryLabel)+(r.interp.mixed?' (혼합)':'')+'</div>';
+    box.appendChild(left); box.appendChild(right);
+  }
+
+  function metric(label, val, warnAt, unit){
+    var cls = val>=warnAt?'m-danger':(val>=warnAt*0.75?'m-warn':'m-ok');
+    return '<div class="ah-metric"><span>'+label+'</span><b class="'+cls+'">'+num(val)+' '+unit+'</b></div>';
+  }
+
+  function warnBanner(){
+    var w=el('div','ab-warn');
+    var html='<div class="aw-title">⚠️ '+esc(CW.title)+'</div><ul>';
+    CW.points.forEach(function(pt){ html+='<li>'+esc(pt)+'</li>'; });
+    html+='</ul>';
+    w.innerHTML=html;
+    return w;
+  }
+
+  /* ════ 공용 ════ */
+  function refBlock(ids){
+    var rf=el('div','ld-refs');
+    rf.innerHTML='<div class="rf-label">📚 출처</div>';
+    var ul=el('ul');
+    ids.forEach(function(id){ var r=REFSDB[id]; if(!r)return;
+      var li=el('li');
+      li.innerHTML='<a href="'+r.url+'" target="_blank" rel="noopener">'+esc(r.title)+'</a> <span class="rf-src">— '+esc(r.src)+(r.year?' ('+r.year+')':'')+'</span>';
+      ul.appendChild(li); });
+    rf.appendChild(ul);
+    return rf;
+  }
+
+  function initABGA(){ if($('pane-abga')) build(); }
+  window.ABGA = { init:initABGA, loadPreset:function(id){ var p=null; for(var i=0;i<PRESETS.length;i++) if(PRESETS[i].id===id)p=PRESETS[i]; if(p){mode='interp'; build(); loadPreset(p, $('ab-result'));} } };
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initABGA);
+  else initABGA();
 })();
 </script>
 </body>
