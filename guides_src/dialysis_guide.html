@@ -999,6 +999,61 @@ var DIALYSIS_CONCEPTS_B = {
     refs: ["ref:kdoqi_nutrition2020","ref:niddk_diet","ref:nkf_diet"]
   },
 
+  "L14": {
+    id: "L14", icon: "🚑", title_ko: "실전 — 언제 신장내과로 보내나",
+    subtitle_ko: "비전문의의 핵심 의무는 처방이 아니라 '제때 넘기는 것'",
+    concept_ids: ["concept:referral_timing"],
+    proc_ids: ["proc:transplant"],
+    core_ko:
+      "비전문의가 투석·신장 환자에서 가장 중요하게 해야 할 일은 완벽한 처방이 아니라 **위험 신호를 알아채고 제때 신장내과로 넘기는 것**이다. "+
+      "의뢰 시점은 세 단계로 나뉜다 — **응급(즉시)·긴급(수일)·정규(계획)**. "+
+      "핵심 근거: 지연 의뢰는 예후를 악화시킨다. AKI에서 진단 2일 후 의뢰는 조기 의뢰 대비 **병원 사망 OR 4.04, 투석의존 OR 3.00**로 나타났다. "+
+      "아래 3단계 triage로 '지금 이 환자를 어느 속도로 보내야 하나'를 판단하라 — 이건 처방 도구가 아니라 의뢰 시점 판단 도구다.",
+    detail_ko: [
+      {h:"응급 — 즉시 (당일/응급실)",
+        t:"생명 위협이라 당장 신장내과 연락 또는 응급실로. 투석이 즉시 필요할 수 있다.\n"+
+        "• 중증 고칼륨혈증: K >6.5 또는 심전도 변화(peaked T·QRS 확장), 특히 AKI 동반·약물 난치성\n"+
+        "• 약물로 조절 안 되는 중증 대사성 산증\n"+
+        "• 이뇨제 저항성 폐부종(용적 과부하)\n"+
+        "• 요독성 심막염·뇌병증\n"+
+        "• 급속 진행성 사구체신염(RPGN) 의심 — 혈뇨+적혈구 원주+빠른 Cr 상승. 신예후가 즉시 개입에 달림\n"+
+        "이들은 급성 투석 적응증(AEIOU: Acidosis·Electrolyte·Intoxication·Overload·Uremia)과 겹친다."},
+      {h:"긴급 — 빠른 (수일~2주)",
+        t:"예후에 직결돼 빠른 의뢰가 필요하다. 지연이 곧 손해다.\n"+
+        "• AKI: 기저 Cr 대비 ≥50% 상승. 조기 의뢰(진단 2일 내)가 사망·투석의존 위험을 크게 낮춘다\n"+
+        "• 빠른 신기능 악화: GFR >20% 저하 또는 Cr >30% 상승, 특히 ACEi/ARB 사용 중\n"+
+        "• 난치성 고혈압: 3제 병용(상보적 계열)에도 BP >150/90 지속 → 이차성·신실질 원인 의심\n"+
+        "• 비뇨기 원인 배제된 지속 혈뇨(적혈구 원주 동반 시 특히)\n"+
+        "• 지속되는 전해질 이상(고칼륨·산증·인/칼슘)"},
+      {h:"정규 — 계획 (외래 의뢰)",
+        t:"급하지 않지만 CKD 진행 관리·신대체 준비를 위해 계획적으로 보낸다.\n"+
+        "• eGFR <30 (CKD G4~G5) — 전통적 기준, 신대체 준비 시작\n"+
+        "• 유의 알부민뇨: ACR ≥300 mg/g\n"+
+        "• 원인 불명 CKD, 유전성 신질환 의심(다낭신 등), 재발 결석/감염\n"+
+        "• 일차진료로 조절 안 되는 CKD 합병증(신성빈혈·MBD)"},
+      {h:"패러다임 전환 — eGFR 기반에서 위험도(KFRE) 기반으로",
+        t:"KDIGO 2024는 의뢰 기준을 'eGFR 단독'에서 'KFRE(신부전 위험 방정식) 기반'으로 전환했다. "+
+        "핵심 역치: 5년 신부전 위험 3~5%면 의뢰 고려, 2년 위험 40%면 접근로·이식 계획.\n"+
+        "왜 바뀌었나? eGFR이 아직 높아도 알부민뇨·진행속도가 나쁘면 고위험일 수 있고, 반대로 eGFR이 낮아도 안정적이면 저위험일 수 있다. "+
+        "CKD 환자의 1~4%만 실제 신부전으로 진행하므로, 위험도로 선별해야 '고위험을 놓치지 않되 저위험을 불필요하게 보내지 않는' 균형이 잡힌다."},
+      {h:"의뢰할 때 무엇을 함께 보내나",
+        t:"신장내과가 빠르게 판단하려면 의뢰서에 다음을 담는다.\n"+
+        "• 추세가 핵심 — 단발 수치보다 eGFR·Cr·ACR의 시간 경과 추이\n"+
+        "• 투석 환자면: 투석 스케줄, dry weight, 접근로 종류, 최근 투석 전후 채혈\n"+
+        "• 약물 목록 — 특히 신독성/신배설 약, ACEi·ARB·SGLT2i·이뇨제\n"+
+        "• AKI 의심 시: 기저 Cr, 소변량, 최근 조영제·NSAID·항생제 노출, 용적 상태\n"+
+        "• 가능하면 요검사(혈뇨·단백뇨·원주)와 신초음파 결과"}
+    ],
+    analogy_ko: "의뢰 시점 판단은 '화재 신고'와 같다. 불길이 번지는 응급(고칼륨·폐부종)은 119에 즉시, "+
+      "연기가 나는 긴급(AKI·급속 악화)은 빠르게, 소방 점검이 필요한 정규(CKD 진행)는 예약해서. "+
+      "가장 큰 실수는 '내가 어떻게 해보겠다'며 늦게 신고하는 것 — 지연 의뢰가 사망 위험을 4배로 올린다.",
+    numbers: [],
+    trial_ids: [],
+    viz: "viz:referral_triage",
+    viz_secondary: "viz:referral_prep",
+    refs: ["ref:kdigo_ckd2024","ref:akd_referral","ref:kdigo_hyperk","ref:akdhc_referral","ref:nephro_internist"]
+  },
+
   "BRIDGE": {
     id: "BRIDGE", icon: "🔄", title_ko: "CRRT 브릿지 — HD와 같은 물리, 다른 속도",
     subtitle_ko: "effluent dose ↔ UF rate ↔ Kt/V: ICU 모듈 숫자를 같은 언어로",
@@ -1084,6 +1139,52 @@ var DIALYSIS_CONCEPTS_B = {
     viz: "viz:crrt_simulator",
     viz_secondary: "viz:crrt_flow",
     refs: ["ref:crrt_dose","ref:crrt_prescribe","ref:kdigo_aki2012","ref:atn_nejm","ref:renal_nejm"]
+  },
+
+  "L16": {
+    id: "L16", icon: "💧", title_ko: "HD UF 시뮬레이터 — 제수분 처방을 직접 돌려본다",
+    subtitle_ko: "IDWG·dry weight·시간이 UF rate 한 숫자로 모인다 (CRRT와 대칭)",
+    concept_ids: ["concept:idwg","concept:dry_weight","concept:plasma_refill"],
+    proc_ids: ["proc:hd"],
+    core_ko:
+      "일반 HD에서 실시간으로 '돌리는' 처방 변수는 사실상 **UF(제수분) 하나**다(Kt/V는 L6 계산기). "+
+      "투석전 체중·목표 체중(dry weight)·투석 시간 세 값이 **UF rate(mL/kg/hr)** 한 숫자로 모인다. "+
+      "이 숫자가 L10에서 배운 위험선 13을 넘는지, 넘으면 시간을 늘려 어떻게 낮추는지 — 아래로 직접 돌려보라. "+
+      "**CRRT(L15)와 대칭이다**: CRRT는 24시간 연속(mL/kg/hr), HD는 4시간 압축. 같은 물리(물 빼기)를 두 속도로 보는 것.",
+    detail_ko: [
+      {h:"UF rate = IDWG ÷ 시간 (한 세션 공식)",
+        t:"개별 투석 세션의 UF rate는 단순하다 — 투석간 늘어난 물(IDWG)을 투석 시간으로 나눈 것이다. "+
+        "IDWG = 투석전 체중 − 목표 체중(dry weight). 이걸 dry weight로 보정하고(mL/kg/hr) 시간으로 나눈다.\n"+
+        "즉 세 손잡이가 있다 — IDWG를 줄이거나(식이·수분 제한, L13), 목표체중을 정확히 잡거나(L11), 시간을 늘리는 것. "+
+        "시뮬레이터에서 세 슬라이더를 움직이면 UF rate가 어떻게 반응하는지 즉시 보인다."},
+      {h:"왜 13이 상한인가 — 그리고 10부터 이미 위험",
+        t:"UF rate가 13 mL/kg/hr를 넘으면 전원인 사망 59%·심혈관 사망 71%가 증가한다(Flythe, HEMO 사후분석). "+
+        "미국 CMS는 이를 품질지표로 삼아 13을 상한으로 정했다.\n"+
+        "그러나 주의할 점 — 13은 '안전선'이 아니라 '상한'이다. 스플라인 분석에서 위험은 이미 **10 mL/kg/hr부터 상승하기 시작**한다(HR 1.15~1.23). "+
+        "특히 심부전(CHF) 환자는 10부터 위험하다. 그래서 시뮬레이터도 10을 주의선(주황), 13을 위험선(빨강)으로 둘로 표시한다."},
+      {h:"핵심 — 같은 UFR도 큰 환자가 더 위험하다",
+        t:"흔히 놓치는 점. UF rate 13을 똑같이 초과해도 사망 위험은 체중에 따라 크게 다르다 — "+
+        "60kg 환자는 HR 약 1.20, 80kg는 1.45, 100kg는 2.0 이상이다(Fan 2022).\n"+
+        "그래서 비보정(unscaled) UFR(mL/hr)도 함께 본다 — 1000 mL/hr 초과가 위험, 900이 경고선. "+
+        "큰 환자에서는 mL/kg/hr보다 절대량(mL/hr)이 더 정확한 위험 지표일 수 있다. 시뮬레이터에서 dry weight를 60→100으로 올려보면 같은 UFR에서도 HR이 치솟는 걸 볼 수 있다."},
+      {h:"왜 시간을 늘리면 안전한가 (CRRT와 같은 원리)",
+        t:"UF rate = 총 물 ÷ 시간이므로, 같은 물이라도 시간을 늘리면 rate가 내려간다. "+
+        "기전은 L10의 plasma refill이다 — 천천히 빼면 조직에서 혈관으로 물이 채워지는 속도(refill)가 UF를 따라잡아 혈압이 유지된다. "+
+        "이것이 정확히 CRRT가 24시간 연속으로 천천히 빼는 이유와 같다(L15·BRIDGE). "+
+        "시뮬레이터에서 시간을 4→6시간으로 늘리면 위험 UFR이 안전 구간으로 내려가는 걸 직접 확인하라 — 야간 투석·잦은 투석이 더 안전한 물리적 근거다."},
+      {h:"실전 연결 — 이 세 손잡이를 언제 쓰나",
+        t:"UFR이 위험할 때 실전 대응은 세 가지다.\n"+
+        "• IDWG↓: 투석간 물·소금 섭취 줄이기 교육(L13). 근본 해결이지만 환자 순응 필요.\n"+
+        "• 시간↑: 즉효. 단 환자 부담·투석실 자원.\n"+
+        "• 목표체중 재평가(L11): 목표를 너무 낮게 잡았다면 조정. dry weight는 정량지표 없는 임상 판단.\n"+
+        "시뮬레이터는 이 세 손잡이가 UFR에 어떻게 작용하는지를 보여주는 도구다 — 처방을 대신하는 게 아니라, 왜 그 처방을 하는지를 이해시킨다."}
+    ],
+    analogy_ko: "HD UF 처방은 '욕조 물을 정해진 시간 안에 빼는 것'이다. 뺄 물(IDWG)이 많거나 시간이 짧으면 배수 속도(UFR)가 빨라져 "+
+      "욕조 벽(혈관)이 휘청인다(IDH). 같은 물이라도 시간을 늘리면 천천히 빠져 안전하다 — CRRT는 이 시간을 24시간까지 늘린 극단이다.",
+    numbers: ["num:ufr_danger","num:idwg_max"],
+    trial_ids: [],
+    viz: "viz:hduf_simulator",
+    refs: ["ref:cjasn_idh","ref:ki_volume","ref:flythe_ufr","ref:fan_ufr"]
   }
 };
 
@@ -1306,7 +1407,8 @@ var DIALYSIS_NEW_IDS = {
     "concept:rule_of_6s","concept:idwg","concept:organic_inorganic_phosphate","concept:eskd_lifeplan",
     "concept:renal_anemia","concept:shpt","concept:ckd_mbd","concept:idh",
     "concept:effluent_dose","concept:filtration_fraction","concept:dilution_factor",
-    "concept:pre_post_dilution","concept:nuf","concept:plasma_flow","concept:rca"],
+    "concept:pre_post_dilution","concept:nuf","concept:plasma_flow","concept:rca",
+    "concept:referral_timing"],
 
   // 임상시험(4): 전부 PubMed 검증 완료
   trials_new: ["pmid:hemo2002","pmid:fhn_daily2010","pmid:fhn_nocturnal2011","pmid:ideal2010"],
@@ -1456,7 +1558,15 @@ var DIALYSIS_VIZ = {
     output_ko:"BFR·Qd·Qr·Qnet을 바꾸면 effluent dose·FF·희석이 실시간 변화"},
   "viz:crrt_flow": {id:"viz:crrt_flow", layer:"L15", type:"flow",
     title_ko:"CRRT 처방 7단계 Flow", render:"crrt_flow",
-    output_ko:"개시→모달리티→세팅→항응고→모니터링→조정→중단"}
+    output_ko:"개시→모달리티→세팅→항응고→모니터링→조정→중단"},
+  "viz:hduf_simulator": {id:"viz:hduf_simulator", layer:"L16", type:"simulator",
+    title_ko:"HD UF 제수분 시뮬레이터", render:"hduf_simulator",
+    output_ko:"투석전체중·목표체중·시간을 바꾸면 UF rate·IDH위험이 실시간 변화"},
+  "viz:referral_triage": {id:"viz:referral_triage", layer:"L14", type:"triage",
+    title_ko:"신장내과 의뢰 3단계 triage", render:"referral_triage",
+    output_ko:"응급·긴급·정규 — 어느 속도로 보낼지 판단"},
+  "viz:referral_prep": {id:"viz:referral_prep", layer:"L14", type:"checklist",
+    title_ko:"의뢰 시 준비 정보", render:"referral_prep"}
 };
 
 </script>
@@ -1829,6 +1939,306 @@ function crrtCompute(params, DATA) {
 })(typeof window !== 'undefined' ? window : this);
 </script>
 <script>/* ============================================================
+   HD UF 시뮬레이터 모듈 — DATA + ENGINE (자기완결)
+   HDUF_DATA / hdUfCompute(params, DATA)
+   ※ CRRT 모듈과 대칭 구조. 같은 물리(물 빼기)를 4시간 압축으로.
+   ※ UFR 임계값은 근거 검증 완료. 하드코딩 아닌 DATA 단독 소유.
+   ※ 정문: hdUfCompute(params) → {ufTotal, ufRate, ufRateUnscaled, idhRisk, flags}
+   ============================================================ */
+
+var HDUF_DATA = {
+
+  /* ---- 근거 임계값 (const:) ---- */
+  consts: {
+    "const:ufr_warn": { value: 13, unit: "mL/kg/hr",
+      label: "UFR 위험 상한(CMS 품질지표)", source: "Flythe 2011 (HEMO 사후분석)",
+      note: ">13 전원인사망 59%·심혈관사망 71%↑. 상한이지 안전선 아님" },
+    "const:ufr_caution": { value: 10, unit: "mL/kg/hr",
+      label: "UFR 주의 시작선", source: "Assimon 2016 / Kim",
+      note: "≥10부터 이미 사망위험 상승(HR 1.15~1.23). CHF 환자는 여기부터 위험" },
+    "const:ufr_unscaled_warn": { value: 1000, unit: "mL/hr",
+      label: "비보정 UFR 경고", source: "Fan 2022 (CJASN)",
+      note: ">1000 mL/hr 사망위험. 900이 저위험 경고선. 큰 환자에 더 정확" },
+    "const:idwg_max_pct": { value: 5, unit: "% 체중",
+      label: "IDWG 권장 상한", source: "임상 관행",
+      note: "초과 시 필요 UFR↑ → IDH 위험" },
+    "const:session_default": { value: 4, unit: "시간",
+      label: "표준 투석시간", source: "주3회 통상",
+      note: "시간↑ → 같은 물 더 천천히 → UFR↓" }
+  },
+
+  /* ---- 체중별 사망위험(HR) — 13 mL/kg/hr 초과 시 ---- */
+  /* 출처: Fan 2022 — 큰 환자일수록 같은 UFR/kg가 더 위험 */
+  weightHazard: [
+    { weight: 60, hr: 1.20 },
+    { weight: 80, hr: 1.45 },
+    { weight: 100, hr: 2.0 }
+  ],
+
+  /* ---- 입력 파라미터 ---- */
+  params: {
+    preWeight: { default: 73, min: 40, max: 150, step: 0.1, unit: "kg", label_ko: "투석 전 체중" },
+    dryWeight: { default: 70, min: 40, max: 150, step: 0.1, unit: "kg", label_ko: "목표 체중(dry weight)" },
+    sessionHr: { default: 4, min: 2, max: 8, step: 0.5, unit: "시간", label_ko: "투석 시간" }
+  },
+
+  /* ---- 연쇄 효과 설명 ---- */
+  chains: {
+    preWeight: { up_ko: "투석전 체중↑ → IDWG↑ → UFR↑", tradeoff_ko: "식이·수분 제한 교육 필요(L13)" },
+    dryWeight: { up_ko: "목표체중↓ → 뺄 물↑ → UFR↑", tradeoff_ko: "너무 낮으면 과도제거·IDH" },
+    sessionHr: { up_ko: "시간↑ → UFR↓(같은 물 천천히)", tradeoff_ko: "안전하나 환자 부담·자원↑" }
+  }
+};
+
+/* ============================================================
+   정문: hdUfCompute(params, DATA)
+   ============================================================ */
+function hdUfCompute(params, DATA) {
+  var C = DATA.consts;
+  var ufrWarn = C["const:ufr_warn"].value;        // 13
+  var ufrCaution = C["const:ufr_caution"].value;  // 10
+  var unscaledWarn = C["const:ufr_unscaled_warn"].value; // 1000
+  var idwgMaxPct = C["const:idwg_max_pct"].value; // 5
+
+  var pre = +params.preWeight, dry = +params.dryWeight, hr = +params.sessionHr;
+
+  // IDWG = 투석전 − 목표체중 (kg = L)
+  var idwg = pre - dry;                             // kg
+  var idwgPct = dry > 0 ? (idwg / dry) * 100 : 0;   // % of dry weight
+  var ufTotal = Math.max(0, idwg) * 1000;           // mL 총 제거량
+
+  // UFR (mL/kg/hr) — dry weight 기준 보정
+  var ufRate = (dry > 0 && hr > 0) ? ufTotal / dry / hr : 0;
+  // 비보정 UFR (mL/hr)
+  var ufRateUnscaled = hr > 0 ? ufTotal / hr : 0;
+  // 시간당 제거량 (mL/hr) = 비보정과 동일
+  var perHour = ufRateUnscaled;
+
+  // 위험 등급
+  var idhRisk, riskColor;
+  if (ufRate > ufrWarn) { idhRisk = "high"; }
+  else if (ufRate >= ufrCaution) { idhRisk = "caution"; }
+  else { idhRisk = "safe"; }
+
+  // 체중별 사망 HR 보간 (13 초과 시)
+  var mortalityHR = null;
+  if (ufRate > ufrWarn) {
+    var wh = DATA.weightHazard;
+    // 선형 보간
+    if (dry <= wh[0].weight) mortalityHR = wh[0].hr;
+    else if (dry >= wh[wh.length - 1].weight) mortalityHR = wh[wh.length - 1].hr;
+    else {
+      for (var i = 0; i < wh.length - 1; i++) {
+        if (dry >= wh[i].weight && dry < wh[i + 1].weight) {
+          var f = (dry - wh[i].weight) / (wh[i + 1].weight - wh[i].weight);
+          mortalityHR = wh[i].hr + f * (wh[i + 1].hr - wh[i].hr);
+          break;
+        }
+      }
+    }
+  }
+
+  // 플래그
+  var flags = [];
+  if (idwg < 0) flags.push({ level: "warn", key: "neg_idwg",
+    text: "투석전 체중이 목표체중보다 낮습니다 — 목표체중 재평가 필요(과도 제거 위험)." });
+  if (ufRate > ufrWarn) flags.push({ level: "danger", key: "ufr_high",
+    text: "UFR " + ufRate.toFixed(1) + " > " + ufrWarn + " mL/kg/hr — 사망위험↑" +
+      (mortalityHR ? " (이 체중 HR≈" + mortalityHR.toFixed(2) + ")" : "") + ". 투석시간↑ 또는 IDWG↓ 필요." });
+  else if (ufRate >= ufrCaution) flags.push({ level: "warn", key: "ufr_caution",
+    text: "UFR " + ufRate.toFixed(1) + " ≥ " + ufrCaution + " mL/kg/hr — 주의 구간(≥10부터 위험 시작, CHF는 특히)." });
+  if (ufRateUnscaled > unscaledWarn) flags.push({ level: "warn", key: "unscaled",
+    text: "비보정 UFR " + Math.round(ufRateUnscaled) + " > " + unscaledWarn + " mL/hr — 큰 환자에서 더 정확한 위험 지표." });
+  if (idwgPct > idwgMaxPct) flags.push({ level: "warn", key: "idwg_high",
+    text: "IDWG " + idwgPct.toFixed(1) + "% > " + idwgMaxPct + "% 체중 — 수분·나트륨 제한 교육 필요(L13)." });
+
+  return {
+    idwg: idwg, idwgPct: idwgPct, ufTotal: ufTotal,
+    ufRate: ufRate, ufRateUnscaled: ufRateUnscaled, perHour: perHour,
+    idhRisk: idhRisk, mortalityHR: mortalityHR, flags: flags,
+    inputs: { preWeight: pre, dryWeight: dry, sessionHr: hr }
+  };
+}
+
+</script>
+<script>/* ============================================================
+   HD UF 시뮬레이터 — UI 위젯 (순수 ES5)
+   mountHdUfSimulator(slot, HDUF_DATA, hdUfCompute)
+   ※ CRRT 시뮬레이터와 대칭. UI만 환경별 교체 가능.
+   ============================================================ */
+(function (global) {
+  var KIDNEY = '#7C3AED', DEEP = '#5B21B6', LIGHT = '#EDE9FE', BLOOD = '#DC2626',
+      DIALYSATE = '#0D9488', WARN = '#D97706', INK = '#1E1B2E', SOFT = '#6B7280',
+      LINE = '#E5E1F0', GREEN = '#059669';
+
+  global.mountHdUfSimulator = function (slot, DATA, compute) {
+    var state = {
+      preWeight: DATA.params.preWeight.default,
+      dryWeight: DATA.params.dryWeight.default,
+      sessionHr: DATA.params.sessionHr.default
+    };
+
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'background:#fff;border:1px solid ' + LINE + ';border-radius:12px;padding:14px;margin:14px 0';
+
+    var outPanel = document.createElement('div');
+    outPanel.style.cssText = 'background:' + LIGHT + ';border-radius:10px;padding:12px;margin-bottom:14px';
+    wrap.appendChild(outPanel);
+
+    var sliderBox = document.createElement('div');
+    wrap.appendChild(sliderBox);
+
+    var flagBox = document.createElement('div');
+    flagBox.style.cssText = 'margin-top:10px';
+    wrap.appendChild(flagBox);
+
+    slot.innerHTML = ''; slot.appendChild(wrap);
+
+    var sliderDefs = ['preWeight', 'dryWeight', 'sessionHr'];
+    var sliderEls = {};
+    sliderDefs.forEach(function (key) {
+      var pdef = DATA.params[key];
+      var row = document.createElement('div');
+      row.style.cssText = 'margin:10px 0';
+      var lab = document.createElement('label');
+      lab.style.cssText = 'font-size:12px;display:flex;justify-content:space-between;color:' + INK;
+      var val = document.createElement('span');
+      val.style.cssText = 'font-family:monospace;font-weight:700;color:' + DEEP;
+      lab.appendChild(document.createTextNode(pdef.label_ko));
+      lab.appendChild(val);
+      var inp = document.createElement('input');
+      inp.type = 'range'; inp.min = pdef.min; inp.max = pdef.max; inp.step = pdef.step;
+      inp.value = state[key];
+      inp.style.cssText = 'width:100%;accent-color:' + KIDNEY + ';margin-top:3px';
+      inp.addEventListener('input', function () { state[key] = +inp.value; render(); });
+      var chain = document.createElement('div');
+      chain.style.cssText = 'font-size:10.5px;color:' + SOFT + ';margin-top:2px;line-height:1.4';
+      row.appendChild(lab); row.appendChild(inp); row.appendChild(chain);
+      sliderBox.appendChild(row);
+      sliderEls[key] = { val: val, chain: chain, def: pdef };
+    });
+
+    function render() {
+      var r = compute(state, DATA);
+      var ufrWarn = DATA.consts['const:ufr_warn'].value;   // 13
+      var ufrCaut = DATA.consts['const:ufr_caution'].value; // 10
+      var ufrColor = r.idhRisk === 'high' ? BLOOD : (r.idhRisk === 'caution' ? WARN : GREEN);
+
+      // 슬라이더 값·연쇄
+      sliderDefs.forEach(function (key) {
+        var el = sliderEls[key];
+        el.val.textContent = state[key] + ' ' + el.def.unit;
+        var c = DATA.chains[key];
+        if (c) el.chain.innerHTML = '↑ ' + c.up_ko + ' <span style="color:' + WARN + '">· ' + c.tradeoff_ko + '</span>';
+      });
+
+      // UFR 게이지 (0~25 스케일, 경고선 10·13)
+      var scale = 25;
+      var ufrPct = Math.min(100, (r.ufRate / scale) * 100);
+      var cautPct = (ufrCaut / scale) * 100, warnPct = (ufrWarn / scale) * 100;
+      var oh = '';
+      oh += '<div style="display:flex;justify-content:space-between;font-size:11px;color:' + INK + '">' +
+        '<span>UF rate</span><span style="font-family:monospace;font-weight:800;font-size:20px;color:' + ufrColor + '">' + r.ufRate.toFixed(1) + ' <span style="font-size:11px">mL/kg/hr</span></span></div>';
+      oh += '<div style="height:14px;border-radius:7px;background:' + LINE + ';position:relative;overflow:hidden;margin:5px 0">' +
+        '<div style="height:100%;width:' + ufrPct + '%;background:' + ufrColor + ';border-radius:7px;transition:.15s"></div>' +
+        '<div style="position:absolute;top:-2px;bottom:-2px;width:2px;background:' + WARN + ';left:' + cautPct + '%" title="주의 10"></div>' +
+        '<div style="position:absolute;top:-2px;bottom:-2px;width:2px;background:' + BLOOD + ';left:' + warnPct + '%" title="위험 13"></div>' +
+        '</div>';
+      oh += '<div style="font-size:9.5px;color:' + SOFT + ';display:flex;justify-content:space-between"><span>안전</span><span style="color:' + WARN + '">주의 10</span><span style="color:' + BLOOD + '">위험 13</span><span>' + scale + '</span></div>';
+      // 상태 라벨
+      var statusTxt = r.idhRisk === 'high' ? '✗ 위험 — IDH·사망위험↑' : (r.idhRisk === 'caution' ? '△ 주의 구간' : '✓ 안전 구간');
+      oh += '<div style="text-align:center;font-size:12px;font-weight:700;color:' + ufrColor + ';margin:6px 0">' + statusTxt +
+        (r.mortalityHR ? ' <span style="font-size:10.5px">(이 체중 사망 HR≈' + r.mortalityHR.toFixed(2) + ')</span>' : '') + '</div>';
+      // 보조 수치
+      oh += '<div style="display:flex;gap:12px;justify-content:center;font-size:11px;color:' + SOFT + ';margin-top:4px;flex-wrap:wrap">' +
+        '<span>IDWG: <b style="font-family:monospace;color:' + INK + '">' + r.idwg.toFixed(1) + '</b> kg (' + r.idwgPct.toFixed(1) + '%)</span>' +
+        '<span>총 UF: <b style="font-family:monospace;color:' + INK + '">' + r.ufTotal + '</b> mL</span>' +
+        '<span>시간당: <b style="font-family:monospace;color:' + INK + '">' + Math.round(r.perHour) + '</b> mL/hr</span>' +
+        '</div>';
+      outPanel.innerHTML = oh;
+
+      // 플래그
+      var fh = '';
+      r.flags.forEach(function (f) {
+        var col = f.level === 'danger' ? BLOOD : (f.level === 'warn' ? WARN : SOFT);
+        var bg = f.level === 'danger' ? '#FEF2F2' : (f.level === 'warn' ? '#FFF8F3' : '#F9FAFB');
+        var icon = f.level === 'danger' ? '🚨' : (f.level === 'warn' ? '⚠️' : 'ℹ️');
+        fh += '<div style="background:' + bg + ';border-left:3px solid ' + col + ';border-radius:6px;padding:7px 10px;margin-bottom:5px;font-size:11.5px;color:' + INK + '">' + icon + ' ' + f.text + '</div>';
+      });
+      flagBox.innerHTML = fh || '<div style="font-size:11.5px;color:' + GREEN + ';text-align:center;padding:6px">✓ 안전 범위 — plasma refill이 UF를 따라잡는 속도</div>';
+    }
+
+    render();
+  };
+})(typeof window !== 'undefined' ? window : this);
+</script>
+<script>/* ============================================================
+   투석 학습 가이드 — L14 실전 의뢰 데이터
+   L14_REFERRAL
+   ※ 처방이 아니라 "언제 신장내과로 보내나" = triage·의뢰 도구.
+   ※ 비전문의의 핵심 의무: 처방이 아니라 제때 넘기는 것.
+   ※ 근거: KDIGO 2024 CKD, KDIGO hyperkalemia, delayed referral 사망 OR 4.04
+   ※ 3층 구조: 응급(즉시)·긴급(빠른)·정규(계획)
+   ============================================================ */
+
+var L14_REFERRAL = {
+
+  /* ---- 3층 의뢰 티어 ---- */
+  tiers: {
+    "emergent": {
+      id: "emergent", label_ko: "응급 — 즉시 (당일/응급실)", icon: "🚨",
+      color: "blood", desc_ko: "생명 위협 — 즉시 신장내과 연락 또는 응급실. 투석이 당장 필요할 수 있음.",
+      items: [
+        { k: "고칼륨혈증(중증)", v: "K >6.5 mmol/L 또는 심전도 변화(peaked T·QRS 확장). 특히 AKI 동반 또는 약물 난치성. 투석 고려 대상.", ref: "ref:kdigo_hyperk" },
+        { k: "중증 대사성 산증", v: "약물로 조절 안 되는 산증 — 급성 투석 적응증(AEIOU의 A).", ref: "ref:amboss_aki" },
+        { k: "용적 과부하(난치성)", v: "이뇨제 저항성 폐부종 — ESRD·AKI에서 응급 투석 적응증.", ref: "ref:nephro_internist" },
+        { k: "요독성 응급", v: "요독성 심막염(pericarditis)·뇌병증(encephalopathy) — 응급 투석 적응증(AEIOU의 U·E).", ref: "ref:amboss_aki" },
+        { k: "급속 진행성 사구체신염", v: "RPGN/초승달형 신염 의심(혈뇨+적혈구 원주+빠른 Cr 상승) — 신예후가 즉시 개입에 달림. 응급 신장내과 상의.", ref: "ref:nephro_internist" }
+      ]
+    },
+    "urgent": {
+      id: "urgent", label_ko: "긴급 — 빠른 (수일~2주)", icon: "⚠️",
+      color: "amber", desc_ko: "빠른 의뢰 필요 — 예후에 직결. 지연 의뢰는 사망·투석의존 위험을 높임(OR 4.04/3.00).",
+      items: [
+        { k: "AKI (급성 신손상)", v: "기저 Cr 대비 ≥50% 상승 또는 급성 GFR 저하. AKI에서 조기 의뢰(진단 2일 내)가 지연 의뢰보다 사망 OR 4.04·투석의존 OR 3.00 낮춤.", ref: "ref:akd_referral" },
+        { k: "빠른 신기능 악화", v: "GFR >20% 저하 또는 Cr >30% 상승 (특히 ACEi/ARB 사용 중). 혈역학 활성 약물 관련이면 원인 규명 필요.", ref: "ref:kdigo_ckd2024" },
+        { k: "난치성 고혈압", v: "3제 병용(상보적 계열)에도 지속 BP >150/90 — 이차성·신실질 원인 의심.", ref: "ref:gpnotebook_ref" },
+        { k: "지속 혈뇨", v: "비뇨기 원인 배제된 지속 혈뇨(적혈구 원주 동반 시 특히) — 사구체/구조적 신병리 시사.", ref: "ref:akdhc_referral" },
+        { k: "전해질 지속 이상", v: "지속 고칼륨·대사성 산증·인/칼슘 대사 이상 — 전문의 개입 필요.", ref: "ref:akdhc_referral" }
+      ]
+    },
+    "routine": {
+      id: "routine", label_ko: "정규 — 계획 (외래 의뢰)", icon: "📋",
+      color: "kidney", desc_ko: "계획적 의뢰 — CKD 진행·신대체 준비. KDIGO 2024는 위험도 기반(KFRE) 의뢰로 전환.",
+      items: [
+        { k: "eGFR <30", v: "eGFR <30 mL/min/1.73m² (CKD G4~G5) — 전통적 의뢰 기준. 신대체 준비 시작.", ref: "ref:kdigo_ckd2024" },
+        { k: "유의 알부민뇨", v: "ACR ≥300 mg/g (또는 요단백 >100 mg/mmol) — 진행 위험 표지. 신염 감별.", ref: "ref:akd_referral" },
+        { k: "KFRE 위험도 (신개념)", v: "5년 신부전 위험 ≥3~5% → 의뢰. 2년 위험 ≥40% → 접근로·이식 계획. KDIGO 2024가 eGFR 단독→위험도 기반으로 전환.", ref: "ref:kdigo_ckd2024" },
+        { k: "지속 원인불명 CKD", v: "원인 불명 CKD, 유전성 신질환 의심(다낭신 등), 재발 결석/감염 — 진단·계획 위해 조기 의뢰.", ref: "ref:akdhc_referral" },
+        { k: "CKD 합병증", v: "신성빈혈·CKD-MBD 등 일차진료로 조절 안 되는 합병증.", ref: "ref:akdhc_referral" }
+      ]
+    }
+  },
+
+  /* ---- 핵심 원칙 ---- */
+  principles: [
+    { h: "왜 '제때'가 중요한가", t: "지연 의뢰(late referral)는 예후를 악화시킨다. AKI에서 진단 2일 후 의뢰는 조기 의뢰 대비 병원 사망 OR 4.04, 퇴원 시 투석의존 OR 3.00로 나타났다. 비전문의의 핵심 역할은 완벽한 처방이 아니라 '위험 신호를 알아채고 제때 넘기는 것'이다." },
+    { h: "eGFR 기반 → 위험도 기반 전환", t: "KDIGO 2024는 의뢰 기준을 eGFR 단독에서 KFRE(신부전 위험 방정식) 기반으로 전환했다. 5년 신부전 위험 3~5%면 의뢰를 고려한다. eGFR이 아직 높아도 알부민뇨·진행속도로 고위험이면 조기 의뢰가 이득이다." },
+    { h: "의뢰가 '너무 이른' 경우도 있다", t: "CKD 환자의 1~4%만 실제 신부전으로 진행한다. 저위험 환자를 모두 의뢰하면 신장내과가 과부하된다. 그래서 위험도 기반 선별이 중요하다 — 고위험을 놓치지 않되, 저위험을 불필요하게 보내지 않는 균형." }
+  ],
+
+  /* ---- 의뢰 시 준비 정보 (실전) ---- */
+  referralPrep: [
+    "추세가 핵심 — 단발 수치보다 eGFR·Cr·ACR의 시간 경과 추이를 함께 전달",
+    "투석 환자라면: 투석 스케줄, dry weight, 접근로 종류, 최근 투석 전후 채혈",
+    "약물 목록 — 특히 신독성/신배설 약물, ACEi·ARB·SGLT2i·이뇨제",
+    "AKI 의심 시: 기저 Cr, 소변량, 최근 조영제·NSAID·항생제 노출, 용적 상태",
+    "가능하면 요검사(혈뇨·단백뇨·원주)와 신초음파 결과 동봉"
+  ]
+};
+
+</script>
+<script>/* ============================================================
    투석 학습 가이드 — ENGINE 레이어
    ※ 비협상 원칙: 엔진은 로직만. 임상 수치·약물명·기준값을 자체 보유 금지.
       모든 값은 DATA(DIALYSIS_*)를 ID로 조회해서 얻는다.
@@ -2143,7 +2553,7 @@ DialysisEngine.prototype.recommend = function (patient) {
 /* ---------- 레이어 목록 (UI 네비게이션용) ---------- */
 DialysisEngine.prototype.listLayers = function () {
   var self = this;
-  var order = ["L0","L1","L2","L3","L4","L5","L6","L7","L8","L9","L10","L11","L12","L13","BRIDGE","L15"];
+  var order = ["L0","L1","L2","L3","L4","L5","L6","L7","L8","L9","L10","L11","L12","L13","L14","BRIDGE","L15","L16"];
   return order.filter(function (L) { return self.concepts[L]; }).map(function (L) {
     var c = self.concepts[L];
     return { id: L, icon: c.icon, title: c.title_ko, subtitle: c.subtitle_ko || null };
@@ -2186,7 +2596,15 @@ var DIALYSIS_REFS = {
   "ref:crrt_dose":{label:"CRRT Dose: Quality Indicator (PMC7965247)",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC7965247/"},
   "ref:crrt_prescribe":{label:"How I prescribe CRRT — Critical Care (Springer)",url:"https://link.springer.com/article/10.1186/s13054-020-03448-7"},
   "ref:atn_nejm":{label:"ATN Study — Palevsky et al. NEJM 2008 (DOI 10.1056/NEJMoa0802639)",url:"https://doi.org/10.1056/NEJMoa0802639"},
-  "ref:renal_nejm":{label:"RENAL Study — RENAL Investigators NEJM 2009 (DOI 10.1056/NEJMoa0902413)",url:"https://doi.org/10.1056/NEJMoa0902413"}
+  "ref:renal_nejm":{label:"RENAL Study — RENAL Investigators NEJM 2009 (DOI 10.1056/NEJMoa0902413)",url:"https://doi.org/10.1056/NEJMoa0902413"},
+  "ref:flythe_ufr":{label:"Flythe et al. — UFR >13 & mortality (Kidney Int 2011)",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC5123913/"},
+  "ref:fan_ufr":{label:"UFR thresholds unscaled vs scaled to body size (KI Reports 2022)",url:"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9263411/"},
+  "ref:akd_referral":{label:"KDIGO 2024 CKD — nephrology referral criteria (NephJC)",url:"http://www.nephjc.com/news/kdigo-ckd-part2"},
+  "ref:kdigo_hyperk":{label:"KDIGO hyperkalemia in ED — nephrology consult",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC7448835/"},
+  "ref:akdhc_referral":{label:"When to Refer to a Nephrologist — key indicators (AKDHC)",url:"https://www.akdhc.com/news/when-to-refer-to-a-nephrologist-key-indicators-for-primary-care-physicians-2"},
+  "ref:nephro_internist":{label:"Nephrology key information for internists (PMC)",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC5473195/"},
+  "ref:amboss_aki":{label:"Acute kidney injury — indications for acute dialysis (AMBOSS)",url:"https://www.amboss.com/us/knowledge/acute-kidney-injury"},
+  "ref:gpnotebook_ref":{label:"Referral criteria from primary care — kidney disease (GPnotebook)",url:"https://primarycarenotebook.com/pages/renal-medicine/referral-criteria-from-primary-care-kidney-disease"}
 };
 
 /* ============================================================
@@ -2765,6 +3183,58 @@ var DIALYSIS_REFS = {
     slot.innerHTML = ''; slot.appendChild(p);
   }
 
+  /* ---- L16: HD UF 시뮬레이터 (외부 모듈 위임) ---- */
+  function hdufSimulator(slot) {
+    if (typeof global.mountHdUfSimulator === 'function' &&
+        typeof global.HDUF_DATA !== 'undefined' && typeof global.hdUfCompute === 'function') {
+      global.mountHdUfSimulator(slot, global.HDUF_DATA, global.hdUfCompute);
+    } else {
+      slot.innerHTML = '<div style="font-size:12px;color:' + SOFT + ';padding:12px">HD UF 시뮬레이터 모듈 로드 실패</div>';
+    }
+  }
+
+  /* ---- L14: 의뢰 triage (응급/긴급/정규 3층) ---- */
+  function referralTriage(slot) {
+    var R = global.L14_REFERRAL;
+    if (!R) { slot.innerHTML = '<div style="font-size:12px;color:' + SOFT + ';padding:12px">의뢰 데이터 로드 실패</div>'; return; }
+    var p = panel();
+    var colorMap = { blood: BLOOD, amber: WARN, kidney: KIDNEY };
+    var bgMap = { blood: '#FEF2F2', amber: '#FFF8F3', kidney: LIGHT };
+    var h = '<div style="font-weight:700;color:' + DEEP + ';font-size:13px;margin-bottom:10px">언제 신장내과로 보내나 — 3단계</div>';
+    ['emergent', 'urgent', 'routine'].forEach(function (tk) {
+      var t = R.tiers[tk];
+      var col = colorMap[t.color], bg = bgMap[t.color];
+      h += '<details' + (tk === 'emergent' ? ' open' : '') + ' style="border:1px solid ' + col + ';border-radius:9px;margin-bottom:8px;overflow:hidden">';
+      h += '<summary style="padding:11px 13px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:' + col + ';background:' + bg + '">' +
+        t.icon + ' ' + t.label_ko + '<span style="margin-left:auto;font-size:12px">▾</span></summary>';
+      h += '<div style="padding:10px 13px">';
+      h += '<div style="font-size:11.5px;color:' + SOFT + ';margin-bottom:8px;line-height:1.5">' + t.desc_ko + '</div>';
+      t.items.forEach(function (it) {
+        h += '<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed ' + LINE + '">' +
+          '<div style="font-size:12.5px;font-weight:600;color:' + INK + '">▸ ' + it.k + '</div>' +
+          '<div style="font-size:11.5px;color:' + SOFT + ';margin-top:2px;line-height:1.55">' + it.v + '</div></div>';
+      });
+      h += '</div></details>';
+    });
+    p.innerHTML = h;
+    p.appendChild(caption('응급(빨강)은 즉시 연락·투석 고려, 긴급(주황)은 수일 내, 정규(보라)는 계획 의뢰. 이건 처방이 아니라 <b>의뢰 시점 판단</b> 도구입니다.'));
+    slot.innerHTML = ''; slot.appendChild(p);
+  }
+
+  /* ---- L14: 의뢰 준비 체크리스트 ---- */
+  function referralPrep(slot) {
+    var R = global.L14_REFERRAL;
+    if (!R) return;
+    var p = panel();
+    var h = '<div style="font-weight:700;color:' + DEEP + ';font-size:13px;margin-bottom:8px">📎 의뢰 시 함께 전달할 정보</div>';
+    R.referralPrep.forEach(function (x) {
+      h += '<div style="font-size:12px;color:' + INK + ';padding:4px 0;line-height:1.5">✓ ' + x + '</div>';
+    });
+    p.innerHTML = h;
+    p.appendChild(caption('의뢰서에 이 정보를 담으면 신장내과가 빠르게 판단할 수 있습니다. 특히 <b>추세(추이)</b>가 단발 수치보다 중요합니다.'));
+    slot.innerHTML = ''; slot.appendChild(p);
+  }
+
   /* ============ 정적 도해 폴백 (혹시 누락 시) ============ */
   function staticDiagram(slot, vizMeta) {
     var p = panel();
@@ -2794,7 +3264,10 @@ var DIALYSIS_REFS = {
     'viz:diet_balance': function (slot) { dietBalance(slot); },
     'viz:hd_crrt_compare': function (slot) { hdCrrtCompare(slot); },
     'viz:crrt_simulator': function (slot) { crrtSimulator(slot); },
-    'viz:crrt_flow': function (slot) { crrtFlow(slot); }
+    'viz:crrt_flow': function (slot) { crrtFlow(slot); },
+    'viz:hduf_simulator': function (slot) { hdufSimulator(slot); },
+    'viz:referral_triage': function (slot) { referralTriage(slot); },
+    'viz:referral_prep': function (slot) { referralPrep(slot); }
   };
 
   global.mountViz = function (cardEl, E, DATA) {

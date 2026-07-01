@@ -48,6 +48,18 @@
       "keywords": "심부전 heart failure HF HFrEF HFpEF HFmrEF GDMT 4제 ARNI 사쿠비트릴 발사르탄 엔트레스토 SGLT2 베타차단 MRA 스피로노락톤 다파글리플로진 엠파글리플로진 EF 박출률 BNP NT-proBNP 이뇨제"
     },
     {
+      "id": "antithrombotic",
+      "title": "항혈전제",
+      "emoji": "⛓️",
+      "src": "antithrombotic_v0_1.html",
+      "out": "antithrombotic.html",
+      "guideline": "항혈전제 가이드 · 항응고·항혈소판 · 출혈위험·중단·역전 · 심평원 급여",
+      "group": "A",
+      "accent": "#8a3a5a",
+      "tag": "순환기",
+      "keywords": "항혈전제 항응고제 항혈소판제 antithrombotic anticoagulant DOAC NOAC 아픽사반 리바록사반 에독사반 다비가트란 와파린 아스피린 클로피도그렐 티카그렐러 프라수그렐 헤파린 출혈위험 HAS-BLED 중단 bridging 역전 idarucizumab andexanet"
+    },
+    {
       "id": "dm",
       "title": "당뇨병",
       "emoji": "🍬",
@@ -250,6 +262,18 @@
       "accent": "#5a6a8a",
       "tag": "평가",
       "keywords": "수술전평가 수술전 위험평가 preop perioperative 마취 ASA RCRI 심혈관위험 출혈약물 항응고제 항혈소판제 와파린 아스피린 DOAC 중단 bridging 수술전검사 MET 기능평가"
+    },
+    {
+      "id": "vent",
+      "title": "기계환기",
+      "emoji": "🌬️",
+      "src": "vent_guide.html",
+      "out": "vent.html",
+      "guideline": "기계환기 실전 교육 · 호흡역학·폐보호환기·ABGA · 중환자",
+      "group": "A",
+      "accent": "#2c6fb0",
+      "tag": "중환자",
+      "keywords": "기계환기 인공호흡기 ventilator 호흡역학 폐보호환기 ARDS 일회호흡량 tidal PEEP FiO2 압력조절 용적조절 ABGA 동맥혈가스 산염기 P/F driving pressure plateau 이탈 weaning SBT 삽관 발관"
     },
     {
       "id": "icu_calc",

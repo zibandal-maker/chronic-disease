@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="color-scheme" content="light only">
+<title>항혈전제 가이드 · Antithrombotic</title>
+<style>
+:root{
+  /* 동맥축 = crimson (백색혈전·항혈소판) */
+  --art:#b91c3c; --art-dim:#d4546e; --art-bg:#fdf2f4; --art-line:#f3c5cf;
+  /* 정맥축 = slate-blue (적색혈전·항응고) */
+  --ven:#2c5282; --ven-dim:#5a7ba8; --ven-bg:#f0f4f9; --ven-line:#c3d3e6;
+  /* 중립 */
+  --ink:#1a1d23; --ink2:#4a4f5a; --ink3:#7c828d; --line:#e4e7ec; --bg:#fafbfc; --card:#fff;
+  --warn:#b45309; --warn-bg:#fef6ec; --ok:#15803d;
+  --r:14px; --rs:10px;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Apple SD Gothic Neo',Roboto,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
+body{padding-bottom:80px}
+h1,h2,h3{margin:0;font-weight:700;letter-spacing:-.02em}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px}
+
+/* ── 고정 헤더 ── */
+.hdr{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line)}
+.hdr-in{max-width:680px;margin:0 auto;padding:11px 16px;display:flex;align-items:center;gap:10px}
+.hdr-logo{font-weight:800;font-size:16px;letter-spacing:-.03em;
+  background:linear-gradient(90deg,var(--art),var(--ven));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hdr-sub{font-size:11px;color:var(--ink3);font-weight:600}
+
+/* ── 척추 배너 ── */
+.spine{margin:16px 0 4px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);
+  display:grid;grid-template-columns:1fr 1fr}
+.spine-half{padding:15px 14px}
+.spine-art{background:var(--art-bg);border-right:1px solid var(--line)}
+.spine-ven{background:var(--ven-bg)}
+.spine-tag{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.spine-art .spine-tag{color:var(--art)} .spine-ven .spine-tag{color:var(--ven)}
+.spine-flow{font-size:13px;font-weight:700;margin:5px 0 2px}
+.spine-drug{font-size:11.5px;color:var(--ink2);font-weight:600}
+.spine-note{font-size:10.5px;color:var(--ink3);margin-top:7px;grid-column:1/-1;padding:8px 14px;
+  background:#fff;border-top:1px solid var(--line)}
+
+/* ── 탭 ── */
+.tabs{display:flex;gap:4px;position:sticky;top:53px;z-index:40;background:var(--bg);
+  padding:10px 0 8px;margin-bottom:4px}
+.tab{flex:1;padding:10px 6px;border-radius:var(--rs);font-size:12.5px;font-weight:700;color:var(--ink3);
+  background:#fff;border:1px solid var(--line);min-height:44px;transition:.15s}
+.tab.on{color:#fff;border-color:transparent}
+.tab.on[data-t="flow"]{background:var(--ink)}
+.tab.on[data-t="lib"]{background:var(--ven)}
+.tab.on[data-t="learn"]{background:var(--art)}
+
+/* ── 카드 ── */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+.card-h{padding:13px 15px;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card-b{padding:0 15px 14px}
+.muted{color:var(--ink3);font-size:12px}
+
+/* ── 입력 ── */
+.field{margin-bottom:13px}
+.field-l{font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:6px;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:8px 12px;border-radius:20px;font-size:12.5px;font-weight:600;background:#fff;
+  border:1.5px solid var(--line);color:var(--ink2);min-height:38px}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip.on.art{background:var(--art);border-color:var(--art)}
+.chip.on.ven{background:var(--ven);border-color:var(--ven)}
+select,input{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--rs);
+  font-size:14px;font-family:inherit;background:#fff;color:var(--ink);min-height:44px}
+
+/* ── 결과 ── */
+.res-drug{border:1px solid var(--line);border-radius:var(--rs);padding:12px 13px;margin-bottom:9px;
+  border-left:3px solid var(--ink3)}
+.res-drug.hold{border-left-color:var(--art)}
+.res-drug.continue{border-left-color:var(--ok)}
+.res-drug.info{border-left-color:var(--ink3)}
+.res-name{font-weight:700;font-size:14px;margin-bottom:3px}
+.res-action{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;
+  text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.res-action.hold{background:var(--art-bg);color:var(--art)}
+.res-action.continue{background:#eafaf0;color:var(--ok)}
+.res-action.info{background:#f1f3f6;color:var(--ink3)}
+.res-row{font-size:12.5px;color:var(--ink2);margin:3px 0}
+.res-row b{color:var(--ink);font-weight:700}
+.res-src{font-size:10.5px;color:var(--ink3);margin-top:6px;font-style:italic}
+.flag{padding:9px 12px;border-radius:var(--rs);font-size:12px;margin-bottom:7px;font-weight:600;display:flex;gap:7px}
+.flag.warn{background:var(--warn-bg);color:var(--warn)}
+.flag.info{background:#f0f4f9;color:var(--ven)}
+.reimb{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--rs);padding:11px 13px;margin-top:8px;font-size:12px}
+.reimb b{color:var(--warn)}
+
+/* ── 접기 ── */
+details{border-top:1px solid var(--line)}
+details summary{padding:11px 0;font-size:12.5px;font-weight:700;color:var(--ink2);
+  cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;min-height:40px}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:'+';font-size:16px;color:var(--ink3);font-weight:400}
+details[open] summary::before{content:'−'}
+details .det-b{padding:0 0 13px;font-size:12.5px;color:var(--ink2)}
+
+.disclaimer{font-size:10.5px;color:var(--ink3);text-align:center;padding:18px 20px;line-height:1.6}
+.sec{display:none} .sec.on{display:block}
+
+/* ── 라이브러리 타일 격자 ── */
+.tile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:4px}
+.tile{text-align:left;padding:10px 11px;border-radius:var(--rs);background:#fff;
+  border:1.5px solid var(--line);min-height:54px;transition:.12s;border-left-width:3px}
+.tile:active{transform:scale(.97)}
+.tile-ven{border-left-color:var(--ven)} .tile-art{border-left-color:var(--art)}
+.tile-name{font-size:13px;font-weight:700;color:var(--ink);line-height:1.3}
+.tile-target{font-size:10.5px;color:var(--ink3);font-weight:600;margin-top:3px}
+
+/* ── 바텀시트 ── */
+.sheet-ov{position:fixed;inset:0;background:rgba(20,22,28,.4);z-index:90;opacity:0;
+  pointer-events:none;transition:.2s}
+.sheet-ov.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:91;background:#fff;
+  border-radius:20px 20px 0 0;padding:8px 20px calc(24px + env(safe-area-inset-bottom));
+  max-width:680px;margin:0 auto;transform:translateY(100%);transition:transform .24s cubic-bezier(.32,.72,0,1);
+  max-height:82vh;overflow-y:auto}
+.sheet.on{transform:translateY(0)}
+.sheet-grip{width:36px;height:4px;background:var(--line);border-radius:3px;margin:6px auto 14px}
+.sheet-title{font-size:18px;font-weight:800;letter-spacing:-.02em}
+.sheet-target{font-size:12px;color:var(--ink3);font-weight:700;margin-top:3px}
+.sheet-extra{font-size:13.5px;color:var(--ink2);line-height:1.62;margin:13px 0}
+.sheet-rows{border-top:1px solid var(--line);margin-top:6px}
+.sheet-row{display:flex;justify-content:space-between;gap:14px;padding:9px 0;
+  border-bottom:1px solid var(--line);font-size:13px}
+.sheet-row span{color:var(--ink3);font-weight:600;flex-shrink:0}
+.sheet-row b{color:var(--ink);font-weight:700;text-align:right}
+.sheet-sect-h{font-size:13px;font-weight:800;color:var(--ink);margin:16px 0 8px;letter-spacing:-.01em}
+.dose-card{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;border-left:3px solid var(--ink3)}
+.dose-card.ven{border-left-color:var(--ven)} .dose-card.art{border-left-color:var(--art)}
+.dose-cond{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:5px}
+.dose-std{font-size:12.5px;color:var(--ink);margin:3px 0}
+.dose-std b,.dose-red b{display:inline-block;min-width:34px;font-size:10.5px;padding:1px 6px;border-radius:5px;margin-right:6px;font-weight:700}
+.dose-std b{background:#eafaf0;color:var(--ok)}
+.dose-red{font-size:12.5px;color:var(--ink2);margin:3px 0}
+.dose-red b{background:var(--art-bg);color:var(--art)}
+.dose-note{font-size:11px;color:var(--ink3);margin-top:5px;line-height:1.5;padding-top:5px;border-top:1px dashed var(--line)}
+.dtbl.mini{font-size:12px}
+.dtbl.mini th{font-size:11px;padding:6px}
+.dtbl.mini td{padding:7px 8px;vertical-align:top}
+.sheet-det{border-top:1px solid var(--line);margin-top:4px}
+.sheet-det summary{padding:11px 0;font-size:12.5px;font-weight:700;color:var(--ink2);cursor:pointer;
+  list-style:none;display:flex;align-items:center;gap:6px;min-height:40px}
+.sheet-det summary::-webkit-details-marker{display:none}
+.sheet-det summary::before{content:'+';font-size:16px;color:var(--ink3)}
+.sheet-det[open] summary::before{content:'−'}
+.sheet-kr{margin-top:12px;padding:9px 12px;background:#f0f4f9;border-radius:8px;font-size:11.5px;color:var(--ven);font-weight:600}
+.sheet-ci{margin-top:12px;padding:11px 13px;background:var(--art-bg);border:1px solid var(--art-line);border-radius:8px;font-size:12px;color:var(--ink);line-height:1.55}
+.sheet-ci b{color:var(--art)}
+.ref-badge{font-size:10px;font-weight:700;color:var(--ink3);background:#f1f3f6;padding:2px 7px;border-radius:6px;margin-left:6px;letter-spacing:-.01em}
+
+/* ── 학습 ── */
+.learn-p{font-size:13.5px;line-height:1.66;color:var(--ink2);margin:9px 0}
+.learn-p b{color:var(--ink);font-weight:700}
+.learn-node{border-top:1px solid var(--line)}
+.learn-node summary{border-left:3px solid var(--line);padding-left:11px}
+.learn-ven summary{border-left-color:var(--ven)} .learn-art summary{border-left-color:var(--art)}
+.learn-tier{margin:8px 0;border:1px solid var(--line);border-radius:var(--rs);overflow:hidden}
+.learn-tier-row{display:flex;gap:11px;padding:9px 12px;font-size:12.5px;border-bottom:1px solid var(--line);align-items:baseline}
+.learn-tier-row:last-child{border-bottom:none}
+.learn-tier-row b{flex-shrink:0;width:88px;color:var(--ink);font-weight:700}
+.learn-tier-row span{color:var(--ink2);line-height:1.5}
+.learn-arrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;font-weight:700;
+  color:var(--ink2);margin:10px 0;padding:11px 12px;background:var(--ven-bg);border-radius:var(--rs)}
+.learn-arrow span{color:var(--ven-dim)} .learn-arrow b{color:var(--ven)}
+.cascade-wrap{margin:14px auto;max-width:340px;padding:12px;background:#fcfdfe;border:1px solid var(--line);border-radius:var(--r)}
+.learn-cap{font-size:11.5px;color:var(--ink3);line-height:1.55;margin:6px 2px 4px}
+.trial-tag{font-size:11.5px;line-height:1.5;padding:7px 10px;border-radius:8px;margin:6px 0;
+  background:#f7f9fb;border-left:3px solid var(--ink3);color:var(--ink2)}
+.trial-tag.ven{border-left-color:var(--ven);background:var(--ven-bg)}
+.trial-tag.art{border-left-color:var(--art);background:var(--art-bg)}
+
+/* ── 중단기간 요약표 ── */
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.dtbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.dtbl th{background:var(--ink);color:#fff;padding:8px 6px;font-weight:700;text-align:center;font-size:11.5px;white-space:nowrap}
+.dtbl th:first-child{text-align:left;border-radius:8px 0 0 0} .dtbl th:last-child{border-radius:0 8px 0 0}
+.dtbl td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+.dtbl-name{text-align:left!important;font-weight:700;color:var(--ink);border-left:3px solid transparent}
+.dtbl-ven .dtbl-name{border-left-color:var(--ven)} .dtbl-art .dtbl-name{border-left-color:var(--art)}
+.dtbl-ven{background:var(--ven-bg)} .dtbl-art{background:var(--art-bg)}
+.dtbl tbody tr:hover{filter:brightness(.97)}
+
+@media print{
+  .hdr,.tabs,.spine,.disclaimer,.sheet,.sheet-ov{display:none!important}
+  .sec{display:block!important}
+  body{padding:0} .card{break-inside:avoid;border:1px solid #999}
+  .dtbl th{background:#333!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr"><div class="hdr-in">
+  <span class="hdr-logo">⛓️ 항혈전제</span>
+  <span class="hdr-sub">Antithrombotic · periprocedural · 학습</span>
+</div></header>
+
+<div class="wrap">
+
+  <!-- 척추 배너 -->
+  <div class="spine">
+    <div class="spine-half spine-art">
+      <div class="spine-tag">🔴 동맥 · ARTERY</div>
+      <div class="spine-flow">빠른 흐름 → 백색 혈전</div>
+      <div class="spine-drug">혈소판 풍부 → <b>항혈소판제</b></div>
+    </div>
+    <div class="spine-half spine-ven">
+      <div class="spine-tag">🔵 정맥 · VEIN</div>
+      <div class="spine-flow">느린 흐름 → 적색 혈전</div>
+      <div class="spine-drug">섬유소 풍부 → <b>항응고제</b></div>
+    </div>
+    <div class="spine-note">💡 혈류 환경이 혈전 성질을 정하고, 혈전 성질이 약을 정한다 — 이 한 줄이 모든 약을 꿰는 축</div>
+  </div>
+
+  <!-- 탭 -->
+  <nav class="tabs">
+    <button class="tab on" data-t="learn" onclick="tab('learn')">🎓 학습</button>
+    <button class="tab" data-t="flow" onclick="tab('flow')">🩺 시술 전후</button>
+    <button class="tab" data-t="lib" onclick="tab('lib')">📚 약물</button>
+  </nav>
+
+  <!-- ═══ 학습 (메인) ═══ -->
+  <section class="sec on" id="sec-learn"></section>
+
+  <!-- ═══ 시술 전후 ═══ -->
+  <section class="sec" id="sec-flow">
+    <div class="card">
+      <div class="card-h">🩺 시술 전후 항혈전제 중단·재개</div>
+      <div class="card-b">
+        <p class="muted" style="margin:2px 0 14px">복용 약물·예정 시술·신기능을 선택하면 중단/재개 권고를 보여줍니다. <b>조언용 — 처방 결정은 의사</b>.</p>
+
+        <div class="field">
+          <label class="field-l">복용 중인 항혈전제 (복수선택)</label>
+          <div class="chips" id="med-chips"></div>
+        </div>
+
+        <div class="field">
+          <label class="field-l">예정 시술</label>
+          <select id="proc-sel"><option value="">— 선택 —</option></select>
+        </div>
+
+        <div class="field">
+          <label class="field-l">신기능 (eGFR/CrCl, mL/min)</label>
+          <input type="number" id="egfr-in" placeholder="예: 45 (모르면 비워두기)" inputmode="numeric">
+        </div>
+
+        <details id="adv-field">
+          <summary>추가 조건 (심방세동·혈전위험)</summary>
+          <div class="det-b">
+            <div class="field" style="margin-top:8px">
+              <label class="field-l">동반질환</label>
+              <div class="chips" id="comorbid-chips"></div>
+            </div>
+            <div class="field">
+              <label class="field-l">와파린 환자 혈전위험 (bridging 판단용)</label>
+              <div class="chips" id="thrombo-chips"></div>
+            </div>
+          </div>
+        </details>
+
+        <div id="result" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 2층 라이브러리 ═══ -->
+  <section class="sec" id="sec-lib"></section>
+
+  <!-- ═══ 3층 학습 ═══ -->
+
+  <div class="disclaimer" id="disc"></div>
+</div>
+
+<div class="sheet-ov" id="sheet-ov" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet"><div class="sheet-grip"></div><div id="sheet-body"></div></div>
+
+<script>const DATA={"periprocedural":{"_meta":{"block":"periprocedural DATA layer","version":"0.1","status":"verified-frozen-candidate","primary_source":{"guideline":"ACCP/CHEST 2022 Perioperative Management of Antithrombotic Therapy","authors":"Douketis JD, Spyropoulos AC, Murad MH, et al.","citation":"Chest 2022;162(5):e207-e243","pmid":"35964704","doi":"10.1016/j.chest.2022.07.025","erratum":"Chest 2023;164(1):267 (doi 10.1016/j.chest.2023.05.019)"},"operational_source":"UNM Hospital Thrombosis & Hemostasis Service protocol (CHEST 2022 기반, updated 10/2024) — 표 수치 추출 출처","key_trials":[{"name":"PAUSE","ref":"Douketis JD, et al. JAMA Intern Med 2019;179(11):1469-1478","doi":"10.1001/jamainternmed.2019.2431","role":"DOAC 중단 프로토콜 검증"},{"name":"BRIDGE","ref":"Douketis JD, et al. N Engl J Med 2015;373(9):823-833","doi":"10.1056/NEJMoa1501035","role":"AF bridging 무익·유해 입증"}],"note":"모든 수치는 임상 판단 보조용. 다학제 논의 권장. 본 데이터는 advisory이지 처방강제 아님."},"bleedRiskClass":{"_desc":"30일 주요출혈 위험 기준 시술 분류 (CHEST 2022 / SSC 2019 / ACG-CAG / SIR 통합)","high":{"id":"bleedrisk:high","label_ko":"고출혈위험","label_en":"High bleed risk","risk30d":"≥2%"},"lowmod":{"id":"bleedrisk:lowmod","label_ko":"저-중등도","label_en":"Low-Moderate bleed risk","risk30d":"0-2%"},"minimal":{"id":"bleedrisk:minimal","label_ko":"최소","label_en":"Minimal bleed risk","risk30d":"0%"}},"procedures":{"_desc":"시술별 출혈위험 등급. proc: 전역ID 부여. 소화기(GI) 강조 — 본인 전공.","_GI_focus":[{"id":"proc:egd","label_ko":"상부위장관내시경(EGD)","bleedRisk":"lowmod"},{"id":"proc:colonoscopy_dx","label_ko":"대장내시경 ±생검","bleedRisk":"lowmod"},{"id":"proc:gi_biopsy","label_ko":"내시경 생검","bleedRisk":"lowmod"},{"id":"proc:esophageal_dilation","label_ko":"식도확장·스텐트","bleedRisk":"lowmod"},{"id":"proc:paracentesis","label_ko":"복수천자","bleedRisk":"lowmod"},{"id":"proc:transjugular_liver_bx","label_ko":"경정맥 간생검","bleedRisk":"lowmod"},{"id":"proc:polypectomy","label_ko":"용종절제술(대장)","bleedRisk":"high","_note":"Colonic polyp surgery=high. 단 소형 cold snare는 ACG-CAG에서 별도 — D4 라운드 정밀화"},{"id":"proc:peg","label_ko":"경피적위루술(PEG)","bleedRisk":"high"},{"id":"proc:ercp_sphincterotomy","label_ko":"ERCP+유두괄약근절개","bleedRisk":"high"},{"id":"proc:ercp","label_ko":"ERCP(절개포함 가능)","bleedRisk":"high","_note":"Appendix2에서 ERCP는 high 분류"},{"id":"proc:bowel_resection","label_ko":"장절제","bleedRisk":"high"},{"id":"proc:tips","label_ko":"경경정맥간내문맥전신단락(TIPS)","bleedRisk":"high"}],"_other_high":["proc:major_ortho","proc:intracranial_spinal_surgery","proc:cardiac_surgery","proc:thoracic_surgery","proc:vascular_surgery","proc:cancer_resection","proc:urologic_surgery","proc:neuraxial_anesthesia","proc:epidural_injection","proc:any_surgery_over_45min","proc:solid_organ_biopsy"],"_other_lowmod":["proc:coronary_angiography","proc:arthroscopy","proc:lap_cholecystectomy","proc:abdominal_hernia_repair","proc:bronchoscopy","proc:thoracentesis","proc:lumbar_puncture","proc:af_ablation","proc:dialysis_access"],"_minimal":[{"id":"proc:cataract","label_ko":"백내장 등 안과","bleedRisk":"minimal"},{"id":"proc:minor_dental","label_ko":"소수 발치·스케일링","bleedRisk":"minimal"},{"id":"proc:pacemaker_icd","label_ko":"심박동기·제세동기 삽입","bleedRisk":"minimal","_note":"CHEST strong rec: VKA 유지(중단말 것)"},{"id":"proc:minor_derm","label_ko":"소피부시술","bleedRisk":"minimal"}]},"doac_periop":{"_desc":"DOAC 중단·재개 (PAUSE 기반). bridging 不요. 일상적 약물농도측정 不권장.","_renal_caveat":"표 적용범위: apixaban CrCl≥25, rivaroxaban·edoxaban CrCl≥30. 미만시 더 길게(예 3-4일)+anti-Xa 일상측정 회피. CrCl은 실체중 계산.","_resume_general":{"lowmod":"24h 후","high":"48-72h 후"},"agents":{"drug:apixaban":{"renalIndependent":true,"hold":{"lowmod":1,"high":2}},"drug:edoxaban":{"renalIndependent":true,"hold":{"lowmod":1,"high":2}},"drug:rivaroxaban":{"renalIndependent":true,"hold":{"lowmod":1,"high":2}},"drug:dabigatran":{"renalDependent":true,"byRenal":{"crcl_ge50":{"hold":{"lowmod":1,"high":2}},"crcl_30_50":{"hold":{"lowmod":2,"high":4}},"crcl_lt30":{"hold":{"lowmod":3,"high":5}}}}},"_outcomes":"이 전략으로 혈전색전 0.2-0.4%, 주요출혈 1-2% [PAUSE/JAMA 2024 리뷰]","_holdDay_def":"hold=N → 시술 N일 전 마지막 복용 후 중단. (예: lowmod hold1 = D-1 중단)"},"conventional_periop":{"_desc":"전통적 비경구 항응고제 + 와파린","drug:warfarin":{"hold":"≥5일 전 중단(INR 정상화)","resume":"대개 시술 당일 저녁부터 유지용량","boost_option":"재개시 2일간 150% '부스트' 용량 고려 후 유지용량","bridging":"VKA에만 해당. 고혈전위험+저출혈위험에서만 고려(아래 vkaThromboticRisk)"},"drug:enoxaparin":{"_role":"치료용량","hold":{"lowmod":1,"high":1},"resume":{"lowmod":"24h","high":"48-72h"},"dose_pref":"1mg/kg BID 선호(1.5mg/kg qd보다 — 출혈완화·중단계획 단순화)","qd_caveat":"1.5mg/kg qd 사용시 36h 전 중단 또는 24h 전 반용량"},"drug:heparin":{"_role":"치료용량 UFH","hold":"≥4시간 전 중단","resume":{"lowmod":"24h","high":"48-72h"},"bridge_caveat":"수술후 bridging시 bolus 생략, 저강도 프로토콜 고려"},"drug:fondaparinux":{"_role":"치료용량, CrCl≥50","hold":{"lowmod":2,"high":4},"resume":{"lowmod":"24h","high":"48-72h"},"renal_caveat":"CrCl<50시 출혈위험 무관하게 5일 전 중단 고려"}},"antiplatelet_periop":{"_desc":"고출혈위험 시술 기준 중단·재개 (CHEST 2022 conditional rec)","_aspirin_rule":"비심장 선택수술에서 aspirin 중단말 것(conditional). 고출혈위험(두개내·척추)에선 전 항혈소판 중단 고려.","_dapt_rule":"소시술(치과·피부·안과)은 항혈소판 지속하되 DAPT면 P2Y12는 중단.","_assess_timing":"시술 ≥7일 전 평가하여 필요시 충분한 중단시간 확보.","agents":{"drug:aspirin":{"hold_days":7,"resume":"24h","class":"class:antiplatelet_cox"},"drug:clopidogrel":{"hold_days":5,"resume":"24-48h","class":"class:antiplatelet_p2y12"},"drug:prasugrel":{"hold_days":7,"resume":"24-48h","class":"class:antiplatelet_p2y12"},"drug:ticagrelor":{"hold_days":"3-5","resume":"24-48h","class":"class:antiplatelet_p2y12"},"drug:cilostazol":{"hold_days":"1-2","resume":"24h","class":"class:antiplatelet_pde"},"drug:dipyridamole":{"hold_days":"1-2","resume":"24h","class":"class:antiplatelet_pde"}}},"vkaThromboticRisk":{"_desc":"와파린 환자 전용 혈전색전 위험 층화 (bridging 결정용, CHEST Table 1 기반)","_bridging_principle":"bridging은 와파린에만. 고혈전위험 AND 저출혈위험에서만 고려. AF에서 routine bridging 반대(strong rec).","high":{"label":"고위험 (>10%/y ATE, >10%/mo VTE)","vte":"최근 VTE <3개월(특히 <1개월), 활동성 고위험암, 중증 혈전성향증(Protein C/S·AT-III 결핍, APS, homozygous Factor V Leiden/Prothrombin G20210A)","af":"NVAF CHA2DS2-VASc ≥7, CVA/TIA <3개월, 판막성 AF(중등-중증 승모판협착), 류마티스판막질환","valve":"승모판 기계판막+주요뇌졸중위험인자, caged-ball/tilting-disk 판막"},"lowmod":{"label":"저-중등도 (Mod 4-10%/y ATE or 4-10%/mo VTE; Low <4%/y ATE, <2%/mo VTE)","vte":"VTE ≥3개월 전(재발성 포함)","af":"NVAF CHA2DS2-VASc <7","valve":"이엽성 대동맥 기계판막(±뇌졸중위험인자)"},"_bridge_dose":{"lmwh_therapeutic":"enoxaparin 1mg/kg BID, dalteparin 100IU/kg BID","lmwh_prophylactic":"enoxaparin 40mg qd, dalteparin 5000IU qd (PAUSE VTE 고위험시 1-3일)"}},"bleedRiskScores":{"_desc":"환자별 출혈위험 보조 점수 (시술위험과 결합 평가)","HAS-BLED":{"_caveat":"원래 AF 와파린 환자 대상. periprocedural 특화 검증 안됨.","interpret":{"0-2":"저-중등도 출혈위험","ge3":"고출혈위험"}},"VTE-BLEED":{"_caveat":"VTE 장기 항응고 환자 6개월 주요출혈 예측.","interpret":{"lt2":"저위험(2.8%)","ge2":"고위험(12.6%)"}}},"_TODO_next_rounds":{"D4_ACG_CAG":"내시경 cold-snare 소형용종 VKA유지/DOAC중단 정밀화, 급성 GI출혈시 중단·재개, 저위험 vs 고위험 내시경 세부","D6_reversal":"idarucizumab/andexanet/4F-PCC/vitamin K/protamine 용량·국내가용·급여","D7_HIRA":"NOAC 급여고시 적응증별, 와파린→NOAC 전환, 항혈소판 급여, 신기능 용량고시, 역전제 급여","D9_nextgen":"factor XI/XIa (abelacimab AZALEA, asundexian OCEANIC-AF 중단, milvexian) — 학습전용"}},"periendoscopy":{"_meta":{"block":"D4 periendoscopic + acute GI bleeding (소화기 전공 핵심)","version":"0.1","status":"verified-frozen-candidate","source":{"guideline":"ACG-CAG 2022 Clinical Practice Guideline","title":"Management of Anticoagulants and Antiplatelets During Acute GI Bleeding and the Periendoscopic Period","authors":"Abraham NS, Barkun AN, Sauer BG, Douketis J, Laine L, Noseworthy PA, Telford JJ, Leontiadis GI","citation":"Am J Gastroenterol 2022;117(4):542-558","doi":"10.14309/ajg.0000000000001627","pmc":"PMC8966740","method":"GRADE"},"_grade_legend":"강도: Strong/Conditional(C) · 확실성: High/Mod/Low(L)/VeryLow(VL) · U=권고불가(근거부족)","_clinical_logic":"내시경의 특수성: 출혈시 내시경으로 즉시 지혈 가능 → 일반수술과 다른 전략. 와파린은 오히려 유지, DOAC는 중단."},"elective_endoscopy":{"_desc":"선택적/계획된 내시경 시술 전 항혈전제 관리. D1(CHEST)과 분기되는 지점.","warfarin":{"action":"continue","rec":"와파린 유지 (1-7일 일시중단보다 유지 제안)","grade":"Conditional, VeryLow","bridging":"반대 (중단하는 경우라도 bridging 안 함)","_contrast_with_surgery":"일반수술은 5일 전 중단(D1). 내시경은 유지 — 내시경적 즉시지혈 가능성 때문.","_caveat":"고위험 advanced 시술은 개별 판단(아래 highRiskEndoscopy 참조). 근거는 VL."},"doac":{"action":"interrupt","rec":"DOAC 일시중단 (유지보다 중단 제안)","grade":"Conditional, VeryLow","rationale":"DOAC의 빠른 발현·짧은 반감기 → 중단의 혈전위험 낮음. 중단일수는 D1(CHEST/PAUSE) 신기능표 적용.","resume":"당일 vs 1-7일 후 — 권고불가(U). 실무상 대개 다음날 재개.","_outcome_ref":"DOAC 일시중단시 30일 혈전색전 0.7%(0.3-1.8), 사망 0.5%(0.2-1.6) [PMC8966740]"},"dapt":{"action":"interrupt_p2y12_keep_asa","rec":"DAPT(2차 심혈관예방)시 ASA 유지하며 P2Y12 억제제 중단","grade":"Conditional","_p2y12_holddays":"D1 antiplatelet 표 적용(clopidogrel 5d, ticagrelor 3-5d, prasugrel 7d)"},"p2y12_mono":{"action":"no_recommendation","rec":"P2Y12 단독요법 일시중단 여부 — 권고불가(U)","grade":"U"},"resume_timing":{"rec":"VKA·DOAC·P2Y12 재개시점(당일 vs 1-7일) — 모두 권고불가(U). 개별·다학제 판단.","grade":"U"}},"endoscopyBleedRisk":{"_desc":"내시경 시술 출혈위험 분류 (ACG-CAG). D1 일반분류를 소화기 특화로 정밀화. 용종 크기가 분기점.","high":{"id":"bleedrisk:endo_high","label_ko":"고위험 내시경 시술","procedures":[{"id":"proc:polypectomy_ge1cm","label_ko":"용종절제 ≥1cm","_note":"크기 분기: <1cm cold-snare는 저위험 쪽"},{"id":"proc:emr","label_ko":"내시경점막절제술(EMR)"},{"id":"proc:esd","label_ko":"내시경점막하박리술(ESD)"},{"id":"proc:peg","label_ko":"경피적위루술(PEG/PEJ)"},{"id":"proc:ercp_sphincterotomy","label_ko":"ERCP+유두괄약근절개"},{"id":"proc:eus_fna","label_ko":"EUS-유도 세침흡인(EUS-FNA)"},{"id":"proc:endo_hemostasis","label_ko":"내시경 지혈(APC 제외)"},{"id":"proc:endo_rfa","label_ko":"내시경 고주파절제(RFA)"},{"id":"proc:poem","label_ko":"경구내시경근절개술(POEM)"},{"id":"proc:varices_tx","label_ko":"정맥류 치료(결찰·경화)"},{"id":"proc:balloon_enteroscopy_tx","label_ko":"치료적 풍선장내시경"}]},"low":{"id":"bleedrisk:endo_low","label_ko":"저위험 내시경 시술","procedures":[{"id":"proc:egd","label_ko":"상부내시경 ±생검"},{"id":"proc:colonoscopy_dx","label_ko":"대장내시경 ±생검"},{"id":"proc:cold_snare_small","label_ko":"소형 cold-snare 용종절제(<1cm)","_note":"ACG-CAG: 와파린 유지로도 시행 가능 수준의 저위험"},{"id":"proc:eus_no_fna","label_ko":"EUS(FNA 없이)"},{"id":"proc:ercp_stent_no_sphincterotomy","label_ko":"ERCP 스텐트(괄약근절개 없이)"},{"id":"proc:argon_apc","label_ko":"아르곤플라즈마응고(APC)"}]}},"acute_gi_bleeding":{"_desc":"급성 위장관출혈 환자의 항혈전제 역전·중단·재개","warfarin":{"ffp":"반대 (FFP 주지 말 것)","vitamin_k":"반대 (비타민K 주지 말 것)","pcc":"권고불가(U)이나 FFP보다 PCC 선호","grade":"Conditional"},"doac":{"pcc":"PCC 투여 권장 안 함","grade":"Conditional","_specific_reversal":"특이역전제(idarucizumab/andexanet)는 D6 라운드에서 — 본 가이드라인은 PCC 중심 언급"},"antiplatelet":{"platelet_transfusion":"반대 (혈소판 수혈 권장 안 함)","grade":"Conditional"},"asa_secondary_prevention":{"rec":"심장 2차예방 ASA를 보류한 경우, 내시경적 지혈 확인 당일 재개 제안","grade":"Conditional"}},"_resolves_conflict":{"issue":"D1(CHEST/UNM)에서 'colonic polyp surgery=high'로 일괄 분류됨","resolution":"ACG-CAG로 정밀화: 용종 크기(<1cm cold-snare=저위험 / ≥1cm·hot·EMR·ESD=고위험)가 진짜 분기점. 엔진은 endoscopyBleedRisk를 GI시술에 우선 적용, 비-GI는 D1 procedures 적용."},"_TODO_next_rounds":{"D6":"idarucizumab/andexanet/4F-PCC 용량·국내가용·급여 (급성출혈 특이역전)","D7":"HIRA 급여"}},"reversal":{"_meta":{"block":"D6 reversal agents (역전제)","version":"0.1","status":"verified-frozen-candidate (단 andexanet 한국가용성 미확인 플래그)","role":"라이브러리 참조용. periprocedural 플로우 직접진입 아님 — 응급출혈 대응 인용.","primary_source":{"guideline":"ISTH SSC 2024 Guidance on DOAC reversal","citation":"J Thromb Haemost 2024;22(10):2889-2899","pmid":"39029742","doi":"10.1016/j.jtha.2024.06.029"},"supporting":[{"name":"Anticoagulation Forum guidance","ref":"Am J Hematol 2019","doi":"10.1002/ajh.25475"},{"name":"RE-VERSE AD (idarucizumab)","role":"이다루시주맙 근거시험"},{"name":"ANNEXA-4 / ANNEXA-I (andexanet)","role":"안덱사넷 근거시험"}],"_critical_recency_flag":"안덱사넷 미국 시장 자발철수 2025-12-22 (혈전 안전성 우려). 한국 가용성 별도확인 필수 — 코딩 직전 재검증."},"specific_reversal":{"_desc":"특이 역전제 — 표적 약물에만 작용. 교차 효과 없음.","drug:idarucizumab":{"id":"drug:idarucizumab","brand_ko":"프락스바인드","target":["drug:dabigatran"],"target_class":"class:doac_dti","mechanism":"단클론항체 — 다비가트란에 직접 결합. FXa 억제제엔 무효.","dose":"5g (2.5g/50mL 바이알 2개), 각 5-10분 점적 연속 또는 일시 정맥투여","onset":"수 분 내 역전, 5g 투여시 2시간 내 응급수술 가능 [RE-VERSE AD]","korea":{"approved":true,"approval_date":"2016-03 허가 / 2016-06 출시","reimbursed":true,"reimbursement_detail":"2019-02 복지부 고시: 8시간 이상 지연불가 응급수술·긴급처치 OR 생명위협·조절불가 출혈시 1회 투여에 한해 급여","source":"식약처 허가 / 복지부 고시 (위키·메디칼업저버 2016)"},"fallback_if_unavailable":"APCC(FEIBA) — 이다루시주맙 없을시 다비가트란 역전 [ISTH 2024]"},"drug:andexanet_alfa":{"id":"drug:andexanet_alfa","brand":"Andexxa","target":["drug:apixaban","drug:rivaroxaban"],"target_class":"class:doac_fxa","target_offlabel":["drug:edoxaban"],"mechanism":"재조합 변형 FXa 디코이 — FXa 억제제를 흡착. 볼러스 종료시 anti-Xa 활성 92% 감소.","dose":"고/저용량 레지멘(약물·용량·마지막복용시점 기반) — 상세 용량 ISTH/제품정보 참조 (D7과 함께 정밀화)","efficacy_caveat":"ANNEXA-I: 지혈효과는 주로 혈종확대 감소. 단 혈전사건(특히 허혈성뇌졸중) 증가. 혈종감소→예후개선 여부 불확실.","korea":{"approved":"UNVERIFIED","reimbursed":"UNVERIFIED","_flag":"⚠️ 한국 허가·급여 정보 미확인. 검색에서 국내 정보 안 잡힘. 코딩 전 식약처(nedrug.mfds.go.kr)·HIRA 직접확인 필수.","_us_status":"미국 2025-12-22 자발철수(혈전우려). 타 국가 잔존판매."},"fallback_if_unavailable":"4F-PCC — 안덱사넷 없을시 FXa 억제제 역전 [ISTH 2024]"}},"nonspecific_reversal":{"_desc":"비특이 지혈제 — off-label DOAC 역전 및 와파린 역전.","drug:pcc_4f":{"id":"drug:pcc_4f","label_ko":"4인자 프로트롬빈복합체농축물","brand_examples":"Kcentra 등","indication":["와파린 역전 (1차, FDA 승인)","FXa 억제제 역전 (안덱사넷 없을시 대체)","edoxaban 역전 (off-label)"],"storage":"실온보관 가능 (특이역전제는 냉장+약국 재구성 필요와 대비 — 응급접근성 우위)","thrombotic_risk":"안덱사넷보다 낮음 [JournalFeed/ISTH 2024]","warfarin_target":"INR <1.5 목표가 흔함. 단 4F-PCC는 post-INR>1.5에서도 비타민K의존인자 지혈수준 회복 — INR이 회복 과소평가 가능."},"drug:apcc_feiba":{"id":"drug:apcc_feiba","label_ko":"활성화 프로트롬빈복합체농축물","brand":"FEIBA","indication":"다비가트란 역전 (이다루시주맙 없을시 대체) [ISTH 2024]"},"drug:vitamin_k":{"id":"drug:vitamin_k","ingredient":"phytonadione","label_ko":"비타민K (피토나디온)","target":["drug:warfarin"],"_note":"와파린 역전. 단 ACG-CAG: 급성 GI출혈에선 FFP·비타민K 반대(PCC 선호) — D4 참조. 비응급 INR교정엔 사용."},"drug:protamine":{"id":"drug:protamine","label_ko":"프로타민","target":["drug:heparin"],"target_partial":["drug:enoxaparin"],"_note":"UFH 특이 해독. 주로 심혈관수술. LMWH는 부분역전만. 안전성 주의(과민·저혈압).","_enoxaparin_caveat":"enoxaparin은 protamine으로 부분 중화만 가능(약 60% anti-Xa)"}},"reversal_decision_logic":{"_desc":"약물→역전제 1차/대체 매핑 (엔진 참조용)","drug:dabigatran":{"first":"drug:idarucizumab","alt":"drug:apcc_feiba"},"drug:apixaban":{"first":"drug:andexanet_alfa","alt":"drug:pcc_4f","_kr_caveat":"안덱사넷 국내 미확인시 4F-PCC가 사실상 1차"},"drug:rivaroxaban":{"first":"drug:andexanet_alfa","alt":"drug:pcc_4f","_kr_caveat":"동일"},"drug:edoxaban":{"first":"drug:pcc_4f","alt":null,"_note":"안덱사넷은 edoxaban off-label"},"drug:warfarin":{"first":"drug:pcc_4f","alt":"drug:vitamin_k","_note":"PCC+비타민K 병용 흔함. 급성GI출혈은 D4 규칙 우선"},"drug:heparin":{"first":"drug:protamine","alt":null},"drug:enoxaparin":{"first":"drug:protamine","alt":null,"_note":"부분역전만"}},"_reversal_indication":{"when":"주요/생명위협 출혈, 또는 응급 수술·침습시술. DOAC는 최근 24h 내 복용시 특이역전제 고려.","acg_endoscopy":"ACG: GI출혈+INR>2.5시 내시경 전 역전제 고려. INR 1.5-2.5는 역전 전/동시에 내시경지혈 지체없이 가능(근거 VL).","general":"역전 전 항응고제 중단만으로도 충분한 경우 많음. 혈전위험·재개시점 고려."},"_TODO_next":{"D9":"factor XI/XIa 차세대 (학습전용)","D7":"HIRA 급여 — 안덱사넷 국내상태 포함 정밀확인"}},"reimbursement":{"_meta":{"block":"D7 HIRA 급여 (1차 — NOAC 중심)","version":"0.1-partial","status":"⚠️ 2차출처 기반. 코딩 직전 HIRA 원문 재검증 필수 (본인 비협상 원칙).","_recheck_mandatory":"급여 수치·고시번호는 학회지·언론 출처가 다수. HIRA 요양급여 적용기준 고시 원문으로 코딩 직전 전수 재확인. 메모리·2차출처로 확정 금지.","primary_source":{"guideline":"2024 대한부정맥학회 NOAC 사용지침","url":"k-hrs.org","role":"국내 최신 NOAC 표준 (급여+가이드라인)"},"supporting":[{"src":"HIRA 2015-07 DOAC 급여확장 고시","ref":"약학정보원 곽혜선 리뷰","_recheck":"고시 원문번호 확인필요"},{"src":"2018 대한부정맥학회 NOAC 사용지침","ref":"ekjm.org/25582"}]},"noac_reimbursement_nvaf":{"_desc":"비판막성 심방세동(NVAF) NOAC 급여 — D7 핵심","covered_agents":["drug:dabigatran","drug:rivaroxaban","drug:apixaban","drug:edoxaban"],"criterion":{"score":"CHA2DS2-VASc","threshold":"≥2점","since":"2015-07 HIRA 급여확장","_recheck":"현행 유지 여부 HIRA 확인"},"nvaf_definition":"기계판막 또는 중등도 이상 승모판협착(주로 류마티스) 제외한 심방세동 [2024 부정맥학회]","_GUIDELINE_VS_REIMBURSEMENT_CONFLICT":{"_desc":"★본인 이중레이어 핵심 사례","guideline":"글로벌·국내 가이드라인: CHA2DS2-VASc 남자 1점(여자 2점)부터 NOAC 권고 (Class I, LoE A)","reimbursement":"한국 급여: 2점 이상만 인정","gap":"남자 1점 환자 = 가이드라인 적응 O, 급여 X → 비급여 처방 또는 와파린 선택 기로","display_rule":"이 충돌을 가이드/급여 이중레이어로 명시 표시. '권고되나 비급여' 플래그."}},"noac_dosing":{"_desc":"NOAC 표준용량·감량기준 (국내, on-label 권고). ★1·2차 의사 핵심.","_recheck":"허가사항·고시 원문 대조 필수","drug:dabigatran":{"standard":"150mg BID","reduced":"110mg BID","reduce_if":"80세 이상 OR P-gp억제제 병용(예 베라파밀) OR HAS-BLED≥3 OR 중등도 신장애(CrCl 30-50)","renal_contraindication":"중증 신장애 금기. 국내 75mg 미도입(ESRD eGFR15-30 권고용량 제외됨)"},"drug:rivaroxaban":{"standard":"20mg QD","reduced":"15mg QD","reduce_if":"HAS-BLED≥3 OR 중등도 신장애 (CrCl 15-50)","food":"15/20mg은 음식과 함께 복용(흡수율)"},"drug:apixaban":{"standard":"5mg BID","reduced":"2.5mg BID","reduce_if":"다음 3조건 중 2개 이상: ①80세 이상 ②체중 60kg 이하 ③혈청 Cr ≥1.5mg/dL","_intl_difference":"유럽: eGFR<30 단일조건으로도 감량. 국내: 3중2 기준. (학습 포인트)"},"drug:edoxaban":{"standard":"60mg QD","reduced":"30mg QD","reduce_if":"체중 60kg 이하 OR CrCl 15-50 OR P-gp억제제 병용","_note":"용량별 충분환자수 설계(ENGAGE-AF)"}},"warfarin_to_noac_switch":{"_desc":"와파린→NOAC 전환 권고 [2024 부정맥학회]","not_recommended":"출혈위험 없고 INR 조절 잘되는 환자는 전환 권고 안 함","recommended":"와파린 민감/금기, 적정 INR 유지 불가, INR 잘 유지되나 뇌출혈 있는 환자","_reimbursement_recheck":"전환 시 급여 연속성 HIRA 확인 필요"},"noac_interactions":{"_desc":"NOAC 약물상호작용 (전 NOAC 공통 P-gp 기질)","pgp_inhibitors_increase":["verapamil","dronedarone","amiodarone","quinidine","clarithromycin","ketoconazole","cyclosporine"],"cyp3a4_relevant":["rivaroxaban","apixaban"],"strong_inducers_avoid":["rifampin","carbamazepine"],"rule":"강력 P-gp 및/또는 CYP3A4 억제제·유도제와 병용 일반적으로 비권고"},"_TODO_recheck_round":{"when":"앱 코딩 직전 (DATA→ENGINE 진입 전)","items":["NOAC NVAF 급여 CHA2DS2-VASc≥2 현행 확인 + 고시번호","VTE(DVT/PE) 적응증 NOAC 급여기준 (미수집)","정형외과 VTE 예방 NOAC 급여 (미수집)","항혈소판제 급여 (clopidogrel 적응증, DAPT 기간) (미수집)","안덱사넷 국내 허가·급여 (D6 미확인 연계)","감량기준 허가사항 대조"],"method":"HIRA 요양급여 적용기준 고시 원문 + 약제급여목록 직접 조회. 2차출처 금지."}},"nextgen":{"_meta":{"block":"D9 next-gen factor XI/XIa inhibitors (학습 전용)","version":"0.1","status":"verified-frozen-candidate","usage_restriction":"⚠️ 학습 섹션 전용. investigational. 임상 플로우·라이브러리 처방부 진입 절대금지. 모든 항목 investigational:true.","role":"항응고제 진화사의 마지막 장 = '왜 차세대는 factor XI을 노리는가'. 본인 요청 컨셉의 정점.","key_sources":[{"trial":"OCEANIC-AF","ref":"Piccini JP, et al. Asundexian vs apixaban in AF. N Engl J Med 2025;392:23-32","doi":"10.1056/NEJMoa2407105"},{"trial":"AZALEA-TIMI 71","ref":"Ruff CT, et al. Abelacimab vs rivaroxaban in AF. N Engl J Med 2025;392:361-371","doi":"10.1056/NEJMoa2406674"},{"trial":"AXIOMATIC-TKR (milvexian VTE예방)","ref":"Weitz JI, et al. N Engl J Med 2021;385:2161-2172","doi":"10.1056/NEJMoa2113194"},{"review":"ISTH SSC 2024 (FXIa 역전 포함)","pmid":"39029742"},{"review":"FXI/XIa: What We Now Know","ref":"EMJ Cardiol 2024;12[Suppl 2]:2-13","doi":"10.33590/emjcardiol/JJBL7143"}]},"core_concept":{"headline":"지혈 보존 항응고 (haemostasis-sparing anticoagulation)","promise":"혈전·뇌졸중 예방은 유지하면서 출혈위험은 최소화 — 기존 항응고제의 근본 딜레마(항혈전 효과 ↔ 출혈위험) 분리 시도","epidemiologic_basis":"선천성 factor XI 결핍자는 혈전질환에서 보호받지만 자발출혈은 드묾 → 'FXI을 막으면 혈전만 막고 지혈은 보존된다'는 가설의 근거","why_factor_xi":{"cascade_position":"FXI은 내인경로 증폭(amplification)에 관여. 지혈 초기 트롬빈 생성(외인경로·조직인자)에는 덜 필수적.","implication":"FXI 억제 → 병적 혈전증폭은 차단, 손상부위 1차 지혈(외인경로)은 온존 → 출혈 적음","learning_link":"기존 DOAC(FXa·트롬빈 직접억제)는 지혈 공통경로를 때려 출혈 동반. FXI은 더 상류·선택적 표적."}},"mechanism_classes":{"_desc":"두 가지 기전 계열 — 학습 핵심 대조","monoclonal_antibody":{"class":"class:factor_xi_mab","target":"factor XI zymogen (비활성 전구체)","action":"자이모겐을 비활성 고정 → FXIa 생성 자체 차단 + 기존 FXIa 중화. 선천성 결핍 모방.","pk":"반감기 수 주(20-40일), 월 1회 IV/SC 투여. 식세포·세망내피계 대사 → 중증 CKD 적합.","agents":["abelacimab","osocimab","xisomab 3G3"]},"small_molecule":{"class":"class:factor_xia_smi","target":"factor XIa 활성(촉매)부위","action":"가역적 결합. FXIa 생성 후 작용, 자연기질 FIX와 경쟁. → 일부 FXIa 회피 가능성(이론적 효능 한계).","pk":"경구 생체이용률 높음, 반감기 짧아 1일 1-2회. 응고검사 간섭 주의(asundexian·milvexian).","agents":["asundexian","milvexian"]}},"agents":{"drug:abelacimab":{"id":"drug:abelacimab","investigational":true,"type":"monoclonal antibody (anti-FXI zymogen)","sponsor":"Anthos Therapeutics","route":"SC/IV 월1회","key_trial":"AZALEA-TIMI 71 (phase 2, vs rivaroxaban)","result":"주요출혈 명백 감소로 조기종료(IDMC). 고용량: 주요/CRNM출혈 67%↓, 주요 GI출혈 93%↓ vs rivaroxaban.","ongoing":["LILAC-TIMI 76 (OAC 부적격 고위험 AF)","ASTER·MAGNOLIA (암관련 VTE)"],"status":"phase 3 진행. 효능 확증 대기."},"drug:asundexian":{"id":"drug:asundexian","investigational":true,"type":"small molecule (FXIa inhibitor)","sponsor":"Bayer","route":"경구 1일1회","key_trial":"OCEANIC-AF (phase 3, vs apixaban, 목표 18000명)","result":"⚠️ 효능 열등(apixaban 대비)으로 조기중단. 초기결과: 허혈위험 apixaban 대비 약 4배. → FXIa 소분자 효능 의문 제기.","ongoing":["OCEANIC-Stroke (2차 뇌졸중예방)","OCEANIC-AFINA (OAC 부적격 ≥65세 AF)"],"status":"AF 적응증 좌초. 다른 적응증 탐색.","_honest_lesson":"차세대=만능 아님. '안전성 좋아도 효능 입증 별개'의 교훈. 학습 섹션 정직성 핵심사례."},"drug:milvexian":{"id":"drug:milvexian","investigational":true,"type":"small molecule (FXIa inhibitor)","sponsor":"BMS/Janssen","route":"경구 1일2회(100mg BID 시험)","key_trial":"LIBREXIA-AF (phase 3, vs apixaban, 목표 15500명) / AXIOMATIC-TKR(VTE예방 양성)","result":"AXIOMATIC-TKR에서 VTE예방 용량반응 입증. AF 3상 진행중.","ongoing":["LIBREXIA-AF","LIBREXIA-Stroke","LIBREXIA-ACS"],"status":"phase 3 진행. OCEANIC-AF 실패 후 동일계열로 주목."}},"honest_framing":{"_desc":"학습 섹션 '정직성 레이어' — 과대선전 경계","breakthrough_vs_bust":"AZALEA(항체) 성공 ↔ OCEANIC-AF(소분자) 실패 공존. 계열 내 기전차이가 결과 가른 가설.","open_questions":["소분자 FXIa 억제가 AF 뇌졸중예방에 충분한 효능 내는가? (OCEANIC-AF 부정적)","항체 vs 소분자 — 기전 우위 hard evidence 아직 없음","역전제: FXIa 억제제 역전전략 개발중(ISTH 2024 언급)"],"clinical_status_2026":"어느 제제도 AF 표준치료 진입 못함. 임상시험 단계. 처방 불가."},"_block_complete":"D9 학습 자료 확보. 임상 plow 비진입 재확인."},"learn":{"_meta":{"block":"LEARN 학습 섹션 구조 + L2 약물표적 캐스케이드","version":"0.1","status":"frozen-structure","design_intent":"본인 동기 — 'factor 12개 나열 모식도는 임상에서 못 써먹는다. 약을 이해하려면 다른 지도가 필요하다.' → 약물 표적 중심 재구성. 생화학 교과서 아님, '이 약을 쓰는 이유'로 읽히는 지도.","depth_decision":"L2는 '현재 쓰는 약이 어디를 때리고 그게 어떻게 항응고로 파급되나'로 한정 (본인 지시). 12 factor 전부 X, 약물표적 노드만.","sources":[{"topic":"동맥/정맥 척추","refs":["JCI 2012 PMC60229","Nat Sci Rep 2020 s41598-020-59526-x","JACC 2014","ATVB 2017 (COMPASS)","Thromb Haemost 2017 (스펙트럼 정직성)"]},{"topic":"헤파린 AT 기전·사슬길이","refs":["ATVB/Circulation 2001 AHA statement (10.1161/hq0701.093686)","Front Pharmacol 2025 LMWH review","pac6.ch 8.3.2"]},{"topic":"차세대 FXI","refs":["D9 블록 참조 — NEJM 2025 OCEANIC-AF, AZALEA-TIMI 71"]}]},"structure":{"L1_spine":{"title":"척추 — 혈류가 혈전을 정하고, 혈전이 약을 정한다","content":{"arterial":"동맥 = high shear(빠른 흐름) → 혈소판 풍부 '백색 혈전' → 항혈소판제","venous":"정맥 = low shear(느린 흐름) → fibrin 풍부 '적색 혈전' → 항응고제","color_mapping":"동맥축=crimson, 정맥축=slate-blue. 색이 곧 학습장치.","honesty_layer":{"step1":"큰 그림: 이분법 (강력한 출발점)","step2":"진실: 스펙트럼. 두 혈전 모두 복합 fibrin망 + 동일 혈구(적혈구·백혈구·혈소판), 상대적 함량 차이일 뿐.","bridge":"동맥혈전도 fibrin이 안정화 → 항응고제도 역할(COMPASS: 저용량 rivaroxaban+aspirin). 단순 이분법의 예외이자 심화."}}},"L2_cascade":{"title":"캐스케이드 재구성 — 약이 어디를 때리나","principle":"factor 나열 대신 약물 표적 노드만 강조. 흐름은 화살표로, 표적은 약물과 연결.","target_nodes":{"vitaminK_dependent":{"factors":["II","VII","IX","X"],"drug":"drug:warfarin","action":"비타민K 의존 인자 '생산' 차단(간). 기존 인자 소진까지 지연 발현(그래서 5일 중단·부스트).","note":"Protein C/S도 비타민K 의존 → 초기 일시적 응고항진(bridging 논거 중 하나)"},"antithrombin_mediated":{"drug_class":"class:heparin","mechanism":"AT 결합→형태변화→IIa·Xa(및 IXa·XIa·XIIa) 비활성 가속. 간접.","chain_length_story":{"_headline":"분자 사슬 길이 하나가 표적을 정한다 (L2 백미)","UFH":"≥18당류 → AT+트롬빈 동시결합(bridging) 가능 → anti-Xa:anti-IIa = 1:1","LMWH":"짧은 사슬 → 트롬빈 bridging 약화, Xa는 결합 불필요 → 비율 2:1~4:1 (drug:enoxaparin)","fondaparinux":"펜타사카라이드만 → bridging 불가 → IIa 못막고 Xa만 선택 억제 (drug:fondaparinux)","learning_link":"사슬 짧아질수록 표적이 Xa로 좁혀짐 → DOAC의 Xa 직접 선택성으로 자연 연결"}},"direct_Xa":{"factor":"Xa","drugs":["drug:rivaroxaban","drug:apixaban","drug:edoxaban"],"class":"class:doac_fxa","action":"Xa 활성부위 직접 결합(AT 불요). 고정용량·모니터링 불요. ~ban 접미사.","why_Xa":"Xa는 공통경로 입구·증폭 핵심. 트롬빈 1분자가 수천 fibrin → 그 상류 차단이 효율적."},"direct_IIa":{"factor":"IIa (thrombin)","drug":"drug:dabigatran","class":"class:doac_dti","action":"트롬빈 직접 억제. 최종 효소 차단. ~gatran 접미사.","reversal_link":"특이역전제 idarucizumab 존재(D6)"},"factor_XI_future":{"factor":"XI/XIa","drugs":["drug:abelacimab(투여중단 자이모겐)","drug:asundexian","drug:milvexian"],"class":"class:factor_xi","action":"증폭경로 상류 선택 차단 → 지혈 보존 항응고. investigational(D9).","learning_role":"진화의 종착점. '왜 더 상류·선택적으로 가나 = 출혈 줄이려는 여정'"}},"platelet_targets":{"_desc":"항혈소판 표적(동맥축). 혈소판 활성화 경로별.","COX1":{"drug":"drug:aspirin","action":"COX-1 비가역 억제→TXA2↓→혈소판 응집↓","extra":"drug:triflusal 유사"},"P2Y12":{"drugs":["drug:clopidogrel","drug:prasugrel","drug:ticagrelor"],"action":"ADP 수용체 P2Y12 차단→혈소판 활성 증폭↓","prodrug_note":"clopidogrel·prasugrel=프로드럭(간 대사 필요, clopidogrel은 CYP2C19 다형성 영향). ticagrelor=직접·가역."},"PDE":{"drugs":["drug:cilostazol","drug:dipyridamole"],"action":"PDE 억제→cAMP↑→혈소판 활성↓ + 혈관확장"},"GPIIbIIIa":{"drug":"drug:tirofiban","action":"최종 공통경로(섬유소원 가교) 차단. 정맥주사·PCI."},"PAR1":{"drug":"vorapaxar","action":"트롬빈 수용체 차단. (국내 제한적, 학습 참고)"}}},"L3_antiplatelet_evolution":{"title":"항혈소판 진화사 — 활성화 경로를 하나씩 공략","timeline_concept":"COX(아스피린) → P2Y12 프로드럭(clopidogrel) → P2Y12 강화·직접(prasugrel·ticagrelor) → 최종공통 GPIIbIIIa → 트롬빈수용체 PAR-1(vorapaxar)","through_theme":"표적을 활성화 단계별로 더 강하게/직접/가역으로. 출혈-허혈 균형 조율.","_fill_at_build":"약물별 승인연도·대표시험(CAPRIE·TRITON·PLATO 등)은 빌드시 약물 기본정보로 채움"},"L4_anticoagulant_evolution":{"title":"항응고 진화사 — 출혈을 줄이려는 선택성의 여정","timeline_concept":"헤파린·와파린(비특이·모니터링 필요) → LMWH/폰다(부분 선택) → DOAC(Xa/IIa 직접·고정용량) → factor XI(지혈 보존)","through_theme":"비특이 광범위 억제 → 점점 선택적 표적 → 항혈전 유지하며 출혈만 분리하려는 시도. L2 사슬길이 story와 D9가 양 끝.","honest_endpoint":"factor XI = 약속(AZALEA 성공)과 실패(OCEANIC-AF 좌초) 공존. 차세대=만능 아님(D9 정직성).","_fill_at_build":"약물별 승인연도·대표시험(RE-LY·ROCKET-AF·ARISTOTLE·ENGAGE-AF)은 빌드시 채움"}},"_learning_principles":{"audience":"기반지식 없어도 이해 가능한 수준. 단계 설명 + SVG 모식도 + 용어 풀이. 영어 용어 통일.","format":"핵심만 펼침, 나머지 접기. 색(crimson/slate)으로 동맥/정맥 직관 학습.","no_simulation":"시뮬레이션 섹션 v0.1 보류(플로우 안정화 후)"}},"druglib":{"_meta":{"block":"라이브러리 약물상세 — DOAC 4종 (라운드1)","version":"0.1","status":"verified-frozen-candidate (국내 허가용량 코딩 직전 재확인 플래그)","sources":[{"ref":"JAHA 2020 Practical Guide DOAC","doi":"10.1161/JAHA.120.017559","pmc":"PMC7670541"},{"ref":"Apixaban dose adjustment critical analysis","pmc":"PMC8175828"},{"ref":"DOAC in CKD update","pmc":"PMC7769201"},{"ref":"Xarelto HCP condition-specific dosing","url":"xareltohcp.com/dosing"},{"ref":"대한부정맥학회 2024 NOAC 사용지침","url":"k-hrs.org"}],"_recheck":"국내 허가용량(특히 dabigatran 110mg, edoxaban 30mg 기준)·급여 CrCl 컷오프는 식약처·HIRA 원문 코딩 직전 재확인","renal_note":"CrCl은 Cockcroft-Gault(실체중) 기준. eGFR(CKD-EPI)과 다를 수 있음 — DOAC 용량조절은 CrCl 사용이 원칙."},"drug:apixaban":{"id":"drug:apixaban","ko":"아픽사반","class":"class:doac_fxa","target":"Factor Xa 직접","renal_excretion":"27% (DOAC 중 최소)","half_life":"8–15시간","onset":"3–4시간","reversal":"andexanet alfa(국내 미확인) / 4F-PCC","indications":[{"cond":"NVAF (뇌졸중예방)","std":"5 mg BID","reduce":"2.5 mg BID — 다음 3개 중 2개 충족 시: ①연령 ≥80세 ②체중 ≤60kg ③혈청Cr ≥1.5 mg/dL","note":"감량기준이 eGFR이 아닌 3중2 방식(C-G 대입 시 약 CrCl 30 상당)"},{"cond":"VTE 치료","std":"10 mg BID × 7일 → 5 mg BID","reduce":"VTE에는 공식 감량기준 없음(신기능 무관 유지)","note":"초기 부하(10mg BID 1주)가 특징 — parenteral 브릿지 불요"},{"cond":"VTE 재발예방(6개월 후)","std":"2.5 mg BID","reduce":"—"}],"renal_table":[{"crcl":"≥30 (또는 3중2 미충족)","dose":"5 mg BID (NVAF)"},{"crcl":"3중2 충족","dose":"2.5 mg BID"},{"crcl":"<15 / 투석","dose":"국내 권고 제한 — 신중, 근거부족(투석시 2.5 BID 쓰이기도)"}],"interactions":"강력 CYP3A4+P-gp 이중 억제제(케토코나졸·이트라코나졸·리토나비르)와 병용 시 감량/회피. 이중 유도제(리팜핀·카바마제핀·페니토인) 병용 회피.","tips":"신기능 영향이 가장 적어 중증 CKD·고령에서 선호되는 경향. 1일 2회 복용 순응도가 관건. 감량기준을 신기능 하나로 오해하지 말 것(3중2).","_kr_flag":"국내 NVAF 급여 CHA2DS2-VASc≥2 (D7 참조)"},"drug:rivaroxaban":{"id":"drug:rivaroxaban","ko":"리바록사반","class":"class:doac_fxa","target":"Factor Xa 직접","renal_excretion":"35%","half_life":"5–9시간(젊은층)·11–13시간(고령)","onset":"2–4시간","reversal":"andexanet alfa(국내 미확인) / 4F-PCC","indications":[{"cond":"NVAF","std":"20 mg QD (저녁 식사와)","reduce":"15 mg QD — CrCl 15–50","note":"적응증 기반 감량. 반드시 음식과 복용(15/20mg 흡수율↑)"},{"cond":"VTE 치료","std":"15 mg BID × 21일 → 20 mg QD","reduce":"치료기 후 유지 20 mg QD(CrCl≥15). 감량은 개별판단","note":"초기 3주 BID 부하가 특징"},{"cond":"VTE 재발예방","std":"10 mg QD 또는 20 mg QD","reduce":"—"},{"cond":"CAD/PAD (COMPASS)","std":"2.5 mg BID + 아스피린","reduce":"—","note":"동맥질환에 저용량 병용 — 학습 L1 참조"}],"renal_table":[{"crcl":"≥50","dose":"20 mg QD (NVAF)"},{"crcl":"15–50","dose":"15 mg QD (NVAF)"},{"crcl":"<15 / 투석","dose":"권고 안 됨(회피)"}],"interactions":"강력 CYP3A4+P-gp 이중 억제/유도제 병용 회피(아픽사반과 동일 계열 주의). 아졸계 항진균제·HIV 프로테아제억제제 주의.","tips":"1일 1회로 순응도 유리하나 반드시 식사와 복용. CrCl 저하 시 노출↑ — 15mg도 일부 환자엔 높을 수 있다는 지적(정밀용량 연구 진행).","_kr_flag":"국내 NVAF 급여 CHA2DS2-VASc≥2"},"drug:edoxaban":{"id":"drug:edoxaban","ko":"에독사반","class":"class:doac_fxa","target":"Factor Xa 직접","renal_excretion":"50% (DOAC 중 최대)","half_life":"10–14시간","onset":"1–2시간","reversal":"andexanet(off-label, 국내 미확인) / 4F-PCC","indications":[{"cond":"NVAF","std":"60 mg QD","reduce":"30 mg QD — CrCl 15–50 OR 체중 ≤60kg OR 강력 P-gp억제제 병용","note":"★신기능 정상(CrCl>95)에선 효능 저하 경고 — 뇌졸중예방 효과 감소 보고"},{"cond":"VTE 치료","std":"LMWH/헤파린 5–10일 선행 → 60 mg QD","reduce":"30 mg QD (동일 감량조건)","note":"parenteral 선행 필수(HOKUSAI-VTE 설계)"}],"renal_table":[{"crcl":">95","dose":"NVAF 효능저하 경고 — 대체 고려"},{"crcl":"50–95","dose":"60 mg QD"},{"crcl":"15–50","dose":"30 mg QD"},{"crcl":"<15 / 투석","dose":"권고 안 됨"}],"interactions":"강력 P-gp 억제제(베라파밀·퀴니딘·드로네다론)와 병용 시 30mg 감량. CYP 영향은 FXa억제제 중 적은 편.","tips":"신기능이 '너무 좋아도' 문제 — CrCl>95는 대체약 고려. parenteral 선행이 필요해 급성기 단독 시작 불가.","_kr_flag":"국내 NVAF 급여 CHA2DS2-VASc≥2"},"drug:dabigatran":{"id":"drug:dabigatran","ko":"다비가트란","class":"class:doac_dti","target":"Factor IIa(트롬빈) 직접","renal_excretion":"80% (최대 — 신기능 의존 큼)","half_life":"12–17시간(정상)·장기화(신부전)","onset":"1–2시간","reversal":"idarucizumab(특이역전·국내 급여) — DOAC 중 유일 특이역전제","indications":[{"cond":"NVAF","std":"150 mg BID","reduce":"110 mg BID — 고령(≥80세) OR P-gp억제제(베라파밀) 병용 OR 출혈고위험(HAS-BLED≥3) OR 중등도 신장애","note":"국내 110mg 도입. 75mg(미국 CrCl15-30)는 국내 미도입"},{"cond":"VTE 치료","std":"parenteral 5–10일 선행 → 150 mg BID","reduce":"110 mg BID(동일조건)","note":"parenteral 선행 필수(RE-COVER)"}],"renal_table":[{"crcl":"≥50","dose":"150 mg BID (또는 110)"},{"crcl":"30–50","dose":"150 또는 110 mg BID(출혈위험 고려 감량)"},{"crcl":"<30","dose":"국내 금기/회피 (신배설 80%)"}],"interactions":"P-gp 억제제(케토코나졸·드로네다론·베라파밀)와 병용 주의/감량. P-gp 유도제(리팜핀) 병용 회피. CYP 대사 거의 없음.","tips":"특이역전제(이다루시주맙)가 있는 유일한 DOAC — 응급수술 잦은 환자에 강점. 단 신배설 80%라 신기능 악화 시 축적 위험 최대. 캡슐 습기민감(원포장 보관). 소화불량 부작용 흔함.","_kr_flag":"국내 NVAF 급여 CHA2DS2-VASc≥2. 이다루시주맙 응급 급여(D6)"},"drug:aspirin":{"id":"drug:aspirin","ko":"아스피린","class":"class:antiplatelet_cox","target":"COX-1 비가역 억제 → TXA2↓","renal_excretion":"—","half_life":"효소 비가역(혈소판 수명 7–10일)","onset":"속효성 30–60분","reversal":"특이역전제 없음(혈소판 수혈 — 단 ACG는 GI출혈시 수혈 반대)","indications":[{"cond":"심혈관 2차예방","std":"75–100 mg QD","reduce":"—","note":"저용량이 표준. 고용량이 효과 더 크지 않고 출혈만↑"},{"cond":"ACS 부하","std":"150–300 mg 1회 부하 → 75–100 mg QD","reduce":"—","note":"DAPT 시 유지 아스피린 100mg 초과 금지(특히 티카그렐러 병용)"}],"renal_table":[{"crcl":"전 구간","dose":"용량조절 불요(신배설 비의존)"}],"interactions":"NSAID(이부프로펜)와 병용 시 COX-1 경쟁으로 항혈소판 효과 감소 가능 — 복용 간격 분리. 항응고제 병용 시 출혈↑.","contraindication":"활동성 소화성궤양·출혈, 아스피린 과민(천식 등), 중증 간·신부전","tips":"위장관 출혈이 흔한 부작용 — 고위험군 PPI 병용 고려. 수술 전에도 심혈관 고위험군은 유지하는 경우가 많음(중단 말 것).","_kr_flag":"저용량 아스피린 급여는 적응증(심혈관질환) 기반"},"drug:clopidogrel":{"id":"drug:clopidogrel","ko":"클로피도그렐","class":"class:antiplatelet_p2y12","target":"P2Y12(ADP 수용체) 비가역 — 프로드럭","renal_excretion":"—","half_life":"활성대사체 단반감기(효과는 혈소판 수명)","onset":"부하 600mg시 2–8시간","reversal":"특이역전제 없음(혈소판 수혈 유효 — 대사체 단반감기)","indications":[{"cond":"ACS/PCI 부하","std":"300–600 mg 부하 → 75 mg QD","reduce":"—","note":"부하 600mg이 표준(빠른 발현). 이중용량 유지는 이점 불명확"},{"cond":"만성 2차예방","std":"75 mg QD","reduce":"—","note":"아스피린 불내성 시 단독 대체로도 사용"}],"renal_table":[{"crcl":"전 구간","dose":"용량조절 불요(단 중증 신부전 경험 제한적)"}],"interactions":"★CYP2C19 억제제(오메프라졸·에소메프라졸) 병용 시 활성화↓ → 판토프라졸/라베프라졸 선호. 강력 CYP2C19 유도/억제제 주의.","contraindication":"활동성 출혈, 중증 간장애","tips":"CYP2C19 유전다형성으로 15–30% 저반응 — 아시아인 poor metabolizer 비율 높음. PPI 병용시 오메프라졸 회피가 실전 포인트.","_kr_flag":"국내 급여 적응증(허혈성 심질환·뇌혈관·말초동맥). 아스피린 병용 DAPT 기간 급여조건 확인"},"drug:prasugrel":{"id":"drug:prasugrel","ko":"프라수그렐","class":"class:antiplatelet_p2y12","target":"P2Y12 비가역 — 프로드럭(효율적 활성화)","renal_excretion":"—","half_life":"활성대사체 단반감기(효과는 혈소판 수명)","onset":"부하 60mg시 30분–4시간(빠름)","reversal":"특이역전제 없음(혈소판 수혈 유효)","indications":[{"cond":"ACS+PCI","std":"60 mg 부하 → 10 mg QD","reduce":"5 mg QD — ≥75세 또는 체중 <60kg","note":"관상동맥 해부 확인 후 사용(진단 전 투여 비권장)"}],"renal_table":[{"crcl":"전 구간","dose":"신기능 조절 불요(단 ESRD 경험 제한)"}],"interactions":"다른 항혈전제와 병용 시 출혈↑. CYP 영향은 클로피도그렐보다 적음(활성화 일관).","contraindication":"★뇌졸중·TIA 병력(금기), 활동성 출혈, 중증 간장애. 관상동맥 해부 미확인 시 비권장.","tips":"클로피도그렐보다 강력·일관되나 출혈↑. 고령·저체중은 5mg 감량. 뇌졸중 병력이면 절대 쓰지 말 것 — 가장 중요한 금기.","_kr_flag":"국내 급여 ACS+PCI 적응증 확인"},"drug:ticagrelor":{"id":"drug:ticagrelor","ko":"티카그렐러","class":"class:antiplatelet_p2y12","target":"P2Y12 직접·가역 (프로드럭 아님)","renal_excretion":"—","half_life":"7–9시간(가역이나 효과 ~5일 지속)","onset":"부하 180mg시 30분–2시간(빠름)","reversal":"특이역전제 벤트라시맙(연구단계). 혈소판 수혈은 가역결합으로 효과 제한적.","indications":[{"cond":"ACS (첫 12개월)","std":"180 mg 부하 → 90 mg BID","reduce":"—","note":"아스피린 75–100mg 병용, 100mg 초과 금지"},{"cond":"ACS 12개월 이후 고위험","std":"60 mg BID","reduce":"—","note":"장기 2차예방 감량 유지"}],"renal_table":[{"crcl":"전 구간","dose":"신기능 조절 불요(투석 경험 제한)"}],"interactions":"강력 CYP3A4 억제제(케토코나졸·클래리스로마이신) 병용 금기·회피. CYP3A4 유도제(리팜핀)는 효과↓. 심바스타틴·로바스타틴 40mg 초과 병용 주의.","contraindication":"★중증 간장애(금기), 활동성 출혈, 두개내출혈 병력.","tips":"호흡곤란(dyspnea) 부작용 특징적 — 아데노신 관련, 대개 경미하나 중단 사유 될 수 있음. 1일 2회 순응도 관건. 프로드럭 아니라 발현 빠름.","_kr_flag":"국내 급여 ACS 적응증. 60mg 장기유지 급여조건 확인"},"drug:cilostazol":{"id":"drug:cilostazol","ko":"실로스타졸","class":"class:antiplatelet_pde","target":"PDE3 억제 → cAMP↑ (+ 혈관확장)","renal_excretion":"—","half_life":"11–13시간","onset":"정상상태 수일","reversal":"특이역전제 없음","indications":[{"cond":"말초동맥질환(간헐성 파행)","std":"100 mg BID (식전 30분/식후 2시간)","reduce":"—","note":"증상완화·보행거리 개선 목적"},{"cond":"뇌졸중 2차예방(일부)","std":"100 mg BID","reduce":"—","note":"국내 사용 있음"}],"renal_table":[{"crcl":"전 구간","dose":"용량조절 자료 제한 — 신중"}],"interactions":"강력 CYP3A4/CYP2C19 억제제(케토코나졸·오메프라졸) 병용 시 감량(50mg BID). 자몽주스 주의.","contraindication":"★모든 심부전 환자에 금기 — PDE3 억제로 치명적 부정맥 위험(심박수 5–7 BPM↑, 심실조기수축↑). 활동성 출혈.","tips":"심부전 금기가 절대적 — 처방 전 반드시 확인. 두통이 흔한 부작용. 간헐성 파행에 pentoxifylline이 심부전 동반 시 대안.","_kr_flag":"국내 급여 말초동맥질환·뇌졸중 적응증 확인"},"drug:heparin":{"id":"drug:heparin","ko":"헤파린(미분획, UFH)","class":"class:heparin","target":"AT 매개 IIa·Xa 억제 (1:1)","renal_excretion":"간·세망내피(신비의존 낮음)","half_life":"1–2시간(용량의존)","onset":"IV 즉시","reversal":"프로타민(특이·완전역전)","indications":[{"cond":"치료(ACS·VTE)","std":"체중기반 IV(bolus + 지속주입), aPTT 조절","reduce":"—","note":"aPTT 1.5–2.5배 목표. anti-Xa 모니터링 대안"},{"cond":"예방","std":"5000 U SC BID–TID","reduce":"—"}],"renal_table":[{"crcl":"전 구간","dose":"신조절 불요 — 신부전에서 LMWH보다 선호(ACCP)"}],"interactions":"다른 항응고·항혈소판제와 출혈↑. 니트로글리세린 IV가 헤파린 효과 감소시킬 수 있음.","contraindication":"활동성 대량출혈, HIT(헤파린유발 혈소판감소증) 병력. 혈소판 모니터링 필수.","tips":"반감기 짧아 조절 용이 — 출혈시 중단만으로 빠르게 회복, 프로타민으로 완전역전. 신부전에서 LMWH 대신 선호. HIT 감시(혈소판 4–14일).","_kr_flag":"입원 치료 기반 급여"},"drug:enoxaparin":{"id":"drug:enoxaparin","ko":"에녹사파린(LMWH)","class":"class:heparin","target":"AT 매개 Xa 우위 (anti-Xa:IIa ≈ 2–4:1)","renal_excretion":"신배설(축적 위험)","half_life":"4–7시간(신부전서 연장)","onset":"SC 3–5시간(peak)","reversal":"프로타민(부분역전 ~60%)","indications":[{"cond":"치료(ACS·VTE)","std":"1 mg/kg SC BID (또는 1.5 mg/kg QD)","reduce":"CrCl<30: 1 mg/kg SC QD로 감량","note":"BID가 QD보다 선호(중단계획·출혈완화). CrCl 30–50은 25% 감량 고려"},{"cond":"예방","std":"40 mg SC QD","reduce":"CrCl<30: 30 mg SC QD"}],"renal_table":[{"crcl":"≥30","dose":"치료 1 mg/kg BID / 예방 40 mg QD"},{"crcl":"<30","dose":"치료 1 mg/kg QD / 예방 30 mg QD (anti-Xa 모니터링 고려)"}],"interactions":"다른 항혈전제와 출혈↑. 신부전서 축적.","contraindication":"활동성 대량출혈, HIT 병력, 중증 신부전 신중.","tips":"신기능 저하 시 축적 — CrCl<30 감량 필수, anti-Xa 모니터링 고려. 프로타민은 부분(~60%)만 중화. 신부전에선 UFH가 더 안전할 수 있음.","_kr_flag":"치료·예방 적응증별 급여"},"drug:fondaparinux":{"id":"drug:fondaparinux","ko":"폰다파리눅스","class":"class:heparin","target":"AT 매개 Xa 선택 억제 (펜타사카라이드)","renal_excretion":"신배설(높음)","half_life":"17–21시간(길다)","onset":"SC 2–3시간(peak)","reversal":"특이역전제 없음(프로타민 무효) — 지혈 어려움","indications":[{"cond":"VTE 치료","std":"체중별 5/7.5/10 mg SC QD (<50/50–100/>100kg)","reduce":"—","note":"반감기 길어 1일 1회. HIT에서 대안으로 쓰이기도"},{"cond":"VTE 예방","std":"2.5 mg SC QD","reduce":"CrCl 20–50: 1.5 mg QD"}],"renal_table":[{"crcl":">50","dose":"표준(치료 체중별 / 예방 2.5 mg)"},{"crcl":"20–50","dose":"예방 1.5 mg QD, 치료는 신중"},{"crcl":"<20–30","dose":"★금기(CrCl<30 금기, <20 절대금기)"}],"interactions":"다른 항혈전제와 출혈↑.","contraindication":"★중증 신부전(CrCl<30) 금기, 활동성 출혈, 체중<50kg 예방 신중.","tips":"반감기 길고 역전제 없어 출혈시 관리 어려움 — 신중한 환자 선택. HIT에서 교차반응 없어 대안이 될 수 있음. 프로타민 안 들음.","_kr_flag":"치료·예방 적응증별 급여"}}};</script>
+<script>// ============================================================
+// 항혈전제 가이드 ENGINE v0.1
+// 정문: recommend(patient) -> { drugs[], targets[], flags[], reimbursement[] }
+// 원칙: DATA/ENGINE/UI 분리. 임상수치는 DATA에만. 엔진은 DATA를 ID로 참조·조합.
+// advisory only — 처방결정권은 의사.
+// ============================================================
+
+window.buildEngine=function(DATA) {
+  const PP = DATA.periprocedural;
+  const ENDO = DATA.periendoscopy;
+  const REV = DATA.reversal;
+  const REIMB = DATA.reimbursement;
+
+  // --- 약물→계열 매핑 (라우팅용) ---
+  const DOAC = ['drug:apixaban','drug:edoxaban','drug:rivaroxaban','drug:dabigatran'];
+  const ANTIPLATELET = Object.keys(PP.antiplatelet_periop.agents);
+  const GI_PROCS = new Set([
+    ...ENDO.endoscopyBleedRisk.high.procedures.map(p=>p.id),
+    ...ENDO.endoscopyBleedRisk.low.procedures.map(p=>p.id)
+  ]);
+
+  // --- 시술 출혈위험 판정 (GI는 D4 우선, 그 외 D1) ---
+  function resolveBleedRisk(procId) {
+    if (!procId) return { tier:null, isGI:false, src:null };
+    // D4 내시경 우선
+    if (ENDO.endoscopyBleedRisk.high.procedures.some(p=>p.id===procId))
+      return { tier:'high', isGI:true, src:'ACG-CAG 2022' };
+    if (ENDO.endoscopyBleedRisk.low.procedures.some(p=>p.id===procId))
+      return { tier:'low', isGI:true, src:'ACG-CAG 2022' };
+    // D1 일반시술
+    const P = PP.procedures;
+    const inList = (arr)=>arr && arr.some(x=> (typeof x==='string'?x:x.id)===procId);
+    if (inList(P._GI_focus.filter(p=>p.bleedRisk==='high'))|| inList(P._other_high))
+      return { tier:'high', isGI:false, src:'CHEST 2022' };
+    if (inList(P._GI_focus.filter(p=>p.bleedRisk==='lowmod'))|| inList(P._other_lowmod))
+      return { tier:'lowmod', isGI:false, src:'CHEST 2022' };
+    if (inList(P._minimal))
+      return { tier:'minimal', isGI:false, src:'CHEST 2022' };
+    // GI_focus 개별 점검
+    const gi = P._GI_focus.find(p=>p.id===procId);
+    if (gi) return { tier:gi.bleedRisk, isGI:false, src:'CHEST 2022' };
+    return { tier:null, isGI:false, src:null };
+  }
+
+  // tier 정규화: D1은 lowmod/high/minimal, D4는 low/high
+  function normTier(tier){
+    if(tier==='low') return 'lowmod';
+    return tier; // high, lowmod, minimal 그대로
+  }
+
+  // --- DOAC 중단·재개 ---
+  function doacPlan(drugId, tier, egfr) {
+    const a = PP.doac_periop.agents[drugId];
+    const t = normTier(tier)==='minimal' ? 'lowmod' : normTier(tier); // minimal은 lowmod로 보수적
+    let hold, renalNote=null;
+    if (a.renalIndependent) {
+      hold = a.hold[t];
+    } else if (a.renalDependent) {
+      // dabigatran: CrCl 구간
+      let band;
+      if (egfr==null) { band='crcl_30_50'; renalNote='신기능 미입력 → 보수적(CrCl 30-50) 가정'; }
+      else if (egfr>=50) band='crcl_ge50';
+      else if (egfr>=30) band='crcl_30_50';
+      else band='crcl_lt30';
+      hold = a.byRenal[band].hold[t];
+      if (egfr!=null && egfr<30) renalNote='CrCl<30: anti-Xa 일상측정 회피, 실체중 계산';
+    }
+    const resume = (t==='high') ? PP.doac_periop._resume_general.high
+                                : PP.doac_periop._resume_general.lowmod;
+    return { id:drugId, action:'hold', holdDays:hold, resumeAfter:resume, renalNote,
+             _src:'CHEST 2022 / PAUSE' };
+  }
+
+  // --- 항혈소판 중단·재개 ---
+  function antiplateletPlan(drugId, tier) {
+    const a = PP.antiplatelet_periop.agents[drugId];
+    // 고출혈위험 기준. 저위험·minimal은 대개 지속(특히 ASA).
+    const t = normTier(tier);
+    if (drugId==='drug:aspirin' && t!=='high') {
+      return { id:drugId, action:'continue', note:'비고위험: ASA 유지(중단말 것)', _src:'CHEST 2022' };
+    }
+    return { id:drugId, action: t==='high'?'hold':'consider_continue',
+             holdDays:a.hold_days, resumeAfter:a.resume,
+             note: t!=='high'?'저위험 시술: 지속 고려(DAPT면 P2Y12만 중단)':null,
+             _src:'CHEST 2022' };
+  }
+
+  // --- 와파린 ---
+  function warfarinPlan(tier, isGI, thromboticRisk) {
+    if (isGI) {
+      // ACG-CAG: 내시경은 와파린 유지
+      return { id:'drug:warfarin', action:'continue',
+               note:'내시경: 와파린 유지 권고(중단보다). bridging 반대.',
+               grade:ENDO.elective_endoscopy.warfarin.grade, _src:'ACG-CAG 2022' };
+    }
+    const c = PP.conventional_periop['drug:warfarin'];
+    const bridge = (thromboticRisk==='high' && normTier(tier)!=='high');
+    return { id:'drug:warfarin', action:'hold', holdInfo:c.hold, resumeAfter:c.resume,
+             bridging: bridge ? 'consider (고혈전+저출혈)' : 'no (AF routine bridging 반대)',
+             _src:'CHEST 2022' };
+  }
+
+  // --- 역전제 매핑 ---
+  function reversalFor(drugId) {
+    const r = REV.reversal_decision_logic[drugId];
+    if (!r) return null;
+    const first = REV.specific_reversal[r.first] || REV.nonspecific_reversal[r.first];
+    return { target:drugId, first:r.first, firstLabel:first?(first.brand_ko||first.label_ko||r.first):r.first,
+             alt:r.alt, krCaveat:r._kr_caveat||null };
+  }
+
+  // --- 급여 ---
+  function reimbursementFor(drugId, comorbids) {
+    const out=[];
+    if (DOAC.includes(drugId) && comorbids && comorbids.includes('comorbid:af')) {
+      const n = REIMB.noac_reimbursement_nvaf;
+      out.push({ drug:drugId, scheme:'NVAF',
+                 criterion:`${n.criterion.score} ${n.criterion.threshold}`,
+                 conflict:n._GUIDELINE_VS_REIMBURSEMENT_CONFLICT.gap,
+                 _recheck:'HIRA 원문 확인' });
+    }
+    return out;
+  }
+
+  // ============ 정문 ============
+  function recommend(patient) {
+    patient = patient||{};
+    const meds = patient.meds||[];
+    const tierInfo = resolveBleedRisk(patient.proc);
+    const egfr = patient.egfr==null?null:Number(patient.egfr);
+    const comorbids = patient.comorbids||[];
+    const thromboticRisk = patient.thromboticRisk||null;
+
+    const drugs=[], flags=[], reimbursement=[];
+
+    // 신기능 경고
+    if (egfr!=null && egfr<30)
+      flags.push({level:'warn', code:'renal', msg:`CrCl/eGFR ${egfr}: DOAC 중단기간 연장, 용량·역전 주의`});
+
+    for (const m of meds) {
+      if (DOAC.includes(m)) {
+        if (tierInfo.isGI) {
+          // 내시경: DOAC는 중단(ACG-CAG) + 중단일수는 CHEST표 적용
+          const plan = doacPlan(m, tierInfo.tier, egfr);
+          plan.endoNote='내시경: DOAC 일시중단 권고(ACG-CAG). 재개 대개 익일.';
+          drugs.push(plan);
+        } else if (tierInfo.tier) {
+          drugs.push(doacPlan(m, tierInfo.tier, egfr));
+        } else {
+          drugs.push({id:m, action:'info', note:'시술 미선택: 일반 복약정보만'});
+        }
+      } else if (m==='drug:warfarin') {
+        drugs.push(warfarinPlan(tierInfo.tier, tierInfo.isGI, thromboticRisk));
+      } else if (ANTIPLATELET.includes(m)) {
+        drugs.push(antiplateletPlan(m, tierInfo.tier));
+      } else {
+        drugs.push({id:m, action:'info', note:'periprocedural 표 외 약물 — 라이브러리 참조'});
+      }
+      // 역전제·급여 부가
+      const rev=reversalFor(m); if(rev) flags.push({level:'info', code:'reversal', msg:`${m} 역전: ${rev.firstLabel}${rev.alt?(' / 대체 '+rev.alt):''}`, data:rev});
+      reimbursement.push(...reimbursementFor(m, comorbids));
+    }
+
+    // 안전장치: DAPT(ASA+P2Y12) + 고위험 시술 동시중단 경고
+    const p2y12List = ['drug:clopidogrel','drug:prasugrel','drug:ticagrelor'];
+    const hasASA = meds.includes('drug:aspirin');
+    const hasP2Y12 = meds.some(m=>p2y12List.includes(m));
+    if (hasASA && hasP2Y12 && normTier(tierInfo.tier)==='high') {
+      flags.push({level:'warn', code:'dapt_highrisk',
+        msg:'DAPT + 고위험 시술: ASA 유지·P2Y12만 중단이 원칙(ACG-CAG). 스텐트 혈전 위험 — 시술 연기 또는 심장내과 협진 권고.'});
+    }
+
+    // 시술 위험 플래그
+    if (tierInfo.tier)
+      flags.push({level:'info', code:'bleedrisk',
+        msg:`시술 출혈위험: ${normTier(tierInfo.tier)} (${tierInfo.src}${tierInfo.isGI?', 내시경 정밀분류':''})`});
+
+    return { drugs, targets:[], flags, reimbursement, _meta:{tier:tierInfo, egfr} };
+  }
+
+  return { recommend, resolveBleedRisk, _internal:{doacPlan, antiplateletPlan, warfarinPlan, reversalFor} };
+}</script>
+<script>const CASCADE_SVG=`<img alt="응고 캐스케이드 모식도" style="width:100%;height:auto" src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSItNjYgMCA0MzAgNDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHN0eWxlPSJ3aWR0aDoxMDAlO2hlaWdodDphdXRvO2ZvbnQtZmFtaWx5OmluaGVyaXQiPgogIDxkZWZzPgogICAgPG1hcmtlciBpZD0iYWgiIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIHJlZlg9IjYiIHJlZlk9IjMiIG9yaWVudD0iYXV0byI+CiAgICAgIDxwYXRoIGQ9Ik0wLDAgTDYsMyBMMCw2IFoiIGZpbGw9IiM3YzgyOGQiLz4KICAgIDwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYWhiIiBtYXJrZXJXaWR0aD0iOSIgbWFya2VySGVpZ2h0PSI5IiByZWZYPSIyIiByZWZZPSIzIiBvcmllbnQ9ImF1dG8iPgogICAgICA8cGF0aCBkPSJNNiwwIEwwLDMgTDYsNiBaIiBmaWxsPSIjYjkxYzNjIi8+CiAgICA8L21hcmtlcj4KICA8L2RlZnM+CiAgPHRleHQgeD0iNzgiIHk9IjIyIiBmb250LXNpemU9IjEwIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMmM1MjgyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7rgrTsnbgg6rK966GcPC90ZXh0PgogIDx0ZXh0IHg9IjI4MiIgeT0iMjIiIGZvbnQtc2l6ZT0iMTAiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMyYzUyODIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuyZuOyduCDqsr3roZw8L3RleHQ+CiAgPHRleHQgeD0iNzgiIHk9IjM0IiBmb250LXNpemU9IjgiIGZpbGw9IiM3YzgyOGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPijspp3tj63Ct+ygkey0iSk8L3RleHQ+CiAgPHRleHQgeD0iMjgyIiB5PSIzNCIgZm9udC1zaXplPSI4IiBmaWxsPSIjN2M4MjhkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4o7KGw7KeB7J247J6QwrfshpDsg4EpPC90ZXh0PgogIDxnIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYTFkMjMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPgogICAgPHJlY3QgeD0iNTgiIHk9IjQyIiB3aWR0aD0iNDAiIGhlaWdodD0iMjIiIHJ4PSI2IiBmaWxsPSIjZWVmMmY3IiBzdHJva2U9IiNjM2QzZTYiLz48dGV4dCB4PSI3OCIgeT0iNTciPlhJSTwvdGV4dD4KICAgIDxyZWN0IHg9IjU4IiB5PSI5MiIgd2lkdGg9IjQwIiBoZWlnaHQ9IjIyIiByeD0iNiIgZmlsbD0iI2VlZjJmNyIgc3Ryb2tlPSIjYzNkM2U2Ii8+PHRleHQgeD0iNzgiIHk9IjEwNyI+WEk8L3RleHQ+CiAgICA8cmVjdCB4PSI1OCIgeT0iMTQyIiB3aWR0aD0iNDAiIGhlaWdodD0iMjIiIHJ4PSI2IiBmaWxsPSIjZWVmMmY3IiBzdHJva2U9IiNjM2QzZTYiLz48dGV4dCB4PSI3OCIgeT0iMTU3Ij5JWDwvdGV4dD4KICAgIDxyZWN0IHg9IjI1MiIgeT0iOTIiIHdpZHRoPSI2MCIgaGVpZ2h0PSIyMiIgcng9IjYiIGZpbGw9IiNlZWYyZjciIHN0cm9rZT0iI2MzZDNlNiIvPjx0ZXh0IHg9IjI4MiIgeT0iMTA3Ij5WSUkgLyBURjwvdGV4dD4KICAgIDxyZWN0IHg9IjE1MCIgeT0iMjAwIiB3aWR0aD0iNjAiIGhlaWdodD0iMjQiIHJ4PSI2IiBmaWxsPSIjZGJlNmYzIiBzdHJva2U9IiMyYzUyODIiIHN0cm9rZS13aWR0aD0iMS41Ii8+PHRleHQgeD0iMTgwIiB5PSIyMTYiPlgg4oaSIFhhPC90ZXh0PgogICAgPHJlY3QgeD0iMTQwIiB5PSIyNzAiIHdpZHRoPSI4MCIgaGVpZ2h0PSIyNCIgcng9IjYiIGZpbGw9IiNkYmU2ZjMiIHN0cm9rZT0iIzJjNTI4MiIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48dGV4dCB4PSIxODAiIHk9IjI4NiI+SUkg4oaSIO2KuOuhrOu5iDwvdGV4dD4KICAgIDxyZWN0IHg9IjEzNSIgeT0iMzQwIiB3aWR0aD0iOTAiIGhlaWdodD0iMjQiIHJ4PSI2IiBmaWxsPSIjY2RkZGVjIiBzdHJva2U9IiMyYzUyODIiIHN0cm9rZS13aWR0aD0iMS41Ii8+PHRleHQgeD0iMTgwIiB5PSIzNTYiPuyErOycoOyGjChmaWJyaW4pPC90ZXh0PgogIDwvZz4KICA8ZyBzdHJva2U9IiM3YzgyOGQiIHN0cm9rZS13aWR0aD0iMS41IiBmaWxsPSJub25lIiBtYXJrZXItZW5kPSJ1cmwoI2FoKSI+CiAgICA8cGF0aCBkPSJNNzgsNjQgTDc4LDkwIi8+CiAgICA8cGF0aCBkPSJNNzgsMTE0IEw3OCwxNDAiLz4KICAgIDxwYXRoIGQ9Ik03OCwxNjQgUTc4LDIwMCAxNDgsMjA4Ii8+CiAgICA8cGF0aCBkPSJNMjgyLDExNCBRMjgyLDE4MCAyMTIsMjA4Ii8+CiAgICA8cGF0aCBkPSJNMTgwLDIyNCBMMTgwLDI2OCIvPgogICAgPHBhdGggZD0iTTE4MCwyOTQgTDE4MCwzMzgiLz4KICA8L2c+CiAgPGcgZm9udC1zaXplPSI5IiBmb250LXdlaWdodD0iNzAwIj4KICAgIDxsaW5lIHgxPSIxNCIgeTE9IjEwMyIgeDI9IjU2IiB5Mj0iMTAzIiBzdHJva2U9IiNiNDUzMDkiIHN0cm9rZS13aWR0aD0iMS41IiBtYXJrZXItZW5kPSJ1cmwoI2FoYikiIHN0cm9rZS1kYXNoYXJyYXk9IjIsMiIvPgogICAgPHRleHQgeD0iMTAiIHk9IjEwMCIgdGV4dC1hbmNob3I9ImVuZCIgZmlsbD0iI2I0NTMwOSI+7LCo7IS464yAPC90ZXh0PgogICAgPHRleHQgeD0iMTAiIHk9IjExMSIgdGV4dC1hbmNob3I9ImVuZCIgZm9udC1zaXplPSI3IiBmaWxsPSIjYjQ1MzA5Ij5YSSjsl7DqtazspJEpPC90ZXh0PgogICAgPGxpbmUgeDE9IjE0IiB5MT0iMTUzIiB4Mj0iNTYiIHkyPSIxNTMiIHN0cm9rZT0iI2I5MWMzYyIgc3Ryb2tlLXdpZHRoPSIxLjUiIG1hcmtlci1lbmQ9InVybCgjYWhiKSIgc3Ryb2tlLWRhc2hhcnJheT0iMywyIi8+CiAgICA8dGV4dCB4PSIxMCIgeT0iMTUwIiB0ZXh0LWFuY2hvcj0iZW5kIiBmaWxsPSIjYjkxYzNjIj7smYDtjIzrprA8L3RleHQ+CiAgICA8dGV4dCB4PSIxMCIgeT0iMTYxIiB0ZXh0LWFuY2hvcj0iZW5kIiBmb250LXNpemU9IjYuNSIgZmlsbD0iIzdjODI4ZCI+SUnCt1ZJScK3SVjCt1g8L3RleHQ+CiAgICA8bGluZSB4MT0iMTE4IiB5MT0iMjEyIiB4Mj0iMTQ4IiB5Mj0iMjEyIiBzdHJva2U9IiNiOTFjM2MiIHN0cm9rZS13aWR0aD0iMS41IiBtYXJrZXItZW5kPSJ1cmwoI2FoYikiIHN0cm9rZS1kYXNoYXJyYXk9IjMsMiIvPgogICAgPHRleHQgeD0iMTE2IiB5PSIyMDkiIHRleHQtYW5jaG9yPSJlbmQiIGZpbGw9IiNiOTFjM2MiPn54YWJhbjwvdGV4dD4KICAgIDx0ZXh0IHg9IjExNiIgeT0iMjE5IiB0ZXh0LWFuY2hvcj0iZW5kIiBmb250LXNpemU9IjciIGZpbGw9IiM3YzgyOGQiPlhhIOyngeygkTwvdGV4dD4KICAgIDxsaW5lIHgxPSIyNDgiIHkxPSIyMTIiIHgyPSIyMTQiIHkyPSIyMTIiIHN0cm9rZT0iI2I5MWMzYyIgc3Ryb2tlLXdpZHRoPSIxLjUiIG1hcmtlci1lbmQ9InVybCgjYWhiKSIgc3Ryb2tlLWRhc2hhcnJheT0iMywyIi8+CiAgICA8dGV4dCB4PSIyNTAiIHk9IjIwOSIgdGV4dC1hbmNob3I9InN0YXJ0IiBmaWxsPSIjYjkxYzNjIj7tl6TtjIzrprDqs4Q8L3RleHQ+CiAgICA8dGV4dCB4PSIyNTAiIHk9IjIxOSIgdGV4dC1hbmNob3I9InN0YXJ0IiBmb250LXNpemU9IjciIGZpbGw9IiM3YzgyOGQiPlhhwrdJSWEoQVQpPC90ZXh0PgogICAgPGxpbmUgeDE9IjI0OCIgeTE9IjI4MiIgeDI9IjIyMiIgeTI9IjI4MiIgc3Ryb2tlPSIjYjkxYzNjIiBzdHJva2Utd2lkdGg9IjEuNSIgbWFya2VyLWVuZD0idXJsKCNhaGIpIiBzdHJva2UtZGFzaGFycmF5PSIzLDIiLz4KICAgIDx0ZXh0IHg9IjI1MCIgeT0iMjc5IiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGZpbGw9IiNiOTFjM2MiPuuLpOu5hOqwgO2KuOuegDwvdGV4dD4KICAgIDx0ZXh0IHg9IjI1MCIgeT0iMjg5IiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGZvbnQtc2l6ZT0iNyIgZmlsbD0iIzdjODI4ZCI+SUlhIOyngeygkTwvdGV4dD4KICA8L2c+Cjwvc3ZnPg==">`;
+// ===== 라이브러리 섹션 =====
+const REV_KO_LIB_MAP={'drug:idarucizumab':'이다루시주맙','drug:andexanet_alfa':'안덱사넷','drug:pcc_4f':'4F-PCC','drug:apcc_feiba':'APCC(FEIBA)','drug:vitamin_k':'비타민K','drug:protamine':'프로타민'};
+function REV_KO_LIB(id){return REV_KO_LIB_MAP[id]||id;}
+
+// 약물 상세 데이터 (라이브러리 펼침용)
+const LIB_DETAIL = {
+  'drug:warfarin':{target:'II·VII·IX·X 생산',half:'36–42h',hold:'약 5일 전',resume:'시술 당일 저녁',renal:'용량 신기능 무관(INR로 조정)',extra:'비타민K 의존인자를 간에서 만들지 못하게 막습니다. 이미 만들어진 인자가 소진될 때까지 효과가 늦게 나타나며, 그래서 중단도 5일가량 필요한 것으로 알려져 있습니다. INR 모니터링이 필요합니다.'},
+  'drug:dabigatran':{target:'IIa(트롬빈) 직접',half:'12–17h',hold:'1–4일(신기능)',resume:'24–72h',renal:'신배설 큼 — CrCl 낮을수록 길게',extra:'트롬빈에 직접 결합하는 것으로 알려져 있습니다. 신장으로 주로 배설되어 신기능이 중단 기간을 좌우합니다. 특이 역전제(이다루시주맙)가 있는 점이 특징입니다.'},
+  'drug:rivaroxaban':{target:'Xa 직접',half:'5–9h',hold:'1–2일',resume:'24–72h',renal:'CrCl 15–50 감량 고려',extra:'활성화된 10인자(Xa)에 직접 결합하는 것으로 생각됩니다. 15/20mg은 음식과 함께 복용할 때 흡수가 좋은 것으로 알려져 있습니다.'},
+  'drug:apixaban':{target:'Xa 직접',half:'8–15h',hold:'1–2일',resume:'24–72h',renal:'3조건 중 2개 충족 시 감량',extra:'Xa 직접 억제제 중 신기능 영향이 비교적 적은 편으로 알려져 있습니다. 1일 2회 복용합니다.'},
+  'drug:edoxaban':{target:'Xa 직접',half:'10–14h',hold:'1–2일',resume:'24–72h',renal:'CrCl 15–50 감량',extra:'1일 1회 Xa 직접 억제제입니다. 신기능이 지나치게 좋은 경우 효과가 떨어질 가능성이 보고된 바 있습니다.'},
+  'drug:heparin':{target:'IIa·Xa (AT 매개)',half:'1–2h',hold:'4–6h 전',resume:'24–72h',renal:'',extra:'안티트롬빈에 결합해 트롬빈과 Xa를 모두 비활성화하는 것으로 알려져 있습니다(약 1:1). 반감기가 짧아 조절이 쉽고, 프로타민으로 역전 가능합니다.'},
+  'drug:enoxaparin':{target:'Xa 우위 (AT 매개)',half:'4–7h',hold:'24h(치료용량)',resume:'24–72h',renal:'CrCl<30 감량',extra:'사슬이 짧아 트롬빈보다 Xa를 더 많이 억제하는 것으로 알려져 있습니다(약 2–4:1). 프로타민으로는 부분 역전만 됩니다.'},
+  'drug:fondaparinux':{target:'Xa 선택 (AT 매개)',half:'17–21h',hold:'CrCl≥50: 2–4일',resume:'24–72h',renal:'CrCl<50 신중',extra:'펜타사카라이드만 가져 트롬빈은 억제하지 못하고 Xa만 선택적으로 억제하는 것으로 생각됩니다. 반감기가 길고 신배설됩니다.'},
+  'drug:aspirin':{target:'COX-1 → TXA2↓',half:'—(비가역)',hold:'고위험만 7일',resume:'24h',renal:'',extra:'COX-1을 비가역적으로 억제해 트롬복산 A2 생성을 줄이는 것으로 알려져 있습니다. 비고위험 시술에서는 유지하는 것이 일반적으로 권고됩니다.'},
+  'drug:clopidogrel':{target:'P2Y12 (프로드럭)',half:'프로드럭',hold:'5일',resume:'24–48h',renal:'',extra:'간에서 활성 대사체로 전환되어야 효과가 나타나는 프로드럭입니다. CYP2C19 유전형에 따라 반응이 달라질 수 있다고 알려져 있습니다.'},
+  'drug:prasugrel':{target:'P2Y12 (프로드럭)',half:'프로드럭',hold:'7일',resume:'24–48h',renal:'',extra:'클로피도그렐보다 강력하고 일관된 혈소판 억제를 보이는 것으로 알려져 있습니다. 중단 기간이 더 깁니다.'},
+  'drug:ticagrelor':{target:'P2Y12 (직접·가역)',half:'7–9h',hold:'3–5일',resume:'24–48h',renal:'',extra:'프로드럭이 아니라 직접·가역적으로 작용하는 것으로 알려져 있습니다. 중단 후 회복이 비교적 빠른 편입니다.'},
+  'drug:cilostazol':{target:'PDE3 → cAMP↑',half:'11–13h',hold:'1–2일',resume:'24h',renal:'',extra:'PDE3을 억제해 cAMP를 높이고 혈관확장 작용도 함께 가지는 것으로 알려져 있습니다.'}
+};
+
+function buildLibrary(){
+  const sec=document.getElementById('sec-lib');
+  let h='';
+
+  // ── 첫 화면: 중단기간 요약표 (임상 최다 조회) ──
+  h+=`<div class="card"><div class="card-h">📋 시술 전 중단기간 한눈에 보기</div><div class="card-b">
+    <p class="muted" style="margin:2px 0 12px">저·고출혈위험 시술별 권장 중단일. 재개는 대개 지혈 확인 후 저위험 24h·고위험 48–72h. <b>세부는 신기능·시술로 달라지므로 시술 전후 탭에서 확인</b>.</p>
+    <div class="tbl-scroll"><table class="dtbl">
+      <thead><tr><th>약물</th><th>저위험</th><th>고위험</th><th>재개</th></tr></thead><tbody>`;
+  const rows=[
+    ['ven','와파린','5일 전','5일 전','당일 저녁'],
+    ['ven','다비가트란','1–2일*','2–4일*','24–72h'],
+    ['ven','리바록사반','1일','2일','24–72h'],
+    ['ven','아픽사반','1일','2일','24–72h'],
+    ['ven','에독사반','1일','2일','24–72h'],
+    ['ven','에녹사파린','24h','24h','24–72h'],
+    ['ven','폰다파리눅스','2–4일','2–4일','24–72h'],
+    ['art','아스피린','유지','7일','24h'],
+    ['art','클로피도그렐','5일','5일','24–48h'],
+    ['art','프라수그렐','7일','7일','24–48h'],
+    ['art','티카그렐러','3–5일','3–5일','24–48h'],
+    ['art','실로스타졸','1–2일','1–2일','24h']
+  ];
+  rows.forEach(r=>{
+    h+=`<tr class="dtbl-${r[0]}"><td class="dtbl-name">${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`;
+  });
+  h+=`</tbody></table></div>
+    <p class="muted" style="font-size:10.5px;margin-top:8px">* 다비가트란은 신기능(CrCl)에 따라: CrCl≥50 저1/고2일, 30–50 저2/고4일, &lt;30 저3/고5일. 내시경에서는 와파린을 오히려 유지(ACG-CAG). 근거: CHEST 2022 · ACG-CAG 2022.</p>
+  </div></div>`;
+
+  const groups=[
+    {title:'🔵 항응고제 · 정맥축',cls:'ven',ids:['drug:warfarin','drug:dabigatran','drug:rivaroxaban','drug:apixaban','drug:edoxaban','drug:heparin','drug:enoxaparin','drug:fondaparinux']},
+    {title:'🔴 항혈소판제 · 동맥축',cls:'art',ids:['drug:aspirin','drug:clopidogrel','drug:prasugrel','drug:ticagrelor','drug:cilostazol']}
+  ];
+  groups.forEach(g=>{
+    h+=`<div class="card"><div class="card-h" style="color:var(--${g.cls})">${g.title}</div>
+      <div class="card-b"><div class="tile-grid">`;
+    g.ids.forEach(id=>{
+      const ko=DRUG_KO[id]||id;
+      const d=LIB_DETAIL[id]||{};
+      h+=`<button class="tile tile-${g.cls}" onclick="tileOpen('${id}','${g.cls}')">
+        <div class="tile-name">${ko}</div>
+        <div class="tile-target">${d.target||''}</div>
+      </button>`;
+    });
+    h+=`</div></div></div>`;
+  });
+  // 역전제 (압축 타일)
+  h+=`<div class="card"><div class="card-h">🛡️ 역전제 <span class="ref-badge">상급의료기관 전용 · 참고용</span></div><div class="card-b">
+    <p class="muted" style="margin:0 0 10px;font-size:11.5px">1·2차 진료에서 직접 쓰는 약이 아니며, 응급 대량출혈 시 상급종합병원에서 사용됩니다. 어떤 약이 있는지 소개만 합니다.</p>
+    <div class="tile-grid">
+    <button class="tile" onclick="revOpen('ida')"><div class="tile-name">이다루시주맙</div><div class="tile-target">다비가트란 · 국내급여</div></button>
+    <button class="tile" onclick="revOpen('and')"><div class="tile-name">안덱사넷</div><div class="tile-target">FXa · 국내 미확인</div></button>
+    <button class="tile" onclick="revOpen('pcc')"><div class="tile-name">4F-PCC</div><div class="tile-target">와파린·FXa 대체</div></button>
+  </div></div></div>`;
+  sec.innerHTML=h;
+}
+
+// 약물 타일 → 바텀시트
+function tileOpen(id,cls){
+  const ko=DRUG_KO[id]||id;
+  const DL=(DATA.druglib&&DATA.druglib[id])||null;
+  if(DL){ return tileOpenRich(id,cls,DL); }  // 상세 데이터 있으면 풍부한 시트
+  // 기존 간단 시트 (상세 미보강 약물)
+  const d=LIB_DETAIL[id]||{};
+  const rev=REV.reversal_decision_logic[id];
+  const revTxt=rev?REV_KO_LIB(rev.first):'—';
+  let b=`<div class="sheet-title" style="color:var(--${cls})">${ko}</div>`;
+  b+=`<div class="sheet-target">${d.target||''}</div>`;
+  b+=`<p class="sheet-extra">${d.extra||''}</p>`;
+  b+=`<div class="sheet-rows">`;
+  if(d.half) b+=`<div class="sheet-row"><span>반감기</span><b>${d.half}</b></div>`;
+  if(d.hold) b+=`<div class="sheet-row"><span>시술 전 중단</span><b>${d.hold}</b></div>`;
+  if(d.resume) b+=`<div class="sheet-row"><span>재개</span><b>${d.resume}</b></div>`;
+  if(d.renal) b+=`<div class="sheet-row"><span>신기능</span><b>${d.renal}</b></div>`;
+  b+=`<div class="sheet-row"><span>역전</span><b>${revTxt}</b></div>`;
+  b+=`</div>`;
+  openSheet(b);
+}
+
+// 풍부한 시트 (DOAC 등 상세 데이터)
+function tileOpenRich(id,cls,DL){
+  let b=`<div class="sheet-title" style="color:var(--${cls})">${DL.ko}</div>`;
+  b+=`<div class="sheet-target">${DL.target} · ${DL.class.replace('class:','')}</div>`;
+
+  // 핵심 지표 (항상 열림)
+  b+=`<div class="sheet-rows">`;
+  b+=`<div class="sheet-row"><span>신배설</span><b>${DL.renal_excretion}</b></div>`;
+  b+=`<div class="sheet-row"><span>반감기</span><b>${DL.half_life}</b></div>`;
+  if(DL.onset) b+=`<div class="sheet-row"><span>Tmax</span><b>${DL.onset}</b></div>`;
+  b+=`<div class="sheet-row"><span>역전</span><b>${DL.reversal}</b></div>`;
+  b+=`</div>`;
+
+  // 적응증별 용량 (핵심 — 열림)
+  b+=`<div class="sheet-sect-h">💊 적응증별 용량</div>`;
+  DL.indications.forEach(ind=>{
+    b+=`<div class="dose-card ${cls}">
+      <div class="dose-cond">${ind.cond}</div>
+      <div class="dose-std"><b>표준</b> ${ind.std}</div>`;
+    if(ind.reduce && ind.reduce!=='—') b+=`<div class="dose-red"><b>감량</b> ${ind.reduce}</div>`;
+    if(ind.note) b+=`<div class="dose-note">${ind.note}</div>`;
+    b+=`</div>`;
+  });
+
+  // CrCl 조절표 (핵심 — 열림)
+  b+=`<div class="sheet-sect-h">🫘 신기능(CrCl)별 용량</div>`;
+  b+=`<div class="tbl-scroll"><table class="dtbl mini"><thead><tr><th>CrCl (mL/min)</th><th>용량</th></tr></thead><tbody>`;
+  DL.renal_table.forEach(r=>{
+    b+=`<tr><td class="dtbl-name">${r.crcl}</td><td style="text-align:left">${r.dose}</td></tr>`;
+  });
+  b+=`</tbody></table></div>`;
+
+  // 상호작용·팁 (접기)
+  b+=`<details class="sheet-det"><summary>⚠️ 상호작용</summary><div class="det-b"><p class="sheet-extra" style="margin:6px 0">${DL.interactions}</p></div></details>`;
+  b+=`<details class="sheet-det"><summary>💡 실전 팁</summary><div class="det-b"><p class="sheet-extra" style="margin:6px 0">${DL.tips}</p></div></details>`;
+  // 금기 (항상 표시 — 안전정보)
+  if(DL.contraindication) b+=`<div class="sheet-ci">🚫 <b>금기·주의</b><br>${DL.contraindication}</div>`;
+  if(DL._kr_flag) b+=`<div class="sheet-kr">🇰🇷 ${DL._kr_flag}</div>`;
+
+  openSheet(b);
+}
+function revOpen(k){
+  const map={
+    ida:['이다루시주맙 (프락스바인드)','다비가트란 특이 역전제로 알려져 있습니다. 5g(2.5g 바이알 2개)를 투여하며, 국내에서는 응급 상황에 한해 급여가 적용되는 것으로 알려져 있습니다. FXa 억제제에는 효과가 없습니다.'],
+    and:['안덱사넷 알파','FXa 억제제(아픽사반·리바록사반) 역전제입니다. 다만 혈전 안전성 우려로 미국에서는 2025년 12월 자발 철수했으며, 국내 가용성은 현재 확인되지 않았습니다. 대체로 4F-PCC가 쓰입니다.'],
+    pcc:['4F-PCC','4인자 프로트롬빈복합체농축물입니다. 와파린 역전의 1차 선택이며, 특이 역전제가 없을 때 FXa 억제제 역전에도 쓰이는 것으로 알려져 있습니다. 실온 보관이 가능해 응급 접근성이 좋은 편입니다.']
+  };
+  const [t,x]=map[k];
+  openSheet(`<div class="sheet-title">${t}</div><p class="sheet-extra">${x}</p>`);
+}
+
+// ===== 학습 섹션 =====
+function buildLearn(){
+  const sec=document.getElementById('sec-learn');
+  let h='';
+
+  // L1 척추
+  h+=`<div class="card"><div class="card-h">🧭 L1 · 척추: 혈류가 약을 정한다</div><div class="card-b">
+    <div class="spine" style="margin:6px 0 12px">
+      <div class="spine-half spine-art"><div class="spine-tag">🔴 동맥</div>
+        <div class="spine-flow">빠른 흐름(high shear)</div><div class="spine-drug">→ 혈소판 백색혈전 → <b>항혈소판</b></div></div>
+      <div class="spine-half spine-ven"><div class="spine-tag">🔵 정맥</div>
+        <div class="spine-flow">느린 흐름(low shear)</div><div class="spine-drug">→ 섬유소 적색혈전 → <b>항응고</b></div></div>
+    </div>
+    <p class="learn-p">동맥은 혈류가 빠르고 압력이 높아, 혈관벽 손상 부위에서 혈소판이 빠르게 달라붙어 혈전을 이루는 것으로 알려져 있습니다. 이를 혈소판이 많은 '백색 혈전'이라 부르며, 그래서 항혈소판제가 주로 쓰입니다. 정맥은 흐름이 느려 섬유소(fibrin)와 적혈구가 갇혀 '적색 혈전'을 이루는 것으로 생각되며, 항응고제가 중심이 됩니다.</p>
+    <details><summary>한 걸음 더 — 이분법은 출발점일 뿐입니다</summary><div class="det-b">
+      <p class="learn-p">이 동맥/정맥 구분은 약을 이해하는 좋은 출발점이지만, 실제 혈전은 그렇게 깔끔하게 나뉘지 않는 것으로 보입니다. 두 혈전 모두 섬유소 그물과 같은 종류의 혈구(적혈구·백혈구·혈소판)를 포함하며, 단지 그 비율이 다를 뿐이라는 견해가 제시되고 있습니다.</p>
+      <p class="learn-p">실제로 동맥 혈전도 섬유소가 뼈대를 잡아 안정화되는 것으로 알려져 있습니다. 이 때문에 일부 동맥질환에서는 항응고제가 함께 쓰이기도 합니다. 예를 들어 COMPASS 연구에서는 관상동맥·말초동맥질환에 저용량 리바록사반과 아스피린을 병용하는 접근이 검토된 바 있습니다. 이는 단순 이분법의 예외이자, 그 너머를 보여주는 사례로 이해할 수 있습니다.</p>
+    </div></details>
+  </div></div>`;
+
+  // L2 캐스케이드
+  h+=`<div class="card"><div class="card-h">⚙️ L2 · 약이 어디를 때리나</div><div class="card-b">
+    <p class="learn-p" style="margin-top:2px">응고 인자 12가지를 모두 외우는 대신, <b>현재 쓰는 약이 어느 지점에 작용하는지</b>만 짚어보겠습니다. 약을 이해하는 데에는 이 지도가 더 실용적인 것으로 생각됩니다.</p>
+    <div class="cascade-wrap">${CASCADE_SVG}</div>
+    <p class="learn-cap">▲ 내인·외인 경로가 공통경로(X→트롬빈→섬유소)로 모입니다. <span style="color:var(--art)">빨간 점선</span>은 각 약물이 막는 지점입니다. 아래에서 하나씩 풀어 보겠습니다.</p>`;
+
+  const ln=(emoji,title,axis,body)=>`<details class="learn-node learn-${axis}"><summary>${emoji} ${title}</summary><div class="det-b">${body}</div></details>`;
+
+  h+=ln('🟦','비타민K 의존인자 (II·VII·IX·X) — 와파린','ven',
+    `<p class="learn-p">와파린은 간에서 비타민K 의존 인자(II·VII·IX·X)를 만드는 과정을 막는 것으로 알려져 있습니다. 다만 이미 혈액에 존재하는 인자가 소진되어야 효과가 나타나므로, 작용이 늦게 시작되고 중단에도 약 5일이 걸리는 것으로 이해됩니다.</p>
+     <p class="learn-p muted">참고로 Protein C·S(항응고 단백)도 비타민K 의존이라, 와파린 시작 초기에 일시적으로 응고가 항진될 수 있다는 점이 bridging 논의의 한 배경으로 알려져 있습니다.</p>`);
+
+  h+=ln('🟦','안티트롬빈 매개 — 헤파린 계열','ven',
+    `<p class="learn-p">헤파린 계열은 스스로 응고인자를 막는 것이 아니라, 우리 몸의 천연 항응고 단백인 안티트롬빈(AT)에 결합해 그 작용을 크게 가속하는 것으로 알려져 있습니다. 즉 간접적으로 트롬빈(IIa)과 Xa 등을 비활성화합니다.</p>
+     <p class="learn-p" style="background:var(--ven-bg);padding:10px 12px;border-radius:8px;margin-top:10px"><b>💎 분자 사슬 길이가 표적을 정합니다</b><br>
+     같은 헤파린 계열이라도 분자의 길이에 따라 무엇을 더 잘 막는지가 달라지는 것으로 알려져 있습니다.</p>
+     <div class="learn-tier">
+       <div class="learn-tier-row"><b>UFH(미분획)</b><span>긴 사슬 → AT와 트롬빈에 동시에 다리를 놓을 수 있어 Xa와 트롬빈을 비슷하게(약 1:1) 억제</span></div>
+       <div class="learn-tier-row"><b>LMWH(저분자)</b><span>짧은 사슬 → 트롬빈에 다리 놓기가 어려워 Xa를 더 많이 억제(약 2–4:1)</span></div>
+       <div class="learn-tier-row"><b>폰다파리눅스</b><span>가장 짧음(펜타사카라이드) → 트롬빈은 못 막고 Xa만 선택적으로 억제</span></div>
+     </div>
+     <p class="learn-p" style="color:var(--ven);margin-top:10px"><b>→ 사슬이 짧아질수록 표적이 Xa로 좁혀집니다. 이 흐름이 다음 세대인 DOAC의 'Xa 직접·선택' 작용으로 자연스럽게 이어진 것으로 볼 수 있습니다.</b></p>`);
+
+  h+=ln('🟦','Xa 직접 — 리바록사반·아픽사반·에독사반','ven',
+    `<p class="learn-p">이 약들은 안티트롬빈을 거치지 않고 활성화된 10인자(Xa)에 직접 결합하는 것으로 알려져 있습니다(이름의 '~xaban'). Xa는 응고 공통경로의 입구이자 증폭의 핵심 지점이라, 이곳을 막으면 효율적으로 응고를 줄일 수 있는 것으로 생각됩니다. 고정 용량으로 쓰고 일상적 모니터링이 필요 없다는 점이 장점으로 꼽힙니다.</p>`);
+
+  h+=ln('🟦','IIa(트롬빈) 직접 — 다비가트란','ven',
+    `<p class="learn-p">다비가트란은 응고의 최종 효소인 트롬빈에 직접 결합하는 것으로 알려져 있습니다(이름의 '~gatran'). 트롬빈은 섬유소원을 섬유소로 바꾸는 마지막 단계를 담당하므로, 이를 직접 막는 방식입니다. 특이 역전제(이다루시주맙)가 있다는 점이 특징입니다.</p>`);
+
+  h+=`</div></div>`;
+
+  // L3 항혈소판 진화사 (신규)
+  h+=`<div class="card"><div class="card-h">🔴 L3 · 항혈소판제 진화사</div><div class="card-b">
+    <p class="learn-p" style="margin-top:2px">혈소판이 활성화되는 경로는 여러 갈래입니다. 항혈소판제의 역사는 이 경로를 하나씩 더 정밀하게 공략해 온 과정으로 이해할 수 있습니다.</p>
+    <p class="learn-p">혈소판은 크게 세 단계로 작동하는 것으로 알려져 있습니다. ①손상 부위에 <b>붙고(부착)</b>, ②서로를 부르며 <b>활성화되고</b>, ③최종적으로 <b>서로 뭉칩니다(응집)</b>. 항혈소판제는 이 각 단계의 서로 다른 신호를 차단합니다 — 아스피린은 활성화 신호(TXA2) 하나를, P2Y12 억제제는 또 다른 활성화 신호(ADP)를, GPIIb/IIIa 억제제는 맨 마지막 응집 단계를 막는 식입니다.</p>`;
+
+  h+=ln('①','COX-1 → 트롬복산 A2 — 아스피린','art',
+    `<p class="learn-p">혈소판 안의 COX-1 효소를 <b>비가역적으로</b> 막아, 혈소판을 서로 불러모으는 신호인 트롬복산 A2(TXA2)의 생성을 줄이는 것으로 알려져 있습니다.</p>
+     <p class="learn-p">'비가역적'이라는 점이 중요합니다. 혈소판은 세포핵이 없어 새 효소를 만들지 못하므로, 한 번 아스피린에 억제된 혈소판은 <b>수명이 다할 때까지(약 7~10일)</b> 기능을 회복하지 못하는 것으로 이해됩니다. 그래서 약을 끊어도 효과가 바로 사라지지 않고, 골수에서 새 혈소판이 만들어져야 서서히 회복됩니다. 이 때문에 고위험 시술 전 중단이 7일가량 필요한 것으로 알려져 있습니다.</p>
+     <div class="trial-tag art">📋 CAPRIE (1996) — 아스피린과 클로피도그렐을 직접 비교한 대규모 연구의 출발점</div>`);
+
+  h+=ln('②','P2Y12(ADP 수용체) — 클로피도그렐·프라수그렐·티카그렐러','art',
+    `<p class="learn-p">혈소판을 더욱 활성화시키는 또 다른 신호인 ADP가 붙는 수용체(P2Y12)를 막는 계열입니다. 아스피린과는 다른 경로를 차단하기 때문에, 둘을 함께 쓰는 것이 이중항혈소판요법(DAPT)입니다.</p>
+     <p class="learn-p">이 계열 안에서도 세대에 따라 성격이 꽤 다른 것으로 알려져 있어, 임상에서 구분이 중요합니다.</p>
+     <div class="learn-tier">
+       <div class="learn-tier-row"><b>클로피도그렐</b><span>프로드럭(간에서 활성형으로 전환 필요). 비가역적. 발현이 느리고, CYP2C19 유전형에 따라 15~30%가 반응이 약한 것으로 보고됩니다.</span></div>
+       <div class="learn-tier-row"><b>프라수그렐</b><span>역시 프로드럭·비가역적이나, 활성형 전환이 효율적이어서 더 강하고 일관된 억제를 보이는 것으로 알려져 있습니다.</span></div>
+       <div class="learn-tier-row"><b>티카그렐러</b><span>프로드럭이 아니며(직접 작용), <b>가역적</b>으로 결합합니다. 발현이 빠르고(부하 2시간 내) 회복도 상대적으로 빠른 편입니다.</span></div>
+     </div>
+     <p class="learn-p" style="margin-top:10px"><b>가역성이 실제 임상을 가릅니다.</b> 클로피도그렐·프라수그렐은 비가역적이라 혈소판 수명(최대 7일) 동안 효과가 남는 반면, 티카그렐러는 가역적인데도 약 5일간 지속되는 것으로 알려져 있습니다. 그래서 중단 기간이 각각 5일·7일·3~5일로 달라집니다.</p>
+     <details style="margin-top:4px"><summary>왜 티카그렐러는 혈소판 수혈이 잘 안 들을까요?</summary><div class="det-b">
+       <p class="learn-p">클로피도그렐·프라수그렐의 활성 대사체는 반감기가 짧아 혈중에서 금방 사라지므로, 급성 출혈 시 혈소판을 수혈하면 새 혈소판은 억제를 덜 받아 지혈에 도움이 될 수 있는 것으로 알려져 있습니다.</p>
+       <p class="learn-p">반면 티카그렐러는 가역적으로 결합해 혈중에 계속 떠다니기 때문에, 수혈한 혈소판까지 다시 억제해버릴 수 있다고 보고됩니다. 이런 이유로 티카그렐러에는 별도의 역전 항체(예: 벤트라시맙)가 연구되어 온 것으로 알려져 있습니다.</p>
+     </div></details>
+     <div class="trial-tag art">📋 TRITON-TIMI 38 (2007) — 프라수그렐이 클로피도그렐보다 허혈 사건을 줄였으나(9.9 vs 12.1%) 출혈은 증가</div>
+     <div class="trial-tag art">📋 PLATO (2009) — 티카그렐러가 클로피도그렐보다 복합지표·사망을 줄인 것으로 보고(9.8 vs 11.7%)</div>
+     <p class="learn-p muted" style="margin-top:8px">다만 이후 일부 연구들이 PLATO의 이점을 재현하지 못했고, 특히 북미 지역에서 효과가 약하게 나타나는 경향이 보고되어, 결과 해석에는 신중함이 필요하다는 견해도 제시되고 있습니다.</p>`);
+
+  h+=ln('③','GPIIb/IIIa(최종 응집) — 티로피반 등','art',
+    `<p class="learn-p">앞의 약들이 '활성화 신호'를 막는다면, 이 계열은 혈소판이 <b>서로 뭉치는 맨 마지막 단계</b>를 직접 막습니다. 섬유소원이 혈소판과 혈소판을 이어 붙이는 다리(GPIIb/IIIa 수용체)를 차단하는 것으로, 여러 경로가 어떤 신호로 활성화되든 결국 이 지점을 거치므로 작용이 강력합니다.</p>
+     <p class="learn-p">다만 그만큼 출혈 위험도 커서, 주로 관상동맥중재술(PCI) 같은 급성 상황에 정맥주사로 제한적으로 쓰이는 것으로 알려져 있습니다.</p>`);
+
+  h+=ln('④','PAR-1(트롬빈 수용체) — 보라팍사','art',
+    `<p class="learn-p">비교적 최근의 접근으로, 혈소판에서 트롬빈이 작용하는 수용체(PAR-1)를 막습니다. 흥미롭게도 이는 '항응고제의 표적(트롬빈)'과 '항혈소판의 영역'이 만나는 지점이기도 합니다. 국내 사용은 제한적인 것으로 알려져 있어 참고용으로 소개합니다.</p>`);
+
+  h+=ln('⑤','PDE 억제 — 실로스타졸·디피리다몰','art',
+    `<p class="learn-p">혈소판 활성화를 억제하는 내부 신호물질(cAMP)을 분해하는 효소(PDE)를 막아, cAMP를 높게 유지함으로써 혈소판을 진정시키는 것으로 알려져 있습니다. 혈관을 넓히는 작용도 함께 가져, 말초동맥질환 등에서 쓰이는 경우가 있습니다.</p>`);
+  h+=`</div></div>`;
+
+  // L4 항응고 진화사
+  h+=`<div class="card"><div class="card-h">🧬 L4 · 항응고제 진화사</div><div class="card-b">
+    <p class="learn-p" style="margin-top:2px"><b>관통하는 주제:</b> 광범위하게 막던 방식에서, 점점 더 선택적인 표적으로. 항혈전 효과는 유지하면서 출혈 부작용만 줄이려는 여정으로 이해할 수 있습니다.</p>
+    <div class="learn-arrow">헤파린·와파린 <span>→</span> LMWH·폰다 <span>→</span> DOAC <span>→</span> <b>factor XI</b></div>
+    <div class="learn-tier" style="margin-top:12px">
+      <div class="learn-tier-row"><b>1세대</b><span>헤파린·와파린 — 효과는 강하나 비특이적이고 모니터링이 필요</span></div>
+      <div class="learn-tier-row"><b>2세대</b><span>LMWH·폰다파리눅스 — Xa 쪽으로 표적이 좁혀지기 시작</span></div>
+      <div class="learn-tier-row"><b>3세대</b><span>DOAC — Xa 또는 트롬빈을 직접·선택적으로, 고정 용량</span></div>
+      <div class="learn-tier-row"><b>차세대</b><span>factor XI 억제 — 지혈은 보존하며 혈전만 막으려는 시도(연구 단계)</span></div>
+    </div>
+    <details style="margin-top:12px"><summary>DOAC를 세상에 알린 4개의 임상시험</summary><div class="det-b">
+      <p class="learn-p">각 DOAC는 비판막성 심방세동에서 와파린과 비교한 대규모 시험을 통해 도입된 것으로 알려져 있습니다.</p>
+      <div class="trial-tag ven">📋 RE-LY (2009) · 다비가트란 — 150mg이 와파린보다 뇌졸중 예방에 우월, 두 용량 모두 두개내출혈 감소</div>
+      <div class="trial-tag ven">📋 ROCKET AF (2011) · 리바록사반 — 와파린 대비 비열등, 1일 1회 요법</div>
+      <div class="trial-tag ven">📋 ARISTOTLE (2011) · 아픽사반 — 뇌졸중·주요출혈·사망을 모두 줄인 것으로 보고</div>
+      <div class="trial-tag ven">📋 ENGAGE AF-TIMI 48 (2013) · 에독사반 — 와파린 대비 비열등, 신기능 정상에서 저용량은 효능 저하 보고</div>
+    </div></details>
+    <details style="margin-top:12px"><summary>차세대 factor XI — '지혈을 보존하는 항응고'라는 아이디어</summary><div class="det-b">
+      <p class="learn-p">현재 가장 주목받는 방향은 11인자(factor XI)를 표적으로 하는 약물입니다. 그 발상의 근거는 흥미롭습니다 — 선천적으로 factor XI가 부족한 사람은 혈전 질환으로부터 어느 정도 보호받으면서도, 자발적 출혈은 드문 것으로 알려져 있습니다. 즉 'factor XI를 막으면 혈전은 줄이되 지혈은 비교적 온전히 남을 수 있지 않을까' 하는 가설입니다.</p>
+      <p class="learn-p">다만 아직 연구 단계이며, 결과가 한 방향으로만 나오고 있지는 않습니다. 솔직하게 정리하면 다음과 같습니다.</p>
+      <div class="learn-tier">
+        <div class="learn-tier-row"><b>abelacimab</b><span>항체 계열. 2상(AZALEA-TIMI 71)에서 출혈 감소가 뚜렷해 조기 종료된 것으로 보고되었습니다.</span></div>
+        <div class="learn-tier-row"><b>asundexian</b><span>경구 소분자. 3상(OCEANIC-AF)에서 아픽사반보다 효능이 떨어져 중단된 것으로 알려져, 안전성이 좋아도 효능 입증은 별개임을 보여준 사례입니다.</span></div>
+        <div class="learn-tier-row"><b>milvexian</b><span>경구 소분자. 현재 3상(LIBREXIA)이 진행 중인 것으로 알려져 있습니다.</span></div>
+      </div>
+      <p class="learn-p muted" style="margin-top:10px">정리하면, 차세대 약물이 모두 성공을 약속하는 것은 아니며, 2026년 현재 어느 약도 표준 치료로 자리잡지는 않은 것으로 보입니다. 임상에서 사용할 수 있는 약이 아니라는 점을 분명히 해 둡니다.</p>
+    </div></details>
+  </div></div>`;
+
+  sec.innerHTML=h;
+}
+
+// ===== 항혈전제 가이드 UI v0.1 =====
+const ENG = buildEngine(DATA);
+const PP = DATA.periprocedural, ENDO = DATA.periendoscopy, REV = DATA.reversal,
+      NEXT = DATA.nextgen, LEARN = DATA.learn;
+
+// 약물 표시명
+const DRUG_KO = {
+  'drug:warfarin':'와파린','drug:dabigatran':'다비가트란','drug:rivaroxaban':'리바록사반',
+  'drug:apixaban':'아픽사반','drug:edoxaban':'에독사반','drug:heparin':'헤파린(UFH)',
+  'drug:enoxaparin':'에녹사파린(LMWH)','drug:fondaparinux':'폰다파리눅스',
+  'drug:aspirin':'아스피린','drug:clopidogrel':'클로피도그렐','drug:prasugrel':'프라수그렐',
+  'drug:ticagrelor':'티카그렐러','drug:cilostazol':'실로스타졸','drug:dipyridamole':'디피리다몰'
+};
+const DRUG_AXIS = { // 동맥/정맥 축
+  'drug:aspirin':'art','drug:clopidogrel':'art','drug:prasugrel':'art','drug:ticagrelor':'art',
+  'drug:cilostazol':'art','drug:dipyridamole':'art',
+  'drug:warfarin':'ven','drug:dabigatran':'ven','drug:rivaroxaban':'ven','drug:apixaban':'ven',
+  'drug:edoxaban':'ven','drug:heparin':'ven','drug:enoxaparin':'ven','drug:fondaparinux':'ven'
+};
+
+const state = { meds:new Set(), proc:'', egfr:null, comorbids:new Set(), thrombo:null };
+
+// 역전제 ID → 한글명
+const REV_KO_MAP = {
+  'drug:idarucizumab':'이다루시주맙','drug:andexanet_alfa':'안덱사넷','drug:pcc_4f':'4F-PCC',
+  'drug:apcc_feiba':'APCC(FEIBA)','drug:vitamin_k':'비타민K','drug:protamine':'프로타민'
+};
+function REV_KO(id){ return REV_KO_MAP[id]||DRUG_KO[id]||id; }
+
+// ── 바텀시트 ──
+function openSheet(html){
+  document.getElementById('sheet-body').innerHTML=html;
+  document.getElementById('sheet').classList.add('on');
+  document.getElementById('sheet-ov').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closeSheet(){
+  document.getElementById('sheet').classList.remove('on');
+  document.getElementById('sheet-ov').classList.remove('on');
+  document.body.style.overflow='';
+}
+
+// ── 탭 ──
+function tab(t){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.getElementById('sec-'+t).classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── 플로우 입력 빌드 ──
+function buildInputs(){
+  // 약물 칩
+  const mc = document.getElementById('med-chips');
+  Object.keys(DRUG_KO).forEach(id=>{
+    const b=document.createElement('button');
+    b.className='chip'; b.textContent=DRUG_KO[id]; b.dataset.id=id;
+    b.onclick=()=>{ b.classList.toggle('on'); b.classList.toggle(DRUG_AXIS[id]);
+      state.meds.has(id)?state.meds.delete(id):state.meds.add(id); run(); };
+    mc.appendChild(b);
+  });
+  // 시술 셀렉트 (GI 우선 그룹핑)
+  const ps=document.getElementById('proc-sel');
+  const giHigh=ENDO.endoscopyBleedRisk.high.procedures;
+  const giLow=ENDO.endoscopyBleedRisk.low.procedures;
+  const og=(label,arr)=>{ const g=document.createElement('optgroup'); g.label=label;
+    arr.forEach(p=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.label_ko; g.appendChild(o);}); return g; };
+  ps.appendChild(og('🔴 고위험 내시경 (ACG-CAG)',giHigh));
+  ps.appendChild(og('🟢 저위험 내시경 (ACG-CAG)',giLow));
+  // 비-GI 주요
+  const nonGI=[
+    {id:'proc:major_ortho',label_ko:'주요 정형외과수술'},{id:'proc:cardiac_surgery',label_ko:'심장수술'},
+    {id:'proc:intracranial_spinal_surgery',label_ko:'두개내·척추수술'},{id:'proc:neuraxial_anesthesia',label_ko:'신경축마취(척추·경막외)'},
+    {id:'proc:coronary_angiography',label_ko:'관상동맥조영술'},{id:'proc:pacemaker_icd',label_ko:'심박동기·제세동기'},
+    {id:'proc:cataract',label_ko:'백내장'},{id:'proc:minor_dental',label_ko:'소수 발치·스케일링'}
+  ];
+  ps.appendChild(og('🏥 비-소화기 시술',nonGI));
+  ps.onchange=e=>{ state.proc=e.target.value; run(); };
+  // eGFR
+  document.getElementById('egfr-in').oninput=e=>{ state.egfr=e.target.value===''?null:Number(e.target.value); run(); };
+  // 동반질환
+  const cc=document.getElementById('comorbid-chips');
+  [['comorbid:af','심방세동'],['comorbid:cad','관상동맥질환'],['comorbid:vte','정맥혈전색전증'],['comorbid:mechanical_valve','기계판막']].forEach(([id,ko])=>{
+    const b=document.createElement('button'); b.className='chip'; b.textContent=ko;
+    b.onclick=()=>{ b.classList.toggle('on'); state.comorbids.has(id)?state.comorbids.delete(id):state.comorbids.add(id); run(); };
+    cc.appendChild(b);
+  });
+  // 혈전위험
+  const tc=document.getElementById('thrombo-chips');
+  [['high','고위험'],['lowmod','저-중등도']].forEach(([v,ko])=>{
+    const b=document.createElement('button'); b.className='chip'; b.textContent=ko;
+    b.onclick=()=>{ tc.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
+      if(state.thrombo===v){state.thrombo=null;}else{b.classList.add('on');state.thrombo=v;} run(); };
+    tc.appendChild(b);
+  });
+}
+
+// ── 결과 렌더 ──
+function run(){
+  const box=document.getElementById('result');
+  if(state.meds.size===0){ box.innerHTML='<p class="muted" style="text-align:center;padding:20px 0">약물을 선택하세요</p>'; return; }
+  const r=ENG.recommend({
+    meds:[...state.meds], proc:state.proc||null, egfr:state.egfr,
+    comorbids:[...state.comorbids], thromboticRisk:state.thrombo
+  });
+  let h='';
+  // 플래그(warn 먼저)
+  r.flags.sort((a,b)=>a.level==='warn'?-1:1).forEach(f=>{
+    let msg=f.msg;
+    // 역전 플래그: drug ID → 한글명
+    if(f.code==='reversal' && f.data){
+      const tgt=DRUG_KO[f.data.target]||f.data.target;
+      const first=REV_KO(f.data.first);
+      const alt=f.data.alt?(REV_KO(f.data.alt)):null;
+      msg=`${tgt} 역전: ${first}${alt?(' / 대체 '+alt):''}`;
+    }
+    h+=`<div class="flag ${f.level}"><span>${f.level==='warn'?'⚠️':'ℹ️'}</span><span>${msg}</span></div>`;
+  });
+  // 약물 카드
+  r.drugs.forEach(d=>{
+    const ko=DRUG_KO[d.id]||d.id;
+    const act=d.action;
+    const actLabel={hold:'중단',continue:'유지',info:'정보',consider_continue:'유지 고려'}[act]||act;
+    h+=`<div class="res-drug ${act}"><div class="res-name">${ko}</div>`;
+    h+=`<span class="res-action ${act}">${actLabel}</span>`;
+    if(d.holdDays!=null) h+=`<div class="res-row"><b>중단:</b> 시술 ${d.holdDays}일 전 마지막 복용</div>`;
+    if(d.holdInfo) h+=`<div class="res-row"><b>중단:</b> ${d.holdInfo}</div>`;
+    if(d.resumeAfter) h+=`<div class="res-row"><b>재개:</b> ${d.resumeAfter}</div>`;
+    if(d.bridging) h+=`<div class="res-row"><b>Bridging:</b> ${d.bridging}</div>`;
+    if(d.renalNote) h+=`<div class="res-row" style="color:var(--warn)">🔸 ${d.renalNote}</div>`;
+    if(d.endoNote) h+=`<div class="res-row">🔹 ${d.endoNote}</div>`;
+    if(d.note) h+=`<div class="res-row">${d.note}</div>`;
+    if(d.grade) h+=`<div class="res-row muted">권고등급: ${d.grade}</div>`;
+    if(d._src) h+=`<div class="res-src">${d._src}</div>`;
+    h+='</div>';
+  });
+  // 급여
+  r.reimbursement.forEach(x=>{
+    h+=`<div class="reimb">💰 <b>급여 (${x.scheme}):</b> ${x.criterion}<br><span style="color:var(--ink2)">⚖️ 가이드라인 vs 급여: ${x.conflict}</span></div>`;
+  });
+  box.innerHTML=h;
+}
+
+document.getElementById('disc').innerHTML =
+  '본 도구는 임상 의사결정 <b>보조용</b>이며 처방을 강제하지 않습니다. 모든 결정은 담당의 판단에 따릅니다.<br>'+
+  '출처: CHEST 2022 (PMID 35964704) · ACG-CAG 2022 (10.14309/ajg.0000000000001627) · ISTH SSC 2024 · 대한부정맥학회 2024 · NEJM 2025';
+
+buildInputs();
+buildLibrary();
+buildLearn();
+run();
+</script>
+</body>
+</html>
