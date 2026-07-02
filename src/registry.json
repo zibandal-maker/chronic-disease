@@ -156,6 +156,18 @@
       "keywords": "만성간질환 간질환 liver B형간염 HBV C형간염 지방간 MASLD MASH NAFLD 간경변 간섬유화 FIB-4 테노포비르 엔테카비르 비리어드 바라크루드 fibroscan 간기능 AST ALT 간경화 정맥류"
     },
     {
+      "id": "fgid",
+      "title": "기능성 위장장애",
+      "emoji": "🌀",
+      "src": "fgid_guide.html",
+      "out": "fgid.html",
+      "guideline": "기능성 장질환 · IBS·만성변비·만성설사 · Rome IV · 심평원 급여",
+      "group": "A",
+      "accent": "#c77d3a",
+      "tag": "소화기",
+      "keywords": "기능성위장장애 기능성장질환 과민성장증후군 IBS 만성변비 만성설사 Rome 로마기준 FODMAP 복통 팽만 리나클로타이드 루비프로스톤 프루칼로프라이드 로페라마이드 리팍시민 프로바이오틱스 진경제 기능성소화불량 FD"
+    },
+    {
       "id": "ckd",
       "title": "만성콩팥병",
       "emoji": "🫘",

@@ -347,6 +347,13 @@ __JSONLD__
   function matchQuery(g, q){
     if (!q) return true;
     const hay = (g.title + ' ' + g.guideline + ' ' + g.tag + ' ' + g.id + ' ' + (g.keywords||'') + ' ' + (g._idx||'')).toLowerCase();
+    // 순수 영문/숫자 쿼리(예: rome, ibs, doac)는 단어경계로 매칭 —
+    // patiromer 안의 'rome', syndrome 안의 'rome' 같은 부분문자열 오매칭 방지.
+    // 한글이 섞인 쿼리는 조사·붙임 때문에 부분매칭 유지(예: '만성변비').
+    if (/^[a-z0-9][a-z0-9\-\/]*$/.test(q)) {
+      const re = new RegExp('(^|[^a-z0-9])' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '([^a-z0-9]|$)');
+      return re.test(hay);
+    }
     return hay.indexOf(q) > -1;
   }
 
