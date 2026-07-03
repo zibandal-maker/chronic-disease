@@ -168,6 +168,18 @@
       "keywords": "기능성위장장애 기능성장질환 과민성장증후군 IBS 만성변비 만성설사 Rome 로마기준 FODMAP 복통 팽만 리나클로타이드 루비프로스톤 프루칼로프라이드 로페라마이드 리팍시민 프로바이오틱스 진경제 기능성소화불량 FD"
     },
     {
+      "id": "endoscopy",
+      "title": "내시경 검사 후 오더",
+      "emoji": "🔬",
+      "external": true,
+      "href": "https://endoscopy-hira.vercel.app/",
+      "guideline": "내시경 검사 후 오더 가이드 · 단계별 선택 → 오더 자동생성 · 급여코드 · HIRA 고시",
+      "group": "A",
+      "accent": "#7a5c9a",
+      "tag": "소화기",
+      "keywords": "내시경 endoscopy 위내시경 EGD 대장내시경 colonoscopy 오더 급여코드 청구 진정내시경 수면내시경 조직검사 biopsy 폴립절제 용종절제 EMR ESD CLO 국가검진 위암검진 대장암검진 나560 나799 Q7701 HIRA 고시"
+    },
+    {
       "id": "ckd",
       "title": "만성콩팥병",
       "emoji": "🫘",
