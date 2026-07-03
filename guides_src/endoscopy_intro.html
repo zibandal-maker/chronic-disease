@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내시경 검사 후 오더·수가코드 가이드 — 위/대장내시경·조직검사·용종절제(CSP·EMR·ESD) | 임상의용</title>
+<meta name="description" content="위·대장내시경 검사 후 처방 오더와 건강보험 수가코드를 단계별 선택으로 자동 생성하는 임상의용 도구. 진정내시경 환자관리료(나799)·조직검사(나560)·용종절제(CSP·EMR·ESD)·국가검진(위암·대장암)·비보험 종합검진 수가코드와 재료대를 조합해 제시.">
+<meta name="keywords" content="내시경 오더, 내시경 수가코드, 위내시경, 대장내시경, EGD, colonoscopy, 진정내시경, 수면내시경, 진정내시경 환자관리료, 나799, 조직검사, 생검, 나560, 용종절제, 폴립절제, CSP, 콜드스네어, EMR, 내시경점막절제술, ESD, 내시경점막하박리술, 국가검진, 위암검진, 대장암검진, FOBT, 헬리코박터, CLO, 건강보험 수가, EMR 코드, 종합검진, 소화기내시경">
+<link rel="canonical" href="https://chronic-disease-dun.vercel.app/guides/endoscopy-intro">
+<meta property="og:type" content="website">
+<meta property="og:title" content="내시경 검사 후 오더·수가코드 가이드 — 위/대장내시경·조직검사·용종절제(CSP·EMR·ESD) | 임상의용">
+<meta property="og:description" content="위·대장내시경 검사 후 처방 오더와 건강보험 수가코드를 단계별 선택으로 자동 생성하는 임상의용 도구. 진정내시경 환자관리료(나799)·조직검사(나560)·용종절제(CSP·EMR·ESD)·국가검진(위암·대장암)·비보험 종합검진 수가코드와 재료대를 조합해 제시.">
+<meta property="og:url" content="https://chronic-disease-dun.vercel.app/guides/endoscopy-intro">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": [
+    "MedicalWebPage",
+    "SoftwareApplication"
+  ],
+  "name": "내시경 검사 후 오더·수가코드 가이드 — 위/대장내시경·조직검사·용종절제(CSP·EMR·ESD) | 임상의용",
+  "description": "위·대장내시경 검사 후 처방 오더와 건강보험 수가코드를 단계별 선택으로 자동 생성하는 임상의용 도구. 진정내시경 환자관리료(나799)·조직검사(나560)·용종절제(CSP·EMR·ESD)·국가검진(위암·대장암)·비보험 종합검진 수가코드와 재료대를 조합해 제시.",
+  "url": "https://chronic-disease-dun.vercel.app/guides/endoscopy-intro",
+  "inLanguage": "ko",
+  "applicationCategory": "MedicalApplication",
+  "applicationSubCategory": "내시경 오더·수가코드 생성 도구",
+  "operatingSystem": "Web",
+  "about": {
+    "@type": "MedicalProcedure",
+    "name": "소화기 내시경(위·대장내시경)"
+  },
+  "audience": {
+    "@type": "MedicalAudience",
+    "audienceType": "Clinician"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "박형도"
+  },
+  "lastReviewed": "2026-07-03"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+  background: #f8fafc; color: #1a1a1a; font-size: 14px;
+  padding: 20px 16px; max-width: 700px; margin: 0 auto;
+  -webkit-font-smoothing: antialiased; word-break: keep-all;
+}
+.app-title { font-size: 18px; font-weight: 700; color: #1B3A6B; margin-bottom: 4px; }
+.app-sub   { font-size: 13px; color: #6b7280; margin-bottom: 12px; }
+
+/* ── 코드맵 배너 ── */
+#codemap-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 10px;
+  padding: 10px 14px; margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.05);
+}
+#codemap-bar .cm-icon { font-size: 18px; }
+#codemap-bar .cm-info { flex: 1; min-width: 0; }
+#codemap-bar .cm-title { font-size: 12px; font-weight: 600; color: #374151; }
+#codemap-bar .cm-desc  { font-size: 11px; color: #9ca3af; margin-top: 1px; }
+#codemap-bar.loaded .cm-title { color: #14532d; }
+#codemap-bar.loaded .cm-desc  { color: #16a34a; }
+.cm-upload-btn {
+  padding: 6px 12px; border-radius: 7px; border: 1px solid #d1d5db;
+  background: #f9fafb; color: #374151; font-size: 12px; font-weight: 500;
+  cursor: pointer; white-space: nowrap; font-family: inherit;
+  transition: all .15s;
+}
+.cm-upload-btn:hover { border-color: #1B3A6B; color: #1B3A6B; background: #EEF3FA; }
+.cm-upload-btn.clear { border-color: #fca5a5; color: #991b1b; background: #fff5f5; }
+.cm-upload-btn.clear:hover { background: #fee2e2; }
+#codemap-file { display: none; }
+
+/* ── 코드맵 헬프 ── */
+.cm-help {
+  background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px;
+  padding: 10px 14px; margin-bottom: 12px; font-size: 11px; color: #0369a1;
+  line-height: 1.7;
+}
+.cm-help strong { font-weight: 600; }
+.cm-help table { border-collapse: collapse; margin-top: 6px; width: 100%; }
+.cm-help th, .cm-help td { border: 1px solid #bae6fd; padding: 4px 8px; text-align: left; font-size: 11px; }
+.cm-help th { background: #e0f2fe; font-weight: 600; }
+.cm-help code { background: #e0f2fe; padding: 1px 5px; border-radius: 4px; font-family: 'Courier New', monospace; }
+
+/* ── 카드 ── */
+.card {
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+  margin-bottom: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.card-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; background: #f9fafb;
+  border-bottom: 1px solid #f3f4f6;
+}
+.badge-num {
+  width: 22px; height: 22px; border-radius: 50%;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; background: #d1d5db; color: #6b7280;
+  transition: all .2s;
+}
+.badge-num.cur  { background: #1B3A6B; color: #fff; }
+.badge-num.done { background: #15803d; color: #fff; }
+.card-title { font-size: 13px; font-weight: 500; color: #6b7280; flex: 1; }
+.card-title.cur { color: #111827; }
+.card-ans { font-size: 12px; color: #1F7A8C; font-weight: 500; margin-left: auto; }
+.card-body { padding: 14px 16px; }
+
+/* ── 선택 박스 ── */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.sel-btn {
+  border: 2px solid #e5e7eb; border-radius: 10px; padding: 12px 14px;
+  background: #fff; text-align: left; cursor: pointer; width: 100%;
+  transition: all .15s;
+}
+.sel-btn:hover { border-color: #1F7A8C; background: #f0fafa; }
+.sel-btn.on    { border-color: #1B3A6B; background: #EEF3FA; }
+.sel-btn .ico  { font-size: 20px; display: block; margin-bottom: 5px; }
+.sel-btn .lbl  { font-size: 13px; font-weight: 600; display: block; }
+.sel-btn .des  { font-size: 11px; color: #6b7280; margin-top: 3px; display: block; }
+.sel-btn.on .lbl { color: #1B3A6B; }
+.sel-btn.on .des { color: #3B6CB5; }
+
+/* ── 체크박스 ── */
+.chk-btn {
+  border: 2px solid #e5e7eb; border-radius: 10px; padding: 10px 14px;
+  background: #fff; display: flex; align-items: center; gap: 10px;
+  cursor: pointer; width: 100%; transition: all .15s;
+}
+.chk-btn:hover { border-color: #1F7A8C; background: #f0fafa; }
+.chk-btn.on    { border-color: #1F7A8C; background: #E6F4F7; }
+.chk-sq {
+  width: 20px; height: 20px; border-radius: 5px;
+  border: 2px solid #d1d5db; background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 12px; font-weight: 700;
+  transition: all .15s; color: transparent;
+}
+.chk-btn.on .chk-sq { border-color: #1F7A8C; background: #1F7A8C; color: #fff; }
+.chk-lbl { font-size: 13px; font-weight: 600; }
+.chk-btn.on .chk-lbl { color: #0D5C6E; }
+.chk-sub { font-size: 11px; color: #6b7280; margin-top: 1px; }
+.chk-btn.on .chk-sub { color: #1F7A8C; }
+
+/* ── 서브 블록 ── */
+.sub-block {
+  background: #f9fafb; border: 1px solid #e5e7eb;
+  border-radius: 10px; padding: 12px; margin-top: 10px;
+}
+.sub-lbl { font-size: 12px; font-weight: 600; color: #6b7280; margin-bottom: 8px; }
+
+/* ── 카운터 ── */
+.ctr-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.ctr {
+  display: flex; align-items: center;
+  border: 1.5px solid #d1d5db; border-radius: 8px; overflow: hidden;
+}
+.ctr-btn {
+  width: 36px; height: 34px; border: none; background: #f3f4f6;
+  color: #374151; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.ctr-btn:hover    { background: #E6F4F7; color: #1F7A8C; }
+.ctr-btn:disabled { opacity: .35; cursor: not-allowed; }
+.ctr-val {
+  width: 44px; text-align: center; font-size: 15px; font-weight: 700;
+  border-left: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; padding: 6px 0;
+}
+.ctr-hint { font-size: 11px; color: #6b7280; margin-top: 5px; }
+.lim-badge {
+  font-size: 11px; padding: 3px 8px; border-radius: 8px; font-weight: 500;
+  background: #fef3c7; color: #92400e; border: 1px solid #fde68a; white-space: nowrap;
+}
+.lim-badge.ok   { background: #f0fdf4; color: #14532d; border-color: #bbf7d0; }
+.lim-badge.over { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+
+/* ── 확정 버튼 ── */
+.conf-btn {
+  width: 100%; padding: 11px; border: none; border-radius: 8px;
+  background: #1B3A6B; color: #fff; font-size: 13px; font-weight: 600;
+  cursor: pointer; margin-top: 12px; transition: opacity .15s;
+  font-family: inherit;
+}
+.conf-btn:hover { opacity: .85; }
+
+/* ── 결과 헤더 ── */
+.result-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; background: #f0fdf4; border-bottom: 1px solid #bbf7d0;
+}
+.result-head-actions { margin-left: auto; display: flex; gap: 6px; }
+.act-btn {
+  padding: 5px 12px; border-radius: 7px; border: 1px solid #d1d5db;
+  background: #fff; color: #374151; font-size: 12px; font-weight: 500;
+  cursor: pointer; display: flex; align-items: center; gap: 5px;
+  font-family: inherit; transition: all .15s; white-space: nowrap;
+}
+.act-btn:hover { border-color: #1B3A6B; color: #1B3A6B; background: #EEF3FA; }
+.act-btn.copied { border-color: #16a34a; color: #16a34a; background: #f0fdf4; }
+.act-btn.print-btn:hover { border-color: #6b7280; color: #374151; background: #f9fafb; }
+
+/* ── 결과 로우 ── */
+.r-sec { margin-bottom: 14px; }
+.r-sec-title {
+  font-size: 11px; font-weight: 600; color: #6b7280;
+  letter-spacing: .06em; text-transform: uppercase;
+  margin-bottom: 6px; padding: 0 2px;
+}
+.r-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 14px; border-radius: 8px; margin-bottom: 5px;
+  border-left: 3px solid #1F7A8C; background: #f9fafb;
+}
+.r-row.em { background: #EEF3FA; border-left-color: #1B3A6B; }
+.r-info   { flex: 1; min-width: 0; }
+.r-name   { font-size: 13px; font-weight: 600; line-height: 1.4; }
+.r-code   { font-size: 11px; color: #6b7280; margin-top: 2px; }
+/* 실제 코드 입력된 경우 강조 */
+.r-code.real  { color: #1B3A6B; font-weight: 600; background: #EEF3FA; padding: 1px 6px; border-radius: 4px; display: inline-block; margin-top: 3px; font-family: 'Courier New', monospace; font-size: 11px; }
+.r-code.draft { color: #9ca3af; font-style: italic; }
+.r-note   { font-size: 11px; color: #6b7280; margin-top: 2px; }
+.bdg {
+  font-size: 11px; padding: 3px 8px; border-radius: 8px;
+  font-weight: 600; white-space: nowrap; flex-shrink: 0;
+}
+.b-g  { background: #dcfce7; color: #14532d; }
+.b-b  { background: #fee2e2; color: #991b1b; }
+.b-w  { background: #fef3c7; color: #92400e; }
+.b-s  { background: #e0f2fe; color: #075985; }
+.b-h  { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+
+/* ── 알럿 ── */
+.al {
+  border-radius: 8px; padding: 9px 12px; font-size: 12px;
+  margin-bottom: 6px; line-height: 1.6; display: flex; gap: 8px; align-items: flex-start;
+}
+.al-w  { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+.al-i  { background: #e0f2fe; color: #075985; border: 1px solid #bae6fd; }
+.al-ok { background: #f0fdf4; color: #14532d; border: 1px solid #bbf7d0; }
+
+.divider { border: none; border-top: 1px solid #f3f4f6; margin: 10px 0; }
+.reset-btn {
+  padding: 8px 16px; border: 1px solid #d1d5db; border-radius: 8px;
+  background: #fff; color: #6b7280; font-size: 12px; cursor: pointer;
+  margin-top: 6px; font-family: inherit;
+}
+.reset-btn:hover { background: #f9fafb; }
+
+.hidden { display: none !important; }
+
+/* ── 인쇄 ── */
+@media print {
+  body { background: #fff; padding: 10px; max-width: 100%; }
+  #codemap-bar, .cm-help, .result-head-actions, .conf-btn,
+  .reset-btn, #c2a, #c2b, #c3, #c4u, #c4l,
+  .card:not(#result-card) { display: none !important; }
+  #result-card { display: block !important; box-shadow: none; border: none; }
+  .result-head { background: none; border-bottom: 2px solid #1B3A6B; }
+  .r-row { break-inside: avoid; }
+  .al { break-inside: avoid; }
+  .app-title { font-size: 15px; }
+  .app-sub   { font-size: 11px; margin-bottom: 8px; }
+  /* 인쇄 시 가안코드 표시 색 유지 */
+  .r-code.draft { color: #aaa !important; }
+  .r-code.real  { color: #1B3A6B !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+@media (max-width: 480px) {
+  .grid3 { grid-template-columns: 1fr 1fr; }
+  .grid2 { grid-template-columns: 1fr 1fr; }
+  .r-row { flex-direction: column; gap: 6px; }
+  .bdg   { align-self: flex-start; }
+  .result-head-actions { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<button id="fb-btn" onclick="openFb()" title="피드백 보내기">💬 피드백</button>
+
+<div class="app-title">내시경 검사 후 오더 가이드</div>
+<div class="app-sub">단계별 선택 → 오더 목록 자동 생성 | </div>
+<div style="font-size:10px;color:#d1d5db;text-align:right;margin-bottom:8px">작성자: 박형도</div>
+
+<!-- ▼ 코드맵 업로드 배너 -->
+<div id="codemap-bar">
+  <span class="cm-icon">🗂</span>
+  <div class="cm-info">
+    <div class="cm-title" id="cm-title">오더코드 미적용 (가안코드 표시 중)</div>
+    <div class="cm-desc" id="cm-desc">엑셀 업로드 시 실제 EMR 코드로 자동 교체됩니다</div>
+  </div>
+  <button class="cm-upload-btn" id="cm-btn" onclick="document.getElementById('codemap-file').click()">📂 코드표 업로드</button>
+  <input type="file" id="codemap-file" accept=".xlsx,.xls,.csv" onchange="loadCodemap(this)">
+</div>
+
+<!-- 코드맵 도움말 (최초 1회 표시) -->
+<div class="cm-help" id="cm-help">
+  <strong>📋 코드표 업로드 형식 안내</strong> — 엑셀(.xlsx) 또는 CSV 파일, 헤더 1행 + 데이터행
+  <table>
+    <tr><th>A열: 코드키 (key)</th><th>B열: 실제 EMR 코드</th><th>C열: 오더명 (선택)</th></tr>
+    <tr><td><code>EGD</code></td><td><code>E1001</code></td><td>위내시경</td></tr>
+    <tr><td><code>CS</code></td><td><code>E2001</code></td><td>대장내시경</td></tr>
+    <tr><td><code>나799_III</code></td><td><code>EA003</code></td><td>진정내시경환자관리료Ⅲ</td></tr>
+    <tr><td><code>나560_Bx</code></td><td><code>LZC5602</code></td><td>병리(위·대장 생검)</td></tr>
+  </table>
+  <div style="margin-top:6px">키 목록: <code>EGD · CS · 세척소독 · 나799_수면비/위/대장/III/IV · 진정제_propofol/midazolam · 나560_Bx/폴립 · 나854 · 나854_위 · 재료_FORCEP · Q7701(_검진/_비검/_제2) · Q7702(_검진/_비검) · Q7703(_검진/_비검) · EMR_U(_검진/_비검) · Q7651(_검진/_비검) · CLO · 누591다 · 재료_SNARE/INJECTOR · ESD_L</code> — _검진=공단(800) / _비검=비보험(J00) / _제2=EMR후 snare(Q7701001)</div>
+</div>
+
+<!-- ▼ STEP 1: 내원 형태 -->
+<div class="card" id="c1">
+  <div class="card-head">
+    <div class="badge-num cur" id="n1">1</div>
+    <div class="card-title cur">내원 형태</div>
+    <div class="card-ans hidden" id="a1"></div>
+  </div>
+  <div class="card-body">
+    <div class="grid2">
+      <button class="sel-btn" onclick="step1('ilban',this)">
+        <span class="ico">🏥</span><span class="lbl">일반 외래</span><span class="des">건강보험 진료</span>
+      </button>
+      <button class="sel-btn" onclick="step1('wiChk',this)">
+        <span class="ico">🛡</span><span class="lbl">국가검진 — 위암</span><span class="des">만 40세 이상 / 2년마다</span>
+      </button>
+      <button class="sel-btn" onclick="step1('bothChk',this)">
+        <span class="ico">🔄</span><span class="lbl">국가검진 — 위암+대장암</span><span class="des">FOBT 양성 대장내시경 동시</span>
+      </button>
+      <button class="sel-btn" onclick="step1('coloChk',this)">
+        <span class="ico">🛡</span><span class="lbl">국가검진 — 대장암</span><span class="des">FOBT 양성 / 대장내시경만</span>
+      </button>
+      <button class="sel-btn" onclick="step1('jonghap',this)">
+        <span class="ico">🏬</span><span class="lbl">비보험 종합검진</span><span class="des">종검센터·직장·단체검진 (J00 코드)</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ▼ STEP 2a: 일반외래 검사종류 -->
+<div class="card hidden" id="c2a">
+  <div class="card-head">
+    <div class="badge-num" id="n2a">2</div>
+    <div class="card-title cur">검사 종류</div>
+    <div class="card-ans hidden" id="a2a"></div>
+  </div>
+  <div class="card-body">
+    <div class="grid3">
+      <button class="sel-btn" onclick="step2a('wi',this)">
+        <span class="ico">🔵</span><span class="lbl">위내시경만</span><span class="des">EGD</span>
+      </button>
+      <button class="sel-btn" onclick="step2a('colo',this)">
+        <span class="ico">🔵</span><span class="lbl">대장내시경만</span><span class="des">Colonoscopy</span>
+      </button>
+      <button class="sel-btn" onclick="step2a('both',this)">
+        <span class="ico">🔄</span><span class="lbl">위+대장 동시</span><span class="des">Same day</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ▼ STEP 2b: 위암검진 대장 추가 여부 -->
+<div class="card hidden" id="c2b">
+  <div class="card-head">
+    <div class="badge-num" id="n2b">2</div>
+    <div class="card-title cur">대장내시경 추가 여부</div>
+    <div class="card-ans hidden" id="a2b"></div>
+  </div>
+  <div class="card-body">
+    <div class="grid2">
+      <button class="sel-btn" onclick="step2b('none',this)">
+        <span class="ico">➖</span><span class="lbl">위내시경만</span><span class="des">대장 추가 없음</span>
+      </button>
+      <button class="sel-btn" onclick="step2b('add',this)">
+        <span class="ico">➕</span><span class="lbl">대장내시경 추가</span><span class="des">검진 외 / 일반 진료 청구</span>
+      </button>
+    </div>
+    <div class="al al-i" style="margin-top:10px">
+      ℹ️ 위암검진에 대장내시경을 추가하는 경우 FOBT 양성 검진 대상이 아니므로
+      <strong>일반 진료 급여 또는 비급여</strong>로 처리됩니다.
+    </div>
+  </div>
+</div>
+
+<!-- ▼ STEP 3: 수면 -->
+<div class="card hidden" id="c3">
+  <div class="card-head">
+    <div class="badge-num" id="n3">3</div>
+    <div class="card-title cur">수면 시행</div>
+    <div class="card-ans hidden" id="a3"></div>
+  </div>
+  <div class="card-body">
+    <div class="grid2">
+      <button class="sel-btn" onclick="step3('yes',this)">
+        <span class="ico">💤</span><span class="lbl">예 — 수면 시행</span><span class="des">진정내시경 환자관리료 + 진정제</span>
+      </button>
+      <button class="sel-btn" onclick="step3('no',this)">
+        <span class="ico">👁</span><span class="lbl">아니오 — 비수면</span><span class="des">진정제 미사용</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ▼ STEP 비보험검진 급여분기 (jonghap 전용) -->
+<div class="card hidden" id="c-jbill">
+  <div class="card-head">
+    <div class="badge-num cur" id="njb">★</div>
+    <div class="card-title cur">비보험검진 — 청구 방식</div>
+    <div class="card-ans hidden" id="ajb"></div>
+  </div>
+  <div class="card-body">
+    <div class="grid2">
+      <button class="sel-btn" onclick="pickJbill('all',this)">
+        <span class="ico">🏬</span><span class="lbl">전체 비급여</span><span class="des">종검 패키지 — 모두 자체 코드(J00)</span>
+      </button>
+      <button class="sel-btn" onclick="pickJbill('paid',this)">
+        <span class="ico">✂️</span><span class="lbl">용종절제만 급여</span><span class="des">우연 발견 용종 → 수술료·병리 급여 청구</span>
+      </button>
+    </div>
+
+    <div class="hidden" id="jexam-sub">
+      <div class="sub-block">
+        <div class="sub-lbl">용종절제 시 검사료(EGD/CS) 처리 — 병원 정책 선택</div>
+        <div class="grid2" style="gap:6px">
+          <button class="sel-btn on" data-jx="diff" onclick="pickJExam(this)" style="padding:9px 10px">
+            <span class="lbl" style="font-size:12px">차액 산정</span><span class="des">검사료 포함 안내 표시 (시술료−검사료)</span>
+          </button>
+          <button class="sel-btn" data-jx="remove" onclick="pickJExam(this)" style="padding:9px 10px">
+            <span class="lbl" style="font-size:12px">검사료 완전 빼기</span><span class="des">검사료 행 미표시</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="al al-i" style="margin-top:10px">
+      ℹ️ 고시 제2024-58호: 검진 중 이상소견으로 용종절제 시 수술료·조직검사는 요양급여 인정 가능.
+      절제술 시 검사료는 시술료에 포함(별도 청구 불가). <strong>세척소독료는 비급여 검진비 포함으로 청구 불가</strong>. 병원 정책에 따라 선택하세요.
+    </div>
+  </div>
+</div>
+
+<!-- ▼ STEP 위내시경 시술 -->
+<div class="card hidden" id="c4u">
+  <div class="card-head">
+    <div class="badge-num" id="n4u">4</div>
+    <div class="card-title cur">위내시경 — 시술 내용</div>
+  </div>
+  <div class="card-body">
+    <div class="grid2">
+      <button class="chk-btn" data-v="obs"  onclick="togU(this)"><div class="chk-sq">✓</div><div><div class="chk-lbl">관찰만</div><div class="chk-sub">이상 소견 없음</div></div></button>
+      <button class="chk-btn" data-v="bx"   onclick="togU(this)"><div class="chk-sq">✓</div><div><div class="chk-lbl">조직검사 (biopsy)</div><div class="chk-sub">부위별 병리 의뢰</div></div></button>
+      <button class="chk-btn" data-v="clo"  onclick="togU(this)"><div class="chk-sq">✓</div><div><div class="chk-lbl">CLO test</div><div class="chk-sub">H. pylori 검사</div></div></button>
+      <button class="chk-btn" data-v="emrU" onclick="togU(this)"><div class="chk-sq">✓</div><div><div class="chk-lbl">EMR / ESD</div><div class="chk-sub">점막절제 / injector 사용</div></div></button>
+      <button class="chk-btn" data-v="snareU" onclick="togU(this)" style="grid-column:span 2"><div class="chk-sq">✓</div><div><div class="chk-lbl">위 폴립절제 (snare)</div><div class="chk-sub">Q7651 / 로컬 위용종 — injector 미사용</div></div></button>
+    </div>
+
+    <div class="hidden" id="bx-sub">
+      <div class="sub-block">
+        <div class="sub-lbl">조직검사 부위 (장기별 나560 산정 — 부위마다 별도)</div>
+        <div class="grid3" style="gap:6px">
+          <button class="chk-btn" data-bx="esophagus" onclick="togBxSite(this)" style="padding:9px 10px"><div class="chk-sq">✓</div><div><div class="chk-lbl" style="font-size:12px">식도</div></div></button>
+          <button class="chk-btn on" data-bx="stomach" onclick="togBxSite(this)" style="padding:9px 10px"><div class="chk-sq" style="color:#fff">✓</div><div><div class="chk-lbl" style="font-size:12px">위</div></div></button>
+          <button class="chk-btn" data-bx="duodenum" onclick="togBxSite(this)" style="padding:9px 10px"><div class="chk-sq">✓</div><div><div class="chk-lbl" style="font-size:12px">십이지장</div></div></button>
+        </div>
+        <div class="ctr-hint" id="bx-hint" style="margin-top:6px">위 1부위 — 나560 1건 / 같은 장기 내 여러 군데는 1건으로 묶임</div>
+      </div>
+    </div>
+
+    <div class="hidden" id="clo-sub">
+      <div class="sub-block">
+        <div class="sub-lbl">CLO test 시행 목적</div>
+        <div class="grid2" style="gap:6px">
+          <button class="sel-btn" style="padding:9px 10px" onclick="pickClo('ulcer',this)">
+            <span class="lbl" style="font-size:12px">소화성궤양·조기위암절제·MALT·ITP</span><span class="des">→ 급여</span>
+          </button>
+          <button class="sel-btn" style="padding:9px 10px" onclick="pickClo('therapy',this)">
+            <span class="lbl" style="font-size:12px">위염 등 진료목적 HP검사<br>(예: 위선종절제후)</span><span class="des">→ 선별급여 90%</span>
+          </button>
+          <button class="sel-btn" style="padding:9px 10px" onclick="pickClo('family',this)">
+            <span class="lbl" style="font-size:12px">위암 가족력</span><span class="des">→ 선별급여 50%</span>
+          </button>
+          <button class="sel-btn" style="padding:9px 10px" onclick="pickClo('screen',this)">
+            <span class="lbl" style="font-size:12px">본인 희망 검진목적</span><span class="des">→ 비급여</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <button class="conf-btn" onclick="confU()">위내시경 항목 확정 →</button>
+  </div>
+</div>
+
+<!-- ▼ STEP 대장내시경 시술 -->
+<div class="card hidden" id="c4l">
+  <div class="card-head">
+    <div class="badge-num" id="n4l">4</div>
+    <div class="card-title cur">대장내시경 — 시술 내용</div>
+  </div>
+  <div class="card-body">
+    <div class="grid2">
+      <button class="chk-btn" data-v="obsL" onclick="togL(this)"><div class="chk-sq">✓</div><div><div class="chk-lbl">관찰만</div><div class="chk-sub">이상 소견 없음</div></div></button>
+      <button class="chk-btn" data-v="fp"   onclick="togL(this)"><div class="chk-sq">✓</div><div><div class="chk-lbl">Forcep biopsy</div><div class="chk-sub">겸자, ≤5mm 과증식 의심</div></div></button>
+      <button class="chk-btn" data-v="csp"  onclick="togL(this)"><div class="chk-sq">✓</div><div><div class="chk-lbl">폴립절제 (CSP/HSP)</div><div class="chk-sub">올가미 절제</div></div></button>
+      <button class="chk-btn" data-v="emrL" onclick="togL(this)"><div class="chk-sq">✓</div><div><div class="chk-lbl">EMR</div><div class="chk-sub">점막절제술</div></div></button>
+      <button class="chk-btn" data-v="esd"  onclick="togL(this)" style="grid-column:span 2"><div class="chk-sq">✓</div><div><div class="chk-lbl">ESD</div><div class="chk-sub">점막하박리절제술</div></div></button>
+    </div>
+
+    <!-- 폴립 개수 -->
+    <div class="hidden" id="polyp-box">
+      <div class="sub-block">
+        <div class="sub-lbl">폴립절제 개수</div>
+        <div class="ctr-wrap">
+          <div class="ctr">
+            <button class="ctr-btn" id="pM" onclick="chgP(-1)">−</button>
+            <div class="ctr-val" id="pv">1</div>
+            <button class="ctr-btn" id="pP" onclick="chgP(1)">+</button>
+          </div>
+          <span class="lim-badge ok" id="p-badge">1 / 최대 6개</span>
+        </div>
+        <div class="ctr-hint" id="p-hint">Q7701 × 1개 (첫 번째 폴립)</div>
+      </div>
+    </div>
+
+    <!-- EMR 개수 -->
+    <div class="hidden" id="emr-box">
+      <div class="sub-block">
+        <div class="sub-lbl">EMR 개수</div>
+        <div class="ctr-wrap">
+          <div class="ctr">
+            <button class="ctr-btn" id="eM" onclick="chgE(-1)">−</button>
+            <div class="ctr-val" id="ev">1</div>
+            <button class="ctr-btn" id="eP" onclick="chgE(1)">+</button>
+          </div>
+          <span class="lim-badge ok" id="e-badge">1개</span>
+        </div>
+        <div class="ctr-hint">1번째 주수술 100% / 2번째부터 제2의수술 50%</div>
+      </div>
+    </div>
+
+
+    <!-- EMR+CSP 합산 안내 -->
+    <div class="hidden" id="combined-box">
+      <div class="sub-block" style="border-color:#fde68a;background:#fefce8">
+        <div class="sub-lbl" style="color:#92400e">⚠ EMR + CSP 합산 한도</div>
+        <div id="combined-desc" style="font-size:12px;color:#92400e;line-height:1.7"></div>
+      </div>
+    </div>
+
+    <button class="conf-btn" onclick="confL()">대장내시경 항목 확정 →</button>
+  </div>
+</div>
+
+<!-- ▼ 결과 -->
+<div class="card hidden" id="result-card">
+  <div class="result-head">
+    <div class="badge-num done" style="background:#15803d;color:#fff">✓</div>
+    <div class="card-title" style="color:#14532d;font-weight:600">오더 목록</div>
+    <div class="result-head-actions">
+      <button class="act-btn" id="copy-btn" onclick="copyOrders()">📋 복사</button>
+      <button class="act-btn print-btn" onclick="window.print()">🖨 인쇄</button>
+    </div>
+  </div>
+  <div class="card-body" id="result-body"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   코드맵 모듈
+═══════════════════════════════════════════════ */
+// 내장 가안 코드맵 — 실제 코드 업로드 전 폴백
+const DRAFT_CODES = {
+  'EGD'              : '[EGD / E7611]',
+  'CS'               : '[CS / E7660]',
+  '나799_수면비'     : '[SEA005 수면비]',
+  '나799_위'         : '[SEA006 위]',
+  '나799_대장'       : '[SEA007 대장]',
+  '나799_III'        : '[EA003 진정Ⅲ]',
+  '나799_IV'         : '[EA004 진정Ⅳ]',
+  '진정제_propofol'  : '[WA653402351A Propofol]',
+  '진정제_midazolam' : '[W642200701A Midazolam]',
+  '나560_Bx'         : '[LZC5602 / C5602000Z]',
+  '나560_폴립'       : '[LZC5603 / C5603000Z]',
+  '나854'            : '[E7660010 결장경하생검]',  // 대장 생검 수기료
+  '나854_위'         : '[E7611010 위내시경하생검]', // 위 생검 수기료
+  '재료_FORCEP'      : '[SN0041005 생검용FORCEP]',  // 위·대장 포셉 재료
+  // 폴립절제 CSP — 맥락별 분리 (일반/공단검진/비보험검진)
+  'Q7701'            : '[Q7701]',          // 일반보험 CSP 1번째
+  'Q7701_검진'       : '[Q7701800]',        // 공단검진 CSP
+  'Q7701_비검'       : '[Q7701J00 직접입력]', // 비보험검진 CSP (커스텀)
+  'Q7701_제2'        : '[Q7701001]',        // EMR 후 제2수술 CSP (접미사 없음)
+  'Q7702'            : '[Q7702]',          // 일반보험 추가폴립        // 공단검진 추가폴립 // 비보험검진 추가폴립 (커스텀)
+  // EMR 대장 — 맥락별 분리
+  'Q7703'            : '[Q7703]',          // 일반보험 EMR
+  'Q7703_검진'       : '[Q7703800]',        // 공단검진 EMR
+  'Q7703_비검'       : '[Q7703J00 직접입력]', // 비보험검진 EMR (커스텀)
+  // 위 EMR/ESD — 맥락별 분리
+  'EMR_U'            : '[Q7652]',          // 일반보험 위 EMR
+  'EMR_U_검진'       : '[Q7652800]',        // 공단검진 위 EMR
+  'EMR_U_비검'       : '[Q7652J00 직접입력]', // 비보험검진 위 EMR (커스텀)
+  // 위 폴립절제 (snare) — 로컬 실무 추가
+  'Q7651'            : '[Q7651 위종양절제]',  // 위 폴립절제 일반
+  'Q7651_검진'       : '[Q7651800]',
+  'Q7651_비검'       : '[Q7651J00 직접입력]',
+  'ESD_L'            : '[ESD 코드 미등록]',
+  'CLO'              : '[LD5892 / D5892]',
+  '누591다'          : '[D5913016Z]',
+  '재료_SNARE'       : '[SN0041003 SNARE]',
+  '재료_INJECTOR'    : '[XJ2301162 INJECTOR]',
+  '세척소독'         : '[SEA010 / EA010]',
+  // ── 비보험 종합검진 전용 (병원 자체 J00 코드 직접 입력) ──
+  'EGD_비검'         : '[EGD J00 직접입력]',
+  'CS_비검'          : '[CS J00 직접입력]',
+  '세척소독_비검'    : '[세척소독 J00 직접입력]',
+  '나799_수면비_비검': '[수면비 J00 직접입력]',
+  '나799_위_비검'    : '[나799위 J00 직접입력]',
+  '나799_대장_비검'  : '[나799대장 J00 직접입력]',
+  '나799_III_비검'   : '[나799Ⅲ J00 직접입력]',
+  '나799_IV_비검'    : '[나799Ⅳ J00 직접입력]',
+  '진정제_propofol_비검'  : '[Propofol J00 직접입력]',
+  '진정제_midazolam_비검' : '[Midazolam J00 직접입력]',
+  '나560_Bx_비검'    : '[병리Bx J00 직접입력]',
+  '나560_폴립_비검'  : '[병리폴립 J00 직접입력]',
+  '나854_비검'       : '[나854 J00 직접입력]',
+  '나854_위_비검'    : '[위생검 J00 직접입력]',
+  '재료_FORCEP_비검' : '[FORCEP J00 직접입력]',
+  'CLO_비검'         : '[CLO J00 직접입력]',
+  '누591다_비검'     : '[누591다 J00 직접입력]',
+  '재료_SNARE_비검'  : '[SNARE J00 직접입력]',
+  '재료_INJECTOR_비검': '[INJECTOR J00 직접입력]',
+};
+
+// 실제 업로드된 코드맵 (로드 후 채워짐)
+let REAL_CODES = {};
+let codemapLoaded = false;
+
+/* 코드 조회 — 실제 코드 있으면 real, 없으면 draft */
+function code(key) {
+  const k = key.toLowerCase();
+  // REAL_CODES 먼저 탐색 (대소문자 무시)
+  for (const [rk, rv] of Object.entries(REAL_CODES)) {
+    if (rk.toLowerCase() === k) return { val: rv, real: true };
+  }
+  // 가안코드 폴백
+  const draft = DRAFT_CODES[key] || `[${key} 코드]`;
+  return { val: draft, real: false };
+}
+
+/* 비보험검진 코드키 폴백: jonghap이면 {key}_비검 우선 조회 */
+function resolveKey(key) {
+  if (typeof S!=='undefined' && S.type==='jonghap') {
+    // 이미 _비검/_검진/_제2 접미사가 있으면 그대로
+    if (/_비검$|_검진$|_제2$/.test(key)) return key;
+    const biboKey = key + '_비검';
+    // _비검 키가 DRAFT 또는 REAL에 존재하면 사용
+    const inDraft = Object.prototype.hasOwnProperty.call(DRAFT_CODES, biboKey);
+    const inReal  = Object.keys(REAL_CODES).some(rk => rk.toLowerCase() === biboKey.toLowerCase());
+    if (inDraft || inReal) return biboKey;
+  }
+  return key;
+}
+
+/* 코드 셀 렌더 */
+function codeCell(key) {
+  const { val, real } = code(resolveKey(key));
+  const cls = real ? 'r-code real' : 'r-code draft';
+  return `<div class="${cls}">${val}</div>`;
+}
+
+/* ── 엑셀/CSV 로더 ── */
+function loadCodemap(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+
+  if (ext === 'csv') {
+    const reader = new FileReader();
+    reader.onload = e => parseCSV(e.target.result, file.name);
+    reader.readAsText(file, 'utf-8');
+  } else {
+    // xlsx: SheetJS CDN 동적 로드
+    loadSheetJS(() => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const wb = XLSX.read(e.target.result, { type: 'array' });
+          const ws = wb.Sheets[wb.SheetNames[0]];
+          const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+          applyCodemap(data, file.name);
+        } catch(err) {
+          alert('엑셀 파일 파싱 오류: ' + err.message);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  }
+  input.value = ''; // 동일 파일 재업로드 허용
+}
+
+function loadSheetJS(cb) {
+  if (window.XLSX) { cb(); return; }
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+  s.onload = cb;
+  s.onerror = () => alert('SheetJS 라이브러리 로드 실패. CSV 형식을 사용해 주세요.');
+  document.head.appendChild(s);
+}
+
+function parseCSV(text, name) {
+  const rows = text.split(/\r?\n/).map(r => r.split(',').map(c => c.trim().replace(/^"|"$/g,'')));
+  applyCodemap(rows, name);
+}
+
+function applyCodemap(rows, name) {
+  const map = {};
+  let count = 0;
+  // 첫 행 헤더 스킵 (key 또는 코드키 포함 여부 확인)
+  const start = (rows[0] && rows[0][0] && /key|코드|name/i.test(rows[0][0])) ? 1 : 0;
+  for (let i = start; i < rows.length; i++) {
+    const r = rows[i];
+    if (!r || !r[0] || !r[1]) continue;
+    map[r[0].trim()] = r[1].trim();
+    count++;
+  }
+  if (count === 0) { alert('코드 데이터를 찾을 수 없습니다. 형식을 확인해 주세요.'); return; }
+  REAL_CODES = map;
+  codemapLoaded = true;
+
+  // UI 업데이트
+  const bar = document.getElementById('codemap-bar');
+  bar.classList.add('loaded');
+  document.getElementById('cm-title').textContent = `✅ 코드표 적용됨 — ${name} (${count}개 코드)`;
+  document.getElementById('cm-desc').textContent = '오더 목록에 실제 EMR 코드가 표시됩니다';
+  document.getElementById('cm-btn').textContent = '✕ 해제';
+  document.getElementById('cm-btn').className = 'cm-upload-btn clear';
+  document.getElementById('cm-btn').onclick = clearCodemap;
+  document.getElementById('cm-help').classList.add('hidden');
+
+  // 결과가 이미 표시된 경우 새로고침
+  if (!document.getElementById('result-card').classList.contains('hidden')) buildResult();
+}
+
+function clearCodemap() {
+  REAL_CODES = {}; codemapLoaded = false;
+  const bar = document.getElementById('codemap-bar');
+  bar.classList.remove('loaded');
+  document.getElementById('cm-title').textContent = '오더코드 미적용 (가안코드 표시 중)';
+  document.getElementById('cm-desc').textContent = '엑셀 업로드 시 실제 EMR 코드로 자동 교체됩니다';
+  document.getElementById('cm-btn').textContent = '📂 코드표 업로드';
+  document.getElementById('cm-btn').className = 'cm-upload-btn';
+  document.getElementById('cm-btn').onclick = () => document.getElementById('codemap-file').click();
+  document.getElementById('cm-help').classList.remove('hidden');
+  if (!document.getElementById('result-card').classList.contains('hidden')) buildResult();
+}
+
+/* ═══════════════════════════════════════════════
+   복사 기능
+═══════════════════════════════════════════════ */
+function copyOrders() {
+  const body = document.getElementById('result-body');
+  if (!body) return;
+
+  // 텍스트 추출 — 섹션별로 구조화
+  let lines = [];
+  body.querySelectorAll('.r-sec').forEach(sec => {
+    const title = sec.querySelector('.r-sec-title');
+    if (title) lines.push('\n[' + title.textContent + ']');
+    sec.querySelectorAll('.r-row').forEach(row => {
+      const name  = row.querySelector('.r-name')?.textContent || '';
+      const codeEl= row.querySelector('.r-code');
+      const badge = row.querySelector('.bdg')?.textContent || '';
+      const note  = row.querySelector('.r-note')?.textContent?.replace(/^→\s*/,'') || '';
+      let line = `• ${name}`;
+      if (codeEl && codeEl.textContent) line += `  (${codeEl.textContent})`;
+      if (badge) line += `  [${badge}]`;
+      if (note)  line += `  ※ ${note}`;
+      lines.push(line);
+    });
+    sec.querySelectorAll('.al').forEach(al => {
+      const t = al.textContent.trim().replace(/\s+/g, ' ');
+      if (t) lines.push('  ' + t);
+    });
+  });
+
+  const text = ` 내시경 오더 목록\n생성: ${new Date().toLocaleString('ko-KR')}\n${'─'.repeat(40)}${lines.join('\n')}`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✅ 복사됨';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 복사'; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    // fallback: textarea
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✅ 복사됨'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 복사'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   시술 코드 맥락 분기 — 방식 A (키 분리)
+   맥락: normal(일반) | gongdan(공단검진) | bibo(비보험검진)
+   procKey('Q7701','gongdan') → 'Q7701_검진'
+═══════════════════════════════════════════════ */
+function curCtx() {
+  // 비보험 종합검진
+  if (S.type === 'jonghap') return 'bibo';
+  // 공단 국가검진 (위암/위+대장/대장암)
+  if (S.type === 'wiChk' || S.type === 'bothChk' || S.type === 'coloChk') return 'gongdan';
+  return 'normal';
+}
+// 검사료(EGD/CS) 출력 결정 — 절제술 시 시술료 포함 처리
+// 반환: {show:bool, note:string}
+function examFeeDecision(hasSurgery) {
+  if (!hasSurgery) return { show:true, note:'' };
+  // 절제술 있음 → 검사료는 시술료에 포함
+  if (S.type==='jonghap') {
+    if (S.jExamFee==='remove') return { show:false, note:'' };
+    // diff: 차액 산정 안내하며 표시
+    return { show:true, note:'시술료에 검사료 포함 → 차액 산정 (시술료−검사료) / 단독 검사료 청구 불가' };
+  }
+  // 일반보험·공단검진: 고시대로 검사료 행 제거
+  return { show:false, note:'' };
+}
+
+function procKey(baseKey, ctx) {
+  // 제2수술 CSP는 별도 (접미사 없음, 맥락 무관)
+  if (baseKey === 'Q7701_제2') return baseKey;
+  // Q7702(추가 폴립절제)는 주수술만 검진/비검 접미사가 붙고, 추가분은 접미사 없이 기본 코드 사용
+  if (baseKey === 'Q7702') return baseKey;
+  if (ctx === 'gongdan') return baseKey + '_검진';
+  if (ctx === 'bibo')    return baseKey + '_비검';
+  return baseKey;
+}
+
+/* ═══════════════════════════════════════════════
+   상수
+═══════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════
+// 근거 매핑 — 각 오더/규칙의 출처 (고시·유권해석)
+// ═══════════════════════════════════════════════
+const REFS = {
+  '나799': {
+    t: '진정내시경 환자관리료 (나799)',
+    why: '소화기 내시경 시 진정·감시·회복 관리 행위. 치료 목적 시술 동반 시 급여, 관찰·조직검사만이면 비급여. 위·대장 동시 시 100%+50% 감산은 급여 나799가 2개일 때만 적용 — 한쪽이 관찰만(비급여)이면 남은 급여 나799는 감산 없이 단독 100% 산정.',
+    src: '보건복지부 고시 제2024-18호 (2024.2.1 시행)'
+  },
+  '나799_등급': {
+    t: '진정내시경 등급 (Ⅲ/Ⅳ)',
+    why: '난이도 등급 분류. Ⅲ=결장경검사·자770(폴립절제·EMR). Ⅳ=위 종양절제(자765)·대장 ESD(자770다 QX706). 병원 자체 매핑: 위EMR→Ⅳ, 대장CSP/EMR→Ⅲ, 대장ESD→Ⅳ.',
+    src: '고시 제2024-18호 진정내시경 산정행위 분류'
+  },
+  '폴립한도': {
+    t: '폴립절제 급여 한도',
+    why: 'CSP 단독 최대 6개(Q7701×1 + Q7702×5). EMR+CSP 혼합 최대 7개. EMR이 주수술 100%, CSP는 제2의수술. EMR 후 추가 snare는 Q7701001.',
+    src: '심평원 공개심의사례 2024-06-28 / 고시 제2020-243호'
+  },
+  '나854한도': {
+    t: '내시경하 생검 수기료 (나854) 한도',
+    why: '폴립절제 한도 이내면 추가 forcep biopsy의 나854 수기료 청구 가능. 한도 도달 후에는 나854 청구 불가, 병리(나560)만 청구.',
+    src: '심평원 공개심의사례 2024-06-28'
+  },
+  '검사료포함': {
+    t: '절제술 시 검사료 포함',
+    why: '자770 결장경하 종양수술·자765 위 종양수술 등 실시 시, 시술료에 내시경 검사료가 포함됨. 검사료를 별도 청구하지 않고 시술료에서 검사료를 제외한 차액만 산정(검진은 8/J 접미사).',
+    src: '고시 제2024-243호 / 제2024-58호 (2024.4.1)'
+  },
+  '나560장기': {
+    t: '병리조직검사 (나560) 산정 단위',
+    why: '나560은 [1장기당] 산정. 위·식도·십이지장은 별개 장기로 각각 산정 가능(일반보험). 대장은 단일 장기로 개수·시술 무관 1건. 절제+biopsy 병행 시 높은 등급(Level C)으로 통합.',
+    src: '나560 조직병리검사 산정기준 (1장기당)'
+  },
+  'CLO': {
+    t: 'Helicobacter pylori 검사 급여기준',
+    why: '소화성궤양·조기위암절제후·MALT·ITP→급여. 위염 등 진료목적→선별급여 90%. 위암가족력→선별급여 50%. 본인희망 검진→비급여. CLO 급여 인정 시 생검료·포셉도 동일 비율.',
+    src: '고시 제2022-204호 (2022.9.1 시행)'
+  },
+  '누591다': {
+    t: 'Clarithromycin 내성검사 (누591다)',
+    why: 'CLO와 독립된 자체 급여기준(적응증 공유). 소화성궤양·MALT·조기위암절제후 → 급여. 위선종절제후·위축성위염·위암가족력 → 선별급여 80%. 검진목적 → 비급여. 80% 고정이 아님.',
+    src: '고시 제2022-204호 / 선별급여 지정기준 (누591다 급여기준)'
+  },
+  '검진분리': {
+    t: '국가검진 중 치료 — 청구 분리',
+    why: '검진 중 이상소견으로 시술 시, 검진 항목(검사료·세척소독·나560·나854·HP검사)은 공단청구(급여처방 X). 용종절제술 등 치료와 병리·치료재료만 요양급여 산정(8 접미사).',
+    src: '고시 제2024-58호 (2024.4.1)'
+  },
+  '비보험검진': {
+    t: '비보험 종합검진 청구',
+    why: '본인희망 건강검진은 비급여. 검진 중 용종절제 시 수술료·조직검사는 요양급여 인정 가능(J 접미사). 세척소독료는 검진비 포함으로 별도 청구 불가. 위내시경 종속검사는 위가 비급여면 청구 불가.',
+    src: '고시 제2024-58호 / 복지부 유권해석'
+  },
+  '세척소독': {
+    t: '내시경 세척·소독료',
+    why: '검사마다 1회 산정, 위·대장 동시 2개. 국가검진은 검진 항목 포함으로 검진청구. 비보험검진은 비급여 검진비에 포함되어 별도 청구 불가.',
+    src: '고시 제2024-58호'
+  },
+};
+
+const MAX_CSP_ONLY = 6;
+const MAX_COMBINED = 7;
+
+/* ═══════════════════════════════════════════════
+   상태
+═══════════════════════════════════════════════ */
+const S = {
+  type: '',       // ilban | wiChk | bothChk | coloChk
+  scope: '',      // wi | colo | both
+  gastroAdd: '',  // none | add
+  sleep: '',      // yes | no
+  jonghapPaid: '', // '' | all(전체비급여) | paid(용종절제급여)
+  jExamFee: 'diff', // 비보험검진 검사료 처리: diff(차액산정) | remove(완전빼기)
+  clo: '',        // ulcer | gastritis | screen | family
+  p: 1, e: 1,
+  uSel: new Set(),
+  bxSites: new Set(['stomach']),  // 식도/위/십이지장 부위별 biopsy
+  lSel: new Set(),
+  uDone: false, lDone: false
+};
+
+/* ═══════════════════════════════════════════════
+   유틸
+═══════════════════════════════════════════════ */
+function $(id) { return document.getElementById(id); }
+function show(id, v) { $(id).classList.toggle('hidden', !v); }
+
+function setNum(id, state) {
+  const el = $(id); if (!el) return;
+  el.className = 'badge-num' + (state==='cur'?' cur':state==='done'?' done':'');
+  if (state === 'done') el.innerHTML = '✓';
+  else el.textContent = { n1:'1',n2a:'2',n2b:'2',n3:'3',n4u:'4',n4l:'4' }[id] || '';
+}
+function setAns(id, text) { const el=$(id); el.textContent=text; el.classList.remove('hidden'); }
+function hideAns(id)      { const el=$(id); el.textContent='';   el.classList.add('hidden');    }
+function clearSel(sel)    { document.querySelectorAll(sel).forEach(b=>b.classList.remove('on')); }
+
+function resetProc() {
+  ['c4u','c4l','result-card'].forEach(id=>show(id,false));
+  document.querySelectorAll('.chk-btn').forEach(b=>{
+    b.classList.remove('on'); b.querySelector('.chk-sq').style.color='transparent';
+  });
+  document.querySelectorAll('#clo-sub .sel-btn').forEach(b=>b.classList.remove('on'));
+  ['clo-sub','bx-sub','polyp-box','emr-box','combined-box'].forEach(id=>show(id,false));
+  S.uSel.clear(); S.lSel.clear();
+  S.uDone=false; S.lDone=false;
+  S.clo=''; S.p=1; S.e=1;
+  resetBxSites();
+  $('pv').textContent='1'; $('ev').textContent='1';
+}
+
+// 조직검사 부위 기본값(위)으로 복원
+function resetBxSites() {
+  S.bxSites = new Set(['stomach']);
+  document.querySelectorAll('#bx-sub .chk-btn').forEach(b=>{
+    const on = b.dataset.bx==='stomach';
+    b.classList.toggle('on', on);
+    b.querySelector('.chk-sq').style.color = on ? '#fff' : 'transparent';
+  });
+  const h=$('bx-hint'); if(h) h.textContent='위 1부위 — 나560 1건 / 같은 장기 내 여러 군데는 1건으로 묶임';
+}
+
+function needU() { return S.scope==='wi'  ||S.scope==='both'; }
+function needL() { return S.scope==='colo'||S.scope==='both'; }
+
+function updateStepNums() {
+  let n=4;
+  if (needU()) { $('n4u').textContent=n; if(needL()) n++; }
+  if (needL()) { $('n4l').textContent=n; }
+}
+function showProcCards() {
+  show('result-card',false); updateStepNums();
+  if (needU()) { show('c4u',true); setNum('n4u','cur'); } else show('c4u',false);
+  if (needL()) { show('c4l',true); setNum('n4l','cur'); } else show('c4l',false);
+}
+
+/* ═══════════════════════════════════════════════
+   카운터 한도 UI
+═══════════════════════════════════════════════ */
+function maxP() { return MAX_CSP_ONLY; }
+
+function updateLimitUI() {
+  const hasCSP=S.lSel.has('csp'), hasEMR=S.lSel.has('emrL'), hasFP=S.lSel.has('fp');
+
+  if (hasCSP) {
+    $('pM').disabled=S.p<=1; $('pP').disabled=S.p>=maxP();
+    const pb=$('p-badge');
+    pb.textContent=S.p+' / 최대 '+maxP()+'개';
+    pb.className='lim-badge '+(S.p>=maxP()?'over':'ok');
+    $('p-hint').textContent=S.p===1?'Q7701 × 1개 (첫 번째 폴립)':'Q7701 × 1개 + Q7702 × '+(S.p-1)+'개';
+  }
+  if (hasEMR) {
+    $('eM').disabled=S.e<=1;
+    const eb=$('e-badge');
+    eb.textContent=S.e+'개'+(S.e>=3?' (심사 강화)':'');
+    eb.className='lim-badge '+(S.e>=3?'over':'ok');
+  }
+  if (hasCSP&&hasEMR) {
+    show('combined-box',true);
+    const used=1+S.p, remain=MAX_COMBINED-used;
+    let msg='EMR 1개(주수술 100%) + CSP 제2의수술(Q7701001) + 추가폴립 Q7702 '+(S.p<=1?0:S.p-1)+'개<br>'
+           +'합계 <strong>'+used+'개</strong> / 한도 '+MAX_COMBINED+'개';
+    if (used>MAX_COMBINED)      msg+=' <strong style="color:#991b1b">⚠ 초과 — 삭감 대상</strong>';
+    else if (used===MAX_COMBINED) msg+=' <strong style="color:#92400e">한도 최대</strong>';
+    else                          msg+=' (잔여 '+remain+'개)';
+    $('combined-desc').innerHTML=msg;
+  } else { show('combined-box',false); }
+}
+
+/* ═══════════════════════════════════════════════
+   STEP 핸들러
+═══════════════════════════════════════════════ */
+function step1(v,btn) {
+  S.type=v; S.scope=''; S.gastroAdd=''; S.sleep='';
+  clearSel('#c1 .sel-btn'); btn.classList.add('on');
+  setNum('n1','done');
+  setAns('a1',{ilban:'일반 외래',wiChk:'국가검진—위암',bothChk:'국가검진—위암+대장암',coloChk:'국가검진—대장암',jonghap:'비보험 종합검진'}[v]);
+  ['c2a','c2b','c3','c-jbill','jexam-sub'].forEach(id=>show(id,false));
+  ['a2a','a2b','a3'].forEach(id=>hideAns(id));
+  hideAns('ajb'); S.jonghapPaid=''; S.jExamFee='diff';
+  clearSel('#c2a .sel-btn,#c2b .sel-btn,#c3 .sel-btn');
+  resetProc();
+  if (v==='ilban' || v==='jonghap') { show('c2a',true); setNum('n2a','cur'); }
+  else if (v==='wiChk') { show('c2b',true); setNum('n2b','cur'); }
+  else { S.scope=v==='bothChk'?'both':'colo'; show('c3',true); setNum('n3','cur'); updateStepNums(); }
+}
+function step2a(v,btn) {
+  S.scope=v; clearSel('#c2a .sel-btn'); btn.classList.add('on');
+  setNum('n2a','done'); setAns('a2a',{wi:'위내시경',colo:'대장내시경',both:'위+대장 동시'}[v]);
+  show('c3',true); setNum('n3','cur'); resetProc(); updateStepNums();
+}
+function step2b(v,btn) {
+  S.gastroAdd=v; S.scope=v==='add'?'both':'wi';
+  clearSel('#c2b .sel-btn'); btn.classList.add('on');
+  setNum('n2b','done'); setAns('a2b',v==='none'?'위내시경만':'대장내시경 추가');
+  show('c3',true); setNum('n3','cur'); resetProc(); updateStepNums();
+}
+function step3(v,btn) {
+  S.sleep=v; clearSel('#c3 .sel-btn'); btn.classList.add('on');
+  setNum('n3','done'); setAns('a3',v==='yes'?'수면':'비수면');
+  resetProc();
+  if (S.type==='jonghap') {
+    // 비보험검진: 급여분기 토글 카드 먼저
+    show('c-jbill',true); setNum('njb','cur');
+    hideAns('ajb');
+    clearSel('#c-jbill .sel-btn');
+    show('jexam-sub',false);
+    S.jonghapPaid=''; S.jExamFee='diff';
+    document.querySelectorAll('#jexam-sub .sel-btn').forEach(b=>b.classList.toggle('on', b.dataset.jx==='diff'));
+    show('c4u',false); show('c4l',false); show('result-card',false);
+  } else {
+    show('c-jbill',false);
+    showProcCards();
+  }
+}
+function pickJbill(v,btn) {
+  S.jonghapPaid=v;
+  // 상단 2개 버튼만 클리어 (jexam-sub 버튼 제외)
+  document.querySelectorAll('#c-jbill > .card-body > .grid2 .sel-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  // 용종절제만 급여 → 검사료 처리 옵션 표시
+  if (v==='paid') {
+    show('jexam-sub', true);
+    setAns('ajb', '용종절제만 급여 / 검사료: '+(S.jExamFee==='remove'?'완전 빼기':'차액 산정'));
+  } else {
+    show('jexam-sub', false);
+    setAns('ajb', '전체 비급여');
+  }
+  setNum('njb','done');
+  showProcCards();
+}
+function pickJExam(btn) {
+  S.jExamFee = btn.dataset.jx;
+  document.querySelectorAll('#jexam-sub .sel-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  setAns('ajb', '용종절제만 급여 / 검사료: '+(S.jExamFee==='remove'?'완전 빼기':'차액 산정'));
+  showProcCards();
+}
+function togU(btn) {
+  const v=btn.dataset.v, sq=btn.querySelector('.chk-sq');
+  if (S.uSel.has(v)){ S.uSel.delete(v); btn.classList.remove('on'); sq.style.color='transparent'; }
+  else {
+    // EMR과 위 snare polypectomy는 상호배타 (위 치료는 한 방식)
+    if (v==='emrU'  && S.uSel.has('snareU')) toggleOffU('snareU');
+    if (v==='snareU'&& S.uSel.has('emrU'))   toggleOffU('emrU');
+    S.uSel.add(v); btn.classList.add('on'); sq.style.color='#fff';
+  }
+  show('clo-sub', S.uSel.has('clo'));
+  show('bx-sub', S.uSel.has('bx'));
+}
+
+function togBxSite(btn) {
+  const site = btn.dataset.bx, sq = btn.querySelector('.chk-sq');
+  if (S.bxSites.has(site)) {
+    // 최소 1부위는 유지
+    if (S.bxSites.size<=1) return;
+    S.bxSites.delete(site); btn.classList.remove('on'); sq.style.color='transparent';
+  } else {
+    S.bxSites.add(site); btn.classList.add('on'); sq.style.color='#fff';
+  }
+  const n = S.bxSites.size;
+  const names = {esophagus:'식도',stomach:'위',duodenum:'십이지장'};
+  const list = [...S.bxSites].map(s=>names[s]).join('·');
+  $('bx-hint').textContent = `${list} ${n}부위 — 나560 ${n}건 / 같은 장기 내 여러 군데는 1건으로 묶임`;
+}
+function toggleOffU(val) {
+  S.uSel.delete(val);
+  const b = document.querySelector(`#c4u .chk-btn[data-v="${val}"]`);
+  if (b) { b.classList.remove('on'); b.querySelector('.chk-sq').style.color='transparent'; }
+}
+function togL(btn) {
+  const v=btn.dataset.v, sq=btn.querySelector('.chk-sq');
+  if (S.lSel.has(v)){
+    S.lSel.delete(v); btn.classList.remove('on'); sq.style.color='transparent';
+    if (v==='csp')  { S.p=1; $('pv').textContent='1'; }
+    if (v==='emrL') { S.e=1; $('ev').textContent='1'; }
+  } else { S.lSel.add(v); btn.classList.add('on'); sq.style.color='#fff'; }
+  if (S.lSel.has('csp')&&S.p>maxP()) { S.p=maxP(); $('pv').textContent=S.p; }
+  show('polyp-box', S.lSel.has('csp'));
+  show('emr-box',   S.lSel.has('emrL'));
+  updateLimitUI();
+}
+function pickClo(v,btn) { S.clo=v; clearSel('#clo-sub .sel-btn'); btn.classList.add('on'); }
+function chgP(d) { S.p=Math.max(1,Math.min(maxP(),S.p+d)); $('pv').textContent=S.p; updateLimitUI(); }
+function chgE(d) { S.e=Math.max(1,S.e+d); $('ev').textContent=S.e; updateLimitUI(); }
+function confU() { S.uDone=true; setNum('n4u','done'); tryResult(); }
+function confL() { S.lDone=true; setNum('n4l','done'); tryResult(); }
+function tryResult() { if ((!needU()||S.uDone)&&(!needL()||S.lDone)) buildResult(); }
+
+/* ═══════════════════════════════════════════════
+   결과 빌더 헬퍼
+═══════════════════════════════════════════════ */
+// ═══ 비보험 종합검진(J00) 급여 대상 판정 ═══
+// 고시 제2024-58호: 본인희망 건강검진 중
+//  · 단순 조직검사·생검·CLO(나560_Bx·나854·FORCEP·CLO·누591다) → 검진 일환, 급여 안 됨 (비급여/미표시)
+//  · 폴립절제술(자765/자770) → J코드로 시술료−검사료 급여
+//  · 절제 관련 병리(나560_폴립 Level C)·치료재료(SNARE/INJECTOR) → 급여
+//  · 절제 동반 진정료(나799_III/IV) → 급여
+// ∴ 화이트리스트 = '절제술 및 그와 직접 관련된 항목'만. 단순 생검계열은 제외.
+const JONGHAP_PAID_KEYS = ['Q7701','Q7702','Q7703','Q7701_제2','EMR_U','Q7651','ESD_L','나560_폴립','재료_SNARE','재료_INJECTOR','나799_III','나799_IV','진정제_propofol','진정제_midazolam'];
+function isJonghapPaidKey(k){ return JONGHAP_PAID_KEYS.some(pk => k===pk || k===pk+'_검진' || k===pk+'_비검'); }
+
+function row(name, codeKey, badge, note, emph, refKey) {
+  // 비보험 종합검진 청구 분기
+  if (typeof S!=='undefined' && S.type==='jonghap') {
+    if (S.jonghapPaid==='paid' && isJonghapPaidKey(codeKey)) {
+      // 용종절제 관련 → 급여 유지 (단, 검진청구는 급여로)
+      if (badge==='검진청구') badge='급여';
+    } else {
+      badge='비급여';
+    }
+  }
+  const cls = { '급여':'b-g','비급여':'b-b','검진청구':'b-w','선별급여':'b-s','100/100':'b-h','진료급여':'b-g' }[badge]||'b-g';
+  const codeHtml = codeCell(codeKey);
+  const refIcon = (refKey && REFS[refKey]) ? ` <span class="ref-i" onclick="openRef('${refKey}')" title="근거 보기">ⓘ</span>` : '';
+  return `<div class="r-row${emph?' em':''}">
+    <div class="r-info">
+      <div class="r-name">${name}${refIcon}</div>
+      ${codeHtml}
+      ${note?`<div class="r-note">→ ${note}</div>`:''}
+    </div>
+    <span class="bdg ${cls}">${badge}</span>
+  </div>`;
+}
+// raw code string 직접 지정 시 (동적 텍스트)
+function rowRaw(name, codeStr, badge, note, emph) {
+  if (typeof S!=='undefined' && S.type==='jonghap') badge='비급여';
+  const cls = { '급여':'b-g','비급여':'b-b','검진청구':'b-w','선별급여':'b-s','100/100':'b-h','진료급여':'b-g' }[badge]||'b-g';
+  return `<div class="r-row${emph?' em':''}">
+    <div class="r-info">
+      <div class="r-name">${name}</div>
+      ${codeStr?`<div class="r-code draft">${codeStr}</div>`:''}
+      ${note?`<div class="r-note">→ ${note}</div>`:''}
+    </div>
+    <span class="bdg ${cls}">${badge}</span>
+  </div>`;
+}
+function sec(title,content) { return `<div class="r-sec"><div class="r-sec-title">${title}</div>${content}</div>`; }
+function alW(msg)  { return `<div class="al al-w">⚠ <span>${msg}</span></div>`; }
+function alI(msg)  { return `<div class="al al-i">ℹ <span>${msg}</span></div>`; }
+function alOK(msg) { return `<div class="al al-ok">✅ <span>${msg}</span></div>`; }
+
+/* ═══════════════════════════════════════════════
+   나799 헬퍼 — 병원 오더 체계 반영
+   위 단독: 나799_위(SEA006) or 나799_IV(EA004)
+   대장 단독: 나799_대장(SEA007) or 나799_III(EA003)
+   동시: buildResult에서 처리
+═══════════════════════════════════════════════ */
+function sed799key(uSurg, lSurg, isUpper, lESD) {
+  // 단독 위: uSurg면 IV, 아니면 위
+  // 단독 대장: ESD면 IV(자770다 QX706), CSP·EMR이면 III, 아니면 대장
+  if (isUpper) return uSurg ? '나799_IV' : '나799_위';
+  if (lESD)    return '나799_IV';
+  return lSurg ? '나799_III': '나799_대장';
+}
+function sed799name(key) {
+  return {
+    '나799_수면비': '진정내시경 환자관리료(수면비)',
+    '나799_위'    : '진정내시경 환자관리료(위)',
+    '나799_대장'  : '진정내시경 환자관리료(대장)',
+    '나799_III'   : '진정내시경 환자관리료Ⅲ',
+    '나799_IV'    : '진정내시경 환자관리료Ⅳ',
+  }[key] || '진정내시경 환자관리료';
+}
+function sedBadge(key) {
+  // IV, III → 급여 / 수면비·위·대장 → 비급여
+  return (key==='나799_IV'||key==='나799_III') ? '급여' : '비급여';
+}
+// 진정제(Propofol/Midazolam) 출력 — 진정료 급여 여부 + 검진 맥락별
+//  sedPaid: 진정료가 급여(시술 동반)인가
+//  isChk: 공단 국가검진인가
+// 규칙:
+//  진정료 급여        → 미다졸람 급여 / 프로포폴 급여
+//  일반외래 진정료 비급여 → 미다졸람 급여 / 프로포폴 100/100(선별급여)
+//  공단검진 진정료 비급여 → 둘 다 비급여
+//  (비보험검진은 row()에서 일괄 비급여 강제)
+// 누591다(Clarithromycin 내성검사) 급여구분 — 자체 급여기준 (CLO와 독립, 적응증 공유)
+//  ulcer(소화성궤양·MALT·조기위암절제후) → 급여
+//  therapy(위선종절제후·위축성위염 등)·family(위암가족력) → 선별급여 80%
+//  screen(검진목적) → 비급여 (제균 적응증 아님)
+// 고시: 누591다 급여 대상 이외 제균요법 필요 시 본인부담률 80% (가족력도 80%)
+function clarInfo(clo) {
+  if (clo==='ulcer')  return { badge:'급여',   note:'소화성궤양·MALT·조기위암절제후 → 급여 (누591다 자체 급여기준)' };
+  if (clo==='screen') return { badge:'비급여', note:'검진목적 → 제균 적응증 아님 / 비급여' };
+  // therapy, family
+  return { badge:'선별급여', note:'위선종절제후·위축성위염·위암가족력 등 → 선별급여 본인부담 80%' };
+}
+
+function sedativeRows(sedPaid, isChk, oneTime) {
+  const suffix = oneTime ? ' — 1회만 청구' : '';
+  const isJong = (S.type==='jonghap');
+  let mBadge, pBadge, mNote, pNote;
+  if (sedPaid) {
+    // 절제술 동반 → 진정료 급여 → 진정제도 급여 (비보험검진 포함, 고시 라항)
+    mBadge='급여'; pBadge='급여';
+    mNote='사용량·농도 차트 기재'; pNote='사용량·농도 차트 기재';
+    if (isJong) { mNote='절제술 동반 → 진정료 급여 → 진정제 급여 (J코드)'; pNote=mNote; }
+  } else if (isJong) {
+    // 비보험검진 관찰만 → 진정료 비급여 → 진정제 비급여
+    mBadge='비급여'; pBadge='비급여';
+    mNote='비보험검진 관찰만 → 진정료 비급여 → 진정제 비급여'; pNote=mNote;
+  } else if (isChk) {
+    mBadge='비급여'; pBadge='비급여';
+    mNote='공단검진 진정료 비급여 → 진정제도 비급여'; pNote='공단검진 진정료 비급여 → 진정제도 비급여';
+  } else {
+    // 일반외래 관찰만
+    mBadge='급여'; pBadge='선별급여';
+    mNote='Midazolam은 진정료 비급여 시에도 급여'; pNote='진정료 비급여 시 100/100 선별급여(전액본인부담)';
+  }
+  return row('진정제 (Propofol)'+suffix, '진정제_propofol', pBadge, pNote, false, '나799')
+       + row('진정제 (Midazolam)'+suffix, '진정제_midazolam', mBadge, mNote, false, '나799');
+}
+
+function sedNote(key, isChk) {
+  const base = {
+    '나799_수면비': '동시+관찰·biopsy만 — 병원 자체 비급여 통합수가 / 사전 고지 필수',
+    '나799_위'    : '관찰·biopsy만 — 비급여 / 사전 고지·동의서 필수',
+    '나799_대장'  : '관찰·biopsy만 — 비급여 / 사전 고지·동의서 필수',
+    '나799_III'   : '대장 CSP·EMR 시술 동반 → 급여 / 투여량·시간 기록 필수',
+    '나799_IV'    : '위 EMR 시술 동반 → 급여 / 투여량·시간 기록 필수',
+  }[key] || '';
+  if (isChk && (key==='나799_IV'||key==='나799_III'))
+    return base + ' / 검진 오더와 분리 청구';
+  if (isChk && key!=='나799_수면비')
+    return base + ' — 국가검진 수면비 별도 고지';
+  return base;
+}
+
+/* ═══════════════════════════════════════════════
+   위내시경 오더 블록
+═══════════════════════════════════════════════ */
+function buildUpper(isChk, hasL) {
+  const { uSel, sleep, clo } = S;
+  let rs='', warns=[];
+  const ctx = curCtx();
+  const hasSurgery = uSel.has('emrU') || uSel.has('snareU');
+  // 위 절제술 + biopsy 병행 → 병리 Level C 통합 (Level B 부위별 산정 억제)
+  const mergeToCU = hasSurgery && uSel.has('bx');
+
+  const egdFee = examFeeDecision(hasSurgery);
+  if (egdFee.show) rs += row('위내시경 (나766 가목)', 'EGD', isChk?'검진청구':'급여', egdFee.note, false, hasSurgery?'검사료포함':null);
+  else if (hasSurgery) rs += `<div class="al al-i" style="margin-bottom:6px">ℹ <span>위 절제술 시행 — 위내시경 검사료(나761)는 시술료에 포함되어 별도 청구하지 않습니다 (고시 제2024-243호).</span></div>`;
+  if (S.type!=='jonghap') rs += row('내시경 세척소독료', '세척소독', isChk?'검진청구':'급여', 'SEA010 / 검사 시마다 1회 산정'+(isChk?' / 공단검진 항목 → 검진청구':''), false, '세척소독');
+
+  // 위 단독 수면 (동시는 buildResult에서 처리)
+  if (sleep==='yes' && !hasL) {
+    const key = sed799key(hasSurgery, false, true);
+    const nm  = sed799name(key);
+    const bg  = sedBadge(key);
+    const nt  = sedNote(key, isChk);
+    rs += row(`${nm} — 단독 100%`, key, bg, nt, hasSurgery, '나799');
+    rs += sedativeRows(hasSurgery, isChk, false);
+    if (!hasSurgery) warns.push('관찰·biopsy만: 나799(위) 비급여 → 사전 설명·동의·고지 필수');
+  }
+
+  // ── 위 조직검사(biopsy) / CLO test 통합 처리 ──
+  // 위 생검 수기료 = 나854_위 (E7611010), 포셉 재료 = 재료_FORCEP (SN0041005)
+  // 비보험 종합검진: 위내시경이 비급여이므로 종속 검사(조직검사·CLO·생검수기료·포셉·내성검사)는
+  //   청구 불가 → 결과에 표시하지 않음 (병원 커스텀 영역, 혼란 방지)
+  const isJonghapU = (S.type==='jonghap');
+  const hasBx  = uSel.has('bx')  && !isJonghapU;
+  const hasClo = uSel.has('clo') && !isJonghapU;
+
+  if (isJonghapU && (uSel.has('bx')||uSel.has('clo')))
+    warns.push('비보험 종합검진: 위내시경이 비급여 → 조직검사·CLO 등 종속 검사는 별도 청구 불가 (오더 미표시)');
+
+  if (hasClo && !clo) {
+    warns.push('CLO test 목적을 선택해야 급여 구분이 결정됩니다.');
+  }
+
+  // CLO 급여율 산출 (목적별)
+  let cloBadge='', cloRate='';
+  if (hasClo && clo) {
+    cloBadge = clo==='ulcer'?'급여':clo==='family'?'선별급여':clo==='therapy'?'선별급여':'비급여';
+    cloRate  = clo==='ulcer'?'30%':clo==='family'?'50%':clo==='therapy'?'90%':'';
+  }
+
+  // ── CASE 1: CLO 단독 (조직검사 없음) ──
+  // CLO + 위 생검 수기료(나854_위) + 포셉(재료_FORCEP) — 모두 CLO 비율
+  // 병리조직검사는 붙지 않음
+  if (hasClo && clo && !hasBx) {
+    const cloNote = clo==='ulcer'    ?'소화성궤양·조기위암절제·MALT·ITP → 급여(본인부담 30%)'
+                  :clo==='family'   ?'위암 가족력 → 선별급여 50% / 진단명 Z80.0 + 줄번호 JX999'
+                  :clo==='therapy'  ?'위염 등 진료목적 HP검사(예: 위선종절제후) → 선별급여 90%'
+                  :                  '본인 희망 검진목적 → 비급여 고지·동의서 필수';
+    rs += row('CLO test (H. pylori, D5892)'+(cloRate?` — ${cloRate}`:''), 'CLO', cloBadge, cloNote, false, 'CLO');
+    if (clo!=='screen') {
+      rs += row('위내시경하 생검 수기료 (나854, E7611010)'+(cloRate?` — ${cloRate}`:''), '나854_위', cloBadge,
+                'CLO 겸자 생검 수기료 — CLO와 동일 본인부담률');
+      rs += row('생검용 FORCEP (재료)'+(cloRate?` — ${cloRate}`:''), '재료_FORCEP', cloBadge,
+                '포셉 재료 — CLO와 동일 본인부담률');
+    }
+    const clarC1 = clarInfo(clo);
+    rs += row('Clarithromycin 내성 돌연변이검사 (누591다, D5913016)', '누591다', clarC1.badge,
+              'CLO 양성 확인 후 즉시 추가 / '+clarC1.note, false, '누591다');
+    if (clo==='screen') warns.push('CLO 검진목적: 비급여 — 사전 고지·동의서 필수');
+    else if (clo!=='ulcer') warns.push(`CLO ${cloRate} 선별급여: 위생검 수기료·FORCEP도 ${cloRate} 적용 / 병리조직검사는 미시행 (CLO 단독)`);
+    else warns.push('CLO 단독: 위생검 수기료·FORCEP은 급여(30%) / 병리조직검사 미시행');
+  }
+
+  // ── CASE 2: 조직검사(biopsy) 시행 — CLO 동반 여부 무관 ──
+  // 공단검진: 나560·나854·FORCEP 공단청구(급여처방 X) / CLO 등 검진 외 항목만 급여처방
+  // 일반보험: 나560·나854·FORCEP = 30% 급여
+  if (hasBx) {
+    const siteNames = {esophagus:'식도',stomach:'위',duodenum:'십이지장'};
+    const siteList = [...S.bxSites].map(s=>siteNames[s]).join('·');
+    const nSites = S.bxSites.size;
+    const bxBadge = isChk ? '검진청구' : '급여';
+    const bxRate  = isChk ? '' : ' — 30%';
+    const bxSuffix = isChk ? ' / 공단검진 항목 → 공단청구(별도 급여처방 X)' : ' / 일반보험 본인부담 30%';
+
+    // 수기료·FORCEP (부위 수 무관 — 1회)
+    rs += row('위내시경하 생검 수기료 (나854, E7611010)'+bxRate, '나854_위', bxBadge,
+              '내시경하 생검 수기료'+bxSuffix);
+    rs += row('생검용 FORCEP (재료)'+bxRate, '재료_FORCEP', bxBadge, '포셉 재료'+bxSuffix);
+
+    // 병리: 위 절제술 병행이면 Level C 통합, 아니면 부위별 Level B
+    if (mergeToCU) {
+      // 절제 동반 Level C 병리는 공단검진이어도 급여 (고시 제2024-58호)
+      rs += row('병리조직검사 — 통합 (나560다 Level C)', '나560_폴립', '급여',
+                '위 절제 검체 + 겸자 검체 통합 — Level C 급여 산정 / Level B 미산정', false, '검진분리');
+      warns.push('위 절제술 + biopsy 병행: 병리조직검사는 Level C 하나로 통합 청구 (Level B 미산정) / Level C는 급여');
+    } else if (isChk) {
+      // 공단검진: 부위 수 무관 검진청구 1건만
+      rs += row('병리조직검사 — 위 생검 (나560나 Level B)', '나560_Bx', '검진청구',
+                `${siteList} ${nSites}부위 시행하더라도 공단검진은 검진청구 1건 / 별도 급여처방 X`);
+    } else {
+      // 일반보험: 부위별(장기별) 나560 Level B — 식도/위/십이지장 각각
+      rs += row(`병리조직검사 — ${siteList} ${nSites}부위 (나560나 Level B × ${nSites})`, '나560_Bx', bxBadge,
+                `장기별 산정 — ${nSites}개 장기 각각 나560 / 같은 장기 내 여러 군데는 1건`+bxSuffix);
+      if (nSites>=2) warns.push(`조직검사 ${nSites}부위(${siteList}): 나560은 장기당 산정 → 부위별 ${nSites}건 청구 가능`);
+    }
+    if (isChk) warns.push('공단검진 + 조직검사: 나854·FORCEP·나560은 공단청구 — 별도 급여(심평원) 처방 내지 않음');
+
+    // 조직검사와 함께 CLO도 시행한 경우 — CLO는 별도 (검진 외 항목)
+    if (hasClo && clo) {
+      const cloNote = clo==='ulcer'    ?'소화성궤양·조기위암절제·MALT·ITP → 급여(30%)'
+                    :clo==='family'   ?'위암 가족력 → 선별급여 50%'
+                    :clo==='therapy'  ?'위염 등 진료목적 HP검사 → 선별급여 90%'
+                    :                  '본인 희망 검진목적 → 비급여';
+      rs += row('CLO test (H. pylori, D5892)'+(cloRate?` — ${cloRate}`:''), 'CLO', cloBadge,
+                cloNote+' / 검진 외 항목 → 급여처방', false, 'CLO');
+      const clarC2 = clarInfo(clo);
+      rs += row('Clarithromycin 내성 돌연변이검사 (누591다, D5913016)', '누591다', clarC2.badge,
+                'CLO 양성 확인 후 즉시 추가 / '+clarC2.note, false, '누591다');
+      if (isChk) warns.push('공단검진이라도 CLO·Clarithromycin은 검진 외 항목 → 급여처방 산정');
+    }
+  }
+
+  if (uSel.has('emrU')) {
+    rs += row('위 EMR (Q7652 내시경적 점막절제술)', procKey('EMR_U',ctx), '급여', '입원 여부 담당의 확인 필수', true);
+    if (!mergeToCU) rs += row('병리조직검사 — 위 EMR 검체 (나560다 Level C)', '나560_폴립', '급여',
+              '방향·크기 기재 / specimen board 사진');
+    rs += row('치료재료 — SNARE', '재료_SNARE', '급여', '');
+    rs += row('치료재료 — INJECTOR', '재료_INJECTOR', '급여', '점막하 주입용');
+  }
+
+  if (uSel.has('snareU')) {
+    rs += row('위 폴립절제술 (Q7651 종양절제, snare)', procKey('Q7651',ctx), '급여',
+              'snare polypectomy / 로컬 위용종 — injector 미사용', true);
+    if (!mergeToCU) rs += row('병리조직검사 — 위 폴립 검체 (나560다 Level C)', '나560_폴립', '급여', '방향·크기 기재');
+    rs += row('치료재료 — SNARE', '재료_SNARE', '급여', '');
+  }
+
+  if (isChk) warns.push('국가검진 중 이상 소견 발견 → 진료 오더 별도 오픈 (검진·진료 코드 혼재 금지)');
+  return { rs, warns };
+}
+
+/* ═══════════════════════════════════════════════
+   대장내시경 오더 블록
+═══════════════════════════════════════════════ */
+function buildLower(isChk, hasU) {
+  const { lSel, sleep, p, e } = S;
+  let rs='', warns=[];
+  const ctx = curCtx();
+
+  const hasCSP  = lSel.has('csp');
+  const hasEMR  = lSel.has('emrL');
+  const hasESD  = lSel.has('esd');
+  const hasSurgery = hasCSP||hasEMR||hasESD;
+  // 비보험 종합검진: 절제술 없이 단순 forcep biopsy만이면 → 검진 일환(급여 안 됨) → 미표시
+  //   (고시 제2024-58호 가: 단순 나560·나854·생검은 검진 일련 과정, 요양급여 산정 안 함)
+  const isJonghapL = (S.type==='jonghap');
+  const suppressLBx = isJonghapL && !hasSurgery; // 절제 없는 단순생검 미표시
+  const hasFP   = lSel.has('fp') && !suppressLBx;
+
+  if (suppressLBx && lSel.has('fp'))
+    warns.push('비보험 종합검진: 대장 절제술 없이 단순 조직검사만 → 검진 일환이므로 별도 청구 불가 (오더 미표시)');
+
+  const lb = isChk?'검진청구':(S.type==='wiChk'&&S.gastroAdd==='add')?'진료급여':'급여';
+  const csFee = examFeeDecision(hasSurgery);
+  if (csFee.show) rs += row('결장경검사 (나766 나목)', 'CS', lb, csFee.note, false, hasSurgery?'검사료포함':null);
+  else if (hasSurgery) rs += `<div class="al al-i" style="margin-bottom:6px">ℹ <span>대장 절제술 시행 — 결장경 검사료(나766)는 시술료(자770)에 포함되어 별도 청구하지 않습니다 (고시 제2024-243호).</span></div>`;
+  if (S.type!=='jonghap') rs += row('내시경 세척소독료', '세척소독', isChk?'검진청구':'급여', 'SEA010 / 검사 시마다 1회 산정'+(isChk?' / 공단검진 항목 → 검진청구':''), false, '세척소독');
+
+  // 대장 단독 수면 (동시는 buildResult에서 처리)
+  if (sleep==='yes' && !hasU) {
+    const key = sed799key(false, hasSurgery, false, hasESD);
+    const nm  = sed799name(key);
+    const bg  = sedBadge(key);
+    const nt  = sedNote(key, isChk);
+    rs += row(`${nm} — 단독 100%`, key, bg, nt, hasSurgery, '나799');
+    rs += sedativeRows(hasSurgery, isChk, false);
+    if (!hasSurgery) warns.push('관찰·biopsy만: 나799(대장) 비급여 → 사전 설명·동의·고지 필수');
+  }
+
+  if (isChk) warns.push('FOBT 양성 결과지 확인 필수 — 결과지 없으면 검진 청구 불가');
+
+  if (hasFP) {
+    let limitReached = false;
+    if (hasCSP&&!hasEMR)  limitReached=(S.p>=MAX_CSP_ONLY);
+    if (hasEMR&&hasCSP)   limitReached=((1+S.p)>=MAX_COMBINED);
+
+    // 공단검진: 나854·FORCEP·나560 공단청구 / 일반보험: 급여(30%)
+    const fpBadge = isChk ? '검진청구' : '급여';
+    const fpNoteSuffix = isChk ? ' / 공단검진 항목 → 공단청구' : '';
+    if (!limitReached) {
+      if (!hasSurgery)
+        rs += row('결장경하 생검 (나854, E7660010)', '나854', fpBadge, '≤5mm 과증식 의심 / snare 미사용 / Q7701 오더 금지'+fpNoteSuffix, false, '나854한도');
+      else
+        rs += row('결장경하 생검 추가 (나854, E7660010)', '나854', fpBadge, '한도 이내 — 나854 수기료 청구 가능'+fpNoteSuffix);
+      rs += row('생검용 FORCEP (재료)', '재료_FORCEP', fpBadge, '포셉 재료'+fpNoteSuffix);
+      if (isChk) warns.push('공단검진 + 대장 조직검사: 나854·FORCEP·나560은 공단청구 — 별도 급여처방 안 냄');
+    } else {
+      rs += row('생검용 FORCEP (재료)', '재료_FORCEP', fpBadge, '포셉 재료'+fpNoteSuffix);
+      rs += `<div class="al al-w" style="margin-bottom:6px">⚠ <span>CSP 또는 EMR+CSP 한도(${hasEMR&&hasCSP?MAX_COMBINED:MAX_CSP_ONLY}개) 도달 — 추가 forcep biopsy 나854 수기료 청구 불가. 병리(나560)만 청구. (심평원 공개심의사례 2024-06-28)</span></div>`;
+      warns.push('한도 도달 후 forcep biopsy: 나854 수기료 불가 — 병리(나560_Bx)만 청구');
+    }
+  }
+
+  if (hasCSP&&!hasEMR) {
+    rs += row('자770가 폴립절제술 1번째 (Q7701)', procKey('Q7701',ctx), '급여', '첫 번째 폴립 — 100% 산정', true, '폴립한도');
+    if (p>=2) rs += row(`자770가주 폴립절제술 추가 × ${p-1}개 (Q7702)`, procKey('Q7702',ctx), '급여', `2번째~${p}번째 각 1개당 추가 산정 (Q7701의 약 20%)`);
+    rs += row('치료재료 — SNARE', '재료_SNARE', '급여', '');
+    if (p>=MAX_CSP_ONLY) warns.push(`폴립 ${MAX_CSP_ONLY}개: CSP 단독 급여 최대치 — 영상·소견 기록 필수`);
+    else if (p>=4) warns.push('폴립 4개 이상: 심사 강화 대상 — 내시경 영상·기록 근거 확보 필수');
+  }
+
+  if (hasEMR&&!hasCSP) {
+    rs += row('자770나 EMR 1번째 (Q7703) — 주수술 100%', procKey('Q7703',ctx), '급여', '', true);
+    if (e>=2) rs += row(`자770나 EMR 추가 × ${e-1}개 — 제2의수술 50%`, procKey('Q7703',ctx), '급여', `2번째~${e}번째 각 50% 산정`);
+    rs += row('치료재료 — SNARE', '재료_SNARE', '급여', '');
+    rs += row('치료재료 — INJECTOR', '재료_INJECTOR', '급여', '점막하 주입용');
+    if (e>=3) warns.push('EMR 3개 이상: 심사 강화 대상 — 병변 크기·위치·소견 기록 근거 필수');
+  }
+
+  if (hasEMR&&hasCSP) {
+    const totalUsed=1+p;
+    rs += row('자770나 EMR — 주수술 100% (Q7703)', procKey('Q7703',ctx), '급여', 'EMR을 반드시 주수술로 청구', true, '폴립한도');
+    rs += row('자770가 CSP — 제2의수술 (Q7701001)', 'Q7701_제2', '급여', 'EMR 후 snare polypectomy → 제2의수술 코드 Q7701001');
+    if (p>=2) rs += row(`자770가주 CSP 추가 × ${p-1}개 (Q7702)`, procKey('Q7702',ctx), '급여', `추가 폴립 각 1개당 산정 / Q7702 최대 5개`);
+    rs += row('치료재료 — SNARE', '재료_SNARE', '급여', '');
+    rs += row('치료재료 — INJECTOR', '재료_INJECTOR', '급여', '점막하 주입용 (EMR)');
+    rs += alI('급여 구조: EMR 주수술 100% + CSP 제2의수술(Q7701001) + Q7702 추가 최대 5개 = 합산 최대 7개');
+    warns.push('EMR+CSP 혼합: EMR이 반드시 주수술 — CSP 주수술 청구 시 삭감');
+    if (totalUsed>MAX_COMBINED)
+      warns.push(`⚠ 총합 ${totalUsed}개: 급여 한도 ${MAX_COMBINED}개 초과 — 심사 삭감 대상`);
+    else if (totalUsed===MAX_COMBINED)
+      warns.push(`총합 ${MAX_COMBINED}개: 급여 인정 최대치 — 영상·소견 기록 필수`);
+  }
+
+  if (hasESD) {
+    rs += row('자770다 ESD — 점막하박리절제술', 'ESD_L', '급여', '원칙적 입원 청구 — 담당의 확인', true);
+    rs += row('치료재료 — SNARE', '재료_SNARE', '급여', '');
+    rs += row('치료재료 — INJECTOR', '재료_INJECTOR', '급여', '');
+    warns.push('ESD: 원칙적으로 입원 청구 — 입원 오더 전환 후 담당의 확인');
+  }
+
+  // ── 대장 병리조직검사 — 단일 청구 (무엇을 하든 1건) ──
+  // 대장은 단일 장기이므로 biopsy·CSP·EMR·ESD 개수·조합 무관하게 나560 1건만 청구
+  if (hasFP || hasSurgery) {
+    // 절제술 있으면 Level C, forcep만이면 Level B
+    const pathKey   = hasSurgery ? '나560_폴립' : '나560_Bx';
+    const pathLevel = hasSurgery ? '나560다 Level C' : '나560나 Level B';
+    // 공단검진: 절제술 동반 병리(Level C)는 급여 / 단순 biopsy(Level B)만은 검진청구(공단)
+    //   고시 제2024-58호: 검진 중 절제술 시 나560 조직병리검사는 요양급여로 산정
+    const pathBadge = (isChk && !hasSurgery) ? '검진청구' : '급여';
+    let pathNote;
+    if (isChk && hasSurgery)      pathNote = '검진 중 절제술 동반 → Level C 병리 급여 산정 (고시 제2024-58호) / 개수·조합 무관 1건';
+    else if (isChk)               pathNote = '검진 중 단순 biopsy → Level B는 검진 일환 공단청구 (별도 급여처방 X)';
+    else if (hasSurgery && hasFP) pathNote = '절제 검체 + 겸자 검체 통합 — Level C 1건만 청구 (개수·조합 무관)';
+    else if (hasSurgery)          pathNote = '절제 검체 — Level C 1건만 청구 (폴립 개수 무관) / 나854 중복 청구 불가';
+    else                          pathNote = '겸자 검체 — Level B 1건만 청구';
+    rs += row(`병리조직검사 (${pathLevel})`, pathKey, pathBadge, pathNote, false, '검진분리');
+  }
+
+  if (isChk&&(hasSurgery||hasFP))
+    warns.push('국가검진 중 치료: 검진 오더(기본)와 진료 오더(절제술·병리) 반드시 분리 청구');
+  if (S.type==='wiChk'&&S.gastroAdd==='add')
+    warns.push('대장내시경은 FOBT 양성 검진 대상 아님 — 일반 진료 급여 청구');
+
+  return { rs, warns };
+}
+
+/* ═══════════════════════════════════════════════
+   결과 조립
+═══════════════════════════════════════════════ */
+function buildResult() {
+  const { type, sleep, gastroAdd } = S;
+  const nU=needU(), nL=needL();
+  const isUpperChk = type==='wiChk'||type==='bothChk';
+  const isLowerChk = type==='coloChk'||type==='bothChk';
+  const isCheckup  = (type!=='ilban' && type!=='jonghap'); // 공단검진만 (수면 비급여 고지 트리거)
+  const isJonghap  = type==='jonghap';
+
+  let html='', allWarns=[];
+
+  if (nU) {
+    const { rs, warns } = buildUpper(isUpperChk, nL);
+    html += sec('위내시경', rs); allWarns=allWarns.concat(warns);
+  }
+
+  // ── 위+대장 동시 수면 블록 ──
+  // 병원 오더 체계 (13케이스 완전 반영):
+  // 위EMR+대장CSP → 위:Ⅳ / 대장:Ⅲ
+  // 위EMR+대장관찰 → 위:Ⅳ / 대장:(대장)
+  // 위관찰+대장CSP → 위:(위) / 대장:Ⅲ
+  // 위관찰+대장관찰 → (수면비) 단일 오더
+  if (sleep==='yes'&&nU&&nL) {
+    const uSurgery = S.uSel.has('emrU') || S.uSel.has('snareU');
+    const lSurgery = S.lSel.has('csp')||S.lSel.has('emrL')||S.lSel.has('esd');
+
+    let sedHtml = '';
+
+    if (!uSurgery && !lSurgery) {
+      // 케이스1: 둘 다 관찰·biopsy만 → (수면비) 단일 비급여 통합수가
+      sedHtml = row('진정내시경 환자관리료(수면비)', '나799_수면비', '비급여',
+        '동시+관찰·biopsy만 — 병원 자체 비급여 통합수가 / 사전 고지·동의서 필수', false, '나799');
+      allWarns.push('위·대장 동시 관찰·biopsy만: 수면비 비급여 통합수가 — 사전 설명·동의 필수');
+    } else {
+      // ── 100%/50% 감산 규칙: 급여 나799가 2개 이상일 때만 적용 ──
+      // 고시 다.2): 위·대장 동시 시 주된 나799 100% + 제2 나799 50%
+      // 단, 이 규칙은 '급여 나799'끼리만 적용됨. 비급여(관찰만) 쪽은 급여 산정 대상이
+      // 아니므로 감산 대상에서 제외되고, 남은 급여 나799 1개는 단독 100% 산정.
+      const paidCount = (uSurgery?1:0) + (lSurgery?1:0);
+
+      // 위 나799
+      const uKey = uSurgery ? '나799_IV' : '나799_위';
+      const uBg  = sedBadge(uKey);
+      let uRate, uNt;
+      if (uSurgery && lSurgery) {
+        // 급여 2개 → 위가 주수술 100% (위 먼저 시행)
+        uRate = '주수술 100%';
+        uNt = '위 치료 시술 동반 → 급여 / 주수술 100% / 투여량·시간 기록 필수';
+      } else if (uSurgery) {
+        // 위만 급여 → 단독 100%
+        uRate = '단독 100%';
+        uNt = '위 치료 시술 동반 → 급여 / 단독 100% (대장 비급여라 감산 없음)';
+      } else {
+        // 위 비급여(관찰만) → 병원 자체 비급여, 감산 규칙 대상 아님
+        uRate = '비급여';
+        uNt = '위 관찰·biopsy만 → 비급여(병원 자체 수가) / 급여 감산 규칙 대상 아님';
+      }
+      sedHtml += row(`${sed799name(uKey)} — 위 (${uRate})`, uKey, uBg, uNt, uSurgery, '나799');
+
+      // 대장 나799
+      const lKey = S.lSel.has('esd') ? '나799_IV' : (lSurgery ? '나799_III' : '나799_대장');
+      const lBg  = sedBadge(lKey);
+      let lRate, lNt;
+      if (uSurgery && lSurgery) {
+        // 급여 2개 → 대장이 제2의수술 50%
+        lRate = '제2의수술 50%';
+        lNt = '대장 치료 시술 동반 → 급여 / 제2의수술 50% (위와 동시, 감산)';
+      } else if (lSurgery) {
+        // 대장만 급여 → 단독 100% (위 비급여라 감산 없음) ★심사과 지적 반영
+        lRate = '단독 100%';
+        lNt = '대장 치료 시술 동반 → 급여 / 단독 100% — 위가 비급여(관찰만)라 제2수술 감산 대상 아님 (고시 다.2 급여 나799 2개 조건 미충족)';
+      } else {
+        lRate = '비급여';
+        lNt = '대장 관찰·biopsy만 → 비급여(병원 자체 수가) / 급여 감산 규칙 대상 아님';
+      }
+      sedHtml += row(`${sed799name(lKey)} — 대장 (${lRate})`, lKey, lBg, lNt, lSurgery, '나799');
+
+      // 안내
+      if (paidCount === 2) {
+        sedHtml += alI('급여 나799 2개 동시 → 주수술(위) 100% + 제2의수술(대장) 50% 감산 (고시 제2024-18호 다.2)');
+      } else if (paidCount === 1) {
+        const paidSide = uSurgery ? '위' : '대장';
+        const freeSide = uSurgery ? '대장' : '위';
+        sedHtml += alI(`급여 나799 1개(${paidSide})만 → 단독 100% 산정. ${freeSide}는 관찰만이라 비급여(병원 자체) → 50% 감산 규칙 미적용 (급여 나799 2개 조건 미충족)`);
+        allWarns.push(`${freeSide} 관찰·biopsy만: 나799 비급여(병원 자체) / ${paidSide} 나799는 감산 없이 단독 100% 산정`);
+      }
+    }
+
+    // 진정제: 한쪽이라도 급여 시술이면 급여
+    const simSedPaid = (uSurgery || lSurgery);
+    sedHtml += sedativeRows(simSedPaid, isCheckup, true);
+
+    html += sec('진정내시경 환자관리료 — 동시 (위+대장)', sedHtml);
+  }
+
+  if (nL) {
+    const { rs, warns } = buildLower(isLowerChk, nU);
+    html += sec('대장내시경', rs); allWarns=allWarns.concat(warns);
+  }
+
+  if (type==='wiChk'&&gastroAdd==='add')
+    html += sec('청구 구분 안내', alI('위: 위암 국가검진 청구 / 대장: FOBT 양성 검진 대상 아님 → 일반 진료 급여 또는 비급여'));
+
+  if (isJonghap) {
+    const hasResection = S.uSel.has('emrU')||S.uSel.has('snareU')||S.lSel.has('csp')||S.lSel.has('emrL')||S.lSel.has('esd');
+    if (S.jonghapPaid==='paid') {
+      let payNote = '용종절제만 급여 청구 — 수술료·조직검사·치료재료는 요양급여 / 검사료·수면·세척소독은 비급여(검진비 포함).';
+      if (hasResection) payNote += ' 용종절제술은 0.5 청구(대장내시경 검사비 포함분 제외) — 복지부 유권해석.';
+      html += sec('비보험 종합검진 안내 — 용종절제만 급여',
+        alI(payNote)+
+        alW('세척소독료는 비급여 검진비에 포함되어 별도 청구 불가(출력 제외). 용종절제 수술료는 0.5로 청구.'));
+    } else {
+      html += sec('비보험 종합검진 안내 — 전체 비급여',
+        alI('종검센터·직장·단체검진 — 전 항목 병원 자체 코드(J00). 엑셀 코드표 _비검 키에 실제 코드 입력.')+
+        alW('세척소독료는 비급여 검진비에 포함되어 별도 청구 불가(출력 제외).'));
+    }
+  }
+
+  if (isCheckup&&sleep==='yes')
+    allWarns.push('국가검진 수검자 수면비: 비급여 별도 고지·동의서 서명 확인 필수');
+  if (isJonghap&&sleep==='yes')
+    allWarns.push('비보험 종합검진 수면비: 비급여 — 사전 고지·동의서 서명 확인 필수');
+
+  // 코드맵 미적용 안내
+  if (!codemapLoaded) {
+    html += sec('코드 안내',
+      alI('현재 가안코드 표시 중 — 상단에서 EMR 코드표 업로드 시 실제 코드로 자동 교체됩니다'));
+  }
+
+  if (allWarns.length)
+    html += sec('주의사항', allWarns.map(w=>alW(w)).join(''));
+
+  html += sec('최종 확인',
+    alOK('병리: bottle 수 = 병리 오더 건수 일치 확인 후 퇴실')+
+    alOK('오더 입력 완료 후 담당의 최종 확인'));
+
+  html += `<div class="divider"></div>
+    <button class="reset-btn" onclick="resetAll()">↩ 처음부터 다시</button>`;
+
+  $('result-body').innerHTML = html;
+  show('result-card', true);
+  $('result-card').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+/* ═══════════════════════════════════════════════
+   리셋
+═══════════════════════════════════════════════ */
+function resetAll() {
+  Object.assign(S, { type:'',scope:'',gastroAdd:'',sleep:'',jonghapPaid:'',jExamFee:'diff',clo:'',p:1,e:1,uDone:false,lDone:false });
+  S.uSel.clear(); S.lSel.clear();
+  ['c2a','c2b','c3','c-jbill','jexam-sub','c4u','c4l','result-card'].forEach(id=>show(id,false));
+  ['n1','n2a','n2b','n3','n4u','n4l'].forEach(id=>setNum(id,''));
+  hideAns('ajb');
+  document.querySelectorAll('#jexam-sub .sel-btn').forEach(b=>b.classList.toggle('on', b.dataset.jx==='diff'));
+  $('n1').textContent='1'; setNum('n1','cur');
+  document.querySelectorAll('.sel-btn,.chk-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.chk-sq').forEach(sq=>sq.style.color='transparent');
+  ['a1','a2a','a2b','a3'].forEach(id=>hideAns(id));
+  ['clo-sub','bx-sub','polyp-box','emr-box','combined-box'].forEach(id=>show(id,false));
+  resetBxSites();
+  $('pv').textContent='1'; $('ev').textContent='1';
+}
+</script>
+
+<!-- ▼ 근거 모달 -->
+<div id="ref-overlay" onclick="if(event.target===this)closeRef()">
+  <div id="ref-modal">
+    <div id="ref-head">
+      <span>📖 산정 근거</span>
+      <button id="ref-close" onclick="closeRef()">✕</button>
+    </div>
+    <div id="ref-body">
+      <div id="ref-title"></div>
+      <div id="ref-why"></div>
+      <div id="ref-src"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ▼ 피드백 모달 -->
+<div id="fb-overlay" onclick="if(event.target===this)closeFb()">
+  <div id="fb-modal">
+    <div id="fb-head">
+      <span>💬 피드백 보내기</span>
+      <button id="fb-close" onclick="closeFb()">✕</button>
+    </div>
+    <div id="fb-body">
+      <p id="fb-desc">오더 코드 오류, 급여기준 변경, 기능 제안 등 자유롭게 남겨주세요.</p>
+      <form id="fb-form" action="https://formspree.io/f/mvzyewew" method="POST">
+        <label class="fb-label">유형</label>
+        <select name="유형" class="fb-input">
+          <option>코드 오류</option>
+          <option>급여기준 변경</option>
+          <option>기능 제안</option>
+          <option>기타</option>
+        </select>
+        <label class="fb-label">내용 *</label>
+        <textarea name="내용" class="fb-input" rows="5" required placeholder="구체적으로 작성할수록 반영이 빠릅니다."></textarea>
+        <label class="fb-label">회신 이메일 (선택)</label>
+        <input type="email" name="email" class="fb-input" placeholder="답변이 필요하면 입력하세요">
+        <button type="submit" id="fb-submit">보내기</button>
+        <div id="fb-status"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+.ref-i {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 700;
+  cursor: pointer; vertical-align: middle; margin-left: 3px;
+  transition: all .15s; font-style: normal;
+}
+.ref-i:hover { background: #0369a1; color: #fff; }
+#ref-overlay {
+  display: none; position: fixed; inset: 0; z-index: 320;
+  background: rgba(0,0,0,.45); align-items: center; justify-content: center; padding: 20px;
+}
+#ref-overlay.on { display: flex; }
+#ref-modal {
+  background: #fff; border-radius: 14px; width: 100%; max-width: 460px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.25); overflow: hidden; animation: fbIn .2s ease;
+}
+#ref-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; background: #0369a1; color: #fff; font-size: 14px; font-weight: 700;
+}
+#ref-close { border: none; background: none; color: #fff; font-size: 18px; cursor: pointer; opacity: .8; }
+#ref-close:hover { opacity: 1; }
+#ref-body { padding: 18px; }
+#ref-title { font-size: 14px; font-weight: 700; color: #1B3A6B; margin-bottom: 10px; }
+#ref-why { font-size: 13px; line-height: 1.7; color: #374151; margin-bottom: 14px; }
+#ref-src {
+  font-size: 12px; color: #0369a1; background: #f0f9ff; border: 1px solid #bae6fd;
+  border-radius: 8px; padding: 9px 12px; line-height: 1.6;
+}
+#ref-src::before { content: '📋 근거: '; font-weight: 700; }
+@media print { .ref-i, #ref-overlay { display: none !important; } }
+
+#fb-btn {
+  position: fixed; top: 14px; right: 14px; z-index: 200;
+  padding: 8px 14px; border: none; border-radius: 20px;
+  background: #1B3A6B; color: #fff; font-size: 13px; font-weight: 600;
+  font-family: inherit; cursor: pointer; box-shadow: 0 2px 8px rgba(27,58,107,.3);
+  transition: all .15s;
+}
+#fb-btn:hover { background: #16305a; transform: translateY(-1px); }
+#fb-overlay {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,.45); align-items: center; justify-content: center;
+  padding: 20px;
+}
+#fb-overlay.on { display: flex; }
+#fb-modal {
+  background: #fff; border-radius: 14px; width: 100%; max-width: 440px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.25); overflow: hidden;
+  animation: fbIn .2s ease;
+}
+@keyframes fbIn { from { opacity: 0; transform: scale(.96) } to { opacity: 1; transform: scale(1) } }
+#fb-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; background: #1B3A6B; color: #fff;
+  font-size: 15px; font-weight: 700;
+}
+#fb-close {
+  border: none; background: none; color: #fff; font-size: 18px;
+  cursor: pointer; opacity: .8; line-height: 1;
+}
+#fb-close:hover { opacity: 1; }
+#fb-body { padding: 18px; }
+#fb-desc { font-size: 12px; color: #6b7280; margin-bottom: 14px; line-height: 1.6; }
+.fb-label { display: block; font-size: 12px; font-weight: 600; color: #374151; margin: 10px 0 4px; }
+.fb-input {
+  width: 100%; padding: 9px 12px; border: 1px solid #d1d5db; border-radius: 8px;
+  font-size: 13px; font-family: inherit; box-sizing: border-box; color: #111827;
+}
+.fb-input:focus { outline: none; border-color: #1F7A8C; box-shadow: 0 0 0 3px rgba(31,122,140,.12); }
+textarea.fb-input { resize: vertical; }
+#fb-submit {
+  width: 100%; margin-top: 14px; padding: 11px; border: none; border-radius: 8px;
+  background: #1F7A8C; color: #fff; font-size: 14px; font-weight: 600;
+  font-family: inherit; cursor: pointer; transition: opacity .15s;
+}
+#fb-submit:hover { opacity: .9; }
+#fb-submit:disabled { opacity: .5; cursor: not-allowed; }
+#fb-status { margin-top: 10px; font-size: 13px; text-align: center; }
+#fb-status.ok  { color: #15803d; }
+#fb-status.err { color: #991b1b; }
+@media print { #fb-btn, #fb-overlay { display: none !important; } }
+</style>
+
+<script>
+function openRef(key) {
+  const r = REFS[key]; if (!r) return;
+  document.getElementById('ref-title').textContent = r.t;
+  document.getElementById('ref-why').textContent = r.why;
+  document.getElementById('ref-src').textContent = r.src;
+  document.getElementById('ref-overlay').classList.add('on');
+}
+function closeRef() { document.getElementById('ref-overlay').classList.remove('on'); }
+
+function openFb() { document.getElementById('fb-overlay').classList.add('on'); }
+function closeFb() {
+  document.getElementById('fb-overlay').classList.remove('on');
+  document.getElementById('fb-status').textContent = '';
+  document.getElementById('fb-status').className = '';
+}
+document.getElementById('fb-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById('fb-submit');
+  const status = document.getElementById('fb-status');
+  btn.disabled = true; btn.textContent = '보내는 중...';
+  status.textContent = ''; status.className = '';
+  try {
+    const res = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      status.textContent = '✅ 피드백이 전송되었습니다. 감사합니다!';
+      status.className = 'ok';
+      form.reset();
+      setTimeout(closeFb, 2000);
+    } else {
+      status.textContent = '❌ 전송 실패 — 잠시 후 다시 시도해주세요.';
+      status.className = 'err';
+    }
+  } catch (err) {
+    status.textContent = '❌ 네트워크 오류 — 인터넷 연결을 확인해주세요.';
+    status.className = 'err';
+  }
+  btn.disabled = false; btn.textContent = '보내기';
+});
+</script>
+<noscript><div class="seo-content">
+<h2>내시경 검사 후 오더·수가코드 가이드</h2>
+<p>위내시경(EGD)·대장내시경(Colonoscopy) 검사 후 처방 오더와 건강보험 수가코드를 단계별 선택으로 자동 생성하는 임상의용 도구입니다. 내원 형태(일반 외래·국가검진 위암/대장암·비보험 종합검진), 검사 종류(위내시경·대장내시경·위+대장 동시), 시술(조직검사·생검, 용종절제 CSP·EMR·ESD)에 따라 적정 오더 목록과 수가코드를 조합해 제시합니다.</p>
+<h3>주요 기능</h3>
+<p>단계별 선택 → 오더 목록 자동 생성 · 엑셀/CSV 코드표 업로드 시 실제 EMR 코드로 자동 교체 · 진정내시경 환자관리료(나799) 등급(Ⅲ/Ⅳ)·감산 규칙 자동 적용 · 국가검진(공단 코드)과 비보험(J00) 구분 · 조직검사(나560) 및 폴립절제(CSP/EMR/ESD) 수가·재료(SNARE·INJECTOR·FORCEP) 코드 안내.</p>
+<h3>다루는 항목</h3>
+<p>위내시경·대장내시경·진정(수면)내시경, 조직검사(생검), 콜드스네어 용종절제술(CSP), 내시경점막절제술(EMR), 내시경점막하박리술(ESD), 헬리코박터 검사(CLO), 국가암검진(위암 40세 이상 2년마다·대장암 FOBT 양성 후 대장내시경), 진정내시경 환자관리료, 조직검사·용종절제 관련 건강보험 수가코드 및 재료대.</p>
+<p><b>근거</b>: 보건복지부 건강보험 수가 고시(진정내시경 환자관리료 나799 — 고시 제2024-18호 2024.2.1 시행 등) 기반. 실제 청구 시 최신 고시·기관별 EMR 코드 확인 필요.</p>
+<p><b>도구 바로가기</b>: <a href="https://endoscopy-hira.vercel.app/">내시경 검사 후 오더 가이드 실행 →</a></p>
+<p><b>작성자</b>: 박형도 · 임상의용 참고 도구</p>
+</div></noscript>
+</body>
+</html>
