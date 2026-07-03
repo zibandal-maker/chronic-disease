@@ -8,7 +8,9 @@
     "feedbackEndpoint": "https://formspree.io/f/mzdqylkl",
     "siteUrl": "https://chronic-disease-dun.vercel.app",
     "seoDescription": "한국 학회 진료지침과 심평원 급여기준을 함께 보여주는 의료진용 처방 의사결정 지원 도구. 고혈압·당뇨·이상지질혈증·갑상선·부정맥·천식·COPD·통풍·골다공증 등 만성질환 15종 처방 가이드와 항생제 선택·ICU 약물 계산기를 한곳에서. 가이드라인 권고등급과 급여 충족조건을 동시에 제시.",
-    "seoKeywords": "처방 가이드, 진료지침, 심평원 급여기준, HIRA 급여, 의사결정 지원, 만성질환 처방, 고혈압 처방, 당뇨 처방, 갑상선, 부정맥 DOAC, 항생제 선택, ICU 약물 계산"
+    "seoKeywords": "처방 가이드, 진료지침, 심평원 급여기준, HIRA 급여, 의사결정 지원, 만성질환 처방, 고혈압 처방, 당뇨 처방, 갑상선, 부정맥 DOAC, 항생제 선택, ICU 약물 계산",
+    "seo_enhanced": "2026-07-03",
+    "seo_note": "전 가이드 head메타+noscript앵커 주입 완료(additive). 원본 엔진 무손상."
   },
   "guides": [
     {
@@ -310,6 +312,20 @@
       "accent": "#c0392b",
       "tag": "중환자",
       "keywords": "중환자 ICU 약물계산 용량계산 주입속도 승압제 강심제 도파민 노르에피네프린 진정제 mcg kg min"
+    },
+    {
+      "id": "endoscopy_intro",
+      "title": "내시경 오더 가이드 (소개)",
+      "emoji": "🔬",
+      "src": "_endoscopy_intro.html",
+      "out": "endoscopy-intro.html",
+      "guideline": "내시경 검사 후 오더·수가코드 자동생성 도구 소개 · 외부 도구 연결",
+      "group": "A",
+      "accent": "#7a5c9a",
+      "tag": "소화기",
+      "keywords": "내시경 오더 수가코드 위내시경 대장내시경 진정내시경 조직검사 폴립절제 CSP EMR ESD 국가검진 나560 나799 소개",
+      "hideFromDashboard": true,
+      "_note": "검색 유입용 소개 랜딩. 대시보드 카드엔 노출 안 함(external endoscopy 카드가 이미 있음). 검색→이 페이지→외부도구 유입."
     }
   ]
 }

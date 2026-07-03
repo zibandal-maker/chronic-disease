@@ -4,7 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="color-scheme" content="light only">
-<title>기계환기 실전 교육</title>
+<title>기계환기(인공호흡기) 실전 교육 — 모드·PEEP·ARDS·ABGA·이탈(Weaning) 완전정리 | 임상의용</title>
+<meta name="description" content="중환자 기계환기 교육자료. 환기 설정(TV·RR·PEEP·FiO₂)·폐역학(ARDS·COPD·천식)·폐보호환기(구동압)·auto-PEEP·동맥혈가스(ABGA) 산염기 해석·인공호흡기 이탈(weaning·SBT)을 용어집 67개 개념과 함께 임상의·전공의용으로 밀도있게 정리한 인터랙티브 교육자료.">
+<meta name="keywords" content="기계환기, 인공호흡기, ventilator, 중환자, PEEP, auto-PEEP, 일회호흡량, TV, tidal volume, 예측체중, PBW, 폐보호환기, 구동압, driving pressure, ARDS, baby lung, COPD 환기, 과팽창, 컴플라이언스, 저항, 시간상수, FiO2, 흡기압, I:E비, 압력조절, 용적조절, ABGA, 동맥혈가스, 산염기, 대사산증, 호흡산증, 음이온차, 보상, weaning, 이탈, 발관, extubation, SAT, SBT, cuff leak, 중환자의학">
+<link rel="canonical" href="https://chronic-disease-dun.vercel.app/guides/ventilator">
+<meta property="og:type" content="article">
+<meta property="og:title" content="기계환기(인공호흡기) 실전 교육 — 모드·PEEP·ARDS·ABGA·이탈(Weaning) 완전정리 | 임상의용">
+<meta property="og:description" content="중환자 기계환기 교육자료. 환기 설정(TV·RR·PEEP·FiO₂)·폐역학(ARDS·COPD·천식)·폐보호환기(구동압)·auto-PEEP·동맥혈가스(ABGA) 산염기 해석·인공호흡기 이탈(weaning·SBT)을 용어집 67개 개념과 함께 임상의·전공의용으로 밀도있게 정리한 인터랙티브 교육자료.">
+<meta property="og:url" content="https://chronic-disease-dun.vercel.app/guides/ventilator">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": [
+    "MedicalWebPage",
+    "LearningResource"
+  ],
+  "name": "기계환기(인공호흡기) 실전 교육 — 모드·PEEP·ARDS·ABGA·이탈(Weaning) 완전정리 | 임상의용",
+  "description": "중환자 기계환기 교육자료. 환기 설정(TV·RR·PEEP·FiO₂)·폐역학(ARDS·COPD·천식)·폐보호환기(구동압)·auto-PEEP·동맥혈가스(ABGA) 산염기 해석·인공호흡기 이탈(weaning·SBT)을 용어집 67개 개념과 함께 임상의·전공의용으로 밀도있게 정리한 인터랙티브 교육자료.",
+  "url": "https://chronic-disease-dun.vercel.app/guides/ventilator",
+  "inLanguage": "ko",
+  "learningResourceType": "교육자료 / 인터랙티브 시뮬레이터",
+  "educationalLevel": "의료전문가(임상의·전공의)",
+  "about": {
+    "@type": "MedicalProcedure",
+    "name": "기계환기(mechanical ventilation)"
+  },
+  "audience": {
+    "@type": "MedicalAudience",
+    "audienceType": "Clinician"
+  },
+  "lastReviewed": "2026-07-03"
+}
+</script>
 <style>
 :root{
   /* 호흡기·공기 기조: 틸-시안 */
@@ -4333,5 +4366,282 @@ var COUPLE_SCENARIOS = [
   else initABGA();
 })();
 </script>
+<noscript><div class="seo-content">
+<h2>기계환기(인공호흡기) 실전 교육 — 모드·설정·폐역학·ABGA·이탈(Weaning)</h2>
+<p>중환자 기계환기의 핵심 개념을 임상의·전공의용으로 정리한 교육자료입니다. 환기 설정 파라미터(일회호흡량 TV·호흡수 RR·호기말양압 PEEP·흡입산소농도 FiO₂·흡기유량·I:E비·흡기압 Pinsp), 폐 상태별 역학(정상·ARDS baby lung·COPD 과팽창·중증 천식·폐부종·폐섬유화)과 환기전략, 폐보호환기(6~8 mL/kg PBW·구동압 driving pressure &lt;15), auto-PEEP·시간상수, 동맥혈가스분석(ABGA) 산염기 해석과 보상, 인공호흡기 이탈(weaning·SAT·SBT)과 발관(extubation)을 용어집 67개 개념과 함께 밀도있게 정리합니다. 폐역학 시뮬레이터·ABGA 해석기·폐-ABGA 연동 등 인터랙티브 학습 도구는 JavaScript 활성화 시 이용 가능합니다.</p>
+<section id="glossary-vent" class="seo-glossary">
+  <h3>기계환기 핵심 용어집 (67개 개념)</h3>
+  <div id="term-peep" class="seo-term">
+    <b>PEEP</b> · positive end-expiratory pressure: 호기말 양압 — 숨을 다 내쉰 끝에도 폐포가 쪼그라들지 않게 유지하는 압력
+  </div>
+  <div id="term-auto-peep" class="seo-term">
+    <b>auto-PEEP</b> · intrinsic/auto PEEP (별칭: auto-PEEP, 내인성 PEEP, PEEPi): 갇힌 공기가 만드는 내인성 PEEP — 다 못 내쉬어 폐에 쌓인 압력
+  </div>
+  <div id="term-zeep" class="seo-term">
+    <b>ZEEP</b> · zero end-expiratory pressure: PEEP을 0으로 — 외인성 PEEP을 걸지 않음(천식 등)
+  </div>
+  <div id="term-tv" class="seo-term">
+    <b>TV</b> · tidal volume (별칭: TV): 일회호흡량 — 한 번 숨에 들어가는 공기량
+  </div>
+  <div id="term-pbw" class="seo-term">
+    <b>PBW</b> · predicted body weight: 예측체중 — 키로 계산한 폐 크기 기준 체중(TV 산정에 사용)
+  </div>
+  <div id="term-ibw" class="seo-term">
+    <b>IBW</b> · ideal body weight: 이상체중 — PBW와 유사하게 쓰임
+  </div>
+  <div id="term-rr" class="seo-term">
+    <b>RR</b> · respiratory rate (별칭: RR): 호흡수 — 분당 호흡 횟수
+  </div>
+  <div id="term-pip" class="seo-term">
+    <b>PIP</b> · peak inspiratory pressure: 최고흡기압 — 흡기 중 가장 높은 기도압(저항분 포함)
+  </div>
+  <div id="term-pplat" class="seo-term">
+    <b>Pplat</b> · plateau pressure (별칭: Pplat): 고원압 — 흡기말 정지 시 압력, 폐포가 받는 실제 압력
+  </div>
+  <div id="term-p" class="seo-term">
+    <b>ΔP</b> · driving pressure (별칭: ΔP): 구동압 = Pplat − PEEP, 폐가 받는 변형(strain)
+  </div>
+  <div id="term-dp" class="seo-term">
+    <b>DP</b> · driving pressure (별칭: DP): 구동압 = Pplat − PEEP
+  </div>
+  <div id="term-fio" class="seo-term">
+    <b>FiO₂</b> · fraction of inspired oxygen (별칭: FiO₂, FiO2): 흡입산소분율 — 들이쉬는 공기의 산소 비율(21~100%)
+  </div>
+  <div id="term-i-e" class="seo-term">
+    <b>I:E</b> · inspiratory:expiratory ratio (별칭: I:E): 흡기:호기 비율 — 들숨과 날숨 시간의 비
+  </div>
+  <div id="term-pinsp" class="seo-term">
+    <b>Pinsp</b> · inspiratory pressure (별칭: Pinsp): 흡기압 — 압력조절(PC)에서 설정하는 목표 압력
+  </div>
+  <div id="term--14" class="seo-term">
+    <b>τ</b> · time constant (별칭: τ): 시간상수 = R×C, 폐가 63% 차거나 비우는 시간
+  </div>
+  <div id="term-vc" class="seo-term">
+    <b>VC</b> · volume control (별칭: VC): 용량조절 — 일회호흡량을 보장(압력은 변동)
+  </div>
+  <div id="term-pc" class="seo-term">
+    <b>PC</b> · pressure control (별칭: PC): 압력조절 — 압력을 보장(일회호흡량은 변동)
+  </div>
+  <div id="term-ac" class="seo-term">
+    <b>AC</b> · assist control (별칭: AC): 보조조절 — 환자 트리거마다 완전한 설정 호흡 보조
+  </div>
+  <div id="term-simv" class="seo-term">
+    <b>SIMV</b> · synchronized intermittent mandatory ventilation: 동시성 간헐강제환기 — 강제호흡을 환자 노력에 동기화
+  </div>
+  <div id="term-psv" class="seo-term">
+    <b>PSV</b> · pressure support ventilation: 압력보조환기 — 환자가 시작한 호흡을 압력으로 받침
+  </div>
+  <div id="term-aprv" class="seo-term">
+    <b>APRV</b> · airway pressure release ventilation: 기도압해제환기 — 높은 압력을 길게 유지하다 짧게 풀어줌
+  </div>
+  <div id="term-hfjv" class="seo-term">
+    <b>HFJV</b> · high-frequency jet ventilation: 고빈도 제트환기 — 아주 작은 부피를 매우 빠르게(BPF 등)
+  </div>
+  <div id="term-hfnc" class="seo-term">
+    <b>HFNC</b> · high-flow nasal cannula: 고유량 비강캐뉼라 — 가온가습 고유량 산소(발관 후 등)
+  </div>
+  <div id="term-niv" class="seo-term">
+    <b>NIV</b> · non-invasive ventilation: 비침습 환기 — 마스크로 양압 보조(삽관 없이)
+  </div>
+  <div id="term-abga" class="seo-term">
+    <b>ABGA</b> · arterial blood gas analysis: 동맥혈가스분석 — pH·PaCO₂·HCO₃ 등
+  </div>
+  <div id="term-paco" class="seo-term">
+    <b>PaCO₂</b> · arterial CO₂ tension (별칭: PaCO₂, PaCO2): 동맥혈 이산화탄소분압
+  </div>
+  <div id="term-pao" class="seo-term">
+    <b>PaO₂</b> · arterial O₂ tension (별칭: PaO₂, PaO2): 동맥혈 산소분압
+  </div>
+  <div id="term-spo" class="seo-term">
+    <b>SpO₂</b> · peripheral oxygen saturation (별칭: SpO₂, SpO2): 맥박산소포화도 — 손가락 등에서 잰 산소포화도
+  </div>
+  <div id="term-etco" class="seo-term">
+    <b>EtCO₂</b> · end-tidal CO₂ (별칭: EtCO₂, EtCO2): 호기말 이산화탄소 — 내쉬는 숨 끝의 CO₂(PaCO₂ 추정)
+  </div>
+  <div id="term-hco" class="seo-term">
+    <b>HCO₃</b> · bicarbonate (별칭: HCO₃, HCO3): 중탄산 — 산-염기의 대사 성분
+  </div>
+  <div id="term-ag" class="seo-term">
+    <b>AG</b> · anion gap (별칭: AG): 음이온차 = Na −(Cl + HCO₃), 대사산증 원인 감별
+  </div>
+  <div id="term-va" class="seo-term">
+    <b>VA</b> · alveolar ventilation (별칭: VA): 폐포환기량 = (TV − 사강)×RR
+  </div>
+  <div id="term-ve" class="seo-term">
+    <b>VE</b> · minute ventilation (별칭: VE): 분환기량 = TV × RR
+  </div>
+  <div id="term-vco" class="seo-term">
+    <b>VCO₂</b> · CO₂ production (별칭: VCO₂, VCO2): 이산화탄소 생산량
+  </div>
+  <div id="term-ards" class="seo-term">
+    <b>ARDS</b> · acute respiratory distress syndrome: 급성호흡곤란증후군 — baby lung·컴플라이언스 저하
+  </div>
+  <div id="term-copd" class="seo-term">
+    <b>COPD</b> · chronic obstructive pulmonary disease: 만성폐쇄성폐질환 — 기도 저항↑·시간상수↑
+  </div>
+  <div id="term-ipf" class="seo-term">
+    <b>IPF</b> · idiopathic pulmonary fibrosis: 특발성 폐섬유화증 — 빳빳한 폐(컴플라이언스 저하)
+  </div>
+  <div id="term-ild" class="seo-term">
+    <b>ILD</b> · interstitial lung disease: 간질성 폐질환 — IPF 등 폐 간질 침범 질환군
+  </div>
+  <div id="term-bpf" class="seo-term">
+    <b>BPF</b> · bronchopleural fistula: 기관흉막루 — 폐에서 흉막강으로 공기가 새는 통로
+  </div>
+  <div id="term-dka" class="seo-term">
+    <b>DKA</b> · diabetic ketoacidosis: 당뇨병성 케톤산증 — 대사성 산증·과호흡 보상
+  </div>
+  <div id="term-iah" class="seo-term">
+    <b>IAH</b> · intra-abdominal hypertension: 복강내고혈압 — 복압↑이 흉강·폐로 전달
+  </div>
+  <div id="term-iap" class="seo-term">
+    <b>IAP</b> · intra-abdominal pressure: 복강내압
+  </div>
+  <div id="term-icp" class="seo-term">
+    <b>ICP</b> · intracranial pressure: 두개내압(뇌압)
+  </div>
+  <div id="term-pvr" class="seo-term">
+    <b>PVR</b> · pulmonary vascular resistance: 폐혈관저항 — 우심실 후부하 결정
+  </div>
+  <div id="term-hpv" class="seo-term">
+    <b>HPV</b> · hypoxic pulmonary vasoconstriction: 저산소성 폐혈관수축 — 환기 안 되는 폐의 혈류를 줄여 V/Q 보호
+  </div>
+  <div id="term-rv" class="seo-term">
+    <b>RV</b> · right ventricle (별칭: RV): 우심실 — 후부하(PEEP·고탄산)에 약한 펌프
+  </div>
+  <div id="term-vili" class="seo-term">
+    <b>VILI</b> · ventilator-induced lung injury: 인공호흡기 유발 폐손상
+  </div>
+  <div id="term-vidd" class="seo-term">
+    <b>VIDD</b> · ventilator-induced diaphragmatic dysfunction: 인공호흡기 유발 횡격막 기능부전(위축)
+  </div>
+  <div id="term-tb" class="seo-term">
+    <b>TB</b> · tuberculosis (별칭: TB): 결핵
+  </div>
+  <div id="term-olv" class="seo-term">
+    <b>OLV</b> · one-lung ventilation: 한쪽폐환기
+  </div>
+  <div id="term-pl" class="seo-term">
+    <b>PL</b> · transpulmonary pressure (별칭: PL, EITP): 경폐압 — 폐 자체가 받는 압력(기도압 − 흉막압). EITP=흡기말 경폐압
+  </div>
+  <div id="term-nmba" class="seo-term">
+    <b>NMBA</b> · neuromuscular blocking agent: 신경근차단제 — 마비로 호흡 노력 제거(중증 ARDS)
+  </div>
+  <div id="term-ecmo" class="seo-term">
+    <b>ECMO</b> · extracorporeal membrane oxygenation: 체외막산소공급 — 회로가 가스교환 대행
+  </div>
+  <div id="term-vv-ecmo" class="seo-term">
+    <b>VV-ECMO</b> · veno-venous ECMO (별칭: VV-ECMO, VV): 정맥-정맥 ECMO — 호흡 부전용
+  </div>
+  <div id="term-ecco-r" class="seo-term">
+    <b>ECCO₂R</b> · extracorporeal CO₂ removal (별칭: ECCO₂R, ECCOR, ECCO): 체외 이산화탄소 제거 — CO₂만 빼 ultra-protective 환기 가능
+  </div>
+  <div id="term-rass" class="seo-term">
+    <b>RASS</b> · Richmond Agitation-Sedation Scale: 리치먼드 초조-진정 척도 — +4(호전적)~−5(무반응)
+  </div>
+  <div id="term-sat" class="seo-term">
+    <b>SAT</b> · spontaneous awakening trial: 자발각성 시험 — 진정을 줄여 환자를 깨우는 단계
+  </div>
+  <div id="term-sbt" class="seo-term">
+    <b>SBT</b> · spontaneous breathing trial: 자발호흡 시험 — 지원을 줄여 혼자 숨 쉬는지 30분 시험
+  </div>
+  <div id="term-rsbi" class="seo-term">
+    <b>RSBI</b> · rapid shallow breathing index: 빠른얕은호흡지수 = RR ÷ TV(L), &lt;105가 전통 기준(참고용)
+  </div>
+  <div id="term-arma" class="seo-term">
+    <b>ARMA</b> · ARDSNet ARMA trial: ARDSNet 2000 — TV 6 vs 12 비교, 폐보호환기 입증
+  </div>
+  <div id="term-acurasys" class="seo-term">
+    <b>ACURASYS</b> · ACURASYS trial: 2010 — 중증 ARDS 48h NMBA로 사망률↓(양성)
+  </div>
+  <div id="term-rose" class="seo-term">
+    <b>ROSE</b> · ROSE trial (별칭: ROSE): 2019 — 더 높은 PEEP에서 NMBA 이득 재현 실패(음성)
+  </div>
+  <div id="term-eolia" class="seo-term">
+    <b>EOLIA</b> · EOLIA trial: 중증 ARDS ECMO 시험 — RV 손상 표현형이 최대 이익
+  </div>
+  <div id="term-loco2" class="seo-term">
+    <b>LOCO2</b> · LOCO2 trial: ARDS 보존적 산소요법 — 너무 낮은 목표의 위험 시사
+  </div>
+  <div id="term-sccm" class="seo-term">
+    <b>SCCM</b> · Society of Critical Care Medicine: 미국 중환자의학회
+  </div>
+  <div id="term-icu" class="seo-term">
+    <b>ICU</b> · intensive care unit: 중환자실
+  </div>
+  <div id="term-vapox" class="seo-term">
+    <b>VAPOX</b> · ventilator-assisted preoxygenation: 인공호흡기 보조 전산소화 — 무호흡기 고분환기(DKA 등)
+  </div>
+  <p><a href="#lib">용어집 상세 →</a></p>
+</section>
+<section id="param-vent" class="seo-param">
+  <h3>기계환기 설정 파라미터 (초기값·범위·단위)</h3>
+  <p><b>TV</b>: 200–800 mL (조정단위 10)</p>
+  <p><b>RR</b>: 4–40 /min (조정단위 1)</p>
+  <p><b>PEEP</b>: 0–24 cmH₂O (조정단위 1)</p>
+  <p><b>FiO₂</b>: 21–100 % (조정단위 1)</p>
+  <p><b>Flow</b>: 30–120 L/min (조정단위 5)</p>
+  <p><b>I:E (1:?)</b>: 1–6  (조정단위 1)</p>
+  <p><b>Pinsp</b>: 5–40 cmH₂O (조정단위 1)</p>
+  <p>일회호흡량(TV)은 예측체중(PBW) 기반 6~8 mL/kg 폐보호환기가 원칙. PEEP·FiO₂는 산소화 목표에 따라 적정. 구동압(driving pressure = Pplateau − PEEP)은 &lt;15 cmH₂O 권장(ARDS).</p>
+  <p><a href="#lib">파라미터 상세 →</a></p>
+</section>
+<section id="profiles-vent" class="seo-profiles">
+  <h3>폐 상태별 환기 역학·전략</h3>
+  <div id="profile-normal" class="seo-profile">
+    <b>🫁 정상 폐</b>: 기준선 — 모든 비교의 출발 — 컴플라이언스 Crs≈70 mL/cmH₂O (정상범위 60~100), 저항 Raw≈8 cmH₂O/L/s
+  </div>
+  <div id="profile-ards" class="seo-profile">
+    <b>🔥 ARDS (baby lung)</b>: 컴플라이언스 저하 — 작은 폐 — 컴플라이언스 Crs≈30 mL/cmH₂O (정상범위 20~40), 저항 Raw≈12 cmH₂O/L/s
+  </div>
+  <div id="profile-copd" class="seo-profile">
+    <b>🌀 COPD 악화</b>: 폐기종 — 컴플라이언스↑ + 저항↑ (과팽창) — 컴플라이언스 Crs≈78 mL/cmH₂O (정상범위 65~95), 저항 Raw≈24 cmH₂O/L/s
+  </div>
+  <div id="profile-asthma" class="seo-profile">
+    <b>💨 중증 천식</b>: 저항 극단 · 컴플라이언스 정상 (flow limitation) — 컴플라이언스 Crs≈58 mL/cmH₂O (정상범위 48~68), 저항 Raw≈45 cmH₂O/L/s
+  </div>
+  <div id="profile-edema" class="seo-profile">
+    <b>💧 폐부종</b>: 컴플라이언스 저하 — PEEP 반응 — 컴플라이언스 Crs≈40 mL/cmH₂O (정상범위 30~50), 저항 Raw≈13 cmH₂O/L/s
+  </div>
+  <div id="profile-fibrosis" class="seo-profile">
+    <b>🪨 폐섬유화</b>: 빳빳하고 안 펴짐(squishy ball) — 컴플라이언스 Crs≈28 mL/cmH₂O (정상범위 20~35), 저항 Raw≈10 cmH₂O/L/s
+  </div>
+  <p>ARDS는 baby lung(작은 폐)이라 저용량·고PEEP·폐보호. COPD/천식은 과팽창·auto-PEEP 위험 → 호기시간 확보(낮은 RR·긴 호기). 폐섬유화·부종은 빳빳한 폐(저컴플라이언스).</p>
+  <p><a href="#lib">폐 프로파일 상세 →</a></p>
+</section>
+<section id="weaning-vent" class="seo-weaning">
+  <h3>인공호흡기 이탈(Weaning)·발관(Extubation)</h3>
+  <p><b>🪜 빼는 것도 기술이다</b>: 이탈은 &quot;되겠지&quot; 감이 아니라 절차다 — 키워드: weaning, 이탈, 발관, extubation, SAT, SBT, liberation</p>
+  <p><b>🚪 숨은 쉬는데 왜 다시 꽂나</b>: 발관 실패의 진짜 원인 — 기도 보호 — 키워드: extubation, 발관, cuff leak, 후두부종, 기침, 분비물, 재삽관, reintubation, stridor</p>
+  <p><b>🔁 자꾸 실패하는 환자</b>: 어려운/지연 이탈 — 무엇이 발목을 잡나 — 키워드: difficult weaning, prolonged weaning, 이탈 실패, 횡격막, 심장, CSWF, 기관절개</p>
+  <p>매일 SAT(자발호흡각성시험)+SBT(자발호흡시험)로 이탈 준비 평가. 발관 실패 원인은 호흡부전뿐 아니라 기도보호 실패(cuff leak·후두부종·분비물). 어려운/지연 이탈은 횡격막 기능·심장·영양·섬망 등 복합 요인.</p>
+  <p><a href="#lib">이탈 상세 →</a></p>
+</section>
+<section id="abga-vent" class="seo-abga">
+  <h3>동맥혈가스분석(ABGA) 해석 시나리오</h3>
+  <p><b>✅ 정상</b>: 기준점 (pH 7.4 · PaCO₂ 40 · HCO₃ 24)</p>
+  <p><b>🔋 DKA</b>: 고음이온차 대사산증 + 호흡보상 (pH 7.22 · PaCO₂ 26 · HCO₃ 11)</p>
+  <p><b>🌀 만성 COPD</b>: 만성 호흡산증(신장 보상) (pH 7.34 · PaCO₂ 60 · HCO₃ 32)</p>
+  <p><b>💨 COPD 급성악화</b>: 만성 위에 급성 겹침 (pH 7.21 · PaCO₂ 80 · HCO₃ 31)</p>
+  <p><b>🔥 패혈증 혼합</b>: 대사산증 + 호흡산증 (pH 7.15 · PaCO₂ 46 · HCO₃ 15)</p>
+  <p><b>🤮 구토</b>: 대사알칼리증 (pH 7.52 · PaCO₂ 48 · HCO₃ 38)</p>
+  <p><b>💊 살리실산 중독</b>: 호흡알칼리증 + 대사산증 (pH 7.44 · PaCO₂ 22 · HCO₃ 15)</p>
+  <p><b>🫧 중증 ARDS 저산소</b>: P/F&lt;100, shunt (pH 7.32 · PaCO₂ 48 · HCO₃ 24)</p>
+  <p><b>😴 순수 환기저하</b>: PaCO₂↑, A-a 정상 (pH 7.2 · PaCO₂ 70 · HCO₃ 27)</p>
+  <p><b>🩸 폐색전 (V/Q)</b>: A-a↑, PaCO₂ 정상~저하 (pH 7.48 · PaCO₂ 30 · HCO₃ 22)</p>
+  <p><b>🌫️ COPD + 저산소</b>: 만성 CO₂저류 + 산소화 (pH 7.35 · PaCO₂ 58 · HCO₃ 31)</p>
+  <p>산염기 해석 순서: ① pH(산증/알칼리증) ② 1차 장애(호흡 PaCO₂ / 대사 HCO₃) ③ 보상 적절성 ④ 대사산증이면 음이온차(AG) ⑤ AG 상승 시 delta-delta. 만성 호흡산증은 신장 보상(HCO₃↑).</p>
+  <p><a href="#lib">ABGA 해석 상세 →</a></p>
+</section>
+<section id="library-vent" class="seo-library">
+  <h3>기계환기 물리·역학 도서관</h3>
+  <p><b>⚙️ 운동방정식 (Equation of Motion)</b>: 환기의 F=ma — 모든 압력은 세 곳에 쓰인다</p>
+  <p><b>📊 컴플라이언스와 저항</b>: 폐의 두 성격 — 얼마나 잘 늘어나는가, 얼마나 잘 통하는가</p>
+  <p><b>⏱️ 시간상수(τ)와 auto-PEEP</b>: 폐가 차고 비우는 시간 — 못 비우면 갇힌다</p>
+  <p><b>📐 구동압 (Driving Pressure)</b>: 폐가 실제로 받는 변형(strain) — TV/kg보다 정확한 지표</p>
+  <p>운동방정식: 압력 = (유량×저항) + (용적÷컴플라이언스) + PEEP. 컴플라이언스(늘어남)와 저항(공기흐름 방해)이 폐의 두 성격. 시간상수 τ=저항×컴플라이언스(못 비우면 auto-PEEP). 구동압=변형(strain)의 대리지표.</p>
+  <p><a href="#lib">도서관 상세 →</a></p>
+</section>
+</div></noscript>
 </body>
 </html>

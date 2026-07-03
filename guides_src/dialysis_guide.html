@@ -3,7 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>투석 학습 가이드 — 0층부터 여는 투석실</title>
+<title>투석 학습 가이드 — 혈액투석·복막투석·Kt/V·CRRT·신성빈혈 완전정리 | 임상의용</title>
+<meta name="description" content="말기신부전 투석 교육자료. 투석 원리(확산·한외여과·대류)·적정투석(Kt/V·URR)·신성빈혈(ESA·록사두스타트)·CKD-MBD(인결합제·칼시미메틱)·투석중저혈압(IDH)·혈관접근·약물용량조절·CRRT를 핵심 수치·근거와 함께 임상의·전공의용으로 밀도있게 정리한 교육자료.">
+<meta name="keywords" content="투석, 혈액투석, HD, 복막투석, PD, 말기신부전, ESKD, 신대체요법, Kt/V, URR, 적정투석, 한외여과, ultrafiltration, 확산, 대류, 투석액, 중공사막, TMP, urea rebound, 신성빈혈, ESA, 에포에틴, 다베포에틴, 록사두스타트, roxadustat, 철분, CKD-MBD, 인결합제, sevelamer, 세벨라머, lanthanum, 칼시미메틱, cinacalcet, 시나칼세트, 투석중저혈압, IDH, 건체중, 제수분, IDWG, 혈관접근, AVF, 동정맥루, 약물용량조절, dialyzability, CRRT, 지속신대체요법, effluent dose, 중환자신장">
+<link rel="canonical" href="https://chronic-disease-dun.vercel.app/guides/dialysis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="투석 학습 가이드 — 혈액투석·복막투석·Kt/V·CRRT·신성빈혈 완전정리 | 임상의용">
+<meta property="og:description" content="말기신부전 투석 교육자료. 투석 원리(확산·한외여과·대류)·적정투석(Kt/V·URR)·신성빈혈(ESA·록사두스타트)·CKD-MBD(인결합제·칼시미메틱)·투석중저혈압(IDH)·혈관접근·약물용량조절·CRRT를 핵심 수치·근거와 함께 임상의·전공의용으로 밀도있게 정리한 교육자료.">
+<meta property="og:url" content="https://chronic-disease-dun.vercel.app/guides/dialysis">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": [
+    "MedicalWebPage",
+    "LearningResource"
+  ],
+  "name": "투석 학습 가이드 — 혈액투석·복막투석·Kt/V·CRRT·신성빈혈 완전정리 | 임상의용",
+  "description": "말기신부전 투석 교육자료. 투석 원리(확산·한외여과·대류)·적정투석(Kt/V·URR)·신성빈혈(ESA·록사두스타트)·CKD-MBD(인결합제·칼시미메틱)·투석중저혈압(IDH)·혈관접근·약물용량조절·CRRT를 핵심 수치·근거와 함께 임상의·전공의용으로 밀도있게 정리한 교육자료.",
+  "url": "https://chronic-disease-dun.vercel.app/guides/dialysis",
+  "inLanguage": "ko",
+  "learningResourceType": "교육자료 / 인터랙티브 시뮬레이터",
+  "educationalLevel": "의료전문가(임상의·전공의)",
+  "about": {
+    "@type": "MedicalProcedure",
+    "name": "투석(dialysis) / 신대체요법"
+  },
+  "audience": {
+    "@type": "MedicalAudience",
+    "audienceType": "Clinician"
+  },
+  "lastReviewed": "2026-07-03"
+}
+</script>
 <style>
 /* ============ 디자인 토큰 (신장 보라 + 혈액/투석액 액센트) ============ */
 :root{
@@ -3437,5 +3470,343 @@ var DIALYSIS_REFS = {
   show('L0');
 })();
 </script>
+<noscript><div class="seo-content">
+<h2>투석(혈액투석·복막투석·CRRT) 학습 가이드 — 원리·약물·적정투석·합병증</h2>
+<p>말기신부전(ESKD) 투석의 핵심 개념을 임상의·전공의용으로 0층부터 쌓아올린 교육자료입니다. 투석 물리(확산 diffusion·한외여과 ultrafiltration·대류 convection·삼투), 중공사막(hollow fiber)·역류(countercurrent)·TMP·KUF, 투석액 조성, 항응고(헤파린·구연산 citrate), urea rebound와 Kt/V(적정 투석량), 투석 시작·양식 선택, 신성빈혈(ESA 에포에틴·다베포에틴·록사두스타트 roxadustat·철분), CKD-MBD(인결합제 sevelamer·lanthanum·칼시미메틱 cinacalcet·etelcalcetide·활성비타민D), 투석 중 저혈압(IDH)·건체중·제수분, 혈관접근(AVF 성숙·thrill·bruit), 투석환자 약물용량 조절(dialyzability), 식이(IDWG·인), CRRT(지속신대체요법)를 핵심 수치·근거와 함께 밀도있게 정리합니다. CRRT·혈액투석 제수분 시뮬레이터 등 인터랙티브 학습 도구는 JavaScript 활성화 시 이용 가능합니다.</p>
+<section id="concepts-dial" class="seo-concepts">
+  <h3>투석 학습 레이어 (L0~L16 — 0층부터 여는 투석실)</h3>
+  <div id="layer-l0" class="seo-layer">
+    <h4>🫘 L0 — 왜 투석이 필요한가</h4>
+    <p><b>콩팥이 하는 일과, 투석이 대신할 수 있는 것·없는 것</b></p>
+    <p>콩팥은 크게 4가지 일을 한다 — ①노폐물 배출(urea·creatinine 같은 대사 찌꺼기) ②물·전해질 균형 ③EPO(erythropoietin) 생산으로 적혈구 만들기 ④비타민 D 활성화로 뼈·칼슘 관리. 콩팥이 망가지면 이 4가지가 모두 무너진다. 그런데 투석은 앞의 2가지(노폐물·물전해질)만 대신하고, 뒤의 2가지(EPO·비타민 D)는 기계가 못 하므로 약으로 따로 보충한다. 이 한 가지 사실이 투석 환자 관리 전체의 출발점이다 — 왜 빈혈약(L8)과 뼈약(L9)이 늘 따라붙는지가 여기서 결정된다.</p>
+    <span id="concept-why-dialysis"><code>concept:why_dialysis</code></span>
+  </div>
+  <div id="layer-l1" class="seo-layer">
+    <h4>🌊 L1 — 투석을 움직이는 물리 3법칙</h4>
+    <p><b>diffusion·ultrafiltration·convection — 투석실 블랙박스 안은 이 3개가 전부다</b></p>
+    <p>투석실의 모든 기계와 숫자는 결국 딱 3가지 물리 현상 위에 서 있다. ①diffusion(확산) — 농도차로 용질이 저절로 퍼지는 것. ②ultrafiltration(한외여과, UF) — 압력으로 물을 짜내는 것. ③convection(대류) — 짜낸 물이 용질을 끌고 가는 것(solvent drag). 이 3개만 이해하면 HD와 CRRT의 차이까지 한 번에 풀린다. 한 줄 요약: HD는 diffusion이 주력, HF·CRRT는 convection이 주력.</p>
+    <span id="concept-diffusion"><code>concept:diffusion</code></span>
+    <span id="concept-ultrafiltration"><code>concept:ultrafiltration</code></span>
+    <span id="concept-convection"><code>concept:convection</code></span>
+    <span id="concept-osmosis"><code>concept:osmosis</code></span>
+    <span id="concept-solvent-drag"><code>concept:solvent_drag</code></span>
+  </div>
+  <div id="layer-l2" class="seo-layer">
+    <h4>🧬 L2 — 왜 그 기계가 그렇게 생겼나</h4>
+    <p><b>hollow fiber 다발과 countercurrent — 표면적과 농도차를 극대화하는 설계</b></p>
+    <p>투석기(dialyzer)의 생김새에는 이유가 있다. 속이 빈 가느다란 관(hollow fiber, 중공사) 수천 개를 다발로 묶어 원통 안에 채운 구조다. 혈액은 이 관 안쪽을 지나고, 투석액은 관 바깥 공간을 흐른다. 여기에 두 가지 영리한 설계가 숨어 있다 — ①섬유 다발로 막 표면적을 극대화해 diffusion을 늘리고, ②countercurrent(역류) 방식으로 혈액과 투석액을 반대 방향으로 흘려 농도차를 처음부터 끝까지 유지한다.</p>
+    <span id="concept-hollow-fiber"><code>concept:hollow_fiber</code></span>
+    <span id="concept-countercurrent"><code>concept:countercurrent</code></span>
+    <span id="concept-tmp"><code>concept:tmp</code></span>
+    <span id="concept-kuf"><code>concept:kuf</code></span>
+  </div>
+  <div id="layer-l3" class="seo-layer">
+    <h4>💧 L3 — 투석액(dialysate)은 왜 그 조성인가</h4>
+    <p><b>단순한 물이 아니다 — 빼고 싶은 건 0, 주고 싶은 건 채운 정밀 설계액</b></p>
+    <p>투석액(dialysate)은 그냥 물이 아니라, 사람 몸의 세포외액을 본떠 만든 정밀 설계 용액이다. 핵심 발상은 농도차의 &#x27;방향&#x27;을 미리 설계하는 것이다 — 몸에서 빼고 싶은 물질은 투석액 농도를 0(또는 낮게) 두어 빠져나가게 하고, 몸에 넣어주고 싶은 물질은 투석액에 더 높게 채워 거꾸로 들어가게 한다. 그래서 투석은 단순히 &#x27;빼기&#x27;만 하는 게 아니라, 한 막에서 동시에 일어나는 양방향 교환이다.</p>
+    <span id="concept-dialysate"><code>concept:dialysate</code></span>
+  </div>
+  <div id="layer-l4" class="seo-layer">
+    <h4>🩸 L4 — 항응고 — 피가 몸 밖으로 나가는 문제</h4>
+    <p><b>체외 회로에서 피가 굳지 않게: heparin과 citrate</b></p>
+    <p>혈액투석은 피를 몸 밖으로 빼내 튜브와 투석기로 이루어진 체외 회로(extracorporeal circuit)를 돌린다. 그런데 피는 몸 밖의 인공 표면에 닿으면 굳으려는 성질이 있다. 그래서 회로가 막히지 않도록 항응고가 반드시 필요하다. 가장 흔히 쓰는 것이 heparin(헤파린, 전신 항응고)이고, 출혈 위험이 크거나 CRRT를 할 때는 citrate(시트레이트, 국소 항응고)를 쓴다.</p>
+    <span id="concept-citrate-anticoag"><code>concept:citrate_anticoag</code></span>
+  </div>
+  <div id="layer-l5" class="seo-layer">
+    <h4>📉 L5 — urea rebound — Kt/V 이해의 마지막 퍼즐</h4>
+    <p><b>투석 직후 urea가 왜 다시 올라가나: 몸은 단일 통이 아니다</b></p>
+    <p>투석이 끝나면 신기한 일이 벌어진다 — 혈액 urea 농도가 다시 올라간다(rebound, 반등). 이유는 몸이 하나의 균일한 통이 아니라 여러 칸으로 나뉘어 있기 때문이다. 혈류가 적은 조직(근육·뼈)에 숨어 있던 urea가 투석이 끝난 뒤 천천히 혈관으로 다시 새어 나온다. 이 현상이 바로 투석 처방 목표를 spKt/V 1.4로 잡는 진짜 이유다(L6와 직결). 표면의 숫자가 아니라 이 동역학을 알아야 Kt/V가 제대로 이해된다.</p>
+    <span id="concept-urea-rebound"><code>concept:urea_rebound</code></span>
+    <span id="concept-two-pool"><code>concept:two_pool</code></span>
+  </div>
+  <div id="layer-l6" class="seo-layer">
+    <h4>📏 L6 — 투석 용량 — Kt/V는 무엇을 재는가</h4>
+    <p><b>분율 청소율(fractional clearance)의 정의와, 목표 1.4·최소 1.2의 근거</b></p>
+    <p>Kt/V = 분율 청소율(fractional clearance), 즉 K·t를 V로 나눈 값이다. K는 투석기의 urea 청소율(분당 깨끗이 거르는 혈액량), t는 투석 시간, V는 urea가 분포하는 몸의 용적이다. K×t는 &#x27;한 세션 동안 깨끗이 청소된 혈액의 총 부피&#x27;이고, 이를 몸 용적 V로 나눠 체격에 맞춰 보정한다. 목표는 spKt/V 1.4, 최소 전달은 1.2. 왜 이 두 숫자인지는 외울 게 아니라 두 개의 대규모 임상시험(HEMO·FHN)에서 나온 결론이다.</p>
+    <span id="concept-adequacy"><code>concept:adequacy</code></span>
+  </div>
+  <div id="layer-l7" class="seo-layer">
+    <h4>🚦 L7 — 언제 시작하고, 무엇을 선택하나</h4>
+    <p><b>숫자가 아니라 증상으로 — IDEAL 연구가 바꾼 패러다임</b></p>
+    <p>투석 개시는 eGFR 숫자가 아니라 요독 증상으로 판단한다. 이건 현대 신장학에서 가장 중요한 패러다임 전환이다. IDEAL 연구가 보여줬다 — 일찍 시작(eGFR 10~14)해도 늦게(5~7) 시작하는 것보다 더 오래 살지 않는다. 그래서 GFR 5~10은 &#x27;참고 구간&#x27;일 뿐 시작 방아쇠가 아니다. 비전문의가 환자에게 설명할 때 가장 중요한 한 가지가 바로 이것이다.</p>
+    <span id="concept-eskd-lifeplan"><code>concept:eskd_lifeplan</code></span>
+  </div>
+  <div id="layer-l8" class="seo-layer">
+    <h4>🔴 L8 — 신성빈혈 — 정상까지 올리지 않는다</h4>
+    <p><b>콩팥 EPO 생산↓가 원인. KDIGO 2026 최신 반영</b></p>
+    <p>콩팥은 EPO(erythropoietin)를 만들어 적혈구 생산을 자극한다. 콩팥이 망가지면 EPO가 줄어 빈혈이 온다 — 이게 L0에서 말한 &#x27;투석이 대신 못 하는 기능&#x27; 중 하나다. 치료는 ESA(EPO 약)로 하되, 핵심 원칙은 정상까지 올리지 않는 것(목표 Hb 11.5 g/dL 미만)이다. Hb를 너무 높이면(과교정) 오히려 심혈관 사건과 사망이 늘기 때문이다 — &#x27;덜 교정하는 게 안전하다&#x27;는 역설이 빈혈 관리를 관통한다.</p>
+    <span id="concept-renal-anemia"><code>concept:renal_anemia</code></span>
+  </div>
+  <div id="layer-l9" class="seo-layer">
+    <h4>🦴 L9 — CKD-MBD — 뼈·미네랄·혈관석회화</h4>
+    <p><b>phosphate↑·비타민D↓ → 부갑상선 자극 → 뼈 녹고 혈관 굳는다</b></p>
+    <p>콩팥이 망가지면 두 가지가 동시에 일어난다 — phosphate(인) 배설이 줄어 고인산혈증이 오고, 활성 비타민 D 생성이 줄어 저칼슘혈증이 온다. 이 둘이 부갑상선을 자극해 이차성 부갑상선기능항진증(SHPT, secondary hyperparathyroidism)을 일으키고, 결국 뼈가 녹고 혈관이 석회화된다. 처방의 두 원칙: 칼슘 기반 인결합제는 제한하고, PTH(부갑상선호르몬)는 정상까지 누르지 않는다(무형성 골질환 방지). 빈혈과 똑같은 &#x27;덜 교정&#x27; 철학이다.</p>
+    <span id="concept-ckd-mbd"><code>concept:ckd_mbd</code></span>
+    <span id="concept-shpt"><code>concept:shpt</code></span>
+  </div>
+  <div id="layer-l10" class="seo-layer">
+    <h4>📉 L10 — 투석 중 저혈압(IDH) — 투석실 최다 합병증</h4>
+    <p><b>UF가 plasma refill보다 빠르면 혈관이 빈다</b></p>
+    <p>투석은 혈관에서 물을 빼낸다(UF). 그런데 조직에서 혈관으로 물이 다시 채워지는 속도(plasma refill, 혈장 재충전)보다 빼는 속도가 빠르면, 혈관 안이 비어 혈압이 떨어진다. 이것이 투석 중 저혈압(IDH, intradialytic hypotension)이고, 외래 투석에서 가장 흔한 합병증이다. 여기가 네가 투석실에서 실제로 가장 자주 마주칠 사건이다.</p>
+    <span id="concept-idh"><code>concept:idh</code></span>
+    <span id="concept-dry-weight"><code>concept:dry_weight</code></span>
+    <span id="concept-plasma-refill"><code>concept:plasma_refill</code></span>
+  </div>
+  <div id="layer-l11" class="seo-layer">
+    <h4>🔗 L11 — 혈관접근 — 분당 수백 mL를 뽑는 통로</h4>
+    <p><b>AVF &gt; AVG &gt; CVC (합병증 적은 순). Rule of 6s와 LOOK·LISTEN·FEEL</b></p>
+    <p>혈액투석을 하려면 분당 수백 mL의 피를 뽑아야 하는데, 보통 혈관으로는 불가능하다. 그래서 고유량 통로를 따로 만든다. 세 종류가 있고 우열이 분명하다 — ①AVF(자가 동정맥루) 최선 → ②AVG(인조혈관 그라프트) → ③CVC(중심정맥 카테터) 최악(감염·혈전 위험 최고). 합병증이 적은 순서가 곧 선호 순서다.</p>
+    <span id="concept-maturation"><code>concept:maturation</code></span>
+    <span id="concept-thrill"><code>concept:thrill</code></span>
+    <span id="concept-bruit"><code>concept:bruit</code></span>
+    <span id="concept-rule-of-6s"><code>concept:rule_of_6s</code></span>
+  </div>
+  <div id="layer-l12" class="seo-layer">
+    <h4>💊 L12 — 투석 환자 약물용량 — &#x27;무조건 감량&#x27;은 틀렸다</h4>
+    <p><b>이 약이 투석으로 빠지나(dialyzability)를 판단한다</b></p>
+    <p>&#x27;투석 환자니까 약은 무조건 줄인다&#x27;는 흔한 오해다. 항상 맞는 게 아니다. 핵심은 이 약이 투석으로 빠지느냐(dialyzability)를 판단하는 것이다. 잘 빠지는 약은 줄이는 게 아니라 오히려 투석 후 &#x27;보충&#x27;해야 한다 — 투석이 약까지 함께 빼버리기 때문이다.</p>
+    <span id="concept-dialyzability"><code>concept:dialyzability</code></span>
+    <span id="concept-protein-binding"><code>concept:protein_binding</code></span>
+    <span id="concept-vd"><code>concept:vd</code></span>
+    <span id="concept-supplemental-dose"><code>concept:supplemental_dose</code></span>
+  </div>
+  <div id="layer-l13" class="seo-layer">
+    <h4>🍽️ L13 — 투석 환자 식이 — 제한과 역설</h4>
+    <p><b>Na·K·phosphate·물은 제한, 단 단백질은 오히려 충분히</b></p>
+    <p>원리는 간단하다 — 콩팥이 못 빼는 것은 식이로 줄인다(나트륨·칼륨·인·수분). 그런데 한 가지 역설이 있다 — 단백질은 오히려 충분히 먹어야 한다(1.0~1.2 g/kg/일). 일반 만성신부전(단백 제한)과 정반대인데, 투석이 아미노산까지 빼버리기 때문이다(세션당 5~8 g 손실). &#x27;제한&#x27;이 기본이지만 단백질만은 예외라는 이 대비를 이해하는 게 핵심이다.</p>
+    <span id="concept-idwg"><code>concept:idwg</code></span>
+    <span id="concept-organic-inorganic-phosphate"><code>concept:organic_inorganic_phosphate</code></span>
+  </div>
+  <div id="layer-l14" class="seo-layer">
+    <h4>🚑 L14 — 실전 — 언제 신장내과로 보내나</h4>
+    <p><b>비전문의의 핵심 의무는 처방이 아니라 &#x27;제때 넘기는 것&#x27;</b></p>
+    <p>비전문의가 투석·신장 환자에서 가장 중요하게 해야 할 일은 완벽한 처방이 아니라 위험 신호를 알아채고 제때 신장내과로 넘기는 것이다. 의뢰 시점은 세 단계로 나뉜다 — 응급(즉시)·긴급(수일)·정규(계획). 핵심 근거: 지연 의뢰는 예후를 악화시킨다. AKI에서 진단 2일 후 의뢰는 조기 의뢰 대비 병원 사망 OR 4.04, 투석의존 OR 3.00로 나타났다. 아래 3단계 triage로 &#x27;지금 이 환자를 어느 속도로 보내야 하나&#x27;를 판단하라 — 이건 처방 도구가 아니라 의뢰 시점 판단 도구다.</p>
+    <span id="concept-referral-timing"><code>concept:referral_timing</code></span>
+  </div>
+  <div id="layer-l15" class="seo-layer">
+    <h4>🎛️ L15 — CRRT 시뮬레이터 — 파라미터를 직접 돌려본다</h4>
+    <p><b>이 값을 바꾸면 무엇이 바뀌나: effluent dose·FF·희석을 실시간으로</b></p>
+    <p>CRRT는 &#x27;그냥 돌리는&#x27; 게 아니라, 조절하는 값이 몇 개뿐이고 그것들이 물리 공식으로 서로 묶여 있다. 혈류(BFR)·투석액(Qd)·보충액(Qr)·순제거(Qnet)를 바꾸면 effluent dose, filtration fraction(FF, 응고 위험), 희석이 어떻게 변하는지 — 아래 시뮬레이터로 직접 돌려보면 &#x27;이 값을 왜 이렇게 두는지&#x27;가 손에 잡힌다. 핵심 한 줄: effluent dose(20~25 mL/kg/hr)는 Kt/V를 24시간 연속으로 펼친 것이고(BRIDGE), FF는 BFR에 반비례한다.</p>
+    <span id="concept-effluent-dose"><code>concept:effluent_dose</code></span>
+    <span id="concept-filtration-fraction"><code>concept:filtration_fraction</code></span>
+    <span id="concept-dilution-factor"><code>concept:dilution_factor</code></span>
+    <span id="concept-pre-post-dilution"><code>concept:pre_post_dilution</code></span>
+    <span id="concept-nuf"><code>concept:nuf</code></span>
+  </div>
+  <div id="layer-l16" class="seo-layer">
+    <h4>💧 L16 — HD UF 시뮬레이터 — 제수분 처방을 직접 돌려본다</h4>
+    <p><b>IDWG·dry weight·시간이 UF rate 한 숫자로 모인다 (CRRT와 대칭)</b></p>
+    <p>일반 HD에서 실시간으로 &#x27;돌리는&#x27; 처방 변수는 사실상 UF(제수분) 하나다(Kt/V는 L6 계산기). 투석전 체중·목표 체중(dry weight)·투석 시간 세 값이 UF rate(mL/kg/hr) 한 숫자로 모인다. 이 숫자가 L10에서 배운 위험선 13을 넘는지, 넘으면 시간을 늘려 어떻게 낮추는지 — 아래로 직접 돌려보라. CRRT(L15)와 대칭이다: CRRT는 24시간 연속(mL/kg/hr), HD는 4시간 압축. 같은 물리(물 빼기)를 두 속도로 보는 것.</p>
+    <span id="concept-idwg"><code>concept:idwg</code></span>
+    <span id="concept-dry-weight"><code>concept:dry_weight</code></span>
+    <span id="concept-plasma-refill"><code>concept:plasma_refill</code></span>
+  </div>
+  <div id="layer-bridge" class="seo-layer">
+    <h4>🔄 BRIDGE — CRRT 브릿지 — HD와 같은 물리, 다른 속도</h4>
+    <p><b>effluent dose ↔ UF rate ↔ Kt/V: ICU 모듈 숫자를 같은 언어로</b></p>
+    <p>CRRT(continuous renal replacement therapy, 지속 신대체요법)는 멀어 보이지만 사실 HD와 같은 물리 법칙(L1) 위에 있다. 차이는 딱 하나 — CRRT는 24시간 내내 아주 천천히 연속으로 뺀다. 이 &#x27;천천히, 연속&#x27;이라는 차이에서 두 가지 결과가 나온다 — ①urea rebound가 거의 없고(늘 평형) ②혈역학이 안정적(IDH 회피). 이 두 가지가 ICU에서 CRRT를 쓰는 이유 전부다.</p>
+    <span id="concept-convection"><code>concept:convection</code></span>
+    <span id="concept-ultrafiltration"><code>concept:ultrafiltration</code></span>
+  </div>
+  <p><a href="#lib">학습 레이어 상세 →</a></p>
+</section>
+<section id="drug-ceftazidime" class="seo-drug">
+  <h3>Ceftazidime 세프타지딤 · Ceftazidime</h3>
+  <p><b>성분 ID</b> <code>drug:ceftazidime</code> · 레이어 L12</p>
+  <p><b>역할</b>: 세팔로스포린 — 투석 후 보충 투여의 표준 예</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-digoxin_ref" class="seo-drug">
+  <h3>Digoxin 디곡신(참고) · Digoxin</h3>
+  <p><b>성분 ID</b> <code>drug:digoxin_ref</code> · 레이어 L12</p>
+  <p><b>역할</b>: 안 빠지는 약의 대표 — 보충 불필요</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-gentamicin" class="seo-drug">
+  <h3>Gentamicin 겐타마이신 · Gentamicin</h3>
+  <p><b>성분 ID</b> <code>drug:gentamicin</code> · 레이어 L12</p>
+  <p><b>역할</b>: 아미노글리코사이드 — 잘 빠지는 약의 대표</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-vancomycin" class="seo-drug">
+  <h3>Vancomycin 반코마이신 · Vancomycin</h3>
+  <p><b>성분 ID</b> <code>drug:vancomycin</code> · 레이어 L12</p>
+  <p><b>역할</b>: 글리코펩티드 항생제 — dialyzability의 대표 학습 사례</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-citrate" class="seo-drug">
+  <h3>Citrate 시트레이트 · Citrate</h3>
+  <p><b>성분 ID</b> <code>drug:citrate</code> · 레이어 L4</p>
+  <p><b>역할</b>: 국소 항응고(RCA) — 회로 내 칼슘 결합, 복귀 전 칼슘 보충</p>
+  <p><b>임상 노트</b>: CRRT 표준 항응고. 전신 출혈위험 최소화. 시트레이트 축적 모니터 / ICU 모듈 공유 ID</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-heparin" class="seo-drug">
+  <h3>Heparin 헤파린 · Heparin</h3>
+  <p><b>성분 ID</b> <code>drug:heparin</code> · 레이어 L4</p>
+  <p><b>역할</b>: 체외회로 전신 항응고 — bolus+유지</p>
+  <p><b>임상 노트</b>: 기존 레지스트리 ID 재사용. 출혈위험 환자엔 부담</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-darbepoetin" class="seo-drug">
+  <h3>Darbepoetin 다르베포에틴 · Darbepoetin alfa</h3>
+  <p><b>성분 ID</b> <code>drug:darbepoetin</code> · 계열 class:esa · 레이어 L8</p>
+  <p><b>역할</b>: 장시간형 ESA — 투여 간격 김</p>
+  <p><b>임상 노트</b>: 반감기 길어 주1회~격주 투여 가능</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-epoetin_alfa" class="seo-drug">
+  <h3>Epoetin alfa 에포에틴알파 · Epoetin alfa</h3>
+  <p><b>성분 ID</b> <code>drug:epoetin_alfa</code> · 계열 class:esa · 레이어 L8</p>
+  <p><b>역할</b>: 적혈구형성자극제(ESA) — 콩팥 EPO 결핍 보충</p>
+  <p><b>임상 노트</b>: 피하&lt;정맥보다 적은 용량으로 일정 Hb 유지(피하 효율적) / 피하→정맥 전환 시 약 30% 증량 필요 / Hb 12 초과 시 심혈관·사망 위험 — 과교정 금지</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-ferric_carboxymaltose" class="seo-drug">
+  <h3>Ferric carboxymaltose 페릭카르복시말토스 · Ferric carboxymaltose</h3>
+  <p><b>성분 ID</b> <code>drug:ferric_carboxymaltose</code> · 레이어 L8</p>
+  <p><b>역할</b>: 정맥 철분 — 고용량 1회 투여 가능</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-iron_sucrose" class="seo-drug">
+  <h3>Iron sucrose 철수크로스 · Iron sucrose</h3>
+  <p><b>성분 ID</b> <code>drug:iron_sucrose</code> · 레이어 L8</p>
+  <p><b>역할</b>: 정맥 철분 — ferritin·TSAT 기반 보충, ESA 용량 절감</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-roxadustat" class="seo-drug">
+  <h3>Roxadustat 록사두스타트 · Roxadustat</h3>
+  <p><b>성분 ID</b> <code>drug:roxadustat</code> · 계열 class:hif_phi · 레이어 L8</p>
+  <p><b>역할</b>: 경구 HIF-PHi — HIF 안정화로 내인성 EPO 생산 자극</p>
+  <p><b>임상 노트</b>: ESA와 비슷한 Hb 도달(2026 KDIGO는 ESA를 1차 선호) / 첫 3개월 갑상선기능 모니터링 / 3~4개월내 적혈구 반응 없으면 중단 / 심혈관·혈전색전·혈관접근 혈전·신규 암 발생 시 중단 / 위험군엔 회피(KDIGO 2026 Table 6)</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-calcitriol" class="seo-drug">
+  <h3>Calcitriol 칼시트리올 · Calcitriol</h3>
+  <p><b>성분 ID</b> <code>drug:calcitriol</code> · 계열 class:vitd_analog · 레이어 L9</p>
+  <p><b>역할</b>: 활성 비타민D — 콩팥이 못 만드는 활성형 보충, PTH 강하</p>
+  <p><b>임상 노트</b>: 고칼슘·고인혈증 주의. 기존 레지스트리 ID 재사용</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-calcium_acetate" class="seo-drug">
+  <h3>Calcium acetate 칼슘아세테이트 · Calcium acetate</h3>
+  <p><b>성분 ID</b> <code>drug:calcium_acetate</code> · 계열 class:phosphate_binder · 레이어 L9</p>
+  <p><b>역할</b>: 칼슘기반 인결합제 — 1차로 쓰되 칼슘부하·고칼슘혈증 주의</p>
+  <p><b>임상 노트</b>: KDIGO 2017: 칼슘기반 결합제 사용 제한(혈관석회화)</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-cinacalcet" class="seo-drug">
+  <h3>Cinacalcet 시나칼셋 · Cinacalcet</h3>
+  <p><b>성분 ID</b> <code>drug:cinacalcet</code> · 계열 class:calcimimetic · 레이어 L9</p>
+  <p><b>역할</b>: 경구 칼시미메틱 — 부갑상선 칼슘수용체 자극해 PTH 강하</p>
+  <p><b>임상 노트</b>: PTH를 정상까지 누르지 않음(무형성골 방지)</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-etelcalcetide" class="seo-drug">
+  <h3>Etelcalcetide 에텔칼세타이드 · Etelcalcetide</h3>
+  <p><b>성분 ID</b> <code>drug:etelcalcetide</code> · 계열 class:calcimimetic · 레이어 L9</p>
+  <p><b>역할</b>: 정맥 칼시미메틱 — 투석 종료 시 정맥 투여(순응도↑)</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-lanthanum" class="seo-drug">
+  <h3>Lanthanum 란타넘 · Lanthanum carbonate</h3>
+  <p><b>성분 ID</b> <code>drug:lanthanum</code> · 계열 class:phosphate_binder · 레이어 L9</p>
+  <p><b>역할</b>: 비칼슘 인결합제 — 강력한 인 결합</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="drug-sevelamer" class="seo-drug">
+  <h3>Sevelamer 세벨라머 · Sevelamer</h3>
+  <p><b>성분 ID</b> <code>drug:sevelamer</code> · 계열 class:phosphate_binder · 레이어 L9</p>
+  <p><b>역할</b>: 비칼슘 인결합제 — 칼슘부하 없이 인 강하(혈관석회화 회피)</p>
+  <p><a href="#lib">투석 약물 상세 →</a></p>
+</section>
+<section id="numbers-dial" class="seo-numbers">
+  <h3>투석 핵심 수치·목표값</h3>
+  <p><b>목표 spKt/V (주3회)</b>: 1.4 (출처 KDOQI HD Adequacy 2015 · 권고 권고 · ID lab:spktv)</p>
+  <p><b>최소 전달 spKt/V (주3회)</b>: 1.2 (출처 KDOQI HD Adequacy 2015 / HEMO · 권고 권고 · ID lab:spktv)</p>
+  <p><b>목표 URR</b>: 70% (출처 KDOQI 2015 · 권고 권고 · ID lab:urr)</p>
+  <p><b>최소 URR</b>: 65% (출처 KDOQI 2015 · 권고 권고 · ID lab:urr)</p>
+  <p><b>spKt/V→eKt/V 평균 갭</b>: 0.2 (출처 약동학(2구획) · 권고 관찰 · ID lab:ektv)</p>
+  <p><b>리바운드에 의한 Kt/V 저하</b>: 15% (출처 약동학(2구획) · 권고 관찰 · ID lab:ktv)</p>
+  <p><b>UF rate 위험 역치</b>: 13mL/kg/hr (출처 관찰연구(IDH·사망 연관) · 권고 관찰 · ID lab:ufr)</p>
+  <p><b>투석간 체중증가(IDWG) 권장 상한</b>: 5% 체중 (출처 임상 관행 · 권고 의견)</p>
+  <p><b>ESA 시작 고려 Hb</b>: [9, 10]g/dL (출처 KDIGO 2026 Anemia · 권고 2D · ID lab:hb)</p>
+  <p><b>ESA 유지 목표 Hb 상한</b>: 11.5g/dL (출처 KDIGO 2026 Anemia · 권고 1D · ID lab:hb)</p>
+  <p><b>Hb 과교정 위험선</b>: 13g/dL (출처 ESA 약전/KDIGO · 권고 경고 · ID lab:hb)</p>
+  <p><b>HIRA EPO 급여/적정성 지표 Hb</b>: 10g/dL (출처 HIRA 적정성평가 · 권고 급여 · ID lab:hb)</p>
+  <p><b>수혈 고려 Hb (안정 입원성인)</b>: 7g/dL (출처 KDIGO 2026 Anemia · 권고 임의역치 지양 · ID lab:hb)</p>
+  <p><b>투석액 칼슘 농도</b>: [1.25, 1.5]mmol/L (출처 KDIGO 2017 CKD-MBD · 권고 2C · ID lab:calcium)</p>
+  <p><b>단백 섭취 (투석환자)</b>: [1, 1.2]g/kg/일 (출처 KDOQI Nutrition 2020 · 권고 1C)</p>
+  <p><b>나트륨 섭취 상한</b>: 2.3g/일 (출처 KDOQI Nutrition 2020 · 권고 1C)</p>
+  <p><b>에너지 섭취</b>: [25, 35]kcal/kg/일 (출처 KDOQI Nutrition 2020 · 권고 1C)</p>
+  <p><b>성숙 누공 최소 직경</b>: 6mm (출처 KDOQI 2006 Rule of 6s · 권고 B)</p>
+  <p><b>성숙 누공 최대 깊이</b>: 6mm (출처 KDOQI 2006 Rule of 6s · 권고 B)</p>
+  <p><b>성숙 누공 최소 혈류</b>: 600mL/min (출처 KDOQI 2006 Rule of 6s · 권고 B · ID lab:access_flow)</p>
+  <p><b>성숙 평가 시점</b>: 6주 (출처 KDOQI 2006 Rule of 6s · 권고 B)</p>
+  <p><b>천자 가능 길이</b>: 6cm (출처 KDOQI 2006 Rule of 6s · 권고 B)</p>
+  <p><b>누공 성숙 소요기간</b>: [6, 12]주 (출처 KDOQI VA 2019 · 권고 관찰)</p>
+  <p><b>투석 개시 흔한 GFR 범위</b>: [5, 10]mL/min/1.73m² (출처 KDIGO 2024 · 권고 참고 · ID lab:egfr)</p>
+  <p><b>접근로 계획 시작 GFR</b>: [15, 20]mL/min/1.73m² (출처 KDIGO 2024 · 권고 권고 · ID lab:egfr)</p>
+  <p><a href="#lib">핵심 수치 상세 →</a></p>
+</section>
+<section id="sim-dial" class="seo-sim">
+  <h3>투석 시뮬레이터 — CRRT·혈액투석 제수분(UF)</h3>
+  <div id="crrt-dial">
+    <h4>CRRT(지속신대체요법) 파라미터</h4>
+    <p><b>모드</b>: CVVH, CVVHD, CVVHDF</p>
+    <p>CRRT는 HD와 같은 물리(확산·대류·한외여과)를 느린 속도로 지속 적용. Effluent dose(배출량)·filtration fraction·전희석/후희석(pre/post-dilution)이 핵심 파라미터. 혈역학 불안정 중환자에 적합.</p>
+  </div>
+  <div id="hduf-dial">
+    <h4>혈액투석 제수분(Ultrafiltration) 처방</h4>
+    <p>제수분율(UF rate)이 13 mL/kg/hr 초과 시 투석 중 저혈압(IDH)·사망 위험↑. 건체중(dry weight)·혈장재충전(plasma refill)·투석간체중증가(IDWG ≤5% 체중)를 고려한 제수분 처방이 핵심.</p>
+  </div>
+  <p><a href="#lib">시뮬레이터 상세 →</a></p>
+</section>
+<section id="refs-dial" class="seo-refs">
+  <h3>근거·출처 (가이드라인·논문)</h3>
+  <p><b>KDIGO 2024 CKD Evaluation &amp; Management Guideline</b></p>
+  <p><b>StatPearls — Hemodialysis (NBK563296)</b></p>
+  <p><b>Deranged Physiology — Principles of Dialysis</b></p>
+  <p><b>NDT — β2-microglobulin clearance in HF-HD vs convective (meta-analysis)</b></p>
+  <p><b>ScienceDirect — Countercurrent dialysate flow</b></p>
+  <p><b>Clinical Tree — Dialysate composition</b></p>
+  <p><b>ScienceDirect — Dialysate solutes &amp; buffers</b></p>
+  <p><b>ClinicalTrials NCT01356615 — LMWH vs UFH for HD anticoagulation</b></p>
+  <p><b>내부 연결 — ICU 약물계산기 CRRT 모듈</b></p>
+  <p><b>Urea rebound &amp; two-pool kinetics (PubMed)</b></p>
+  <p><b>Kt/V — definition &amp; equilibrated Kt/V</b></p>
+  <p><b>KDOQI 2015 Hemodialysis Adequacy Update</b></p>
+  <p><b>HEMO Study — Eknoyan et al. NEJM 2002 (DOI 10.1056/NEJMoa021583)</b></p>
+  <p><b>FHN Daily — Chertow et al. NEJM 2010 (DOI 10.1056/NEJMoa1001593)</b></p>
+  <p><b>IDEAL — Cooper et al. NEJM 2010 (DOI 10.1056/NEJMoa1000552)</b></p>
+  <p><b>KDIGO 2024 CKD — dialysis initiation</b></p>
+  <p><b>KDOQI 2019 Vascular Access Update</b></p>
+  <p><b>KDIGO 2026 Anemia in CKD Guideline</b></p>
+  <p><b>NephJC — 2026 KDIGO Anemia commentary</b></p>
+  <p><b>HIRA 혈액투석 적정성평가</b></p>
+  <p><b>KDIGO 2017 CKD-MBD Update</b></p>
+  <p><b>CJASN — Intradialytic hypotension</b></p>
+  <p><b>Kidney Int Reports — Volume balance &amp; UF rate</b></p>
+  <p><b>AJKD 2006 — Rule of 6s (vascular access)</b></p>
+  <p><b>Renal Pharmacy Consultants — Drug Dialyzability</b></p>
+  <p><b>StatPearls — Volume of Distribution (NBK545280)</b></p>
+  <p><b>KDOQI 2020 Nutrition in CKD</b></p>
+  <p><b>NIDDK — Eating &amp; Nutrition for Hemodialysis</b></p>
+  <p><b>NKF — Hemodialysis and Your Diet</b></p>
+  <p><b>KDIGO 2012 AKI Guideline (CRRT dose)</b></p>
+  <p><b>CRRT Dose: Quality Indicator (PMC7965247)</b></p>
+  <p><b>How I prescribe CRRT — Critical Care (Springer)</b></p>
+  <p><b>ATN Study — Palevsky et al. NEJM 2008 (DOI 10.1056/NEJMoa0802639)</b></p>
+  <p><b>RENAL Study — RENAL Investigators NEJM 2009 (DOI 10.1056/NEJMoa0902413)</b></p>
+  <p><b>Flythe et al. — UFR &gt;13 &amp; mortality (Kidney Int 2011)</b></p>
+  <p><b>UFR thresholds unscaled vs scaled to body size (KI Reports 2022)</b></p>
+  <p><b>KDIGO 2024 CKD — nephrology referral criteria (NephJC)</b></p>
+  <p><b>KDIGO hyperkalemia in ED — nephrology consult</b></p>
+  <p><b>When to Refer to a Nephrologist — key indicators (AKDHC)</b></p>
+  <p><b>Nephrology key information for internists (PMC)</b></p>
+  <p><b>Acute kidney injury — indications for acute dialysis (AMBOSS)</b></p>
+  <p><b>Referral criteria from primary care — kidney disease (GPnotebook)</b></p>
+</section>
+</div></noscript>
 </body>
 </html>

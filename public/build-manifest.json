@@ -1,9 +1,21 @@
 {
-  "builtAt": "2026-06-15T02:08:49.789Z",
+  "builtAt": "2026-07-03T06:26:28.888Z",
   "built": [
     {
       "id": "htn",
       "out": "htn.html"
+    },
+    {
+      "id": "arrhythmia",
+      "out": "arrhythmia.html"
+    },
+    {
+      "id": "hf",
+      "out": "hf.html"
+    },
+    {
+      "id": "antithrombotic",
+      "out": "antithrombotic.html"
     },
     {
       "id": "dm",
@@ -34,6 +46,22 @@
       "out": "ibd.html"
     },
     {
+      "id": "liver",
+      "out": "liver.html"
+    },
+    {
+      "id": "fgid",
+      "out": "fgid.html"
+    },
+    {
+      "id": "ckd",
+      "out": "ckd.html"
+    },
+    {
+      "id": "dialysis",
+      "out": "dialysis.html"
+    },
+    {
       "id": "rheum",
       "out": "rheum.html"
     },
@@ -42,12 +70,32 @@
       "out": "gout.html"
     },
     {
+      "id": "osteoporosis",
+      "out": "osteoporosis.html"
+    },
+    {
+      "id": "thyroid",
+      "out": "thyroid.html"
+    },
+    {
       "id": "antimicrobial",
       "out": "antimicrobial.html"
     },
     {
-      "id": "icu_calc",
-      "out": "icu_calc.html"
+      "id": "isolation",
+      "out": "isolation.html"
+    },
+    {
+      "id": "preop",
+      "out": "preop.html"
+    },
+    {
+      "id": "vent",
+      "out": "vent.html"
+    },
+    {
+      "id": "endoscopy_intro",
+      "out": "endoscopy-intro.html"
     }
   ]
 }

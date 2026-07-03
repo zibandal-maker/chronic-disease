@@ -3,7 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>수술 전 위험평가 · Pre-op Risk</title>
+<title>수술 전 위험평가 — RCRI·ARISCAT·항혈전제 중단/재개·장기 위험 | 임상의용</title>
+<meta name="description" content="비심장수술 전 위험평가 도구. 2024 AHA/ACC 가이드라인 기반. 심장 위험(RCRI)·폐 합병증(ARISCAT)·기능능력(METs)·항혈전제 중단(DOAC·와파린·항혈소판제)·스텐트 관리·응급 역전·간(Child-Pugh)·신장·Frailty 위험을 위험점수와 함께 임상의용으로 정리.">
+<meta name="keywords" content="수술전평가, 수술전 위험평가, preop, perioperative, RCRI, 심장위험, ARISCAT, 폐합병증, PPC, METs, 기능능력, ASA 분류, 항혈전제 중단, 항응고제 중단, DOAC 중단, 아픽사반, 리바록사반, 에독사반, 다비가트란, 와파린 중단, 브릿징, bridging, LMWH, 항혈소판제, 아스피린 중단, 클로피도그렐, 티카그렐러, 관상동맥 스텐트, DAPT, 응급역전, idarucizumab, andexanet, PCC, Child-Pugh, MELD, Frailty, 노쇠, 마취위험">
+<link rel="canonical" href="https://chronic-disease-dun.vercel.app/guides/preop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="수술 전 위험평가 — RCRI·ARISCAT·항혈전제 중단/재개·장기 위험 | 임상의용">
+<meta property="og:description" content="비심장수술 전 위험평가 도구. 2024 AHA/ACC 가이드라인 기반. 심장 위험(RCRI)·폐 합병증(ARISCAT)·기능능력(METs)·항혈전제 중단(DOAC·와파린·항혈소판제)·스텐트 관리·응급 역전·간(Child-Pugh)·신장·Frailty 위험을 위험점수와 함께 임상의용으로 정리.">
+<meta property="og:url" content="https://chronic-disease-dun.vercel.app/guides/preop">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "수술 전 위험평가 — RCRI·ARISCAT·항혈전제 중단/재개·장기 위험 | 임상의용",
+  "description": "비심장수술 전 위험평가 도구. 2024 AHA/ACC 가이드라인 기반. 심장 위험(RCRI)·폐 합병증(ARISCAT)·기능능력(METs)·항혈전제 중단(DOAC·와파린·항혈소판제)·스텐트 관리·응급 역전·간(Child-Pugh)·신장·Frailty 위험을 위험점수와 함께 임상의용으로 정리.",
+  "url": "https://chronic-disease-dun.vercel.app/guides/preop",
+  "inLanguage": "ko",
+  "about": {
+    "@type": "MedicalProcedure",
+    "name": "수술 전 위험평가(preoperative risk assessment)"
+  },
+  "audience": {
+    "@type": "MedicalAudience",
+    "audienceType": "Clinician"
+  },
+  "lastReviewed": "2026-07-03"
+}
+</script>
 <style>
 /* ═══ 디자인 토큰 ═══
    시그니처: 신호등(등급) + 임상 차트지 느낌. 영역별 색은 임상 의미.
@@ -2209,5 +2237,97 @@ renderLib();
 
 </script>
 
+<noscript><div class="seo-content">
+<h2>수술 전 위험평가 — 심장·폐 위험점수, 항혈전제 관리, 장기 평가</h2>
+<p>비심장수술 전 위험 평가를 임상의용으로 정리한 도구입니다. 2024 AHA/ACC 수술전 가이드라인 기반. 심장 위험(RCRI), 수술 후 폐 합병증 위험(ARISCAT), 기능적 운동능력(METs), 항혈전제 수술 전 중단·재개(DOAC 아픽사반·리바록사반·에독사반·다비가트란, 와파린 브릿징, 항혈소판제 아스피린·클로피도그렐·티카그렐러, LMWH), 관상동맥 스텐트 환자 관리, 응급 역전(idarucizumab·andexanet·PCC), 장기별 위험(간 Child-Pugh·MELD, 신장, Frailty 노쇠), 마취·수술 부위 위험을 위험점수·중단시기와 함께 밀도있게 정리합니다. 위험 계산·환자 적용 플로우는 JavaScript 활성화 시 이용 가능합니다.</p>
+<section id="scores-preop" class="seo-scores">
+  <h3>수술 전 위험 점수 (RCRI · ARISCAT)</h3>
+  <div id="score-rcri">
+    <h4>RCRI (Revised Cardiac Risk Index) — 심장 위험</h4>
+    <p><b>6개 인자</b>: 고위험 수술 (흉곽내/복강내/서혜상부 혈관) · 허혈성 심질환 병력 · 울혈성 심부전 병력 · 뇌혈관질환 병력 · 인슐린 치료 당뇨 · Cr &gt; 2.0 mg/dL (&gt;177 µmol/L)</p>
+    <p>각 1점. 0=Class I(0.4%) / 1=II(0.9%) / 2=III(6.6%) / ≥3=IV(11%) 주요심장사건 위험. 고위험 수술·허혈성심질환·심부전·뇌혈관질환·인슐린당뇨·Cr>2.0.</p>
+    <p><b>근거</b>: Lee TH 1999 Circulation; Ford MK 2010 Ann Intern Med</p>
+  </div>
+  <div id="score-ariscat">
+    <h4>ARISCAT — 수술 후 폐 합병증(PPC) 위험</h4>
+    <p><b>항목</b>: 나이 · 수술 전 SpO2 · 1개월 내 호흡기 감염 · 빈혈 (Hb≤10) · 절개 부위 · 수술 시간 · 응급 수술</p>
+    <p>나이·수술전 SpO₂·1개월내 호흡기감염·빈혈·수술부위·수술시간·응급수술 가중. &lt;26 저위험 / 26–44 중등도 / ≥45 고위험.</p>
+    <p><b>근거</b>: Canet J 2010 Anesthesiology 113:1338, PMID 21045639</p>
+  </div>
+  <p><a href="#lib">위험 점수 상세 →</a></p>
+</section>
+<section id="antithrombotic-preop" class="seo-antithrombotic">
+  <h3>수술 전 항혈전제 중단·재개·브릿징</h3>
+  <div id="preop-doac">
+    <h4>DOAC(직접경구항응고제) 중단 시기</h4>
+    <p><b>약물</b>: 아픽사반(엘리퀴스) · 리바록사반(자렐토) · 에독사반(릭시아나) · 다비가트란(프라닥사)</p>
+    <p><b>Xa억제제(아픽사반·리바록사반·에독사반)</b>: 저출혈위험 수술 1일 전 / 고출혈위험 2일 전 중단</p>
+    <p><b>다비가트란(신배설)</b>: CrCl 정상 1–2일 / CrCl 저하 2–4일 전</p>
+    <p><b>근거</b>: PAUSE trial JAMA Intern Med 2019; ACCP 2022</p>
+  </div>
+  <div id="preop-antiplatelet">
+    <h4>항혈소판제 중단</h4>
+    <p><b>아스피린</b> (COX-1 비가역, 비가역): 중단 4–5일 · 2차예방·스텐트는 유지 우선. 1차예방은 중단.</p>
+    <p><b>클로피도그렐</b> (P2Y12 thienopyridine, 비가역): 중단 5일 · 응급 ≥3일</p>
+    <p><b>프라수그렐</b> (P2Y12 thienopyridine, 비가역): 중단 7일 · 가장 길게</p>
+    <p><b>티카그렐러</b> (P2Y12 직접·가역, 가역): 중단 3–5일 · low 3일/high 5일</p>
+    <p><b>실로스타졸(플레탈)</b> (PDE3 억제, 가역): 중단 2일 · 출혈 거의 안 늘림</p>
+    <p><b>사르포그렐레이트(안플라그)</b> (5-HT2A 길항, 가역): 중단 1–2일 · ⚠️ 가역+초단반감기 → 짧게 충분. 과하게 끊지 말 것.</p>
+    <p><b>트리플루살(디스그렌)</b> (COX-1 비가역+PDE, 비가역): 중단 5일 · ⚠️ 비가역+긴 대사물 → 아스피린급(5일). cilostazol처럼 짧게 끊으면 오류!</p>
+    <p><b>베라프로스트(베라실)</b> (PGI2 analogue, 가역): 중단 1일</p>
+    <p><b>디피리다몰(페르산틴)</b> (PDE5 억제, 가역): 중단 보통 불요 · ASA병용 시 ASA 기준</p>
+    <p><b>근거</b>: 2024 AHA/ACC; CCJM 2025; 약동학</p>
+  </div>
+  <div id="preop-warfarin-bridge">
+    <h4>와파린·브릿징·스텐트·응급 역전</h4>
+    <p><b>와파린</b>: 통상 수술 5일 전 중단, INR 정상화 확인. 고혈전위험군만 LMWH 브릿징 고려(대부분 브릿징 불필요 — BRIDGE trial).</p>
+    <p><b>관상동맥 스텐트</b>: DAPT 유지기간(DES 6–12개월) 내 비심장수술 지연 권고. 조기수술 불가피 시 아스피린 유지·다학제 상의.</p>
+    <p><b>응급 역전</b>: DOAC — idarucizumab(다비가트란)·andexanet alfa(Xa억제제) / 와파린 — 4-factor PCC + 비타민K.</p>
+  </div>
+  <p><a href="#lib">항혈전제 관리 상세 →</a></p>
+</section>
+<section id="organ-preop" class="seo-organ">
+  <h3>장기별 수술 위험 평가</h3>
+  <p><b>간 위험(Child-Pugh·MELD)</b>: 간경변 환자 수술 위험 계층화. Child A 저위험, C 고위험. 복부수술·간절제 특히 주의.</p>
+  <p><b>신장 위험</b>: 만성콩팥병·투석 환자 수술 전 평가. 조영제·신독성약물·용적 관리. AKI 위험 인자 평가.</p>
+  <p><b>Frailty(노쇠)</b>: 고령 환자 수술 결과 예측. 근감소·기능저하·인지 평가. 수술 후 섬망·합병증·사망 위험 상승.</p>
+  <p><a href="#lib">장기 평가 상세 →</a></p>
+</section>
+<section id="anesthesia-preop" class="seo-anesthesia">
+  <h3>마취·수술 부위 위험</h3>
+  <p><b>기능적 운동능력(METs)</b>: ≥4 METs(2층 계단·언덕 오르기) 가능하면 추가 심장검사 대개 불필요. &lt;4 METs·불명이면 위험도·수술긴급성 따라 검사 고려.</p>
+  <p><b>수술 부위·침습도</b>: 흉곽내·복강내·대혈관 수술 고위험. 표재성·내시경 저위험. 수술 위험 등급이 전체 평가의 기준.</p>
+  <p><b>ASA 신체상태 분류</b>: I(정상)~VI(뇌사). 마취 위험의 기본 지표.</p>
+  <p><a href="#lib">마취 위험 상세 →</a></p>
+</section>
+<section id="library-preop" class="seo-library">
+  <h3>수술 전 평가 도서관</h3>
+  <p><b>수술 부위 · 마취법</b>: 평가의 출발점 · 위험 분류</p>
+  <p><b>2-tier 평가 체계</b>: Step0 gate · Tier1 · Tier2 흐름</p>
+  <p><b>심장 위험 (RCRI)</b>: 6인자 · MACE율 · 4MET 분기</p>
+  <p><b>폐 위험 (ARISCAT)</b>: 7변수 · 점수표 · PPC율</p>
+  <p><b>신장 위험</b>: eGFR 변곡점 (60/45) · AKI</p>
+  <p><b>간 위험</b>: MELD · Child-Pugh · AGA gate</p>
+  <p><b>Frailty · 전신</b>: CFS · mFI-5 · SORT · override</p>
+  <p><b>항응고제 중단</b>: DOAC(PAUSE) · 와파린 · bridging</p>
+  <p><b>항혈소판제 중단</b>: 비가역/가역 · 1차약제 · 스텐트</p>
+  <p><b>응급 역전</b>: idarucizumab · andexanet · PCC</p>
+  <p><a href="#lib">도서관 상세 →</a></p>
+</section>
+<section id="sources-preop" class="seo-sources">
+  <h3>근거·출처</h3>
+  <p><a href="https://doi.org/10.1161/CIR.0000000000001285">2024 AHA/ACC Perioperative Guideline</a></p>
+  <p><a href="https://pubmed.ncbi.nlm.nih.gov/10477528/">RCRI — Lee TH et al. Circulation 1999</a></p>
+  <p><a href="https://pubmed.ncbi.nlm.nih.gov/21098314/">RCRI pooled — Ford MK et al. Ann Intern Med 2010</a></p>
+  <p><a href="https://pubmed.ncbi.nlm.nih.gov/21045639/">ARISCAT — Canet J et al. Anesthesiology 2010</a></p>
+  <p><a href="https://pubmed.ncbi.nlm.nih.gov/17241878/">MELD 비간수술 — Teh SH et al. Gastroenterology 2007</a></p>
+  <p><a href="https://www.cghjournal.org/article/S1542-3565(18)31075-9/fulltext">AGA Surgical Risk Update — Clin Gastroenterol Hepatol 2019</a></p>
+  <p><a href="https://pubmed.ncbi.nlm.nih.gov/25388883/">SORT — Protopapa KL et al. Br J Surg 2014</a></p>
+  <p><a href="https://pubmed.ncbi.nlm.nih.gov/31380891/">PAUSE trial — Douketis JD et al. JAMA Intern Med 2019</a></p>
+  <p><a href="https://journal.chestnet.org/article/S0012-3692(22)01359-9/fulltext">ACCP Perioperative Antithrombotic — CHEST 2022</a></p>
+  <p><a href="https://pubmed.ncbi.nlm.nih.gov/26095867/">BRIDGE trial — Douketis JD et al. NEJM 2015</a></p>
+  <p><a href="https://www.jthjournal.org/article/S1538-7836(24)00426-4/fulltext">ISTH DOAC Reversal Guidance 2024</a></p>
+</section>
+</div></noscript>
 </body>
 </html>

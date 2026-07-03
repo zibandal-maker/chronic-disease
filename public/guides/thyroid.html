@@ -3,7 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🦋 갑상선 통합 처방가이드</title>
+<title>갑상선질환 처방가이드 — 기능저하·항진·결절 진단·치료·급여(K-TIRADS·급여코드) | 임상의용</title>
+<meta name="description" content="갑상선질환 진단·약물치료 가이드. 대한갑상선학회(KTA)·ATA/ETA 지침·급여기준 기반. 갑상선기능저하(레보티록신)·항진증(메티마졸·PTU)·무증상저하(SCH)·결절(K-TIRADS·Bethesda)·분화암 TSH 억제요법을 권고등급·급여기준·가이드라인 비교와 함께 임상의용으로 정리.">
+<meta name="keywords" content="갑상선, 갑상선질환, 갑상선기능저하증, 갑상선기능항진증, 그레이브스병, 하시모토, 레보티록신, LT4, 씬지로이드, 메티마졸, MMI, 프로필티오우라실, PTU, 카비마졸, 항갑상선제, 무증상갑상선기능저하, SCH, TSH, free T4, 갑상선결절, K-TIRADS, 티라즈, Bethesda, 베데스다, 세침검사, FNA, 분화갑상선암, DTC, TSH억제요법, 부갑상선기능저하, E03, E05, 급여기준, KTA, ATA, HIRA">
+<link rel="canonical" href="https://chronic-disease-dun.vercel.app/guides/thyroid">
+<meta property="og:type" content="article">
+<meta property="og:title" content="갑상선질환 처방가이드 — 기능저하·항진·결절 진단·치료·급여(K-TIRADS·급여코드) | 임상의용">
+<meta property="og:description" content="갑상선질환 진단·약물치료 가이드. 대한갑상선학회(KTA)·ATA/ETA 지침·급여기준 기반. 갑상선기능저하(레보티록신)·항진증(메티마졸·PTU)·무증상저하(SCH)·결절(K-TIRADS·Bethesda)·분화암 TSH 억제요법을 권고등급·급여기준·가이드라인 비교와 함께 임상의용으로 정리.">
+<meta property="og:url" content="https://chronic-disease-dun.vercel.app/guides/thyroid">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "갑상선질환 처방가이드 — 기능저하·항진·결절 진단·치료·급여(K-TIRADS·급여코드) | 임상의용",
+  "description": "갑상선질환 진단·약물치료 가이드. 대한갑상선학회(KTA)·ATA/ETA 지침·급여기준 기반. 갑상선기능저하(레보티록신)·항진증(메티마졸·PTU)·무증상저하(SCH)·결절(K-TIRADS·Bethesda)·분화암 TSH 억제요법을 권고등급·급여기준·가이드라인 비교와 함께 임상의용으로 정리.",
+  "url": "https://chronic-disease-dun.vercel.app/guides/thyroid",
+  "inLanguage": "ko",
+  "about": [
+    {
+      "@type": "MedicalCondition",
+      "name": "갑상선기능저하증",
+      "code": {
+        "@type": "MedicalCode",
+        "codeValue": "E03",
+        "codingSystem": "ICD-10"
+      }
+    },
+    {
+      "@type": "MedicalCondition",
+      "name": "갑상선중독증",
+      "code": {
+        "@type": "MedicalCode",
+        "codeValue": "E05",
+        "codingSystem": "ICD-10"
+      }
+    }
+  ],
+  "audience": {
+    "@type": "MedicalAudience",
+    "audienceType": "Clinician"
+  },
+  "lastReviewed": "2026-07-03"
+}
+</script>
 <style>
 :root{
   /* 갑상선 테마: teal 계열(초음파 모니터 톤) */
@@ -3323,5 +3367,160 @@ function render(){
 }
 render();
 </script>
+<noscript><div class="seo-content">
+<h2>갑상선질환(기능저하·기능항진·결절·분화암) 진단·처방·급여 정보</h2>
+<p>대한갑상선학회(KTA) 진료권고안 및 ATA/ETA 지침, 건강보험 급여기준(HIRA) 기반. 갑상선기능저하증(레보티록신 보충), 갑상선기능항진증·그레이브스병(항갑상선제 메티마졸·PTU·카비마졸, 베타차단제), 무증상 갑상선기능저하(SCH) 치료 판단, 갑상선결절(K-TIRADS 초음파 K1~5·Bethesda 세침 I~VI), 분화갑상선암 TSH 억제요법, 부갑상선기능저하 관리를 권고등급·급여기준(상병코드 E03/E05·초음파/세침 급여)·가이드라인 비교(KTA vs ATA/ETA)와 함께 임상의용으로 정리합니다. 기능·결절 알고리즘·환자 적용 플로우·시뮬레이션은 JavaScript 활성화 시 이용 가능합니다.</p>
+<section id="drug-levothyroxine" class="seo-drug">
+  <h3>레보티록신(LT4) · levothyroxine</h3>
+  <p><b>성분 ID</b> <code>drug:levothyroxine</code> · ATC H03AA01</p>
+  <p><b>계열·역할</b>: 갑상선호르몬제(LT4)</p>
+  <p><b>임상</b>: 갑상선기능저하증 표준 보충. 공복 복용, 4~6주 후 TSH 재평가. 분화암 TSH 억제요법에도 사용.</p>
+  <p><b>분화암 TSH 억제목표</b>: 저위험 0.5–2 / 중간 0.1–2.0 / 고위험 &lt;0.1 mIU/L (재발위험 기반)</p>
+  <p><a href="#lib">갑상선질환 처방가이드 상세 →</a></p>
+</section>
+<section id="drug-liothyronine" class="seo-drug">
+  <h3>리오티로닌(LT3) · liothyronine</h3>
+  <p><b>성분 ID</b> <code>drug:liothyronine</code> · ATC H03AA02</p>
+  <p><b>계열·역할</b>: 갑상선호르몬제(LT3)</p>
+  <p><b>임상</b>: 반감기 짧아 특수상황. 일반 저하증엔 LT4 단독 우선.</p>
+  <p><a href="#lib">갑상선질환 처방가이드 상세 →</a></p>
+</section>
+<section id="drug-methimazole" class="seo-drug">
+  <h3>메티마졸(MMI) · methimazole</h3>
+  <p><b>성분 ID</b> <code>drug:methimazole</code> · ATC H03BB02</p>
+  <p><b>계열·역할</b>: 항갑상선제(MMI, thionamide)</p>
+  <p><b>임상</b>: ★그레이브스병 1차. 초기 15~60mg/day(중증도별), 유지 5~15mg. 무과립구증·간독성 주의.</p>
+  <p><b>용량</b>: 초기 경증 15mg/day · 중등도 30 / 40mg · 중증 60mg (8시간 3회분할) → 유지 5 / 15mg/day</p>
+  <p><b>임신</b>: 가임여성은 저용량으로 안정 후 임신. 임신 확인 시 ATD 중단 가능, 1–2주 후 재평가. 저용량 MMI ≤5–10mg / PTU ≤100–200mg</p>
+  <p><b>안전성</b>: {&#x27;msg&#x27;: &#x27;PTU 간독성·무과립구증 — 간기능·WBC 모니터&#x27;, &#x27;labs&#x27;: [&#x27;lab:t4&#x27;]} / {&#x27;msg&#x27;: &#x27;MMI 무과립구증·간독성 — 발열·인후통 시 즉시 WBC 확인&#x27;}</p>
+  <p><a href="#lib">갑상선질환 처방가이드 상세 →</a></p>
+</section>
+<section id="drug-carbimazole" class="seo-drug">
+  <h3>카비마졸(CBZ) · carbimazole</h3>
+  <p><b>성분 ID</b> <code>drug:carbimazole</code> · ATC H03BB01</p>
+  <p><b>계열·역할</b>: 항갑상선제(CBZ)</p>
+  <p><b>임상</b>: 체내서 MMI로 전환되는 프로드러그.</p>
+  <p><a href="#lib">갑상선질환 처방가이드 상세 →</a></p>
+</section>
+<section id="drug-propylthiouracil" class="seo-drug">
+  <h3>프로필티오우라실(PTU) · propylthiouracil</h3>
+  <p><b>성분 ID</b> <code>drug:propylthiouracil</code> · ATC H03BA02</p>
+  <p><b>계열·역할</b>: 항갑상선제(PTU)</p>
+  <p><b>임상</b>: 임신 1기·갑상선중독발작·MMI 부작용 시 한정. 간독성(FDA 경고).</p>
+  <p><a href="#lib">갑상선질환 처방가이드 상세 →</a></p>
+</section>
+<section id="drug-propranolol" class="seo-drug">
+  <h3>프로프라놀롤 · propranolol</h3>
+  <p><b>성분 ID</b> <code>drug:propranolol</code> · ATC C07AA05</p>
+  <p><b>계열·역할</b>: 베타차단제</p>
+  <p><b>임상</b>: 갑상선항진 증상(빈맥·떨림) 조절 보조. T4→T3 전환 일부 억제.</p>
+  <p><a href="#lib">갑상선질환 처방가이드 상세 →</a></p>
+</section>
+<section id="drug-potassium_iodide" class="seo-drug">
+  <h3>요오드화칼륨(KI) · potassium_iodide</h3>
+  <p><b>성분 ID</b> <code>drug:potassium_iodide</code> · ATC H03CA</p>
+  <p><b>계열·역할</b>: 요오드(KI)</p>
+  <p><b>임상</b>: 갑상선중독발작·수술 전 준비. Wolff-Chaikoff 효과.</p>
+  <p><a href="#lib">갑상선질환 처방가이드 상세 →</a></p>
+</section>
+<section id="drug-calcium_carbonate" class="seo-drug">
+  <h3>탄산칼슘 · calcium_carbonate</h3>
+  <p><b>성분 ID</b> <code>drug:calcium_carbonate</code> · ATC A12AA04</p>
+  <p><b>계열·역할</b>: 칼슘보충</p>
+  <p><b>임상</b>: 부갑상선기능저하·수술후 저칼슘혈증 보충.</p>
+  <p><a href="#lib">갑상선질환 처방가이드 상세 →</a></p>
+</section>
+<section id="drug-calcitriol" class="seo-drug">
+  <h3>칼시트리올 · calcitriol</h3>
+  <p><b>성분 ID</b> <code>drug:calcitriol</code> · ATC A11CC04, D05AX03</p>
+  <p><b>계열·역할</b>: 활성비타민D</p>
+  <p><b>임상</b>: 부갑상선기능저하증 저칼슘혈증 관리(활성형).</p>
+  <p><a href="#lib">갑상선질환 처방가이드 상세 →</a></p>
+</section>
+<section id="drug-alfacalcidol" class="seo-drug">
+  <h3>알파칼시돌 · alfacalcidol</h3>
+  <p><b>성분 ID</b> <code>drug:alfacalcidol</code> · ATC A11CC03</p>
+  <p><b>계열·역할</b>: 활성비타민D</p>
+  <p><b>임상</b>: 부갑상선기능저하 저칼슘 관리(1α형).</p>
+  <p><a href="#lib">갑상선질환 처방가이드 상세 →</a></p>
+</section>
+<section id="drug-cholecalciferol" class="seo-drug">
+  <h3>콜레칼시페롤 · cholecalciferol</h3>
+  <p><b>성분 ID</b> <code>drug:cholecalciferol</code> · ATC A11CC05</p>
+  <p><b>계열·역할</b>: 비타민D3</p>
+  <p><b>임상</b>: 비타민D 보충(비활성형).</p>
+  <p><a href="#lib">갑상선질환 처방가이드 상세 →</a></p>
+</section>
+<section id="reimb-thyroid" class="seo-reimb">
+  <h3>갑상선질환 급여기준·상병코드(KCD)</h3>
+  <div id="kcd-thyroid">
+    <h4>흔한 상병코드·연계 검사·약물</h4>
+    <p><b>E03</b>: 기타 갑상선기능저하증 (E03.9 상세불명, E03.8 기타 명시된) · 연계검사: 갑상선자극호르몬, 유리티록신 · 약물: 레보티록신(LT4)</p>
+    <p><b>E02</b>: 무증상 요오드결핍성 갑상선기능저하증 · 연계검사: 갑상선자극호르몬 · 약물: 레보티록신(LT4) — SCH 코딩 주의 — 요오드결핍성 분류</p>
+    <p><b>E05</b>: 갑상선중독증(갑상선기능항진증) (E05.0 그레이브스병(미만성갑상선종 동반), E05.9 상세불명) · 연계검사: 갑상선자극호르몬, 유리티록신, TSH수용체항체 · 약물: 메티마졸(MMI), 프로필티오우라실(PTU), 프로프라놀롤</p>
+    <p><b>E06</b>: 갑상선염 (E06.3 자가면역성 갑상선염(하시모토)) · 연계검사: 갑상선자극호르몬, 갑상선과산화효소항체 · 약물: 레보티록신(LT4)</p>
+    <p><b>E04</b>: 기타 비독성 갑상선종(결절·종) (E04.1 비독성 단일결절, E04.2 비독성 다결절성갑상선종) · 연계검사: 갑상선자극호르몬</p>
+    <p><b>C73</b>: 갑상선 악성신생물 · 연계검사: 갑상선자극호르몬, 갑상선글로불린, 갑상선글로불린항체 · 약물: 레보티록신(LT4), 탄산칼슘, 칼시트리올 — 산정특례 대상(본인부담 5%). V193 등록</p>
+  </div>
+  <div id="reimb-us-fna">
+    <h4>갑상선 초음파·세침검사(FNA) 급여 (2026.7 검증)</h4>
+    <p><b>초음파</b>: 2016.10 암 등 중증 의심자 급여화 → 2022.2 경부초음파 급여 확대. 갑상선암 의심 시 <b>에피소드당 1회</b> 급여(연간·평생 개념 아님). 단순 크기변화 추적은 비급여, 새 소견/기능수치 변화 시 급여.</p>
+    <p><b>세침(FNA)·중심침생검(CNB)</b>: 세침/중심침 결과 비정형세포·여포종양(의심) 확인 시 경과관찰 목적 <b>1회 급여</b>, 횟수 초과 시 선별급여(본인부담 80%). 암의심 impression이 급여 판단 핵심.</p>
+    <p><b>판독소견서</b>: K-TIRADS 등급·위치·최대직경·주요소견 기술 필수(급여 요건).</p>
+  </div>
+  <p><a href="#lib">급여기준 상세 →</a></p>
+</section>
+<section id="dx-thyroid" class="seo-dx">
+  <h3>갑상선결절 진단 — K-TIRADS·Bethesda</h3>
+  <div id="ktirads-thyroid">
+    <h4>K-TIRADS 초음파 분류 (대한갑상선학회)</h4>
+    <p><b>K5 — 높은의심</b>: 악성도 &gt;60% · FNA≥1cm (0.5–1cm도 고위험특성 동반시 고려)</p>
+    <p><b>K4 — 중간의심</b>: 악성도 10–40% · FNA 대상 아님 (임상·환자요인 범위내 결정)</p>
+    <p><b>K3 — 낮은의심</b>: 악성도 3–10% · FNA≥2cm</p>
+    <p><b>K2 — 양성</b>: 악성도 &lt;3% · FNA 대상 아님 (크기증가/시술예정시 예외)</p>
+    <p><b>K1 — 무결절</b>: 악성도  · FNA 대상 아님</p>
+  </div>
+  <div id="bethesda-thyroid">
+    <h4>Bethesda 세포병리 분류 (2023 제3판)</h4>
+    <p><b>Bethesda I — 비진단적</b>: 악성위험 13%(범위 5–20) · 다음: 재시행(초음파유도)</p>
+    <p><b>Bethesda II — 양성</b>: 악성위험 4%(범위 2–7) · 다음: 추가검사 불필요, 초음파소견 따라 추적</p>
+    <p><b>Bethesda III — 비정형(AUS)</b>: 악성위험 22%(범위 13–30) · 다음: 반복FNA/CNB/분자표지자 or 추적 or 수술</p>
+    <p><b>Bethesda IV — 여포종양</b>: 악성위험 30%(범위 23–34) · 다음: 수술 우선고려(2cm↑ 위험↑), 분자표지자</p>
+    <p><b>Bethesda V — 악성의심</b>: 악성위험 74%(범위 67–83) · 다음: 악성에 준해 수술</p>
+    <p><b>Bethesda VI — 악성</b>: 악성위험 97%(범위 97–100) · 다음: 수술 권고; 저위험 미세유두암은 적극관찰 고려</p>
+  </div>
+  <p><a href="#lib">진단검사 상세 →</a></p>
+</section>
+<section id="compare-thyroid" class="seo-compare">
+  <h3>가이드라인 비교 — 대한갑상선학회(KTA) vs ATA / ETA</h3>
+  <p>대한갑상선학회(KTA)와 국제 가이드라인(ATA/ETA)의 쟁점별 권고 차이. 급여·임상 판단 시 균형 참조.</p>
+  <p><b>TSH 정상상한</b> — KTA: 4.5~5.0 (검사기기별 상이, 각 검사실 참고치 우선) / 해외: ATA ~4.0–4.5</p>
+  <p><b>SCH 노인(≥70) 치료</b> — KTA: 경증·중증 모두 LT4 비권고(관찰) / 해외: ETA: 연령·증상 고려 개별화, 일반적으로 보존적</p>
+  <p><b>ATD 중단 기준</b> — KTA: TSH 정상 + TRAb 음성 (12–18개월) / 해외: ATA: TSH+TRAb 둘 다 정상 시 중단 (S,H). TRAb 지속양성→ATD 연장 or RAI/수술. ETA: TRAb&lt;2 U/L·MMI≤2.5mg 권장</p>
+  <p><b>ATD 1차 선택</b> — KTA: MMI 1차 (PTU는 임신1기·중독발작·MMI부작용 한정) / 해외: 동일 (ATA/ETA 모두 MMI 1차, 임신1기 PTU)</p>
+  <p><b>장기 저용량 ATD</b> — KTA: 관해 안 되면 저용량 MMI 장기 가능 / 해외: ATA 2016 개정: 안전성 근거 축적, 저용량 MMI 장기요법 적극 고려(특히 RAI 회피)</p>
+  <p><b>양성결절 LT4 억제</b> — KTA: 일률적 비권고 [수준1] (부정맥·골다공증 위해&gt;이득) / 해외: ATA 2015: 동일하게 일률적 억제 비권고</p>
+  <p><b>미세유두암 적극관찰</b> — KTA: 저위험 성인 고려 [수준2] / 해외: ATA: 선택적 도입 (일본 Kuma/Ito 코호트 근거)</p>
+  <p><b>분화암 TSH 억제 목표</b> — KTA: 저위험 0.5–2 / 중간 0.1–2.0 / 고위험 &lt;0.1 / 해외: ATA: ORS 반응기반 유사 (구조적불완전 &lt;0.1)</p>
+  <p><a href="#lib">가이드라인 비교 상세 →</a></p>
+</section>
+<section id="rules-thyroid" class="seo-rules">
+  <h3>주요 치료 규칙 — 항갑상선제·무증상기능저하·억제요법</h3>
+  <div id="rule-atd">
+    <h4>항갑상선제(ATD) 치료 규칙</h4>
+    <p><b>1차</b>: 메티마졸(MMI) (MMI). PTU는 임신1기·중독발작·MMI부작용 한정.</p>
+    <p><b>치료기간</b>: {&#x27;range&#x27;: [12, 18], &#x27;unit&#x27;: &#x27;개월&#x27;}</p>
+    <p><b>중단기준</b>: {&#x27;kta&#x27;: &#x27;TSH 정상 + TRAb 음성&#x27;, &#x27;ata&#x27;: &#x27;TSH 정상이면 TRAb 높아도 중단 가능 (가이드라인 비교 레이어 참조)&#x27;, &#x27;lab&#x27;: [&#x27;lab:tsh&#x27;, &#x27;lab:trab&#x27;]}</p>
+    <p><b>갑상선중독발작</b>: {&#x27;drug&#x27;: &#x27;drug:potassium_iodide&#x27;, &#x27;note&#x27;: &#x27;갑상선중독발작 시 단기&#x27;}</p>
+  </div>
+  <div id="rule-sch">
+    <h4>무증상 갑상선기능저하(SCH) 치료 규칙</h4>
+    <p><b>연령 기준</b>: 70</p>
+    <p><b>1단계</b>: {&#x27;id&#x27;: &#x27;thyroid:rule:sch_recheck&#x27;, &#x27;action&#x27;: &#x27;투약 없이 2–3개월 후 TSH 재검 (일과성·경증과 진행위험군 감별)&#x27;, &#x27;recLevel&#x27;: &#x27;강함/높음&#x27;, &#x27;note&#x27;: &#x27;SCH의 상당수는 일과성. 첫 단계는 진행위험 높은 중증을 가려내는 것&#x27;, &#x27;addLab&#x27;: &#x27;TPO 항체 측정 권고 (양성 시 현성 진행 위험 2배↑)&#x27;, &#x27;lab&#x27;: [&#x27;lab:tsh&#x27;, &#x27;lab:tpo_ab&#x27;]}</p>
+    <p><b>진행위험인자</b>: {&#x27;key&#x27;: &#x27;severe&#x27;, &#x27;label&#x27;: &#x27;중증 (TSH &gt; 10.0)&#x27;, &#x27;weight&#x27;: &#x27;high&#x27;} / {&#x27;key&#x27;: &#x27;tsh_rising&#x27;, &#x27;label&#x27;: &#x27;추적 시 TSH 지속 상승&#x27;, &#x27;weight&#x27;: &#x27;high&#x27;} / {&#x27;key&#x27;: &#x27;tpo_positive&#x27;, &#x27;label&#x27;: &#x27;TPO 항체 양성 / 자가면역 갑상선염 소견&#x27;, &#x27;weight&#x27;: &#x27;mod&#x27;} / {&#x27;key&#x27;: &#x27;female&#x27;, &#x27;label&#x27;: &#x27;여성&#x27;, &#x27;weight&#x27;: &#x27;mod&#x27;} / {&#x27;key&#x27;: &#x27;lobectomy&#x27;, &#x27;label&#x27;: &#x27;갑상선엽절제술 과거력&#x27;, &#x27;weight&#x27;: &#x27;high&#x27;} / {&#x27;key&#x27;: &#x27;neck_radiation&#x27;, &#x27;label&#x27;: &#x27;경부 방사선 치료 병력&#x27;, &#x27;weight&#x27;: &#x27;high&#x27;} / {&#x27;key&#x27;: &#x27;us_autoimmune&#x27;, &#x27;label&#x27;: &#x27;초음파 에코저하·염증 소견&#x27;, &#x27;weight&#x27;: &#x27;mod&#x27;}</p>
+  </div>
+  <p><a href="#lib">치료규칙 상세 →</a></p>
+</section>
+</div></noscript>
 </body>
 </html>
