@@ -1,0 +1,84 @@
+{
+  "manifest_version": "1.0",
+  "generated": "2026-07-03",
+  "generated_by": "Claude (drive full scan)",
+  "purpose": "만성질환 가이드 프로젝트의 Google Drive 단일 진실 소스 지도. 새 세션은 이 파일 하나만 먼저 읽고, 필요한 파일을 driveId로 직접 download_file_content 하면 된다. 프로젝트 파일 업로드 불필요.",
+
+  "how_to_use": {
+    "read_this_first": "세션 시작 시 이 매니페스트를 drive에서 download_file_content 하여 전체 지형 파악",
+    "fetch_a_file": "원하는 항목의 driveId를 download_file_content(fileId=driveId)로 호출",
+    "write_back": "수정 결과물은 create_file로 해당 폴더(folders 참조)에 업로드. 덮어쓰기 아님 → 파일명 버전 규칙 사용",
+    "canonical_rule": "가이드 정본은 public/guides (slug본). guides_src는 원본 아카이브이며 정본 아님",
+    "size_warning": "sizeKB 200 이상 파일은 통째 다운로드 시 context 부담. 부분 참조 필요시 사용자와 청크 전략 논의"
+  },
+
+  "repo_root": {
+    "driveId": "1uldbpLmHJCbL11R2hWdBFpTb63lQc6wx",
+    "name": "chronic-disease repo root",
+    "note": "Vercel 배포 repo. guides_src → scripts/build.js → public 파이프라인"
+  },
+
+  "folders": {
+    "root":        "1uldbpLmHJCbL11R2hWdBFpTb63lQc6wx",
+    "src":         "1pWmCAM2M9uXWYzAZISJbUOevqXv4PGns",
+    "scripts":     "13Yflowv1fg2Cg9SPt9uluKy4P2N8biGl",
+    "public":      "107peHxc2SaYQb9feETP4I53QKs1pryI_",
+    "guides":      "1fiqxDHxCdQdHVglIF-NQteWW45JlC0gv",
+    "guides_src":  "1dgtu84CyAu4OuYWXRZRXFrN3-D_AR70C",
+    "node_modules":"15VQwn6F9DMHT1Qyuqc7SAvUjYtSkgKI-",
+    "writable": ["src","scripts","public","guides","guides_src","node_modules","root"]
+  },
+
+  "infra": {
+    "registry.json":        {"driveId":"1m37PwvqSOAvNuKG3uqdiby00A4v3z1C1","folder":"src","sizeKB":15,"role":"SOURCE_OF_TRUTH","note":"포털 메타데이터 중앙. slug/카테고리/external 플래그"},
+    "index.template.html":  {"driveId":"1xVKXBRWao2SDfja8kivg0thm33Whwpvp","folder":"src","sizeKB":26,"role":"portal_template"},
+    "build.js":             {"driveId":"17a28u0WeaGAbTZm2kn8UkReShZa3NnDa","folder":"scripts","sizeKB":11,"role":"build_pipeline","note":"헤더주입·검색인덱스·sitemap 생성"},
+    "verify_all_seo.js":    {"driveId":"10OdyrpEhslUhYOSnBk9Jx8m0geQB59Ds","folder":"scripts","sizeKB":4,"role":"seo_verifier"},
+    "package.json":         {"driveId":"1Gsc0vxZFLqpRwrJtY30bm2fYma_9oq0q","folder":"root","sizeKB":1},
+    "package-lock.json":    {"driveId":"14zNXvc5hdoP_3gIeyGsN5BG_Ommpowuq","folder":"root","sizeKB":18},
+    "vercel.json":          {"driveId":"1rwXBEbklQtMx1U4osoi2SpFkYgNLz1TK","folder":"root","sizeKB":1},
+    "README.md":            {"driveId":"13RCHntjuentWKiDb5iJK8EnwdSPy2EGx","folder":"root","sizeKB":5},
+    "public/index.html":    {"driveId":"1S6TDOmklNsq2Xz_SbOdACMwE0dKSU8zN","folder":"public","sizeKB":530,"role":"portal_built","note":"빌드 산출물. 직접 수정 금지, template+build.js로 재생성"},
+    "public/build-manifest.json":{"driveId":"1D03an-Y_5rs0J-xhXwPuYUc8zfmECOsP","folder":"public","sizeKB":2},
+    "public/sitemap.xml":   {"driveId":"11anodCI1Y-rPTDxvznJmPngTUizFYbGU","folder":"public","sizeKB":5},
+    "public/robots.txt":    {"driveId":"1WrDOG1NAt_QcG-GSELYSsHH5WrTRVGjg","folder":"public","sizeKB":1}
+  },
+
+  "seo_status_note": "아래 seo 값은 메모리 기준(per_memory)이며 파일 실검증 전. 실제 head 메타/JSON-LD 주입 여부는 다운로드 후 확인 대상. SEO 완료 10개(메모리): dyslipidemia, htn, infection(antimicrobial), antithrombotic, ar, af(arrhythmia?), asthma, liver, ckd, copd",
+
+  "guides": [
+    {"slug":"htn","disease":"고혈압","canonical_id":"1yFYGVtLxyfWfJEyTdx_7Z48y-dYCVuXN","sizeKB":303,"archive_id":"1uD4awnOEzFyTydlXIcOo6qQXeA9sB-Gj","archive_name":"htn_prescribing_guide__7_.html","seo":"per_memory_done","frozen":false},
+    {"slug":"dm","disease":"당뇨","canonical_id":"1Has0LT1-dR8a2Eivbg9nDQkIXBjpGMV6","sizeKB":2769,"archive_id":"1N_tTGx9JUKfUcABJfx4yNQXJWV90l4HR","archive_name":"dm_guide__5_.html","seo":"pending","frozen":false,"note":"SEO 다음 시작점. canonical 설계 레퍼런스. 대형파일 2.7MB"},
+    {"slug":"dyslipidemia","disease":"이상지질혈증","canonical_id":"12Mnc-pcxB5UyC-ZWrXgnGyI20K-jqGI6","sizeKB":1225,"archive_id":"1HBALHBUFzj-HVnkZa16iAeLQu5fM73be","archive_name":"dyslipidemia_guide.html","seo":"per_memory_done","frozen":false},
+    {"slug":"antimicrobial","disease":"감염/항생제","canonical_id":"1UBsRj04ugEUxFk2R3cOwjn3D1lforbcv","sizeKB":355,"archive_id":"1WDbr0NTuTxXz9dL86TnLJtJAbtvbx5ZU","archive_name":"antimicrobial_app_v1__6_.html","seo":"per_memory_done","frozen":false,"note":"메모리상 infection으로도 지칭"},
+    {"slug":"antithrombotic","disease":"항혈전제","canonical_id":"1peYG6toDzhhxZc104UeZ6eNsdwIJQzMV","sizeKB":131,"archive_id":"1wGFHi9hxF8Qqdb0TKqu6DVaVFMFQJ60s","archive_name":"antithrombotic_v0_1.html","seo":"per_memory_done","frozen":false},
+    {"slug":"ar","disease":"알레르기비염","canonical_id":"16x9naPSnmQv9iwQyn5bCOArCPhdO_DOU","sizeKB":95,"archive_id":"1X9_RbIbpgIwGKiyBB5auSI2gWBdPEOt4","archive_name":"ar_guide__2_.html","seo":"per_memory_done","frozen":false},
+    {"slug":"arrhythmia","disease":"부정맥","canonical_id":"1tFxQd_6y0Qf5tnCA588XGz0weaC07SZH","sizeKB":535,"archive_id":"1pt9L3U827YXj-NpqsG8H1AvUBRYMV-ji","archive_name":"arrhythmia_guide.html","seo":"per_memory_done_af?","frozen":false,"note":"메모리 SEO목록의 af가 이것으로 추정. 확인 필요"},
+    {"slug":"asthma","disease":"천식","canonical_id":"1-QBXz6D7xMoc3kW06o3CqkJJhN4gA6aD","sizeKB":147,"archive_id":"1CtubohD3fKo9KLFO3sC7bP1CyNEy1jdk","archive_name":"asthma_totalcare_app__2_.html","seo":"per_memory_done","frozen":false},
+    {"slug":"liver","disease":"만성간질환","canonical_id":"15ODyZaBNNyx8NKb0EgAPpBqM5PI2j6zu","sizeKB":234,"archive_id":"1HRBNNlfrMJaXZmaYnTf9PpSQPpAs7XOG","archive_name":"chronic_liver_guide.html","seo":"per_memory_done","frozen":false},
+    {"slug":"ckd","disease":"만성콩팥병","canonical_id":"1dXct6M-OcIjwF_8fXJMVx8h0M82yxuAb","sizeKB":164,"archive_id":"1RJ5Y2NJn9rhEE95OXTF0VFogRqGjH4ee","archive_name":"ckd_guide.html","seo":"per_memory_done","frozen":false},
+    {"slug":"copd","disease":"COPD","canonical_id":"1Bem4Oz3VgwAExubQPlV-gSSMWlmd8QCM","sizeKB":256,"archive_id":"15Wwd7x1cXqkYQ-LCY4mfhRZBzufoSStH","archive_name":"copd_guide__2_.html","seo":"per_memory_done","frozen":false},
+    {"slug":"skin","disease":"피부질환","canonical_id":"1cLn_mzv2bctNj9TwOlGArlSqcu7xTlWr","sizeKB":218,"archive_id":"1TkI7iftgPh8K5azN860MX1VEDE2NoHzs","archive_name":"skin_guide__1_.html","seo":"pending","frozen":false},
+    {"slug":"ibd","disease":"IBD","canonical_id":"1gtgDO9B7jaRdi1WePoT6ZY1rCKQQhNYZ","sizeKB":180,"archive_id":"17FCXIVxOA7fib8kPTde0fXjCc9wp9niC","archive_name":"ibd_guide__1_.html","seo":"pending","frozen":false},
+    {"slug":"rheum","disease":"류마티스","canonical_id":"18_1M9u2NDuPFDvvfAxmGoGhqvaaiOUSw","sizeKB":144,"archive_id":"1_bWgNsgn44NQIe5WsT5fZTVcsoyu5HQg","archive_name":"rheum_guide.html","seo":"pending","frozen":false},
+    {"slug":"gout","disease":"통풍","canonical_id":"1moSOFTTvTgT8MUPNDYuii6k_qchaVnNU","sizeKB":147,"archive_id":"1oCo83KQL4lhglKTwg4yOKPhNRgNDaGD2","archive_name":"gout_guide.html","seo":"pending","frozen":false},
+    {"slug":"osteoporosis","disease":"골다공증","canonical_id":"19jEn-P6Myk6bHIxVJ-5uhlhXRsDJWa6P","sizeKB":108,"archive_id":"1pgtfk_DrlCL2BavG7VB222Vl4vkiEygm","archive_name":"osteoporosis_guide.html","seo":"pending","frozen":false},
+    {"slug":"thyroid","disease":"갑상선","canonical_id":"1rpUrLAVgUT2BNvxafPYke0VAqutVblfe","sizeKB":156,"archive_id":"1EqmE3EwFGoIscBEsRq_fwpCsCvWi2AUK","archive_name":"thyroid_guide.html","seo":"pending","frozen":false},
+    {"slug":"fgid","disease":"기능성위장장애/IBS","canonical_id":"1F7PNjZPMXK8pCEI1MuQhgMcs5dqz6r0y","sizeKB":341,"archive_id":"1mWuLCGLnJjhXczXLJQT-s7S5Tv3XQ0pT","archive_name":"fgid_guide.html","seo":"pending","frozen":false},
+    {"slug":"hf","disease":"심부전","canonical_id":"107k4FqepZWTO3qz-Fc1idtt45q2egr4b","sizeKB":197,"archive_id":"1TWG6crJyPyaqh0fErdUjYBbujO7t6Vtt","archive_name":"hf_guide.html","seo":"pending","frozen":false},
+    {"slug":"dialysis","disease":"투석","canonical_id":"1sxrjz3YChCGZhAMSl9EzrThw8t_HFult","sizeKB":270,"archive_id":"1UI4dYcbQox6GYnJxxhTkkib1NdRsmjbc","archive_name":"dialysis_guide.html","seo":"pending","frozen":false},
+    {"slug":"vent","disease":"기계환기","canonical_id":"1ub1b5209VDXbLEhrMFHwuEl4Rx9UmxT0","sizeKB":333,"archive_id":"1BWC4SwnD_aDJBxACaAg4URQUOKk9zDtx","archive_name":"vent_guide.html","seo":"pending","frozen":false},
+    {"slug":"preop","disease":"수술전위험평가","canonical_id":"11QCsp66HXuBcpf7rqRZHVYHOAB3NYEZI","sizeKB":120,"archive_id":"1Y7LHJSSCuRPlgT3iFuypfyitf5YUZ9VG","archive_name":"preop_risk_guide.html","seo":"pending","frozen":false},
+    {"slug":"isolation","disease":"법정감염병","canonical_id":"1uEyl-xE_LeAqcWQexNS6jc6V9o_rjhGh","sizeKB":202,"archive_id":"1MGVb69t-d29HubeMQq35TF9Zs4iTpGhC","archive_name":"isolation_guide.html","seo":"pending","frozen":false},
+    {"slug":"endoscopy-intro","disease":"내시경검사후오더","canonical_id":"19awikMX_Da8kF_c2vQfyL8hDqywD97yv","sizeKB":105,"archive_id":"1cZoC0k5X_9mA1otOqRROcLN4AUs_IV9h","archive_name":"endoscopy_intro.html","seo":"pending","frozen":false},
+    {"slug":"icu_calc","disease":"ICU약물계산기(외부링크)","canonical_id":"17M1RwgNa0tm89ZwFrT5JmOGds22MPiuv","sizeKB":64,"archive_id":null,"seo":"na","frozen":false,"note":"별도배포 icucalc.kr. guides폴더 icu_calc.html은 스텁/링크용 추정"}
+  ],
+
+  "counts": {"guides_total": 25, "seo_per_memory_done": 10, "seo_pending": 15},
+
+  "open_questions": [
+    "메모리 SEO목록의 af와 infection이 각각 arrhythmia / antimicrobial 매핑인지 파일 실검증 필요",
+    "guides폴더 icu_calc.html이 실앱인지 외부링크 스텁인지 확인",
+    "registry.json 실제 내용과 이 매니페스트 slug 목록 일치 여부 대조 필요"
+  ]
+}

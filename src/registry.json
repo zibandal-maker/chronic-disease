@@ -278,6 +278,18 @@
       "keywords": "법정감염병 격리 감염병 신고 음압 비말 접촉 검역 결핵 TB MERS 코로나 질병관리청"
     },
     {
+      "id": "vaccine",
+      "title": "성인 예방접종",
+      "emoji": "💉",
+      "src": "adult_vaccine_guide.html",
+      "out": "vaccine.html",
+      "guideline": "대한감염학회(KSID) 성인예방접종 권고안 2023–2026 · 국가예방접종(NIP) · 나이별 인터랙티브 일정표",
+      "group": "A",
+      "accent": "#2f6fd6",
+      "tag": "예방접종",
+      "keywords": "성인예방접종 백신 vaccine 예방접종 일정표 KSID 대한감염학회 국가예방접종 NIP 인플루엔자 독감 폐렴알균 폐렴구균 PCV21 PPSV23 대상포진 RZV 싱그릭스 shingrix RSV 코로나19 Tdap 파상풍 백일해 HPV 수막알균 A형간염 B형간염 수두 MMR Hib 65세 임신부 면역저하"
+    },
+    {
       "id": "preop",
       "title": "수술 전 위험평가",
       "emoji": "📋",
@@ -317,7 +329,7 @@
       "id": "endoscopy_intro",
       "title": "내시경 오더 가이드 (소개)",
       "emoji": "🔬",
-      "src": "_endoscopy_intro.html",
+      "src": "endoscopy_intro.html",
       "out": "endoscopy-intro.html",
       "guideline": "내시경 검사 후 오더·수가코드 자동생성 도구 소개 · 외부 도구 연결",
       "group": "A",

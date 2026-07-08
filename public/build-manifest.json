@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-07-03T06:32:45.228Z",
+  "builtAt": "2026-07-08T07:00:13.096Z",
   "built": [
     {
       "id": "htn",
@@ -84,6 +84,10 @@
     {
       "id": "isolation",
       "out": "isolation.html"
+    },
+    {
+      "id": "vaccine",
+      "out": "vaccine.html"
     },
     {
       "id": "preop",

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ===== SEO / 배포 전 이 두 줄의 도메인·경로만 실제 값으로 교체 ===== -->
+<!-- 예: https://yourdomain.com/adult-vaccine -->
+<title>성인 예방접종 일정표 | 나이별 인터랙티브 가이드 (KSID·국가예방접종)</title>
+<meta name="description" content="나이만 입력하면 권장 백신이 바로 보이는 성인 예방접종 인터랙티브 일정표. 대한감염학회(KSID) 2023–2026 개정 권고와 국가예방접종(NIP) 무료지원을 함께 제공 — 인플루엔자·폐렴알균·대상포진·RSV·코로나19·Tdap·HPV·수막알균 등.">
+<meta name="keywords" content="성인 예방접종, 성인 백신, 예방접종 일정표, KSID, 대한감염학회, 국가예방접종, NIP, 폐렴구균, 대상포진, RSV 백신, 인플루엔자, Tdap, HPV, 65세 이상 예방접종">
+<meta name="author" content="박형도">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#2f6fd6">
+<link rel="canonical" href="https://chronic-disease-dun.vercel.app/guides/vaccine">
+
+<!-- Open Graph (카카오톡·페이스북 등 공유 미리보기) -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="만성질환·예방접종 가이드">
+<meta property="og:title" content="성인 예방접종 일정표 | 나이별 인터랙티브 가이드">
+<meta property="og:description" content="나이만 입력하면 권장 백신이 바로 보이는 성인 예방접종 일정표. KSID 2023–2026 개정 + 국가예방접종 무료지원 이중 표시.">
+<meta property="og:url" content="https://chronic-disease-dun.vercel.app/guides/vaccine">
+<meta property="og:image" content="https://chronic-disease-dun.vercel.app/og-adult-vaccine.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chronic-disease-dun.vercel.app/og-adult-vaccine.png">
+<meta name="twitter:title" content="성인 예방접종 일정표 | 나이별 인터랙티브 가이드">
+<meta name="twitter:description" content="나이만 입력하면 권장 백신이 바로 보이는 성인 예방접종 일정표 (KSID·국가예방접종).">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%89%3C/text%3E%3C/svg%3E">
+
+<!-- 구조화 데이터: 검색결과 리치 표시 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "성인 예방접종 일정표 — 인터랙티브 가이드",
+  "inLanguage": "ko",
+  "description": "나이별 성인 예방접종 권고를 인터랙티브로 확인하는 도구. 대한감염학회(KSID) 2023–2026 개정 권고와 국가예방접종(NIP) 무료지원을 함께 제공.",
+  "audience": { "@type": "MedicalAudience", "audienceType": "Clinician" },
+  "medicalAudience": "Clinician",
+  "lastReviewed": "2026-07-08",
+  "citation": "대한감염학회(KSID) 성인예방접종 권고안 2023–2026, 질병관리청 국가예방접종",
+  "about": { "@type": "MedicalGuideline", "name": "성인 예방접종 권고안 (KSID)" }
+}
+</script>
+<!-- ===== /SEO ===== -->
+
+<style>
+  :root{
+    --bg:#e4e9f1; --panel:#ffffff; --panel2:#eef2f8; --line:#cdd7e5;
+    --colhead:#dbe3f0; --namebg:#e5ebf5;
+    --txt:#1b2436; --mut:#606d85; --acc:#2f6fd6;
+    --age:#c9741a; --ageBg:#fcefd9; --ageTx:#8f5510;    /* 연령권장 주황 */
+    --risk:#6a5bc4; --riskBg:#ebe7fa; --riskTx:#443a86;  /* 위험군권장 보라 */
+    --nip:#cf4040;                                        /* 국가무료 빨강 */
+    --reco:#178a57; --cond:#c47a00;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:'Segoe UI','Malgun Gothic',system-ui,sans-serif;line-height:1.5}
+  header{padding:16px 18px 10px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#eaf1fb,#f4f7fb)}
+  h1{margin:0 0 3px;font-size:19px}
+  .sub{color:var(--mut);font-size:12.5px}
+  nav{display:flex;gap:4px;padding:8px 14px 0;position:sticky;top:0;background:var(--bg);z-index:30;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  nav button{background:transparent;border:none;color:var(--mut);padding:9px 15px;font-size:14px;font-weight:600;cursor:pointer;border-radius:8px 8px 0 0;border-bottom:2px solid transparent}
+  nav button.on{color:var(--txt);border-bottom-color:var(--acc);background:var(--panel)}
+  main{padding:14px 16px 40px;max-width:1080px;margin:0 auto}
+  .view{display:none}.view.on{display:block}
+  .hint{color:var(--mut);font-size:12.5px;margin:0 0 12px}
+
+  /* ---- age control ---- */
+  .agebar{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;position:sticky;top:46px;z-index:20}
+  .agerow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .agenum{font-size:30px;font-weight:800;color:var(--acc);min-width:120px}
+  .agenum small{font-size:14px;color:var(--mut);font-weight:600}
+  input[type=range]{flex:1;min-width:180px;accent-color:var(--acc);height:6px}
+  .seg{display:flex;gap:4px}
+  .seg button{background:var(--panel2);border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer}
+  .seg button.on{background:var(--acc);color:#fff;font-weight:700;border-color:var(--acc)}
+  .presets{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .presets button{background:var(--panel2);border:1px dashed var(--line);color:var(--mut);border-radius:20px;padding:5px 11px;font-size:12px;cursor:pointer}
+  .presets button:hover{border-color:var(--acc);color:var(--txt)}
+  .risktoggle{margin-top:10px}
+  .risktoggle>button{background:none;border:none;color:var(--acc);font-size:13px;cursor:pointer;font-weight:700;padding:4px 0}
+  .riskwrap{display:none;margin-top:8px}
+  .riskwrap.on{display:block}
+  .chips{display:flex;gap:7px;flex-wrap:wrap}
+  .chip{background:var(--panel2);border:1px solid var(--line);color:var(--mut);padding:6px 11px;border-radius:20px;font-size:12.5px;cursor:pointer;user-select:none}
+  .chip.on{background:var(--risk);color:#fff;font-weight:700;border-color:var(--risk)}
+
+  /* ---- summary ---- */
+  .summary{background:#f6f9fe;border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .summary h3{margin:0 0 8px;font-size:14px}
+  .pill{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:6px 12px;margin:3px 4px 3px 0;font-size:13px;cursor:pointer}
+  .pill.reco{border-color:var(--reco);background:rgba(57,217,138,.12)}
+  .pill.cond{border-color:var(--cond);background:rgba(255,176,32,.1)}
+  .pill .free{font-size:10px;background:var(--nip);color:#fff;border-radius:6px;padding:1px 5px;font-weight:700}
+  .sumnote{color:var(--mut);font-size:12px;margin-top:6px}
+
+  /* ---- matrix ---- */
+  .mwrap{overflow-x:auto;border-radius:14px;border:1px solid var(--line)}
+  table.m{border-collapse:collapse;width:100%;min-width:720px;font-size:12.5px;background:var(--panel)}
+  table.m th,table.m td{border:1px solid var(--line);padding:0;text-align:center;vertical-align:middle}
+  table.m thead th{background:var(--colhead);color:#3a475e;font-weight:700;font-size:12px;padding:8px 4px;position:sticky;top:0}
+  table.m thead th.col.act{background:#c6dbfa;color:#123566}
+  .vx{display:flex;align-items:center;gap:7px;padding:9px 10px;text-align:left;background:var(--namebg);border-right:2px solid var(--line);cursor:pointer;min-width:150px}
+  .vx:hover{background:#dbe4f2}
+  .vx .em{font-size:17px}.vx .nm{font-weight:700;font-size:12.5px}.vx .arw{margin-left:auto;color:var(--mut);font-size:11px}
+  td.cell{padding:8px 6px;font-size:11.5px;line-height:1.35;color:var(--txt);font-weight:700}
+  td.cell.age{background:var(--ageBg);color:var(--ageTx)}
+  td.cell.risk{background:var(--riskBg);color:var(--riskTx)}
+  td.cell.empty{background:transparent;color:#cfd6e2;font-weight:400}
+  td.cell.act{outline:2px solid var(--acc);outline-offset:-2px}
+  td.cell.nip{position:relative}
+  td.cell.nip::after{content:'무료';position:absolute;top:2px;right:3px;font-size:8.5px;background:var(--nip);color:#fff;border-radius:4px;padding:0 4px;font-weight:700}
+  .rbadge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:12px;font-weight:800;margin-right:5px;flex:0 0 auto;vertical-align:middle}
+  .rbadge.reco{background:var(--reco);color:#fff}
+  .rbadge.cond{background:var(--cond);color:#fff}
+  .rbadge.na{background:#c3ccdb;color:#fff}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--mut);margin:10px 2px 0}
+  .legend span{display:inline-flex;align-items:center;gap:5px}
+  .sw{width:13px;height:13px;border-radius:3px;display:inline-block}
+
+  /* ---- detail drawer ---- */
+  .drawer{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:50;align-items:flex-end;justify-content:center}
+  .drawer.on{display:flex}
+  .sheet{background:var(--panel);border:1px solid var(--line);border-radius:16px 16px 0 0;width:100%;max-width:640px;max-height:86vh;overflow:auto;padding:18px 18px 28px}
+  .sheet .x{float:right;background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px}
+  .sheet h2{margin:2px 0 2px;font-size:19px}
+  .layer{margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--panel2)}
+  .layer.ksid{border-left:3px solid var(--acc)} .layer.nipL{border-left:3px solid var(--nip)}
+  .layer h4{margin:0 0 6px;font-size:13px}
+  .layer p{margin:4px 0;font-size:13.5px}
+  .kv{color:var(--mut);font-size:12px;margin-right:4px}
+  .grade{font-size:11px;color:var(--cond);font-weight:700}
+  .yourec{border-radius:10px;padding:10px 14px;font-size:13.5px;margin-top:4px}
+  .yourec.reco{background:rgba(57,217,138,.12);border:1px solid var(--reco)}
+  .yourec.cond{background:rgba(255,176,32,.1);border:1px solid var(--cond)}
+  .yourec.na{background:var(--panel2);border:1px solid var(--line);color:var(--mut)}
+
+  /* library / nip reuse */
+  table.t{width:100%;border-collapse:collapse;font-size:13px;background:var(--panel);border-radius:12px;overflow:hidden}
+  table.t th,table.t td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  table.t th{background:var(--panel2);color:var(--mut);font-size:12px}
+  .yes{color:var(--reco);font-weight:700}
+  footer{border-top:1px solid var(--line);padding:16px;margin-top:22px;color:var(--mut);font-size:12px}
+  footer a{color:var(--acc);text-decoration:none;word-break:break-all}
+  footer h4{color:var(--txt);margin:0 0 8px;font-size:13px}
+  .disc{background:rgba(255,176,32,.08);border:1px solid rgba(255,176,32,.3);color:#ffd98a;padding:9px 13px;border-radius:10px;font-size:12px;margin-top:12px}
+</style>
+</head>
+<body>
+<!--PORTAL_HEADER_V1-->
+<style>
+  #portal-hdr{position:fixed;top:0;left:0;right:0;height:46px;z-index:99999;
+    display:flex;align-items:center;gap:10px;padding:0 12px;box-sizing:border-box;
+    background:rgba(248,250,252,.94);backdrop-filter:saturate(1.4) blur(10px);
+    -webkit-backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid rgba(20,40,60,.10);
+    font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;}
+  #portal-hdr a.ph-back,#portal-hdr a.ph-home{display:inline-flex;align-items:center;justify-content:center;
+    height:30px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;
+    color:#1a2530;background:#fff;border:1px solid rgba(20,40,60,.14);transition:.15s;}
+  #portal-hdr a.ph-back{padding:0 11px 0 8px;gap:3px;}
+  #portal-hdr a.ph-home{width:32px;font-size:15px;}
+  #portal-hdr a.ph-back:active,#portal-hdr a.ph-home:active{transform:scale(.96);background:#eef1f4;}
+  #portal-hdr .ph-emoji{font-size:17px;line-height:1;}
+  #portal-hdr .ph-title{font-size:14.5px;font-weight:700;color:#16202b;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;}
+  #portal-hdr .ph-tag{font-size:11px;font-weight:600;color:#5a6a78;background:#eef1f4;
+    padding:2px 7px;border-radius:999px;white-space:nowrap;}
+  #portal-hdr .ph-accent{width:3px;height:18px;border-radius:2px;background:#2f6fd6;flex:0 0 auto;}
+  #portal-hdr .ph-spacer{flex:1 1 auto;min-width:0;}
+  body{padding-top:46px !important;}
+  @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
+</style>
+<div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
+  <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
+  <a class="ph-home" href="../index.html" title="홈">🏠</a>
+  <span class="ph-accent"></span>
+  <span class="ph-emoji">💉</span>
+  <span class="ph-title">성인 예방접종</span>
+  <span class="ph-spacer"></span>
+  <span class="ph-tag">예방접종</span>
+</div>
+
+<!--/PORTAL_HEADER_V1-->
+
+<header>
+  <h1>💉 성인 예방접종 일정표</h1>
+  <div class="sub">나이를 움직이면 표가 바로 반응합니다 · KSID 권고 + 국가예방접종(NIP) · 2023–2026 개정 반영</div>
+</header>
+
+<nav>
+  <button class="on" data-v="sch">📅 일정표</button>
+  <button data-v="lib">📖 백신 상세</button>
+  <button data-v="nip">🏛️ 국가지원</button>
+</nav>
+
+<main>
+  <!-- SCHEDULE (primary) -->
+  <section class="view on" id="sch">
+    <div class="agebar">
+      <div class="agerow">
+        <div class="agenum" id="ageNum">만 66세</div>
+        <input type="range" id="ageSlider" min="19" max="90" value="66">
+        <div class="seg" id="sexSeg">
+          <button data-s="M" class="on">남</button>
+          <button data-s="F">여</button>
+          <button data-s="P">임신</button>
+        </div>
+      </div>
+      <div class="presets" id="presets"></div>
+      <div class="risktoggle">
+        <button id="riskBtn">＋ 기저질환·위험요인 추가 ▾</button>
+        <div class="riskwrap" id="riskWrap"><div class="chips" id="riskChips"></div></div>
+      </div>
+    </div>
+
+    <div class="summary" id="summary"></div>
+
+    <div class="mwrap">
+      <table class="m">
+        <thead><tr id="mHead"></tr></thead>
+        <tbody id="mBody"></tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span><span class="sw" style="background:var(--age)"></span>연령 권장</span>
+      <span><span class="sw" style="background:var(--risk)"></span>위험군 권장</span>
+      <span><span class="sw" style="background:var(--nip)"></span>국가 무료</span>
+      <span><span class="rbadge reco" style="width:15px;height:15px;line-height:15px;font-size:10px">✓</span>내 나이 권장</span>
+      <span><span class="rbadge cond" style="width:15px;height:15px;line-height:15px;font-size:10px">△</span>조건부(위험군)</span>
+    </div>
+    <p class="hint" style="margin-top:10px">💡 백신 이름을 누르면 상세(KSID 권고 + 국가지원)가 열립니다. 위 슬라이더로 나이를, 필요하면 위험요인을 추가하세요.</p>
+  </section>
+
+  <!-- LIBRARY -->
+  <section class="view" id="lib">
+    <p class="hint">백신별 상세 검색·복습. 카드를 눌러 펼치세요.</p>
+    <input id="q" placeholder="🔍 검색 (폐렴, 대상포진, RSV, 면역저하…)" style="width:100%;padding:10px 13px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--txt);margin-bottom:12px">
+    <div id="cards"></div>
+  </section>
+
+  <!-- NIP -->
+  <section class="view" id="nip">
+    <p class="hint">2025–2026 기준 성인 관련 국가예방접종(NIP) 무료지원 현황.</p>
+    <div id="nipTable"></div>
+    <div class="disc">⚠️ 국가지원 대상 생년·시작일은 절기마다 변동. 접종 직전 예방접종도우미(nip.kdca.go.kr) 원문 재확인.</div>
+  </section>
+</main>
+
+<div class="drawer" id="drawer"><div class="sheet" id="sheet"></div></div>
+<footer id="foot"></footer>
+
+<script>
+/* ============ DATA LAYER (임상 수치·대상·간격은 여기에만) ============ */
+const BANDS=[['19','만19~29'],['30','만30~39'],['40','만40~49'],['50','만50~59'],['60','만60~64'],['65','만65+']];
+function bandIdx(age){ return age<30?0:age<40?1:age<50?2:age<60?3:age<65?4:5; }
+
+const RISKS=[['immunocompromised','면역저하'],['transplant_solid','고형장기이식'],['asplenia','무비증'],
+ ['hiv','HIV'],['chronic_lung','만성폐질환'],['chronic_heart','만성심질환'],['chronic_liver','만성간질환'],
+ ['chronic_renal','만성신질환'],['diabetes','당뇨'],['smoker','흡연'],['obesity_severe','중증비만'],
+ ['csf_leak','뇌척수액누출'],['cochlear','인공와우'],['hcw','의료종사자'],['dorm','기숙사'],
+ ['travel_endemic','유행지역여행'],['lab_worker','실험실종사자'],['seronegative','항체음성']];
+const RISK_KO=Object.fromEntries(RISKS);
+const IMMUNO=['immunocompromised','transplant_solid','transplant_hsct','hiv'];
+
+// 매트릭스 셀: m[6] = {l:'age'|'risk'|'', t:label}, nipB=[band idx...]
+const VACCINES=[
+ {id:'influenza',name:'인플루엔자',emoji:'🤧',kw:'독감 flu 이식 고용량 mf59',
+  m:[c('age','매년 1회'),c('age','매년 1회'),c('age','매년 1회'),c('age','매년 1회'),c('age','매년 1회'),c('age','매년 1회')],nipB:[5],
+  ksid:{ind:'모든 성인 매년 1회. 면역저하자도 매년(비강 생백신 금기). 18–64세 고형장기이식은 고면역원성(HD-IIV/MF59) 고려.',sch:'매 절기 1회',route:'근육주사',grade:'I',src:'2025 개정+2012표'},
+  nip:{sup:true,target:'65세+ 어르신, 임신부',cost:'무료',note:'절기(10월~익년4월).'}},
+
+ {id:'tdap',name:'파상풍·디프테리아·백일해',emoji:'🩹',kw:'tdap td 백일해 임신부',
+  m:[c('age','Tdap 1회→10년마다 Td'),c('age','Tdap 1회→10년 Td'),c('age','Tdap 1회→10년 Td'),c('age','Tdap 1회→10년 Td'),c('age','Tdap 1회→10년 Td'),c('age','Tdap 1회→10년 Td')],nipB:[],
+  ksid:{ind:'모든 성인 Tdap 1회 후 Td 매 10년. 임신부는 매 임신마다 Tdap 1회.',sch:'미접종자 Tdap–Td–Td(0·1·6개월)',route:'근육주사',grade:'I',src:'2023 개정'},
+  nip:{sup:false,target:'—',cost:'—',note:'성인 국가지원 없음(임신부 Tdap 권고).'}},
+
+ {id:'pneumococcal',name:'폐렴알균',emoji:'🫁',kw:'폐렴 폐렴구균 pcv21 pcv20 pcv15 ppsv23',
+  m:[c('risk','고위험군'),c('risk','고위험군'),c('risk','고위험군'),c('risk','고위험군'),c('risk','고위험군'),c('age','PCV21/20 또는 PCV15-PPSV23 1회')],nipB:[5],
+  ksid:{ind:'65세+ 전원 + 19–64세 고위험군(만성질환·뇌척수액누출·인공와우·면역저하·무비증).',sch:'PCV21 1회 · 또는 PCV20 1회 · 또는 PCV15→PPSV23 순차(동등)',route:'근육주사',grade:'2026',src:'2026 PCV21 개정',
+    note:'PCV13 접종력 완결은 PPSV23 대신 PCV21/20. PCV21은 혈청형4 미포함. 면역저하·무비증·뇌척수액누출·인공와우는 PCV15→PPSV23 간격 8주, 그 외 1년.'},
+  nip:{sup:true,target:'65세+(PPSV23 접종력 없는 자)',cost:'무료(평생 1회)',note:'국가지원은 PPSV23 1회. 단백결합백신 비지원.'}},
+
+ {id:'zoster',name:'대상포진',emoji:'🔥',kw:'대상포진 rzv zvl 싱그릭스 shingrix',
+  m:[c('risk','중증면역저하 RZV'),c('risk','중증면역저하 RZV'),c('risk','중증면역저하 RZV'),c('age','RZV 2회'),c('age','RZV 2회'),c('age','RZV 2회')],nipB:[],
+  ksid:{ind:'50세+ RZV 2회. 18세+ 중증면역저하자도 RZV.',sch:'RZV 2회(2–6개월, 최소4주)',route:'근육주사',grade:'RZV 우선',src:'2023 개정',
+    note:'RZV 우선. ZVL(생백신)은 대체 가능하나 중증면역저하자 금기.'},
+  nip:{sup:false,target:'—',cost:'—',note:'국가지원 없음(일부 지자체).'}},
+
+ {id:'rsv',name:'RSV',emoji:'🫀',kw:'rsv 호흡기세포융합 arexvy mresvia',
+  m:[c('',''),c('',''),c('',''),c('risk','고위험군 1회'),c('risk','고위험군 1회'),c('age','75세+ 1회 (50–74 고위험군)')],nipB:[],
+  ksid:{ind:'75세+ 전원 1회. 50–74세 중증 RSV 고위험군 1회.',sch:'1회(정기 반복 미권고), 8–10월 권장',route:'근육주사',grade:'2026 신규',src:'2026 RSV 신규',
+    note:'국내 허가 Arexvy·mRESVIA. 고위험: 만성 심/폐/신/간질환, 인슐린·SGLT2i 당뇨, 중증비만(BMI≥40), 중등도이상 면역저하, 요양시설 거주 등.'},
+  nip:{sup:false,target:'—',cost:'—',note:'국가지원 없음.'}},
+
+ {id:'covid19',name:'코로나19',emoji:'🦠',kw:'코로나 covid mrna 화이자 모더나',
+  m:[c('risk','고위험군 절기 1회'),c('risk','고위험군 절기 1회'),c('risk','고위험군 절기 1회'),c('risk','고위험군 절기 1회'),c('risk','고위험군 절기 1회'),c('age','절기 1회')],nipB:[5],
+  ksid:{ind:'65세+ 또는 6개월+ 고위험군·감염취약시설 입소자.',sch:'2025–26절기 LP.8.1 mRNA 1회. 65세+·면역저하는 6개월 간격 추가 고려.',route:'근육주사',grade:'절기',src:'2025–26 권고'},
+  nip:{sup:true,target:'65세+ 및 고위험군',cost:'무료',note:'절기 접종사업.'}},
+
+ {id:'hepa',name:'A형간염',emoji:'🟠',kw:'a형간염 간질환',
+  m:[c('age','2회(0,6–12개월)'),c('age','2회'),c('age','항체검사 후 2회'),c('risk','고위험군 항체검사 후 2회'),c('risk','고위험군 검사 후 2회'),c('risk','고위험군 검사 후 2회')],nipB:[],
+  ksid:{ind:'고위험군·항체음성(만성간질환, 노출위험 종사자, MSM, 유행지역 여행 등).',sch:'2회(0,6–12개월)',route:'근육주사',grade:'II',src:'2012표',
+    note:'40세 미만 항체검사 생략 가능, 40세+ 검사 후.'},
+  nip:{sup:false,target:'—(소아 필수 별도)',cost:'—',note:'성인 지원 없음.'}},
+
+ {id:'hepb',name:'B형간염',emoji:'🟡',kw:'b형간염',
+  m:[c('risk','고위험군/항체음성 3회'),c('risk','고위험군 3회'),c('risk','고위험군 3회'),c('risk','고위험군 3회'),c('risk','고위험군 3회'),c('risk','고위험군 3회')],nipB:[],
+  ksid:{ind:'3회 접종력 불확실+항체음성 고위험군.',sch:'3회(0,1,6개월)',route:'근육주사',grade:'III',src:'2012표'},
+  nip:{sup:false,target:'—',cost:'—',note:'성인 지원 없음.'}},
+
+ {id:'varicella',name:'수두',emoji:'💧',kw:'수두 항체 varicella',
+  m:[c('risk','고위험군 항체음성 2회'),c('risk','고위험군 2회'),c('risk','고위험군 2회'),c('',''),c('',''),c('','')],nipB:[],
+  ksid:{ind:'고위험군 중 항체음성자(의료인, 면역저하환자 가족, 교사·보육, 가임여성 등).',sch:'2회(0,4–8주)',route:'피하주사',grade:'II',src:'2012표',
+    note:'생백신 → 임신부·중증면역저하 금기.'},
+  nip:{sup:false,target:'—',cost:'—',note:'성인 지원 없음.'}},
+
+ {id:'mmr',name:'홍역·이하선염·풍진(MMR)',emoji:'🔴',kw:'mmr 홍역 풍진 임신',
+  m:[c('risk','고위험군 1–2회'),c('risk','고위험군 1–2회'),c('risk','고위험군 1–2회'),c('',''),c('',''),c('','')],nipB:[],
+  ksid:{ind:'고위험군(의료인, 개도국 여행, 면역저하환자 돌봄, 기숙사) 최소 1회. 1967년+ 의료인 2회.',sch:'1–2회',route:'피하주사',grade:'II',src:'2012표',
+    note:'생백신 → 임신부·중증면역저하 금기. 가임여성 풍진 IgG 확인.'},
+  nip:{sup:false,target:'—',cost:'—',note:'성인 지원 없음.'}},
+
+ {id:'hpv',name:'인유두종바이러스(HPV)',emoji:'🎗️',kw:'hpv 자궁경부암 가다실',
+  m:[c('age','여성 3회(≤26 따라잡기)'),c('risk','27–45세 여성 상의'),c('risk','≤45세 여성 상의'),c('',''),c('',''),c('','')],nipB:[],
+  ksid:{ind:'11–12세 여아 기본, 13–26세 여성 따라잡기, 27–45세 여성 상의, 남성 9–26세 가능.',sch:'9–14세 2회 / 15–45세 3회',route:'근육주사',grade:'II',src:'2023 개정'},
+  nip:{sup:true,target:"여성청소년 12–17세, 저소득 여성 18–26세, 2026 신규 12세 남아",cost:'무료',note:'국가지원은 청소년·저소득 대상(성인 일반 자비).'}},
+
+ {id:'meningococcal',name:'수막알균',emoji:'🧠',kw:'수막구균 menb menacwy 무비증 훈련병 기숙사',
+  m:[c('risk','고위험군 1–2회'),c('risk','고위험군 1–2회'),c('risk','고위험군 1–2회'),c('risk','고위험군 1–2회'),c('risk','고위험군 1–2회'),c('risk','고위험군 1–2회')],nipB:[],
+  ksid:{ind:'고위험군(무비증·보체결핍·신입훈련병·실험실·유행지역·기숙사 신입생·HIV) → 4가+B혈청군 함께.',sch:'무비증·보체결핍·HIV는 4가 2회(0,2개월)+5년마다',route:'근육주사',grade:'II',src:'2023 개정'},
+  nip:{sup:false,target:'—',cost:'—',note:'국가지원 없음.'}},
+
+ {id:'hib',name:'Hib',emoji:'🧫',kw:'hib 헤모필루스 무비증',
+  m:[c('risk','고위험군 1–3회'),c('risk','고위험군 1–3회'),c('risk','고위험군 1–3회'),c('risk','고위험군 1–3회'),c('risk','고위험군 1–3회'),c('risk','고위험군 1–3회')],nipB:[],
+  ksid:{ind:'특정 의학적 적응증(무비증, 조혈모세포이식 등).',sch:'적응증별',route:'근육주사',grade:'조건부',src:'2012표'},
+  nip:{sup:false,target:'—',cost:'—',note:'성인 지원 없음.'}}
+];
+function c(l,t){return {l,t};}
+function V(id){return VACCINES.find(v=>v.id===id);}
+
+/* ============ ENGINE: 나이+위험요인 → 백신별 상태 assess() ============ */
+function assess(v, age, sex, risks){ // →{s:'reco'|'cond'|'na', note}
+  const R=new Set(risks); const preg=sex==='P';
+  const immuno=IMMUNO.some(x=>R.has(x))||R.has('immunocompromised');
+  const has=(...a)=>a.some(x=>R.has(x));
+  switch(v.id){
+   case 'influenza': return r('reco','매년 1회'+(immuno?' (불활화, 생백신 금기)':'')+(age>=65||preg?' · 국가무료':''));
+   case 'tdap': return r('reco',preg?'이번 임신 Tdap 1회':'Tdap 1회 후 Td 매 10년');
+   case 'pneumococcal':{const hi=has('chronic_lung','chronic_heart','chronic_liver','chronic_renal','diabetes','smoker','asplenia','csf_leak','cochlear','hiv')||immuno;
+     if(age>=65) return r('reco','PCV21/20 또는 PCV15-PPSV23 1회 · 국가무료(PPSV23)');
+     if(age>=19&&hi) return r('cond','고위험군: PCV21/20 또는 PCV15-PPSV23');
+     return r('na','65세+ 또는 고위험군 대상');}
+   case 'zoster':
+     if(age>=50) return r('reco','RZV 2회(면역저하자는 필수 · ZVL 금기)');
+     if(age>=18&&immuno) return r('cond','중증면역저하: RZV 2회');
+     return r('na','50세+ 또는 중증면역저하 대상');
+   case 'rsv':{const hi=has('chronic_lung','chronic_heart','chronic_renal','chronic_liver','diabetes','obesity_severe')||immuno;
+     if(age>=75) return r('reco','1회(8–10월 권장)');
+     if(age>=50&&hi) return r('cond','중증 RSV 고위험군: 1회');
+     return r('na','75세+ 또는 50–74 고위험군');}
+   case 'covid19':{const hi=has('chronic_lung','chronic_heart','chronic_renal','chronic_liver','diabetes','obesity_severe','smoker')||immuno;
+     if(age>=65) return r('reco','절기 1회 · 국가무료'+(immuno?' (6개월 간격 추가 고려)':''));
+     if(hi) return r('cond','고위험군: 절기 1회 · 국가무료');
+     return r('na','65세+ 또는 고위험군');}
+   case 'hepa':{const hi=has('chronic_liver','hcw','lab_worker','travel_endemic');
+     if(age<40&&hi) return r('reco','2회(항체검사 생략 가능)');
+     if(hi) return r('cond','고위험군: 항체검사 후 2회');
+     return r('na','고위험군 대상');}
+   case 'hepb':{const hi=has('hiv','chronic_renal','chronic_liver','hcw','lab_worker');
+     return hi? r('cond','항체음성 시 3회(0,1,6개월)'): r('na','고위험군 대상');}
+   case 'varicella':return (has('hcw','dorm')&&R.has('seronegative')&&!immuno&&!preg)? r('cond','항체음성: 2회(0,4–8주)'): r('na','고위험군 항체음성 대상');
+   case 'mmr':return (has('hcw','travel_endemic','dorm')&&!immuno&&!preg)? r('cond','최소 1회(의료인 2회)'): r('na','고위험군 대상');
+   case 'hpv':
+     if(sex==='F'&&age<=26) return r('reco','여성 따라잡기 3회');
+     if(sex==='F'&&age<=45) return r('cond','27–45세 여성: 전문가 상의');
+     if(sex==='M'&&age<=26) return r('cond','남성 접종 가능');
+     return r('na','여성 ≤45 / 남성 ≤26');
+   case 'meningococcal':return has('asplenia','hiv','lab_worker','travel_endemic','dorm')? r('cond','4가+B혈청군(무비증·HIV는 2회)'): r('na','고위험군 대상');
+   case 'hib':return has('asplenia')? r('cond','무비증 등 적응증'): r('na','의학적 적응증');
+   default:return r('na','');
+  }
+  function r(s,note){return {s,note};}
+}
+
+/* ============ UI LAYER ============ */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let AGE=66, SEX='M', RISKSET=new Set();
+
+$$('nav button').forEach(b=>b.onclick=()=>{$$('nav button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  $$('.view').forEach(v=>v.classList.remove('on'));$('#'+b.dataset.v).classList.add('on');});
+
+// age slider
+const slider=$('#ageSlider');
+slider.oninput=()=>{AGE=+slider.value;$('#ageNum').innerHTML='만 '+AGE+'세';paint();};
+$('#sexSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  $('#sexSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  SEX=b.dataset.s; if(SEX==='P'&&AGE>50){AGE=32;slider.value=32;$('#ageNum').innerHTML='만 32세';} paint();});
+
+// risk expander
+$('#riskBtn').onclick=()=>{const w=$('#riskWrap');w.classList.toggle('on');
+  $('#riskBtn').innerHTML=(w.classList.contains('on')?'－ 위험요인 접기 ▴':'＋ 기저질환·위험요인 추가 ▾');};
+$('#riskChips').innerHTML=RISKS.map(([id,ko])=>`<span class="chip" data-r="${id}">${ko}</span>`).join('');
+$('#riskChips').querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{ch.classList.toggle('on');
+  ch.classList.contains('on')?RISKSET.add(ch.dataset.r):RISKSET.delete(ch.dataset.r);paint();});
+
+// presets (교육/빠른 시작)
+const PRESETS=[
+ ['68세·당뇨·만성폐질환',68,'M',['diabetes','chronic_lung']],
+ ['55세·면역억제제',55,'F',['immunocompromised']],
+ ['30세·임신부',30,'P',[]],
+ ['77세·심부전',77,'F',['chronic_heart']],
+ ['45세·무비증',45,'M',['asplenia']],
+ ['19세·기숙사',19,'M',['dorm']]
+];
+$('#presets').innerHTML=PRESETS.map((p,i)=>`<button data-i="${i}">${p[0]}</button>`).join('');
+$('#presets').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  const [,age,sex,rs]=PRESETS[b.dataset.i];AGE=age;SEX=sex;RISKSET=new Set(rs);
+  slider.value=age;$('#ageNum').innerHTML='만 '+age+'세';
+  $('#sexSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.s===sex));
+  $('#riskChips').querySelectorAll('.chip').forEach(ch=>ch.classList.toggle('on',RISKSET.has(ch.dataset.r)));
+  if(RISKSET.size){$('#riskWrap').classList.add('on');$('#riskBtn').innerHTML='－ 위험요인 접기 ▴';}
+  paint();});
+
+// matrix header
+$('#mHead').innerHTML='<th style="min-width:150px">백신</th>'+BANDS.map((b,i)=>`<th class="col" data-i="${i}">${b[1]}</th>`).join('');
+
+function paint(){
+  const ai=bandIdx(AGE);
+  // header active
+  $('#mHead').querySelectorAll('th.col').forEach((th,i)=>th.classList.toggle('act',i===ai));
+  // body
+  $('#mBody').innerHTML=VACCINES.map(v=>{
+    const st=assess(v,AGE,SEX,[...RISKSET]);
+    const badge=`<span class="rbadge ${st.s}">${st.s==='reco'?'✓':st.s==='cond'?'△':'–'}</span>`;
+    const cells=v.m.map((cell,i)=>{
+      const cls=cell.l||'empty';
+      const nip=v.nipB.includes(i)?' nip':'';
+      const act=i===ai?' act':'';
+      return `<td class="cell ${cls}${nip}${act}">${cell.t||''}</td>`;
+    }).join('');
+    return `<tr><td><div class="vx" data-id="${v.id}"><span class="em">${v.emoji}</span><span class="nm">${badge}${v.name}</span><span class="arw">상세 ▸</span></div></td>${cells}</tr>`;
+  }).join('');
+  $('#mBody').querySelectorAll('.vx').forEach(el=>el.onclick=()=>openDetail(el.dataset.id));
+  paintSummary();
+}
+
+function paintSummary(){
+  const reco=[],cond=[];
+  VACCINES.forEach(v=>{const st=assess(v,AGE,SEX,[...RISKSET]);
+    if(st.s==='reco')reco.push([v,st]); else if(st.s==='cond')cond.push([v,st]);});
+  const who='만 '+AGE+'세 '+({M:'남성',F:'여성',P:'임신부'}[SEX])+(RISKSET.size?' · '+[...RISKSET].map(r=>RISK_KO[r]).join('·'):'');
+  const pill=([v,st],cl)=>`<span class="pill ${cl}" data-id="${v.id}">${v.emoji} ${v.name}${(v.nipB.length&&v.nip.sup&&(AGE>=65||SEX==='P')&&(v.id==='influenza'||v.id==='pneumococcal'||v.id==='covid19'))?' <span class="free">국가무료</span>':''}</span>`;
+  let html=`<h3>🎯 ${who} — 권장 요약</h3>`;
+  html+= reco.length?`<div><b style="color:var(--reco)">✓ 지금 권장</b><br>${reco.map(x=>pill(x,'reco')).join('')}</div>`:'<div class="sumnote">이 나이의 연령 기반 권장 항목 없음 — 위험요인을 추가해 보세요.</div>';
+  if(cond.length) html+=`<div style="margin-top:8px"><b style="color:var(--cond)">△ 위험군이면 고려</b><br>${cond.map(x=>pill(x,'cond')).join('')}</div>`;
+  html+=`<div class="sumnote">칩/표를 누르면 상세가 열립니다. 판단·처방은 진료 의사에게 있습니다.</div>`;
+  $('#summary').innerHTML=html;
+  $('#summary').querySelectorAll('.pill').forEach(el=>el.onclick=()=>openDetail(el.dataset.id));
+}
+
+// detail drawer
+function openDetail(id){
+  const v=V(id); const st=assess(v,AGE,SEX,[...RISKSET]);
+  const stTxt={reco:'✓ 지금(만'+AGE+'세) 권장',cond:'△ 위험군이면 고려',na:'– 현재 조건 해당 없음'}[st.s];
+  $('#sheet').innerHTML=`<button class="x" onclick="closeD()">✕</button>
+   <h2>${v.emoji} ${v.name}</h2>
+   <div class="yourec ${st.s}"><b>${stTxt}</b>${st.note?' — '+st.note:''}</div>
+   <div class="layer ksid"><h4>🔵 KSID 학회 권고 <span class="grade">${v.ksid.grade||''}</span></h4>
+     <p><span class="kv">대상</span>${v.ksid.ind}</p>
+     <p><span class="kv">일정</span>${v.ksid.sch}</p>
+     <p><span class="kv">경로</span>${v.ksid.route}</p>
+     ${v.ksid.note?`<p><span class="kv">비고</span>${v.ksid.note}</p>`:''}
+     <p style="color:var(--mut);font-size:11px">근거: ${v.ksid.src}</p></div>
+   <div class="layer nipL"><h4>🔴 국가예방접종(NIP) ${v.nip.sup?'지원':'미지원'}</h4>
+     ${v.nip.sup?`<p><span class="kv">대상</span>${v.nip.target}</p><p><span class="kv">비용</span><span class="yes">${v.nip.cost}</span></p>`:''}
+     <p><span class="kv">비고</span>${v.nip.note}</p></div>`;
+  $('#drawer').classList.add('on');
+}
+function closeD(){$('#drawer').classList.remove('on');}
+$('#drawer').onclick=e=>{if(e.target.id==='drawer')closeD();};
+
+// library
+function renderCards(){
+  const q=($('#q').value||'').toLowerCase();
+  const list=VACCINES.filter(v=>!q||(v.name+v.kw).toLowerCase().includes(q));
+  $('#cards').innerHTML=list.map(v=>`<div style="background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:9px;cursor:pointer" data-id="${v.id}">
+     <b>${v.emoji} ${v.name}</b> <span style="color:var(--mut);font-size:12px">· ${v.ksid.grade||''} ${v.nip.sup?'· 🔴국가무료':''}</span>
+     <div style="color:var(--mut);font-size:12.5px;margin-top:3px">${v.ksid.ind}</div></div>`).join('')||'<p style="color:var(--mut)">결과 없음</p>';
+  $('#cards').querySelectorAll('[data-id]').forEach(el=>el.onclick=()=>openDetail(el.dataset.id));
+}
+$('#q').oninput=renderCards;
+
+// nip table
+$('#nipTable').innerHTML=(()=>{const rows=VACCINES.filter(v=>v.nip.sup).map(v=>`<tr><td>${v.emoji} ${v.name}</td><td class="yes">지원</td><td>${v.nip.target}</td><td>${v.nip.cost}</td><td>${v.nip.note}</td></tr>`).join('');
+  const none=VACCINES.filter(v=>!v.nip.sup).map(v=>v.name).join(', ');
+  return `<table class="t"><thead><tr><th>백신</th><th>지원</th><th>대상</th><th>비용</th><th>비고</th></tr></thead><tbody>${rows}</tbody></table>
+  <p class="hint" style="margin-top:10px">🚫 <b>성인 미지원</b>: ${none} — 학회 권고 대상이나 자비(일부 지자체 지원 가능).</p>`;})();
+
+// footer
+const SRC=[['KSID 성인예방접종 권고안','https://www.ksid.or.kr/content/info/vaccine_rule.php'],
+ ['2026 RSV','https://www.ksid.or.kr/introduce/file/vaccine_rule_2026_01.pdf'],
+ ['2026 폐렴알균 PCV21','https://www.ksid.or.kr/introduce/file/vaccine_rule_2026_02.pdf'],
+ ['2025 인플루엔자(면역저하)','https://www.ksid.or.kr/introduce/file/vaccine_rule_2025_01.pdf'],
+ ['2025–26 COVID-19','https://www.ksid.or.kr/introduce/file/vaccine_rule_2025_03.pdf'],
+ ['2023 대상포진·Tdap·수막알균·HPV','https://www.ksid.or.kr/content/info/vaccine_rule_2023.php'],
+ ['KSID 성인예방접종표(영문)','https://www.ksid.or.kr/file/vaccine_eng.pdf'],
+ ['질병청 어르신 인플루엔자','https://nip.kdca.go.kr/irhp/infm/goVcntInfo.do?menuLv=1&menuCd=134'],
+ ['질병청 65세+ 폐렴구균','https://nip.kdca.go.kr/irhp/infm/goVcntInfo.do?menuLv=1&menuCd=135'],
+ ['질병청 HPV 국가예방접종','https://nip.kdca.go.kr/irhp/infm/goVcntInfo.do?menuCd=132&menuLv=1']];
+$('#foot').innerHTML='<h4>📎 출처 · 근거</h4>'+SRC.map(([t,u])=>`<div>• <a href="${u}" target="_blank">${t}</a></div>`).join('')+
+ '<p style="margin-top:12px">임상 의사결정 보조 자료(KSID 2023–2026 개정 + 질병청 NIP). 최종 접종 판단·처방은 진료 의사에게 있으며, 국가지원 생년·시작일은 절기마다 변동되므로 접종 직전 원문 재확인이 필요합니다.</p>';
+
+// init
+$('#ageNum').innerHTML='만 '+AGE+'세';
+renderCards(); paint();
+</script>
+<noscript><div class="seo-content">
+<h2>성인 예방접종 가이드 — 백신별 요약 (KSID 2023–2026 · 국가예방접종 NIP)</h2>
+<p>대한감염학회(KSID) 성인예방접종 권고안과 질병관리청 국가예방접종(NIP) 무료지원을 함께 정리했습니다. 나이·성별·기저질환에 따른 인터랙티브 일정표는 JavaScript 활성화 시 이용할 수 있습니다.</p>
+<section id="concept-influenza" class="seo-vaccine"><h3>인플루엔자 · influenza (독감)</h3><p><b>대상</b>: 모든 성인 매년 1회(면역저하자 포함, 비강 생백신 금기). 18–64세 고형장기이식은 고면역원성 백신 고려. <b>일정</b>: 매 절기 1회, 근육주사. <b>국가지원</b>: 65세+·임신부 무료. <b>권고등급</b> I.</p></section>
+<section id="concept-tdap" class="seo-vaccine"><h3>파상풍·디프테리아·백일해 · Tdap/Td</h3><p><b>대상</b>: 모든 성인 Tdap 1회 후 Td 매 10년. 임신부는 매 임신마다 Tdap 1회. <b>일정</b>: 미접종자 Tdap–Td–Td(0·1·6개월). <b>국가지원</b>: 성인 지원 없음. <b>권고등급</b> I.</p></section>
+<section id="concept-pneumococcal" class="seo-vaccine"><h3>폐렴알균 · pneumococcal (PCV21·PCV20·PCV15·PPSV23)</h3><p><b>대상</b>: 65세+ 전원 + 19–64세 고위험군(만성질환·뇌척수액누출·인공와우·면역저하·무비증). <b>일정</b>: PCV21 1회 또는 PCV20 1회 또는 PCV15→PPSV23 순차. <b>국가지원</b>: 65세+ PPSV23 1회 무료(단백결합백신 비지원). <b>권고</b> 2026 개정.</p></section>
+<section id="concept-zoster" class="seo-vaccine"><h3>대상포진 · herpes zoster (RZV, Shingrix)</h3><p><b>대상</b>: 50세+ RZV 2회, 18세+ 중증면역저하자 RZV. <b>일정</b>: RZV 2회(2–6개월). ZVL 생백신은 중증면역저하 금기. <b>국가지원</b>: 없음(일부 지자체). <b>권고</b> RZV 우선(2023 개정).</p></section>
+<section id="concept-rsv" class="seo-vaccine"><h3>RSV · 호흡기세포융합바이러스 (Arexvy, mRESVIA)</h3><p><b>대상</b>: 75세+ 전원 1회, 50–74세 중증 RSV 고위험군 1회. <b>일정</b>: 1회(반복 미권고), 8–10월 권장. <b>국가지원</b>: 없음. <b>권고</b> 2026 신규.</p></section>
+<section id="concept-covid19" class="seo-vaccine"><h3>코로나19 · COVID-19 (mRNA)</h3><p><b>대상</b>: 65세+ 또는 6개월+ 고위험군·감염취약시설 입소자. <b>일정</b>: 절기 mRNA 1회, 65세+·면역저하는 6개월 간격 추가 고려. <b>국가지원</b>: 65세+·고위험군 무료.</p></section>
+<section id="concept-hepa" class="seo-vaccine"><h3>A형간염 · hepatitis A</h3><p><b>대상</b>: 고위험군·항체음성(만성간질환, 노출위험 종사자, 유행지역 여행 등). <b>일정</b>: 2회(0, 6–12개월). 40세 미만 항체검사 생략 가능. <b>국가지원</b>: 성인 지원 없음. <b>권고등급</b> II.</p></section>
+<section id="concept-hepb" class="seo-vaccine"><h3>B형간염 · hepatitis B</h3><p><b>대상</b>: 3회 접종력 불확실 + 항체음성 고위험군. <b>일정</b>: 3회(0·1·6개월). <b>국가지원</b>: 성인 지원 없음. <b>권고등급</b> III.</p></section>
+<section id="concept-varicella" class="seo-vaccine"><h3>수두 · varicella</h3><p><b>대상</b>: 고위험군 중 항체음성자(의료인, 면역저하환자 가족, 보육·교사, 가임여성). <b>일정</b>: 2회(0, 4–8주), 피하주사. 생백신 → 임신부·중증면역저하 금기. <b>국가지원</b>: 없음. <b>권고등급</b> II.</p></section>
+<section id="concept-mmr" class="seo-vaccine"><h3>홍역·이하선염·풍진 · MMR</h3><p><b>대상</b>: 고위험군(의료인, 개도국 여행, 면역저하환자 돌봄, 기숙사) 최소 1회, 1967년+ 의료인 2회. <b>일정</b>: 1–2회, 피하주사. 생백신 금기(임신부·중증면역저하). <b>국가지원</b>: 없음. <b>권고등급</b> II.</p></section>
+<section id="concept-hpv" class="seo-vaccine"><h3>인유두종바이러스 · HPV</h3><p><b>대상</b>: 13–26세 여성 따라잡기, 27–45세 여성 상의, 남성 9–26세 가능. <b>일정</b>: 9–14세 2회 / 15–45세 3회. <b>국가지원</b>: 여성청소년 12–17세·저소득 여성 18–26세·2026 12세 남아 무료. <b>권고등급</b> II.</p></section>
+<section id="concept-meningococcal" class="seo-vaccine"><h3>수막알균 · meningococcal (MenACWY·MenB)</h3><p><b>대상</b>: 고위험군(무비증·보체결핍·신입훈련병·실험실·유행지역·기숙사 신입생·HIV) 4가+B혈청군. <b>일정</b>: 무비증·보체결핍·HIV는 4가 2회(0·2개월)+5년마다. <b>국가지원</b>: 없음. <b>권고등급</b> II.</p></section>
+<section id="concept-hib" class="seo-vaccine"><h3>Hib · 헤모필루스 인플루엔자 b형</h3><p><b>대상</b>: 특정 의학적 적응증(무비증, 조혈모세포이식 등). <b>일정</b>: 적응증별 1–3회. <b>국가지원</b>: 성인 지원 없음. <b>권고</b> 조건부.</p></section>
+<p>출처: 대한감염학회(KSID) 성인예방접종 권고안 2023–2026, 질병관리청 국가예방접종도우미(nip.kdca.go.kr).</p>
+</div></noscript>
+</body>
+</html>
