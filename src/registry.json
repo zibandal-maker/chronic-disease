@@ -338,6 +338,18 @@
       "keywords": "내시경 오더 수가코드 위내시경 대장내시경 진정내시경 조직검사 폴립절제 CSP EMR ESD 국가검진 나560 나799 소개",
       "hideFromDashboard": true,
       "_note": "검색 유입용 소개 랜딩. 대시보드 카드엔 노출 안 함(external endoscopy 카드가 이미 있음). 검색→이 페이지→외부도구 유입."
+    },
+    {
+      "id": "anemia",
+      "title": "빈혈",
+      "emoji": "🩸",
+      "src": "anemia_guide.html",
+      "out": "anemia.html",
+      "guideline": "빈혈 감별진단·IV 철분·ESA·HIF-PHI · KDIGO 2026·ESC 2023·대한내과학회 · 심평원 급여",
+      "group": "A",
+      "accent": "#B23A48",
+      "tag": "혈액",
+      "keywords": "빈혈 anemia 철결핍 IDA IV철분 정맥철분 페린젝트 ferric carboxymaltose 베노훼럼 iron sucrose ESA 조혈자극제 네스프 darbepoetin 미쎄라 HIF-PHI roxadustat 신성빈혈 CKD KDIGO 만성질환빈혈 ACD 심부전철결핍 거대적혈모구 비타민B12 엽산 folate 용혈성빈혈 AIHA TTP HUS PNH 재생불량성빈혈 aplastic MDS 골수형성이상 다발골수종 SPEP sFLC 지중해빈혈 thalassemia 감별진단 workup 급여기준 고시2024-72 D50 D63 심평원"
     }
   ]
 }
