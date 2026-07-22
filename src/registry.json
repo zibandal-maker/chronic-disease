@@ -350,6 +350,18 @@
       "accent": "#B23A48",
       "tag": "혈액",
       "keywords": "빈혈 anemia 철결핍 IDA IV철분 정맥철분 페린젝트 ferric carboxymaltose 베노훼럼 iron sucrose ESA 조혈자극제 네스프 darbepoetin 미쎄라 HIF-PHI roxadustat 신성빈혈 CKD KDIGO 만성질환빈혈 ACD 심부전철결핍 거대적혈모구 비타민B12 엽산 folate 용혈성빈혈 AIHA TTP HUS PNH 재생불량성빈혈 aplastic MDS 골수형성이상 다발골수종 SPEP sFLC 지중해빈혈 thalassemia 감별진단 workup 급여기준 고시2024-72 D50 D63 심평원"
+    },
+    {
+      "id": "bph",
+      "title": "전립선비대증",
+      "emoji": "🚹",
+      "src": "bph_guide.html",
+      "out": "bph.html",
+      "guideline": "전립선비대증·남성 LUTS·노년 배뇨장애 · 대한비뇨의학회·대한배뇨장애요실금학회·AUA·EAU·NICE · 심평원 급여",
+      "group": "A",
+      "accent": "#2C7A7B",
+      "tag": "비뇨",
+      "keywords": "전립선비대증 BPH 하부요로증상 LUTS IPSS 남성배뇨장애 노년배뇨 과민성방광 OAB 야간뇨 야간다뇨 알파차단제 탐스로신 하루날 실로도신 트루패스 알푸조신 자트랄 독사조신 카두라 나프토피딜 플리바스 5알파환원효소억제제 피나스테리드 프로스카 두타스테리드 아보다트 듀오다트 자이가 타다라필 시알리스 PDE5 항무스카린 솔리페나신 베시케어 톨테로딘 페소테로딘 트로스퓸 프로피베린 이미다페나신 옥시부티닌 미라베그론 베타미가 비베그론 베오바 데스모프레신 미니린 녹더나 급성요폐 신경인성방광 배뇨근저활동 전립선암 방광암 혈뇨 TURP HoLEP UroLift Rezum 요역동학 잔뇨 Qmax 전립선용적 N40 N31 N32 R33 R35 심평원 급여기준"
     }
   ]
 }
