@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>법정감염병 격리 가이드 — 80종 격리·신고·전파경로·해제기준 | 임상의·감염관리용</title>
 <meta name="description" content="대한민국 법정감염병 80종(제1~4급) 격리 참조자료. 질병관리청(KDCA) 대응지침 기반. 음압격리(결핵·홍역·MERS)·비말·접촉(CRE 등 다제내성균)·장관격리 전파경로별 주의와 개인보호구(PPE)·상병코드·신고시기·접촉자감시·격리해제 기준을 질병별로 정리.">
-<meta name="keywords" content="법정감염병, 격리, 감염관리, 음압병실, 음압격리, 공기주의, 비말주의, 접촉주의, 표준주의, 결핵 격리, 홍역, 수두, MERS, 코로나, 두창, 백일해, 수막구균, 디프테리아, CRE, VRSA, MRSA, VRE, 다제내성균, 콜레라, 장티푸스, 이질, EHEC, 감염병 신고, 1급감염병, 2급감염병, 전파경로, 격리해제, 접촉자감시, PPE, N95, 개인보호구, KCD, 상병코드, 질병관리청, KDCA, 감염병예방법">
+<meta name="keywords" content="법정감염병, 격리, 감염관리, 음압병실, 음압격리, 공기주의, 비말주의, 접촉주의, 표준주의, 결핵 격리, 홍역, 수두, MERS, 코로나, 두창, 백일해, 수막구균, 디프테리아, CRE, VRSA, MRSA, VRE, 다제내성균, 콜레라, 장티푸스, 이질, EHEC, 감염병 신고, 1급감염병, 2급감염병, 전파경로, 격리해제, 접촉자감시, PPE, N95, 개인보호구, KCD, 상병코드, 질병관리청, KDCA, 감염병예방법, 클로스트리디오이데스 디피실, 클로스트리듐 디피실, C. difficile, CDI, 위막성대장염, 항생제연관설사, 아포">
 <link rel="canonical" href="https://chronic-disease-dun.vercel.app/guides/isolation">
 <meta property="og:type" content="article">
 <meta property="og:title" content="법정감염병 격리 가이드 — 80종 격리·신고·전파경로·해제기준 | 임상의·감염관리용">
@@ -109,7 +109,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Ne
 .chip:active{transform:scale(.94)}
 .chip.on{color:#fff;border-color:transparent}
 .chip.on.f-g1{background:var(--grade1)} .chip.on.f-g2{background:var(--grade2)}
-.chip.on.f-g3{background:var(--grade3)} .chip.on.f-g4{background:var(--grade4)}
+.chip.on.f-g3{background:var(--grade3)} .chip.on.f-g4{background:var(--grade4)} .chip.on.f-gx{background:#3f7a6d}
 
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .gc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 12px 11px;
@@ -122,7 +122,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Ne
 .gc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:6px}
 .gc-name{font-size:14px;font-weight:730;letter-spacing:-.02em;line-height:1.3}
 .gc-g{font-size:9.5px;font-weight:750;padding:1px 6px;border-radius:5px;color:#fff;flex:0 0 auto;margin-top:1px}
-.gc-g.g1{background:var(--grade1)} .gc-g.g2{background:var(--grade2)} .gc-g.g3{background:var(--grade3)} .gc-g.g4{background:var(--grade4)}
+.gc-g.g1{background:var(--grade1)} .gc-g.g2{background:var(--grade2)} .gc-g.g3{background:var(--grade3)} .gc-g.g4{background:var(--grade4)} .gc-g.gx{background:#3f7a6d}
 .gc-lvls{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
 .gc-lvl{font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px}
 .gc-lvl.air{background:var(--air-bg);color:var(--air)} .gc-lvl.drop{background:var(--drop-bg);color:var(--drop)}
@@ -149,7 +149,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Ne
 .sh-b.contact{background:var(--contact-bg);color:var(--contact)} .sh-b.std{background:var(--std-bg);color:var(--std)}
 .sh-b.none{background:var(--none-bg);color:var(--none)} .sh-b.neg{background:#f0e3f7;color:#7d3a9e}
 .sh-b.mand{background:#fde8e8;color:#b3261e} .sh-b.g{color:#fff}
-.sh-b.g.g1{background:var(--grade1)} .sh-b.g.g2{background:var(--grade2)} .sh-b.g.g3{background:var(--grade3)} .sh-b.g.g4{background:var(--grade4)}
+.sh-b.g.g1{background:var(--grade1)} .sh-b.g.g2{background:var(--grade2)} .sh-b.g.g3{background:var(--grade3)} .sh-b.g.g4{background:var(--grade4)} .sh-b.g.gx{background:#3f7a6d}
 .sect{margin-top:18px}
 .sect-t{font-size:11px;font-weight:780;color:var(--ink-faint);letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:7px}
 .sect-t::before{content:"";width:3px;height:13px;border-radius:2px;background:var(--line)}
@@ -221,6 +221,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Ne
     <button class="chip f-g2" data-grade="급2">2급</button>
     <button class="chip f-g3" data-grade="급3">3급</button>
     <button class="chip f-g4" data-grade="급4">4급</button>
+    <button class="chip f-gx" data-grade="비법정">비법정</button>
   </div>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" style="display:none"><div class="big">🔍</div><p>결과가 없습니다.</p></div>
@@ -891,6 +892,22 @@ var DISEASES = [
   extra:{ contact_monitoring:"의료기관 내 보균 감시(직장도말)·환경관리", work_restriction:null, special_precaution:"손위생·전용기구·환경소독", notify:"표본감시(7일)", cost_support:false },
   sources:[{ guideline:"의료관련감염병 관리지침", version:"2025", url:"https://www.kdca.go.kr/", verified:VERIFIED }] },
 
+{ id:"disease:cdiff", name_ko:"클로스트리디오이데스 디피실 감염증(CDI)", name_en:"Clostridioides difficile infection",
+  aliases:["CDI","C. difficile","C.diff","클로스트리디오이데스 디피실","클로스트리듐 디피실","디피실","위막성대장염","항생제연관설사","CDAD"], grade:"비법정", kcd:"A04.7", tags:["의료관련감염","장관","아포형성","접촉","항생제연관","비법정"],
+  isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:false, note:"법정감염병 아님(의료관련감염) · 접촉주의 — 의심 시 확진 전 선제격리 권고" },
+  room:{ primary:"room:single", label:"1인실 우선(부족 시 코호트·다제내성균 보유자와 분리·전용 화장실/변기)" },
+  release:[
+    "설사 등 증상 호전 후 최소 48시간까지 접촉주의 유지",
+    "유행 상황에서는 치료 전 기간(재원 종료 시까지) 격리 유지 고려",
+    "★재발 흔함 · 무증상 보균자 선별·해제 확정 기준 없음 → 감염관리실 판단"
+  ], duration:"증상 소실 후 48시간(유행 시 재원 전 기간)",
+  extra:{ contact_monitoring:"항생제 스튜어드십(고위험 항생제 관리)이 핵심 · 유행 시 접촉자 조사 · 진단은 2단계(NAAT/GDH 선별 → Toxin A&B EIA 확인)", work_restriction:null, special_precaution:"손위생은 반드시 비누와 물(알코올 젤은 아포에 살균력 없음) · 환경은 아포 사멸 소독제(차아염소산나트륨 등 염소계·과산화수소·과초산) · no-touch 소독(UV·과산화수소 증기) 병용 · 일회용 가운+장갑", notify:"해당 없음(법정 미지정)", cost_support:false },
+  sources:[
+    { guideline:"클로스트리디오이데스 디피실 감염 관리지침(대한의료관련감염관리학회지 26-2)", version:"2021", url:"https://synapse.koreamed.org/upload/synapsexml/1128kjhaicp/pdf/kjicp-26-2-70.pdf", verified:"2026-07-22" },
+    { guideline:"의료관련감염 표준예방지침(질병관리청)", version:"2017", url:"https://www.kdca.go.kr/", verified:"2026-07-22" },
+    { guideline:"IDSA/SHEA CDI Clinical Practice Guidelines(진단·치료: fidaxomicin 우선)", version:"2021", url:"https://www.idsociety.org/practice-guideline/clostridioides-difficile-2021-focused-update/", verified:"2026-07-22" }
+  ] },
+
 { id:"disease:mrpa", name_ko:"다제내성녹농균(MRPA) 감염증", name_en:"MRPA infection",
   aliases:["MRPA","다제내성녹농균","녹농균"], grade:"급4", kcd:"...", tags:["의료관련감염","다제내성균","MDRO","접촉","표본감시"],
   isolation:{ types:["class:iso_contact","class:iso_standard"], negative_pressure:false, mandatory:false, note:"의료기관 내 접촉주의 권고" },
@@ -1039,14 +1056,14 @@ function renderList(){
   document.getElementById("empty").style.display=arr.length?"none":"block";
   var html="";
   arr.forEach(function(d){
-    var lc=levelClass(d), gn=d.grade.replace("급","");
+    var lc=levelClass(d), gn=d.grade.replace("급",""), gcl=/^[1-4]$/.test(gn)?("g"+gn):"gx";
     var lvls="";
     ["class:iso_airborne","class:iso_droplet","class:iso_contact","class:iso_standard"].forEach(function(t){
       if(d.isolation.types.indexOf(t)>=0) lvls+='<span class="gc-lvl '+lvlCls(t)+'">'+lvlShort(t)+'</span>';
     });
     if(isNoIso(d)) lvls='<span class="gc-lvl none">격리불요</span>';
     var roomShort=(d.room.label||"").replace("국가지정 입원치료병상","국가지정").replace(/\s*\(.*?\)\s*/," ").trim();
-    html+='<div class="gc l-'+lc+'" data-id="'+d.id+'"><div class="gc-top"><span class="gc-name">'+esc(d.name_ko)+'</span><span class="gc-g g'+gn+'">'+gn+'</span></div>';
+    html+='<div class="gc l-'+lc+'" data-id="'+d.id+'"><div class="gc-top"><span class="gc-name">'+esc(d.name_ko)+'</span><span class="gc-g '+gcl+'">'+esc(gn)+'</span></div>';
     html+='<div class="gc-lvls">'+lvls+'</div>';
     html+='<div class="gc-room">🏠 '+esc(roomShort||"-")+(d.isolation.negative_pressure?'<span class="gc-neg">음압</span>':'')+'</div></div>';
   });
@@ -1056,10 +1073,10 @@ function renderList(){
 
 function openSheet(id){
   var d=DISEASES.filter(function(x){return x.id===id;})[0]; if(!d)return;
-  var rels=resolveRelease(d), gn=d.grade.replace("급","");
+  var rels=resolveRelease(d), gn=d.grade.replace("급",""), gcl=/^[1-4]$/.test(gn)?("g"+gn):"gx", glab=/^[1-4]$/.test(gn)?(gn+"급"):gn;
   var h="";
   h+='<div class="sh-name">'+esc(d.name_ko)+'</div><div class="sh-en">'+esc(d.name_en)+'</div>';
-  h+='<div class="sh-badges"><span class="sh-b g g'+gn+'">'+gn+'급</span>';
+  h+='<div class="sh-badges"><span class="sh-b g '+gcl+'">'+esc(glab)+'</span>';
   ["class:iso_airborne","class:iso_droplet","class:iso_contact","class:iso_standard"].forEach(function(t){
     if(d.isolation.types.indexOf(t)>=0) h+='<span class="sh-b '+lvlCls(t)+'">'+ISO_LEVELS[t].ko+'</span>';
   });
@@ -2104,6 +2121,22 @@ renderHub();
   <p><b>출처</b>: <a href="https://www.kdca.go.kr/">의료관련감염병 관리지침 2025</a></p>
   <p><a href="#lib">감염병 격리 상세 →</a></p>
 </section>
+<section id="disease-cdiff" class="seo-disease">
+  <h3>클로스트리디오이데스 디피실 감염증(CDI) · Clostridioides difficile infection (별칭: C. difficile, 클로스트리듐 디피실, 위막성대장염, 항생제연관설사, CDAD)</h3>
+  <p><b>분류</b>: 법정감염병 아님(의료관련감염, 신고 의무 없음) · 상병코드(KCD) A04.7 · 질병 ID <code>disease:cdiff</code></p>
+  <p><b>특성</b>: 의료관련감염 · 아포형성 혐기성 그람양성균 · 항생제 연관 설사·위막성대장염 · 접촉</p>
+  <p><b>격리유형</b>: 접촉주의 · 표준주의 (의심 시 확진 전 선제격리 권고)</p>
+  <p><b>격리실</b>: 1인실 우선(부족 시 코호트, 다제내성균 보유자와 분리·전용 화장실/변기)</p>
+  <p><b>신고</b>: 해당 없음(법정 미지정)</p>
+  <p><b>격리해제 기준</b>: 설사 등 증상 호전 후 최소 48시간까지 유지 / 유행 시 재원 전 기간 / 재발 흔함·확정 해제기준 없음 → 감염관리실 판단</p>
+  <p><b>손위생</b>: 반드시 비누와 물 — 알코올 젤은 C. difficile 아포에 살균력이 없음</p>
+  <p><b>환경소독</b>: 아포 사멸 소독제(차아염소산나트륨 등 염소계·과산화수소·과초산), no-touch 소독(UV·과산화수소 증기) 병용</p>
+  <p><b>진단</b>: 2단계 알고리즘 — NAAT 또는 GDH 선별 → Toxin A&amp;B EIA 확인(둘 다 양성이면 진단)</p>
+  <p><b>치료·재발</b>: 경구 반코마이신 또는 피닥소마이신(2021 IDSA/SHEA는 피닥소마이신 우선) · 원인 항생제 중단·항생제 스튜어드십 · 베즐로톡수맙은 국내 미도입</p>
+  <p><b>특별주의</b>: 일회용 가운+장갑, 항생제 스튜어드십이 예방의 핵심</p>
+  <p><b>출처</b>: <a href="https://synapse.koreamed.org/upload/synapsexml/1128kjhaicp/pdf/kjicp-26-2-70.pdf">대한의료관련감염관리학회지 CDI 관리지침 2021</a> · <a href="https://www.kdca.go.kr/">의료관련감염 표준예방지침 2017</a></p>
+  <p><a href="#lib">감염병 격리 상세 →</a></p>
+</section>
 <section id="disease-sti_4" class="seo-disease">
   <h3>성매개감염병(임질·클라미디아 등) · STIs (gonorrhea, chlamydia, etc.) (별칭: 성매개, 임질, 클라미디아, 연성하감, 성기단순포진, 첨규콘딜롬, 트리코모나스)</h3>
   <p><b>분류</b>: 제4급 법정감염병 · 상병코드(KCD) A54-A64 · 질병 ID <code>disease:sti_4</code></p>
@@ -2217,7 +2250,7 @@ renderHub();
   <div id="iso-categories">
     <h4>격리 분류 카테고리</h4>
     <p><b>🔴 음압 격리</b>: 공기매개 — 음압 1인실 필요 — 예: 결핵·홍역·수두·MERS·두창</p>
-    <p><b>🟡 병원 접촉 격리</b>: 다제내성균 등 — 격리실/코호트 — 예: CRE·VRSA·MRSA·VRE</p>
+    <p><b>🟡 병원 접촉 격리</b>: 다제내성균·의료관련감염 — 격리실/코호트 — 예: CRE·VRSA·MRSA·VRE·CDI(클로스트리디오이데스 디피실)</p>
     <p><b>🟠 비말 격리</b>: 1m 이내 비말 — 1인실 — 예: 백일해·수막구균·디프테리아</p>
     <p><b>🟤 장관 격리</b>: 분변·접촉 — 배양 음성까지 — 예: 콜레라·장티푸스·이질·EHEC</p>
     <p><b>✈️ 해외 감염병·검역</b>: 해외 유입·검역 대상 — 예: 에볼라·뎅기·지카·말라리아</p>
@@ -2246,6 +2279,10 @@ renderHub();
     <h4>제4급 감염병 (13종)</h4>
     <p><b>기준·신고</b>: 유행 여부 조사 위한 표본감시 — 7일 이내 신고</p>
     <p><b>해당 질병</b>: 메티실린내성황색포도알균(MRSA) 감염증 · 반코마이신내성장알균(VRE) 감염증 · 다제내성녹농균(MRPA) 감염증 · 다제내성아시네토박터바우마니(MRAB) 감염증 · 칸디다 오리스 감염증 · 인플루엔자 · 코로나바이러스감염증-19 · 수족구병 · 급성호흡기감염증 · 장관감염증 · 성매개감염병(임질·클라미디아 등) · 장내기생충감염증 · 엔테로바이러스감염증</p>
+  </div>
+  <div id="grade-noncat">
+    <h4>참고: 법정감염병 외 병원 내 주요 감염</h4>
+    <p><b>클로스트리디오이데스 디피실 감염증(CDI)</b>: 법정감염병으로 지정되어 있지 않으나(신고 의무 없음), 병원 내 접촉주의가 필요한 대표적 의료관련감염(항생제 연관 설사·위막성대장염)으로 본 격리 참조자료에 포함. 손위생은 비누와 물(알코올 젤은 아포에 무효), 환경소독은 아포 사멸 소독제(차아염소산나트륨 등 염소계) 사용. 상병코드 A04.7.</p>
   </div>
   <p><a href="#lib">급수 분류 상세 →</a></p>
 </section>
