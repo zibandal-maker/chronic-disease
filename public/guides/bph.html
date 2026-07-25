@@ -102,11 +102,22 @@ footer.src li{margin:3px 0}
 .m-head{position:sticky;top:0;background:linear-gradient(135deg,var(--accent),var(--accent-d));color:#fff;padding:15px 20px;border-radius:14px 14px 0 0;display:flex;align-items:center;gap:10px;z-index:2}
 .m-head h3{margin:0;font-size:17px}
 .m-head .m-close{margin-left:auto;background:rgba(255,255,255,.2);border:0;color:#fff;width:32px;height:32px;border-radius:8px;font-size:20px;cursor:pointer;line-height:1}
-.m-body{padding:16px 20px 26px}
-.m-body h4{font-size:13.5px;margin:15px 0 5px;color:var(--accent-d);border-bottom:2px solid var(--accent-l);padding-bottom:3px}
-.m-body h4:first-child{margin-top:0}
-.m-body ul{margin:5px 0;padding-left:19px}.m-body li{margin:3px 0}
-.m-body table{font-size:12.5px}
+.m-body{padding:18px 20px 28px}
+.m-body p{margin:8px 0;line-height:1.68}
+.m-body > p:first-child{background:#F7FAFC;border:1px solid var(--line);border-radius:9px;padding:11px 13px;margin-top:2px}
+.m-body h4{font-size:14px;margin:22px 0 9px;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-d));padding:8px 12px;border-radius:7px;font-weight:700;letter-spacing:-.2px;box-shadow:0 2px 6px rgba(44,122,123,.25)}
+.m-body h4:first-child{margin-top:2px}
+.m-body ul{margin:8px 0;padding-left:20px}.m-body li{margin:5px 0;line-height:1.6}
+.m-body table{font-size:12.5px;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.m-body table th{background:var(--accent-d);color:#fff;border-color:var(--accent-d)}
+.m-body table tr:nth-child(even) td{background:#F7FAFC}
+.drugcard{border:1px solid var(--line);border-radius:11px;margin:14px 0;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.drugname{background:linear-gradient(135deg,var(--accent-l),#fff);border-left:5px solid var(--accent);padding:10px 13px;font-weight:700;font-size:15.5px;color:var(--accent-d)}
+.drugname .bn{color:var(--ink)}
+.drugname .dz{font-weight:400;font-size:12px;color:var(--muted);margin-left:2px}
+.drugbody{padding:2px 14px 12px}
+.drugbody p{margin:9px 0}
+.drugbody > p:first-child{background:none;border:0;padding:0;margin-top:9px}
 .ipss-row{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:13px}
 .ipss-row span{flex:1}.ipss-row select{width:64px;flex:0 0 auto}
 .ipss-out{margin-top:12px;padding:12px;border-radius:9px;background:var(--accent-l);color:var(--accent-d);font-size:14px}
@@ -806,23 +817,22 @@ function openType(id){
   const recRows=(t.recs||[]).map(r=>{const R=REC[r];return R?`<tr><td>${recTargetLabel(R.recommend)}</td><td><span class="grade ${gradeCls(R.norm)}">${R.grade}</span> <span class="small">${REC_SYSTEMS[R.sys]?.label||""} · ${R.source}</span></td><td class="small">${esc(R.note||"")}</td></tr>`:"";}).join("");
   const gateRows=(t.gates||[]).map(g=>GATES[g]?.reason).filter(Boolean).map(esc).join(" · ");
   const html=`<span class="axisbadge" style="background:${t.color}">${t.axis}</span>
-    <h4>개요</h4><p>${d.overview||esc(t.clues)}</p>
-    <h4>단서</h4><p>${esc(t.clues)}</p>
-    <h4>진단 워크업</h4><p>${d.workup||"—"}</p>
-    <h4>감별진단</h4><p>${d.ddx||"—"}</p>
-    <h4>치료 방향</h4><p>${d.treat||"—"}</p>
-    ${recRows?`<h4>권고(등급순)</h4><table><tr><th>권고</th><th>등급</th><th>메모</th></tr>${recRows}</table>`:""}
-    <h4>⚠ pitfall · 게이트</h4><p class="small">${esc(t.pitfall)}${gateRows?" · "+gateRows:""}</p>`;
+    <h4>📌 개요</h4><p>${d.overview||esc(t.clues)}</p>
+    <h4>🔍 진단 단서</h4><p>${esc(t.clues)}</p>
+    <h4>🩺 진단 워크업</h4><p>${d.workup||"—"}</p>
+    <h4>↔️ 감별진단</h4><p>${d.ddx||"—"}</p>
+    <h4>💊 치료 방향</h4><p>${d.treat||"—"}</p>
+    ${recRows?`<h4>📋 권고 (등급순)</h4><table><tr><th>권고</th><th>등급</th><th>메모</th></tr>${recRows}</table>`:""}
+    <h4>⚠️ 놓치기 쉬운 점 · 게이트</h4><p class="small">${esc(t.pitfall)}${gateRows?" · "+gateRows:""}</p>`;
   openModal(t.emoji,esc(t.ko),html);
 }
 function openClass(cid){
   const c=CLASSES[cid];
   const ds=Object.entries(DRUGS).filter(([,d])=>d.cls===cid);
-  let html=`<p style="font-size:14px">${esc(c.mech)}</p><h4>성분별로 살펴보면</h4>`;
+  let html=`<p style="font-size:14px">${esc(c.mech)}</p><h4>💊 성분별로 살펴보면</h4>`;
   ds.forEach(([id,d])=>{
     const brands=(d.brand||[]).filter(Boolean);
-    html+=`<div style="margin:12px 0 4px;font-weight:700;font-size:14.5px;color:var(--accent-d)">${esc(d.ko)}${brands.length?` <span style="color:var(--ink)">· ${esc(brands.join(", "))}</span>`:""} <span class="small" style="font-weight:400">(${esc(d.dose)})</span></div>
-      ${DRUG_DETAIL[id]||(d.note?`<p>${esc(d.note)}</p>`:"")}`;
+    html+=`<div class="drugcard"><div class="drugname">${esc(d.ko)}${brands.length?` <span class="bn">· ${esc(brands.join(", "))}</span>`:""} <span class="dz">${esc(d.dose)}</span></div><div class="drugbody">${DRUG_DETAIL[id]||(d.note?`<p>${esc(d.note)}</p>`:"")}</div></div>`;
   });
   openModal(c.emoji,esc(c.label)+` <span class="small" style="font-weight:400">(${ds.length}종)</span>`,html);
 }
