@@ -1021,5 +1021,83 @@ window.AR_ROLE_TO_CLASS={"drug:ah2-oral":"class:antihistamine_2g_oral","drug:inc
 window.AR_COMPONENT_TO_CLASS={"drug:cetirizine":"class:antihistamine_2g_oral","drug:levocetirizine":"class:antihistamine_2g_oral","drug:fexofenadine":"class:antihistamine_2g_oral","drug:loratadine":"class:antihistamine_2g_oral","drug:desloratadine":"class:antihistamine_2g_oral","drug:bilastine":"class:antihistamine_2g_oral","drug:ebastine":"class:antihistamine_2g_oral","drug:rupatadine":"class:antihistamine_2g_oral","drug:olopatadine":"class:antihistamine_nasal","drug:azelastine":"class:antihistamine_nasal","drug:fluticasone":"class:incs","drug:mometasone":"class:incs","drug:budesonide":"class:incs","drug:beclomethasone":"class:incs","drug:ciclesonide":"class:incs","drug:montelukast":"class:ltra","drug:pranlukast":"class:ltra","drug:zafirlukast":"class:ltra","drug:prednisolone":"class:corticosteroid_oral","drug:methylprednisolone":"class:corticosteroid_oral","drug:xylometazoline":"class:decongestant_nasal","drug:oxymetazoline":"class:decongestant_nasal","drug:dupilumab":"class:biologic","drug:omalizumab":"class:biologic","drug:mepolizumab":"class:biologic","drug:tezepelumab":"class:biologic"};
 window.AR_ID_REVIEW=[{"component":"drug:olopatadine","reason":"경구·비강 양형 — 계열 both 확인"}];
 </script>
+
+<!--BACK_TRAP_V2-->
+<script>
+/* 공용 뒤로가기 트랩 v2 — 모바일/브라우저 뒤로가기가 페이지를 이탈시키지 않고 열린 오버레이(모달·시트)를 닫는다.
+   앱 내부 함수명을 몰라도 동작. 열림=로드 이후 새로 "화면을 실제로 덮는(교차면적 기준) 고정 오버레이"로 감지,
+   닫힘=앱 전역 close/hide 함수 우선 호출 + 남으면 표시 클래스 제거. 오버레이 없으면 뒤로가기는 정상 이탈. */
+(function(){
+  "use strict";
+  if(window.__backTrapInstalled) return; window.__backTrapInstalled=true;
+  var armed=false, consuming=false, baseline=null, raf=0;
+  var SHOW_CLASSES=['on','open','active','show','visible','is-open','opened','shown'];
+
+  function inView(el){                                   // 뷰포트와의 실제 교차로 판정(transform으로 밀린 요소 제외)
+    var r=el.getBoundingClientRect();
+    var iw=Math.min(r.right,innerWidth)-Math.max(r.left,0);
+    var ih=Math.min(r.bottom,innerHeight)-Math.max(r.top,0);
+    if(iw<=0||ih<=0) return false;
+    return iw>=innerWidth*0.5 && (iw*ih)>=innerWidth*innerHeight*0.28;
+  }
+  function znum(s){ var z=parseInt(s.zIndex,10); return isNaN(z)?0:z; }
+  function candidates(){
+    var out=[], body=document.body; if(!body) return out;
+    var all=body.getElementsByTagName('*');
+    for(var i=0;i<all.length;i++){
+      var el=all[i];
+      if(el.id==='portal-hdr') continue;
+      var s=getComputedStyle(el);
+      if(s.position!=='fixed' && s.position!=='absolute') continue;
+      if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity||'1')<0.05) continue;
+      if(znum(s) < 10) continue;
+      if(!inView(el)) continue;
+      out.push(el);
+    }
+    return out;
+  }
+  function overlays(){ if(!baseline) return []; return candidates().filter(function(el){ return !baseline.has(el); }); }
+
+  function appClosers(){
+    var bad={close:1,closed:1,stop:1,print:1,open:1,opener:1,focus:1,blur:1,alert:1,confirm:1,prompt:1};
+    var fns=[];
+    for(var k in window){
+      try{ if(/^(close|hide|dismiss)/i.test(k) && !bad[k] && typeof window[k]==='function' && window[k].length===0) fns.push(window[k]); }catch(e){}
+    }
+    return fns;
+  }
+  function closeAll(){
+    appClosers().forEach(function(fn){ try{fn();}catch(e){} });
+    overlays().forEach(function(el){ SHOW_CLASSES.forEach(function(c){ el.classList.remove(c); }); });
+    try{ if(!overlays().length) document.body.style.overflow=''; }catch(e){}
+  }
+
+  function refresh(){
+    if(raf) return;
+    raf=requestAnimationFrame(function(){
+      raf=0;
+      var open=overlays().length>0;
+      if(open && !armed){ armed=true; try{history.pushState({backTrap:1},'');}catch(e){} }
+      else if(!open && armed && !consuming){ consuming=true; try{history.back();}catch(e){} }
+    });
+  }
+  window.addEventListener('popstate', function(){
+    if(consuming){ consuming=false; armed=false; return; }
+    if(overlays().length>0){ armed=false; closeAll(); refresh(); }
+    else { armed=false; }
+  });
+  function init(){
+    baseline=new WeakSet();
+    candidates().forEach(function(el){ baseline.add(el); });
+    var mo=new MutationObserver(refresh);
+    mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style'],childList:true});
+    document.addEventListener('click',function(){ setTimeout(refresh,0); },true);
+    window.addEventListener('resize',function(){ setTimeout(refresh,0); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(init,80); });
+  else setTimeout(init,80);
+})();
+</script>
+
 </body>
 </html>
