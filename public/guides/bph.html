@@ -754,41 +754,15 @@ function card(title,tag,tagColor,bodyHtml,open){
   return `<div class="card${open?" open":""}"><div class="head">${tag?`<span class="tag" style="background:${tagColor}">${tag}</span>`:""}<span>${title}</span><span class="chev">▶</span></div><div class="body">${bodyHtml}</div></div>`;
 }
 // ----- Modal -----
-// 뒤로가기 트랩: 모달을 열 때 히스토리 항목 1개를 push 해두면, 모바일/브라우저 뒤로가기가
-// 그 항목을 소비하며 popstate를 쏜다 → 페이지 이탈 대신 모달만 닫는다.
-// 모달이 없을 땐 아무것도 push하지 않으므로 뒤로가기가 정상적으로 목록으로 나간다(가두지 않음).
-let __modalHistoryActive=false;
+// (뒤로가기 트랩은 build.js가 전 가이드에 자동 주입하는 공용 모듈이 처리 — 여기선 순수 모달 로직만)
 function openModal(emoji,title,html){
   $("#m-emoji").textContent=emoji||"";
   $("#m-title").innerHTML=title;
   $("#m-body").innerHTML=html;
   const bk=$("#modal-back"); bk.classList.add("open"); bk.scrollTop=0;
   document.body.style.overflow="hidden";
-  if(!__modalHistoryActive){                 // 최초 열림에만 항목 push(콘텐츠 교체 시 중복 push 방지)
-    __modalHistoryActive=true;
-    try{history.pushState({bphModal:true},"");}catch(e){}
-  }
 }
-function __hideModal(){                       // 순수 DOM 숨김(히스토리 조작 없음) — popstate용
-  $("#modal-back").classList.remove("open");
-  document.body.style.overflow="";
-}
-function closeModal(){                        // X·배경·Esc 등 UI로 닫을 때: push한 항목을 back으로 소비
-  if(__modalHistoryActive){
-    __modalHistoryActive=false;
-    __hideModal();
-    try{history.back();}catch(e){}
-  }else{
-    __hideModal();
-  }
-}
-window.addEventListener("popstate",function(){
-  if(__modalHistoryActive){                   // 모달 떠 있는 상태의 뒤로가기 → 닫기만 하고 이탈 막음
-    __modalHistoryActive=false;
-    __hideModal();
-  }
-  // 모달이 없으면 no-op → 뒤로가기가 정상적으로 이전 페이지(목록)로 이동
-});
+function closeModal(){$("#modal-back").classList.remove("open");document.body.style.overflow="";}
 $("#modal-back").addEventListener("click",e=>{if(e.target.id==="modal-back")closeModal();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
 
@@ -1047,5 +1021,114 @@ buildLibrary(); buildFlowForm(); buildSources();
 <section id="reimb-bph"><h3>급여·KCD</h3><p>알파차단제·5ARI·타다라필·항무스카린·β3·데스모프레신 급여 및 KCD N40(전립선증식증)·N31(신경인성방광)·N32.8(과민성방광)·R33(요저류)·R35(빈뇨·야간뇨). 급여는 현행 고시 원문 재검증 필요.</p></section>
 <section id="redflag-bph"><h3>Red flag(의뢰)</h3><p>혈뇨→방광암(C67), PSA↑/DRE 이상→전립선암(C61), 폐색성 신부전, 재발 UTI·방광결석, 마미증후군. 수술 의뢰(TURP·HoLEP·UroLift·Rezūm).</p></section>
 </div></noscript>
+<!--BACK_TRAP_V4-->
+<script>
+/* 공용 뒤로가기 트랩 v4 (build.js 자동 주입) — 뒤로가기 시 열린 팝업을 닫거나, 없으면 "‹ 도서관/돌아가기/목록으로" 뷰-백 실행.
+   둘 다 없으면 정상 이탈. 앱 내부 함수명을 몰라도 DOM 레벨로 동작. */
+(function(){
+  "use strict";
+  if(window.__backTrapInstalled) return; window.__backTrapInstalled=true;
+  var armed=false, consuming=false, baseline=null, backTrapOK=true, lastSched=-1;
+  var SHOW_CLASSES=['on','open','active','show','visible','is-open','opened','shown','in'];
+  function inView(el){
+    var r=el.getBoundingClientRect();
+    var iw=Math.min(r.right,innerWidth)-Math.max(r.left,0);
+    var ih=Math.min(r.bottom,innerHeight)-Math.max(r.top,0);
+    if(iw<=0||ih<=0) return false;
+    return iw>=innerWidth*0.5 && (iw*ih)>=innerWidth*innerHeight*0.22;
+  }
+  function znum(s){ var z=parseInt(s.zIndex,10); return isNaN(z)?0:z; }
+  function candidates(){
+    var out=[], body=document.body; if(!body) return out;
+    var all=body.getElementsByTagName('*');
+    for(var i=0;i<all.length;i++){
+      var el=all[i];
+      if(el.id==='portal-hdr') continue;
+      var s=getComputedStyle(el);
+      if(s.position!=='fixed' && s.position!=='absolute') continue;
+      if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity||'1')<0.05) continue;
+      if(znum(s) < 10) continue;
+      if(!inView(el)) continue;
+      out.push(el);
+    }
+    return out;
+  }
+  function overlays(){ if(!baseline) return []; return candidates().filter(function(el){ return !baseline.has(el); }); }
+  function isVisible(el){
+    var s=getComputedStyle(el); if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity||'1')<0.05) return false;
+    var r=el.getBoundingClientRect(); return r.width>4 && r.height>4 && r.bottom>0 && r.top<innerHeight;
+  }
+  var BACK_ARROW=/[\u2039\u2190\u25C0\u27E8\u276E<]/;
+  function looksBack(t){
+    if(!t) return false; t=t.replace(/\s+/g,' ').trim(); if(t.length>16) return false;
+    if(/\uB3CC\uC544\uAC00\uAE30/.test(t)) return true;            // 돌아가기
+    if(/\uBAA9\uB85D\uC73C\uB85C/.test(t)) return true;            // 목록으로
+    if(/\uB3C4\uC11C\uAD00/.test(t) && BACK_ARROW.test(t)) return true;  // 도서관 + 화살표
+    if(BACK_ARROW.test(t) && /\uBAA9\uB85D|\uB9AC\uC2A4\uD2B8|\uCC98\uC74C|home/i.test(t)) return true;
+    return false;
+  }
+  function backControl(){
+    var nodes=document.body.querySelectorAll('[onclick],a,button,[role=button]');
+    for(var i=0;i<nodes.length;i++){
+      var el=nodes[i];
+      if(el.id==='portal-hdr'||el.closest('#portal-hdr')) continue;
+      if(!isVisible(el)) continue;
+      if(looksBack(el.textContent||'')) return el.closest('[onclick],a,button,[role=button]')||el;
+    }
+    return null;
+  }
+  function closeTarget(){
+    if(overlays().length>0) return {type:'overlay'};
+    if(backTrapOK){ var b=backControl(); if(b) return {type:'back', el:b}; }
+    return null;
+  }
+  function appClosers(){
+    var bad={close:1,closed:1,stop:1,print:1,open:1,opener:1,focus:1,blur:1,alert:1,confirm:1,prompt:1};
+    var fns=[];
+    for(var k in window){
+      try{ if(/^(close|hide|dismiss)/i.test(k) && !bad[k] && typeof window[k]==='function' && window[k].length===0 && (''+window[k]).indexOf('[native code]')<0) fns.push(window[k]); }catch(e){}
+    }
+    try{ if(typeof window.close==='function' && (''+window.close).indexOf('[native code]')<0) fns.push(window.close); }catch(e){}
+    return fns;
+  }
+  function closeOverlays(){
+    appClosers().forEach(function(fn){ try{fn.call(window);}catch(e){} });
+    overlays().forEach(function(el){ SHOW_CLASSES.forEach(function(c){ el.classList.remove(c); }); });
+    try{ if(!overlays().length) document.body.style.overflow=''; }catch(e){}
+  }
+  function refreshOnce(){
+    var has=!!closeTarget();
+    if(has && !armed){ armed=true; try{history.pushState({backTrap:1},'');}catch(e){} }
+    else if(!has && armed && !consuming){ consuming=true; try{history.back();}catch(e){} }
+  }
+  function schedule(){
+    var t=(window.performance&&performance.now)?performance.now():+new Date();
+    if(lastSched>=0 && t-lastSched<80) return; lastSched=t;
+    [0,100,250,450,700].forEach(function(d){ setTimeout(refreshOnce,d); });
+  }
+  window.addEventListener('popstate', function(){
+    if(consuming){ consuming=false; armed=false; return; }
+    var tgt=closeTarget();
+    if(tgt){
+      armed=false;
+      if(tgt.type==='overlay') closeOverlays();
+      else if(tgt.el){ try{tgt.el.click();}catch(e){} }
+      schedule();
+    } else { armed=false; }
+  });
+  function init(){
+    baseline=new WeakSet();
+    candidates().forEach(function(el){ baseline.add(el); });
+    backTrapOK = (backControl()===null);
+    var mo=new MutationObserver(schedule);
+    mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style','hidden'],childList:true});
+    document.addEventListener('click',function(){ schedule(); },true);
+    window.addEventListener('resize',schedule);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(init,80); });
+  else setTimeout(init,80);
+})();
+</script>
+
 </body>
 </html>

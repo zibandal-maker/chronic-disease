@@ -25,6 +25,143 @@ const REG = JSON.parse(fs.readFileSync(path.resolve(ROOT, 'src', 'registry.json'
 const MARK = '<!--PORTAL_HEADER_V1-->';
 const HDR_H = 46; // px, 주입 헤더 높이
 
+// ── 공용 뒤로가기 트랩(Back-Trap): 모든 가이드에 자동 주입 ──
+// 모바일/브라우저 뒤로가기가 페이지를 이탈시키지 않고 (1)열린 팝업을 닫거나 (2)앱 내부 "도서관 돌아가기" 뷰-백을 실행.
+// build.js가 이 모듈의 단일 소스. 신규 가이드는 registry 추가 후 빌드만 하면 자동 적용. (원본 소스 무손상)
+const BT_MARK = '<!--BACK_TRAP_V4-->';
+const BT_OLD_MARKS = ['<!--BACK_TRAP_V1-->','<!--BACK_TRAP_V2-->','<!--BACK_TRAP_V3-->','<!--BACK_TRAP_V4-->'];
+const BACKTRAP = BT_MARK + `
+<script>
+/* 공용 뒤로가기 트랩 v4 (build.js 자동 주입) — 뒤로가기 시 열린 팝업을 닫거나, 없으면 "‹ 도서관/돌아가기/목록으로" 뷰-백 실행.
+   둘 다 없으면 정상 이탈. 앱 내부 함수명을 몰라도 DOM 레벨로 동작. */
+(function(){
+  "use strict";
+  if(window.__backTrapInstalled) return; window.__backTrapInstalled=true;
+  var armed=false, consuming=false, baseline=null, backTrapOK=true, lastSched=-1;
+  var SHOW_CLASSES=['on','open','active','show','visible','is-open','opened','shown','in'];
+  function inView(el){
+    var r=el.getBoundingClientRect();
+    var iw=Math.min(r.right,innerWidth)-Math.max(r.left,0);
+    var ih=Math.min(r.bottom,innerHeight)-Math.max(r.top,0);
+    if(iw<=0||ih<=0) return false;
+    return iw>=innerWidth*0.5 && (iw*ih)>=innerWidth*innerHeight*0.22;
+  }
+  function znum(s){ var z=parseInt(s.zIndex,10); return isNaN(z)?0:z; }
+  function candidates(){
+    var out=[], body=document.body; if(!body) return out;
+    var all=body.getElementsByTagName('*');
+    for(var i=0;i<all.length;i++){
+      var el=all[i];
+      if(el.id==='portal-hdr') continue;
+      var s=getComputedStyle(el);
+      if(s.position!=='fixed' && s.position!=='absolute') continue;
+      if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity||'1')<0.05) continue;
+      if(znum(s) < 10) continue;
+      if(!inView(el)) continue;
+      out.push(el);
+    }
+    return out;
+  }
+  function overlays(){ if(!baseline) return []; return candidates().filter(function(el){ return !baseline.has(el); }); }
+  function isVisible(el){
+    var s=getComputedStyle(el); if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity||'1')<0.05) return false;
+    var r=el.getBoundingClientRect(); return r.width>4 && r.height>4 && r.bottom>0 && r.top<innerHeight;
+  }
+  var BACK_ARROW=/[\\u2039\\u2190\\u25C0\\u27E8\\u276E<]/;
+  function looksBack(t){
+    if(!t) return false; t=t.replace(/\\s+/g,' ').trim(); if(t.length>16) return false;
+    if(/\\uB3CC\\uC544\\uAC00\\uAE30/.test(t)) return true;            // 돌아가기
+    if(/\\uBAA9\\uB85D\\uC73C\\uB85C/.test(t)) return true;            // 목록으로
+    if(/\\uB3C4\\uC11C\\uAD00/.test(t) && BACK_ARROW.test(t)) return true;  // 도서관 + 화살표
+    if(BACK_ARROW.test(t) && /\\uBAA9\\uB85D|\\uB9AC\\uC2A4\\uD2B8|\\uCC98\\uC74C|home/i.test(t)) return true;
+    return false;
+  }
+  function backControl(){
+    var nodes=document.body.querySelectorAll('[onclick],a,button,[role=button]');
+    for(var i=0;i<nodes.length;i++){
+      var el=nodes[i];
+      if(el.id==='portal-hdr'||el.closest('#portal-hdr')) continue;
+      if(!isVisible(el)) continue;
+      if(looksBack(el.textContent||'')) return el.closest('[onclick],a,button,[role=button]')||el;
+    }
+    return null;
+  }
+  function closeTarget(){
+    if(overlays().length>0) return {type:'overlay'};
+    if(backTrapOK){ var b=backControl(); if(b) return {type:'back', el:b}; }
+    return null;
+  }
+  function appClosers(){
+    var bad={close:1,closed:1,stop:1,print:1,open:1,opener:1,focus:1,blur:1,alert:1,confirm:1,prompt:1};
+    var fns=[];
+    for(var k in window){
+      try{ if(/^(close|hide|dismiss)/i.test(k) && !bad[k] && typeof window[k]==='function' && window[k].length===0 && (''+window[k]).indexOf('[native code]')<0) fns.push(window[k]); }catch(e){}
+    }
+    try{ if(typeof window.close==='function' && (''+window.close).indexOf('[native code]')<0) fns.push(window.close); }catch(e){}
+    return fns;
+  }
+  function closeOverlays(){
+    appClosers().forEach(function(fn){ try{fn.call(window);}catch(e){} });
+    overlays().forEach(function(el){ SHOW_CLASSES.forEach(function(c){ el.classList.remove(c); }); });
+    try{ if(!overlays().length) document.body.style.overflow=''; }catch(e){}
+  }
+  function refreshOnce(){
+    var has=!!closeTarget();
+    if(has && !armed){ armed=true; try{history.pushState({backTrap:1},'');}catch(e){} }
+    else if(!has && armed && !consuming){ consuming=true; try{history.back();}catch(e){} }
+  }
+  function schedule(){
+    var t=(window.performance&&performance.now)?performance.now():+new Date();
+    if(lastSched>=0 && t-lastSched<80) return; lastSched=t;
+    [0,100,250,450,700].forEach(function(d){ setTimeout(refreshOnce,d); });
+  }
+  window.addEventListener('popstate', function(){
+    if(consuming){ consuming=false; armed=false; return; }
+    var tgt=closeTarget();
+    if(tgt){
+      armed=false;
+      if(tgt.type==='overlay') closeOverlays();
+      else if(tgt.el){ try{tgt.el.click();}catch(e){} }
+      schedule();
+    } else { armed=false; }
+  });
+  function init(){
+    baseline=new WeakSet();
+    candidates().forEach(function(el){ baseline.add(el); });
+    backTrapOK = (backControl()===null);
+    var mo=new MutationObserver(schedule);
+    mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style','hidden'],childList:true});
+    document.addEventListener('click',function(){ schedule(); },true);
+    window.addEventListener('resize',schedule);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(init,80); });
+  else setTimeout(init,80);
+})();
+</script>
+`;
+
+// 기존 트랩 블록 제거(버전 정규화 + 검색색인 오염 방지)
+function stripBackTrap(html){
+  for(const MK of BT_OLD_MARKS){
+    let i=html.indexOf(MK);
+    while(i>=0){
+      const end=html.indexOf('</script>', i);
+      if(end<0) break;
+      let e=end+'</script>'.length; if(html[e]==='\n') e++;
+      html=html.slice(0,i)+html.slice(e);
+      i=html.indexOf(MK);
+    }
+  }
+  return html;
+}
+// </body> 직전에 최신 트랩 주입
+function injectBackTrap(html){
+  const m=html.match(/<\/body>/i);
+  if(!m){ return html; }
+  const idx=html.lastIndexOf(m[0]);
+  return html.slice(0,idx)+BACKTRAP+'\n'+html.slice(idx);
+}
+
 function findSrc(filename) {
   for (const d of SRC_DIRS) {
     const p = path.join(d, filename);
@@ -153,9 +290,11 @@ for (const g of REG.guides) {
     continue;
   }
   let html = fs.readFileSync(srcPath, 'utf8');
-  // 본문 검색 색인 추출 (헤더 주입 전 원본 기준)
+  html = stripBackTrap(html);   // 소스에 남은 트랩 제거(색인 오염 방지 + 버전 정규화)
+  // 본문 검색 색인 추출 (헤더·트랩 주입 전 원본 기준)
   searchIndex[g.id] = extractSearchIndex(html);
   html = injectHeader(html, g);
+  html = injectBackTrap(html);  // 공용 뒤로가기 트랩 자동 주입(전 가이드 공통)
   fs.writeFileSync(path.join(OUT_DIR, g.out), html);
   const idxKb = (searchIndex[g.id].length/1024).toFixed(0);
   console.log(`✓ ${g.id.padEnd(14)} → guides/${g.out}  (${(html.length/1024).toFixed(0)} KB, 색인 ${idxKb}KB)`);
