@@ -3523,23 +3523,26 @@ render();
 </section>
 </div></noscript>
 
-<!--BACK_TRAP_V2-->
+
+
+<!--BACK_TRAP_V4-->
 <script>
-/* 공용 뒤로가기 트랩 v2 — 모바일/브라우저 뒤로가기가 페이지를 이탈시키지 않고 열린 오버레이(모달·시트)를 닫는다.
-   앱 내부 함수명을 몰라도 동작. 열림=로드 이후 새로 "화면을 실제로 덮는(교차면적 기준) 고정 오버레이"로 감지,
-   닫힘=앱 전역 close/hide 함수 우선 호출 + 남으면 표시 클래스 제거. 오버레이 없으면 뒤로가기는 정상 이탈. */
+/* 공용 뒤로가기 트랩 v4 — 모바일/브라우저 뒤로가기가 페이지를 이탈시키지 않고
+   (1) 열린 팝업(모달·시트)을 닫거나, (2) 팝업이 없으면 앱 내부 "‹ 도서관/돌아가기/목록으로" 뷰-백을 실행한다.
+   둘 다 없으면 뒤로가기는 정상 이탈(사용자 안 가둠). 앱 내부 함수명을 몰라도 DOM 레벨로 동작. */
 (function(){
   "use strict";
   if(window.__backTrapInstalled) return; window.__backTrapInstalled=true;
-  var armed=false, consuming=false, baseline=null, raf=0;
-  var SHOW_CLASSES=['on','open','active','show','visible','is-open','opened','shown'];
+  var armed=false, consuming=false, baseline=null, backTrapOK=true, lastSched=-1;
+  var SHOW_CLASSES=['on','open','active','show','visible','is-open','opened','shown','in'];
 
-  function inView(el){                                   // 뷰포트와의 실제 교차로 판정(transform으로 밀린 요소 제외)
+  /* ---- 오버레이(팝업) 감지 ---- */
+  function inView(el){
     var r=el.getBoundingClientRect();
     var iw=Math.min(r.right,innerWidth)-Math.max(r.left,0);
     var ih=Math.min(r.bottom,innerHeight)-Math.max(r.top,0);
     if(iw<=0||ih<=0) return false;
-    return iw>=innerWidth*0.5 && (iw*ih)>=innerWidth*innerHeight*0.28;
+    return iw>=innerWidth*0.5 && (iw*ih)>=innerWidth*innerHeight*0.22;
   }
   function znum(s){ var z=parseInt(s.zIndex,10); return isNaN(z)?0:z; }
   function candidates(){
@@ -3559,41 +3562,85 @@ render();
   }
   function overlays(){ if(!baseline) return []; return candidates().filter(function(el){ return !baseline.has(el); }); }
 
+  /* ---- 앱 내부 "도서관 돌아가기" 뷰-백 버튼 감지 ---- */
+  function isVisible(el){
+    var s=getComputedStyle(el); if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity||'1')<0.05) return false;
+    var r=el.getBoundingClientRect(); return r.width>4 && r.height>4 && r.bottom>0 && r.top<innerHeight;
+  }
+  var BACK_ARROW=/[\u2039\u2190\u25C0\u27E8\u276E<]/;   // ‹ ← ◀ ⟨ ❮ <
+  function looksBack(t){
+    if(!t) return false; t=t.replace(/\s+/g,' ').trim(); if(t.length>16) return false;
+    if(/돌아가기/.test(t)) return true;
+    if(/목록으로/.test(t)) return true;
+    if(/도서관/.test(t) && BACK_ARROW.test(t)) return true;
+    if(BACK_ARROW.test(t) && /목록|리스트|처음|home/i.test(t)) return true;
+    return false;
+  }
+  function backControl(){
+    var nodes=document.body.querySelectorAll('[onclick],a,button,[role=button]');
+    for(var i=0;i<nodes.length;i++){
+      var el=nodes[i];
+      if(el.id==='portal-hdr'||el.closest('#portal-hdr')) continue;
+      if(!isVisible(el)) continue;
+      if(looksBack(el.textContent||'')){
+        return el.closest('[onclick],a,button,[role=button]')||el;
+      }
+    }
+    return null;
+  }
+
+  /* ---- 무엇을 닫을지 결정(팝업 우선, 없으면 뷰-백) ---- */
+  function closeTarget(){
+    if(overlays().length>0) return {type:'overlay'};
+    if(backTrapOK){ var b=backControl(); if(b) return {type:'back', el:b}; }
+    return null;
+  }
+
   function appClosers(){
     var bad={close:1,closed:1,stop:1,print:1,open:1,opener:1,focus:1,blur:1,alert:1,confirm:1,prompt:1};
     var fns=[];
     for(var k in window){
-      try{ if(/^(close|hide|dismiss)/i.test(k) && !bad[k] && typeof window[k]==='function' && window[k].length===0) fns.push(window[k]); }catch(e){}
+      try{ if(/^(close|hide|dismiss)/i.test(k) && !bad[k] && typeof window[k]==='function' && window[k].length===0 && (''+window[k]).indexOf('[native code]')<0) fns.push(window[k]); }catch(e){}
     }
+    try{ if(typeof window.close==='function' && (''+window.close).indexOf('[native code]')<0) fns.push(window.close); }catch(e){}
     return fns;
   }
-  function closeAll(){
-    appClosers().forEach(function(fn){ try{fn();}catch(e){} });
+  function closeOverlays(){
+    appClosers().forEach(function(fn){ try{fn.call(window);}catch(e){} });
     overlays().forEach(function(el){ SHOW_CLASSES.forEach(function(c){ el.classList.remove(c); }); });
     try{ if(!overlays().length) document.body.style.overflow=''; }catch(e){}
   }
 
-  function refresh(){
-    if(raf) return;
-    raf=requestAnimationFrame(function(){
-      raf=0;
-      var open=overlays().length>0;
-      if(open && !armed){ armed=true; try{history.pushState({backTrap:1},'');}catch(e){} }
-      else if(!open && armed && !consuming){ consuming=true; try{history.back();}catch(e){} }
-    });
+  function refreshOnce(){
+    var has=!!closeTarget();
+    if(has && !armed){ armed=true; try{history.pushState({backTrap:1},'');}catch(e){} }
+    else if(!has && armed && !consuming){ consuming=true; try{history.back();}catch(e){} }
   }
+  function schedule(){
+    var t=(window.performance&&performance.now)?performance.now():+new Date();
+    if(lastSched>=0 && t-lastSched<80) return; lastSched=t;
+    [0,100,250,450,700].forEach(function(d){ setTimeout(refreshOnce,d); });
+  }
+
   window.addEventListener('popstate', function(){
     if(consuming){ consuming=false; armed=false; return; }
-    if(overlays().length>0){ armed=false; closeAll(); refresh(); }
-    else { armed=false; }
+    var tgt=closeTarget();
+    if(tgt){
+      armed=false;
+      if(tgt.type==='overlay') closeOverlays();
+      else if(tgt.el){ try{tgt.el.click();}catch(e){} }   // 앱 자체 "도서관 돌아가기" 실행
+      schedule();                                          // 더 깊으면 재무장
+    } else { armed=false; }
   });
+
   function init(){
     baseline=new WeakSet();
     candidates().forEach(function(el){ baseline.add(el); });
-    var mo=new MutationObserver(refresh);
-    mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style'],childList:true});
-    document.addEventListener('click',function(){ setTimeout(refresh,0); },true);
-    window.addEventListener('resize',function(){ setTimeout(refresh,0); });
+    backTrapOK = (backControl()===null);      // 로드(도서관 뷰)에 이미 백버튼 보이면 신호로 못 씀 → 뷰-백 트랩 비활성
+    var mo=new MutationObserver(schedule);
+    mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style','hidden'],childList:true});
+    document.addEventListener('click',function(){ schedule(); },true);
+    window.addEventListener('resize',schedule);
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(init,80); });
   else setTimeout(init,80);
