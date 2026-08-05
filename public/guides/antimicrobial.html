@@ -3458,5 +3458,83 @@ window.ABX_ID_MAP={"AMX":"drug:amoxicillin","AMC":"drug:amoxicillin_clavulanate"
 window.ABX_CLASS_MAP={"BETALACTAM":"class:betalactam","PCN":"class:pcn","PCN_APSEUDO":"class:pcn_apseudo","BLBLI":"class:blbli","CEPH":"class:ceph","CEPH_1":"class:ceph_1","CEPH_2":"class:ceph_2","CEPH_3":"class:ceph_3","CEPH_4":"class:ceph_4","CEPH_5":"class:ceph_5","CEPH_SIDERO":"class:ceph_sidero","CARBAPENEM":"class:carbapenem","CEPHAMYCIN":"class:cephamycin","MONOBACTAM":"class:monobactam","FQ":"class:fq","AMINOGLY":"class:aminogly","MACROLIDE":"class:macrolide","TETRA":"class:tetra","GLYCOPEP":"class:glycopep","OXAZOLID":"class:oxazolid","LIPOPEPTIDE":"class:lipopeptide","LINCO":"class:linco","NITROIMID":"class:nitroimid","SULFA":"class:sulfa","OTHER_ABX":"class:other_abx","AZOLE":"class:azole","ECHINOCANDIN":"class:echinocandin","GLYCYLCYCLINE":"class:glycylcycline","POLYMYXIN":"class:polymyxin","NITROFURAN":"class:nitrofuran","FOSFOMYCIN_CL":"class:fosfomycin_cl","ANTIVIRAL_HERPES":"class:antiviral_herpes","POLYENE":"class:polyene","ANTIMETAB_AF":"class:antimetab_af","ANTIVIRAL_CMV":"class:antiviral_cmv","NEURAMINIDASE":"class:neuraminidase","CAP_ENDONUCLEASE":"class:cap_endonuclease","ANTIVIRAL_COVID":"class:antiviral_covid","ANTI_TB":"class:anti_tb","ANTIMALARIAL":"class:antimalarial","ANTHELMINTIC":"class:anthelmintic","ANTIPROTOZOAL":"class:antiprotozoal","ANTITOXIN_IG":"class:antitoxin_ig"};/* provisional: 계열 표준체계는 통합 프로젝트서 확정 */
 window.ABX_ID_REVIEW=[{"localId":"TIG","name":"파상풍 면역글로불린 (TIG)","reason":"면역글로불린/항독소 — drug: 부적합"},{"localId":"RIG","name":"광견병 면역글로불린 (RIG)","reason":"면역글로불린/항독소 — drug: 부적합"},{"localId":"BAT","name":"보툴리눔 항독소 (BAT)","reason":"면역글로불린/항독소 — drug: 부적합"},{"localId":"DAT","name":"디프테리아 항독소 (DAT)","reason":"면역글로불린/항독소 — drug: 부적합"}];/* drug: 부적합 — 별도 네임스페이스 대기 */
 </script>
+
+<!--BACK_TRAP_V2-->
+<script>
+/* 공용 뒤로가기 트랩 v2 — 모바일/브라우저 뒤로가기가 페이지를 이탈시키지 않고 열린 오버레이(모달·시트)를 닫는다.
+   앱 내부 함수명을 몰라도 동작. 열림=로드 이후 새로 "화면을 실제로 덮는(교차면적 기준) 고정 오버레이"로 감지,
+   닫힘=앱 전역 close/hide 함수 우선 호출 + 남으면 표시 클래스 제거. 오버레이 없으면 뒤로가기는 정상 이탈. */
+(function(){
+  "use strict";
+  if(window.__backTrapInstalled) return; window.__backTrapInstalled=true;
+  var armed=false, consuming=false, baseline=null, raf=0;
+  var SHOW_CLASSES=['on','open','active','show','visible','is-open','opened','shown'];
+
+  function inView(el){                                   // 뷰포트와의 실제 교차로 판정(transform으로 밀린 요소 제외)
+    var r=el.getBoundingClientRect();
+    var iw=Math.min(r.right,innerWidth)-Math.max(r.left,0);
+    var ih=Math.min(r.bottom,innerHeight)-Math.max(r.top,0);
+    if(iw<=0||ih<=0) return false;
+    return iw>=innerWidth*0.5 && (iw*ih)>=innerWidth*innerHeight*0.28;
+  }
+  function znum(s){ var z=parseInt(s.zIndex,10); return isNaN(z)?0:z; }
+  function candidates(){
+    var out=[], body=document.body; if(!body) return out;
+    var all=body.getElementsByTagName('*');
+    for(var i=0;i<all.length;i++){
+      var el=all[i];
+      if(el.id==='portal-hdr') continue;
+      var s=getComputedStyle(el);
+      if(s.position!=='fixed' && s.position!=='absolute') continue;
+      if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity||'1')<0.05) continue;
+      if(znum(s) < 10) continue;
+      if(!inView(el)) continue;
+      out.push(el);
+    }
+    return out;
+  }
+  function overlays(){ if(!baseline) return []; return candidates().filter(function(el){ return !baseline.has(el); }); }
+
+  function appClosers(){
+    var bad={close:1,closed:1,stop:1,print:1,open:1,opener:1,focus:1,blur:1,alert:1,confirm:1,prompt:1};
+    var fns=[];
+    for(var k in window){
+      try{ if(/^(close|hide|dismiss)/i.test(k) && !bad[k] && typeof window[k]==='function' && window[k].length===0) fns.push(window[k]); }catch(e){}
+    }
+    return fns;
+  }
+  function closeAll(){
+    appClosers().forEach(function(fn){ try{fn();}catch(e){} });
+    overlays().forEach(function(el){ SHOW_CLASSES.forEach(function(c){ el.classList.remove(c); }); });
+    try{ if(!overlays().length) document.body.style.overflow=''; }catch(e){}
+  }
+
+  function refresh(){
+    if(raf) return;
+    raf=requestAnimationFrame(function(){
+      raf=0;
+      var open=overlays().length>0;
+      if(open && !armed){ armed=true; try{history.pushState({backTrap:1},'');}catch(e){} }
+      else if(!open && armed && !consuming){ consuming=true; try{history.back();}catch(e){} }
+    });
+  }
+  window.addEventListener('popstate', function(){
+    if(consuming){ consuming=false; armed=false; return; }
+    if(overlays().length>0){ armed=false; closeAll(); refresh(); }
+    else { armed=false; }
+  });
+  function init(){
+    baseline=new WeakSet();
+    candidates().forEach(function(el){ baseline.add(el); });
+    var mo=new MutationObserver(refresh);
+    mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style'],childList:true});
+    document.addEventListener('click',function(){ setTimeout(refresh,0); },true);
+    window.addEventListener('resize',function(){ setTimeout(refresh,0); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(init,80); });
+  else setTimeout(init,80);
+})();
+</script>
+
 </body>
 </html>
