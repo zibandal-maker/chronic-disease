@@ -718,14 +718,41 @@ function card(title,tag,tagColor,bodyHtml,open){
   return `<div class="card${open?" open":""}"><div class="head">${tag?`<span class="tag" style="background:${tagColor}">${tag}</span>`:""}<span>${title}</span><span class="chev">▶</span></div><div class="body">${bodyHtml}</div></div>`;
 }
 // ----- Modal -----
+// 뒤로가기 트랩: 모달을 열 때 히스토리 항목 1개를 push 해두면, 모바일/브라우저 뒤로가기가
+// 그 항목을 소비하며 popstate를 쏜다 → 페이지 이탈 대신 모달만 닫는다.
+// 모달이 없을 땐 아무것도 push하지 않으므로 뒤로가기가 정상적으로 목록으로 나간다(가두지 않음).
+let __modalHistoryActive=false;
 function openModal(emoji,title,html){
   $("#m-emoji").textContent=emoji||"";
   $("#m-title").innerHTML=title;
   $("#m-body").innerHTML=html;
   const bk=$("#modal-back"); bk.classList.add("open"); bk.scrollTop=0;
   document.body.style.overflow="hidden";
+  if(!__modalHistoryActive){                 // 최초 열림에만 항목 push(콘텐츠 교체 시 중복 push 방지)
+    __modalHistoryActive=true;
+    try{history.pushState({bphModal:true},"");}catch(e){}
+  }
 }
-function closeModal(){$("#modal-back").classList.remove("open");document.body.style.overflow="";}
+function __hideModal(){                       // 순수 DOM 숨김(히스토리 조작 없음) — popstate용
+  $("#modal-back").classList.remove("open");
+  document.body.style.overflow="";
+}
+function closeModal(){                        // X·배경·Esc 등 UI로 닫을 때: push한 항목을 back으로 소비
+  if(__modalHistoryActive){
+    __modalHistoryActive=false;
+    __hideModal();
+    try{history.back();}catch(e){}
+  }else{
+    __hideModal();
+  }
+}
+window.addEventListener("popstate",function(){
+  if(__modalHistoryActive){                   // 모달 떠 있는 상태의 뒤로가기 → 닫기만 하고 이탈 막음
+    __modalHistoryActive=false;
+    __hideModal();
+  }
+  // 모달이 없으면 no-op → 뒤로가기가 정상적으로 이전 페이지(목록)로 이동
+});
 $("#modal-back").addEventListener("click",e=>{if(e.target.id==="modal-back")closeModal();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
 
