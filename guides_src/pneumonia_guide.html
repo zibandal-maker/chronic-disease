@@ -1,0 +1,1760 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>폐렴 처방 가이드 — 지역사회획득·병원획득·경험적 항생제·급여삭감 | 임상의용</title>
+<meta name="description" content="성인 폐렴(CAP·HAP·VAP·흡인) 경험적 항생제 결정기. 한국 CAP 2018·HAP 2025 + IDSA 보완, 균주 동정·기저질환·면역저하 3축 고려, 심평원 급여·삭감 배지.">
+<meta name="keywords" content="폐렴, pneumonia, 지역사회획득 폐렴, CAP, 병원획득 폐렴, HAP, 인공호흡기연관 폐렴, VAP, 흡인성 폐렴, aspiration pneumonia, 경험적 항생제, empirical antibiotics, 중증도, CURB-65, PSI, de-escalation, 삭감, 급여기준, 심평원, HIRA, 폐렴구균, 마이코플라스마, 레지오넬라, 녹농균, Pseudomonas, MRSA, MSSA, 아시네토박터, CRAB, ESBL, CRE, 결핵 감별, 면역저하, PCP, 폐농양, 농흉, J18, J13, J15, J69">
+<link rel="canonical" href="https://chronic-disease-dun.vercel.app/guides/pneumonia">
+<meta property="og:type" content="website">
+<meta property="og:title" content="폐렴 처방 가이드 — CAP·HAP·VAP 경험적 항생제·급여삭감 | 임상의용">
+<meta property="og:description" content="한국 폐렴 진료지침 + 심평원 급여·삭감을 함께 보여주는 경험적 항생제 결정기.">
+<meta property="og:url" content="https://chronic-disease-dun.vercel.app/guides/pneumonia">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":["MedicalWebPage","SoftwareApplication"],"name":"폐렴 처방 가이드","inLanguage":"ko","applicationCategory":"MedicalApplication","description":"성인 폐렴(CAP·HAP·VAP·흡인) 경험적 항생제 결정기 — 한국 CAP 2018·HAP 2025 + IDSA 2016 보완, 균주 동정·기저질환·면역저하 3축 고려, 심평원 급여·삭감.","audience":{"@type":"MedicalAudience","audienceType":"Clinician"},"about":{"@type":"MedicalCondition","name":"폐렴","alternateName":["Pneumonia","CAP","HAP","VAP"],"code":{"@type":"MedicalCode","codingSystem":"ICD-10","codeValue":"J18"}},"lastReviewed":"2026-08-14","isBasedOn":[{"@type":"MedicalGuideline","name":"성인 지역사회획득 폐렴 항생제 사용지침","url":"https://www.ksid.or.kr/file/190401_kor.pdf"},{"@type":"MedicalGuideline","name":"Korean Guidelines for Management and Antibiotic Therapy in Adult HAP/VAP (11 PICO)","url":"https://e-trd.org/upload/pdf/trd-2024-0135.pdf"},{"@type":"MedicalGuideline","name":"Management of Adults With HAP/VAP","url":"https://www.idsociety.org/practice-guideline/hap_vap/"},{"@type":"MedicalGuideline","name":"Diagnosis and Treatment of Adults with CAP","url":"https://www.atsjournals.org/doi/10.1164/rccm.201908-1581ST"},{"@type":"MedicalGuideline","name":"카바페넴 내성 장내세균목 감염증 항생제 사용 지침","url":"https://common.health.kr/shared/healthkr/pharmreview/카바페넴 내성 항생제_최종.pdf"},{"@type":"MedicalGuideline","name":"중증 인플루엔자 치료 지침","url":"https://www.ekjm.org/journal/view.php?doi=10.3904/kjm.2014.86.1.116"}]}</script>
+<style>
+/* ===== canonical-view.css v1.0 (동결 미러 인라인 — 단일파일 배포용) ===== */
+:root{
+  color-scheme:light only;
+  --bg:#f4f6f8; --panel:#ffffff; --panel2:#eef1f4; --line:#d6dde3;
+  --ink:#1a2530; --ink-dim:#4a5a68; --ink-faint:#8493a0;
+  --radius:14px;
+  --pay:#b87514; --pay-bg:#fbf0d8;
+  --clin:#2c6fb0; --clin-bg:#e4eef8;
+  --care:#1a8a72; --care-bg:#dcf2ec;
+  --ok:#1f9d54; --ok-bg:#dcf2e4;
+  --warn:#b87514; --warn-bg:#fbf0d8;
+  --block:#c43838; --block-bg:#fbe2e2;
+  --alert:#d8632a;
+}
+.tabbar{position:sticky;top:0;z-index:60;display:flex;background:rgba(255,255,255,0.97);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.tabbar button{flex:1;background:none;border:none;color:var(--ink-faint);
+  font-size:13.5px;font-weight:600;padding:13px 0;cursor:pointer;position:relative;
+  font-family:inherit;touch-action:manipulation;transition:color .15s}
+.tabbar button .ti{font-size:15px;margin-right:5px}
+.tabbar button.on{color:var(--ink)}
+.tabbar button.on:after{content:"";position:absolute;left:18%;right:18%;bottom:0;
+  height:2.5px;background:var(--care);border-radius:2px}
+.pane{display:none}
+.pane.on{display:block}
+.field{display:flex;flex-direction:column;gap:2px}
+.field label{font-size:10px;color:var(--ink-faint);padding-left:2px;letter-spacing:0.02em}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{background:var(--panel2);border:1px solid var(--line);color:var(--ink-dim);
+  border-radius:18px;padding:5px 11px;font-size:12.5px;cursor:pointer;
+  user-select:none;transition:all .13s;font-weight:500}
+.chip:active{transform:scale(0.96)}
+.chip.on{background:var(--care-bg);border-color:var(--care);color:var(--care)}
+.chip.on.danger{background:var(--block-bg);border-color:var(--block);color:var(--block)}
+.chip-group{margin-bottom:6px}
+.chip-group .gl{font-size:10px;color:var(--ink-faint);margin:0 0 4px 2px;
+  text-transform:uppercase;letter-spacing:0.05em}
+.stream{padding:14px 14px 0;max-width:560px;margin:0 auto}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  margin-bottom:12px;overflow:hidden;animation:rise .25s ease}
+.card .ch{display:flex;align-items:center;gap:8px;padding:11px 14px;
+  font-size:13px;font-weight:600;border-bottom:1px solid var(--line)}
+.card .ch .ic{font-size:16px}
+.card .ch .tag{margin-left:auto;font-size:10px;font-weight:600;padding:2px 8px;
+  border-radius:10px;letter-spacing:0.03em}
+.card.pay .ch{color:var(--pay)}   .card.pay .ch .tag{background:var(--pay-bg);color:var(--pay)}
+.card.clin .ch{color:var(--clin)} .card.clin .ch .tag{background:var(--clin-bg);color:var(--clin)}
+.card.care .ch{color:var(--care)} .card.care .ch .tag{background:var(--care-bg);color:var(--care)}
+.drugclass-box{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+.dc-row{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid rgba(42,55,68,0.12);
+  font-size:12.5px;line-height:1.45}
+.dc-row:last-child{border-bottom:none}
+.dc-k{flex-shrink:0;width:52px;font-size:10.5px;font-weight:700;color:var(--ink-faint);padding-top:1px}
+.dc-v{color:var(--ink-dim)}
+.dc-reimb .dc-k{color:var(--pay)} .dc-reimb .dc-v{color:var(--ink-dim)}
+.dc-feat .dc-k{color:var(--care)} .dc-feat .dc-v{color:var(--ink)}
+.dc-contra .dc-k{color:var(--block)} .dc-contra .dc-v{color:var(--block)}
+.conflict{display:flex;gap:9px;padding:10px 12px;border-radius:11px;font-size:12.5px;
+  margin:6px 0 0;line-height:1.45}
+.conflict.soft{background:var(--warn-bg);border:1px solid var(--line);color:var(--warn)}
+.conflict.hard{background:var(--block-bg);border:1px solid var(--line);color:var(--block)}
+.conflict .ci{flex-shrink:0}
+.conflict b{color:var(--ink)}
+.dcclass{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:9px;overflow:hidden}
+.empty{text-align:center;color:var(--ink-faint);font-size:13px;padding:30px 14px;line-height:1.6}
+.empty .big{font-size:34px;margin-bottom:8px;opacity:0.5}
+.foot{text-align:center;font-size:10.5px;color:var(--ink-faint);padding:18px 14px 8px;line-height:1.6}
+.foot b{color:var(--ink-dim)}
+.srcbanner{margin-top:14px;padding:11px 13px;background:var(--panel);border:1px solid var(--line);
+  border-radius:11px;font-size:11px;color:var(--ink-faint);line-height:1.9;text-align:center}
+.srcbanner a{color:var(--clin);text-decoration:none;font-weight:600}
+.foot .footnote{display:block;margin-top:8px;font-size:10px;color:var(--ink-faint);line-height:1.5;font-style:italic}
+
+/* ===== 앱 전용 가산(정본에 없는 것만) ===== */
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%}
+.topbar{padding:14px 16px 10px;background:var(--panel);border-bottom:1px solid var(--line)}
+.topbar h1{margin:0;font-size:17px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
+.topbar h1 .sub{font-size:11px;font-weight:600;color:var(--ink-faint);margin-left:auto}
+.wrap{max-width:560px;margin:0 auto;padding:14px}
+.cb{padding:11px 14px}
+.subttl{font-size:11px;font-weight:700;color:var(--ink-faint);margin:12px 2px 5px;text-transform:uppercase;letter-spacing:.04em}
+.opt{padding:7px 0;border-bottom:1px solid rgba(42,55,68,.10)}
+.opt:last-child{border-bottom:none}
+.opt .ol{font-size:13.5px;font-weight:600;color:var(--ink)}
+.opt .od{font-size:12.5px;color:var(--ink-dim);margin-top:1px}
+.opt .stc{margin-top:3px;font-size:11px;line-height:1.5}
+.opt .stc .g{color:var(--clin);font-weight:600}
+.opt .stc .p{color:var(--care);font-weight:600}
+.libItem summary{cursor:pointer;list-style:none;padding:11px 13px;font-size:13.5px;font-weight:700;color:var(--ink);display:flex;gap:8px;align-items:center}
+.libItem summary::-webkit-details-marker{display:none}
+.libItem summary .cat{font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--panel2);color:var(--ink-faint)}
+.libItem[open] summary{border-bottom:1px solid var(--line)}
+.libItem .body{padding:10px 13px}
+#libSearch{width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--line);
+  border-radius:11px;padding:10px 12px;font-size:14px;color:var(--ink);outline:none;margin-bottom:10px}
+#libSearch:focus{border-color:var(--care)}
+.simbtn{width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:11px;
+  padding:10px 13px;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;cursor:pointer;font-family:inherit}
+.simbtn:active{transform:scale(.99)}
+.simbtn .d{font-size:11px;color:var(--ink-faint);font-weight:500;margin-top:2px}
+.riskbadge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;background:var(--pay-bg);color:var(--pay);margin-left:6px}
+.note{font-size:11px;color:var(--ink-faint);padding:2px 2px 8px;line-height:1.5}
+/* 도서관 슬라이드-업 시트(팝업) — 뒤로가기 트랩이 fixed 오버레이 감지 */
+.sheet-back{position:fixed;inset:0;z-index:110;background:rgba(20,28,36,.42);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.sheet-back.on{opacity:1;visibility:visible}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;background:var(--panel);border-radius:16px 16px 0 0;max-height:84vh;
+  transform:translateY(101%);transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:0 -8px 30px rgba(20,28,36,.18);display:flex;flex-direction:column}
+.sheet.on{transform:translateY(0)}
+.sheet-h{display:flex;align-items:center;gap:8px;padding:13px 15px;border-bottom:1px solid var(--line);font-size:14px;font-weight:800;color:var(--ink);flex-shrink:0}
+.sheet-h .x{margin-left:auto;font-size:22px;line-height:1;color:var(--ink-faint);cursor:pointer;background:none;border:none;font-family:inherit}
+.sheet-b{overflow:auto;padding:12px 15px 24px;-webkit-overflow-scrolling:touch}
+.librow{display:flex;align-items:center;gap:9px;padding:13px 12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:8px;
+  font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;width:100%;text-align:left;font-family:inherit}
+.librow:active{transform:scale(.99)}
+.librow .lc{font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--care-bg);color:var(--care);margin-left:auto}
+/* 약물 도표 */
+.drugtbl{width:100%;border-collapse:collapse;font-size:11.5px}
+.drugtbl th{background:var(--panel2);color:var(--ink-dim);padding:6px;border:1px solid var(--line);font-size:10.5px;text-align:left}
+.drugtbl td{padding:6px;border:1px solid var(--line);color:var(--ink);text-align:left}
+.drugtbl td.en{color:var(--ink-faint);font-size:10.5px}
+.drugtbl td.rk{color:var(--pay);font-weight:800;text-align:center;white-space:nowrap}
+.drugtbl th.rowhead{background:var(--clin-bg);color:var(--clin);font-weight:800;text-align:left;font-size:11px}
+/* 핵심노트·특수상황 blocks */
+.keypoints{margin:2px 0 0;padding-left:0;list-style:none}
+.keypoints li{position:relative;padding:4px 0 4px 15px;font-size:12px;color:var(--ink-dim);line-height:1.5}
+.keypoints li:before{content:"›";position:absolute;left:2px;color:var(--care);font-weight:800}
+.blk{padding:8px 0;border-bottom:1px solid rgba(42,55,68,.1)}
+.blk:last-child{border-bottom:none}
+.blk .bl{font-size:12.5px;font-weight:700;color:var(--ink)}
+.blk .bd{font-size:12.5px;color:var(--ink-dim);margin-top:1px}
+/* 플로우 대분류 트리(아코디언) */
+.acc-top{margin-bottom:10px}
+.acc-top .gl{font-size:10px;color:var(--ink-faint);margin:0 0 5px 2px;text-transform:uppercase;letter-spacing:.05em}
+.typebtns{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.typebtn{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px 12px;cursor:pointer;
+  font-size:13.5px;font-weight:700;color:var(--ink-dim);text-align:left;font-family:inherit;transition:all .13s}
+.typebtn .td{display:block;font-size:10.5px;font-weight:500;color:var(--ink-faint);margin-top:2px}
+.typebtn.on{border-color:var(--care);background:var(--care-bg);color:var(--care)}
+.typebtn.on .td{color:var(--care)}
+.accSec{background:var(--panel);border:1px solid var(--line);border-radius:11px;margin-bottom:7px;overflow:hidden}
+.accSec>summary{cursor:pointer;list-style:none;padding:10px 13px;font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px}
+.accSec>summary::-webkit-details-marker{display:none}
+.accSec>summary .arw{color:var(--ink-faint);font-size:12px;transition:transform .15s}
+.accSec[open]>summary .arw{transform:rotate(90deg)}
+.accSec>summary .sel{margin-left:auto;font-size:10.5px;font-weight:600;color:var(--care);text-align:right}
+.accSec>summary .sel.none{color:var(--ink-faint);font-weight:500}
+.accSec[open]>summary{border-bottom:1px solid var(--line)}
+.accSec .abody{padding:10px 13px}
+.accSec .hint{font-size:11px;color:var(--ink-faint);margin-bottom:8px;line-height:1.5}
+</style>
+</head><body>
+
+<div class="topbar"><h1><span>🫁</span>폐렴 처방 가이드<span class="sub">경험적 결정기 · v1</span></h1></div>
+
+<div class="tabbar">
+  <button id="tab-lib" class="on"><span class="ti">📚</span>도서관</button>
+  <button id="tab-sim"><span class="ti">🧪</span>시뮬레이션</button>
+  <button id="tab-flow"><span class="ti">🩺</span>플로우</button>
+</div>
+
+<div id="pane-lib" class="pane on"><div class="wrap">
+  <input id="libSearch" placeholder="유형·원인균·약물·급여 검색…">
+  <div id="libGrid"></div>
+</div></div>
+
+<div id="pane-sim" class="pane"><div class="wrap">
+  <div class="note">프리셋 증례를 누르면 결정기가 그대로 돌아갑니다(교육용). 실제 처방은 플로우에서.</div>
+  <div id="simBtns"></div>
+  <div id="simStream" class="stream" style="padding-left:0;padding-right:0"></div>
+</div></div>
+
+<div id="pane-flow" class="pane"><div class="wrap">
+  <div id="flowInputs"></div>
+  <div id="stream" class="stream" style="padding-left:0;padding-right:0"></div>
+  <div id="empty" class="empty"><div class="big">🩺</div>유형과 상황을 선택하면<br>경험적 시작 제안 + 3축 고려사항을 제시합니다</div>
+</div></div>
+
+<div class="foot"><div class="wrap">
+  <div class="srcbanner" id="srcbanner"></div>
+  <div class="footnote">본 도구는 의사결정 지원용이며 최종 판단은 임상의에게 있습니다. 급여·용량은 코딩 직전 원문 재검증 대상(일부 verified:false).</div>
+</div></div>
+
+<div id="sheetBack" class="sheet-back"></div>
+<div id="sheet" class="sheet"><div class="sheet-h"><span id="sheetTitle"></span><button class="x" id="sheetX" aria-label="닫기">✕</button></div><div class="sheet-b" id="sheetBody"></div></div>
+
+<noscript><div class="seo-content"><h2>폐렴 처방·경험적 항생제·급여 진료지침 정보 (임상의용)</h2><p>성인 폐렴(지역사회획득 CAP·병원획득 HAP·인공호흡기연관 VAP·흡인성)의 중증도 평가(CURB-65·PSI·IDSA/ATS)와 경험적 항생제 선택을 한국 CAP 2018·HAP 2025 지침과 IDSA/ATS 2016을 병치해 제시하고, 원인균 동정·기저질환·면역저하 3축과 심평원 급여·삭감 위험을 함께 안내한다.</p><section id="type-cap"><h3>지역사회획득 폐렴</h3><p>입원 48시간 이전/외래 발생. 폐렴구균·비정형(마이코플라스마·클라미디아·레지오넬라)·H.influenzae 중심. cap_out_simple, cap_out_comorbid, cap_ward, cap_icu</p></section><section id="type-hap"><h3>병원획득 폐렴(HAP)</h3><p>입원 &gt;48h 후 발생. 다제내성 그람음성(녹농균·아시네토박터·ESBL)·MRSA 위험↑. hap_low, hap_high</p></section><section id="type-vap"><h3>인공호흡기연관 폐렴(VAP)</h3><p>기계환기 ≥48h 후 발생. MDR 최고위험. 침습적 정량배양·프로칼시토닌 진단 루틴은 비권고. vap_low, vap_high</p></section><section id="type-aspiration"><h3>흡인성 폐렴</h3><p>흡인 위험군(연하장애·의식저하·신경질환)의 하기도 세균감염. aspiration</p></section><section id="type-viral_influenza"><h3>인플루엔자 폐렴</h3><p>인플루엔자 바이러스에 의한 폐렴 ± 세균 이차감염. influenza</p></section><section id="type-viral_covid"><h3>COVID-19 폐렴</h3><p>SARS-CoV-2 폐렴. 중증도(산소요구)에 따라 스테로이드·항바이러스·면역조절. covid</p></section><section id="type-pcp"><h3>주폐포자충 폐렴(PCP)</h3><p>면역저하(HIV CD4&lt;200·장기 스테로이드·이식·혈액암)에서 아급성 호흡곤란·건성기침·LDH↑. pcp</p></section><section id="type-abscess"><h3>폐농양·괴사성 폐렴</h3><p>공동·괴사 병변. 혐기성 포함 장기 항생제. abscess</p></section><section id="type-empyema"><h3>농흉</h3><p>흉막강 화농. 배액이 핵심. empyema</p></section><section id="pathogen-target_mssa"><h3>MSSA 표적치료</h3><p>1차 세파졸린(cefazolin)</p></section><section id="pathogen-target_mrsa"><h3>MRSA 표적치료</h3><p>1차 반코마이신(vancomycin), 리네졸리드(linezolid)</p></section><section id="pathogen-target_pseudomonas"><h3>P.aeruginosa 표적치료</h3><p>1차 피페라실린/타조박탐(piperacillin-tazobactam), 세페핌(cefepime), 세프타지딤(ceftazidime), 메로페넴(meropenem) — 확진·감수성 시 단독(한국 HAP2025 #7)</p></section><section id="pathogen-target_crab"><h3>CRAB(A.baumannii) 표적치료</h3><p>1차 암피실린/설박탐(ampicillin-sulbactam), 콜리스티메테이트(콜리스틴)(colistimethate) — colistin ±흡입</p></section><section id="pathogen-target_esbl"><h3>ESBL 장내세균 표적치료</h3><p>1차 메로페넴(meropenem), 이미페넴/실라스타틴(imipenem-cilastatin), 에르타페넴(ertapenem)</p></section><section id="pathogen-target_cre"><h3>CRE 표적치료</h3><p>1차 세프타지딤/아비박탐(ceftazidime-avibactam), 세피데로콜(cefiderocol)</p></section><section id="pathogen-target_legionella"><h3>L.pneumophila 표적치료</h3><p>1차 아지트로마이신(azithromycin), 레보플록사신(levofloxacin), 목시플록사신(moxifloxacin) — ≥14일</p></section><section id="drug-amoxicillin"><h3>아목시실린 (amoxicillin)</h3><p>아미노페니실린</p></section><section id="drug-amoxicillin_clavulanate"><h3>아목시실린/클라불란산 (amoxicillin-clavulanate)</h3><p>β-lactam/β-lactamase 억제제 복합</p></section><section id="drug-ampicillin_sulbactam"><h3>암피실린/설박탐 (ampicillin-sulbactam)</h3><p>β-lactam/β-lactamase 억제제 복합 · CRAB에 sulbactam 고용량</p></section><section id="drug-ampicillin"><h3>암피실린 (ampicillin)</h3><p>아미노페니실린 · 감수성 폐렴구균 정맥 표적(de-escalation)</p></section><section id="drug-nafcillin"><h3>나프실린 (nafcillin)</h3><p>항포도상 페니실린(MSSA) · MSSA 표적 — 가이드 표준. 국내 미시판→cefazolin 대체</p></section><section id="drug-cefazolin"><h3>세파졸린 (cefazolin)</h3><p>1세대 세팔로스포린 · MSSA 표적 — 국내 실사용 표준</p></section><section id="drug-cefuroxime"><h3>세푸록심 (cefuroxime)</h3><p>2세대 세팔로스포린</p></section><section id="drug-cefpodoxime"><h3>세프포독심 (cefpodoxime)</h3><p>3세대 세팔로스포린(경구)</p></section><section id="drug-cefditoren"><h3>세프디토렌 (cefditoren)</h3><p>3세대 세팔로스포린(경구)</p></section><section id="drug-cefotaxime"><h3>세포탁심 (cefotaxime)</h3><p>3세대 세팔로스포린(주사)</p></section><section id="drug-ceftriaxone"><h3>세프트리악손 (ceftriaxone)</h3><p>3세대 세팔로스포린(주사)</p></section><section id="drug-cefepime"><h3>세페핌 (cefepime)</h3><p>4세대 세팔로스포린 · 급여 ★★</p></section><section id="drug-ceftazidime"><h3>세프타지딤 (ceftazidime)</h3><p>항녹농균 β-lactam</p></section><section id="drug-piperacillin_tazobactam"><h3>피페라실린/타조박탐 (piperacillin-tazobactam)</h3><p>항녹농균 BL/BLI · 급여 ★★</p></section><section id="drug-aztreonam"><h3>아즈트레오남 (aztreonam)</h3><p>모노박탐 · β-lactam 알레르기 대체</p></section><section id="drug-imipenem_cilastatin"><h3>이미페넴/실라스타틴 (imipenem-cilastatin)</h3><p>카바페넴 · 급여 ★★★</p></section><section id="drug-meropenem"><h3>메로페넴 (meropenem)</h3><p>카바페넴 · 급여 ★★★</p></section><section id="drug-ertapenem"><h3>에르타페넴 (ertapenem)</h3><p>카바페넴 · 항녹농균 없음 · 급여 ★★★</p></section><section id="drug-doripenem"><h3>도리페넴 (doripenem)</h3><p>카바페넴 · 급여 ★★★</p></section><section id="drug-vancomycin"><h3>반코마이신 (vancomycin)</h3><p>글리코펩타이드 · 급여 ★★★</p></section><section id="drug-teicoplanin"><h3>테이코플라닌 (teicoplanin)</h3><p>글리코펩타이드 · 급여 ★★★</p></section><section id="drug-linezolid"><h3>리네졸리드 (linezolid)</h3><p>옥사졸리디논 · 급여 ★★★</p></section><section id="drug-tedizolid"><h3>테디졸리드 (tedizolid)</h3><p>옥사졸리디논</p></section><section id="drug-ceftaroline"><h3>세프타롤린 (ceftaroline)</h3><p>항MRSA 세팔로스포린 · 급여 ★★</p></section><section id="drug-azithromycin"><h3>아지트로마이신 (azithromycin)</h3><p>마크로라이드</p></section><section id="drug-clarithromycin"><h3>클래리트로마이신 (clarithromycin)</h3><p>마크로라이드</p></section><section id="drug-roxithromycin"><h3>록시트로마이신 (roxithromycin)</h3><p>마크로라이드</p></section><section id="drug-erythromycin"><h3>에리트로마이신 (erythromycin)</h3><p>마크로라이드</p></section><section id="drug-doxycycline"><h3>독시사이클린 (doxycycline)</h3><p>테트라사이클린</p></section><section id="drug-levofloxacin"><h3>레보플록사신 (levofloxacin)</h3><p>호흡기 플루오로퀴놀론 · 급여 ★★</p></section><section id="drug-moxifloxacin"><h3>목시플록사신 (moxifloxacin)</h3><p>호흡기 플루오로퀴놀론 · 급여 ★★</p></section><section id="drug-gemifloxacin"><h3>제미플록사신 (gemifloxacin)</h3><p>호흡기 플루오로퀴놀론</p></section><section id="drug-ciprofloxacin"><h3>시프로플록사신 (ciprofloxacin)</h3><p>플루오로퀴놀론</p></section><section id="drug-colistin"><h3>콜리스티메테이트(콜리스틴) (colistimethate)</h3><p>폴리믹신 · 급여 ★★★</p></section><section id="drug-amikacin"><h3>아미카신 (amikacin)</h3><p>아미노글리코사이드 · 급여 ★★</p></section><section id="drug-gentamicin"><h3>겐타마이신 (gentamicin)</h3><p>아미노글리코사이드</p></section><section id="drug-tobramycin"><h3>토브라마이신 (tobramycin)</h3><p>아미노글리코사이드</p></section><section id="drug-tigecycline"><h3>타이제사이클린 (tigecycline)</h3><p>글리실사이클린 · 급여 ★★★</p></section><section id="drug-ceftolozane_tazobactam"><h3>세프톨로잔/타조박탐 (ceftolozane-tazobactam)</h3><p>신규 β-lactam/BLI(MDR 그람음성) · 급여 ★★★</p></section><section id="drug-ceftazidime_avibactam"><h3>세프타지딤/아비박탐 (ceftazidime-avibactam)</h3><p>신규 β-lactam/BLI(MDR 그람음성) · CRE 표적 · 급여 ★★★</p></section><section id="drug-cefiderocol"><h3>세피데로콜 (cefiderocol)</h3><p>신규 β-lactam/BLI(MDR 그람음성) · CRAB 원내폐렴 1차(급여 2025.9 약평위) · 급여 ★★★</p></section><section id="drug-sulbactam_durlobactam"><h3>설박탐/둘로박탐 (sulbactam-durlobactam)</h3><p>신규 β-lactam/BLI(MDR 그람음성) · CRAB 표적(신규)</p></section><section id="drug-clindamycin"><h3>클린다마이신 (clindamycin)</h3><p>린코사마이드</p></section><section id="drug-metronidazole"><h3>메트로니다졸 (metronidazole)</h3><p>니트로이미다졸</p></section><section id="drug-oseltamivir"><h3>오셀타미비르 (oseltamivir)</h3><p>뉴라미니다제 억제제</p></section><section id="drug-peramivir"><h3>페라미비르 (peramivir)</h3><p>뉴라미니다제 억제제</p></section><section id="drug-baloxavir"><h3>발록사비르 (baloxavir marboxil)</h3><p>항바이러스제</p></section><section id="drug-remdesivir"><h3>렘데시비르 (remdesivir)</h3><p>항바이러스제</p></section><section id="drug-nirmatrelvir_ritonavir"><h3>니르마트렐비르/리토나비르 (nirmatrelvir-ritonavir)</h3><p>항바이러스제</p></section><section id="drug-dexamethasone"><h3>덱사메타손 (dexamethasone)</h3><p>항바이러스제 · COVID 저산소 보조</p></section><section id="drug-trimethoprim_sulfamethoxazole"><h3>트리메토프림/설파메톡사졸 (trimethoprim-sulfamethoxazole)</h3><p>엽산길항제(TMP-SMX 등) · PCP 치료·예방</p></section><section id="drug-primaquine"><h3>프리마퀸 (primaquine)</h3><p>항바이러스제 · PCP 대체(+clindamycin)</p></section><section id="drug-atovaquone"><h3>아토바쿠온 (atovaquone)</h3><p>항바이러스제 · PCP 경증 대체</p></section><section id="drug-pentamidine"><h3>펜타미딘 (pentamidine)</h3><p>항바이러스제 · PCP 대체</p></section><section id="reimb-pneumonia"><h3>폐렴 심평원 급여·삭감 및 KCD</h3><ul><li>glycopeptide (★★★): 그람양성 중증감염 허가범위 내 급여. 경험적 사용 가능.</li><li>linezolid (★★★): VRE 감염, 또는 MRSA/그람양성에서 glycopeptide(반코마이신·테이코플라닌) 사용 곤란(내성·부작용·실패) 시. 경구 포함.</li><li>carbapenem (★★★): 중증·복잡성 감염·ESBL 등 허가범위 내 급여.</li><li>piptazo (★★): 중등도–중증·녹농균/혼합감염 정황 허가범위 내 급여.</li><li>cefepime (★★): 중증·녹농균 위험 허가범위 내 급여.</li><li>resp-fq (★★): CAP·AECOPD 등 허가 적응 범위 내 급여.</li><li>colistin (★★★): 다제내성 그람음성(CRAB/CRPA/CRE) 감수성 근거 시 급여. 흡입 병용 가능.</li><li>tigecycline (★★★): 국내 허가 = 복잡성 피부·연조직 / 복잡성 복강내 / 지역사회획득 폐렴(CAP). HAP/VAP 허가·급여 제외.</li><li>novel-bl (★★★): MDR 그람음성 감수성 확인·단계조건 시 급여. cefiderocol: CRAB 확인 원내폐렴(HAP/VAP) 1차, 2차=카바페넴 실패/MDR녹농균·CRE(약평위 2025-09-04 급여 인정, 약가협상).</li><li>aminoglycoside (★★): 병용요법 성분으로 허가범위 내 급여.</li><li>ceftaroline (★★): 허가 적응 제한.</li><li>J12 바이러스 폐렴(NEC)</li><li>J13 폐렴연쇄구균 폐렴</li><li>J14 H. influenzae 폐렴</li><li>J15 세균성 폐렴 NEC</li><li>J16 기타 감염성 폐렴 NEC</li><li>J17* 달리 분류된 질환에서의 폐렴</li><li>J18 상세불명 병원체 폐렴</li><li>J69 고형물·액체에 의한 폐렴</li><li>J85 폐·종격동 농양</li><li>J86 농흉</li><li>J95.85 인공호흡기연관 폐렴(VAP)</li><li>B59 주폐포자충증(PCP)</li><li>U07 COVID-19</li></ul></section><section id="class-antibiotics"><h3>항생제 계열</h3><p>아미노페니실린, 항포도상 페니실린(MSSA), β-lactam/β-lactamase 억제제 복합, 1세대 세팔로스포린, 2세대 세팔로스포린, 3세대 세팔로스포린(주사), 3세대 세팔로스포린(경구), 4세대 세팔로스포린, 항녹농균 β-lactam, 항녹농균 BL/BLI, 카바페넴, 모노박탐, 마크로라이드, 호흡기 플루오로퀴놀론, 플루오로퀴놀론, 글리코펩타이드, 옥사졸리디논, 아미노글리코사이드, 폴리믹신, 글리실사이클린, 테트라사이클린, 린코사마이드, 니트로이미다졸, 신규 β-lactam/BLI(MDR 그람음성), 항MRSA 세팔로스포린, 뉴라미니다제 억제제, 항바이러스제, 엽산길항제(TMP-SMX 등)</p></section></div></noscript>
+<script>
+/* data/pneu_guidelines.js */
+/* pneu_guidelines.js — 가이드라인 버전 + 권고체계 정규화 (GL / recsys)
+ * SPEC §3-7. 신뢰도 레이어 L1(한국)·L1'(IDSA 보완)·L2(국내역학)·L3(급여).
+ */
+(function (root) {
+  const PNEU_GUIDELINES = {
+    "gl:cap-kr-2018": {
+      id: "gl:cap-kr-2018", layer: "L1",
+      title: "성인 지역사회획득 폐렴 항생제 사용지침",
+      org: "대한감염학회·대한화학요법학회·대한결핵및호흡기학회",
+      year: 2018, recsys: "recsys:kr_abx",
+      url: "https://www.ksid.or.kr/file/190401_kor.pdf"
+    },
+    "gl:hap-kr-2025": {
+      id: "gl:hap-kr-2025", layer: "L1",
+      title: "Korean Guidelines for Management and Antibiotic Therapy in Adult HAP/VAP (11 PICO)",
+      org: "대한결핵및호흡기학회·대한감염학회 등",
+      year: 2025, recsys: "recsys:kr_abx",
+      url: "https://e-trd.org/upload/pdf/trd-2024-0135.pdf"
+    },
+    "gl:hapvap-idsa-2016": {
+      id: "gl:hapvap-idsa-2016", layer: "L1p",
+      title: "Management of Adults With HAP/VAP",
+      org: "IDSA/ATS", year: 2016, recsys: "recsys:idsa",
+      url: "https://www.idsociety.org/practice-guideline/hap_vap/"
+    },
+    "gl:cap-idsa-2019": {
+      id: "gl:cap-idsa-2019", layer: "L1p",
+      title: "Diagnosis and Treatment of Adults with CAP",
+      org: "ATS/IDSA", year: 2019, recsys: "recsys:idsa",
+      url: "https://www.atsjournals.org/doi/10.1164/rccm.201908-1581ST"
+    },
+    "gl:cre-kr-2024": {
+      id: "gl:cre-kr-2024", layer: "L1",
+      title: "카바페넴 내성 장내세균목 감염증 항생제 사용 지침",
+      org: "질병관리청", year: 2024,
+      url: "https://common.health.kr/shared/healthkr/pharmreview/카바페넴 내성 항생제_최종.pdf"
+    },
+    "gl:influenza-kr-2014": {
+      id: "gl:influenza-kr-2014", layer: "L2",
+      title: "중증 인플루엔자 치료 지침",
+      org: "대한감염학회 등", year: 2014,
+      url: "https://www.ekjm.org/journal/view.php?doi=10.3904/kjm.2014.86.1.116"
+    }
+  };
+
+  // 권고체계 정규화: 원등급 → norm(A/B/C) + rank(낮을수록 우선)
+  const PNEU_RECSYS = {
+    "recsys:kr_abx": {
+      id: "recsys:kr_abx", label: "한국 항생제지침 등급",
+      strength: ["강함", "약함", "조건부"],
+      loe: ["높음", "중등도", "낮음", "매우낮음"],
+      norm: { "강함": "A", "조건부": "B", "약함": "C" },
+      rank: { "강함": 1, "조건부": 2, "약함": 3 }
+    },
+    "recsys:idsa": {
+      id: "recsys:idsa", label: "IDSA/ATS 등급",
+      strength: ["strong", "conditional", "weak"],
+      loe: ["high", "moderate", "low", "very low"],
+      norm: { "strong": "A", "conditional": "B", "weak": "C" },
+      rank: { "strong": 1, "conditional": 2, "weak": 3 }
+    }
+  };
+
+  const OUT = { PNEU_GUIDELINES, PNEU_RECSYS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/pneu_labs.js */
+/* pneu_labs.js — 전역 검사 (LOINC canonical). SPEC §3-3. */
+(function (root) {
+  const PNEU_LABS = {
+    "lab:blood_culture":      { id: "lab:blood_culture", ko: "혈액배양", loinc: "600-7", when: "항생제 전 2쌍(중등도/중증)" },
+    "lab:sputum_culture":     { id: "lab:sputum_culture", ko: "객담배양", loinc: "624-7" },
+    "lab:sputum_gram":        { id: "lab:sputum_gram", ko: "객담 그람염색", loinc: "664-3" },
+    "lab:pneumococcal_uag":   { id: "lab:pneumococcal_uag", ko: "폐렴구균 소변항원", loinc: "43563-3" },
+    "lab:legionella_uag":     { id: "lab:legionella_uag", ko: "레지오넬라 소변항원", loinc: "9536-2", note: "혈청형1 민감도~80%, 특이도>95%" },
+    "lab:resp_virus_pcr":     { id: "lab:resp_virus_pcr", ko: "호흡기바이러스 PCR", loinc: "82170-2" },
+    "lab:mrsa_pcr_nares":     { id: "lab:mrsa_pcr_nares", ko: "비강 MRSA PCR", loinc: "94360-4", note: "음성예측도 높아 de-escalation 근거" },
+    "lab:procalcitonin":      { id: "lab:procalcitonin", ko: "프로칼시토닌", loinc: "33959-8", note: "진단 단독 비권고, 중단 보조" },
+    "lab:crp":                { id: "lab:crp", ko: "CRP", loinc: "1988-5" },
+    "lab:wbc":                { id: "lab:wbc", ko: "백혈구수", loinc: "6690-2" },
+    "lab:bun":                { id: "lab:bun", ko: "BUN", loinc: "3094-0" },
+    "lab:pao2_fio2":          { id: "lab:pao2_fio2", ko: "PaO2/FiO2", loinc: "50984-4" },
+    "lab:sao2":               { id: "lab:sao2", ko: "산소포화도", loinc: "2708-6" },
+    "lab:lactate":            { id: "lab:lactate", ko: "젖산", loinc: "2524-7" },
+    "lab:creatinine":         { id: "lab:creatinine", ko: "크레아티닌", loinc: "2160-0" },
+    "lab:egfr":               { id: "lab:egfr", ko: "eGFR", loinc: "48642-3" }
+  };
+  const OUT = { PNEU_LABS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/pneu_diseases.js */
+/* pneu_diseases.js — 폐렴 관련 KCD (canonical). SPEC §3-4. 세분류는 KOICD 최종확인(verified). */
+(function (root) {
+  const PNEU_DISEASES = {
+    "dx:j12":    { id: "dx:j12", kcd: "J12", ko: "바이러스 폐렴(NEC)", sub: ["J12.8", "J12.9"] },
+    "dx:j13":    { id: "dx:j13", kcd: "J13", ko: "폐렴연쇄구균 폐렴", pathogen: "S. pneumoniae" },
+    "dx:j14":    { id: "dx:j14", kcd: "J14", ko: "H. influenzae 폐렴" },
+    "dx:j15":    { id: "dx:j15", kcd: "J15", ko: "세균성 폐렴 NEC", sub: ["J15.0 Klebsiella", "J15.1 Pseudomonas", "J15.2 포도구균", "J15.5 E.coli", "J15.7 Mycoplasma", "J15.8", "J15.9"] },
+    "dx:j16":    { id: "dx:j16", kcd: "J16", ko: "기타 감염성 폐렴 NEC", sub: ["J16.0 Chlamydia"] },
+    "dx:j17":    { id: "dx:j17", kcd: "J17*", ko: "달리 분류된 질환에서의 폐렴" },
+    "dx:j18":    { id: "dx:j18", kcd: "J18", ko: "상세불명 병원체 폐렴", sub: ["J18.0 기관지폐렴", "J18.1 대엽성", "J18.2 침강성", "J18.8", "J18.9"] },
+    "dx:j69":    { id: "dx:j69", kcd: "J69", ko: "고형물·액체에 의한 폐렴", sub: ["J69.0 흡인성 폐렴"] },
+    "dx:j85":    { id: "dx:j85", kcd: "J85", ko: "폐·종격동 농양", sub: ["J85.1 폐렴동반 폐농양", "J85.2 폐렴없는 폐농양"] },
+    "dx:j86":    { id: "dx:j86", kcd: "J86", ko: "농흉", sub: ["J86.0 누공동반", "J86.9"] },
+    "dx:j95_85": { id: "dx:j95_85", kcd: "J95.85", ko: "인공호흡기연관 폐렴(VAP)", verified: false },
+    "dx:b59":    { id: "dx:b59", kcd: "B59", ko: "주폐포자충증(PCP)" },
+    "dx:u07":    { id: "dx:u07", kcd: "U07", ko: "COVID-19", sub: ["U07.1 확인", "U07.2 임상진단"] }
+  };
+  const OUT = { PNEU_DISEASES };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/pneu_drugs.js */
+/* pneu_drugs.js — 항생제·항바이러스 성분(drug:) + 계열(class:). SPEC §3-1·3-2.
+ * shared:true = 통합레지스트리 v1.2(611종) 기존 ID 재사용 대상(D10, 신규생성 금지).
+ * 용량은 pneu_thresholds.js(dose_*)에서 맥락값 참조 — 여기엔 리터럴 용량 두지 않음(SSOT).
+ */
+(function (root) {
+  const PNEU_CLASSES = {
+    "class:aminopenicillin":         { id: "class:aminopenicillin", ko: "아미노페니실린", atc_prefix: "J01CA" },
+    "class:antistaphylococcal_penicillin": { id: "class:antistaphylococcal_penicillin", ko: "항포도상 페니실린(MSSA)", atc_prefix: "J01CF" },
+    "class:blbli":                   { id: "class:blbli", ko: "β-lactam/β-lactamase 억제제 복합", atc_prefix: "J01CR" },
+    "class:cephalosporin_1g":        { id: "class:cephalosporin_1g", ko: "1세대 세팔로스포린", atc_prefix: "J01DB" },
+    "class:cephalosporin_2g":        { id: "class:cephalosporin_2g", ko: "2세대 세팔로스포린", atc_prefix: "J01DC" },
+    "class:cephalosporin_3g":        { id: "class:cephalosporin_3g", ko: "3세대 세팔로스포린(주사)", atc_prefix: "J01DD" },
+    "class:cephalosporin_3g_oral":   { id: "class:cephalosporin_3g_oral", ko: "3세대 세팔로스포린(경구)", atc_prefix: "J01DD" },
+    "class:cephalosporin_4g":        { id: "class:cephalosporin_4g", ko: "4세대 세팔로스포린", atc_prefix: "J01DE" },
+    "class:antipseudomonal_betalactam": { id: "class:antipseudomonal_betalactam", ko: "항녹농균 β-lactam" },
+    "class:antipseudomonal_blbli":   { id: "class:antipseudomonal_blbli", ko: "항녹농균 BL/BLI" },
+    "class:carbapenem":              { id: "class:carbapenem", ko: "카바페넴", atc_prefix: "J01DH" },
+    "class:monobactam":              { id: "class:monobactam", ko: "모노박탐", atc_prefix: "J01DF" },
+    "class:macrolide":               { id: "class:macrolide", ko: "마크로라이드", atc_prefix: "J01FA" },
+    "class:respiratory_fq":          { id: "class:respiratory_fq", ko: "호흡기 플루오로퀴놀론" },
+    "class:fluoroquinolone":         { id: "class:fluoroquinolone", ko: "플루오로퀴놀론", atc_prefix: "J01MA" },
+    "class:glycopeptide":            { id: "class:glycopeptide", ko: "글리코펩타이드", atc_prefix: "J01XA" },
+    "class:oxazolidinone":           { id: "class:oxazolidinone", ko: "옥사졸리디논", atc_prefix: "J01XX" },
+    "class:aminoglycoside":          { id: "class:aminoglycoside", ko: "아미노글리코사이드", atc_prefix: "J01G" },
+    "class:polymyxin":               { id: "class:polymyxin", ko: "폴리믹신", atc_prefix: "J01XB" },
+    "class:glycylcycline":           { id: "class:glycylcycline", ko: "글리실사이클린", atc_prefix: "J01AA12" },
+    "class:tetracycline":            { id: "class:tetracycline", ko: "테트라사이클린", atc_prefix: "J01AA" },
+    "class:lincosamide":             { id: "class:lincosamide", ko: "린코사마이드", atc_prefix: "J01FF" },
+    "class:nitroimidazole":          { id: "class:nitroimidazole", ko: "니트로이미다졸", atc_prefix: "J01XD" },
+    "class:novel_betalactam":        { id: "class:novel_betalactam", ko: "신규 β-lactam/BLI(MDR 그람음성)" },
+    "class:cephalosporin_antimrsa":  { id: "class:cephalosporin_antimrsa", ko: "항MRSA 세팔로스포린" },
+    "class:neuraminidase_inhibitor": { id: "class:neuraminidase_inhibitor", ko: "뉴라미니다제 억제제", atc_prefix: "J05AH" },
+    "class:antiviral":               { id: "class:antiviral", ko: "항바이러스제", atc_prefix: "J05" },
+    "class:folate_antagonist":       { id: "class:folate_antagonist", ko: "엽산길항제(TMP-SMX 등)", atc_prefix: "J01EE" }
+  };
+
+  const D = (id, ko, en, atc, cls, extra) => Object.assign(
+    { id, ko, en, atc, class: cls, shared: true }, extra || {});
+
+  const PNEU_DRUGS = {
+    // β-lactam
+    "drug:amoxicillin":            D("drug:amoxicillin", "아목시실린", "amoxicillin", "J01CA04", "class:aminopenicillin", { dose: "pneu:th:dose_amoxicillin", route: ["po"] }),
+    "drug:amoxicillin_clavulanate":D("drug:amoxicillin_clavulanate", "아목시실린/클라불란산", "amoxicillin-clavulanate", "J01CR02", "class:blbli", { route: ["po", "iv"] }),
+    "drug:ampicillin_sulbactam":   D("drug:ampicillin_sulbactam", "암피실린/설박탐", "ampicillin-sulbactam", "J01CR01", "class:blbli", { route: ["iv"], note: "CRAB에 sulbactam 고용량" }),
+    "drug:ampicillin":             D("drug:ampicillin", "암피실린", "ampicillin", "J01CA01", "class:aminopenicillin", { route: ["iv"], note: "감수성 폐렴구균 정맥 표적(de-escalation)" }),
+    "drug:nafcillin":              D("drug:nafcillin", "나프실린", "nafcillin", "J01CF06", "class:antistaphylococcal_penicillin", { route: ["iv"], antistaph: true, note: "MSSA 표적 — 가이드 표준. 국내 미시판→cefazolin 대체", shared: false }),
+    "drug:cefazolin":              D("drug:cefazolin", "세파졸린", "cefazolin", "J01DB04", "class:cephalosporin_1g", { antistaph: true, note: "MSSA 표적 — 국내 실사용 표준" }),
+    "drug:cefuroxime":             D("drug:cefuroxime", "세푸록심", "cefuroxime", "J01DC02", "class:cephalosporin_2g"),
+    "drug:cefpodoxime":            D("drug:cefpodoxime", "세프포독심", "cefpodoxime", "J01DD13", "class:cephalosporin_3g_oral", { route: ["po"] }),
+    "drug:cefditoren":             D("drug:cefditoren", "세프디토렌", "cefditoren", "J01DD16", "class:cephalosporin_3g_oral", { route: ["po"] }),
+    "drug:cefotaxime":             D("drug:cefotaxime", "세포탁심", "cefotaxime", "J01DD01", "class:cephalosporin_3g", { dose: "pneu:th:dose_cefotaxime" }),
+    "drug:ceftriaxone":            D("drug:ceftriaxone", "세프트리악손", "ceftriaxone", "J01DD04", "class:cephalosporin_3g", { dose: "pneu:th:dose_ceftriaxone" }),
+    "drug:cefepime":               D("drug:cefepime", "세페핌", "cefepime", "J01DE01", "class:cephalosporin_4g", { antipseudomonal: true, dose: "pneu:th:dose_cefepime", reimb: "notice:hira-cefepime" }),
+    "drug:ceftazidime":            D("drug:ceftazidime", "세프타지딤", "ceftazidime", "J01DD02", "class:antipseudomonal_betalactam", { antipseudomonal: true, dose: "pneu:th:dose_ceftazidime" }),
+    "drug:piperacillin_tazobactam":D("drug:piperacillin_tazobactam", "피페라실린/타조박탐", "piperacillin-tazobactam", "J01CR05", "class:antipseudomonal_blbli", { antipseudomonal: true, dose: "pneu:th:dose_piptazo", reimb: "notice:hira-piptazo" }),
+    "drug:aztreonam":              D("drug:aztreonam", "아즈트레오남", "aztreonam", "J01DF01", "class:monobactam", { antipseudomonal: true, note: "β-lactam 알레르기 대체" }),
+    "drug:imipenem_cilastatin":    D("drug:imipenem_cilastatin", "이미페넴/실라스타틴", "imipenem-cilastatin", "J01DH51", "class:carbapenem", { antipseudomonal: true, reimb: "notice:hira-carbapenem" }),
+    "drug:meropenem":              D("drug:meropenem", "메로페넴", "meropenem", "J01DH02", "class:carbapenem", { antipseudomonal: true, dose: "pneu:th:dose_meropenem", reimb: "notice:hira-carbapenem" }),
+    "drug:ertapenem":              D("drug:ertapenem", "에르타페넴", "ertapenem", "J01DH03", "class:carbapenem", { antipseudomonal: false, note: "항녹농균 없음", reimb: "notice:hira-carbapenem" }),
+    "drug:doripenem":              D("drug:doripenem", "도리페넴", "doripenem", "J01DH04", "class:carbapenem", { antipseudomonal: true, reimb: "notice:hira-carbapenem" }),
+    // 항MRSA/그람양성
+    "drug:vancomycin":             D("drug:vancomycin", "반코마이신", "vancomycin", "J01XA01", "class:glycopeptide", { dose: "pneu:th:dose_vancomycin", reimb: "notice:hira-glycopeptide", tdm: true }),
+    "drug:teicoplanin":            D("drug:teicoplanin", "테이코플라닌", "teicoplanin", "J01XA02", "class:glycopeptide", { reimb: "notice:hira-glycopeptide" }),
+    "drug:linezolid":              D("drug:linezolid", "리네졸리드", "linezolid", "J01XX08", "class:oxazolidinone", { dose: "pneu:th:dose_linezolid", route: ["iv", "po"], reimb: "notice:hira-linezolid" }),
+    "drug:tedizolid":              D("drug:tedizolid", "테디졸리드", "tedizolid", "J01XX11", "class:oxazolidinone"),
+    "drug:ceftaroline":            D("drug:ceftaroline", "세프타롤린", "ceftaroline", "J01DI02", "class:cephalosporin_antimrsa", { reimb: "notice:hira-ceftaroline" }),
+    // 비정형/퀴놀론/마크로라이드
+    "drug:azithromycin":           D("drug:azithromycin", "아지트로마이신", "azithromycin", "J01FA10", "class:macrolide", { dose: "pneu:th:dose_azithromycin" }),
+    "drug:clarithromycin":         D("drug:clarithromycin", "클래리트로마이신", "clarithromycin", "J01FA09", "class:macrolide"),
+    "drug:roxithromycin":          D("drug:roxithromycin", "록시트로마이신", "roxithromycin", "J01FA06", "class:macrolide"),
+    "drug:erythromycin":           D("drug:erythromycin", "에리트로마이신", "erythromycin", "J01FA01", "class:macrolide"),
+    "drug:doxycycline":            D("drug:doxycycline", "독시사이클린", "doxycycline", "J01AA02", "class:tetracycline"),
+    "drug:levofloxacin":           D("drug:levofloxacin", "레보플록사신", "levofloxacin", "J01MA12", "class:respiratory_fq", { dose: "pneu:th:dose_levofloxacin", antipseudomonal: true, reimb: "notice:hira-resp-fq" }),
+    "drug:moxifloxacin":           D("drug:moxifloxacin", "목시플록사신", "moxifloxacin", "J01MA14", "class:respiratory_fq", { dose: "pneu:th:dose_moxifloxacin", reimb: "notice:hira-resp-fq" }),
+    "drug:gemifloxacin":           D("drug:gemifloxacin", "제미플록사신", "gemifloxacin", "J01MA15", "class:respiratory_fq", { route: ["po"] }),
+    "drug:ciprofloxacin":          D("drug:ciprofloxacin", "시프로플록사신", "ciprofloxacin", "J01MA02", "class:fluoroquinolone", { antipseudomonal: true, dose: "pneu:th:dose_ciprofloxacin" }),
+    // MDR 그람음성/기타
+    "drug:colistin":               D("drug:colistin", "콜리스티메테이트(콜리스틴)", "colistimethate", "J01XB01", "class:polymyxin", { dose: "pneu:th:dose_colistin", reimb: "notice:hira-colistin", route: ["iv", "inhaled"], nephrotoxic: true }),
+    "drug:amikacin":               D("drug:amikacin", "아미카신", "amikacin", "J01GB06", "class:aminoglycoside", { dose: "pneu:th:dose_amikacin", reimb: "notice:hira-aminoglycoside", mono_forbidden: true }),
+    "drug:gentamicin":             D("drug:gentamicin", "겐타마이신", "gentamicin", "J01GB03", "class:aminoglycoside", { mono_forbidden: true }),
+    "drug:tobramycin":             D("drug:tobramycin", "토브라마이신", "tobramycin", "J01GB01", "class:aminoglycoside", { mono_forbidden: true }),
+    "drug:tigecycline":            D("drug:tigecycline", "타이제사이클린", "tigecycline", "J01AA12", "class:glycylcycline", { reimb: "notice:hira-tigecycline", approved: ["cap", "cSSTI", "cIAI"], excluded: ["hap", "vap"], warn: "전 임상 사망률 증가(4.0 vs 3.0%)" }),
+    "drug:ceftolozane_tazobactam": D("drug:ceftolozane_tazobactam", "세프톨로잔/타조박탐", "ceftolozane-tazobactam", "J01DI54", "class:novel_betalactam", { reimb: "notice:hira-novel-bl" }),
+    "drug:ceftazidime_avibactam":  D("drug:ceftazidime_avibactam", "세프타지딤/아비박탐", "ceftazidime-avibactam", "J01DD52", "class:novel_betalactam", { reimb: "notice:hira-novel-bl", note: "CRE 표적" }),
+    "drug:cefiderocol":            D("drug:cefiderocol", "세피데로콜", "cefiderocol", "J01DI04", "class:novel_betalactam", { reimb: "notice:hira-novel-bl", note: "CRAB 원내폐렴 1차(급여 2025.9 약평위)" }),
+    "drug:sulbactam_durlobactam":  D("drug:sulbactam_durlobactam", "설박탐/둘로박탐", "sulbactam-durlobactam", "J01DI55", "class:novel_betalactam", { note: "CRAB 표적(신규)", shared: false }),
+    "drug:clindamycin":            D("drug:clindamycin", "클린다마이신", "clindamycin", "J01FF01", "class:lincosamide", { anaerobe: true }),
+    "drug:metronidazole":          D("drug:metronidazole", "메트로니다졸", "metronidazole", "J01XD01", "class:nitroimidazole", { anaerobe: true }),
+    // 항바이러스·보조·PCP
+    "drug:oseltamivir":            D("drug:oseltamivir", "오셀타미비르", "oseltamivir", "J05AH02", "class:neuraminidase_inhibitor", { route: ["po"] }),
+    "drug:peramivir":              D("drug:peramivir", "페라미비르", "peramivir", "J05AH03", "class:neuraminidase_inhibitor", { route: ["iv"] }),
+    "drug:baloxavir":              D("drug:baloxavir", "발록사비르", "baloxavir marboxil", "J05AX25", "class:antiviral", { route: ["po"] }),
+    "drug:remdesivir":             D("drug:remdesivir", "렘데시비르", "remdesivir", "J05AB16", "class:antiviral", { route: ["iv"] }),
+    "drug:nirmatrelvir_ritonavir": D("drug:nirmatrelvir_ritonavir", "니르마트렐비르/리토나비르", "nirmatrelvir-ritonavir", "J05AE30", "class:antiviral", { route: ["po"] }),
+    "drug:dexamethasone":          D("drug:dexamethasone", "덱사메타손", "dexamethasone", "H02AB02", "class:antiviral", { note: "COVID 저산소 보조" }),
+    "drug:trimethoprim_sulfamethoxazole": D("drug:trimethoprim_sulfamethoxazole", "트리메토프림/설파메톡사졸", "trimethoprim-sulfamethoxazole", "J01EE01", "class:folate_antagonist", { note: "PCP 치료·예방" }),
+    "drug:primaquine":             D("drug:primaquine", "프리마퀸", "primaquine", "P01BA03", "class:antiviral", { note: "PCP 대체(+clindamycin)" }),
+    "drug:atovaquone":             D("drug:atovaquone", "아토바쿠온", "atovaquone", "P01AX06", "class:antiviral", { note: "PCP 경증 대체" }),
+    "drug:pentamidine":            D("drug:pentamidine", "펜타미딘", "pentamidine", "P01CX01", "class:antiviral", { note: "PCP 대체" })
+  };
+
+  const OUT = { PNEU_CLASSES, PNEU_DRUGS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/pneu_thresholds.js */
+/* pneu_thresholds.js — SSOT ★. 중증도 컷오프·용량(맥락값)·내성률·치료기간.
+ * 엔진·UI는 숫자/용량 리터럴 금지 → 여기 ID만 참조(SPEC §2·D5). verified=false는 코딩직전 재검증.
+ */
+(function (root) {
+  const PNEU_TH = {
+    // ── 중증도 도구 ──
+    "pneu:th:curb65": {
+      id: "pneu:th:curb65", tool: "CURB-65", source: "L1", ref: "gl:cap-kr-2018", verified: true,
+      items: [
+        { k: "confusion", op: "present", pt: 1 },
+        { k: "bun", op: ">", val: 19, unit: "mg/dL", pt: 1 },
+        { k: "rr", op: ">=", val: 30, unit: "/min", pt: 1 },
+        { k: "sbp", op: "<", val: 90, unit: "mmHg", pt: 1, or: { k: "dbp", op: "<=", val: 60 } },
+        { k: "age", op: ">=", val: 65, pt: 1 }
+      ],
+      bands: [
+        { score: "0-1", disp: "외래", mort: "1.5%", setting: "outpatient" },
+        { score: "2", disp: "입원 고려", mort: "9.2%", setting: "ward" },
+        { score: "3-5", disp: "중증·ICU 평가", mort: "22%", setting: "severe" }
+      ]
+    },
+    "pneu:th:crb65": {
+      id: "pneu:th:crb65", tool: "CRB-65", source: "L1", ref: "gl:cap-kr-2018", verified: true,
+      note: "혈액검사 없이 외래(의원)용", bands: [
+        { score: "0", disp: "외래" }, { score: "1-2", disp: "입원" }, { score: "3-4", disp: "신속 입원" }]
+    },
+    "pneu:th:psi": {
+      id: "pneu:th:psi", tool: "PSI", source: "L1", ref: "gl:cap-kr-2018", verified: true,
+      classes: [
+        { cls: "I", disp: "외래", mort: "0.1%" }, { cls: "II", range: "<=70", disp: "외래", mort: "0.6-0.7%" },
+        { cls: "III", range: "71-90", disp: "외래/단기입원", mort: "0.9-2.8%" },
+        { cls: "IV", range: "91-130", disp: "입원", mort: "8.2-9.3%" },
+        { cls: "V", range: ">130", disp: "입원·ICU", mort: "27-31%" }]
+    },
+    "pneu:th:ats_severe": {
+      id: "pneu:th:ats_severe", tool: "IDSA/ATS 중증기준", source: "L1", ref: "gl:cap-kr-2018", verified: true,
+      major: ["기계환기 필요", "승압제 필요 패혈성 쇽"],
+      minor: ["RR>=30", "PaO2/FiO2<=250", "다엽성 침윤", "혼돈/지남력장애", "BUN>=20", "WBC<4000", "PLT<100000", "체온<36", "적극적 수액소생 필요 저혈압"],
+      rule: "major>=1 또는 minor>=3 → ICU"
+    },
+    // ── 용량(맥락값) — 재검증 대상 ──
+    "pneu:th:dose_amoxicillin":  { id: "pneu:th:dose_amoxicillin", drug: "drug:amoxicillin", values: [{ ctx: "cap_highdose", val: "1 g tid" }], source: "L1", ref: "gl:cap-kr-2018", verified: false },
+    "pneu:th:dose_cefotaxime":   { id: "pneu:th:dose_cefotaxime", drug: "drug:cefotaxime", values: [{ ctx: "cap", val: "1-2 g q8h" }], verified: false },
+    "pneu:th:dose_ceftriaxone":  { id: "pneu:th:dose_ceftriaxone", drug: "drug:ceftriaxone", values: [{ ctx: "cap", val: "1-2 g q24h" }], verified: false },
+    "pneu:th:dose_cefepime":     { id: "pneu:th:dose_cefepime", drug: "drug:cefepime", values: [{ ctx: "hap", val: "2 g q8h" }], source: "L1p", ref: "gl:hapvap-idsa-2016", verified: false },
+    "pneu:th:dose_ceftazidime":  { id: "pneu:th:dose_ceftazidime", drug: "drug:ceftazidime", values: [{ ctx: "hap", val: "2 g q8h" }], verified: false },
+    "pneu:th:dose_piptazo":      { id: "pneu:th:dose_piptazo", drug: "drug:piperacillin_tazobactam", values: [{ ctx: "hap", val: "4.5 g q6h", note: "연장주입 4h" }], source: "L1p", ref: "gl:hapvap-idsa-2016", verified: false },
+    "pneu:th:dose_meropenem":    { id: "pneu:th:dose_meropenem", drug: "drug:meropenem", values: [{ ctx: "standard", val: "1 g q8h" }, { ctx: "severe_resistant", val: "2 g q8h", note: "연장주입" }], source: "L1p", ref: "gl:hapvap-idsa-2016", verified: false },
+    "pneu:th:dose_vancomycin":   { id: "pneu:th:dose_vancomycin", drug: "drug:vancomycin", values: [{ ctx: "mrsa", val: "15 mg/kg q8-12h, 부하 25-30 mg/kg, AUC/MIC 400-600" }], source: "L1p", ref: "gl:hapvap-idsa-2016", verified: false },
+    "pneu:th:dose_linezolid":    { id: "pneu:th:dose_linezolid", drug: "drug:linezolid", values: [{ ctx: "mrsa", val: "600 mg q12h" }], verified: false },
+    "pneu:th:dose_levofloxacin": { id: "pneu:th:dose_levofloxacin", drug: "drug:levofloxacin", values: [{ ctx: "cap", val: "750 mg q24h" }], verified: false },
+    "pneu:th:dose_moxifloxacin": { id: "pneu:th:dose_moxifloxacin", drug: "drug:moxifloxacin", values: [{ ctx: "cap", val: "400 mg q24h" }], verified: false },
+    "pneu:th:dose_ciprofloxacin":{ id: "pneu:th:dose_ciprofloxacin", drug: "drug:ciprofloxacin", values: [{ ctx: "antipseudomonal", val: "400 mg q8h IV" }], verified: false },
+    "pneu:th:dose_azithromycin": { id: "pneu:th:dose_azithromycin", drug: "drug:azithromycin", values: [{ ctx: "cap", val: "500 mg q24h" }], verified: false },
+    "pneu:th:dose_amikacin":     { id: "pneu:th:dose_amikacin", drug: "drug:amikacin", values: [{ ctx: "combo", val: "15-20 mg/kg q24h" }], verified: false },
+    "pneu:th:dose_colistin":     { id: "pneu:th:dose_colistin", drug: "drug:colistin", values: [{ ctx: "iv", val: "부하 후 유지(신기능 보정)" }, { ctx: "inhaled", val: "흡입 병용(CRGNB VAP)" }], verified: false },
+    // ── 치료기간 ──
+    "pneu:th:duration_cap":  { id: "pneu:th:duration_cap", values: [{ ctx: "standard", val: "최소 5일, 안정 후 종료(7-10일)" }, { ctx: "legionella", val: "≥14일" }, { ctx: "cavitary_necrotizing", val: "14-21일+" }], source: "L1", ref: "gl:cap-kr-2018", verified: true },
+    "pneu:th:duration_hap":  { id: "pneu:th:duration_hap", values: [{ ctx: "standard", val: "7-8일" }, { ctx: "extended", val: "균혈증·농양·면역저하·MDR 지속 시 연장" }], source: "L1", ref: "gl:hap-kr-2025", verified: true },
+    "pneu:th:duration_pcp":  { id: "pneu:th:duration_pcp", values: [{ ctx: "standard", val: "21일" }], verified: false },
+    "pneu:th:duration_abscess": { id: "pneu:th:duration_abscess", values: [{ ctx: "lung_abscess", val: "3-6주" }, { ctx: "empyema", val: "2-6주 + 배액" }], verified: false },
+    // ── 내성 역학(국내) ──
+    "pneu:th:resist_mp_macrolide": { id: "pneu:th:resist_mp_macrolide", pathogen: "M.pneumoniae", target: "class:macrolide", value: "31.4%+ (증가)", source: "L2", ref: "gl:cap-kr-2018", verified: false },
+    "pneu:th:resist_hi_ampicillin": { id: "pneu:th:resist_hi_ampicillin", pathogen: "H.influenzae", target: "amoxicillin/ampicillin", value: "58.5%", source: "L2", ref: "gl:cap-kr-2018", verified: false },
+    "pneu:th:resist_sp_macrolide": { id: "pneu:th:resist_sp_macrolide", pathogen: "S.pneumoniae", target: "class:macrolide", value: "높음(단독 부적합)", source: "L2", ref: "gl:cap-kr-2018", verified: false }
+  };
+  const OUT = { PNEU_TH };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/pneu_types.js */
+/* pneu_types.js — 폐렴 유형 노드 + 특수상황(내용 보강). SPEC §4-5. */
+(function (root) {
+  const PNEU_TYPES = {
+    "pneu:type:cap": {
+      id: "pneu:type:cap", ko: "지역사회획득 폐렴", dx: "dx:j18", color: "#0E7C7B", emoji: "🫁",
+      def: "입원 48시간 이전/외래 발생. 폐렴구균·비정형(마이코플라스마·클라미디아·레지오넬라)·H.influenzae 중심.",
+      severity_tools: ["pneu:th:curb65", "pneu:th:crb65", "pneu:th:psi", "pneu:th:ats_severe"],
+      risk_axes: ["pseudomonas_risk", "mrsa_risk"],
+      regimens: ["pneu:rg:cap_out_simple", "pneu:rg:cap_out_comorbid", "pneu:rg:cap_ward", "pneu:rg:cap_icu"],
+      notes: [
+        "β-lactam 또는 respiratory FQ 골격. 마크로라이드 단독은 국내 폐렴구균·마이코플라스마 내성으로 비권고(병용/비정형 한정).",
+        "중증(ICU)은 병용요법 + 레지오넬라 커버.",
+        "결핵 배제 전 respiratory FQ 경험적 사용 회피(부분치료·진단지연·내성).",
+        "입원 시 폐렴구균·레지오넬라 소변항원 + 항생제 전 혈액배양.",
+        "치료기간 최소 5일, 임상 안정 48–72h 후 종료."
+      ],
+      guideline: ["gl:cap-kr-2018", "gl:cap-idsa-2019"]
+    },
+    "pneu:type:hap": {
+      id: "pneu:type:hap", ko: "병원획득 폐렴(HAP)", dx: "dx:j18", color: "#1B4F72", emoji: "🏥",
+      def: "입원 >48h 후 발생. 다제내성 그람음성(녹농균·아시네토박터·ESBL)·MRSA 위험↑.",
+      risk_axes: ["mdr_risk", "mrsa_risk", "pseudomonas_risk"],
+      regimens: ["pneu:rg:hap_low", "pneu:rg:hap_high"],
+      notes: [
+        "MDR 위험인자: 최근 90일 IV항생제, 입원 ≥5일, 발병 시 패혈성 쇽, 선행 ARDS, 급성 신대체요법, MDR 유병 병동.",
+        "저위험은 cefepime 또는 pip/tazo 단독; 고위험은 항녹농 β-lactam + FQ/아미노글리코사이드(±MRSA 커버).",
+        "혐기성 루틴 커버 불필요(한국 HAP2025). 녹농균 확진·감수성 시 병용 종료·단독 전환.",
+        "치료기간 7–8일, 배양 확인 후 de-escalation(삭감 방어의 핵심).",
+        "항생제 용량 스키마는 IDSA/ATS 2016 병치."
+      ],
+      gates: ["pneu:gate:glyco_empiric_window", "pneu:gate:carbapenem_deescalation", "pneu:gate:pseudomonas_mono_switch"],
+      guideline: ["gl:hap-kr-2025", "gl:hapvap-idsa-2016"]
+    },
+    "pneu:type:vap": {
+      id: "pneu:type:vap", ko: "인공호흡기연관 폐렴(VAP)", dx: "dx:j95_85", color: "#154360", emoji: "🌬️",
+      def: "기계환기 ≥48h 후 발생. MDR 최고위험. 침습적 정량배양·프로칼시토닌 진단 루틴은 비권고.",
+      risk_axes: ["mdr_risk", "mrsa_risk", "pseudomonas_risk"],
+      regimens: ["pneu:rg:vap_low", "pneu:rg:vap_high"],
+      notes: [
+        "경험적 항녹농 커버 필수, 고위험은 이중 그람음성 + MRSA 커버.",
+        "CRGNB(카바페넴내성 그람음성) VAP는 정맥 + 흡입 콜리스틴 병용 고려(한국 HAP2025 #8).",
+        "녹농균 확진·감수성 시 단독 전환(#7). 혐기성 루틴 불필요(#6).",
+        "치료기간 7–8일, de-escalation, 프로칼시토닌 + 임상기준으로 중단 보조(개별화군).",
+        "tigecycline은 VAP 허가·급여 제외 + 사망위험 경고 → 회피."
+      ],
+      gates: ["pneu:gate:colistin_nephrotox", "pneu:gate:tigecycline_pneumonia"],
+      guideline: ["gl:hap-kr-2025", "gl:hapvap-idsa-2016"]
+    },
+    "pneu:type:aspiration": {
+      id: "pneu:type:aspiration", ko: "흡인성 폐렴", dx: "dx:j69", color: "#B9770E", emoji: "🫗",
+      def: "흡인 위험군(연하장애·의식저하·신경질환)의 하기도 세균감염.",
+      regimens: ["pneu:rg:aspiration"],
+      notes: [
+        "패러다임 전환: 단순 흡인성 폐렴에 혐기성 일상 커버 불필요 → amox-clav / ampicillin-sulbactam / ceftriaxone로 충분.",
+        "혐기성 커버 적응: 폐농양·괴사성·농흉·중증 치주질환 동반 시 → clindamycin·carbapenem·BL/BLI (±metronidazole).",
+        "화학적 폐렴염(Mendelson)과 감별 — 초기 항생제 불필요, 48–72h 발열·침윤 지속 시 세균감염 전환 판단."
+      ],
+      gates: ["pneu:gate:aspiration_anaerobe"],
+      guideline: ["gl:hap-kr-2025"]
+    },
+    // ── 특수상황(바이러스·면역저하·화농) ──
+    "pneu:special:viral_influenza": {
+      id: "pneu:special:viral_influenza", ko: "인플루엔자 폐렴", dx: "dx:j12", color: "#B9770E", emoji: "🦠", special: true,
+      def: "인플루엔자 바이러스에 의한 폐렴 ± 세균 이차감염.",
+      regimens: ["pneu:rg:influenza"], guideline: ["gl:influenza-kr-2014"]
+    },
+    "pneu:special:viral_covid": {
+      id: "pneu:special:viral_covid", ko: "COVID-19 폐렴", dx: "dx:u07", color: "#B9770E", emoji: "🦠", special: true,
+      def: "SARS-CoV-2 폐렴. 중증도(산소요구)에 따라 스테로이드·항바이러스·면역조절.",
+      regimens: ["pneu:rg:covid"]
+    },
+    "pneu:special:pcp": {
+      id: "pneu:special:pcp", ko: "주폐포자충 폐렴(PCP)", dx: "dx:b59", color: "#7a4fb0", emoji: "🫁", special: true,
+      def: "면역저하(HIV CD4<200·장기 스테로이드·이식·혈액암)에서 아급성 호흡곤란·건성기침·LDH↑.",
+      regimens: ["pneu:rg:pcp"]
+    },
+    "pneu:special:abscess": {
+      id: "pneu:special:abscess", ko: "폐농양·괴사성 폐렴", dx: "dx:j85", color: "#C0392B", emoji: "🫧", special: true,
+      def: "공동·괴사 병변. 혐기성 포함 장기 항생제.",
+      regimens: ["pneu:rg:abscess"]
+    },
+    "pneu:special:empyema": {
+      id: "pneu:special:empyema", ko: "농흉", dx: "dx:j86", color: "#C0392B", emoji: "🫧", special: true,
+      def: "흉막강 화농. 배액이 핵심.",
+      regimens: ["pneu:rg:empyema"]
+    }
+  };
+  const OUT = { PNEU_TYPES };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/pneu_regimens.js */
+/* pneu_regimens.js — 경험적/표적 요법 티어(결정기 본체 ★). SPEC §4-2.
+ * 유형×중증도×위험 → 약물조합. when은 화이트리스트 미니문법(engine/gate.js가 평가).
+ */
+(function (root) {
+  const PNEU_REGIMENS = {
+    // ── CAP ──
+    "pneu:rg:cap_out_simple": {
+      id: "pneu:rg:cap_out_simple", type: "pneu:type:cap", setting: "outpatient",
+      when: "type('cap') && severity_outpatient() && !has(comorbid:copd) && !pseudomonas_risk()",
+      options: [
+        { label: "β-lactam", any_of: ["drug:amoxicillin", "drug:amoxicillin_clavulanate", "drug:cefpodoxime", "drug:cefditoren"] },
+        { label: "호흡기 FQ", any_of: ["drug:levofloxacin", "drug:moxifloxacin", "drug:gemifloxacin"] },
+        { label: "마크로라이드 단독", any_of: ["drug:azithromycin", "drug:clarithromycin"], gate: "pneu:gate:macrolide_mono_cap",
+          stance: { guideline: "국내 폐렴구균·마이코플라스마 마크로라이드 내성↑ → 단독 비권고", practice: "경증·젊은 비흡연 외래에서 실제 사용되기도" } }
+      ],
+      grade: "강함", grade_system: "recsys:kr_abx", loe: "높음", grade_rank: 1,
+      duration: "pneu:th:duration_cap", source: "L1", ref: "gl:cap-kr-2018"
+    },
+    "pneu:rg:cap_out_comorbid": {
+      id: "pneu:rg:cap_out_comorbid", type: "pneu:type:cap", setting: "outpatient",
+      when: "type('cap') && severity_outpatient() && (has(comorbid:copd) || has(comorbid:dm) || has(comorbid:ckd) || has(comorbid:hf))",
+      options: [
+        { label: "β-lactam ± macrolide(비정형 의심)", base_any_of: ["drug:amoxicillin_clavulanate", "drug:cefpodoxime"], plus_if_atypical: ["drug:azithromycin", "drug:clarithromycin"] },
+        { label: "호흡기 FQ 단독", any_of: ["drug:levofloxacin", "drug:moxifloxacin"] }
+      ],
+      grade: "강함", grade_system: "recsys:kr_abx", loe: "높음", grade_rank: 1,
+      duration: "pneu:th:duration_cap", source: "L1", ref: "gl:cap-kr-2018"
+    },
+    "pneu:rg:cap_ward": {
+      id: "pneu:rg:cap_ward", type: "pneu:type:cap", setting: "ward",
+      when: "type('cap') && severity_ward()",
+      options: [
+        { label: "β-lactam 단독(IV)", any_of: ["drug:amoxicillin_clavulanate", "drug:ampicillin_sulbactam", "drug:cefotaxime", "drug:ceftriaxone"] },
+        { label: "호흡기 FQ 단독", any_of: ["drug:levofloxacin", "drug:moxifloxacin"] },
+        { label: "β-lactam + macrolide(비정형/중증 제한)", base_any_of: ["drug:ceftriaxone", "drug:cefotaxime"], plus: ["drug:azithromycin"] }
+      ],
+      grade: "약함", grade_system: "recsys:kr_abx", loe: "중등도", grade_rank: 3,
+      duration: "pneu:th:duration_cap", source: "L1", ref: "gl:cap-kr-2018"
+    },
+    "pneu:rg:cap_icu": {
+      id: "pneu:rg:cap_icu", type: "pneu:type:cap", setting: "icu",
+      when: "type('cap') && severity_icu()",
+      combo: true, legionella_cover: true,
+      base_any_of: ["drug:ceftriaxone", "drug:cefotaxime"],
+      plus_one_of: ["drug:azithromycin", "drug:levofloxacin", "drug:moxifloxacin"],
+      addons: [
+        { when: "pseudomonas_risk()", ref: "pneu:rule:pseudomonas_risk" },
+        { when: "mrsa_risk()", ref: "pneu:rule:mrsa_risk" }
+      ],
+      grade: "강함", grade_system: "recsys:kr_abx", loe: "중등도", grade_rank: 1,
+      duration: "pneu:th:duration_cap", source: "L1", ref: "gl:cap-kr-2018"
+    },
+    // ── HAP ──
+    "pneu:rg:hap_low": {
+      id: "pneu:rg:hap_low", type: "pneu:type:hap", risk: "low",
+      when: "type('hap') && !mdr_risk()",
+      options: [{ label: "단독", any_of: ["drug:cefepime", "drug:piperacillin_tazobactam"] }],
+      stance: { guideline: "MDR 저위험군 단독요법 권고(한국 HAP2025/IDSA)", practice: "2차병원 현실서 위험 불확실 시 초기 병용 후 배양 확인·de-escalation도 흔함" },
+      grade: "조건부", grade_system: "recsys:kr_abx", loe: "낮음", grade_rank: 2,
+      duration: "pneu:th:duration_hap", deescalate: true, source: "L1", ref: "gl:hap-kr-2025"
+    },
+    "pneu:rg:hap_high": {
+      id: "pneu:rg:hap_high", type: "pneu:type:hap", risk: "high",
+      when: "type('hap') && mdr_risk()",
+      combo: true,
+      antipseudomonal_betalactam_any_of: ["drug:piperacillin_tazobactam", "drug:cefepime", "drug:ceftazidime", "drug:meropenem", "drug:imipenem_cilastatin"],
+      plus_one_of: ["drug:ciprofloxacin", "drug:levofloxacin", "drug:amikacin"],
+      mrsa_if: { when: "mrsa_risk()", any_of: ["drug:vancomycin", "drug:linezolid"] },
+      grade: "조건부", grade_system: "recsys:kr_abx", loe: "낮음", grade_rank: 2,
+      duration: "pneu:th:duration_hap", deescalate: true,
+      source: "L1+L1p", ref: ["gl:hap-kr-2025", "gl:hapvap-idsa-2016"]
+    },
+    // ── VAP ──
+    "pneu:rg:vap_low": {
+      id: "pneu:rg:vap_low", type: "pneu:type:vap", risk: "low",
+      when: "type('vap') && !mdr_risk()",
+      options: [{ label: "단독 항녹농균", any_of: ["drug:cefepime", "drug:piperacillin_tazobactam", "drug:meropenem", "drug:levofloxacin"] }],
+      grade: "조건부", grade_system: "recsys:idsa", loe: "low", grade_rank: 2,
+      duration: "pneu:th:duration_hap", deescalate: true, ref: "gl:hapvap-idsa-2016"
+    },
+    "pneu:rg:vap_high": {
+      id: "pneu:rg:vap_high", type: "pneu:type:vap", risk: "high",
+      when: "type('vap') && mdr_risk()",
+      combo: true,
+      antipseudomonal_betalactam_any_of: ["drug:piperacillin_tazobactam", "drug:cefepime", "drug:ceftazidime", "drug:meropenem", "drug:imipenem_cilastatin", "drug:aztreonam"],
+      plus_one_of: ["drug:ciprofloxacin", "drug:levofloxacin", "drug:amikacin", "drug:tobramycin", "drug:colistin"],
+      mrsa_if: { when: "mrsa_risk()", any_of: ["drug:vancomycin", "drug:linezolid"] },
+      grade: "조건부", grade_system: "recsys:idsa", loe: "low", grade_rank: 2,
+      duration: "pneu:th:duration_hap", deescalate: true, ref: "gl:hapvap-idsa-2016"
+    },
+    // ── 흡인 ──
+    "pneu:rg:aspiration": {
+      id: "pneu:rg:aspiration", type: "pneu:type:aspiration",
+      when: "type('aspiration')",
+      options: [
+        { label: "표준(혐기성 루틴 불필요)", any_of: ["drug:amoxicillin_clavulanate", "drug:ampicillin_sulbactam", "drug:ceftriaxone"] },
+        { label: "혐기성 커버(농양·농흉·괴사 시)", any_of: ["drug:clindamycin", "drug:piperacillin_tazobactam", "drug:meropenem"], note: "필요시 +metronidazole" }
+      ],
+      grade: "조건부", grade_system: "recsys:kr_abx", loe: "중등도", grade_rank: 2,
+      duration: "pneu:th:duration_abscess", ref: "gl:hap-kr-2025"
+    },
+    // ── 특수상황(blocks 스키마 — 상세) ──
+    "pneu:rg:influenza": {
+      id: "pneu:rg:influenza", type: "pneu:special:viral_influenza", special: true,
+      blocks: [
+        { label: "항바이러스 1차", drugs: ["drug:oseltamivir"], text: "75 mg bid ×5일. 중증·입원·폐렴은 증상 발현시점 무관 즉시 시작(48h 경과해도)." },
+        { label: "대체 항바이러스", drugs: ["drug:peramivir", "drug:baloxavir"], text: "peramivir IV 단회 / baloxavir 경구 단회." },
+        { label: "세균 이차감염 병용", drugs: ["drug:ceftriaxone", "drug:vancomycin"], text: "인플루엔자 후 세균성 폐렴(폐렴구균·황색포도구균; MRSA 괴사성) 동반 흔함 → 의심 시 항생제 병용." }
+      ],
+      keypoints: ["조기 투여일수록 이득이나 중증·폐렴은 시점 무관 즉시", "고위험군(임신·만성질환·면역저하·65세↑) 적극 치료", "MRSA 괴사성 폐렴 합병 주의"],
+      ref: "gl:influenza-kr-2014"
+    },
+    "pneu:rg:covid": {
+      id: "pneu:rg:covid", type: "pneu:special:viral_covid", special: true,
+      blocks: [
+        { label: "외래 고위험(경증)", drugs: ["drug:nirmatrelvir_ritonavir"], text: "증상 5일 이내 시작. 신기능·병용약 상호작용 확인." },
+        { label: "입원·산소요구(저산소) 스테로이드", drugs: ["drug:dexamethasone"], text: "dexamethasone 6 mg qd, 최대 10일. 산소 필요할 때만(경증엔 오히려 해로울 수 있음)." },
+        { label: "항바이러스(입원 조기)", drugs: ["drug:remdesivir"], text: "산소요구 조기 5일 요법." },
+        { label: "면역조절(중증·급속악화)", text: "baricitinib 또는 tocilizumab 추가 고려(고유량 산소·기계환기로 진행 시)." }
+      ],
+      keypoints: ["'산소요구'가 dexamethasone 시작 기준선", "경증에 스테로이드 남용 회피", "세균 이차감염 과잉진단·불필요 항생제 삭감 주의", "정맥혈전 예방 고려"],
+      dx: "dx:u07"
+    },
+    "pneu:rg:pcp": {
+      id: "pneu:rg:pcp", type: "pneu:special:pcp", special: true,
+      blocks: [
+        { label: "치료 1차", drugs: ["drug:trimethoprim_sulfamethoxazole"], text: "TMP 15–20 mg/kg/일 분할 q6–8h ×21일." },
+        { label: "대체", drugs: ["drug:clindamycin", "drug:primaquine", "drug:atovaquone", "drug:pentamidine"], text: "clindamycin+primaquine / atovaquone(경증) / pentamidine." },
+        { label: "보조 스테로이드", drugs: ["drug:dexamethasone"], text: "PaO2 ≤70(실내공기) 또는 A-a gradient ≥35 → prednisone 40 mg bid 5일→감량(스테로이드 상당량)." },
+        { label: "예방(prophylaxis)", drugs: ["drug:trimethoprim_sulfamethoxazole"], text: "CD4<200·고위험 면역저하 → TMP-SMX 1정(SS/DS) qd." }
+      ],
+      keypoints: ["아급성 호흡곤란·건성기침·LDH↑ + 면역저하 정황", "저산소 시 보조 스테로이드가 예후 개선", "CMV·결핵·곰팡이 동시 감별"],
+      duration: "pneu:th:duration_pcp", dx: "dx:b59"
+    },
+    "pneu:rg:abscess": {
+      id: "pneu:rg:abscess", type: "pneu:special:abscess", special: true,
+      blocks: [
+        { label: "항생제(혐기성 포함)", drugs: ["drug:amoxicillin_clavulanate", "drug:ampicillin_sulbactam", "drug:clindamycin", "drug:piperacillin_tazobactam", "drug:meropenem"], text: "3–6주 장기. 병원획득·기저에 따라 상향(±metronidazole)." },
+        { label: "배액", text: "난치·대형 농양에서 경피/기관지경 배액 고려." }
+      ],
+      keypoints: ["폐농양은 임상·영상 반응까지 장기 항생제", "혐기성·구강내 세균 커버"],
+      duration: "pneu:th:duration_abscess", dx: "dx:j85"
+    },
+    "pneu:rg:empyema": {
+      id: "pneu:rg:empyema", type: "pneu:special:empyema", special: true,
+      blocks: [
+        { label: "배액(필수)", text: "흉관 배액 ± 섬유소용해제(tPA + DNase). 다방성·불응 → 흉강경(VATS)/수술." },
+        { label: "항생제", drugs: ["drug:amoxicillin_clavulanate", "drug:ampicillin_sulbactam", "drug:piperacillin_tazobactam", "drug:clindamycin"], text: "혐기성 포함 커버, 2–6주. 원내/기저 따라 상향." },
+        { label: "부폐렴삼출 배액 적응", text: "삼출 pH<7.2 / 농성 / 균 검출 → 배액." }
+      ],
+      keypoints: ["농흉은 항생제만으로 불충분 — 배액이 핵심"],
+      duration: "pneu:th:duration_abscess", dx: "dx:j86"
+    },
+    // ── 표적치료 카탈로그(도서관) ──
+    "pneu:rg:target_mssa": { id: "pneu:rg:target_mssa", target: "MSSA", first: ["drug:cefazolin"], alt: ["drug:nafcillin", "drug:ampicillin", "drug:amoxicillin_clavulanate"], stance: { guideline: "항포도상 페니실린(nafcillin/oxacillin) 표준", practice: "국내 nafcillin 미시판 → cefazolin이 실사용 표준, 감수성 시 ampicillin 축소" } },
+    "pneu:rg:target_mrsa": { id: "pneu:rg:target_mrsa", target: "MRSA", first: ["drug:vancomycin", "drug:linezolid"], alt: ["drug:teicoplanin", "drug:ceftaroline"] },
+    "pneu:rg:target_pseudomonas": { id: "pneu:rg:target_pseudomonas", target: "P.aeruginosa", first: ["drug:piperacillin_tazobactam", "drug:cefepime", "drug:ceftazidime", "drug:meropenem"], note: "확진·감수성 시 단독(한국 HAP2025 #7)" },
+    "pneu:rg:target_crab": { id: "pneu:rg:target_crab", target: "CRAB(A.baumannii)", first: ["drug:ampicillin_sulbactam", "drug:colistin"], alt: ["drug:cefiderocol", "drug:sulbactam_durlobactam"], note: "colistin ±흡입" },
+    "pneu:rg:target_esbl": { id: "pneu:rg:target_esbl", target: "ESBL 장내세균", first: ["drug:meropenem", "drug:imipenem_cilastatin", "drug:ertapenem"] },
+    "pneu:rg:target_cre": { id: "pneu:rg:target_cre", target: "CRE", first: ["drug:ceftazidime_avibactam", "drug:cefiderocol"], alt: ["drug:colistin"], ref: "gl:cre-kr-2024" },
+    "pneu:rg:target_legionella": { id: "pneu:rg:target_legionella", target: "L.pneumophila", first: ["drug:azithromycin", "drug:levofloxacin", "drug:moxifloxacin"], duration: "pneu:th:duration_cap", note: "≥14일" }
+  };
+  const OUT = { PNEU_REGIMENS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/pneu_rec.js */
+/* pneu_rec.js — 위험층화·전략 권고규칙(REC). SPEC §3-6.
+ * 경험적 요법 티어는 regimens에, 여기는 위험 토글·전략 규칙(녹농균/MRSA/MDR·de-escalation·기간).
+ */
+(function (root) {
+  const PNEU_REC = {
+    "pneu:rule:pseudomonas_risk": {
+      id: "pneu:rule:pseudomonas_risk", topic: "녹농균 위험",
+      when: "has(comorbid:bronchiectasis) || has(comorbid:copd_severe) || prior_pseudomonas() || recent_broad_abx() || recent_steroid()",
+      action: "항녹농균 β-lactam(±2계열) 추가", ref_regimen: "pneu:rg:target_pseudomonas",
+      grade: "강함", grade_system: "recsys:kr_abx", source: "L1", ref: "gl:cap-kr-2018"
+    },
+    "pneu:rule:mrsa_risk": {
+      id: "pneu:rule:mrsa_risk", topic: "MRSA 위험",
+      when: "post_influenza_necrotizing() || prior_mrsa() || ivdu() || recent_hospitalization()",
+      action: "vancomycin 또는 linezolid 추가", ref_regimen: "pneu:rg:target_mrsa",
+      grade: "조건부", grade_system: "recsys:kr_abx", source: "L1", ref: "gl:cap-kr-2018"
+    },
+    "pneu:rule:mdr_risk": {
+      id: "pneu:rule:mdr_risk", topic: "다제내성 위험(HAP/VAP)",
+      when: "prior_iv_abx_90d() || septic_shock_at_onset() || ards_before() || hospital_days_ge5() || acute_rrt() || high_mdr_ward()",
+      action: "고위험 경험적 티어(병용) 적용",
+      grade: "조건부", grade_system: "recsys:idsa", source: "L1p", ref: "gl:hapvap-idsa-2016"
+    },
+    "pneu:rule:deescalation": {
+      id: "pneu:rule:deescalation", topic: "스펙트럼 축소",
+      when: "culture_available() && clinically_stable()",
+      action: "배양·감수성 확인 후 좁은 스펙트럼 전환(삭감 방어 핵심)",
+      grade: "조건부", grade_system: "recsys:kr_abx", source: "L1", ref: "gl:hap-kr-2025"
+    },
+    "pneu:rule:duration_cap": {
+      id: "pneu:rule:duration_cap", topic: "CAP 기간",
+      action: "최소 5일, 임상 안정 48–72h 후 종료", ref_th: "pneu:th:duration_cap",
+      grade: "강함", grade_system: "recsys:kr_abx", source: "L1", ref: "gl:cap-kr-2018"
+    },
+    "pneu:rule:duration_hap": {
+      id: "pneu:rule:duration_hap", topic: "HAP/VAP 기간",
+      action: "표준 7–8일(연장은 균혈증·농양·면역저하·MDR)", ref_th: "pneu:th:duration_hap",
+      grade: "조건부", grade_system: "recsys:kr_abx", source: "L1", ref: "gl:hap-kr-2025"
+    },
+    "pneu:rule:tb_exclude": {
+      id: "pneu:rule:tb_exclude", topic: "결핵 감별",
+      when: "upper_lobe() || cavitary() || subacute() || tb_contact()",
+      action: "항산균 도말·배양·TB-PCR 선행, FQ 경험적 회피", gate: "pneu:gate:tb_exclude_fq",
+      grade: "약함", grade_system: "recsys:kr_abx", source: "L1", ref: "gl:cap-kr-2018"
+    },
+    "pneu:rule:steroid_severe_cap": {
+      id: "pneu:rule:steroid_severe_cap", topic: "중증 CAP 스테로이드",
+      when: "type('cap') && severity_icu() && shock()",
+      action: "쇽 동반 중증 CAP 스테로이드 고려",
+      grade: "약함", grade_system: "recsys:kr_abx", loe: "낮음", source: "L1", ref: "gl:cap-kr-2018"
+    }
+  };
+  const OUT = { PNEU_REC };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/pneu_gate.js */
+/* pneu_gate.js — 안전·급여 메타규칙 GATE ★. SPEC §4-3.
+ * action: EXCLUDE(금기) / DEMOTE(강등) / WARN(경고) / INFO(정보). tag:"reimb" = 삭감 방어.
+ * RANK보다 먼저 실행(engine/recommend.js).
+ */
+(function (root) {
+  const PNEU_GATES = {
+    "pneu:gate:tb_exclude_fq": {
+      id: "pneu:gate:tb_exclude_fq", action: "WARN", severity: "strong",
+      when: "recommend_class('class:respiratory_fq') && tb_suspect()",
+      reason: "결핵 미배제 시 FQ는 부분치료·진단지연·FQ내성 유발 — 항산균 도말·배양·TB-PCR 선행",
+      ref: "gl:cap-kr-2018"
+    },
+    "pneu:gate:tigecycline_pneumonia": {
+      id: "pneu:gate:tigecycline_pneumonia", action: "EXCLUDE", severity: "absolute",
+      when: "recommend('drug:tigecycline') && (type('hap') || type('vap') || bacteremia())",
+      reason: "HAP/VAP 허가·급여 제외 + 전 임상 사망률 증가(FDA/MFDS 경고). CAP는 허가 내 last-line",
+      ref: "notice:hira-tigecycline"
+    },
+    "pneu:gate:aminoglycoside_mono": {
+      id: "pneu:gate:aminoglycoside_mono", action: "EXCLUDE", severity: "absolute",
+      when: "regimen_mono('class:aminoglycoside')",
+      reason: "폐렴 단독요법 금지(IDSA) — 병용 성분으로만 사용",
+      ref: "gl:hapvap-idsa-2016"
+    },
+    "pneu:gate:glyco_empiric_window": {
+      id: "pneu:gate:glyco_empiric_window", action: "WARN", tag: "reimb",
+      when: "recommend_class('class:glycopeptide') && !mrsa_confirmed() && days_since_start_gt3()",
+      reason: "MRSA 미확인 경험적 창 초과 — 배양 확인·de-escalation 필요(삭감위험 ★★★)",
+      ref: "notice:hira-glycopeptide"
+    },
+    "pneu:gate:carbapenem_deescalation": {
+      id: "pneu:gate:carbapenem_deescalation", action: "DEMOTE", tag: "reimb",
+      when: "recommend_class('class:carbapenem') && !esbl_or_mdr_evidence()",
+      reason: "ESBL/MDR 근거 없이 1차·지속 — 배양 후 축소 제안(삭감위험 ★★★)",
+      ref: "notice:hira-carbapenem"
+    },
+    "pneu:gate:piptazo_duration": {
+      id: "pneu:gate:piptazo_duration", action: "WARN", tag: "reimb",
+      when: "recommend('drug:piperacillin_tazobactam') && duration_excess()",
+      reason: "과다 기간·경증 남용 삭감위험(★★) — 기간 준수·경구 전환 검토",
+      ref: "notice:hira-piptazo"
+    },
+    "pneu:gate:resp_fq_iv_stepdown": {
+      id: "pneu:gate:resp_fq_iv_stepdown", action: "INFO", tag: "reimb",
+      when: "recommend_class('class:respiratory_fq') && route_iv() && clinically_stable()",
+      reason: "임상 안정 시 경구 전환(생체이용률 높음) — 정맥 지속 삭감위험(★★)",
+      ref: "notice:hira-resp-fq"
+    },
+    "pneu:gate:pseudomonas_mono_switch": {
+      id: "pneu:gate:pseudomonas_mono_switch", action: "INFO",
+      when: "(type('hap') || type('vap')) && pseudomonas_confirmed_susceptible()",
+      reason: "녹농균 확진·감수성 → 경험적 병용 종료, 단독 전환(한국 HAP2025 #7)",
+      ref: "gl:hap-kr-2025"
+    },
+    "pneu:gate:colistin_nephrotox": {
+      id: "pneu:gate:colistin_nephrotox", action: "INFO",
+      when: "recommend('drug:colistin')",
+      reason: "신기능 모니터·감수성 근거 요구; CRGNB VAP는 정맥+흡입 병용 고려(한국 HAP2025 #8)",
+      ref: "notice:hira-colistin"
+    },
+    "pneu:gate:macrolide_mono_cap": {
+      id: "pneu:gate:macrolide_mono_cap", action: "WARN", coexist: true,
+      when: "type('cap') && regimen_mono('class:macrolide')",
+      reason: "국내 폐렴구균·마이코플라스마 마크로라이드 내성↑ → 가이드상 단독 비권고(β-lactam/FQ 골격 우선)",
+      practice_note: "경증·젊은 비흡연 외래서 실제 사용되기도 — 금지가 아닌 주의(옵션 유지)",
+      ref: "pneu:th:resist_sp_macrolide"
+    },
+    "pneu:gate:aspiration_anaerobe": {
+      id: "pneu:gate:aspiration_anaerobe", action: "INFO",
+      when: "type('aspiration') && !(abscess() || empyema() || necrotizing())",
+      reason: "단순 흡인성 폐렴 혐기성 루틴 커버 불필요(한국 HAP2025 #6)",
+      ref: "gl:hap-kr-2025"
+    },
+    "pneu:gate:novel_bl_susceptibility": {
+      id: "pneu:gate:novel_bl_susceptibility", action: "WARN", tag: "reimb",
+      when: "recommend_class('class:novel_betalactam') && !susceptibility_documented()",
+      reason: "신규 BL/BLI는 감수성·단계조건·심의 근거 필요(삭감위험 ★★★)",
+      ref: "notice:hira-novel-bl"
+    },
+    "pneu:gate:immunocompromise_escalate": {
+      id: "pneu:gate:immunocompromise_escalate", action: "INFO",
+      when: "has(comorbid:immunocompromise) || has(comorbid:neutropenia)",
+      reason: "면역저하/호중구감소 → 경험적 스펙트럼 상향 + PCP·곰팡이·CMV 감별 고려",
+      ref: "gl:hapvap-idsa-2016"
+    }
+  };
+  const OUT = { PNEU_GATES };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/pneu_notices.js */
+/* pneu_notices.js — 급여고시 + 삭감위험 매트릭스 ★1급 시민. SPEC §4-4.
+ * 재검증 로그(claude/폐렴_급여재검증로그.md) 반영. verified=false → 코딩직전 최종 확정.
+ * risk: 삭감위험도(★~★★★). basis: 급여 인정요지. cut: 삭감 트리거.
+ */
+(function (root) {
+  const PNEU_NOTICES = {
+    "notice:hira-abx-general": {
+      id: "notice:hira-abx-general", scope: "all-antibiotics", risk: "-",
+      basis: "식약처 허가사항(적응증·용법·기간) 범위 내 급여가 원칙. 광범위·고가는 근거 기재, 배양 후 조정.",
+      cut: ["허가범위 초과(적응·용량·기간)", "배양 후 de-escalation 미이행", "근거 미기재 광범위 경험적", "중앙심사조정위 심사사례"],
+      source_body: "요양급여 세부사항(약제) [일반원칙] 항생제 '610 항생물질제제'",
+      verified: false
+    },
+    "notice:hira-glycopeptide": {
+      id: "notice:hira-glycopeptide", scope: "class:glycopeptide",
+      drugs: ["drug:vancomycin", "drug:teicoplanin"], risk: "★★★",
+      basis: "그람양성 중증감염 허가범위 내 급여. 경험적 사용 가능.",
+      cut: ["배양 MRSA(−) 확인 후 지속", "MSSA 확인 후 미전환", "장기 무근거 투여"],
+      verified: false
+    },
+    "notice:hira-linezolid": {
+      id: "notice:hira-linezolid", scope: "drug:linezolid", risk: "★★★",
+      basis: "VRE 감염, 또는 MRSA/그람양성에서 glycopeptide(반코마이신·테이코플라닌) 사용 곤란(내성·부작용·실패) 시. 경구 포함.",
+      cut: ["1차부터 무근거 사용", "glycopeptide 대체근거 미기재", "허가 외"],
+      noticeNo: "보건복지부 고시 제2015-26호(pointer)", verified: false
+    },
+    "notice:hira-carbapenem": {
+      id: "notice:hira-carbapenem", scope: "class:carbapenem",
+      drugs: ["drug:meropenem", "drug:imipenem_cilastatin", "drug:ertapenem", "drug:doripenem"], risk: "★★★",
+      basis: "중증·복잡성 감염·ESBL 등 허가범위 내 급여.",
+      cut: ["경증 1차 남용", "ESBL/MDR 근거 없이 지속", "배양 후 미축소"],
+      verified: false
+    },
+    "notice:hira-piptazo": {
+      id: "notice:hira-piptazo", scope: "drug:piperacillin_tazobactam", risk: "★★",
+      basis: "중등도–중증·녹농균/혼합감염 정황 허가범위 내 급여.",
+      cut: ["경증 외래성 남용", "과다 기간"], verified: false
+    },
+    "notice:hira-cefepime": {
+      id: "notice:hira-cefepime", scope: "drug:cefepime", risk: "★★",
+      basis: "중증·녹농균 위험 허가범위 내 급여.", cut: ["근거 없는 광범위 선택"], verified: false
+    },
+    "notice:hira-resp-fq": {
+      id: "notice:hira-resp-fq", scope: "class:respiratory_fq",
+      drugs: ["drug:moxifloxacin", "drug:levofloxacin"], risk: "★★",
+      basis: "CAP·AECOPD 등 허가 적응 범위 내 급여.",
+      cut: ["결핵 미배제 사용(임상)", "경증 정맥 남용", "조기 경구전환 미이행"], verified: false
+    },
+    "notice:hira-colistin": {
+      id: "notice:hira-colistin", scope: "drug:colistin", risk: "★★★",
+      basis: "다제내성 그람음성(CRAB/CRPA/CRE) 감수성 근거 시 급여. 흡입 병용 가능.",
+      cut: ["감수성 근거 없는 사용", "신독성 미모니터", "단독 남용"],
+      verified: false, note: "흡입요법 급여 세부 재확인"
+    },
+    "notice:hira-tigecycline": {
+      id: "notice:hira-tigecycline", scope: "drug:tigecycline", risk: "★★★",
+      basis: "국내 허가 = 복잡성 피부·연조직 / 복잡성 복강내 / 지역사회획득 폐렴(CAP). HAP/VAP 허가·급여 제외.",
+      cut: ["HAP/VAP·균혈증 사용(사망위험 경고)", "허가 외 폐렴 사용"],
+      warn: "전 임상 사망률 4.0% vs 대조 3.0%; VAP 하위군 치유 47.9% vs 70.1%",
+      verified: true, source: "약학정보원 허가사항 + FDA/MFDS 경고"
+    },
+    "notice:hira-novel-bl": {
+      id: "notice:hira-novel-bl", scope: "class:novel_betalactam",
+      drugs: ["drug:cefiderocol", "drug:ceftazidime_avibactam", "drug:ceftolozane_tazobactam"], risk: "★★★",
+      basis: "MDR 그람음성 감수성 확인·단계조건 시 급여. cefiderocol: CRAB 확인 원내폐렴(HAP/VAP) 1차, 2차=카바페넴 실패/MDR녹농균·CRE(약평위 2025-09-04 급여 인정, 약가협상).",
+      cut: ["감수성 근거·심의 없이 사용"],
+      verified: false, note: "cefiderocol 확인. ceftolozane-tazo·ceftazidime-avibactam 등재현황 재확인",
+      source: "약평위 평가결과(페트로자주) 2025-09-04"
+    },
+    "notice:hira-aminoglycoside": {
+      id: "notice:hira-aminoglycoside", scope: "class:aminoglycoside",
+      drugs: ["drug:amikacin", "drug:gentamicin", "drug:tobramycin"], risk: "★★",
+      basis: "병용요법 성분으로 허가범위 내 급여.",
+      cut: ["폐렴 단독요법(IDSA 금지)", "신·이독성 미모니터"], verified: false
+    },
+    "notice:hira-ceftaroline": {
+      id: "notice:hira-ceftaroline", scope: "drug:ceftaroline", risk: "★★",
+      basis: "허가 적응 제한.", cut: ["폐렴 off-label"], verified: false
+    }
+  };
+  const OUT = { PNEU_NOTICES };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/pneu_relations.js */
+/* pneu_relations.js — 관계 트리플(R). SPEC §3(P3): covers/targets/insurance_basis/monitors/measures.
+ * 값 복제 없이 ID 참조로만 결합(헌장 §3).
+ */
+(function (root) {
+  const PNEU_RELATIONS = [
+    // 약물 → 표적균 (covers)
+    { s: "drug:vancomycin", p: "covers", o: "MRSA" },
+    { s: "drug:linezolid", p: "covers", o: "MRSA" },
+    { s: "drug:linezolid", p: "covers", o: "VRE" },
+    { s: "drug:piperacillin_tazobactam", p: "covers", o: "P.aeruginosa" },
+    { s: "drug:cefepime", p: "covers", o: "P.aeruginosa" },
+    { s: "drug:meropenem", p: "covers", o: "ESBL" },
+    { s: "drug:colistin", p: "covers", o: "CRAB" },
+    { s: "drug:colistin", p: "covers", o: "CRE" },
+    { s: "drug:cefiderocol", p: "covers", o: "CRAB" },
+    { s: "drug:ceftazidime_avibactam", p: "covers", o: "CRE" },
+    { s: "drug:azithromycin", p: "covers", o: "atypical" },
+    { s: "drug:levofloxacin", p: "covers", o: "atypical" },
+    // 고시 → 약물 (insurance_basis)
+    { s: "notice:hira-glycopeptide", p: "insurance_basis", o: "drug:vancomycin" },
+    { s: "notice:hira-glycopeptide", p: "insurance_basis", o: "drug:teicoplanin" },
+    { s: "notice:hira-linezolid", p: "insurance_basis", o: "drug:linezolid" },
+    { s: "notice:hira-carbapenem", p: "insurance_basis", o: "drug:meropenem" },
+    { s: "notice:hira-tigecycline", p: "insurance_basis", o: "drug:tigecycline" },
+    { s: "notice:hira-colistin", p: "insurance_basis", o: "drug:colistin" },
+    { s: "notice:hira-novel-bl", p: "insurance_basis", o: "drug:cefiderocol" },
+    // 검사 → 유형 (measures / diagnoses)
+    { s: "lab:pneumococcal_uag", p: "diagnoses", o: "dx:j13" },
+    { s: "lab:legionella_uag", p: "diagnoses", o: "L.pneumophila" },
+    { s: "lab:mrsa_pcr_nares", p: "rules_out", o: "MRSA" },
+    { s: "lab:procalcitonin", p: "guides_stop", o: "pneu:rule:deescalation" },
+    // 약물 → 모니터 (monitors)
+    { s: "drug:vancomycin", p: "monitors", o: "lab:creatinine" },
+    { s: "drug:colistin", p: "monitors", o: "lab:creatinine" },
+    { s: "drug:vancomycin", p: "monitors", o: "pneu:th:dose_vancomycin" },
+    // 동반질환 → 위험규칙 (raises_risk)
+    { s: "comorbid:bronchiectasis", p: "raises_risk", o: "pneu:rule:pseudomonas_risk" },
+    { s: "comorbid:immunocompromise", p: "raises_risk", o: "pneu:gate:immunocompromise_escalate" },
+    { s: "comorbid:copd", p: "raises_risk", o: "pneu:rule:pseudomonas_risk" }
+  ];
+  const OUT = { PNEU_RELATIONS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* engine/expr.js */
+/* expr.js — 미니문법 평가기(화이트리스트). SPEC §5-3.
+ * when 문자열의 헬퍼호출을 boolean으로 치환 후, 안전한 boolean 파서로 평가(임의코드 실행 차단).
+ */
+(function (root) {
+  // 안전 boolean 파서: true/false/!/&&/||/()
+  function evalBool(s) {
+    let i = 0; s = s.replace(/\s+/g, "");
+    function peek() { return s[i]; }
+    function parseOr() { let v = parseAnd(); while (s.substr(i, 2) === "||") { i += 2; const r = parseAnd(); v = v || r; } return v; }
+    function parseAnd() { let v = parseUnary(); while (s.substr(i, 2) === "&&") { i += 2; const r = parseUnary(); v = v && r; } return v; }
+    function parseUnary() { if (peek() === "!") { i++; return !parseUnary(); } return parsePrim(); }
+    function parsePrim() {
+      if (peek() === "(") { i++; const v = parseOr(); if (peek() === ")") i++; return v; }
+      if (s.substr(i, 4) === "true") { i += 4; return true; }
+      if (s.substr(i, 5) === "false") { i += 5; return false; }
+      throw new Error("expr parse error @" + i + " in: " + s);
+    }
+    const v = parseOr();
+    if (i !== s.length) throw new Error("expr trailing @" + i + " in: " + s);
+    return v;
+  }
+
+  // when 평가: ctx.fn(name, arg) → bool
+  function evalExpr(expr, ctx) {
+    if (expr == null || expr === "") return true;
+    const replaced = expr.replace(/([a-zA-Z_][a-zA-Z0-9_]*)\(\s*([^()]*?)\s*\)/g, function (_, name, arg) {
+      const a = arg.replace(/^['"]|['"]$/g, "");
+      const fn = ctx.fn(name, a);
+      return fn ? "true" : "false";
+    });
+    return evalBool(replaced);
+  }
+
+  const OUT = { evalExpr, evalBool };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* engine/stratify.js */
+/* stratify.js — 유형·중증도·위험 산출. SPEC §5-2 A. */
+(function (root) {
+  // CURB-65 + ATS → setting ∈ {outpatient, ward, icu}
+  function computeSetting(sev) {
+    sev = sev || {};
+    if (sev.setting) return sev.setting;
+    let curb = 0;
+    if (sev.confusion) curb++;
+    if (sev.bun != null && sev.bun > 19) curb++;
+    if (sev.rr != null && sev.rr >= 30) curb++;
+    if ((sev.sbp != null && sev.sbp < 90) || (sev.dbp != null && sev.dbp <= 60)) curb++;
+    if (sev.age != null && sev.age >= 65) curb++;
+    const atsMajor = !!(sev.mech_vent || sev.vasopressor);
+    let minors = 0;
+    if (sev.rr >= 30) minors++;
+    if (sev.pao2_fio2 != null && sev.pao2_fio2 <= 250) minors++;
+    if (sev.multilobar) minors++;
+    if (sev.confusion) minors++;
+    if (sev.bun != null && sev.bun >= 20) minors++;
+    if (sev.wbc != null && sev.wbc < 4000) minors++;
+    if (sev.plt != null && sev.plt < 100000) minors++;
+    if (sev.temp != null && sev.temp < 36) minors++;
+    if (atsMajor || minors >= 3 || curb >= 3) return "icu";
+    if (curb === 2) return "ward";
+    return "outpatient";
+  }
+
+  function computeRisks(p) {
+    const r = p.risk || {}, c = p.comorbid || [];
+    const pseudomonas = !!(r.pseudomonas || r.prior_pseudomonas || r.recent_broad_abx || r.recent_steroid
+      || c.includes("bronchiectasis") || c.includes("copd_severe"));
+    const mrsa = !!(r.mrsa || r.post_influenza_necrotizing || r.prior_mrsa || r.ivdu || r.recent_hospitalization);
+    const mdr = !!(r.prior_iv_abx_90d || r.septic_shock_onset || r.ards_before || r.acute_rrt || r.high_mdr_ward
+      || (r.hospital_days != null && r.hospital_days >= 5));
+    return { pseudomonas, mrsa, mdr };
+  }
+
+  const OUT = { computeSetting, computeRisks };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* engine/gate.js */
+/* gate.js — GATE 실행. SPEC §5-2 C. action별 분류. */
+(function (root) {
+  const expr = (typeof require !== "undefined") ? require("./expr.js") : root;
+  function runGates(GATES, ctx) {
+    const out = { excludes: [], demotes: [], warns: [], infos: [] };
+    for (const g of Object.values(GATES)) {
+      let hit = false;
+      try { hit = expr.evalExpr(g.when, ctx); } catch (e) { hit = false; }
+      if (!hit) continue;
+      const item = { gate: g.id, action: g.action, reason: g.reason, tag: g.tag || null,
+        coexist: !!g.coexist, practice_note: g.practice_note || null, ref: g.ref };
+      if (g.action === "EXCLUDE") out.excludes.push(item);
+      else if (g.action === "DEMOTE") out.demotes.push(item);
+      else if (g.action === "WARN") out.warns.push(item);
+      else out.infos.push(item);
+    }
+    return out;
+  }
+  const OUT = { runGates };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* engine/rank.js */
+/* rank.js — 정렬. SPEC §5-2 D: grade_rank → LOE → 급여충족(삭감위험 낮음). */
+(function (root) {
+  const LOE = { "높음": 0, "high": 0, "중등도": 1, "moderate": 1, "낮음": 2, "low": 2, "매우낮음": 3, "very low": 3 };
+  const RISK = { "★": 1, "★★": 2, "★★★": 3 };
+  function rankRegimens(regs, notices) {
+    return regs.slice().sort((a, b) => {
+      const gr = (a.grade_rank || 9) - (b.grade_rank || 9); if (gr) return gr;
+      const lo = (LOE[a.loe] ?? 9) - (LOE[b.loe] ?? 9); if (lo) return lo;
+      return (worstRisk(a, notices) - worstRisk(b, notices));
+    });
+  }
+  function worstRisk(reg, notices) {
+    let w = 0; const s = JSON.stringify(reg);
+    const m = s.match(/drug:[a-z0-9_]+/g) || [];
+    for (const d of m) for (const n of Object.values(notices || {})) {
+      if ((n.drugs || []).includes(d) || n.scope === d) w = Math.max(w, RISK[n.risk] || 0);
+    }
+    return w;
+  }
+  const OUT = { rankRegimens };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* engine/recommend.js */
+/* recommend.js — 정문 오케스트레이션. SPEC §5.
+ * 폐렴은 1차 이후 발산 → 본 엔진은 "경험적 시작 제안"에 집중하고,
+ * 3축(균주 동정·기저질환·면역저하)의 고려사항을 함께 반환한다(개발자 방향, 08-14).
+ */
+(function (root) {
+  const req = (typeof require !== "undefined");
+  const DR = req ? require("../data/pneu_drugs.js") : root;
+  const TY = req ? require("../data/pneu_types.js") : root;
+  const RG = req ? require("../data/pneu_regimens.js") : root;
+  const GA = req ? require("../data/pneu_gate.js") : root;
+  const NO = req ? require("../data/pneu_notices.js") : root;
+  const RC = req ? require("../data/pneu_rec.js") : root;
+  const TH = req ? require("../data/pneu_thresholds.js") : root;
+  const expr = req ? require("./expr.js") : root;
+  const strat = req ? require("./stratify.js") : root;
+  const gate = req ? require("./gate.js") : root;
+  const rank = req ? require("./rank.js") : root;
+
+  const DRUGS = DR.PNEU_DRUGS, CLASSES = DR.PNEU_CLASSES, TYPES = TY.PNEU_TYPES,
+    REGIMENS = RG.PNEU_REGIMENS, GATES = GA.PNEU_GATES, NOTICES = NO.PNEU_NOTICES,
+    REC = RC.PNEU_REC, THS = TH.PNEU_TH;
+
+  const drugClass = (id) => (DRUGS[id] || {}).class || null;
+
+  // 후보 약물/계열/mono계열 수집
+  function collectCandidate(regs, risks) {
+    const drugs = new Set(), classes = new Set(), mono = new Set();
+    for (const reg of regs) {
+      const clone = JSON.parse(JSON.stringify(reg));
+      if (!risks.mrsa) delete clone.mrsa_if;                 // MRSA 커버는 위험시만 후보
+      const ids = (JSON.stringify(clone).match(/drug:[a-z0-9_]+/g) || []);
+      ids.forEach(d => { drugs.add(d); const c = drugClass(d); if (c) classes.add(c); });
+      if (!reg.combo && Array.isArray(reg.options)) {
+        for (const o of reg.options) {
+          if (o.any_of && !o.base_any_of && !o.plus && !o.plus_if_atypical) {
+            const cs = new Set(o.any_of.map(drugClass));
+            if (cs.size === 1) mono.add([...cs][0]);
+          }
+        }
+      }
+    }
+    if (risks.mrsa) { drugs.add("drug:vancomycin"); classes.add("class:glycopeptide"); }
+    return { drugs, classes, monoClasses: mono };
+  }
+
+  // 헬퍼 컨텍스트(화이트리스트)
+  function makeCtx(p, computed, cand) {
+    const r = p.risk || {}, c = p.comorbid || [], mi = p.micro || {}, co = p.course || {}, cl = p.clinical || {}, sv = p.severity || {};
+    const T = { setting: computed.setting, risks: computed.risks };
+    const table = {
+      type: a => p.type === a,
+      has: a => c.includes(String(a).replace(/^comorbid:/, "")),
+      special: a => (p.special || []).includes(a),
+      severity_outpatient: () => T.setting === "outpatient",
+      severity_ward: () => T.setting === "ward",
+      severity_icu: () => T.setting === "icu",
+      severity_severe: () => T.setting === "icu",
+      pseudomonas_risk: () => T.risks.pseudomonas,
+      mrsa_risk: () => T.risks.mrsa,
+      mdr_risk: () => T.risks.mdr,
+      recommend: a => cand && cand.drugs.has(a),
+      recommend_class: a => cand && cand.classes.has(a),
+      regimen_mono: a => cand && cand.monoClasses.has(a),
+      tb_suspect: () => !!cl.tb_suspect,
+      bacteremia: () => !!mi.bacteremia,
+      mrsa_confirmed: () => !!mi.mrsa_confirmed,
+      esbl_or_mdr_evidence: () => !!(mi.esbl_evidence || mi.mdr_evidence),
+      susceptibility_documented: () => !!mi.susceptibility_documented,
+      pseudomonas_confirmed_susceptible: () => !!mi.pseudomonas_confirmed_susceptible,
+      culture_available: () => !!mi.culture_available,
+      clinically_stable: () => !!co.clinically_stable,
+      route_iv: () => co.route === "iv",
+      days_since_start_gt3: () => (co.days_since_start || 0) > 3,
+      duration_excess: () => co.duration_planned != null && co.duration_planned > 8,
+      abscess: () => !!cl.abscess, empyema: () => !!cl.empyema, necrotizing: () => !!cl.necrotizing,
+      prior_pseudomonas: () => !!r.prior_pseudomonas, recent_broad_abx: () => !!r.recent_broad_abx,
+      recent_steroid: () => !!r.recent_steroid, post_influenza_necrotizing: () => !!r.post_influenza_necrotizing,
+      prior_mrsa: () => !!r.prior_mrsa, ivdu: () => !!r.ivdu, recent_hospitalization: () => !!r.recent_hospitalization,
+      prior_iv_abx_90d: () => !!r.prior_iv_abx_90d, septic_shock_at_onset: () => !!r.septic_shock_onset,
+      ards_before: () => !!r.ards_before, hospital_days_ge5: () => (r.hospital_days || 0) >= 5,
+      acute_rrt: () => !!r.acute_rrt, high_mdr_ward: () => !!r.high_mdr_ward,
+      upper_lobe: () => !!cl.upper_lobe, cavitary: () => !!cl.cavitary, subacute: () => !!cl.subacute,
+      tb_contact: () => !!cl.tb_contact, shock: () => !!sv.vasopressor
+    };
+    return { fn: (name, arg) => { const f = table[name]; return f ? !!f(arg) : false; } };
+  }
+
+  // 3축: 균주 동정 → 표적 카탈로그
+  const PATHOGEN_MAP = {
+    MRSA: "pneu:rg:target_mrsa", MSSA: "pneu:rg:target_mssa", PSEUDOMONAS: "pneu:rg:target_pseudomonas",
+    ESBL: "pneu:rg:target_esbl", CRE: "pneu:rg:target_cre", CRAB: "pneu:rg:target_crab", LEGIONELLA: "pneu:rg:target_legionella"
+  };
+
+  const SPECIAL = { viral_influenza: "pneu:rg:influenza", viral_covid: "pneu:rg:covid", pcp: "pneu:rg:pcp", abscess: "pneu:rg:abscess", empyema: "pneu:rg:empyema" };
+
+  function specialResult(p, rid) {
+    const reg = REGIMENS[rid], t = TYPES[reg.type] || {};
+    const drugs = new Set(JSON.stringify(reg).match(/drug:[a-z0-9_]+/g) || []);
+    const classes = new Set([...drugs].map(drugClass).filter(Boolean));
+    const reimb = [];
+    for (const n of Object.values(NOTICES)) {
+      if ((n.drugs || []).some(d => drugs.has(d)) || drugs.has(n.scope) || classes.has(n.scope)) reimb.push({ notice: n.id, basis: n.basis, cut: n.cut, risk: n.risk, verified: n.verified });
+    }
+    const comorb = p.comorbid || [];
+    const axes = { pathogen: null, comorbidity: null, immunocompromise: null };
+    if (rid === "pneu:rg:pcp" || comorb.includes("immunocompromise") || comorb.includes("neutropenia"))
+      axes.immunocompromise = { escalated: true, gate: "pneu:gate:immunocompromise_escalate", considerations: ["경험적 스펙트럼 상향", "PCP(TMP-SMX)·CD4/면역상태", "곰팡이·CMV 동시 고려", "결핵 감별"] };
+    return {
+      types: [reg.type], setting: null, risks: {}, special: true,
+      regimens: [{ id: reg.id, blocks: reg.blocks, keypoints: reg.keypoints, duration: reg.duration || null }],
+      typeNotes: t.notes || null, typeDef: t.def || null,
+      axes, flags: [], gates: [], reimb, duration: reg.duration || null, referrals: []
+    };
+  }
+
+  function recommend(patient) {
+    const p = patient || {};
+    if (SPECIAL[p.type]) return specialResult(p, SPECIAL[p.type]);
+    const setting = strat.computeSetting(p.severity);
+    const risks = strat.computeRisks(p);
+    const computed = { setting, risks };
+
+    // SELECT: 유형·when 매칭 경험적 티어
+    const ctxSel = makeCtx(p, computed, null);
+    const selected = Object.values(REGIMENS).filter(reg => {
+      if (reg.target) return false;                       // 표적 카탈로그는 축에서 처리
+      if (reg.type && TYPES[reg.type] && p.type && reg.type !== ("pneu:type:" + p.type) && !reg.type.startsWith("pneu:special")) return false;
+      try { return reg.when ? expr.evalExpr(reg.when, ctxSel) : false; } catch (e) { return false; }
+    });
+
+    // GATE
+    const cand = collectCandidate(selected, risks);
+    // CAP 녹농균 위험 addon → 항녹농 약제를 후보에 편입(급여 배지·게이트 연동)
+    if (p.type === "cap" && risks.pseudomonas) {
+      ["drug:piperacillin_tazobactam", "drug:cefepime", "drug:ciprofloxacin"].forEach(d => { cand.drugs.add(d); const c = drugClass(d); if (c) cand.classes.add(c); });
+    }
+    const ctxGate = makeCtx(p, computed, cand);
+    const gates = gate.runGates(GATES, ctxGate);
+
+    // EXCLUDE 반영(후보 제거 표시) + RANK
+    const ranked = rank.rankRegimens(selected, NOTICES);
+
+    // 3축
+    const axes = { pathogen: null, comorbidity: null, immunocompromise: null };
+    const pk = (p.micro && p.micro.pathogen ? String(p.micro.pathogen).toUpperCase().replace(/[^A-Z]/g, "") : "");
+    for (const key of Object.keys(PATHOGEN_MAP)) if (pk.includes(key)) {
+      axes.pathogen = { pathogen: p.micro.pathogen, target: PATHOGEN_MAP[key], regimen: REGIMENS[PATHOGEN_MAP[key]] }; break;
+    }
+    const comorb = p.comorbid || [];
+    if (comorb.length) {
+      const mods = [];
+      if (comorb.includes("bronchiectasis") || comorb.includes("copd") || comorb.includes("copd_severe")) mods.push({ comorbid: "copd/기관지확장증", effect: "녹농균 위험 → 항녹농 스펙트럼 고려", rule: "pneu:rule:pseudomonas_risk" });
+      if (comorb.includes("ckd")) mods.push({ comorbid: "ckd", effect: "신배설 항생제 용량조절(vancomycin/aminoglycoside/colistin)" });
+      if (comorb.includes("cirrhosis")) mods.push({ comorbid: "간경변", effect: "간독성·출혈 주의, 감수성 확인" });
+      if (comorb.includes("dm")) mods.push({ comorbid: "당뇨", effect: "중증화 위험, 혼합감염 고려" });
+      axes.comorbidity = { present: comorb, modifiers: mods };
+    }
+    if (comorb.includes("immunocompromise") || comorb.includes("neutropenia") || comorb.includes("hiv")) {
+      axes.immunocompromise = {
+        escalated: true, gate: "pneu:gate:immunocompromise_escalate",
+        considerations: ["경험적 스펙트럼 상향(항녹농 ± MRSA)", "PCP(TMP-SMX) 감별·CD4/면역상태", "곰팡이(아스페르길루스)·CMV 동시 고려", "결핵 감별"]
+      };
+    }
+
+    // reimb 요지(선택 후보 관련 고시)
+    const reimb = [];
+    for (const n of Object.values(NOTICES)) {
+      const rel = (n.drugs || []).some(d => cand.drugs.has(d)) || cand.drugs.has(n.scope) || cand.classes.has(n.scope);
+      if (rel) reimb.push({ notice: n.id, basis: n.basis, cut: n.cut, risk: n.risk, verified: n.verified });
+    }
+
+    var tnode = TYPES["pneu:type:" + p.type] || {};
+    return {
+      types: [p.type ? "pneu:type:" + p.type : null].filter(Boolean),
+      setting: (p.type === "cap" ? setting : null),   // 중증도도구(CURB-65/PSI)는 CAP 전용
+      risks, typeNotes: tnode.notes || null, typeDef: tnode.def || null,
+      regimens: ranked.map(r => ({
+        id: r.id, grade: r.grade, loe: r.loe, grade_rank: r.grade_rank,
+        options: r.options || r, stance: r.stance || null, duration: r.duration || null
+      })),
+      axes,
+      flags: gates.warns.concat(gates.infos),
+      gates: gates.excludes.concat(gates.demotes),
+      reimb,
+      referrals: gates.warns.filter(w => /결핵/.test(w.reason || "")).map(w => ({ reason: w.reason, ref: w.ref }))
+    };
+  }
+
+  const OUT = { recommend, makeCtx, collectCandidate };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT;
+  else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+</script>
+<script>
+/* app.js — 폐렴 앱 뷰 로직. 정본 카드 문법(clin/pay/care). 엔진 recommend() 불변 소비. */
+(function () {
+  var W = window;
+  var DRUGS = W.PNEU_DRUGS, TYPES = W.PNEU_TYPES, REG = W.PNEU_REGIMENS, NOTICES = W.PNEU_NOTICES,
+    GATES = W.PNEU_GATES, GL = W.PNEU_GUIDELINES, DIS = W.PNEU_DISEASES;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var el = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); };
+  var dn = function (id) { return (DRUGS[id] || {}).ko || String(id).replace("drug:", ""); };
+  var joinD = function (arr, sep) { return (arr || []).map(dn).join(sep || " 또는 "); };
+
+  /* ---------- 슬라이드-업 시트(팝업) ---------- */
+  function openSheet(title, html) { el("sheetTitle").innerHTML = title; el("sheetBody").innerHTML = html; el("sheet").classList.add("on"); el("sheetBack").classList.add("on"); }
+  function closeSheet() { el("sheet").classList.remove("on"); el("sheetBack").classList.remove("on"); }
+  W.closeSheet = closeSheet;   // 뒤로가기 트랩이 이 close* 함수를 호출
+  el("sheetX").addEventListener("click", closeSheet);
+  el("sheetBack").addEventListener("click", closeSheet);
+
+  /* ---------- 렌더 헬퍼 ---------- */
+  function fmtKeypoints(arr) { return arr && arr.length ? '<ul class="keypoints">' + arr.map(function (k) { return "<li>" + esc(k) + "</li>"; }).join("") + "</ul>" : ""; }
+  function fmtBlocks(blocks) {
+    return (blocks || []).map(function (b) {
+      return '<div class="blk"><div class="bl">' + esc(b.label) + "</div>" +
+        (b.drugs ? '<div class="bd">' + joinD(b.drugs, " · ") + "</div>" : "") +
+        (b.text ? '<div class="bd" style="color:var(--ink-faint)">' + esc(b.text) + "</div>" : "") + "</div>";
+    }).join("");
+  }
+  function fmtType(t) {
+    var h = t.def ? '<div class="note" style="padding:0 0 6px">' + esc(t.def) + "</div>" : "";
+    (t.regimens || []).forEach(function (rid) { if (REG[rid]) h += fmtRegimen(REG[rid]); });
+    if (t.notes) h += '<div class="subttl">핵심 노트</div>' + fmtKeypoints(t.notes);
+    return h;
+  }
+  function drugTable() {   // 항생제: 하위메뉴 대신 도표로 일괄 나열
+    var CL = W.PNEU_CLASSES || {}, byClass = {};
+    Object.values(DRUGS).forEach(function (d) { (byClass[d.class] = byClass[d.class] || []).push(d); });
+    var rows = "";
+    Object.values(CL).forEach(function (c) {
+      var ds = byClass[c.id]; if (!ds) return;
+      rows += '<tr><th class="rowhead" colspan="3">' + esc(c.ko) + "</th></tr>";
+      ds.forEach(function (d) {
+        var risk = d.reimb ? ((NOTICES[d.reimb] || {}).risk || "") : "";
+        rows += "<tr><td>" + esc(d.ko) + '</td><td class="en">' + esc(d.en || "") + '</td><td class="rk">' + esc(risk) + "</td></tr>";
+      });
+    });
+    return '<table class="drugtbl"><thead><tr><th>성분</th><th>영문</th><th>급여</th></tr></thead><tbody>' + rows + "</tbody></table>";
+  }
+
+  /* ---------- 탭 ---------- */
+  ["lib", "sim", "flow"].forEach(function (t) {
+    el("tab-" + t).addEventListener("click", function () {
+      ["lib", "sim", "flow"].forEach(function (o) {
+        el("tab-" + o).classList.toggle("on", o === t);
+        el("pane-" + o).classList.toggle("on", o === t);
+      });
+    });
+  });
+
+  /* ---------- 환자 상태 ---------- */
+  var P = { type: null, special: [], severity: {}, risk: {}, comorbid: [], micro: {}, course: {}, clinical: {} };
+
+  /* ---------- 플로우 대분류 트리 ---------- */
+  var TYPE_CHIPS = [["cap", "CAP", "지역사회획득"], ["hap", "HAP", "병원획득 >48h"], ["vap", "VAP", "인공호흡기 >48h"], ["aspiration", "흡인성", "흡인 위험군"]];
+  var SETTING_CHIPS = [["outpatient", "외래"], ["ward", "병동"], ["icu", "중환자실"]];
+  var COMORB_CHIPS = [["copd", "COPD"], ["bronchiectasis", "기관지확장증"], ["ckd", "CKD"], ["dm", "당뇨"],
+    ["cirrhosis", "간경변"], ["immunocompromise", "면역저하"], ["neutropenia", "호중구감소"]];
+  var PATH_CHIPS = [["", "미동정"], ["MRSA", "MRSA"], ["MSSA", "MSSA"], ["PSEUDOMONAS", "녹농균"],
+    ["ESBL", "ESBL"], ["CRE", "CRE"], ["CRAB", "CRAB"], ["LEGIONELLA", "레지오넬라"]];
+  var RISK_LABEL = { pseudomonas: "녹농균 위험", mrsa: "MRSA 위험", mdr: "MDR 위험(최근IV·입원≥5d)", tb: "결핵 의심",
+    culture: "배양 시행", stable: "임상 안정", iv: "정맥 투여중", abscess: "폐농양", empyema: "농흉", necrotizing: "괴사성" };
+
+  function riskChipsFor(t) {
+    if (t === "cap") return ["pseudomonas", "mrsa", "tb", "culture", "stable", "iv"];
+    if (t === "hap" || t === "vap") return ["mdr", "mrsa", "pseudomonas", "culture", "stable", "iv"];
+    if (t === "aspiration") return ["abscess", "empyema", "necrotizing", "culture"];
+    return [];
+  }
+  function applyRisk(v, on) {
+    if (v === "pseudomonas") P.risk.pseudomonas = on; else if (v === "mrsa") P.risk.mrsa = on;
+    else if (v === "mdr") P.risk.prior_iv_abx_90d = on; else if (v === "tb") P.clinical.tb_suspect = on;
+    else if (v === "culture") P.micro.culture_available = on; else if (v === "stable") P.course.clinically_stable = on;
+    else if (v === "iv") P.course.route = on ? "iv" : null;
+    else if (v === "abscess") P.clinical.abscess = on; else if (v === "empyema") P.clinical.empyema = on;
+    else if (v === "necrotizing") P.clinical.necrotizing = on;
+  }
+  function toggleArr(arr, v, on) { var i = arr.indexOf(v); if (on && i < 0) arr.push(v); if (!on && i >= 0) arr.splice(i, 1); }
+
+  function accSec(id, num, title, hint, openIt) {
+    return '<details class="accSec"' + (openIt ? " open" : "") + '><summary><span class="arw">▸</span>' + num + ". " + title +
+      '<span class="sel none" id="sel_' + id + '">미선택</span></summary><div class="abody">' +
+      (hint ? '<div class="hint">' + hint + "</div>" : "") + '<div id="cg' + id + '" class="chips"></div></div></details>';
+  }
+
+  var SPECIAL_CHIPS = [["viral_influenza", "인플루엔자"], ["viral_covid", "COVID-19"], ["pcp", "PCP"], ["abscess", "폐농양"], ["empyema", "농흉"]];
+  var SPECIAL_SET = { viral_influenza: 1, viral_covid: 1, pcp: 1, abscess: 1, empyema: 1 };
+
+  function buildFlowInputs() {
+    el("flowInputs").innerHTML =
+      '<div class="acc-top"><div class="gl">1. 폐렴 유형 · 대분류 (택1)</div><div id="typeBtns" class="typebtns"></div></div>' +
+      '<div class="acc-top"><div class="gl">특수 · 바이러스</div><div id="specialBtns" class="typebtns"></div></div>' +
+      '<div id="ctxSections"></div>';
+    mkTypeBtns("typeBtns", TYPE_CHIPS);
+    mkTypeBtns("specialBtns", SPECIAL_CHIPS);
+  }
+  function mkTypeBtns(host, list) {
+    var h = el(host);
+    list.forEach(function (t) {
+      var b = document.createElement("button"); b.className = "typebtn"; b.dataset.v = t[0];
+      b.innerHTML = esc(t[1]) + (t[2] ? '<span class="td">' + esc(t[2]) + "</span>" : "");
+      b.addEventListener("click", function () {
+        ["typeBtns", "specialBtns"].forEach(function (g) { Array.prototype.forEach.call(el(g).children, function (c) { c.classList.remove("on"); }); });
+        b.classList.add("on"); P.type = t[0]; onTypeChange();
+      });
+      h.appendChild(b);
+    });
+  }
+
+  function onTypeChange() {
+    P.severity = {}; P.risk = {}; P.clinical = {}; P.micro = { pathogen: null }; P.course = {}; P.comorbid = [];
+    var t = P.type, s = "";
+    if (SPECIAL_SET[t]) {
+      s += accSec("Com", 4, "기저질환 · 면역상태", "면역저하(스테로이드·이식·HIV·호중구감소)면 PCP·곰팡이·CMV 감별 및 스펙트럼 상향.", true);
+      el("ctxSections").innerHTML = s;
+      mkChips("cgCom", COMORB_CHIPS, "multi", function (v, on) { toggleArr(P.comorbid, v, on); });
+      render(); return;
+    }
+    if (t === "cap") s += accSec("Set", 2, "중증도", "CURB-65/PSI 기반 진료환경. 외래→병동→ICU로 경험적 강도가 올라갑니다.", true);
+    var rtitle = (t === "cap") ? "위험 인자" : (t === "aspiration") ? "병변 성격" : "MDR·내성 위험";
+    var rhint = (t === "cap") ? "녹농균·MRSA·결핵 의심에 따라 스펙트럼을 조정합니다."
+      : (t === "aspiration") ? "농양·농흉·괴사 시에만 혐기성 커버를 추가(단순 흡인은 불필요)."
+        : "최근 IV항생제·입원≥5d·쇽 등 MDR 신호를 표시합니다.";
+    s += accSec("Risk", 3, rtitle, rhint, t !== "cap");
+    s += accSec("Com", 4, "기저질환", "동반질환에 따른 위험·용량 고려.", false);
+    s += accSec("Path", 5, "균주 동정", "배양 확인 시 표적치료로 전환(1차 이후 축).", false);
+    el("ctxSections").innerHTML = s;
+    if (t === "cap") mkChips("cgSet", SETTING_CHIPS, "single", function (v) { P.severity.setting = v; });
+    mkChips("cgRisk", riskChipsFor(t).map(function (k) { return [k, RISK_LABEL[k]]; }), "multi", function (v, on) { applyRisk(v, on); });
+    mkChips("cgCom", COMORB_CHIPS, "multi", function (v, on) { toggleArr(P.comorbid, v, on); });
+    mkChips("cgPath", PATH_CHIPS, "single", function (v) { P.micro.pathogen = v || null; });
+    render();
+  }
+
+  function updateSel() {
+    function set(id, txt) { var e = el("sel_" + id); if (!e) return; var none = !txt; e.textContent = none ? "미선택" : txt; e.classList.toggle("none", none); }
+    set("Set", P.severity.setting ? ({ outpatient: "외래", ward: "병동", icu: "중환자실" })[P.severity.setting] : "");
+    var rk = [];
+    if (P.risk.pseudomonas) rk.push("녹농균"); if (P.risk.mrsa) rk.push("MRSA"); if (P.risk.prior_iv_abx_90d) rk.push("MDR");
+    if (P.clinical.tb_suspect) rk.push("결핵의심"); if (P.clinical.abscess) rk.push("폐농양"); if (P.clinical.empyema) rk.push("농흉"); if (P.clinical.necrotizing) rk.push("괴사");
+    if (P.micro.culture_available) rk.push("배양"); if (P.course.clinically_stable) rk.push("안정"); if (P.course.route === "iv") rk.push("IV");
+    set("Risk", rk.join(", "));
+    set("Com", P.comorbid.map(function (c) { var f = COMORB_CHIPS.filter(function (x) { return x[0] === c; })[0]; return f ? f[1] : c; }).join(", "));
+    set("Path", P.micro.pathogen || "");
+  }
+
+  function mkChips(host, list, mode, cb) {
+    var h = el(host); h.innerHTML = "";
+    list.forEach(function (it) {
+      var b = document.createElement("div"); b.className = "chip"; b.textContent = it[1];
+      b.addEventListener("click", function () {
+        if (mode === "single") {
+          Array.prototype.forEach.call(h.children, function (c) { c.classList.remove("on"); });
+          b.classList.add("on"); cb(it[0], true);
+        } else {
+          var on = !b.classList.contains("on"); b.classList.toggle("on", on); cb(it[0], on);
+        }
+        render();
+      });
+      h.appendChild(b);
+    });
+  }
+
+  /* ---------- 요법 포맷 ---------- */
+  function fmtRegimen(orig) {
+    if (!orig) return "";
+    if (orig.blocks) return fmtBlocks(orig.blocks) + fmtKeypoints(orig.keypoints);
+    if (orig.combo) {
+      var parts = [];
+      if (orig.base_any_of) parts.push(joinD(orig.base_any_of));
+      if (orig.antipseudomonal_betalactam_any_of) parts.push("[항녹농 β-lactam: " + joinD(orig.antipseudomonal_betalactam_any_of, " / ") + "] 중 1");
+      if (orig.plus_one_of) parts.push("＋ [" + joinD(orig.plus_one_of, " / ") + "] 중 1");
+      if (orig.mrsa_if) parts.push("(＋MRSA 위험 시: " + joinD(orig.mrsa_if.any_of, " / ") + ")");
+      var extra = orig.legionella_cover ? '<div class="od">· 레지오넬라 커버 포함</div>' : "";
+      return '<div class="opt"><div class="ol">병용 요법</div><div class="od">' + esc(parts.join(" ")) + "</div>" + extra + "</div>";
+    }
+    if (orig.options) {
+      return orig.options.map(function (o) {
+        var line = "";
+        if (o.any_of) line = joinD(o.any_of);
+        else if (o.base_any_of) line = joinD(o.base_any_of) + (o.plus_if_atypical ? " (± " + joinD(o.plus_if_atypical, "/") + " 비정형시)" : "") + (o.plus ? " ＋ " + joinD(o.plus, "/") : "");
+        var stc = o.stance ? '<div class="stc"><span class="g">가이드</span> ' + esc(o.stance.guideline) + '<br><span class="p">실사용</span> ' + esc(o.stance.practice) + "</div>" : "";
+        return '<div class="opt"><div class="ol">' + esc(o.label) + '</div><div class="od">' + esc(line) + "</div>" + stc + "</div>";
+      }).join("");
+    }
+    // 표적(first/alt)
+    if (orig.first) {
+      var s = '<div class="opt"><div class="ol">1차</div><div class="od">' + joinD(orig.first) + "</div>";
+      if (orig.alt) s += '<div class="od">대체: ' + joinD(orig.alt) + "</div>";
+      if (orig.stance) s += '<div class="stc"><span class="g">가이드</span> ' + esc(orig.stance.guideline) + '<br><span class="p">실사용</span> ' + esc(orig.stance.practice) + "</div>";
+      if (orig.note) s += '<div class="od">· ' + esc(orig.note) + "</div>";
+      return s + "</div>";
+    }
+    return "";
+  }
+
+  function card(cls, ic, title, tag, bodyHtml) {
+    return '<div class="card ' + cls + '"><div class="ch"><span class="ic">' + ic + "</span>" + esc(title) +
+      (tag ? '<span class="tag">' + esc(tag) + "</span>" : "") + '</div><div class="cb">' + bodyHtml + "</div></div>";
+  }
+
+  /* ---------- 렌더 ---------- */
+  function renderResult(res, hostId) {
+    var host = el(hostId); host.innerHTML = "";
+    if (!res || !res.types.length) { if (hostId === "stream") el("empty").style.display = "block"; return; }
+    if (hostId === "stream") el("empty").style.display = "none";
+    var html = "";
+
+    if (res.special) {
+      var sr = res.regimens[0], stn = (TYPES[res.types[0]] || {}).ko || "";
+      var sbody = (res.typeDef ? '<div class="note" style="padding:0 0 8px">' + esc(res.typeDef) + "</div>" : "") + fmtBlocks(sr.blocks) + fmtKeypoints(sr.keypoints);
+      html += card("clin", "🧬", stn + " — 프로토콜", null, sbody);
+    } else {
+      var body = "";
+      if (res.regimens.length) {
+        res.regimens.forEach(function (r) {
+          var orig = REG[r.id];
+          var tname = (TYPES[orig.type] || {}).ko || "";
+          body += '<div class="subttl">' + esc(tname || r.id) + (r.grade ? " · 권고 " + esc(r.grade) + (r.loe ? "/" + esc(r.loe) : "") : "") + "</div>";
+          body += fmtRegimen(orig);
+          if (orig.stance) body += '<div class="opt"><div class="stc"><span class="g">가이드</span> ' + esc(orig.stance.guideline) + '<br><span class="p">실사용</span> ' + esc(orig.stance.practice) + "</div></div>";
+        });
+      } else body = '<div class="note">해당 유형·상황에 매칭된 경험적 티어가 없습니다. 입력을 확인하세요.</div>';
+      html += card("clin", "💊", "경험적 시작 제안", "1차", body);
+      if (res.typeNotes) html += card("care", "📌", "유형 핵심 노트", null, fmtKeypoints(res.typeNotes));
+    }
+
+    // 2) 안전 게이트 (EXCLUDE=hard, WARN=soft)
+    var conf = "";
+    res.gates.forEach(function (g) {
+      if (g.action === "EXCLUDE") conf += '<div class="conflict hard"><span class="ci">⛔</span><div><b>금기</b> · ' + esc(g.reason) + "</div></div>";
+      else if (g.action === "DEMOTE") conf += '<div class="conflict soft"><span class="ci">▼</span><div><b>강등</b> · ' + esc(g.reason) + "</div></div>";
+    });
+    res.flags.forEach(function (g) {
+      if (g.action === "WARN") conf += '<div class="conflict soft"><span class="ci">⚠️</span><div>' + esc(g.reason) + (g.practice_note ? '<br><span style="color:var(--care)">실사용: ' + esc(g.practice_note) + "</span>" : "") + "</div></div>";
+    });
+    if (conf) html += card("clin", "🚦", "안전·주의 게이트", null, conf);
+
+    // 3) 급여·삭감 (pay)
+    if (res.reimb.length) {
+      var rb = '<div class="drugclass-box">';
+      res.reimb.forEach(function (n) {
+        rb += '<div class="dc-row dc-reimb"><span class="dc-k">' + esc(n.risk || "-") + '</span><span class="dc-v"><b>' + esc(n.notice.replace("notice:hira-", "")) + "</b> — " + esc(n.basis) +
+          (n.cut ? '<br><span style="color:var(--warn)">삭감: ' + esc((n.cut || []).join(" / ")) + "</span>" : "") +
+          (n.verified === false ? ' <span style="color:var(--ink-faint)">(재검증 대상)</span>' : "") + "</span></div>";
+      });
+      rb += "</div>";
+      html += card("pay", "💰", "급여 · 삭감 위험", "HIRA", rb);
+    }
+
+    // 4) 3축 고려 (care)
+    var ax = res.axes, axb = "";
+    if (ax.pathogen) {
+      var tr = ax.pathogen.regimen;
+      axb += '<div class="subttl">균주 동정 → 표적</div><div class="drugclass-box"><div class="dc-row dc-feat"><span class="dc-k">' + esc(ax.pathogen.pathogen) + '</span><span class="dc-v">1차 ' + joinD(tr.first) + (tr.alt ? " / 대체 " + joinD(tr.alt) : "") + (tr.note ? "<br>· " + esc(tr.note) : "") + "</span></div></div>";
+    }
+    if (ax.comorbidity && ax.comorbidity.modifiers.length) {
+      axb += '<div class="subttl">기저질환 고려</div><div class="drugclass-box">';
+      ax.comorbidity.modifiers.forEach(function (m) { axb += '<div class="dc-row"><span class="dc-k">' + esc(m.comorbid) + '</span><span class="dc-v">' + esc(m.effect) + "</span></div>"; });
+      axb += "</div>";
+    }
+    if (ax.immunocompromise) {
+      axb += '<div class="subttl">면역저하 고려 (스펙트럼 상향)</div><div class="drugclass-box">';
+      ax.immunocompromise.considerations.forEach(function (c, i) { axb += '<div class="dc-row"><span class="dc-k">' + (i + 1) + '</span><span class="dc-v">' + esc(c) + "</span></div>"; });
+      axb += "</div>";
+    }
+    if (axb) html += card("care", "🧭", "1차 이후 고려 — 균주·기저·면역저하", null, axb);
+
+    // 5) 기간
+    var durTh = res.duration || (res.regimens[0] && REG[res.regimens[0].id] ? REG[res.regimens[0].id].duration : null);
+    var TH = W.PNEU_TH || {};
+    if (durTh && TH[durTh]) {
+      var dv = (TH[durTh].values || []).map(function (v) { return v.ctx + ": " + v.val; }).join(" · ");
+      html += card("care", "⏱️", "치료기간", null, '<div class="note" style="padding:0">' + esc(dv) + "</div>");
+    }
+    host.innerHTML = html;
+  }
+
+  function render() { updateSel(); renderResult(W.recommend(P), "stream"); }
+
+  /* ---------- 도서관 ---------- */
+  function buildLibrary() {
+    var items = [];
+    // 유형
+    Object.values(TYPES).forEach(function (t) {
+      if (!t.regimens) return;
+      items.push({ cat: "유형", title: t.emoji + " " + t.ko, kw: t.ko + " " + (t.def || ""), html: fmtType(t) });
+    });
+    // 원인균 표적
+    Object.values(REG).forEach(function (r) {
+      if (!r.target) return;
+      items.push({ cat: "균주표적", title: "🦠 " + r.target, kw: r.target, html: fmtRegimen(r) });
+    });
+    // 급여·삭감
+    Object.values(NOTICES).forEach(function (n) {
+      if (n.scope === "all-antibiotics") return;
+      var b = '<div class="drugclass-box"><div class="dc-row dc-reimb"><span class="dc-k">' + esc(n.risk || "-") + '</span><span class="dc-v">' + esc(n.basis) + "</span></div>" +
+        (n.cut ? '<div class="dc-row dc-contra"><span class="dc-k">삭감</span><span class="dc-v">' + esc((n.cut || []).join(" / ")) + "</span></div>" : "") +
+        (n.warn ? '<div class="dc-row"><span class="dc-k">경고</span><span class="dc-v">' + esc(n.warn) + "</span></div>" : "") + "</div>";
+      items.push({ cat: "급여", title: "💰 " + n.id.replace("notice:hira-", ""), kw: n.id + " " + n.basis, html: b });
+    });
+    // 약물(계열별)
+    var byClass = {};
+    Object.values(DRUGS).forEach(function (d) { (byClass[d.class] = byClass[d.class] || []).push(d); });
+    (W.PNEU_CLASSES ? Object.values(W.PNEU_CLASSES) : []).forEach(function (c) {
+      var ds = byClass[c.id]; if (!ds) return;
+      var b = '<div class="drugclass-box">' + ds.map(function (d) { return '<div class="dc-row"><span class="dc-k">' + esc(d.ko) + '</span><span class="dc-v">' + esc(d.en || "") + (d.reimb ? ' <span class="riskbadge">' + esc((NOTICES[d.reimb] || {}).risk || "") + "</span>" : "") + (d.note ? "<br>· " + esc(d.note) : "") + "</span></div>"; }).join("") + "</div>";
+      items.push({ cat: "약물", title: "💊 " + c.ko, kw: c.ko + " " + ds.map(function (d) { return d.ko + d.en; }).join(" "), html: b });
+    });
+    W._LIB = items; W._DRUGTABLE = drugTable(); renderLib("");
+  }
+  var CAT_META = { "유형": ["🫁", "폐렴 유형"], "균주표적": ["🦠", "원인균 표적치료"], "약물": ["💊", "항생제 계열"], "급여": ["💰", "급여 · 삭감"] };
+  var CAT_ORDER = ["유형", "균주표적", "약물", "급여"];
+  function renderLib(q) {
+    q = (q || "").toLowerCase();
+    var host = el("libGrid"); host.innerHTML = "";
+    if (q) {   // 검색: 매칭 항목 인라인(펼침)
+      var matches = (W._LIB || []).filter(function (it) { return (it.title + it.kw).toLowerCase().indexOf(q) >= 0; });
+      if (!matches.length) { host.innerHTML = '<div class="note">검색 결과 없음</div>'; return; }
+      matches.forEach(function (it) {
+        var d = document.createElement("details"); d.className = "libItem"; d.open = true;
+        d.innerHTML = '<summary><span class="cat">' + esc((CAT_META[it.cat] || [])[1] || it.cat) + "</span>" + esc(it.title) + '</summary><div class="body">' + it.html + "</div>";
+        host.appendChild(d);
+      });
+      return;
+    }
+    CAT_ORDER.forEach(function (cat) {   // 기본: 대분류 버튼 → 클릭 시 슬라이드-업 시트
+      var meta = CAT_META[cat];
+      var items = (W._LIB || []).filter(function (it) { return it.cat === cat; });
+      if (!items.length) return;
+      var count = (cat === "약물") ? Object.keys(DRUGS).length : items.length;
+      var b = document.createElement("button"); b.className = "librow";
+      b.innerHTML = meta[0] + " " + esc(meta[1]) + '<span class="lc">' + count + "개</span>";
+      b.addEventListener("click", function () {
+        if (cat === "약물") openSheet(meta[0] + " " + esc(meta[1]), W._DRUGTABLE);
+        else openSheet(meta[0] + " " + esc(meta[1]),
+          items.map(function (it) { return '<details class="libItem"><summary>' + esc(it.title) + '</summary><div class="body">' + it.html + "</div></details>"; }).join(""));
+      });
+      host.appendChild(b);
+    });
+  }
+  el("libSearch").addEventListener("input", function (e) { renderLib(e.target.value); });
+
+  /* ---------- 시뮬레이션 프리셋 ---------- */
+  var PRESETS = [
+    { label: "CAP 외래 경증", d: "젊음·동반질환 없음", p: { type: "cap", severity: { setting: "outpatient", age: 40 }, comorbid: [] } },
+    { label: "CAP 병동 중등도", d: "CURB-65 2, 동반 COPD", p: { type: "cap", severity: { setting: "ward" }, comorbid: ["copd"] } },
+    { label: "CAP 중환자실 + 녹농균 위험", d: "기계환기, 기관지확장증", p: { type: "cap", severity: { setting: "icu", mech_vent: true }, comorbid: ["bronchiectasis"], risk: {} } },
+    { label: "HAP 고위험(MDR) + MRSA", d: "최근 IV항생제·입원, 배양 전", p: { type: "hap", risk: { prior_iv_abx_90d: true, mrsa: true }, micro: { culture_available: false } } },
+    { label: "VAP + CRAB 동정", d: "colistin 경과, 흡입 고려", p: { type: "vap", risk: { hospital_days: 8 }, micro: { pathogen: "CRAB", culture_available: true }, course: { days_since_start: 4 } } },
+    { label: "면역저하 CAP", d: "장기 스테로이드", p: { type: "cap", severity: { setting: "ward" }, comorbid: ["immunocompromise"] } },
+    { label: "흡인성 폐렴", d: "혐기성 루틴 불필요 안내", p: { type: "aspiration" } },
+    { label: "COVID-19 폐렴(산소요구)", d: "저산소 → dexamethasone·remdesivir", p: { type: "viral_covid" } },
+    { label: "면역저하 PCP", d: "TMP-SMX + 보조 스테로이드", p: { type: "pcp", comorbid: ["immunocompromise"] } }
+  ];
+  function buildSim() {
+    var host = el("simBtns"); host.innerHTML = "";
+    PRESETS.forEach(function (ps) {
+      var b = document.createElement("button"); b.className = "simbtn";
+      b.innerHTML = "<div>" + esc(ps.label) + '</div><div class="d">' + esc(ps.d) + "</div>";
+      b.addEventListener("click", function () {
+        var saved = P; P = JSON.parse(JSON.stringify(Object.assign({ type: null, special: [], severity: {}, risk: {}, comorbid: [], micro: {}, course: {}, clinical: {} }, ps.p)));
+        renderResult(W.recommend(P), "simStream");
+        var out = el("simStream").innerHTML; el("simStream").innerHTML = ""; P = saved;
+        openSheet("🎬 " + esc(ps.label), out);
+      });
+      host.appendChild(b);
+    });
+  }
+
+  /* ---------- 출처 배너 ---------- */
+  function buildSrc() {
+    el("srcbanner").innerHTML = Object.values(GL).map(function (g) {
+      return '<a href="' + esc(g.url) + '" target="_blank" rel="noopener">📘 ' + esc(g.title) + " (" + g.year + ")</a>";
+    }).join("<br>");
+  }
+
+  buildFlowInputs(); buildLibrary(); buildSim(); buildSrc();
+})();
+
+</script>
+</body></html>

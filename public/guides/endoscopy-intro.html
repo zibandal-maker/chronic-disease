@@ -1933,18 +1933,16 @@ document.getElementById('fb-form').addEventListener('submit', async function(e) 
 
 
 
+
 <!--BACK_TRAP_V4-->
 <script>
-/* 공용 뒤로가기 트랩 v4 — 모바일/브라우저 뒤로가기가 페이지를 이탈시키지 않고
-   (1) 열린 팝업(모달·시트)을 닫거나, (2) 팝업이 없으면 앱 내부 "‹ 도서관/돌아가기/목록으로" 뷰-백을 실행한다.
-   둘 다 없으면 뒤로가기는 정상 이탈(사용자 안 가둠). 앱 내부 함수명을 몰라도 DOM 레벨로 동작. */
+/* 공용 뒤로가기 트랩 v4 (build.js 자동 주입) — 뒤로가기 시 열린 팝업을 닫거나, 없으면 "‹ 도서관/돌아가기/목록으로" 뷰-백 실행.
+   둘 다 없으면 정상 이탈. 앱 내부 함수명을 몰라도 DOM 레벨로 동작. */
 (function(){
   "use strict";
   if(window.__backTrapInstalled) return; window.__backTrapInstalled=true;
   var armed=false, consuming=false, baseline=null, backTrapOK=true, lastSched=-1;
   var SHOW_CLASSES=['on','open','active','show','visible','is-open','opened','shown','in'];
-
-  /* ---- 오버레이(팝업) 감지 ---- */
   function inView(el){
     var r=el.getBoundingClientRect();
     var iw=Math.min(r.right,innerWidth)-Math.max(r.left,0);
@@ -1969,19 +1967,17 @@ document.getElementById('fb-form').addEventListener('submit', async function(e) 
     return out;
   }
   function overlays(){ if(!baseline) return []; return candidates().filter(function(el){ return !baseline.has(el); }); }
-
-  /* ---- 앱 내부 "도서관 돌아가기" 뷰-백 버튼 감지 ---- */
   function isVisible(el){
     var s=getComputedStyle(el); if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity||'1')<0.05) return false;
     var r=el.getBoundingClientRect(); return r.width>4 && r.height>4 && r.bottom>0 && r.top<innerHeight;
   }
-  var BACK_ARROW=/[\u2039\u2190\u25C0\u27E8\u276E<]/;   // ‹ ← ◀ ⟨ ❮ <
+  var BACK_ARROW=/[\u2039\u2190\u25C0\u27E8\u276E<]/;
   function looksBack(t){
     if(!t) return false; t=t.replace(/\s+/g,' ').trim(); if(t.length>16) return false;
-    if(/돌아가기/.test(t)) return true;
-    if(/목록으로/.test(t)) return true;
-    if(/도서관/.test(t) && BACK_ARROW.test(t)) return true;
-    if(BACK_ARROW.test(t) && /목록|리스트|처음|home/i.test(t)) return true;
+    if(/\uB3CC\uC544\uAC00\uAE30/.test(t)) return true;            // 돌아가기
+    if(/\uBAA9\uB85D\uC73C\uB85C/.test(t)) return true;            // 목록으로
+    if(/\uB3C4\uC11C\uAD00/.test(t) && BACK_ARROW.test(t)) return true;  // 도서관 + 화살표
+    if(BACK_ARROW.test(t) && /\uBAA9\uB85D|\uB9AC\uC2A4\uD2B8|\uCC98\uC74C|home/i.test(t)) return true;
     return false;
   }
   function backControl(){
@@ -1990,20 +1986,15 @@ document.getElementById('fb-form').addEventListener('submit', async function(e) 
       var el=nodes[i];
       if(el.id==='portal-hdr'||el.closest('#portal-hdr')) continue;
       if(!isVisible(el)) continue;
-      if(looksBack(el.textContent||'')){
-        return el.closest('[onclick],a,button,[role=button]')||el;
-      }
+      if(looksBack(el.textContent||'')) return el.closest('[onclick],a,button,[role=button]')||el;
     }
     return null;
   }
-
-  /* ---- 무엇을 닫을지 결정(팝업 우선, 없으면 뷰-백) ---- */
   function closeTarget(){
     if(overlays().length>0) return {type:'overlay'};
     if(backTrapOK){ var b=backControl(); if(b) return {type:'back', el:b}; }
     return null;
   }
-
   function appClosers(){
     var bad={close:1,closed:1,stop:1,print:1,open:1,opener:1,focus:1,blur:1,alert:1,confirm:1,prompt:1};
     var fns=[];
@@ -2018,7 +2009,6 @@ document.getElementById('fb-form').addEventListener('submit', async function(e) 
     overlays().forEach(function(el){ SHOW_CLASSES.forEach(function(c){ el.classList.remove(c); }); });
     try{ if(!overlays().length) document.body.style.overflow=''; }catch(e){}
   }
-
   function refreshOnce(){
     var has=!!closeTarget();
     if(has && !armed){ armed=true; try{history.pushState({backTrap:1},'');}catch(e){} }
@@ -2029,22 +2019,20 @@ document.getElementById('fb-form').addEventListener('submit', async function(e) 
     if(lastSched>=0 && t-lastSched<80) return; lastSched=t;
     [0,100,250,450,700].forEach(function(d){ setTimeout(refreshOnce,d); });
   }
-
   window.addEventListener('popstate', function(){
     if(consuming){ consuming=false; armed=false; return; }
     var tgt=closeTarget();
     if(tgt){
       armed=false;
       if(tgt.type==='overlay') closeOverlays();
-      else if(tgt.el){ try{tgt.el.click();}catch(e){} }   // 앱 자체 "도서관 돌아가기" 실행
-      schedule();                                          // 더 깊으면 재무장
+      else if(tgt.el){ try{tgt.el.click();}catch(e){} }
+      schedule();
     } else { armed=false; }
   });
-
   function init(){
     baseline=new WeakSet();
     candidates().forEach(function(el){ baseline.add(el); });
-    backTrapOK = (backControl()===null);      // 로드(도서관 뷰)에 이미 백버튼 보이면 신호로 못 씀 → 뷰-백 트랩 비활성
+    backTrapOK = (backControl()===null);
     var mo=new MutationObserver(schedule);
     mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style','hidden'],childList:true});
     document.addEventListener('click',function(){ schedule(); },true);

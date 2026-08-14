@@ -362,6 +362,18 @@
       "accent": "#2C7A7B",
       "tag": "비뇨",
       "keywords": "전립선비대증 BPH 하부요로증상 LUTS IPSS 남성배뇨장애 노년배뇨 과민성방광 OAB 야간뇨 야간다뇨 알파차단제 탐스로신 하루날 실로도신 트루패스 알푸조신 자트랄 독사조신 카두라 나프토피딜 플리바스 5알파환원효소억제제 피나스테리드 프로스카 두타스테리드 아보다트 듀오다트 자이가 타다라필 시알리스 PDE5 항무스카린 솔리페나신 베시케어 톨테로딘 페소테로딘 트로스퓸 프로피베린 이미다페나신 옥시부티닌 미라베그론 베타미가 비베그론 베오바 데스모프레신 미니린 녹더나 급성요폐 신경인성방광 배뇨근저활동 전립선암 방광암 혈뇨 TURP HoLEP UroLift Rezum 요역동학 잔뇨 Qmax 전립선용적 N40 N31 N32 R33 R35 심평원 급여기준"
+    },
+    {
+      "id": "pneumonia",
+      "title": "폐렴",
+      "emoji": "🫁",
+      "src": "pneumonia_guide.html",
+      "out": "pneumonia.html",
+      "guideline": "성인 폐렴(CAP·HAP·VAP·흡인) 경험적 항생제 결정기 · 한국 CAP 2018·HAP 2025 + IDSA 2016 · 심평원 급여·삭감",
+      "group": "A",
+      "accent": "#0E7C7B",
+      "tag": "호흡기",
+      "keywords": "폐렴 pneumonia 지역사회획득 CAP 병원획득 HAP 인공호흡기 VAP 흡인성 aspiration 경험적항생제 세프트리악손 레보플록사신 목시플록사신 아지트로마이신 피페라실린타조박탐 세페핌 메로페넴 카바페넴 반코마이신 리네졸리드 콜리스틴 티게사이클린 녹농균 MRSA 아시네토박터 CRAB ESBL CRE 레지오넬라 마이코플라스마 폐렴구균 CURB-65 PSI 급여삭감 de-escalation 결핵감별 면역저하 PCP 농흉 폐농양 J18 J13 J15 J69 심평원"
     }
   ]
 }
