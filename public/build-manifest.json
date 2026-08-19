@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-08-14T06:02:14.651Z",
+  "builtAt": "2026-08-19T02:45:15.703Z",
   "built": [
     {
       "id": "htn",
@@ -112,6 +112,10 @@
     {
       "id": "pneumonia",
       "out": "pneumonia.html"
+    },
+    {
+      "id": "cold",
+      "out": "cold.html"
     }
   ]
 }

@@ -1,0 +1,1367 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>감기·급성 상기도감염 처방가이드 — 항생제 적응·대증요법·소아 위험징후·처방률 | 임상의용</title>
+<meta name="description" content="감기(급성 상기도감염) 처방가이드 — 항생제 적응 판단(McIsaac·부비동·중이염 관찰대기), 증상별 대증요법(가이드+통용·출처), 소아 위험징후 의뢰, 심평원 항생제 처방률 평가.">
+<meta name="keywords" content="감기, 급성 상기도감염, common cold, URI, 인두편도염, GAS, McIsaac, 부비동염, 중이염, 관찰대기, 급성 기관지염, 크룹, 대증요법, 해열진통, 항히스타민, 비충혈제거제, 진해제, 거담제, 코데인, 덱스트로메토르판, 슈도에페드린, 아세트아미노펜, 아목시실린, 항생제 처방률, 심평원, 삭감, 소아 위험징후, 후두개염, 수막염, 가와사키, J00, J02, J03, H66">
+<link rel="canonical" href="https://chronic-disease-dun.vercel.app/guides/cold">
+<meta property="og:type" content="website">
+<meta property="og:title" content="감기·급성 상기도감염 처방가이드 — 항생제 적응·대증요법·소아 위험징후 | 임상의용">
+<meta property="og:description" content="한국 상기도감염 지침 + 대증요법(출처) + 심평원 처방률 평가를 함께.">
+<meta property="og:url" content="https://chronic-disease-dun.vercel.app/guides/cold">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":["MedicalWebPage","SoftwareApplication"],"name":"감기 처방 가이드","inLanguage":"ko","applicationCategory":"MedicalApplication","description":"감기(급성 상기도감염) 처방가이드 — 항생제 적응 판단·증상별 대증요법(가이드+통용)·소아 위험징후 의뢰·심평원 항생제 처방률 평가.","audience":{"@type":"MedicalAudience","audienceType":"Clinician"},"about":{"@type":"MedicalCondition","name":"급성 상기도감염(감기)","alternateName":["common cold","URI","acute pharyngitis"],"code":{"@type":"MedicalCode","codingSystem":"ICD-10","codeValue":"J00"}},"lastReviewed":"2026-08-14","isBasedOn":[{"@type":"MedicalGuideline","name":"성인 급성 상기도감염 항생제 사용지침 권고안","url":"https://www.ksid.or.kr/file/2017_49_4_ko.pdf"},{"@type":"MedicalGuideline","name":"2025 급성 상기도 감염 항생제 사용 지침","url":"https://www.kdca.go.kr/bbs/kdca/263/307007/download.do"},{"@type":"MedicalGuideline","name":"소아 급성 중이염·부비동염 치료 가이드라인","url":"https://synapse.koreamed.org/upload/synapsedata/pdfdata/0153kjpid/kjpid-15-100.pdf"},{"@type":"MedicalGuideline","name":"Fever in under 5s (traffic light)","url":"https://www.nice.org.uk/guidance/ng143"}]}</script>
+<style>
+/* ===== canonical-view.css v1.0 (동결 미러 인라인 — 단일파일 배포용) ===== */
+:root{
+  color-scheme:light only;
+  --bg:#f4f6f8; --panel:#ffffff; --panel2:#eef1f4; --line:#d6dde3;
+  --ink:#1a2530; --ink-dim:#4a5a68; --ink-faint:#8493a0;
+  --radius:14px;
+  --pay:#b87514; --pay-bg:#fbf0d8;
+  --clin:#2c6fb0; --clin-bg:#e4eef8;
+  --care:#1a8a72; --care-bg:#dcf2ec;
+  --ok:#1f9d54; --ok-bg:#dcf2e4;
+  --warn:#b87514; --warn-bg:#fbf0d8;
+  --block:#c43838; --block-bg:#fbe2e2;
+  --alert:#d8632a;
+}
+.tabbar{position:sticky;top:0;z-index:60;display:flex;background:rgba(255,255,255,0.97);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.tabbar button{flex:1;background:none;border:none;color:var(--ink-faint);
+  font-size:13.5px;font-weight:600;padding:13px 0;cursor:pointer;position:relative;
+  font-family:inherit;touch-action:manipulation;transition:color .15s}
+.tabbar button .ti{font-size:15px;margin-right:5px}
+.tabbar button.on{color:var(--ink)}
+.tabbar button.on:after{content:"";position:absolute;left:18%;right:18%;bottom:0;
+  height:2.5px;background:var(--care);border-radius:2px}
+.pane{display:none}
+.pane.on{display:block}
+.field{display:flex;flex-direction:column;gap:2px}
+.field label{font-size:10px;color:var(--ink-faint);padding-left:2px;letter-spacing:0.02em}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{background:var(--panel2);border:1px solid var(--line);color:var(--ink-dim);
+  border-radius:18px;padding:5px 11px;font-size:12.5px;cursor:pointer;
+  user-select:none;transition:all .13s;font-weight:500}
+.chip:active{transform:scale(0.96)}
+.chip.on{background:var(--care-bg);border-color:var(--care);color:var(--care)}
+.chip.on.danger{background:var(--block-bg);border-color:var(--block);color:var(--block)}
+.chip-group{margin-bottom:6px}
+.chip-group .gl{font-size:10px;color:var(--ink-faint);margin:0 0 4px 2px;
+  text-transform:uppercase;letter-spacing:0.05em}
+.stream{padding:14px 14px 0;max-width:560px;margin:0 auto}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  margin-bottom:12px;overflow:hidden;animation:rise .25s ease}
+.card .ch{display:flex;align-items:center;gap:8px;padding:11px 14px;
+  font-size:13px;font-weight:600;border-bottom:1px solid var(--line)}
+.card .ch .ic{font-size:16px}
+.card .ch .tag{margin-left:auto;font-size:10px;font-weight:600;padding:2px 8px;
+  border-radius:10px;letter-spacing:0.03em}
+.card.pay .ch{color:var(--pay)}   .card.pay .ch .tag{background:var(--pay-bg);color:var(--pay)}
+.card.clin .ch{color:var(--clin)} .card.clin .ch .tag{background:var(--clin-bg);color:var(--clin)}
+.card.care .ch{color:var(--care)} .card.care .ch .tag{background:var(--care-bg);color:var(--care)}
+.drugclass-box{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+.dc-row{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid rgba(42,55,68,0.12);
+  font-size:12.5px;line-height:1.45}
+.dc-row:last-child{border-bottom:none}
+.dc-k{flex-shrink:0;width:52px;font-size:10.5px;font-weight:700;color:var(--ink-faint);padding-top:1px}
+.dc-v{color:var(--ink-dim)}
+.dc-reimb .dc-k{color:var(--pay)} .dc-reimb .dc-v{color:var(--ink-dim)}
+.dc-feat .dc-k{color:var(--care)} .dc-feat .dc-v{color:var(--ink)}
+.dc-contra .dc-k{color:var(--block)} .dc-contra .dc-v{color:var(--block)}
+.conflict{display:flex;gap:9px;padding:10px 12px;border-radius:11px;font-size:12.5px;
+  margin:6px 0 0;line-height:1.45}
+.conflict.soft{background:var(--warn-bg);border:1px solid var(--line);color:var(--warn)}
+.conflict.hard{background:var(--block-bg);border:1px solid var(--line);color:var(--block)}
+.conflict .ci{flex-shrink:0}
+.conflict b{color:var(--ink)}
+.dcclass{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:9px;overflow:hidden}
+.empty{text-align:center;color:var(--ink-faint);font-size:13px;padding:30px 14px;line-height:1.6}
+.empty .big{font-size:34px;margin-bottom:8px;opacity:0.5}
+.foot{text-align:center;font-size:10.5px;color:var(--ink-faint);padding:18px 14px 8px;line-height:1.6}
+.foot b{color:var(--ink-dim)}
+.srcbanner{margin-top:14px;padding:11px 13px;background:var(--panel);border:1px solid var(--line);
+  border-radius:11px;font-size:11px;color:var(--ink-faint);line-height:1.9;text-align:center}
+.srcbanner a{color:var(--clin);text-decoration:none;font-weight:600}
+.foot .footnote{display:block;margin-top:8px;font-size:10px;color:var(--ink-faint);line-height:1.5;font-style:italic}
+
+/* ===== 앱 전용 가산(정본에 없는 것만) ===== */
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%}
+.topbar{padding:14px 16px 10px;background:var(--panel);border-bottom:1px solid var(--line)}
+.topbar h1{margin:0;font-size:17px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
+.topbar h1 .sub{font-size:11px;font-weight:600;color:var(--ink-faint);margin-left:auto}
+.wrap{max-width:560px;margin:0 auto;padding:14px}
+.cb{padding:11px 14px}
+.subttl{font-size:11px;font-weight:700;color:var(--ink-faint);margin:12px 2px 5px;text-transform:uppercase;letter-spacing:.04em}
+.opt{padding:7px 0;border-bottom:1px solid rgba(42,55,68,.10)}
+.opt:last-child{border-bottom:none}
+.opt .ol{font-size:13.5px;font-weight:600;color:var(--ink)}
+.opt .od{font-size:12.5px;color:var(--ink-dim);margin-top:1px}
+.opt .stc{margin-top:3px;font-size:11px;line-height:1.5}
+.opt .stc .g{color:var(--clin);font-weight:600}
+.opt .stc .p{color:var(--care);font-weight:600}
+.libItem summary{cursor:pointer;list-style:none;padding:11px 13px;font-size:13.5px;font-weight:700;color:var(--ink);display:flex;gap:8px;align-items:center}
+.libItem summary::-webkit-details-marker{display:none}
+.libItem summary .cat{font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--panel2);color:var(--ink-faint)}
+.libItem[open] summary{border-bottom:1px solid var(--line)}
+.libItem .body{padding:10px 13px}
+#libSearch{width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--line);
+  border-radius:11px;padding:10px 12px;font-size:14px;color:var(--ink);outline:none;margin-bottom:10px}
+#libSearch:focus{border-color:var(--care)}
+.simbtn{width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:11px;
+  padding:10px 13px;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;cursor:pointer;font-family:inherit}
+.simbtn:active{transform:scale(.99)}
+.simbtn .d{font-size:11px;color:var(--ink-faint);font-weight:500;margin-top:2px}
+.riskbadge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;background:var(--pay-bg);color:var(--pay);margin-left:6px}
+.note{font-size:11px;color:var(--ink-faint);padding:2px 2px 8px;line-height:1.5}
+/* 도서관 슬라이드-업 시트(팝업) — 뒤로가기 트랩이 fixed 오버레이 감지 */
+.sheet-back{position:fixed;inset:0;z-index:110;background:rgba(20,28,36,.42);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.sheet-back.on{opacity:1;visibility:visible}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;background:var(--panel);border-radius:16px 16px 0 0;max-height:84vh;
+  transform:translateY(101%);transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:0 -8px 30px rgba(20,28,36,.18);display:flex;flex-direction:column}
+.sheet.on{transform:translateY(0)}
+.sheet-h{display:flex;align-items:center;gap:8px;padding:13px 15px;border-bottom:1px solid var(--line);font-size:14px;font-weight:800;color:var(--ink);flex-shrink:0}
+.sheet-h .x{margin-left:auto;font-size:22px;line-height:1;color:var(--ink-faint);cursor:pointer;background:none;border:none;font-family:inherit}
+.sheet-b{overflow:auto;padding:12px 15px 24px;-webkit-overflow-scrolling:touch}
+.librow{display:flex;align-items:center;gap:9px;padding:13px 12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:8px;
+  font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;width:100%;text-align:left;font-family:inherit}
+.librow:active{transform:scale(.99)}
+.librow .lc{font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--care-bg);color:var(--care);margin-left:auto}
+/* 약물 도표 */
+.drugtbl{width:100%;border-collapse:collapse;font-size:11.5px}
+.drugtbl th{background:var(--panel2);color:var(--ink-dim);padding:6px;border:1px solid var(--line);font-size:10.5px;text-align:left}
+.drugtbl td{padding:6px;border:1px solid var(--line);color:var(--ink);text-align:left}
+.drugtbl td.en{color:var(--ink-faint);font-size:10.5px}
+.drugtbl td.rk{color:var(--pay);font-weight:800;text-align:center;white-space:nowrap}
+.drugtbl th.rowhead{background:var(--clin-bg);color:var(--clin);font-weight:800;text-align:left;font-size:11px}
+/* 핵심노트·특수상황 blocks */
+.keypoints{margin:2px 0 0;padding-left:0;list-style:none}
+.keypoints li{position:relative;padding:4px 0 4px 15px;font-size:12px;color:var(--ink-dim);line-height:1.5}
+.keypoints li:before{content:"›";position:absolute;left:2px;color:var(--care);font-weight:800}
+.blk{padding:8px 0;border-bottom:1px solid rgba(42,55,68,.1)}
+.blk:last-child{border-bottom:none}
+.blk .bl{font-size:12.5px;font-weight:700;color:var(--ink)}
+.blk .bd{font-size:12.5px;color:var(--ink-dim);margin-top:1px}
+/* 플로우 대분류 트리(아코디언) */
+.acc-top{margin-bottom:10px}
+.acc-top .gl{font-size:10px;color:var(--ink-faint);margin:0 0 5px 2px;text-transform:uppercase;letter-spacing:.05em}
+.typebtns{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.typebtn{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px 12px;cursor:pointer;
+  font-size:13.5px;font-weight:700;color:var(--ink-dim);text-align:left;font-family:inherit;transition:all .13s}
+.typebtn .td{display:block;font-size:10.5px;font-weight:500;color:var(--ink-faint);margin-top:2px}
+.typebtn.on{border-color:var(--care);background:var(--care-bg);color:var(--care)}
+.typebtn.on .td{color:var(--care)}
+.accSec{background:var(--panel);border:1px solid var(--line);border-radius:11px;margin-bottom:7px;overflow:hidden}
+.accSec>summary{cursor:pointer;list-style:none;padding:10px 13px;font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px}
+.accSec>summary::-webkit-details-marker{display:none}
+.accSec>summary .arw{color:var(--ink-faint);font-size:12px;transition:transform .15s}
+.accSec[open]>summary .arw{transform:rotate(90deg)}
+.accSec>summary .sel{margin-left:auto;font-size:10.5px;font-weight:600;color:var(--care);text-align:right}
+.accSec>summary .sel.none{color:var(--ink-faint);font-weight:500}
+.accSec[open]>summary{border-bottom:1px solid var(--line)}
+.accSec .abody{padding:10px 13px}
+.accSec .hint{font-size:11px;color:var(--ink-faint);margin-bottom:8px;line-height:1.5}
+</style>
+</head><body>
+<!--PORTAL_HEADER_V1-->
+<style>
+  #portal-hdr{position:fixed;top:0;left:0;right:0;height:46px;z-index:99999;
+    display:flex;align-items:center;gap:10px;padding:0 12px;box-sizing:border-box;
+    background:rgba(248,250,252,.94);backdrop-filter:saturate(1.4) blur(10px);
+    -webkit-backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid rgba(20,40,60,.10);
+    font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;}
+  #portal-hdr a.ph-back,#portal-hdr a.ph-home{display:inline-flex;align-items:center;justify-content:center;
+    height:30px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;
+    color:#1a2530;background:#fff;border:1px solid rgba(20,40,60,.14);transition:.15s;}
+  #portal-hdr a.ph-back{padding:0 11px 0 8px;gap:3px;}
+  #portal-hdr a.ph-home{width:32px;font-size:15px;}
+  #portal-hdr a.ph-back:active,#portal-hdr a.ph-home:active{transform:scale(.96);background:#eef1f4;}
+  #portal-hdr .ph-emoji{font-size:17px;line-height:1;}
+  #portal-hdr .ph-title{font-size:14.5px;font-weight:700;color:#16202b;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;}
+  #portal-hdr .ph-tag{font-size:11px;font-weight:600;color:#5a6a78;background:#eef1f4;
+    padding:2px 7px;border-radius:999px;white-space:nowrap;}
+  #portal-hdr .ph-accent{width:3px;height:18px;border-radius:2px;background:#0E7C7B;flex:0 0 auto;}
+  #portal-hdr .ph-spacer{flex:1 1 auto;min-width:0;}
+  body{padding-top:46px !important;}
+  @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
+</style>
+<div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
+  <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
+  <a class="ph-home" href="../index.html" title="홈">🏠</a>
+  <span class="ph-accent"></span>
+  <span class="ph-emoji">🤧</span>
+  <span class="ph-title">감기·상기도감염</span>
+  <span class="ph-spacer"></span>
+  <span class="ph-tag">호흡기</span>
+</div>
+
+<!--/PORTAL_HEADER_V1-->
+
+
+<div class="topbar"><h1><span>🤧</span>감기 처방 가이드<span class="sub">상기도감염 · v1</span></h1></div>
+
+<div class="tabbar">
+  <button id="tab-lib" class="on"><span class="ti">📚</span>도서관</button>
+  <button id="tab-sim"><span class="ti">🧪</span>시뮬레이션</button>
+  <button id="tab-flow"><span class="ti">🩺</span>플로우</button>
+</div>
+
+<div id="pane-lib" class="pane on"><div class="wrap">
+  <input id="libSearch" placeholder="유형·원인균·약물·급여 검색…">
+  <div id="libGrid"></div>
+</div></div>
+
+<div id="pane-sim" class="pane"><div class="wrap">
+  <div class="note">프리셋 증례를 누르면 결정기가 그대로 돌아갑니다(교육용). 실제 처방은 플로우에서.</div>
+  <div id="simBtns"></div>
+  <div id="simStream" class="stream" style="padding-left:0;padding-right:0"></div>
+</div></div>
+
+<div id="pane-flow" class="pane"><div class="wrap">
+  <div id="flowInputs"></div>
+  <div id="stream" class="stream" style="padding-left:0;padding-right:0"></div>
+  <div id="empty" class="empty"><div class="big">🤧</div>유형·연령·증상을 선택하면<br>항생제 적응 판단 + 대증요법 + 소아 위험징후를 제시합니다</div>
+</div></div>
+
+<div class="foot"><div class="wrap">
+  <div class="srcbanner" id="srcbanner"></div>
+  <div class="footnote">본 도구는 의사결정 지원용이며 최종 판단은 임상의에게 있습니다. 급여·용량은 코딩 직전 원문 재검증 대상(일부 verified:false).</div>
+</div></div>
+
+<div id="sheetBack" class="sheet-back"></div>
+<div id="sheet" class="sheet"><div class="sheet-h"><span id="sheetTitle"></span><button class="x" id="sheetX" aria-label="닫기">✕</button></div><div class="sheet-b" id="sheetBody"></div></div>
+
+<noscript><div class="seo-content"><h2>감기·급성 상기도감염 처방·대증요법·소아 위험징후 정보 (임상의용)</h2><p>감기(급성 비인두염·인두편도염·부비동염·중이염·기관지염·크룹)의 항생제 적응 판단(대부분 바이러스로 항생제 불필요, GAS 인두염은 McIsaac, 세균성 부비동염·중이염 기준)과 증상별 대증요법(가이드+통용, 출처 병치), 소아 위험징후 의뢰, 심평원 항생제 처방률 평가를 제공한다.</p><section id="type-cold"><h3>감기(급성 비인두염)</h3><p>바이러스성 급성 비인두염. 리노바이러스가 최다(코로나바이러스·RSV·파라인플루엔자·아데노 등). 항생제 불필요 — 대증치료 중심. 충분한 수분·휴식·가습. 손위생으로 전파 예방. 증상별 대증요법은 §플로우 참고(가이드/통용·출처 병치).</p></section><section id="type-pharyngitis"><h3>급성 인두편도염</h3><p>인두·편도의 급성 염증. 대부분 바이러스. 성인의 5–15%(소아 20–30%)만 A군 연쇄구균(GAS). 1차 amoxicillin 10일(GAS 확인 시). 페니실린 알레르기 4형은 1세대 cephalosporin/clindamycin/macrolide. GAS 치료 목적: 증상단축·전파차단·급성 류마티스열 예방. 치료 24시간 후 전염력 급감(등교/출근 기준).</p></section><section id="type-rhinosinusitis"><h3>급성 비부비동염</h3><p>부비동 점막의 급성 염증. 대부분 바이러스성(감기의 연장). 세균 중복감염은 소수(0.5–2%). 1차 amoxicillin 또는 amoxicillin/clavulanate. 내성폐렴구균 고위험은 고용량. 국소 스테로이드·생리식염수 세척 보조. 치료 실패(48–72h) 시 amox-clav 고용량 또는 대체.</p></section><section id="type-otitis_media"><h3>급성 중이염</h3><p>중이강의 급성 감염. 소아 흔함(이관 미성숙). 연령·중증도별 관찰대기(watchful waiting). 1차 amoxicillin 고용량 80–90 mg/kg/일, 2차/실패 amox-clav. 페니실린(1형 제외) 대체: cefdinir·cefuroxime·cefpodoxime·cefprozil. 기간 10일(2세↑ 경증 5일 가능). 통증조절(아세트아미노펜/이부프로펜) 병행.</p></section><section id="type-bronchitis"><h3>급성 기관지염</h3><p>하기도 기관지의 급성 염증. 대부분 바이러스(~10%만 백일해·마이코플라스마·클라미디아). 대증치료(진해·거담·수분). 흡연 시 금연. 백일해 확진/유행 시 macrolide + 접촉자 관리. 빈호흡·저산소 → 폐렴 감별(폐렴 앱 연계).</p></section><section id="type-laryngitis"><h3>급성 후두염</h3><p>후두 점막의 급성 염증. 바이러스성 쉰목소리(애성)가 주. 대증·음성휴식·수분·가습. 역류 동반 시 생활습관 교정.</p></section><section id="type-croup"><h3>크룹(후두기관기관지염)</h3><p>소아 상기도(성문하) 바이러스 감염. 개 짖는(barking) 기침·쉰목소리·흡기 stridor. 덱사메타손 0.15–0.6 mg/kg 1회(경증 포함) 표준. 중등도–중증(안정 시 stridor)은 분무 에피네프린 + 관찰(반동 주의)/의뢰. 찬 공기·가습이 도움될 수 있음.</p></section><section id="type-uri_unspec"><h3>다발성·상세불명 상기도감염</h3><p>복합 상기도 증상(비인두·인두·후두 혼재). 바이러스. 대증치료. 소아는 위험징후(§의뢰) 먼저 확인.</p></section><section id="symptom-fever"><h3>발열·통증 대증요법</h3><p>아세트아미노펜 / 이부프로펜, 덱시부프로펜, 록소프로펜</p></section><section id="symptom-rhinorrhea"><h3>콧물·재채기 대증요법</h3><p>클로르페니라민, 트리프롤리딘 / 세티리진, 로라타딘, 에바스틴 / 이프라트로피움 비강분무</p></section><section id="symptom-congestion"><h3>코막힘 대증요법</h3><p>슈도에페드린, 페닐에프린 / 옥시메타졸린, 자일로메타졸린, 나파졸린 / 생리식염수 비강세척</p></section><section id="symptom-cough"><h3>기침 대증요법</h3><p>덱스트로메토르판, 노스카핀, 벤프로페린 / 레보드로프로피진, 옥솔아민 / 코데인, 디히드로코데인 / 꿀</p></section><section id="symptom-sputum"><h3>가래 대증요법</h3><p>구아이페네신, 암브록솔, 브롬헥신 / 아세틸시스테인, 카르보시스테인, 에르도스테인</p></section><section id="symptom-sore_throat"><h3>인후통 대증요법</h3><p>아세트아미노펜 / 이부프로펜 / 생리식염수 비강세척</p></section><section id="drug-acetaminophen"><h3>아세트아미노펜 (acetaminophen)</h3><p>해열진통제 · 발열·통증 1차. 간독성 상한 주의(복합제 중복 확인)</p></section><section id="drug-ibuprofen"><h3>이부프로펜 (ibuprofen)</h3><p>NSAID(비스테로이드 소염진통) · 위장·신장·심혈관 주의; 탈수·수분부족 시 신독성↑</p></section><section id="drug-dexibuprofen"><h3>덱시부프로펜 (dexibuprofen)</h3><p>NSAID(비스테로이드 소염진통) · 이부프로펜 S-이성질체</p></section><section id="drug-loxoprofen"><h3>록소프로펜 (loxoprofen)</h3><p>NSAID(비스테로이드 소염진통) · 전구약물, 위장 부담 상대적 적음</p></section><section id="drug-chlorpheniramine"><h3>클로르페니라민 (chlorpheniramine)</h3><p>1세대 항히스타민 · 콧물·재채기(항콜린). 졸음·구갈·요저류; 고령·전립선·녹내장 주의</p></section><section id="drug-triprolidine"><h3>트리프롤리딘 (triprolidine)</h3><p>1세대 항히스타민 · 복합감기약 성분</p></section><section id="drug-cetirizine"><h3>세티리진 (cetirizine)</h3><p>2세대 항히스타민 · 졸음 적음. 감기 단독효과는 제한</p></section><section id="drug-loratadine"><h3>로라타딘 (loratadine)</h3><p>2세대 항히스타민 · 비진정성</p></section><section id="drug-ebastine"><h3>에바스틴 (ebastine)</h3><p>2세대 항히스타민 · 비진정성</p></section><section id="drug-pseudoephedrine"><h3>슈도에페드린 (pseudoephedrine)</h3><p>경구 비충혈제거제 · 혈압·불면·심계·전립선; 고혈압·관상동맥·MAOI·갑상선항진 주의</p></section><section id="drug-phenylephrine"><h3>페닐에프린 (phenylephrine)</h3><p>경구 비충혈제거제 · 경구 효과 논란(FDA 재평가)</p></section><section id="drug-oxymetazoline"><h3>옥시메타졸린 (oxymetazoline)</h3><p>국소(비강) 비충혈제거제 · ★7일 이상 금지 → 반동성 비염(rhinitis medicamentosa)</p></section><section id="drug-xylometazoline"><h3>자일로메타졸린 (xylometazoline)</h3><p>국소(비강) 비충혈제거제 · 7일 이내</p></section><section id="drug-naphazoline"><h3>나파졸린 (naphazoline)</h3><p>국소(비강) 비충혈제거제 · 7일 이내; 소아 전신흡수 주의</p></section><section id="drug-dextromethorphan"><h3>덱스트로메토르판 (dextromethorphan)</h3><p>중추성 비마약성 진해제 · SSRI·MAOI 병용 시 세로토닌증후군 주의</p></section><section id="drug-noscapine"><h3>노스카핀 (noscapine)</h3><p>중추성 비마약성 진해제 · 비마약성</p></section><section id="drug-benproperine"><h3>벤프로페린 (benproperine)</h3><p>중추성 비마약성 진해제</p></section><section id="drug-levodropropizine"><h3>레보드로프로피진 (levodropropizine)</h3><p>말초성 진해제 · 말초성, 졸음 적음</p></section><section id="drug-oxolamine"><h3>옥솔아민 (oxolamine)</h3><p>말초성 진해제 · 말초성·소염</p></section><section id="drug-codeine"><h3>코데인 (codeine)</h3><p>중추성 마약성 진해제 · 호흡억제·의존; CYP2D6 초대사자 위험</p></section><section id="drug-dihydrocodeine"><h3>디히드로코데인 (dihydrocodeine)</h3><p>중추성 마약성 진해제 · 코데인과 동일 주의</p></section><section id="drug-guaifenesin"><h3>구아이페네신 (guaifenesin)</h3><p>거담제 · 수분 섭취 병행</p></section><section id="drug-ambroxol"><h3>암브록솔 (ambroxol)</h3><p>거담제</p></section><section id="drug-bromhexine"><h3>브롬헥신 (bromhexine)</h3><p>거담제 · 암브록솔 전구체</p></section><section id="drug-acetylcysteine"><h3>아세틸시스테인 (acetylcysteine)</h3><p>점액용해제 · 점액 점도↓</p></section><section id="drug-carbocisteine"><h3>카르보시스테인 (carbocisteine)</h3><p>점액용해제</p></section><section id="drug-erdosteine"><h3>에르도스테인 (erdosteine)</h3><p>점액용해제</p></section><section id="drug-ipratropium_nasal"><h3>이프라트로피움 비강분무 (ipratropium nasal)</h3><p>보조·비약물 · 콧물 감소</p></section><section id="drug-saline_nasal"><h3>생리식염수 비강세척 (saline nasal)</h3><p>보조·비약물 · 약물사용 감소</p></section><section id="drug-zinc"><h3>아연 (zinc)</h3><p>보조·비약물 · 미각이상·오심; 이질성</p></section><section id="drug-honey"><h3>꿀 (honey)</h3><p>보조·비약물 · ★1세 미만 금기(보툴리누스)</p></section><section id="drug-dexamethasone"><h3>덱사메타손 (dexamethasone)</h3><p>코르티코스테로이드 · 경증 크룹 포함 표준</p></section><section id="drug-epinephrine_neb"><h3>에피네프린 분무 (nebulized epinephrine)</h3><p>코르티코스테로이드 · 중등도–중증 크룹, 관찰(반동)</p></section><section id="drug-amoxicillin"><h3>아목시실린 (amoxicillin)</h3><p>아미노페니실린 · 전염단핵구증 의심 시 금지(발진)</p></section><section id="drug-amoxicillin_clavulanate"><h3>아목시실린/클라불란산 (amoxicillin-clavulanate)</h3><p>β-lactam/억제제 복합 · 2차·중증·재발</p></section><section id="drug-cephalexin"><h3>세팔렉신 (cephalexin)</h3><p>1세대 세팔로스포린 · GAS 페니실린 4형 알레르기 대체</p></section><section id="drug-cefadroxil"><h3>세파드록실 (cefadroxil)</h3><p>1세대 세팔로스포린 · GAS 대체</p></section><section id="drug-cefdinir"><h3>세프디니르 (cefdinir)</h3><p>3세대 세팔로스포린 · 순응도 대체(5일)</p></section><section id="drug-cefuroxime"><h3>세푸록심 (cefuroxime)</h3><p>2세대 세팔로스포린 · 중이염 대체</p></section><section id="drug-cefpodoxime"><h3>세프포독심 (cefpodoxime)</h3><p>3세대 세팔로스포린 · 부비동·중이염 대체</p></section><section id="drug-cefprozil"><h3>세프프로질 (cefprozil)</h3><p>2세대 세팔로스포린 · 중이염 대체</p></section><section id="drug-clindamycin"><h3>클린다마이신 (clindamycin)</h3><p>린코사마이드 · GAS 1형 알레르기·재발</p></section><section id="drug-clarithromycin"><h3>클래리트로마이신 (clarithromycin)</h3><p>마크로라이드 · 마크로라이드 내성 주의</p></section><section id="drug-azithromycin"><h3>아지트로마이신 (azithromycin)</h3><p>마크로라이드 · 백일해에도 사용</p></section><section id="drug-doxycycline"><h3>독시사이클린 (doxycycline)</h3><p>테트라사이클린 · 부비동 페니실린 알레르기 대체</p></section><section id="drug-benzathine_penicillin_g"><h3>벤자틴 페니실린 G (benzathine penicillin G)</h3><p>아미노페니실린 · 국내 1차 비권장(순응도 대안)</p></section><section id="redflag-peds"><h3>소아 위험징후·의뢰</h3><ul><li>신생아·3개월 미만 영아 발열 → 즉시 평가(중증세균감염·수막염 배제). 감기로 처리 금지</li><li>급성 후두개염/기도폐쇄 응급</li><li>호흡곤란 — 폐렴·세기관지염(RSV)·천식 악화 감별(폐렴 앱 연계)</li><li>수막염·뇌염 의심</li><li>패혈증/수막구균혈증</li><li>가와사키병 — 관상동맥류 위험, IVIG 골든타임(발병 10일 이내)</li><li>URI 국소 합병증(유양돌기염·안와 연조직염·전두골 골수염)</li><li>탈수 — 수분·평가</li><li>백일해 의심 — PCR·격리·macrolide·접촉자 예방</li><li>NICE amber(중간위험)·발열 5일↑ → 안전망·재평가</li></ul></section><section id="reimb-cold"><h3>처방률 평가·삭감·KCD</h3><ul><li>상병에 부합하는 약물만 급여. 급여기준 벗어난 병용은 조정.</li><li>대증약 대부분 급여. 성분중복·과다품목·투여기간 이탈 시 조정.</li><li>J00 급성 비인두염(감기)</li><li>J01 급성 부비동염</li><li>J02 급성 인두염</li><li>J03 급성 편도염</li><li>J04 급성 후두염·기관염</li><li>J05 급성 폐쇄성 후두염(크룹)·후두개염</li><li>J06 다발성·상세불명 급성 상기도감염</li><li>J20 급성 기관지염</li><li>H66 화농성·상세불명 중이염</li><li>B27 전염단핵구증(감별)</li><li>A37 백일해(감별)</li></ul></section></div></noscript>
+<script>
+/* data/cold_guidelines.js */
+/* cold_guidelines.js — 가이드라인 + 권고체계. SPEC §3-5. */
+(function (root) {
+  const COLD_GUIDELINES = {
+    "gl:uri-kr-2017": { id: "gl:uri-kr-2017", layer: "L1", title: "성인 급성 상기도감염 항생제 사용지침 권고안", org: "대한감염학회·대한화학요법학회", year: 2017, recsys: "recsys:kr_uri", url: "https://www.ksid.or.kr/file/2017_49_4_ko.pdf" },
+    "gl:uri-kr-2025": { id: "gl:uri-kr-2025", layer: "L1", title: "2025 급성 상기도 감염 항생제 사용 지침", org: "질병관리청", year: 2025, url: "https://www.kdca.go.kr/bbs/kdca/263/307007/download.do", verified: false },
+    "gl:om-sinus-kr-kjpid": { id: "gl:om-sinus-kr-kjpid", layer: "L1", title: "소아 급성 중이염·부비동염 치료 가이드라인", org: "대한소아감염학회", url: "https://synapse.koreamed.org/upload/synapsedata/pdfdata/0153kjpid/kjpid-15-100.pdf" },
+    "gl:gas-idsa-2012": { id: "gl:gas-idsa-2012", layer: "L1p", title: "GAS 인두염 진단·치료", org: "IDSA", year: 2012 },
+    "gl:sinus-idsa-2012": { id: "gl:sinus-idsa-2012", layer: "L1p", title: "급성 세균성 비부비동염", org: "IDSA", year: 2012 },
+    "gl:om-aap-2013": { id: "gl:om-aap-2013", layer: "L1p", title: "급성 중이염 진단·관리", org: "AAP", year: 2013 },
+    "gl:fever-nice-ng143": { id: "gl:fever-nice-ng143", layer: "L1p", title: "Fever in under 5s (traffic light)", org: "NICE NG143", url: "https://www.nice.org.uk/guidance/ng143" }
+  };
+  const COLD_RECSYS = {
+    "recsys:kr_uri": { id: "recsys:kr_uri", label: "한국 상기도감염 지침 등급", strength: ["강함", "약함"], loe: ["높음", "중등도", "낮음"], norm: { "강함": "A", "약함": "C" }, rank: { "강함": 1, "약함": 3 } }
+  };
+  const OUT = { COLD_GUIDELINES, COLD_RECSYS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/cold_diseases.js */
+/* cold_diseases.js — 감기 관련 KCD. SPEC §3-2. 세분류 KOICD 재검증. */
+(function (root) {
+  const COLD_DISEASES = {
+    "dx:j00": { id: "dx:j00", kcd: "J00", ko: "급성 비인두염(감기)" },
+    "dx:j01": { id: "dx:j01", kcd: "J01", ko: "급성 부비동염" },
+    "dx:j02": { id: "dx:j02", kcd: "J02", ko: "급성 인두염", sub: ["J02.0 연쇄구균 인두염"] },
+    "dx:j03": { id: "dx:j03", kcd: "J03", ko: "급성 편도염", sub: ["J03.0 연쇄구균 편도염"] },
+    "dx:j04": { id: "dx:j04", kcd: "J04", ko: "급성 후두염·기관염" },
+    "dx:j05": { id: "dx:j05", kcd: "J05", ko: "급성 폐쇄성 후두염(크룹)·후두개염" },
+    "dx:j06": { id: "dx:j06", kcd: "J06", ko: "다발성·상세불명 급성 상기도감염" },
+    "dx:j20": { id: "dx:j20", kcd: "J20", ko: "급성 기관지염" },
+    "dx:h66": { id: "dx:h66", kcd: "H66", ko: "화농성·상세불명 중이염" },
+    "dx:b27": { id: "dx:b27", kcd: "B27", ko: "전염단핵구증(감별)" },
+    "dx:a37": { id: "dx:a37", kcd: "A37", ko: "백일해(감별)" }
+  };
+  const OUT = { COLD_DISEASES };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/cold_evidence.js */
+/* cold_evidence.js — 통용요법 근거 출처(L2). SPEC §3-5. 최신판 재검증. */
+(function (root) {
+  const COLD_EVIDENCE = {
+    "ev:kr-coldmed-hpi": { id: "ev:kr-coldmed-hpi", label: "감기약·코감기약 약물정보", org: "약학정보원", tier: "L2", url: "https://common.health.kr/shared/healthkr/pharmreview/감기약.pdf" },
+    "ev:cochrane-antihist-decong": { id: "ev:cochrane-antihist-decong", label: "항히스타민-비충혈제/진통 복합(De Sutter)", org: "Cochrane", tier: "L2", note: "성인 단기 개선, 소아 근거 부족", verified: false },
+    "ev:cochrane-otc-cough": { id: "ev:cochrane-otc-cough", label: "OTC 진해·거담제(Smith)", org: "Cochrane", tier: "L2", note: "감기 기침 효과 근거 부족/불확실", verified: false },
+    "ev:cochrane-zinc": { id: "ev:cochrane-zinc", label: "아연 감기(Singh/Hemilä)", org: "Cochrane", tier: "L2", note: "24-48h내 시작 시 기간 단축 가능, 이질성", verified: false },
+    "ev:cochrane-honey": { id: "ev:cochrane-honey", label: "소아 기침 꿀(Oduwole)", org: "Cochrane", tier: "L2", note: "야간기침 개선, 1세미만 금기", verified: false },
+    "ev:cochrane-saline": { id: "ev:cochrane-saline", label: "생리식염수 비강세척(King)", org: "Cochrane", tier: "L2", verified: false },
+    "ev:cochrane-ipratropium": { id: "ev:cochrane-ipratropium", label: "비강 ipratropium 콧물(AlBalawi)", org: "Cochrane", tier: "L2", verified: false },
+    "ev:cochrane-decongestant": { id: "ev:cochrane-decongestant", label: "비충혈제거제(Deckx)", org: "Cochrane", tier: "L2", verified: false }
+  };
+  const OUT = { COLD_EVIDENCE };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/cold_drugs.js */
+/* cold_drugs.js — 대증 + 항생제 성분/계열 + 성인·소아 용량. SPEC §3-1.
+ * shared:true=통합레지스트리 재사용. dose_adult/dose_child = 표준 용량(재검증 대상, 헌장 §9).
+ */
+(function (root) {
+  const COLD_CLASSES = {
+    "class:antipyretic_analgesic": { id: "class:antipyretic_analgesic", ko: "해열진통제", atc_prefix: "N02BE" },
+    "class:nsaid": { id: "class:nsaid", ko: "NSAID(비스테로이드 소염진통)", atc_prefix: "M01A" },
+    "class:antihistamine_1g": { id: "class:antihistamine_1g", ko: "1세대 항히스타민", atc_prefix: "R06A" },
+    "class:antihistamine_2g": { id: "class:antihistamine_2g", ko: "2세대 항히스타민", atc_prefix: "R06A" },
+    "class:decongestant_oral": { id: "class:decongestant_oral", ko: "경구 비충혈제거제", atc_prefix: "R01BA" },
+    "class:decongestant_topical": { id: "class:decongestant_topical", ko: "국소(비강) 비충혈제거제", atc_prefix: "R01AA" },
+    "class:antitussive_central_opioid": { id: "class:antitussive_central_opioid", ko: "중추성 마약성 진해제", atc_prefix: "R05DA" },
+    "class:antitussive_central_nonopioid": { id: "class:antitussive_central_nonopioid", ko: "중추성 비마약성 진해제", atc_prefix: "R05DB" },
+    "class:antitussive_peripheral": { id: "class:antitussive_peripheral", ko: "말초성 진해제" },
+    "class:expectorant": { id: "class:expectorant", ko: "거담제", atc_prefix: "R05CA" },
+    "class:mucolytic": { id: "class:mucolytic", ko: "점액용해제", atc_prefix: "R05CB" },
+    "class:aminopenicillin": { id: "class:aminopenicillin", ko: "아미노페니실린", atc_prefix: "J01CA" },
+    "class:blbli": { id: "class:blbli", ko: "β-lactam/억제제 복합", atc_prefix: "J01CR" },
+    "class:cephalosporin_1g": { id: "class:cephalosporin_1g", ko: "1세대 세팔로스포린", atc_prefix: "J01DB" },
+    "class:cephalosporin_2g": { id: "class:cephalosporin_2g", ko: "2세대 세팔로스포린", atc_prefix: "J01DC" },
+    "class:cephalosporin_3g": { id: "class:cephalosporin_3g", ko: "3세대 세팔로스포린", atc_prefix: "J01DD" },
+    "class:macrolide": { id: "class:macrolide", ko: "마크로라이드", atc_prefix: "J01FA" },
+    "class:lincosamide": { id: "class:lincosamide", ko: "린코사마이드", atc_prefix: "J01FF" },
+    "class:tetracycline": { id: "class:tetracycline", ko: "테트라사이클린", atc_prefix: "J01AA" },
+    "class:corticosteroid": { id: "class:corticosteroid", ko: "코르티코스테로이드", atc_prefix: "H02AB" },
+    "class:supportive": { id: "class:supportive", ko: "보조·비약물" }
+  };
+  const D = (id, ko, en, atc, cls, extra) => Object.assign({ id, ko, en, atc, class: cls, shared: true, verified: false }, extra || {});
+  const COLD_DRUGS = {
+    // ── 해열진통·NSAID ──
+    "drug:acetaminophen": D("drug:acetaminophen", "아세트아미노펜", "acetaminophen", "N02BE01", "class:antipyretic_analgesic",
+      { dose_adult: "1회 500–1000 mg, 4–6시간마다 (최대 4 g/일; 간질환·음주 시 ≤2–3 g)", dose_child: "10–15 mg/kg, 4–6시간마다 (최대 5회/일·75 mg/kg/일)", note: "발열·통증 1차. 간독성 상한 주의(복합제 중복 확인)" }),
+    "drug:ibuprofen": D("drug:ibuprofen", "이부프로펜", "ibuprofen", "M01AE01", "class:nsaid",
+      { dose_adult: "1회 200–400 mg, 4–6시간마다 (OTC 최대 1200 mg/일)", dose_child: "5–10 mg/kg, 6–8시간마다 (생후 6개월 이상)", note: "위장·신장·심혈관 주의; 탈수·수분부족 시 신독성↑" }),
+    "drug:dexibuprofen": D("drug:dexibuprofen", "덱시부프로펜", "dexibuprofen", "M01AE14", "class:nsaid",
+      { dose_adult: "1회 300 mg, 1일 2–3회", dose_child: "시럽 연령·체중별(허가사항)", note: "이부프로펜 S-이성질체" }),
+    "drug:loxoprofen": D("drug:loxoprofen", "록소프로펜", "loxoprofen", "M01AE", "class:nsaid",
+      { dose_adult: "1회 60 mg, 1일 3회(급성 최대 180 mg)", dose_child: "소아 자료 제한", note: "전구약물, 위장 부담 상대적 적음" }),
+    // ── 항히스타민 ──
+    "drug:chlorpheniramine": D("drug:chlorpheniramine", "클로르페니라민", "chlorpheniramine", "R06AB04", "class:antihistamine_1g",
+      { dose_adult: "1회 2–4 mg, 4–6시간마다 (최대 24 mg/일)", dose_child: "0.35 mg/kg/일 분할(연령별); 2세 미만 권장 안 함", note: "콧물·재채기(항콜린). 졸음·구갈·요저류; 고령·전립선·녹내장 주의" }),
+    "drug:triprolidine": D("drug:triprolidine", "트리프롤리딘", "triprolidine", "R06AX07", "class:antihistamine_1g",
+      { dose_adult: "1회 2.5 mg, 6–8시간마다", dose_child: "연령별 시럽; 2세 미만 주의", note: "복합감기약 성분" }),
+    "drug:cetirizine": D("drug:cetirizine", "세티리진", "cetirizine", "R06AE07", "class:antihistamine_2g",
+      { dose_adult: "10 mg 1일 1회", dose_child: "6개월–2세 2.5 mg qd, 2–5세 2.5 mg qd~bid, ≥6세 5–10 mg", note: "졸음 적음. 감기 단독효과는 제한" }),
+    "drug:loratadine": D("drug:loratadine", "로라타딘", "loratadine", "R06AX13", "class:antihistamine_2g",
+      { dose_adult: "10 mg 1일 1회", dose_child: "2–5세 5 mg qd, ≥6세 10 mg qd", note: "비진정성" }),
+    "drug:ebastine": D("drug:ebastine", "에바스틴", "ebastine", "R06AX22", "class:antihistamine_2g",
+      { dose_adult: "10 mg 1일 1회(최대 20 mg)", dose_child: "6–11세 5 mg qd", note: "비진정성" }),
+    // ── 비충혈제거제 ──
+    "drug:pseudoephedrine": D("drug:pseudoephedrine", "슈도에페드린", "pseudoephedrine", "R01BA02", "class:decongestant_oral",
+      { dose_adult: "60 mg, 4–6시간마다 (최대 240 mg/일)", dose_child: "≥6세 30 mg q6h; 6세 미만 권장 안 함", note: "혈압·불면·심계·전립선; 고혈압·관상동맥·MAOI·갑상선항진 주의", reimb: "notice:hira-uri-symptomatic" }),
+    "drug:phenylephrine": D("drug:phenylephrine", "페닐에프린", "phenylephrine", "R01BA03", "class:decongestant_oral",
+      { dose_adult: "10 mg, 4시간마다", dose_child: "소아 권장 근거 약함", note: "경구 효과 논란(FDA 재평가)" }),
+    "drug:oxymetazoline": D("drug:oxymetazoline", "옥시메타졸린", "oxymetazoline", "R01AA05", "class:decongestant_topical",
+      { dose_adult: "0.05% 비강 1–2회 분무, 1일 2회", dose_child: "≥6세 0.05%; 6세 미만 주의", note: "★7일 이상 금지 → 반동성 비염(rhinitis medicamentosa)", maxdays: "cold:th:decongestant_topical_max" }),
+    "drug:xylometazoline": D("drug:xylometazoline", "자일로메타졸린", "xylometazoline", "R01AA07", "class:decongestant_topical",
+      { dose_adult: "0.1% 비강 1일 2–3회", dose_child: "소아 0.05%", note: "7일 이내" }),
+    "drug:naphazoline": D("drug:naphazoline", "나파졸린", "naphazoline", "R01AA08", "class:decongestant_topical",
+      { dose_adult: "0.05% 국소", dose_child: "소아 주의", note: "7일 이내; 소아 전신흡수 주의" }),
+    // ── 진해제 ──
+    "drug:dextromethorphan": D("drug:dextromethorphan", "덱스트로메토르판", "dextromethorphan", "R05DA09", "class:antitussive_central_nonopioid",
+      { dose_adult: "10–20 mg q4h 또는 30 mg q6–8h (최대 120 mg/일)", dose_child: "6세 미만 권장 안 함; 6–12세 5–10 mg", note: "SSRI·MAOI 병용 시 세로토닌증후군 주의" }),
+    "drug:noscapine": D("drug:noscapine", "노스카핀", "noscapine", "R05DA07", "class:antitussive_central_nonopioid",
+      { dose_adult: "15–30 mg 1일 3회", dose_child: "연령별 시럽", note: "비마약성" }),
+    "drug:benproperine": D("drug:benproperine", "벤프로페린", "benproperine", "R05DB", "class:antitussive_central_nonopioid",
+      { dose_adult: "20–40 mg 1일 3회", dose_child: "연령별", note: "" }),
+    "drug:levodropropizine": D("drug:levodropropizine", "레보드로프로피진", "levodropropizine", "R05DB27", "class:antitussive_peripheral",
+      { dose_adult: "60 mg 1일 3회", dose_child: "1 mg/kg 1일 3회(≥2세)", note: "말초성, 졸음 적음" }),
+    "drug:oxolamine": D("drug:oxolamine", "옥솔아민", "oxolamine", "R05DB07", "class:antitussive_peripheral",
+      { dose_adult: "시럽 상용량", dose_child: "연령별 시럽", note: "말초성·소염" }),
+    "drug:codeine": D("drug:codeine", "코데인", "codeine", "R05DA04", "class:antitussive_central_opioid",
+      { dose_adult: "10–20 mg q4–6h (최대 120 mg/일)", dose_child: "★12세 미만 금기(식약처); 12–18세 비만·OSA·호흡저하 위험군 주의", note: "호흡억제·의존; CYP2D6 초대사자 위험", gate: "cold:gate:opioid_antitussive_age" }),
+    "drug:dihydrocodeine": D("drug:dihydrocodeine", "디히드로코데인", "dihydrocodeine", "R05DA04", "class:antitussive_central_opioid",
+      { dose_adult: "복합제 상용량", dose_child: "★12세 미만 금기", note: "코데인과 동일 주의", gate: "cold:gate:opioid_antitussive_age" }),
+    // ── 거담·점액용해 ──
+    "drug:guaifenesin": D("drug:guaifenesin", "구아이페네신", "guaifenesin", "R05CA03", "class:expectorant",
+      { dose_adult: "200–400 mg q4h (최대 2400 mg/일)", dose_child: "연령별(2–6세 소량)", note: "수분 섭취 병행" }),
+    "drug:ambroxol": D("drug:ambroxol", "암브록솔", "ambroxol", "R05CB06", "class:expectorant",
+      { dose_adult: "30 mg 1일 3회", dose_child: "시럽 연령별(<2세 7.5 mg bid 등)", note: "" }),
+    "drug:bromhexine": D("drug:bromhexine", "브롬헥신", "bromhexine", "R05CB02", "class:expectorant",
+      { dose_adult: "8–16 mg 1일 3회", dose_child: "연령별", note: "암브록솔 전구체" }),
+    "drug:acetylcysteine": D("drug:acetylcysteine", "아세틸시스테인", "acetylcysteine", "R05CB01", "class:mucolytic",
+      { dose_adult: "200 mg 1일 3회 또는 600 mg 1일 1회", dose_child: "연령별", note: "점액 점도↓" }),
+    "drug:carbocisteine": D("drug:carbocisteine", "카르보시스테인", "carbocisteine", "R05CB03", "class:mucolytic",
+      { dose_adult: "750 mg 1일 3회", dose_child: "시럽 연령별", note: "" }),
+    "drug:erdosteine": D("drug:erdosteine", "에르도스테인", "erdosteine", "R05CB15", "class:mucolytic",
+      { dose_adult: "300 mg 1일 2회", dose_child: "연령·체중별", note: "" }),
+    // ── 보조 ──
+    "drug:ipratropium_nasal": D("drug:ipratropium_nasal", "이프라트로피움 비강분무", "ipratropium nasal", "R01AX03", "class:supportive",
+      { dose_adult: "0.03% 비강 1일 2–3회", dose_child: "≥5–6세", note: "콧물 감소", evidence: "ev:cochrane-ipratropium" }),
+    "drug:saline_nasal": D("drug:saline_nasal", "생리식염수 비강세척", "saline nasal", "R01AX10", "class:supportive",
+      { dose_adult: "필요시 수회", dose_child: "영아·소아 안전", note: "약물사용 감소", evidence: "ev:cochrane-saline" }),
+    "drug:zinc": D("drug:zinc", "아연", "zinc", "A12CB", "class:supportive",
+      { dose_adult: "원소 아연 ~75 mg/일 분할, 증상 24–48h 내 시작", dose_child: "정립 안 됨", note: "미각이상·오심; 이질성", evidence: "ev:cochrane-zinc" }),
+    "drug:honey": D("drug:honey", "꿀", "honey", "-", "class:supportive",
+      { dose_adult: "2.5–5 mL", dose_child: "≥1세 2.5–5 mL 취침 전", note: "★1세 미만 금기(보툴리누스)", evidence: "ev:cochrane-honey", shared: false }),
+    "drug:dexamethasone": D("drug:dexamethasone", "덱사메타손", "dexamethasone", "H02AB02", "class:corticosteroid",
+      { dose_adult: "—(크룹은 소아)", dose_child: "크룹 0.15–0.6 mg/kg 1회 PO/IM (최대 16 mg)", note: "경증 크룹 포함 표준" }),
+    "drug:epinephrine_neb": D("drug:epinephrine_neb", "에피네프린 분무", "nebulized epinephrine", "C01CA24", "class:corticosteroid",
+      { dose_adult: "—", dose_child: "L-에피네프린 1:1000 0.5 mL/kg 분무(최대 5 mL)", note: "중등도–중증 크룹, 관찰(반동)", shared: false }),
+    // ── 항생제 ──
+    "drug:amoxicillin": D("drug:amoxicillin", "아목시실린", "amoxicillin", "J01CA04", "class:aminopenicillin",
+      { dose_adult: "GAS 500 mg tid 또는 1000 mg qd; 부비동 500–875 mg bid", dose_child: "GAS 50 mg/kg/일(1일1회, 최대 1000 mg); 중이염·부비동 80–90 mg/kg/일 분2", note: "전염단핵구증 의심 시 금지(발진)" }),
+    "drug:amoxicillin_clavulanate": D("drug:amoxicillin_clavulanate", "아목시실린/클라불란산", "amoxicillin-clavulanate", "J01CR02", "class:blbli",
+      { dose_adult: "500/125 tid 또는 875/125 bid(고위험 2 g bid)", dose_child: "amox 기준 45 또는 90 mg/kg/일 분2", note: "2차·중증·재발" }),
+    "drug:cephalexin": D("drug:cephalexin", "세팔렉신", "cephalexin", "J01DB01", "class:cephalosporin_1g",
+      { dose_adult: "500 mg 1일 2회", dose_child: "25–50 mg/kg/일 분할", note: "GAS 페니실린 4형 알레르기 대체" }),
+    "drug:cefadroxil": D("drug:cefadroxil", "세파드록실", "cefadroxil", "J01DB05", "class:cephalosporin_1g",
+      { dose_adult: "1 g qd 또는 500 mg bid", dose_child: "30 mg/kg/일", note: "GAS 대체" }),
+    "drug:cefdinir": D("drug:cefdinir", "세프디니르", "cefdinir", "J01DD15", "class:cephalosporin_3g",
+      { dose_adult: "300 mg bid 또는 600 mg qd", dose_child: "14 mg/kg/일 분1–2", note: "순응도 대체(5일)" }),
+    "drug:cefuroxime": D("drug:cefuroxime", "세푸록심", "cefuroxime", "J01DC02", "class:cephalosporin_2g",
+      { dose_adult: "250–500 mg bid", dose_child: "30 mg/kg/일 분2", note: "중이염 대체" }),
+    "drug:cefpodoxime": D("drug:cefpodoxime", "세프포독심", "cefpodoxime", "J01DD13", "class:cephalosporin_3g",
+      { dose_adult: "200 mg bid", dose_child: "10 mg/kg/일 분2", note: "부비동·중이염 대체" }),
+    "drug:cefprozil": D("drug:cefprozil", "세프프로질", "cefprozil", "J01DC10", "class:cephalosporin_2g",
+      { dose_adult: "500 mg qd", dose_child: "15–30 mg/kg/일 분2", note: "중이염 대체" }),
+    "drug:clindamycin": D("drug:clindamycin", "클린다마이신", "clindamycin", "J01FF01", "class:lincosamide",
+      { dose_adult: "300 mg 1일 3–4회", dose_child: "20–30 mg/kg/일 분3", note: "GAS 1형 알레르기·재발" }),
+    "drug:clarithromycin": D("drug:clarithromycin", "클래리트로마이신", "clarithromycin", "J01FA09", "class:macrolide",
+      { dose_adult: "250–500 mg bid", dose_child: "15 mg/kg/일 분2", note: "마크로라이드 내성 주의" }),
+    "drug:azithromycin": D("drug:azithromycin", "아지트로마이신", "azithromycin", "J01FA10", "class:macrolide",
+      { dose_adult: "500 mg D1→250 mg×4일(또는 500 qd 3일)", dose_child: "10–12 mg/kg/일 5일(GAS) 또는 10 mg/kg 3일", note: "백일해에도 사용" }),
+    "drug:doxycycline": D("drug:doxycycline", "독시사이클린", "doxycycline", "J01AA02", "class:tetracycline",
+      { dose_adult: "100 mg bid", dose_child: "★8세 미만 회피(치아착색; 단기 예외)", note: "부비동 페니실린 알레르기 대체" }),
+    "drug:benzathine_penicillin_g": D("drug:benzathine_penicillin_g", "벤자틴 페니실린 G", "benzathine penicillin G", "J01CE08", "class:aminopenicillin",
+      { dose_adult: "120만 U IM 1회", dose_child: "<27kg 60만 U, ≥27kg 120만 U IM", note: "국내 1차 비권장(순응도 대안)" })
+  };
+  const OUT = { COLD_CLASSES, COLD_DRUGS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/cold_thresholds.js */
+/* cold_thresholds.js — SSOT. McIsaac·부비동·중이염·비충혈제·처방률 등급·용량. 재검증 대상. */
+(function (root) {
+  const COLD_TH = {
+    "cold:th:mcisaac": {
+      id: "cold:th:mcisaac", tool: "McIsaac(변형 Centor)", source: "L1", ref: "gl:uri-kr-2017", verified: true,
+      items: [
+        { k: "fever>38", label: "발열 >38℃", pt: 1 }, { k: "no_cough", label: "기침 없음", pt: 1 },
+        { k: "tender_anterior_nodes", label: "압통성 전경부 림프절", pt: 1 }, { k: "tonsillar_exudate", label: "편도 삼출·종대", pt: 1 },
+        { k: "age", bands: [{ r: "3-14", pt: 1 }, { r: "15-44", pt: 0 }, { r: ">=45", pt: -1 }] }
+      ],
+      bands: [{ s: ">=4", gas: "51-53%", act: "신속항원검사→양성 시 항생제" }, { s: "3", gas: "28-35%", act: "신속항원검사" },
+        { s: "2", gas: "11-17%", act: "선택적 검사" }, { s: "1", gas: "5-10%", act: "대증" }, { s: "<=0", gas: "1-2.5%", act: "대증(항생제 불필요)" }]
+    },
+    "cold:th:sinusitis_criteria": { id: "cold:th:sinusitis_criteria", days_persistent: 10, double_worsening: true, high_fever_purulent: "39℃ + 화농성 비루 3-4일", source: "L1", ref: "gl:uri-kr-2017", verified: true },
+    "cold:th:om_matrix": {
+      id: "cold:th:om_matrix", source: "L1", ref: "gl:om-sinus-kr-kjpid", verified: false,
+      rows: [{ age: "<6mo", confirmed: "항생제", suspect: "항생제" }, { age: "6mo-2y", confirmed: "항생제", suspect: "중증 항생제/경증 관찰옵션" }, { age: ">=2y", confirmed: "중증 항생제/경증 관찰옵션", suspect: "관찰옵션" }],
+      watch_condition: "추적관찰 보장 + 악화 시 즉시 항생제(48-72h)"
+    },
+    "cold:th:om_dose_amox": { id: "cold:th:om_dose_amox", drug: "drug:amoxicillin", values: [{ ctx: "otitis_first", val: "80-90 mg/kg/일(고용량)" }, { ctx: "sinusitis_first", val: "45 또는 90 mg/kg/일(2회)" }], verified: false },
+    "cold:th:gas_dose_amox": { id: "cold:th:gas_dose_amox", drug: "drug:amoxicillin", values: [{ ctx: "gas", val: "50 mg/kg qd(최대 1000mg) 또는 25 mg/kg bid ×10일" }], verified: false },
+    "cold:th:sinus_dose_amox_clav": { id: "cold:th:sinus_dose_amox_clav", drug: "drug:amoxicillin_clavulanate", values: [{ ctx: "adult_std", val: "500 mg tid 또는 875 mg bid" }, { ctx: "adult_highdose", val: "2 g bid(내성폐렴구균 고위험)" }], verified: false },
+    "cold:th:decongestant_topical_max": { id: "cold:th:decongestant_topical_max", days: 7, note: "초과 시 반동성 비염(rhinitis medicamentosa)", verified: true },
+    "cold:th:codeine_min_age": { id: "cold:th:codeine_min_age", min_age_years: 12, note: "12세 미만 금기(식약처 안전성 서한)", source: "L3", verified: true },
+    "cold:th:croup_dexamethasone": { id: "cold:th:croup_dexamethasone", drug: "drug:dexamethasone", values: [{ ctx: "croup", val: "0.15-0.6 mg/kg 1회" }], verified: false },
+    "cold:th:abx_rate_grade": {
+      id: "cold:th:abx_rate_grade", indicator: "급성상기도감염 항생제 처방률", value_2023: "41.4%",
+      grades: [{ g: 1, cut: "≤20%" }, { g: 2, cut: "20-31%" }, { g: 3, cut: "31-43%" }, { g: 4, cut: "43-59%" }, { g: 5, cut: ">59%" }],
+      lower_resp: { value_2023: "59.8%", grades: "40%(1)~75%(5)" },
+      source: "L3", ref: "eval:hira-abx-uri-rate", verified: false
+    }
+  };
+  const OUT = { COLD_TH };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/cold_types.js */
+/* cold_types.js — 감기(URI) 유형 노드(내용 대폭 보강). SPEC §3-2. */
+(function (root) {
+  const COLD_TYPES = {
+    "uri:type:cold": {
+      id: "uri:type:cold", ko: "감기(급성 비인두염)", dx: "dx:j00", emoji: "🤧", abx: "not_indicated",
+      def: "바이러스성 급성 비인두염. 리노바이러스가 최다(코로나바이러스·RSV·파라인플루엔자·아데노 등).",
+      cause: "주로 리노바이러스. 비말·접촉 전파, 잠복 1–3일.",
+      course: "콧물(맑음→농성 변화 가능)·코막힘·재채기·인후통·기침·미열이 3–7일 정점 후 호전, 기침은 2–3주까지 잔존 가능. 콧물이 며칠 뒤 누렇게 변하는 것은 세균감염 근거가 아님(정상 경과).",
+      workup: ["임상 진단. 검사 불필요.", "10일 이상 지속·이중악화 → 급성 부비동염 재평가.", "고열·화농성 편도삼출·기침없음 → GAS 인두염 감별(McIsaac)."],
+      pitfalls: ["누런 콧물=세균감염 아님(항생제 근거 아님).", "항생제는 세균 합병증을 줄이지 못하고 내성·부작용만 증가.", "인플루엔자 유행기·고위험군은 항바이러스 별도 고려."],
+      notes: ["항생제 불필요 — 대증치료 중심.", "충분한 수분·휴식·가습. 손위생으로 전파 예방.", "증상별 대증요법은 §플로우 참고(가이드/통용·출처 병치)."],
+      guideline: ["gl:uri-kr-2017"]
+    },
+    "uri:type:pharyngitis": {
+      id: "uri:type:pharyngitis", ko: "급성 인두편도염", dx: "dx:j02", emoji: "😣", abx: "conditional",
+      def: "인두·편도의 급성 염증. 대부분 바이러스. 성인의 5–15%(소아 20–30%)만 A군 연쇄구균(GAS).",
+      cause: "바이러스(아데노·EBV·엔테로 등)가 다수. 세균은 GAS가 대표. 3세 미만 GAS 드묾.",
+      course: "인후통·발열·연하통. GAS는 급성 발병·편도삼출·전경부 압통 림프절·기침 없음이 특징. 바이러스성은 기침·콧물·결막염·쉰목소리 동반 경향.",
+      rule: "uri:rule:gas_abx", tool: "cold:th:mcisaac",
+      workup: ["McIsaac(변형 Centor) 점수화.", "≥3점 → 신속항원검사(RADT), 양성 시 항생제. 성인 음성이면 배양 불필요(위험 낮음).", "전염단핵구증 의심(비장종대·경부 림프절·피로·이형림프구) 시 EBV 검사."],
+      pitfalls: ["McIsaac ≤2점은 항생제 불필요(대증).", "전염단핵구증에 amoxicillin/ampicillin → 70–100% 발진.", "1형 페니실린 알레르기 시 모든 β-lactam 금지 → clindamycin·macrolide."],
+      notes: ["1차 amoxicillin 10일(GAS 확인 시). 페니실린 알레르기 4형은 1세대 cephalosporin/clindamycin/macrolide.", "GAS 치료 목적: 증상단축·전파차단·급성 류마티스열 예방.", "치료 24시간 후 전염력 급감(등교/출근 기준)."],
+      guideline: ["gl:uri-kr-2017", "gl:gas-idsa-2012"]
+    },
+    "uri:type:rhinosinusitis": {
+      id: "uri:type:rhinosinusitis", ko: "급성 비부비동염", dx: "dx:j01", emoji: "🤒", abx: "conditional",
+      def: "부비동 점막의 급성 염증. 대부분 바이러스성(감기의 연장). 세균 중복감염은 소수(0.5–2%).",
+      cause: "바이러스가 다수. 세균 시 폐렴구균·H.influenzae·M.catarrhalis.",
+      course: "코막힘·농성 비루·안면통/압박감·후각저하. 대개 10일 이내 호전.",
+      rule: "uri:rule:sinusitis_abx", tool: "cold:th:sinusitis_criteria",
+      workup: ["세균성 기준(하나라도): ①증상 ≥10일 지속·호전 없음 ②초기 호전 후 이중악화(double worsening) ③39℃↑ 고열+화농성 비루 3–4일.", "영상·천자 일상적 불필요.", "안와·두개내 합병증 징후(안구돌출·복시·심한 두통·의식) → 응급 의뢰."],
+      pitfalls: ["7일 이내·악화 없으면 항생제 비권고(대증·관찰).", "화농성 비루만으로 항생제 시작 금물(바이러스도 농성).", "결핵 배제 전 respiratory FQ 회피."],
+      notes: ["1차 amoxicillin 또는 amoxicillin/clavulanate. 내성폐렴구균 고위험은 고용량.", "국소 스테로이드·생리식염수 세척 보조.", "치료 실패(48–72h) 시 amox-clav 고용량 또는 대체."],
+      guideline: ["gl:uri-kr-2017", "gl:sinus-idsa-2012"]
+    },
+    "uri:type:otitis_media": {
+      id: "uri:type:otitis_media", ko: "급성 중이염", dx: "dx:h66", emoji: "👂", abx: "conditional",
+      def: "중이강의 급성 감염. 소아 흔함(이관 미성숙). 연령·중증도별 관찰대기(watchful waiting).",
+      cause: "폐렴구균·H.influenzae·M.catarrhalis. 흔히 바이러스 상기도감염 후속.",
+      course: "이통·발열·보챔·이루(고막천공 시). 고막 팽윤·발적·운동성 감소.",
+      rule: "uri:rule:om_watchful_wait", tool: "cold:th:om_matrix",
+      workup: ["진단 3요소: 급성 발병 + 중이 삼출 + 중이 염증 징후(고막 팽윤·현저한 발적/이루).", "관찰대기 조건: 추적관찰 보장 + 악화 시 즉시 항생제(48–72h).", "합병증(유양돌기염·안면마비·심한 두통) 의심 → 의뢰."],
+      pitfalls: ["<6개월은 무조건 항생제.", "6개월–2세 확진은 항생제, 경증 의심은 관찰옵션.", "≥2세 경증은 관찰옵션 우선(불필요 항생제·내성 감소)."],
+      notes: ["1차 amoxicillin 고용량 80–90 mg/kg/일, 2차/실패 amox-clav.", "페니실린(1형 제외) 대체: cefdinir·cefuroxime·cefpodoxime·cefprozil.", "기간 10일(2세↑ 경증 5일 가능). 통증조절(아세트아미노펜/이부프로펜) 병행."],
+      guideline: ["gl:om-sinus-kr-kjpid", "gl:om-aap-2013"]
+    },
+    "uri:type:bronchitis": {
+      id: "uri:type:bronchitis", ko: "급성 기관지염", dx: "dx:j20", emoji: "😮‍💨", abx: "not_indicated",
+      def: "하기도 기관지의 급성 염증. 대부분 바이러스(~10%만 백일해·마이코플라스마·클라미디아).",
+      cause: "바이러스 다수. 세균은 백일해·마이코플라스마 등.",
+      course: "기침(±가래)이 주증상, 3주까지 지속 가능(post-viral). 발열은 흔치 않음.",
+      workup: ["임상 진단. 흉부영상은 폐렴 의심(빈호흡·저산소·국소 수포음·고열 지속) 시.", "발작성 기침·whoop·영아 무호흡 → 백일해 검사.", "기침 3주 이상·객혈·체중감소 → 결핵·기타 감별."],
+      pitfalls: ["항생제는 급성 기관지염 회복을 앞당기지 못함(비권고).", "지속 기침을 세균감염으로 오인해 항생제 처방 → 처방률·삭감 불리.", "천식·GERD·ACEi 기침 감별."],
+      notes: ["대증치료(진해·거담·수분). 흡연 시 금연.", "백일해 확진/유행 시 macrolide + 접촉자 관리.", "빈호흡·저산소 → 폐렴 감별(폐렴 앱 연계)."],
+      guideline: ["gl:uri-kr-2017"]
+    },
+    "uri:type:laryngitis": {
+      id: "uri:type:laryngitis", ko: "급성 후두염", dx: "dx:j04", emoji: "🗣️", abx: "not_indicated",
+      def: "후두 점막의 급성 염증. 바이러스성 쉰목소리(애성)가 주.",
+      cause: "바이러스. 음성남용·역류도 기여.",
+      course: "애성·목소리 변화·인후 불편감, 대개 1–2주 내 호전.",
+      workup: ["임상 진단.", "안정 시 stridor·호흡곤란 → 후두개염/크룹 감별(의뢰).", "2–3주 이상 지속 애성 → 후두 병변·성대 질환 이비인후과 평가."],
+      pitfalls: ["항생제 불필요.", "성대 안정(속삭임도 성대 부담) — 완전 음성휴식·가습."],
+      notes: ["대증·음성휴식·수분·가습.", "역류 동반 시 생활습관 교정."],
+      guideline: ["gl:uri-kr-2017"]
+    },
+    "uri:type:croup": {
+      id: "uri:type:croup", ko: "크룹(후두기관기관지염)", dx: "dx:j05", emoji: "🐕", abx: "not_indicated",
+      def: "소아 상기도(성문하) 바이러스 감염. 개 짖는(barking) 기침·쉰목소리·흡기 stridor.",
+      cause: "파라인플루엔자가 대표. 6개월–3세 호발.",
+      course: "야간 악화 경향. 대개 경증·자연호전. Westley 중증도로 평가.",
+      rule: "uri:rule:croup_steroid",
+      workup: ["임상 진단(barking cough·stridor·애성).", "안정 시 stridor·심한 함몰·청색·처짐 → 중증, 응급.", "삼킴곤란·침흘림·toxic·기침 없음 → 후두개염 감별(응급)."],
+      pitfalls: ["항생제 불필요.", "경증에도 스테로이드 1회가 재내원·입원 감소.", "울리거나 자극하면 악화 — 진정·편안한 자세."],
+      notes: ["덱사메타손 0.15–0.6 mg/kg 1회(경증 포함) 표준.", "중등도–중증(안정 시 stridor)은 분무 에피네프린 + 관찰(반동 주의)/의뢰.", "찬 공기·가습이 도움될 수 있음."],
+      guideline: ["gl:uri-kr-2017"]
+    },
+    "uri:type:uri_unspec": {
+      id: "uri:type:uri_unspec", ko: "다발성·상세불명 상기도감염", dx: "dx:j06", emoji: "🤧", abx: "not_indicated",
+      def: "복합 상기도 증상(비인두·인두·후두 혼재). 바이러스.",
+      cause: "각종 호흡기 바이러스.",
+      course: "감기와 유사, 3–7일 정점 후 호전.",
+      workup: ["임상 진단. 위험징후 선별(특히 소아).", "특정 부위 국소화·기준 충족 시 해당 유형(부비동·인두 등)으로 재분류."],
+      pitfalls: ["항생제 불필요.", "지속·악화 시 유형 재평가."],
+      notes: ["대증치료.", "소아는 위험징후(§의뢰) 먼저 확인."],
+      guideline: ["gl:uri-kr-2017"]
+    }
+  };
+  const OUT = { COLD_TYPES };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/cold_abx_rules.js */
+/* cold_abx_rules.js — 유형별 항생제 적응 판단 + 요법. SPEC §4-2. */
+(function (root) {
+  const COLD_ABX = {
+    "uri:rule:gas_abx": {
+      id: "uri:rule:gas_abx", type: "uri:type:pharyngitis",
+      decision_when: "mcisaac_ge3() && radt_positive()",
+      test_when: "mcisaac_ge3() && !radt_done()",
+      not_when: "mcisaac_le2()",
+      options: [
+        { label: "1차", any_of: ["drug:amoxicillin"], dose: "cold:th:gas_dose_amox", duration: "10일", grade: "강함", loe: "높음" },
+        { label: "순응도↓", any_of: ["drug:cefdinir", "drug:azithromycin"], duration: "5일", grade: "강함", loe: "중등도" },
+        { label: "페니실린 4형(발진)", any_of: ["drug:cephalexin", "drug:cefadroxil", "drug:clindamycin", "drug:clarithromycin"] }
+      ],
+      gate: ["cold:gate:mono_amox", "cold:gate:pcn_anaphylaxis"],
+      grade_system: "recsys:kr_uri", ref: "gl:uri-kr-2017"
+    },
+    "uri:rule:sinusitis_abx": {
+      id: "uri:rule:sinusitis_abx", type: "uri:type:rhinosinusitis",
+      decision_when: "sinusitis_bacterial()", not_when: "!sinusitis_bacterial()",
+      options: [
+        { label: "1차", any_of: ["drug:amoxicillin", "drug:amoxicillin_clavulanate"], dose: "cold:th:sinus_dose_amox_clav", duration: "5-10일(호전 후 4-7일)", grade: "강함", loe: "높음" },
+        { label: "페니실린 4형", any_of: ["drug:doxycycline", "drug:cefpodoxime", "drug:clindamycin"] }
+      ],
+      gate: ["cold:gate:pcn_anaphylaxis", "cold:gate:tb_fq_caution"],
+      grade_system: "recsys:kr_uri", ref: "gl:uri-kr-2017"
+    },
+    "uri:rule:om_watchful_wait": {
+      id: "uri:rule:om_watchful_wait", type: "uri:type:otitis_media",
+      matrix: "cold:th:om_matrix",
+      first: ["drug:amoxicillin"], dose: "cold:th:om_dose_amox",
+      second: ["drug:amoxicillin_clavulanate"],
+      pcn_alt: ["drug:cefdinir", "drug:cefuroxime", "drug:cefpodoxime", "drug:cefprozil", "drug:clarithromycin", "drug:azithromycin"],
+      duration: "10일(2세↑ 경증 5일 가능)", grade_system: "recsys:kr_uri", ref: "gl:om-sinus-kr-kjpid"
+    },
+    "uri:rule:croup_steroid": {
+      id: "uri:rule:croup_steroid", type: "uri:type:croup",
+      first: ["drug:dexamethasone"], dose: "cold:th:croup_dexamethasone",
+      severe_add: ["drug:epinephrine_neb"], abx: "not_indicated", ref: "gl:uri-kr-2017"
+    },
+    "uri:rule:abx_not_indicated": {
+      id: "uri:rule:abx_not_indicated", types: ["uri:type:cold", "uri:type:bronchitis", "uri:type:laryngitis", "uri:type:uri_unspec"],
+      decision: "항생제 불필요(바이러스) — 대증치료. 처방률·삭감 유리.",
+      gate: ["cold:gate:abx_not_indicated"], grade: "강함", grade_system: "recsys:kr_uri", ref: "gl:uri-kr-2017"
+    }
+  };
+  const OUT = { COLD_ABX };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/cold_symptomatic.js */
+/* cold_symptomatic.js — 증상별 대증요법 옵션 + stance(가이드/통용) + 출처. SPEC §4-3. ★사용자 요구 */
+(function (root) {
+  const COLD_SYMPT = {
+    "uri:sympt:fever": {
+      id: "uri:sympt:fever", ko: "발열·통증", options: [
+        { class: "class:antipyretic_analgesic", drugs: ["drug:acetaminophen"], stance: { guideline: "발열·통증 완화 확립(1차)", common: "성인·소아 광범위 사용" }, cautions: ["간독성 상한(총량)"] },
+        { class: "class:nsaid", drugs: ["drug:ibuprofen", "drug:dexibuprofen", "drug:loxoprofen"], stance: { guideline: "해열·진통 효과 확립", common: "성인 흔히 사용" }, cautions: ["위장·신장·심혈관", "탈수·신질환 주의"] }
+      ]
+    },
+    "uri:sympt:rhinorrhea": {
+      id: "uri:sympt:rhinorrhea", ko: "콧물·재채기", options: [
+        { class: "class:antihistamine_1g", drugs: ["drug:chlorpheniramine", "drug:triprolidine"], stance: { guideline: "항히스타민 단독 효과 제한; 1세대+비충혈/진통 복합은 성인 단기 개선", common: "복합감기약 주성분으로 통용" }, evidence: "ev:cochrane-antihist-decong", cautions: ["졸음·구갈", "고령·전립선·녹내장 주의", "소아 근거 부족"] },
+        { class: "class:antihistamine_2g", drugs: ["drug:cetirizine", "drug:loratadine", "drug:ebastine"], stance: { guideline: "졸음 적으나 감기 단독효과 약함", common: "알레르기 동반 시 선호" } },
+        { label: "비강 ipratropium", drugs: ["drug:ipratropium_nasal"], stance: { guideline: "콧물 감소 근거", common: "선택적 사용" }, evidence: "ev:cochrane-ipratropium" }
+      ]
+    },
+    "uri:sympt:congestion": {
+      id: "uri:sympt:congestion", ko: "코막힘", options: [
+        { class: "class:decongestant_oral", drugs: ["drug:pseudoephedrine", "drug:phenylephrine"], stance: { guideline: "단기 코막힘 완화", common: "코감기약으로 통용" }, evidence: "ev:cochrane-decongestant", cautions: ["혈압·불면·심계", "HTN·MAOI·전립선 주의", "소아 <6세 권장 안 함"] },
+        { class: "class:decongestant_topical", drugs: ["drug:oxymetazoline", "drug:xylometazoline", "drug:naphazoline"], stance: { guideline: "국소 단기 효과", common: "빠른 완화로 사용" }, cautions: ["7일 이상 금지 → 반동성 비염"], gate: ["cold:gate:decongestant_topical_7d"] },
+        { label: "생리식염수", drugs: ["drug:saline_nasal"], stance: { guideline: "증상·약물사용 감소 경향(특히 소아)", common: "안전한 보조" }, evidence: "ev:cochrane-saline" }
+      ]
+    },
+    "uri:sympt:cough": {
+      id: "uri:sympt:cough", ko: "기침", options: [
+        { class: "class:antitussive_central_nonopioid", drugs: ["drug:dextromethorphan", "drug:noscapine", "drug:benproperine"], stance: { guideline: "OTC 진해제 감기 기침 효과 근거 부족/불확실", common: "1차의료서 광범위 사용" }, evidence: "ev:cochrane-otc-cough", cautions: ["소아 효과 제한"] },
+        { class: "class:antitussive_peripheral", drugs: ["drug:levodropropizine", "drug:oxolamine"], stance: { guideline: "말초성, 졸음 적음", common: "선택 사용" } },
+        { class: "class:antitussive_central_opioid", drugs: ["drug:codeine", "drug:dihydrocodeine"], stance: { guideline: "권고 아님", common: "심한 마른기침에 처방되기도" }, cautions: ["12세 미만 금기(식약처)"], gate: ["cold:gate:opioid_antitussive_age"] },
+        { label: "소아 대안", drugs: ["drug:honey"], stance: { guideline: "소아 야간기침 위약 대비 개선", common: "가정 요법" }, evidence: "ev:cochrane-honey", cautions: ["1세 미만 금기"] }
+      ]
+    },
+    "uri:sympt:sputum": {
+      id: "uri:sympt:sputum", ko: "가래", options: [
+        { class: "class:expectorant", drugs: ["drug:guaifenesin", "drug:ambroxol", "drug:bromhexine"], stance: { guideline: "감기 단기 효과 근거 약함", common: "객담 배출 목적 통용" } },
+        { class: "class:mucolytic", drugs: ["drug:acetylcysteine", "drug:carbocisteine", "drug:erdosteine"], stance: { guideline: "만성기관지염 일부 근거", common: "점액 점도↓ 목적" } }
+      ]
+    },
+    "uri:sympt:sore_throat": {
+      id: "uri:sympt:sore_throat", ko: "인후통", options: [
+        { class: "class:antipyretic_analgesic", drugs: ["drug:acetaminophen"], stance: { guideline: "통증 완화", common: "1차" } },
+        { class: "class:nsaid", drugs: ["drug:ibuprofen"], stance: { guideline: "인후통 진통", common: "성인" } },
+        { label: "국소·보조", drugs: ["drug:saline_nasal"], stance: { guideline: "따뜻한 물·가글·수분", common: "가정 요법" } }
+      ]
+    }
+  };
+  const OUT = { COLD_SYMPT };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/cold_gate.js */
+/* cold_gate.js — 임상·삭감 게이트. SPEC §4-4. */
+(function (root) {
+  const COLD_GATES = {
+    "cold:gate:mono_amox": { id: "cold:gate:mono_amox", action: "WARN", when: "has(comorbid:mono_suspect) && recommend('drug:amoxicillin')", reason: "전염단핵구증 의심 시 amoxicillin/ampicillin 발진(70-100%) — 회피", ref: "gl:uri-kr-2017" },
+    "cold:gate:pcn_anaphylaxis": { id: "cold:gate:pcn_anaphylaxis", action: "EXCLUDE", severity: "absolute", when: "allergy_pcn_type1() && recommend_class_betalactam()", reason: "1형 페니실린 알레르기 → 모든 β-lactam(세팔로스포린 포함) 금지", ref: "gl:uri-kr-2017" },
+    "cold:gate:opioid_antitussive_age": { id: "cold:gate:opioid_antitussive_age", action: "EXCLUDE", severity: "absolute", when: "age_lt12() && recommend_class('class:antitussive_central_opioid')", reason: "코데인·디히드로코데인 12세 미만 금기(호흡억제·식약처 안전성 서한)", ref: "cold:th:codeine_min_age" },
+    "cold:gate:decongestant_topical_7d": { id: "cold:gate:decongestant_topical_7d", action: "WARN", when: "recommend_class('class:decongestant_topical')", reason: "국소 비충혈제거제 7일 이상 → 반동성 비염(rhinitis medicamentosa)", ref: "cold:th:decongestant_topical_max" },
+    "cold:gate:peds_combo_cold": { id: "cold:gate:peds_combo_cold", action: "WARN", when: "age_lt6() && recommend_class('class:decongestant_oral')", reason: "소아 <6세 복합감기약·경구 비충혈제거제 권장 안 함(효과·안전성 근거 부족)", ref: "ev:cochrane-decongestant" },
+    "cold:gate:nsaid_caution": { id: "cold:gate:nsaid_caution", action: "INFO", when: "recommend_class('class:nsaid') && (has(comorbid:peptic_ulcer)||has(comorbid:ckd)||has(comorbid:hypertension))", reason: "NSAID 위장·신장·혈압 주의(기저질환)" },
+    "cold:gate:abx_not_indicated": { id: "cold:gate:abx_not_indicated", action: "WARN", tag: "eval", when: "type_viral() && abx_prescribed()", reason: "바이러스성 감기/기관지염에 항생제 → 효과 없음·내성 + 항생제 처방률 등급 악화(삭감·평가 불리)", ref: "eval:hira-abx-uri-rate" },
+    "cold:gate:injection_warn": { id: "cold:gate:injection_warn", action: "WARN", tag: "eval", when: "injection_prescribed()", reason: "감기 주사제 습관적 처방 → 주사제 처방률 등급 악화", ref: "eval:hira-injection-rate" },
+    "cold:gate:combo_cut": { id: "cold:gate:combo_cut", action: "WARN", tag: "reimb", when: "offlabel_combo() || same_class_multi()", reason: "상병무관 끼워넣기·동일계열 다품목·배수처방 → 급여 불인정 위험", ref: "notice:hira-combo-cut" },
+    "cold:gate:tb_fq_caution": { id: "cold:gate:tb_fq_caution", action: "INFO", when: "recommend('drug:doxycycline')", reason: "지속 증상 시 결핵·비정형 감별(폐렴 자료집 정합)" }
+  };
+  const OUT = { COLD_GATES };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/cold_refer.js */
+/* cold_refer.js — 소아/성인 위험징후 의뢰(red-flag). SPEC §4-5. ★안전 최우선
+ * signs = "이 증상이 위험 사인"(구체 목록). detail = 무엇을 확인·조치. donot = 하지 말 것.
+ */
+(function (root) {
+  const COLD_REFER = {
+    "uri:refer:neonate_fever": {
+      id: "uri:refer:neonate_fever", category: "연령", urgency: "emergency", action: "REFER",
+      when: "ageband_neonate() || (ageband_infant() && fever())",
+      signs: ["생후 28일 미만(신생아) 발열 ≥38℃", "생후 3개월 미만 영아 발열", "처짐·수유거부 동반"],
+      reason: "신생아·3개월 미만 영아 발열 → 즉시 평가(중증세균감염·수막염 배제). 감기로 처리 금지",
+      detail: "발열 자체가 SBI(중증세균감염) 위험. 활력징후·혈액·소변·필요 시 뇌척수액 검사·입원·경험적 항생제 검토.",
+      ref: "gl:fever-nice-ng143"
+    },
+    "uri:refer:airway": {
+      id: "uri:refer:airway", category: "기도", urgency: "emergency", action: "REFER",
+      when: "stridor_at_rest() || drooling() || tripod() || muffled_voice()",
+      signs: ["안정 시(가만히 있을 때) 흡기 stridor", "침을 삼키지 못하고 흘림(drooling)", "앞으로 기대어 턱 내민 삼각(tripod) 자세", "먹먹한(hot-potato) 목소리", "갑작스런 고열+심한 인후통+toxic"],
+      reason: "급성 후두개염/기도폐쇄 응급",
+      detail: "기도확보 우선. 아이를 울리거나 눕히지 말고 편한 자세 유지, 산소·즉시 이송.",
+      donot: "인두 시진·설압자 자극·검사 금지(기도 완전폐쇄 유발)",
+      ref: "gl:uri-kr-2017"
+    },
+    "uri:refer:resp_distress": {
+      id: "uri:refer:resp_distress", category: "호흡", urgency: "emergency", action: "REFER",
+      when: "rr_high() || retraction() || nasal_flaring() || grunting() || spo2_low() || cyanosis()",
+      signs: ["빈호흡(신생아 RR>60, 영아>50, 유아>40)", "흉부 함몰(늑간·흉골하)", "콧벌렁임(nasal flaring)", "신음호흡(grunting)", "SpO2 ≤95%", "청색증", "영아 무호흡(apnea)"],
+      reason: "호흡곤란 — 폐렴·세기관지염(RSV)·천식 악화 감별(폐렴 앱 연계)",
+      detail: "산소포화도 측정, 청진(수포음·천명), 흉부영상 고려. 저산소·무호흡은 응급.",
+      ref: "gl:fever-nice-ng143"
+    },
+    "uri:refer:cns": {
+      id: "uri:refer:cns", category: "신경(CNS)", urgency: "emergency", action: "REFER",
+      when: "neck_stiffness() || altered_consciousness() || prolonged_seizure() || bulging_fontanelle() || photophobia()",
+      signs: ["목경직(경부 강직)", "의식저하·심한 처짐·깨워도 반응 저하", "지속·초점·반복 경련", "영아 대천문 팽대(bulging fontanelle)", "광과민(빛을 싫어함)", "심한 두통·구토"],
+      reason: "수막염·뇌염 의심",
+      detail: "단순 열성경련(6개월–5세·<15분·전신·의식회복)과 구분. 의식저하 지속·초점 징후는 중추감염 배제 필요.",
+      ref: "gl:fever-nice-ng143"
+    },
+    "uri:refer:sepsis": {
+      id: "uri:refer:sepsis", category: "패혈증", urgency: "emergency", action: "REFER",
+      when: "nonblanching_rash() || petechiae() || poor_perfusion() || toxic()",
+      signs: ["누르면 사라지지 않는 발진(비퇴색·유리컵 검사 양성)", "점상출혈(petechiae)·자반(purpura)", "잿빛·얼룩덜룩(mottled) 피부", "모세혈관 재충전 ≥3초·차가운 사지", "toxic 양상(무기력·창백·반응저하)"],
+      reason: "패혈증/수막구균혈증",
+      detail: "비퇴색 발진 + 발열은 수막구균 응급. 즉시 이송·경험적 항생제.",
+      ref: "gl:fever-nice-ng143"
+    },
+    "uri:refer:kawasaki": {
+      id: "uri:refer:kawasaki", category: "가와사키", urgency: "urgent", action: "REFER",
+      when: "fever_ge5d() && kawasaki_ge4()",
+      signs: ["5일 이상 지속되는 고열", "양측 삼출 없는 결막충혈", "입술 홍조·딸기혀·구강점막 변화", "부정형 발진", "사지 말단 부종·홍반·(회복기)막양낙설", "경부 림프절종대 ≥1.5cm(흔히 편측)"],
+      reason: "가와사키병 — 관상동맥류 위험, IVIG 골든타임(발병 10일 이내)",
+      detail: "감기·인두염으로 오인 주의. 항생제에 반응 없는 지속 고열 + 위 징후 조합이면 의뢰(심초음파·IVIG).",
+      ref: "gl:fever-nice-ng143"
+    },
+    "uri:refer:complication": {
+      id: "uri:refer:complication", category: "국소 합병증", urgency: "urgent", action: "REFER",
+      when: "mastoiditis() || orbital_signs() || pott_puffy()",
+      signs: ["중이염 경과 중 귓바퀴 뒤 발적·부종·압통·귀가 앞아래로 밀림(유양돌기염)", "부비동염 중 안검부종·안구돌출·안구운동장애·복시·시력저하(안와 연조직염/농양)", "전두부 부종·압통(Pott's puffy tumor)"],
+      reason: "URI 국소 합병증(유양돌기염·안와 연조직염·전두골 골수염)",
+      detail: "영상(CT)·배농·정맥 항생제 필요. 안와·두개내 침범은 응급.",
+      ref: "gl:om-sinus-kr-kjpid"
+    },
+    "uri:refer:dehydration": {
+      id: "uri:refer:dehydration", category: "탈수", urgency: "urgent", action: "REFER",
+      when: "poor_feeding() || reduced_urine() || no_tears() || reduced_skin_turgor()",
+      signs: ["수유·수분 거부", "소변량 감소(기저귀 <4회/일)", "울어도 눈물 없음", "피부탄력 저하·입마름·함몰된 눈", "무기력"],
+      reason: "탈수 — 수분·평가",
+      detail: "경구수분보충(ORS) 시도, 중등도 이상·경구 실패 시 수액.",
+      ref: "gl:fever-nice-ng143"
+    },
+    "uri:refer:pertussis": {
+      id: "uri:refer:pertussis", category: "백일해", urgency: "reeval", action: "WARN",
+      when: "paroxysmal_cough() || whoop() || infant_apnea()",
+      signs: ["발작성(paroxysmal) 기침 — 연속 기침 발작", "기침 끝 흡기 시 'whoop' 소리", "기침 후 구토", "영아에서 무호흡·청색(전형적 whoop 없을 수 있음)", "접촉력"],
+      reason: "백일해 의심 — PCR·격리·macrolide·접촉자 예방",
+      detail: "카타르기 전염력 높음. 영아는 무호흡으로 발현. 확진 전이라도 의심 시 macrolide + 접촉자 관리.",
+      ref: "gl:uri-kr-2017"
+    },
+    "uri:refer:amber_reeval": {
+      id: "uri:refer:amber_reeval", category: "재평가(NICE amber)", urgency: "reeval", action: "REFER",
+      when: "amber_flags() || fever_ge5d()",
+      signs: ["보호자가 보고하는 창백", "활동저하·자극 시에만 미소", "빈호흡(경계)·SpO2 95–96%", "빈맥·모세혈관재충전 지연", "점막 건조·수유 감소", "발열 ≥5일", "사지·관절 부종·비체중지지"],
+      reason: "NICE amber(중간위험)·발열 5일↑ → 안전망·재평가",
+      detail: "즉시 응급은 아니나 관찰·재평가·검사 고려. 악화 시 지체 없이 재내원 안내(safety-netting).",
+      ref: "gl:fever-nice-ng143"
+    }
+  };
+  const OUT = { COLD_REFER };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/cold_eval.js */
+/* cold_eval.js — 심평원 처방률 적정성 평가(가감지급 성격). SPEC §4-6. L3, 재검증. */
+(function (root) {
+  const COLD_EVAL = {
+    "eval:hira-abx-uri-rate": {
+      id: "eval:hira-abx-uri-rate", indicator: "급성상기도감염 항생제 처방률",
+      def: "외래 내원일 대비 항생제 처방 비율(J00-J06 등 주상병)",
+      mechanism: "약제급여 적정성 평가 → 등급·공개(+고처방기관 실사·중재). 가감지급/외래처방 인센티브 여부 재확인.",
+      grade_ref: "cold:th:abx_rate_grade", value_2023: "41.4%",
+      note: "2001년 73.3%→감소, 2022 32.4%→2023 41.4% 반등(코로나 방역 완화)",
+      source: "HIRA 약제급여 적정성 평가 / PHWR 2023", verified: false
+    },
+    "eval:hira-injection-rate": {
+      id: "eval:hira-injection-rate", indicator: "주사제 처방률",
+      def: "외래 주사제 처방 비율", mechanism: "적정성 평가 지표(감기 습관적 주사 지적)", verified: false
+    }
+  };
+  const OUT = { COLD_EVAL };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/cold_notices.js */
+/* cold_notices.js — 개별 삭감·대증약 급여. SPEC §4-6. L3, 재검증. */
+(function (root) {
+  const COLD_NOTICES = {
+    "notice:hira-combo-cut": {
+      id: "notice:hira-combo-cut", scope: "combination", risk: "★★",
+      basis: "상병에 부합하는 약물만 급여. 급여기준 벗어난 병용은 조정.",
+      cut: ["상병무관 약물 끼워넣기", "동일계열 진해거담제 다품목", "배수처방·과다 투약일수", "바이러스 상병에 항생제"],
+      verified: false
+    },
+    "notice:hira-uri-symptomatic": {
+      id: "notice:hira-uri-symptomatic", scope: "symptomatic", risk: "★",
+      basis: "대증약 대부분 급여. 성분중복·과다품목·투여기간 이탈 시 조정.",
+      cut: ["성분 중복(복합제+단일제)", "과다 품목수"], verified: false
+    }
+  };
+  const OUT = { COLD_NOTICES };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/cold_relations.js */
+/* cold_relations.js — 관계 트리플. SPEC §2(P3). */
+(function (root) {
+  const COLD_RELATIONS = [
+    // 증상 → 계열
+    { s: "uri:sympt:fever", p: "treated_by", o: "class:antipyretic_analgesic" },
+    { s: "uri:sympt:rhinorrhea", p: "treated_by", o: "class:antihistamine_1g" },
+    { s: "uri:sympt:congestion", p: "treated_by", o: "class:decongestant_oral" },
+    { s: "uri:sympt:cough", p: "treated_by", o: "class:antitussive_central_nonopioid" },
+    { s: "uri:sympt:sputum", p: "treated_by", o: "class:expectorant" },
+    // 약물 → 금기/제한
+    { s: "drug:codeine", p: "contraindicated_in", o: "ageband:child" },
+    { s: "drug:dihydrocodeine", p: "contraindicated_in", o: "ageband:child" },
+    { s: "drug:oxymetazoline", p: "limited_by", o: "cold:th:decongestant_topical_max" },
+    { s: "drug:amoxicillin", p: "avoided_in", o: "comorbid:mono_suspect" },
+    // 유형 → 항생제 규칙
+    { s: "uri:type:pharyngitis", p: "abx_rule", o: "uri:rule:gas_abx" },
+    { s: "uri:type:rhinosinusitis", p: "abx_rule", o: "uri:rule:sinusitis_abx" },
+    { s: "uri:type:otitis_media", p: "abx_rule", o: "uri:rule:om_watchful_wait" },
+    // 지표 → 평가
+    { s: "eval:hira-abx-uri-rate", p: "grades", o: "cold:th:abx_rate_grade" },
+    // 근거 → 약물
+    { s: "ev:cochrane-honey", p: "supports", o: "drug:honey" },
+    { s: "ev:cochrane-zinc", p: "supports", o: "drug:zinc" },
+    { s: "ev:cochrane-ipratropium", p: "supports", o: "drug:ipratropium_nasal" }
+  ];
+  const OUT = { COLD_RELATIONS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* engine/expr.js */
+/* expr.js — 미니문법 평가기(화이트리스트). 폐렴 엔진 재사용. */
+(function (root) {
+  function evalBool(s) {
+    let i = 0; s = s.replace(/\s+/g, "");
+    function peek() { return s[i]; }
+    function parseOr() { let v = parseAnd(); while (s.substr(i, 2) === "||") { i += 2; const r = parseAnd(); v = v || r; } return v; }
+    function parseAnd() { let v = parseUnary(); while (s.substr(i, 2) === "&&") { i += 2; const r = parseUnary(); v = v && r; } return v; }
+    function parseUnary() { if (peek() === "!") { i++; return !parseUnary(); } return parsePrim(); }
+    function parsePrim() {
+      if (peek() === "(") { i++; const v = parseOr(); if (peek() === ")") i++; return v; }
+      if (s.substr(i, 4) === "true") { i += 4; return true; }
+      if (s.substr(i, 5) === "false") { i += 5; return false; }
+      throw new Error("expr parse @" + i + ": " + s);
+    }
+    const v = parseOr(); if (i !== s.length) throw new Error("trailing @" + i); return v;
+  }
+  function evalExpr(expr, ctx) {
+    if (expr == null || expr === "") return true;
+    const replaced = expr.replace(/([a-zA-Z_][a-zA-Z0-9_]*)\(\s*([^()]*?)\s*\)/g, function (_, name, arg) {
+      const a = arg.replace(/^['"]|['"]$/g, ""); return ctx.fn(name, a) ? "true" : "false";
+    });
+    return evalBool(replaced);
+  }
+  const OUT = { evalExpr, evalBool };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* engine/recommend.js */
+/* recommend.js — 감기 정문. SPEC §5. 순서: REFER(최우선) → CLASSIFY → ABX 적응 → 대증요법 → EVAL/삭감. */
+(function (root) {
+  const req = (typeof require !== "undefined");
+  const DR = req ? require("../data/cold_drugs.js") : root, TY = req ? require("../data/cold_types.js") : root,
+    AB = req ? require("../data/cold_abx_rules.js") : root, SY = req ? require("../data/cold_symptomatic.js") : root,
+    GA = req ? require("../data/cold_gate.js") : root, RF = req ? require("../data/cold_refer.js") : root,
+    EV = req ? require("../data/cold_eval.js") : root, NO = req ? require("../data/cold_notices.js") : root,
+    TH = req ? require("../data/cold_thresholds.js") : root, expr = req ? require("./expr.js") : root;
+  const DRUGS = DR.COLD_DRUGS, TYPES = TY.COLD_TYPES, ABX = AB.COLD_ABX, SYMPT = SY.COLD_SYMPT,
+    GATES = GA.COLD_GATES, REFER = RF.COLD_REFER, EVAL = EV.COLD_EVAL, NOTICES = NO.COLD_NOTICES, THS = TH.COLD_TH;
+  const BL = new Set(["class:aminopenicillin", "class:blbli", "class:cephalosporin_1g", "class:cephalosporin_2g", "class:cephalosporin_3g"]);
+  const AUTO_OPT_GATES = ["cold:gate:opioid_antitussive_age", "cold:gate:decongestant_topical_7d", "cold:gate:peds_combo_cold", "cold:gate:nsaid_caution"];
+  const drugClass = id => (DRUGS[id] || {}).class || null;
+
+  function ageInfo(p) {
+    const a = p.age || {}; let months = a.months != null ? a.months : (a.years != null ? a.years * 12 : null);
+    let days = a.days != null ? a.days : (months != null ? months * 30 : null);
+    let years = a.years != null ? a.years : (months != null ? months / 12 : null);
+    let band = "adult";
+    if (days != null && days < 28) band = "neonate"; else if (months != null && months < 3) band = "infant";
+    else if (years != null && years < 12) band = "child";
+    return { months, days, years, band };
+  }
+  function mcisaac(p) {
+    const ph = p.pharyngitis || {}, ai = ageInfo(p); let s = 0;
+    if (ph.fever38) s++; if (ph.no_cough) s++; if (ph.tender_nodes) s++; if (ph.tonsillar_exudate) s++;
+    if (ai.years != null) { if (ai.years < 15) s++; else if (ai.years >= 45) s--; }
+    return s;
+  }
+  function sinusBacterial(p) { const s = p.sinusitis || {}; return !!(s.duration_days >= 10 || s.double_worsening || s.high_fever_purulent); }
+
+  function makeCtx(p, opt) {
+    const ai = ageInfo(p), rf = p.redflags || {}, sy = p.symptoms || {}, co = p.comorbid || [], al = p.allergy || {}, ph = p.pharyngitis || {};
+    const oc = opt ? (function () { const cs = opt.class ? [opt.class] : []; (opt.drugs || []).forEach(d => { const c = drugClass(d); if (c && cs.indexOf(c) < 0) cs.push(c); }); return cs; })() : [];
+    const score = mcisaac(p);
+    const t = {
+      type: a => p.type === a, type_viral: () => ["cold", "bronchitis", "laryngitis", "uri_unspec"].indexOf(p.type) >= 0,
+      has: a => co.indexOf(String(a).replace(/^comorbid:/, "")) >= 0,
+      ageband_neonate: () => ai.band === "neonate", ageband_infant: () => ai.band === "infant" || ai.band === "neonate",
+      age_lt12: () => ai.years != null && ai.years < 12, age_lt6: () => ai.years != null && ai.years < 6,
+      fever: () => !!sy.fever || !!rf.fever,
+      mcisaac_ge3: () => score >= 3, mcisaac_le2: () => score <= 2,
+      radt_positive: () => ph.radt === "positive", radt_done: () => ph.radt != null && ph.radt !== "",
+      sinusitis_bacterial: () => sinusBacterial(p),
+      allergy_pcn_type1: () => al.penicillin === "type1",
+      recommend: a => !!opt && (opt.drugs || []).indexOf(a) >= 0,
+      recommend_class: a => oc.indexOf(a) >= 0,
+      recommend_class_betalactam: () => oc.some(c => BL.has(c)),
+      abx_prescribed: () => !!p.abx_prescribed, injection_prescribed: () => !!p.injection_prescribed,
+      offlabel_combo: () => !!p.offlabel_combo, same_class_multi: () => !!p.same_class_multi,
+      fever_ge5d: () => (rf.fever_days || 0) >= 5 || !!rf.fever_ge5d,
+      kawasaki_ge4: () => (rf.kawasaki_count || 0) >= 4 || !!rf.kawasaki_ge4,
+      amber_flags: () => !!rf.amber_flags,
+      spo2_low: () => !!rf.spo2_low || (rf.spo2 != null && rf.spo2 <= 95)
+    };
+    // 나머지 red-flag 불리언
+    ["stridor_at_rest", "drooling", "tripod", "muffled_voice", "rr_high", "retraction", "nasal_flaring", "grunting", "cyanosis",
+      "neck_stiffness", "altered_consciousness", "prolonged_seizure", "bulging_fontanelle", "photophobia", "nonblanching_rash",
+      "petechiae", "poor_perfusion", "toxic", "mastoiditis", "orbital_signs", "pott_puffy", "poor_feeding", "reduced_urine",
+      "no_tears", "reduced_skin_turgor", "paroxysmal_cough", "whoop", "infant_apnea"].forEach(k => { t[k] = () => !!rf[k]; });
+    return { fn: (name, arg) => { const f = t[name]; return f ? !!f(arg) : false; }, score, band: ai.band };
+  }
+
+  function gate(id) { return GATES[id]; }
+
+  function recommend(patient) {
+    const p = patient || {}, ai = ageInfo(p), ctx = makeCtx(p, null);
+    // A. REFER (최우선)
+    const referrals = [];
+    Object.values(REFER).forEach(r => { let hit = false; try { hit = expr.evalExpr(r.when, ctx); } catch (e) {} if (hit) referrals.push({ id: r.id, urgency: r.urgency || "reeval", reason: r.reason, donot: r.donot || null, detail: r.detail || null, category: r.category || null, action: r.action }); });
+    const urgRank = { emergency: 0, urgent: 1, reeval: 2 };
+    referrals.sort((a, b) => (urgRank[a.urgency] ?? 3) - (urgRank[b.urgency] ?? 3));
+
+    // B. CLASSIFY
+    const type = p.type, tnode = TYPES["uri:type:" + type] || {};
+
+    // C. ABX 적응 판단
+    let antibiotic = { decision: "not_indicated", options: [], note: "", grade: null, duration: null };
+    function filterAbxOpts(opts) {
+      return (opts || []).map(o => {
+        const c = makeCtx(p, o), warns = [];
+        // EXCLUDE: 1형 페니실린 알레르기 β-lactam
+        let excluded = false;
+        const g1 = gate("cold:gate:pcn_anaphylaxis"); if (g1 && expr.evalExpr(g1.when, c)) excluded = true;
+        const g2 = gate("cold:gate:mono_amox"); if (g2 && expr.evalExpr(g2.when, c)) warns.push(g2.reason);
+        return excluded ? null : { label: o.label, drugs: o.any_of || o.drugs || [], dose: o.dose ? doseText(o.dose) : null, duration: o.duration || null, warns };
+      }).filter(Boolean);
+    }
+    if (type === "pharyngitis") {
+      const r = ABX["uri:rule:gas_abx"], sc = ctx.score;
+      if (ctx.fn("mcisaac_le2")) { antibiotic = { decision: "not_indicated", note: "McIsaac ≤2 → GAS 가능성 낮음, 대증치료", mcisaac: sc, options: [] }; }
+      else if (ctx.fn("mcisaac_ge3") && !ctx.fn("radt_done")) { antibiotic = { decision: "test", note: "McIsaac ≥3 → 신속항원검사(RADT) 시행, 양성 시 항생제", mcisaac: sc, options: [] }; }
+      else if (ctx.fn("mcisaac_ge3") && ctx.fn("radt_positive")) { antibiotic = { decision: "indicated", note: "GAS 확인 → 항생제", mcisaac: sc, grade: "강함", options: filterAbxOpts(r.options), rule: r.id }; }
+      else { antibiotic = { decision: "not_indicated", note: "RADT 음성 → 대증치료", mcisaac: sc, options: [] }; }
+    } else if (type === "rhinosinusitis") {
+      const r = ABX["uri:rule:sinusitis_abx"];
+      if (sinusBacterial(p)) antibiotic = { decision: "indicated", note: "세균성 기준 충족 → 항생제", grade: "강함", options: filterAbxOpts(r.options), rule: r.id };
+      else antibiotic = { decision: "not_indicated", note: "바이러스성(7일 이내·악화 없음) → 대증·관찰", options: [] };
+    } else if (type === "otitis_media") {
+      const r = ABX["uri:rule:om_watchful_wait"], sev = (p.otitis || {}).severity, cert = (p.otitis || {}).certainty;
+      let dec = "watchful";
+      if (ai.band === "neonate" || ai.band === "infant" || (ai.years != null && ai.years < 0.5)) dec = "indicated";
+      else if (ai.years != null && ai.years < 2) dec = (cert === "confirmed" || sev === "severe") ? "indicated" : "watchful";
+      else dec = (sev === "severe") ? "indicated" : "watchful";
+      antibiotic = { decision: dec, note: dec === "indicated" ? "연령·중증도 → 항생제(고용량 amoxicillin)" : "관찰옵션(추적 보장 + 악화 시 즉시 항생제, 48-72h)",
+        options: dec === "indicated" ? [{ label: "1차", drugs: r.first, dose: doseText(r.dose), duration: r.duration }, { label: "2차/실패", drugs: r.second, dose: null }] : [], rule: r.id };
+    } else if (type === "croup") {
+      const r = ABX["uri:rule:croup_steroid"];
+      antibiotic = { decision: "steroid", note: "덱사메타손 1회(경증 포함); 중등도-중증은 분무 에피네프린. 항생제 불필요",
+        options: [{ label: "스테로이드", drugs: r.first, dose: doseText(r.dose) }, { label: "중증 추가", drugs: r.severe_add }] };
+    } else {
+      antibiotic = { decision: "not_indicated", note: "바이러스성 → 항생제 불필요, 대증치료(처방률·삭감 유리)", options: [], grade: "강함" };
+    }
+
+    // D. SYMPTOMATIC
+    const symptomatic = [];
+    const syInput = p.symptoms || {};
+    Object.keys(syInput).forEach(k => {
+      if (!syInput[k]) return; const node = SYMPT["uri:sympt:" + k]; if (!node) return;
+      const opts = [];
+      node.options.forEach(o => {
+        const c = makeCtx(p, o); let excluded = false; const warns = [];
+        const gateIds = (o.gate || []).concat(AUTO_OPT_GATES);
+        gateIds.forEach(gid => { const g = gate(gid); if (!g) return; let hit = false; try { hit = expr.evalExpr(g.when, c); } catch (e) {} if (hit) { if (g.action === "EXCLUDE") excluded = true; else warns.push(g.reason); } });
+        if (!excluded) opts.push({ label: o.label || (DR.COLD_CLASSES[o.class] || {}).ko, drugs: o.drugs || [], stance: o.stance || null, evidence: o.evidence || null, cautions: o.cautions || [], warns });
+      });
+      symptomatic.push({ symptom: k, ko: node.ko, options: opts });
+    });
+
+    // E. EVAL / 삭감
+    const evalOut = [], reimb = [];
+    if (antibiotic.decision === "not_indicated") evalOut.push({ indicator: "항생제 처방률", impact: "이 상병에 항생제 처방 시 등급 악화(평가 불리)·삭감 위험", ref: "eval:hira-abx-uri-rate" });
+    evalOut.push({ indicator: "주사제 처방률", impact: "감기 습관적 주사 지양(주사제 처방률 지표)", ref: "eval:hira-injection-rate" });
+    Object.values(NOTICES).forEach(n => reimb.push({ notice: n.id, basis: n.basis, cut: n.cut, risk: n.risk }));
+
+    return {
+      type, ageBand: ai.band, mcisaac: type === "pharyngitis" ? ctx.score : null,
+      referrals, antibiotic, symptomatic, eval: evalOut, reimb, typeNotes: tnode.notes || null, typeDef: tnode.def || null
+    };
+  }
+  function doseText(ref) { const th = THS[ref]; if (!th) return null; return (th.values || []).map(v => v.val).join(" / "); }
+
+  const OUT = { recommend, makeCtx };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+</script>
+<script>
+/* app.js — 감기 앱 뷰. 정본 카드 문법. 엔진 recommend() 불변 소비. 폐렴 앱 UX 재사용. */
+(function () {
+  var W = window;
+  var DRUGS = W.COLD_DRUGS, CLASSES = W.COLD_CLASSES, TYPES = W.COLD_TYPES, ABX = W.COLD_ABX, SYMPT = W.COLD_SYMPT,
+    REFER = W.COLD_REFER, NOTICES = W.COLD_NOTICES, GL = W.COLD_GUIDELINES, EVID = W.COLD_EVIDENCE, TH = W.COLD_TH;
+  var el = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); };
+  var dn = function (id) { return (DRUGS[id] || {}).ko || String(id).replace("drug:", ""); };
+  var joinD = function (a, sep) { return (a || []).map(dn).join(sep || " · "); };
+
+  /* 시트 */
+  function openSheet(t, h) { el("sheetTitle").innerHTML = t; el("sheetBody").innerHTML = h; el("sheet").classList.add("on"); el("sheetBack").classList.add("on"); }
+  function closeSheet() { el("sheet").classList.remove("on"); el("sheetBack").classList.remove("on"); }
+  W.closeSheet = closeSheet;
+  el("sheetX").addEventListener("click", closeSheet); el("sheetBack").addEventListener("click", closeSheet);
+  function fmtKeypoints(a) { return a && a.length ? '<ul class="keypoints">' + a.map(function (k) { return "<li>" + esc(k) + "</li>"; }).join("") + "</ul>" : ""; }
+  function card(cls, ic, title, tag, body) { return '<div class="card ' + cls + '"><div class="ch"><span class="ic">' + ic + "</span>" + esc(title) + (tag ? '<span class="tag">' + esc(tag) + "</span>" : "") + '</div><div class="cb">' + body + "</div></div>"; }
+
+  /* 탭 */
+  ["lib", "sim", "flow"].forEach(function (t) { el("tab-" + t).addEventListener("click", function () { ["lib", "sim", "flow"].forEach(function (o) { el("tab-" + o).classList.toggle("on", o === t); el("pane-" + o).classList.toggle("on", o === t); }); }); });
+
+  /* 상태 */
+  var P;
+  function reset() { P = { type: null, age: {}, symptoms: {}, pharyngitis: {}, sinusitis: {}, otitis: {}, redflags: {}, comorbid: [], allergy: {} }; }
+  reset();
+
+  var TYPE_BTNS = [["cold", "감기", "🤧 비인두염"], ["pharyngitis", "인두편도염", "😣 GAS 감별"], ["rhinosinusitis", "부비동염", "🤒"], ["otitis_media", "중이염", "👂 소아"], ["bronchitis", "기관지염", "😮‍💨"], ["laryngitis", "후두염", "🗣️"], ["croup", "크룹", "🐕 소아"], ["uri_unspec", "상세불명 URI", "🤧"]];
+  var SYMPT_CHIPS = [["fever", "발열·통증"], ["rhinorrhea", "콧물·재채기"], ["congestion", "코막힘"], ["cough", "기침"], ["sputum", "가래"], ["sore_throat", "인후통"]];
+  var COMORB_CHIPS = [["hypertension", "고혈압"], ["bph", "전립선비대"], ["glaucoma", "녹내장"], ["peptic_ulcer", "소화성궤양"], ["ckd", "CKD"], ["pregnancy", "임신"], ["mono_suspect", "전염단핵구증 의심"]];
+  var MCISAAC_CHIPS = [["fever38", "발열>38℃"], ["no_cough", "기침 없음"], ["tender_nodes", "압통성 전경부 림프절"], ["tonsillar_exudate", "편도 삼출·종대"]];
+  var SINUS_CHIPS = [["duration_days", "농성비루 ≥10일"], ["double_worsening", "이중 악화"], ["high_fever_purulent", "39℃+화농성 3-4일"]];
+  var REDFLAG_GROUPS = [
+    ["기도", [["stridor_at_rest", "안정 시 stridor"], ["drooling", "침흘림"], ["tripod", "삼각자세"], ["muffled_voice", "먹먹한 목소리"]]],
+    ["호흡", [["rr_high", "빈호흡"], ["retraction", "흉부함몰"], ["grunting", "신음(grunting)"], ["cyanosis", "청색증"], ["spo2_low", "SpO2≤95"]]],
+    ["신경(CNS)", [["neck_stiffness", "목경직"], ["altered_consciousness", "의식저하"], ["prolonged_seizure", "지속 경련"], ["bulging_fontanelle", "천문팽대"], ["photophobia", "광과민"]]],
+    ["패혈증", [["nonblanching_rash", "비퇴색 발진"], ["petechiae", "점상출혈"], ["poor_perfusion", "관류저하"], ["toxic", "toxic 양상"]]],
+    ["전신·탈수", [["poor_feeding", "수유거부"], ["reduced_urine", "소변감소"], ["no_tears", "무루"]]],
+    ["합병증", [["mastoiditis", "유양돌기 발적·부종"], ["orbital_signs", "안와징후(안구돌출·복시)"]]],
+    ["가와사키·백일해", [["fever_ge5d", "발열 ≥5일"], ["kawasaki_ge4", "가와사키 5징후 中 ≥4"], ["paroxysmal_cough", "발작성 기침"], ["whoop", "흡기 whoop"], ["infant_apnea", "영아 무호흡"]]]
+  ];
+
+  function chip(host, list, mode, cb) {
+    var h = el(host); if (!h) return; h.innerHTML = "";
+    list.forEach(function (it) {
+      var b = document.createElement("div"); b.className = "chip"; b.textContent = it[1];
+      b.addEventListener("click", function () {
+        if (mode === "single") { Array.prototype.forEach.call(h.children, function (c) { c.classList.remove("on"); }); b.classList.add("on"); cb(it[0], true); }
+        else { var on = !b.classList.contains("on"); b.classList.toggle("on", on); if (host.indexOf("Rf") >= 0 || host === "cgMcisaac" || host === "cgSinus") b.classList.toggle("danger", on && host.indexOf("Rf") >= 0); cb(it[0], on); }
+        render();
+      });
+      h.appendChild(b);
+    });
+  }
+  function accSec(id, num, title, hint, open) { return '<details class="accSec"' + (open ? " open" : "") + '><summary><span class="arw">▸</span>' + num + ". " + title + '<span class="sel none" id="sel_' + id + '">미선택</span></summary><div class="abody">' + (hint ? '<div class="hint">' + hint + "</div>" : "") + '<div id="cg' + id + '" class="chips"></div></div></details>'; }
+
+  function buildFlow() {
+    el("flowInputs").innerHTML =
+      '<div class="acc-top"><div class="gl">1. 유형 · 대분류 (택1)</div><div id="typeBtns" class="typebtns"></div></div>' +
+      '<div class="acc-top"><div class="gl">2. 연령</div><div id="ageRow" style="display:flex;gap:8px;align-items:center"></div></div>' +
+      '<div id="ctxSections"></div>';
+    var hb = el("typeBtns");
+    TYPE_BTNS.forEach(function (t) {
+      var b = document.createElement("button"); b.className = "typebtn";
+      b.innerHTML = esc(t[1]) + '<span class="td">' + esc(t[2]) + "</span>";
+      b.addEventListener("click", function () { Array.prototype.forEach.call(hb.children, function (c) { c.classList.remove("on"); }); b.classList.add("on"); P.type = t[0]; buildCtx(); render(); });
+      hb.appendChild(b);
+    });
+    el("ageRow").innerHTML = '<input id="ageY" type="number" min="0" placeholder="세" style="width:70px"> 세 <input id="ageM" type="number" min="0" placeholder="개월" style="width:70px"> 개월(영아)';
+    el("ageY").addEventListener("input", function (e) { P.age.years = e.target.value === "" ? undefined : +e.target.value; render(); });
+    el("ageM").addEventListener("input", function (e) { var v = e.target.value; P.age.months = v === "" ? undefined : +v; P.age.days = v === "" ? undefined : (+v) * 30; render(); });
+  }
+  function buildCtx() {
+    P.symptoms = {}; P.pharyngitis = {}; P.sinusitis = {}; P.otitis = {}; P.redflags = {}; P.comorbid = []; P.allergy = {};
+    var s = accSec("Sympt", 3, "증상 (대증요법)", "선택 증상별 계열 옵션 + 가이드/통용·출처를 제시.", true);
+    if (P.type === "pharyngitis") s += accSec("Mcisaac", 4, "McIsaac (GAS 점수)", "≥3점 → 신속항원검사, 양성 시 항생제. RADT 결과도 선택.", true) + '<div class="acc-top" style="margin:6px 0 10px"><div class="gl">신속항원검사(RADT)</div><div id="radtRow"></div></div>';
+    if (P.type === "rhinosinusitis") s += accSec("Sinus", 4, "세균성 부비동염 기준", "하나라도 충족 시 항생제 적응.", true);
+    if (P.type === "otitis_media") s += '<div class="acc-top" style="margin:6px 0 10px"><div class="gl">중이염 중증도/확실성</div><div id="omRow" class="chips"></div></div>';
+    s += accSec("Rf", 5, "🚨 소아·응급 위험징후 (의뢰)", "하나라도 있으면 감기 대증치료 중단하고 소아과/응급 의뢰.", false);
+    s += accSec("Com", 6, "동반질환·알레르기", "약물 선택·금기 반영.", false);
+    el("ctxSections").innerHTML = s;
+    chip("cgSympt", SYMPT_CHIPS, "multi", function (v, on) { P.symptoms[v] = on; });
+    if (P.type === "pharyngitis") {
+      chip("cgMcisaac", MCISAAC_CHIPS, "multi", function (v, on) { P.pharyngitis[v] = on; });
+      el("radtRow").innerHTML = '<div class="chips" id="cgRadt"></div>';
+      chip("cgRadt", [["", "미시행"], ["positive", "양성"], ["negative", "음성"]], "single", function (v) { P.pharyngitis.radt = v; });
+    }
+    if (P.type === "rhinosinusitis") chip("cgSinus", SINUS_CHIPS, "multi", function (v, on) { if (v === "duration_days") P.sinusitis.duration_days = on ? 10 : 0; else P.sinusitis[v] = on; });
+    if (P.type === "otitis_media") chip("omRow", [["confirmed", "확진"], ["suspect", "의심"], ["mild", "경증"], ["severe", "중증"]], "multi", function (v, on) { if (v === "confirmed" || v === "suspect") P.otitis.certainty = on ? v : null; else P.otitis.severity = on ? v : null; });
+    // red flags: grouped
+    var rfHost = el("cgRf"); if (rfHost) { rfHost.innerHTML = ""; REDFLAG_GROUPS.forEach(function (g) { var lab = document.createElement("div"); lab.className = "gl"; lab.style.cssText = "width:100%;margin:4px 0 2px"; lab.textContent = g[0]; rfHost.appendChild(lab); g[1].forEach(function (it) { var b = document.createElement("div"); b.className = "chip"; b.textContent = it[1]; b.addEventListener("click", function () { var on = !b.classList.contains("on"); b.classList.toggle("on", on); b.classList.toggle("danger", on); P.redflags[it[0]] = on; render(); }); rfHost.appendChild(b); }); }); }
+    chip("cgCom", COMORB_CHIPS, "multi", function (v, on) { var i = P.comorbid.indexOf(v); if (on && i < 0) P.comorbid.push(v); if (!on && i >= 0) P.comorbid.splice(i, 1); });
+    var comHost = el("cgCom"); if (comHost) { var al = document.createElement("div"); al.style.cssText = "width:100%;margin-top:6px"; al.innerHTML = '<div class="gl">페니실린 알레르기</div><div class="chips" id="cgAllergy"></div>'; comHost.parentNode.appendChild(al); chip("cgAllergy", [["none", "없음"], ["type4", "4형(발진)"], ["type1", "1형(아나필락시스)"]], "single", function (v) { P.allergy.penicillin = v; }); }
+  }
+  function updateSel() {
+    function set(id, t) { var e = el("sel_" + id); if (!e) return; var none = !t; e.textContent = none ? "미선택" : t; e.classList.toggle("none", none); }
+    set("Sympt", Object.keys(P.symptoms).filter(function (k) { return P.symptoms[k]; }).map(function (k) { return (SYMPT_CHIPS.filter(function (x) { return x[0] === k; })[0] || [])[1]; }).join(", "));
+    if (el("sel_Mcisaac")) set("Mcisaac", "점수 " + (W.recommend ? (W.recommend(P).mcisaac) : ""));
+    var rf = Object.keys(P.redflags).filter(function (k) { return P.redflags[k]; });
+    set("Rf", rf.length ? rf.length + "개 ⚠️" : "");
+    set("Com", (P.comorbid || []).length ? P.comorbid.length + "개" : "");
+    if (el("sel_Sinus")) set("Sinus", sinusText());
+  }
+  function sinusText() { var s = P.sinusitis, a = []; if (s.duration_days >= 10) a.push("≥10일"); if (s.double_worsening) a.push("이중악화"); if (s.high_fever_purulent) a.push("고열화농"); return a.join(", "); }
+
+  /* 렌더 */
+  var DECISION_LABEL = { not_indicated: ["항생제 불필요", "🚫"], test: ["신속항원검사 권고", "🧪"], indicated: ["항생제 적응", "💊"], watchful: ["관찰대기(항생제 유보)", "⏳"], steroid: ["스테로이드(크룹)", "💊"] };
+  function fmtOpt(o) {
+    var h = '<div class="opt"><div class="ol">' + esc(o.label || "") + '</div><div class="od">' + joinD(o.drugs, " · ") + (o.dose ? " — " + esc(o.dose) : "") + (o.duration ? " · " + esc(o.duration) : "") + "</div>";
+    if (o.stance) h += '<div class="stc"><span class="g">가이드</span> ' + esc(o.stance.guideline) + '<br><span class="p">통용</span> ' + esc(o.stance.common) + "</div>";
+    if (o.evidence && EVID[o.evidence]) h += '<div class="od" style="color:var(--ink-faint)">근거: ' + esc(EVID[o.evidence].label) + " (" + esc(EVID[o.evidence].org) + ")</div>";
+    if (o.cautions && o.cautions.length) h += '<div class="od" style="color:var(--warn)">주의: ' + esc(o.cautions.join(" / ")) + "</div>";
+    if (o.warns && o.warns.length) h += '<div class="od" style="color:var(--block)">⚠️ ' + esc(o.warns.join(" / ")) + "</div>";
+    return h + "</div>";
+  }
+  function render() {
+    updateSel();
+    var host = el("stream"); if (!P.type) { host.innerHTML = ""; el("empty").style.display = "block"; return; }
+    el("empty").style.display = "none";
+    var r = W.recommend(P), html = "";
+    // REFER 최상단
+    if (r.referrals.length) {
+      var rb = "";
+      r.referrals.forEach(function (x) {
+        var cls = x.urgency === "emergency" ? "hard" : "soft", ic = x.urgency === "emergency" ? "🚨" : (x.urgency === "urgent" ? "⏱️" : "🔁");
+        rb += '<div class="conflict ' + cls + '"><span class="ci">' + ic + '</span><div><b>' + (x.urgency === "emergency" ? "응급 의뢰" : x.urgency === "urgent" ? "긴급 의뢰" : "재평가") + "</b>" + (x.category ? " · " + esc(x.category) : "") + " · " + esc(x.reason) + (x.detail ? '<br><span style="color:var(--ink-dim)">' + esc(x.detail) + "</span>" : "") + (x.donot ? '<br><span style="color:var(--block);font-weight:600">⛔ 하지 말 것: ' + esc(x.donot) + "</span>" : "") + "</div></div>";
+      });
+      html += card("clin", "🚨", "위험징후 — 의뢰 우선", "SAFETY", rb);
+    }
+    // 항생제 적응
+    var a = r.antibiotic, dl = DECISION_LABEL[a.decision] || [a.decision, "💊"];
+    var ab = '<div class="subttl">' + dl[1] + " " + esc(dl[0]) + (r.mcisaac != null ? " · McIsaac " + r.mcisaac : "") + '</div><div class="note" style="padding:0 0 6px">' + esc(a.note) + "</div>";
+    (a.options || []).forEach(function (o) { ab += fmtOpt(o); });
+    html += card("clin", "💊", "항생제 적응 판단", a.decision === "indicated" ? "처방" : a.decision === "not_indicated" ? "불필요" : "판단", ab);
+    // 대증요법
+    if (r.symptomatic.length) {
+      var sb = "";
+      r.symptomatic.forEach(function (s) { sb += '<div class="subttl">' + esc(s.ko) + "</div>"; s.options.forEach(function (o) { sb += fmtOpt(o); }); });
+      html += card("clin", "🧴", "증상별 대증요법 (가이드/통용·출처)", null, sb);
+    }
+    // 유형 노트
+    if (r.typeNotes) html += card("care", "📌", "유형 핵심 노트", null, fmtKeypoints(r.typeNotes));
+    // 평가·삭감
+    var eb = '<div class="drugclass-box">';
+    (r.eval || []).forEach(function (e) { eb += '<div class="dc-row dc-reimb"><span class="dc-k">평가</span><span class="dc-v"><b>' + esc(e.indicator) + "</b> — " + esc(e.impact) + "</span></div>"; });
+    (r.reimb || []).forEach(function (n) { eb += '<div class="dc-row dc-reimb"><span class="dc-k">' + esc(n.risk || "-") + '</span><span class="dc-v">' + esc(n.basis) + (n.cut ? '<br><span style="color:var(--warn)">' + esc((n.cut || []).join(" / ")) + "</span>" : "") + "</span></div>"; });
+    eb += "</div>";
+    html += card("pay", "💰", "처방률 평가 · 삭감", "HIRA", eb);
+    host.innerHTML = html;
+  }
+
+  /* 도서관 */
+  var CAT_META = { "유형": ["🤧", "감기 유형"], "대증약": ["🧴", "대증약 계열"], "위험": ["🚨", "소아 위험징후·의뢰"], "급여": ["💰", "처방률 평가·삭감"] };
+  var CAT_ORDER = ["유형", "대증약", "위험", "급여"];
+  function fmtType(t) {
+    function sec(title, body) { return body ? '<div class="subttl">' + title + "</div>" + body : ""; }
+    function p(x) { return '<div class="note" style="padding:0 0 6px">' + esc(x) + "</div>"; }
+    var h = t.def ? '<div class="note" style="padding:0 0 8px;color:var(--ink-dim);font-size:12.5px">' + esc(t.def) + "</div>" : "";
+    h += sec("원인", t.cause ? p(t.cause) : "");
+    h += sec("경과·증상", t.course ? p(t.course) : "");
+    h += sec("항생제 원칙", p({ not_indicated: "항생제 불필요 — 바이러스성, 대증치료(처방률·삭감 유리)", conditional: "조건부 — 기준 충족 시에만 항생제(그 외 대증)" }[t.abx] || t.abx));
+    h += sec("진단·감별", t.workup ? fmtKeypoints(t.workup) : "");
+    h += sec("주의·함정", t.pitfalls ? fmtKeypoints(t.pitfalls) : "");
+    h += sec("치료 노트", t.notes ? fmtKeypoints(t.notes) : "");
+    return h;
+  }
+  function drugTable() {
+    var byC = {}; Object.values(DRUGS).forEach(function (d) { (byC[d.class] = byC[d.class] || []).push(d); });
+    var rows = "";
+    Object.values(CLASSES).forEach(function (c) {
+      var ds = byC[c.id]; if (!ds) return;
+      rows += '<tr><th class="rowhead" colspan="3">' + esc(c.ko) + "</th></tr>";
+      ds.forEach(function (d) {
+        rows += "<tr><td><b>" + esc(d.ko) + '</b><br><span class="en">' + esc(d.en || "") + "</span>" + (d.note ? '<br><span style="color:var(--warn);font-size:10px">· ' + esc(d.note) + "</span>" : "") + "</td>" +
+          '<td>' + esc(d.dose_adult || "—") + "</td><td>" + esc(d.dose_child || "—") + "</td></tr>";
+      });
+    });
+    return '<div class="note" style="padding:0 0 6px">성인·소아 용량은 표준 권고(코딩 직전 허가사항·약학정보원 재검증). 소아는 mg/kg 기준.</div>' +
+      '<table class="drugtbl"><thead><tr><th>성분</th><th>성인 용량</th><th>소아 용량</th></tr></thead><tbody>' + rows + "</tbody></table>";
+  }
+  function referList() {
+    var URG = { emergency: ["🚨 응급 (즉시 119 / 응급실)", "var(--block)"], urgent: ["⏱️ 긴급 (당일 소아과 / 이비인후과)", "var(--alert)"], reeval: ["🔁 재평가 · 안전망", "var(--warn)"] };
+    var h = '<div class="note" style="padding:0 0 10px">감기처럼 보이지만 놓치면 위험한 소아 상황. 아래 <b>위험 사인</b>이 하나라도 보이면 감기 대증치료를 멈추고 의뢰한다. 등급·계통별로 정리.</div>';
+    ["emergency", "urgent", "reeval"].forEach(function (u) {
+      var items = Object.values(REFER).filter(function (x) { return x.urgency === u; });
+      if (!items.length) return;
+      h += '<div class="subttl" style="color:' + URG[u][1] + '">' + esc(URG[u][0]) + "</div>";
+      items.forEach(function (x) {
+        h += '<div class="blk"><div class="bl">' + esc((x.category ? "[" + x.category + "] " : "") + x.reason) + "</div>";
+        if (x.signs) h += '<div style="margin-top:2px"><span style="font-size:10.5px;color:var(--ink-faint)">위험 사인:</span>' + fmtKeypoints(x.signs) + "</div>";
+        if (x.detail) h += '<div class="bd" style="color:var(--ink-faint);font-size:11px">→ ' + esc(x.detail) + "</div>";
+        if (x.donot) h += '<div class="bd" style="color:var(--block);font-size:11.5px;font-weight:600">⛔ 하지 말 것: ' + esc(x.donot) + "</div>";
+        h += "</div>";
+      });
+    });
+    return h;
+  }
+  function buildLib() {
+    var items = [];
+    Object.values(TYPES).forEach(function (t) { items.push({ cat: "유형", title: t.emoji + " " + t.ko, kw: t.ko + " " + (t.def || ""), html: fmtType(t) }); });
+    items.push({ cat: "위험", title: "🚨 소아 위험징후·의뢰 목록", kw: "소아 위험 의뢰 후두개염 수막염 가와사키", html: referList() });
+    Object.values(NOTICES).forEach(function (n) { items.push({ cat: "급여", title: "💰 " + n.id.replace("notice:hira-", ""), kw: n.id + n.basis, html: '<div class="drugclass-box"><div class="dc-row dc-reimb"><span class="dc-k">' + esc(n.risk || "") + '</span><span class="dc-v">' + esc(n.basis) + "</span></div><div class=\"dc-row\"><span class=\"dc-k\" style=\"color:var(--warn)\">삭감</span><span class=\"dc-v\">" + esc((n.cut || []).join(" / ")) + "</span></div></div>" }); });
+    items.push({ cat: "급여", title: "💰 항생제 처방률 평가(가감지급 성격)", kw: "처방률 평가 등급 가감지급", html: '<div class="note" style="padding:0">급성상기도감염 항생제 처방률 = 외래 내원일 대비 항생제 처방 비율. 2023년 41.4%. 등급 1(≤20%)~5(>59%). 등급·공개 + 고처방 실사로 자율개선 유도. 바이러스 상병 항생제·주사제 처방은 등급 악화.</div>' });
+    W._LIB = items; W._DRUGTABLE = drugTable(); renderLib("");
+  }
+  function renderLib(q) {
+    q = (q || "").toLowerCase(); var host = el("libGrid"); host.innerHTML = "";
+    if (q) { var m = (W._LIB || []).filter(function (it) { return (it.title + it.kw).toLowerCase().indexOf(q) >= 0; }); if (!m.length) { host.innerHTML = '<div class="note">검색 결과 없음</div>'; return; } m.forEach(function (it) { var d = document.createElement("details"); d.className = "libItem"; d.open = true; d.innerHTML = '<summary><span class="cat">' + esc((CAT_META[it.cat] || [])[1] || it.cat) + "</span>" + esc(it.title) + '</summary><div class="body">' + it.html + "</div>"; host.appendChild(d); }); return; }
+    CAT_ORDER.forEach(function (cat) {
+      var meta = CAT_META[cat], items = (W._LIB || []).filter(function (it) { return it.cat === cat; });
+      var count = cat === "대증약" ? Object.keys(DRUGS).length : items.length; if (cat !== "대증약" && !items.length) return;
+      var b = document.createElement("button"); b.className = "librow"; b.innerHTML = meta[0] + " " + esc(meta[1]) + '<span class="lc">' + count + "개</span>";
+      b.addEventListener("click", function () { if (cat === "대증약") openSheet(meta[0] + " " + esc(meta[1]), W._DRUGTABLE); else { var op = items.length <= 1 ? " open" : ""; openSheet(meta[0] + " " + esc(meta[1]), items.map(function (it) { return '<details class="libItem"' + op + '><summary>' + esc(it.title) + '</summary><div class="body">' + it.html + "</div></details>"; }).join("")); } });
+      host.appendChild(b);
+    });
+  }
+  el("libSearch").addEventListener("input", function (e) { renderLib(e.target.value); });
+
+  /* 시뮬레이션 */
+  var PRESETS = [
+    { label: "성인 단순 감기", d: "콧물·기침 대증", p: { type: "cold", age: { years: 30 }, symptoms: { rhinorrhea: true, cough: true } } },
+    { label: "GAS 인두염(McIsaac 4)", d: "RADT→양성 시 amoxicillin", p: { type: "pharyngitis", age: { years: 20 }, pharyngitis: { fever38: true, no_cough: true, tender_nodes: true, tonsillar_exudate: true, radt: "positive" } } },
+    { label: "세균성 부비동염", d: "10일+이중악화 → amox/clav", p: { type: "rhinosinusitis", age: { years: 35 }, sinusitis: { duration_days: 12, double_worsening: true } } },
+    { label: "소아 3세 중이염 경증", d: "관찰대기", p: { type: "otitis_media", age: { years: 3 }, otitis: { certainty: "confirmed", severity: "mild" } } },
+    { label: "소아 8세 기침(코데인 제외)", d: "코데인 자동 제외", p: { type: "cold", age: { years: 8 }, symptoms: { cough: true } } },
+    { label: "★후두개염 red flag", d: "응급 의뢰·인두검사 금지", p: { type: "pharyngitis", age: { years: 4 }, redflags: { drooling: true, tripod: true } } },
+    { label: "★신생아 발열", d: "즉시 응급", p: { type: "uri_unspec", age: { days: 20 }, symptoms: { fever: true }, redflags: { fever: true } } }
+  ];
+  function buildSim() {
+    var host = el("simBtns"); host.innerHTML = "";
+    PRESETS.forEach(function (ps) { var b = document.createElement("button"); b.className = "simbtn"; b.innerHTML = "<div>" + esc(ps.label) + '</div><div class="d">' + esc(ps.d) + "</div>"; b.addEventListener("click", function () { var saved = P; P = JSON.parse(JSON.stringify(Object.assign({ type: null, age: {}, symptoms: {}, pharyngitis: {}, sinusitis: {}, otitis: {}, redflags: {}, comorbid: [], allergy: {} }, ps.p))); renderResultTo("simStream"); P = saved; openSheet("🎬 " + esc(ps.label), el("simStream").innerHTML); el("simStream").innerHTML = ""; }); host.appendChild(b); });
+  }
+  function renderResultTo(hostId) { var stream = el("stream"), keep = stream.innerHTML, ke = el("empty").style.display; render(); el(hostId).innerHTML = el("stream").innerHTML; stream.innerHTML = keep; el("empty").style.display = ke; }
+
+  function buildSrc() { el("srcbanner").innerHTML = Object.values(GL).map(function (g) { return g.url ? '<a href="' + esc(g.url) + '" target="_blank" rel="noopener">📘 ' + esc(g.title) + (g.year ? " (" + g.year + ")" : "") + "</a>" : ""; }).filter(Boolean).join("<br>"); }
+
+  buildFlow(); buildLib(); buildSim(); buildSrc();
+})();
+
+</script>
+<!--BACK_TRAP_V4-->
+<script>
+/* 공용 뒤로가기 트랩 v4 (build.js 자동 주입) — 뒤로가기 시 열린 팝업을 닫거나, 없으면 "‹ 도서관/돌아가기/목록으로" 뷰-백 실행.
+   둘 다 없으면 정상 이탈. 앱 내부 함수명을 몰라도 DOM 레벨로 동작. */
+(function(){
+  "use strict";
+  if(window.__backTrapInstalled) return; window.__backTrapInstalled=true;
+  var armed=false, consuming=false, baseline=null, backTrapOK=true, lastSched=-1;
+  var SHOW_CLASSES=['on','open','active','show','visible','is-open','opened','shown','in'];
+  function inView(el){
+    var r=el.getBoundingClientRect();
+    var iw=Math.min(r.right,innerWidth)-Math.max(r.left,0);
+    var ih=Math.min(r.bottom,innerHeight)-Math.max(r.top,0);
+    if(iw<=0||ih<=0) return false;
+    return iw>=innerWidth*0.5 && (iw*ih)>=innerWidth*innerHeight*0.22;
+  }
+  function znum(s){ var z=parseInt(s.zIndex,10); return isNaN(z)?0:z; }
+  function candidates(){
+    var out=[], body=document.body; if(!body) return out;
+    var all=body.getElementsByTagName('*');
+    for(var i=0;i<all.length;i++){
+      var el=all[i];
+      if(el.id==='portal-hdr') continue;
+      var s=getComputedStyle(el);
+      if(s.position!=='fixed' && s.position!=='absolute') continue;
+      if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity||'1')<0.05) continue;
+      if(znum(s) < 10) continue;
+      if(!inView(el)) continue;
+      out.push(el);
+    }
+    return out;
+  }
+  function overlays(){ if(!baseline) return []; return candidates().filter(function(el){ return !baseline.has(el); }); }
+  function isVisible(el){
+    var s=getComputedStyle(el); if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity||'1')<0.05) return false;
+    var r=el.getBoundingClientRect(); return r.width>4 && r.height>4 && r.bottom>0 && r.top<innerHeight;
+  }
+  var BACK_ARROW=/[\u2039\u2190\u25C0\u27E8\u276E<]/;
+  function looksBack(t){
+    if(!t) return false; t=t.replace(/\s+/g,' ').trim(); if(t.length>16) return false;
+    if(/\uB3CC\uC544\uAC00\uAE30/.test(t)) return true;            // 돌아가기
+    if(/\uBAA9\uB85D\uC73C\uB85C/.test(t)) return true;            // 목록으로
+    if(/\uB3C4\uC11C\uAD00/.test(t) && BACK_ARROW.test(t)) return true;  // 도서관 + 화살표
+    if(BACK_ARROW.test(t) && /\uBAA9\uB85D|\uB9AC\uC2A4\uD2B8|\uCC98\uC74C|home/i.test(t)) return true;
+    return false;
+  }
+  function backControl(){
+    var nodes=document.body.querySelectorAll('[onclick],a,button,[role=button]');
+    for(var i=0;i<nodes.length;i++){
+      var el=nodes[i];
+      if(el.id==='portal-hdr'||el.closest('#portal-hdr')) continue;
+      if(!isVisible(el)) continue;
+      if(looksBack(el.textContent||'')) return el.closest('[onclick],a,button,[role=button]')||el;
+    }
+    return null;
+  }
+  function closeTarget(){
+    if(overlays().length>0) return {type:'overlay'};
+    if(backTrapOK){ var b=backControl(); if(b) return {type:'back', el:b}; }
+    return null;
+  }
+  function appClosers(){
+    var bad={close:1,closed:1,stop:1,print:1,open:1,opener:1,focus:1,blur:1,alert:1,confirm:1,prompt:1};
+    var fns=[];
+    for(var k in window){
+      try{ if(/^(close|hide|dismiss)/i.test(k) && !bad[k] && typeof window[k]==='function' && window[k].length===0 && (''+window[k]).indexOf('[native code]')<0) fns.push(window[k]); }catch(e){}
+    }
+    try{ if(typeof window.close==='function' && (''+window.close).indexOf('[native code]')<0) fns.push(window.close); }catch(e){}
+    return fns;
+  }
+  function closeOverlays(){
+    appClosers().forEach(function(fn){ try{fn.call(window);}catch(e){} });
+    overlays().forEach(function(el){ SHOW_CLASSES.forEach(function(c){ el.classList.remove(c); }); });
+    try{ if(!overlays().length) document.body.style.overflow=''; }catch(e){}
+  }
+  function refreshOnce(){
+    var has=!!closeTarget();
+    if(has && !armed){ armed=true; try{history.pushState({backTrap:1},'');}catch(e){} }
+    else if(!has && armed && !consuming){ consuming=true; try{history.back();}catch(e){} }
+  }
+  function schedule(){
+    var t=(window.performance&&performance.now)?performance.now():+new Date();
+    if(lastSched>=0 && t-lastSched<80) return; lastSched=t;
+    [0,100,250,450,700].forEach(function(d){ setTimeout(refreshOnce,d); });
+  }
+  window.addEventListener('popstate', function(){
+    if(consuming){ consuming=false; armed=false; return; }
+    var tgt=closeTarget();
+    if(tgt){
+      armed=false;
+      if(tgt.type==='overlay') closeOverlays();
+      else if(tgt.el){ try{tgt.el.click();}catch(e){} }
+      schedule();
+    } else { armed=false; }
+  });
+  function init(){
+    baseline=new WeakSet();
+    candidates().forEach(function(el){ baseline.add(el); });
+    backTrapOK = (backControl()===null);
+    var mo=new MutationObserver(schedule);
+    mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style','hidden'],childList:true});
+    document.addEventListener('click',function(){ schedule(); },true);
+    window.addEventListener('resize',schedule);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(init,80); });
+  else setTimeout(init,80);
+})();
+</script>
+
+</body></html>
