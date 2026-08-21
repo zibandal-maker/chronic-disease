@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-08-19T02:45:15.703Z",
+  "builtAt": "2026-08-21T10:52:22.285Z",
   "built": [
     {
       "id": "htn",
@@ -116,6 +116,10 @@
     {
       "id": "cold",
       "out": "cold.html"
+    },
+    {
+      "id": "gastroenteritis",
+      "out": "gastroenteritis.html"
     }
   ]
 }
