@@ -398,6 +398,18 @@
       "accent": "#0E7C7B",
       "tag": "소화기",
       "keywords": "장염 급성위장관염 감염성설사 gastroenteritis 설사 수양성설사 혈성설사 세균성이질 시겔라 살모넬라 캄필로박터 STEC EHEC O157 HUS 용혈성요독증후군 콜레라 Cdifficile 여행자설사 식중독 경구수액 ORS 탈수 수분요법 loperamide 지사제 라세카도트릴 온단세트론 프로바이오틱스 정장생균제 아연 시프로플록사신 아지트로마이신 독시사이클린 메트로니다졸 반코마이신 주사처방률 심평원 위험사인 외과적복증 장중첩 충수염 A09 A03 A04 A08 A00"
+    },
+    {
+      "id": "gerd",
+      "title": "위식도역류질환(GERD)",
+      "emoji": "🔥",
+      "src": "gerd_guide.html",
+      "out": "gerd.html",
+      "guideline": "위식도역류질환(GERD) — PPI·P-CAB 단계적 치료·불응성 감별(functional heartburn·achalasia·EoE)·산분비억제제 병용 급여조건 · 서울 진료지침 2020 + Lyon 2.0/Rome IV/Chicago 4.0",
+      "group": "A",
+      "accent": "#0E7C7B",
+      "tag": "소화기",
+      "keywords": "위식도역류질환 GERD 역류성식도염 가슴쓰림 산역류 PPI 양성자펌프억제제 에스오메프라졸 라베프라졸 판토프라졸 P-CAB 칼륨경쟁적위산분비억제제 테고프라잔 케이캡 펙수프라잔 보노프라잔 H2RA 파모티딘 불응성 refractory 기능성가슴쓰림 functional heartburn 역류과민성 reflux hypersensitivity achalasia 분문이완불능 호산구성식도염 EoE 임피던스pH 산노출 AET HRM Lyon RomeIV 경보징후 연하곤란 급여 병용 취침H2RA 야간산분비 미란성8주 심평원 K21 K22"
     }
   ]
 }
