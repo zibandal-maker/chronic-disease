@@ -316,7 +316,7 @@ function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
 
 // noscript 정적 링크 (크롤러용)
 const noscriptLinks = REG.guides.map(g => {
-  const href = g.external ? g.href : 'guides/' + g.out;
+  const href = g.external ? g.href : 'guides/' + g.out.replace(/\.html$/, '');
   return `<li><a href="${href}">${esc(g.emoji)} ${esc(g.title)}</a> — ${esc(g.guideline)}</li>`;
 }).join('\n        ');
 
@@ -332,7 +332,7 @@ const jsonld = {
     "@type": "ItemList",
     "itemListElement": REG.guides.map((g, i) => ({
       "@type": "ListItem", "position": i + 1, "name": g.title,
-      "url": g.external ? g.href : SITE + "/guides/" + g.out
+      "url": g.external ? g.href : SITE + "/guides/" + g.out.replace(/\.html$/, '')
     }))
   }
 };
@@ -351,7 +351,7 @@ console.log(`✓ 대시보드      → index.html`);
 // ── sitemap.xml 생성 (index + 내부 가이드만; 외부 링크는 제외) ──
 const urls = [
   { loc: SITE + '/', priority: '1.0' },
-  ...REG.guides.filter(g => !g.external).map(g => ({ loc: SITE + '/guides/' + g.out, priority: '0.8' }))
+  ...REG.guides.filter(g => !g.external).map(g => ({ loc: SITE + '/guides/' + g.out.replace(/\.html$/, ''), priority: '0.8' }))
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
