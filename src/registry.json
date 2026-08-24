@@ -410,6 +410,18 @@
       "accent": "#0E7C7B",
       "tag": "소화기",
       "keywords": "위식도역류질환 GERD 역류성식도염 가슴쓰림 산역류 PPI 양성자펌프억제제 에스오메프라졸 라베프라졸 판토프라졸 P-CAB 칼륨경쟁적위산분비억제제 테고프라잔 케이캡 펙수프라잔 보노프라잔 H2RA 파모티딘 불응성 refractory 기능성가슴쓰림 functional heartburn 역류과민성 reflux hypersensitivity achalasia 분문이완불능 호산구성식도염 EoE 임피던스pH 산노출 AET HRM Lyon RomeIV 경보징후 연하곤란 급여 병용 취침H2RA 야간산분비 미란성8주 심평원 K21 K22"
+    },
+    {
+      "id": "nutrition",
+      "title": "ICU 영양·NPO·TPN",
+      "emoji": "🍽️",
+      "src": "nutrition_guide.html",
+      "out": "nutrition.html",
+      "guideline": "중환자 영양·NPO·TPN — 질환별 칼로리·단백 계산기·TPN 조성·전해질 보충·재급식·기전 해설 · ASPEN·ESPEN·NICE·KSPEN",
+      "group": "A",
+      "accent": "#0E7C7B",
+      "tag": "중환자",
+      "keywords": "중환자영양 ICU영양 TPN 완전정맥영양 정맥영양 경장영양 EN PN NPO 금식 칼로리계산 kcal/kg 단백 g/kg 수액 GIR 포도당 지질 아미노산 전해질보충 저칼륨 저인혈증 저마그네슘 칼슘 재급식증후군 refeeding 티아민 이상체중 보정체중 ASPEN ESPEN NICE KSPEN CRRT 간부전 비만중환자 화상 지질유제 스트레스대사 기전"
     }
   ]
 }

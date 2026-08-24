@@ -1,0 +1,1069 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ICU 영양·NPO·TPN 가이드 — 칼로리·단백·수액 계산·전해질 보충·재급식 | 임상의용</title>
+<meta name="description" content="중환자 영양·NPO·TPN 가이드 — 질환별 칼로리(kcal/kg)·단백(g/kg) 계산기, 수액·TPN 조성 산출(포도당·지질·아미노산·GIR), 전해질 보충 프로토콜(K·Mg·P·Ca), 재급식증후군, 경장 vs 정맥영양, 모니터링. ASPEN·ESPEN·NICE·KSPEN 근거.">
+<meta name="keywords" content="중환자 영양, ICU 영양, TPN, 완전정맥영양, 정맥영양, 경장영양, NPO, 금식, 칼로리 계산, kcal/kg, 단백 g/kg, 수액, GIR, 전해질 보충, 저칼륨, 저인혈증, 저마그네슘, 칼슘, 재급식증후군, refeeding, 티아민, 이상체중, 보정체중, ASPEN, ESPEN, NICE, KSPEN, CRRT 영양, 간부전 영양, 비만 중환자, 화상 영양, 지질유제, 아미노산">
+<link rel="canonical" href="https://chronic-disease-dun.vercel.app/guides/nutrition">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ICU 영양·NPO·TPN 가이드 — 칼로리·단백·수액 계산·전해질 보충·재급식 | 임상의용">
+<meta property="og:description" content="질환별 칼로리·단백 계산기 + TPN 조성 + 전해질 보충 프로토콜 + 재급식. ASPEN·ESPEN·NICE·KSPEN 근거.">
+<meta property="og:url" content="https://chronic-disease-dun.vercel.app/guides/nutrition">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":["MedicalWebPage","SoftwareApplication"],"name":"ICU 영양·NPO·TPN 계산 가이드","inLanguage":"ko","applicationCategory":"MedicalApplication","description":"중환자 영양·NPO·TPN 가이드 — 질환별 칼로리·단백 계산, 수액·TPN 조성 산출, 전해질 보충(K·Mg·P·Ca), 재급식증후군, 경장 vs 정맥영양, 모니터링.","audience":{"@type":"MedicalAudience","audienceType":"Clinician"},"about":{"@type":"MedicalCondition","name":"중환자 영양지원(critical care nutrition)"},"lastReviewed":"2026-08-23","isBasedOn":[{"@type":"MedicalGuideline","name":"한국형 경장영양 실무지침(제1판)","url":"https://www.kspen.org/"},{"@type":"MedicalGuideline","name":"성인 중환자 영양지원 지침(2016·2022 개정)","url":"https://aspenjournals.onlinelibrary.wiley.com/doi/10.1002/jpen.2267"},{"@type":"MedicalGuideline","name":"중환자 임상영양(실무·부분개정)","url":"https://www.clinicalnutritionjournal.com/article/S0261-5614(23)00230-3/fulltext"},{"@type":"MedicalGuideline","name":"성인 영양지원(경구·경장·정맥·재급식)","url":"https://www.nice.org.uk/guidance/cg32/chapter/recommendations"},{"@type":"MedicalGuideline","name":"Parenteral Nutrition(조성·요구량)","url":"https://www.merckmanuals.com/professional/nutritional-disorders/nutritional-support/parenteral-nutrition-pn"}]}</script>
+<style>
+/* ===== canonical-view.css v1.0 (동결 미러 인라인 — 단일파일 배포용) ===== */
+:root{
+  color-scheme:light only;
+  --bg:#f4f6f8; --panel:#ffffff; --panel2:#eef1f4; --line:#d6dde3;
+  --ink:#1a2530; --ink-dim:#4a5a68; --ink-faint:#8493a0;
+  --radius:14px;
+  --pay:#b87514; --pay-bg:#fbf0d8;
+  --clin:#2c6fb0; --clin-bg:#e4eef8;
+  --care:#1a8a72; --care-bg:#dcf2ec;
+  --ok:#1f9d54; --ok-bg:#dcf2e4;
+  --warn:#b87514; --warn-bg:#fbf0d8;
+  --block:#c43838; --block-bg:#fbe2e2;
+  --alert:#d8632a;
+}
+.tabbar{position:sticky;top:0;z-index:60;display:flex;background:rgba(255,255,255,0.97);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.tabbar button{flex:1;background:none;border:none;color:var(--ink-faint);
+  font-size:13.5px;font-weight:600;padding:13px 0;cursor:pointer;position:relative;
+  font-family:inherit;touch-action:manipulation;transition:color .15s}
+.tabbar button .ti{font-size:15px;margin-right:5px}
+.tabbar button.on{color:var(--ink)}
+.tabbar button.on:after{content:"";position:absolute;left:18%;right:18%;bottom:0;
+  height:2.5px;background:var(--care);border-radius:2px}
+.pane{display:none}
+.pane.on{display:block}
+.field{display:flex;flex-direction:column;gap:2px}
+.field label{font-size:10px;color:var(--ink-faint);padding-left:2px;letter-spacing:0.02em}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{background:var(--panel2);border:1px solid var(--line);color:var(--ink-dim);
+  border-radius:18px;padding:5px 11px;font-size:12.5px;cursor:pointer;
+  user-select:none;transition:all .13s;font-weight:500}
+.chip:active{transform:scale(0.96)}
+.chip.on{background:var(--care-bg);border-color:var(--care);color:var(--care)}
+.chip.on.danger{background:var(--block-bg);border-color:var(--block);color:var(--block)}
+.chip-group{margin-bottom:6px}
+.chip-group .gl{font-size:10px;color:var(--ink-faint);margin:0 0 4px 2px;
+  text-transform:uppercase;letter-spacing:0.05em}
+.stream{padding:14px 14px 0;max-width:560px;margin:0 auto}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  margin-bottom:12px;overflow:hidden;animation:rise .25s ease}
+.card .ch{display:flex;align-items:center;gap:8px;padding:11px 14px;
+  font-size:13px;font-weight:600;border-bottom:1px solid var(--line)}
+.card .ch .ic{font-size:16px}
+.card .ch .tag{margin-left:auto;font-size:10px;font-weight:600;padding:2px 8px;
+  border-radius:10px;letter-spacing:0.03em}
+.card.pay .ch{color:var(--pay)}   .card.pay .ch .tag{background:var(--pay-bg);color:var(--pay)}
+.card.clin .ch{color:var(--clin)} .card.clin .ch .tag{background:var(--clin-bg);color:var(--clin)}
+.card.care .ch{color:var(--care)} .card.care .ch .tag{background:var(--care-bg);color:var(--care)}
+.card.block .ch{color:var(--block)} .card.block .ch .tag{background:var(--block-bg);color:var(--block)}
+.drugclass-box{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+.dc-row{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid rgba(42,55,68,0.12);
+  font-size:12.5px;line-height:1.45}
+.dc-row:last-child{border-bottom:none}
+.dc-k{flex-shrink:0;width:52px;font-size:10.5px;font-weight:700;color:var(--ink-faint);padding-top:1px}
+.dc-v{color:var(--ink-dim)}
+.dc-reimb .dc-k{color:var(--pay)} .dc-reimb .dc-v{color:var(--ink-dim)}
+.dc-feat .dc-k{color:var(--care)} .dc-feat .dc-v{color:var(--ink)}
+.dc-contra .dc-k{color:var(--block)} .dc-contra .dc-v{color:var(--block)}
+.conflict{display:flex;gap:9px;padding:10px 12px;border-radius:11px;font-size:12.5px;
+  margin:6px 0 0;line-height:1.45}
+.conflict.soft{background:var(--warn-bg);border:1px solid var(--line);color:var(--warn)}
+.conflict.hard{background:var(--block-bg);border:1px solid var(--line);color:var(--block)}
+.conflict .ci{flex-shrink:0}
+.conflict b{color:var(--ink)}
+.dcclass{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:9px;overflow:hidden}
+.empty{text-align:center;color:var(--ink-faint);font-size:13px;padding:30px 14px;line-height:1.6}
+.empty .big{font-size:34px;margin-bottom:8px;opacity:0.5}
+.foot{text-align:center;font-size:10.5px;color:var(--ink-faint);padding:18px 14px 8px;line-height:1.6}
+.foot b{color:var(--ink-dim)}
+.srcbanner{margin-top:14px;padding:11px 13px;background:var(--panel);border:1px solid var(--line);
+  border-radius:11px;font-size:11px;color:var(--ink-faint);line-height:1.9;text-align:center}
+.srcbanner a{color:var(--clin);text-decoration:none;font-weight:600}
+.foot .footnote{display:block;margin-top:8px;font-size:10px;color:var(--ink-faint);line-height:1.5;font-style:italic}
+
+/* ===== 앱 전용 가산(정본에 없는 것만) ===== */
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%}
+.topbar{padding:14px 16px 10px;background:var(--panel);border-bottom:1px solid var(--line)}
+.topbar h1{margin:0;font-size:17px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
+.topbar h1 .sub{font-size:11px;font-weight:600;color:var(--ink-faint);margin-left:auto}
+.wrap{max-width:560px;margin:0 auto;padding:14px}
+.cb{padding:11px 14px}
+.subttl{font-size:11px;font-weight:700;color:var(--ink-faint);margin:12px 2px 5px;text-transform:uppercase;letter-spacing:.04em}
+.opt{padding:7px 0;border-bottom:1px solid rgba(42,55,68,.10)}
+.opt:last-child{border-bottom:none}
+.opt .ol{font-size:13.5px;font-weight:600;color:var(--ink)}
+.opt .od{font-size:12.5px;color:var(--ink-dim);margin-top:1px}
+.opt .stc{margin-top:3px;font-size:11px;line-height:1.5}
+.opt .stc .g{color:var(--clin);font-weight:600}
+.opt .stc .p{color:var(--care);font-weight:600}
+.opt .rk{font-size:9.5px;font-weight:800;padding:1px 7px;border-radius:8px;background:var(--clin-bg);color:var(--clin);margin-right:4px;white-space:nowrap}
+.opt .rk.care{background:var(--care-bg);color:var(--care)}
+.opt .dose{font-size:12px;color:var(--ink);margin-top:1px}
+.opt .dose b{color:var(--ink-faint);font-weight:700;font-size:10px}
+.libItem summary{cursor:pointer;list-style:none;padding:11px 13px;font-size:13.5px;font-weight:700;color:var(--ink);display:flex;gap:8px;align-items:center}
+.libItem summary::-webkit-details-marker{display:none}
+.libItem summary .cat{font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--panel2);color:var(--ink-faint)}
+.libItem[open] summary{border-bottom:1px solid var(--line)}
+.libItem .body{padding:10px 13px}
+#libSearch{width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--line);
+  border-radius:11px;padding:10px 12px;font-size:14px;color:var(--ink);outline:none;margin-bottom:10px}
+#libSearch:focus{border-color:var(--care)}
+.simbtn{width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:11px;
+  padding:10px 13px;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;cursor:pointer;font-family:inherit}
+.simbtn:active{transform:scale(.99)}
+.simbtn .d{font-size:11px;color:var(--ink-faint);font-weight:500;margin-top:2px}
+.riskbadge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;background:var(--pay-bg);color:var(--pay);margin-left:6px}
+.note{font-size:11px;color:var(--ink-faint);padding:2px 2px 8px;line-height:1.5}
+/* 슬라이드-업 시트(팝업) — 뒤로가기 트랩이 fixed 오버레이 감지 */
+.sheet-back{position:fixed;inset:0;z-index:110;background:rgba(20,28,36,.42);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.sheet-back.on{opacity:1;visibility:visible}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;background:var(--panel);border-radius:16px 16px 0 0;max-height:84vh;
+  transform:translateY(101%);transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:0 -8px 30px rgba(20,28,36,.18);display:flex;flex-direction:column}
+.sheet.on{transform:translateY(0)}
+.sheet-h{display:flex;align-items:center;gap:8px;padding:13px 15px;border-bottom:1px solid var(--line);font-size:14px;font-weight:800;color:var(--ink);flex-shrink:0}
+.sheet-h .x{margin-left:auto;font-size:22px;line-height:1;color:var(--ink-faint);cursor:pointer;background:none;border:none;font-family:inherit}
+.sheet-b{overflow:auto;padding:12px 15px 24px;-webkit-overflow-scrolling:touch}
+.librow{display:flex;align-items:center;gap:9px;padding:13px 12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:8px;
+  font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;width:100%;text-align:left;font-family:inherit}
+.librow:active{transform:scale(.99)}
+.librow .lc{font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--care-bg);color:var(--care);margin-left:auto}
+.librow.danger .lc{background:var(--block-bg);color:var(--block)}
+/* 약물 도표 */
+.drugtbl{width:100%;border-collapse:collapse;font-size:11.5px}
+.drugtbl th{background:var(--panel2);color:var(--ink-dim);padding:6px;border:1px solid var(--line);font-size:10.5px;text-align:left}
+.drugtbl td{padding:6px;border:1px solid var(--line);color:var(--ink);text-align:left;vertical-align:top}
+.drugtbl td.en{color:var(--ink-faint);font-size:10.5px}
+.drugtbl th.rowhead{background:var(--clin-bg);color:var(--clin);font-weight:800;text-align:left;font-size:11px}
+/* 핵심노트·블록 */
+.keypoints{margin:2px 0 0;padding-left:0;list-style:none}
+.keypoints li{position:relative;padding:4px 0 4px 15px;font-size:12px;color:var(--ink-dim);line-height:1.5}
+.keypoints li:before{content:"›";position:absolute;left:2px;color:var(--care);font-weight:800}
+.keypoints.danger li:before{content:"⛔";left:0;font-size:9px}
+.blk{padding:8px 0;border-bottom:1px solid rgba(42,55,68,.1)}
+.blk:last-child{border-bottom:none}
+.blk .bl{font-size:12.5px;font-weight:700;color:var(--ink)}
+.blk .bd{font-size:12.5px;color:var(--ink-dim);margin-top:1px}
+/* 지뢰(피해야 할 것) 블록 */
+.pit{border-radius:11px;padding:10px 12px;margin-bottom:8px;font-size:12.5px;line-height:1.5;border:1px solid var(--line)}
+.pit.crit{background:var(--block-bg)} .pit.mod{background:var(--warn-bg)}
+.pit .pt{font-weight:800;color:var(--block);display:flex;gap:6px;align-items:baseline}
+.pit.mod .pt{color:var(--warn)}
+.pit .pt .sev{font-size:9px;font-weight:800;padding:1px 6px;border-radius:7px;background:rgba(0,0,0,.06);margin-left:auto;letter-spacing:.03em}
+.pit .pl{color:var(--ink-dim);margin-top:3px}.pit .pl b{color:var(--ink)}
+.pit .pi{color:var(--care);margin-top:3px;font-weight:600}
+/* 불응성 감별 결정트리 스텝 */
+.step{display:flex;gap:9px;padding:7px 0}
+.step .sn{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--clin-bg);color:var(--clin);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.step.on .sn{background:var(--clin);color:#fff}
+.step .sc{font-size:12.5px;line-height:1.5}
+.step .sc .st{font-weight:700;color:var(--ink)}
+.step .sc .sd{color:var(--ink-dim);margin-top:1px}
+.dxbox{background:var(--care-bg);border:1px solid var(--care);border-radius:11px;padding:11px 13px;margin-top:8px}
+.dxbox .dt{font-weight:800;color:var(--care);font-size:13.5px}
+.dxbox .df{font-size:12px;color:var(--ink-dim);margin-top:3px}
+.dxbox .dm{font-size:12.5px;color:var(--ink);margin-top:4px}.dxbox .dm b{color:var(--care)}
+.cand{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:9px;background:var(--panel2);color:var(--ink-dim);margin:3px 4px 0 0}
+.wkup{background:var(--warn-bg);border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:12px;color:var(--warn);margin-top:6px;line-height:1.5}
+.reimb-hit{outline:2px solid var(--pay);outline-offset:1px}
+/* 계산 결과 KPI */
+.kpirow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:2px 0 4px}
+.kpi{background:var(--clin-bg);border:1px solid var(--clin);border-radius:12px;padding:11px 10px;text-align:center}
+.kpi .kl{font-size:10.5px;font-weight:700;color:var(--clin);letter-spacing:.02em}
+.kpi .kv{font-size:19px;font-weight:800;color:var(--ink);margin-top:2px;line-height:1.1}
+.kpi .ku{font-size:10px;color:var(--ink-faint);margin-top:1px}
+.kpi.care{background:var(--care-bg);border-color:var(--care)}.kpi.care .kl{color:var(--care)}
+.tpnbar{display:flex;height:16px;border-radius:8px;overflow:hidden;margin:6px 0;border:1px solid var(--line)}
+.tpnbar span{display:block;font-size:9px;color:#fff;text-align:center;line-height:16px;white-space:nowrap}
+.tpnbar .dx{background:var(--clin)} .tpnbar .lp{background:var(--pay)} .tpnbar .aa{background:var(--care)}
+.numfield{display:flex;flex-direction:column;gap:3px}
+.numfield label{font-size:10px;color:var(--ink-faint);padding-left:2px}
+.numfield input{width:100%;box-sizing:border-box}
+.numgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lytegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.warnbox{background:var(--warn-bg);border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-bottom:8px;font-size:12px;color:var(--warn);line-height:1.5}
+.warnbox b{color:var(--block)}
+.whybox{background:var(--clin-bg);border-left:3px solid var(--clin);border-radius:0 9px 9px 0;padding:9px 12px;margin:6px 0;font-size:12.5px;color:var(--ink-dim);line-height:1.6}
+.whybox b{color:var(--clin);font-weight:800}
+.conceptblk{margin-bottom:12px}
+.conceptblk .ct{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.conceptblk .cbody{font-size:12.5px;color:var(--ink-dim);line-height:1.65;margin-bottom:4px}
+/* 플로우 대분류 트리(아코디언) */
+.acc-top{margin-bottom:10px}
+.acc-top .gl{font-size:10px;color:var(--ink-faint);margin:0 0 5px 2px;text-transform:uppercase;letter-spacing:.05em}
+.typebtns{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.typebtn{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px 12px;cursor:pointer;
+  font-size:13.5px;font-weight:700;color:var(--ink-dim);text-align:left;font-family:inherit;transition:all .13s}
+.typebtn .td{display:block;font-size:10.5px;font-weight:500;color:var(--ink-faint);margin-top:2px}
+.typebtn.on{border-color:var(--care);background:var(--care-bg);color:var(--care)}
+.typebtn.on .td{color:var(--care)}
+.accSec{background:var(--panel);border:1px solid var(--line);border-radius:11px;margin-bottom:7px;overflow:hidden}
+.accSec>summary{cursor:pointer;list-style:none;padding:10px 13px;font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px}
+.accSec>summary::-webkit-details-marker{display:none}
+.accSec>summary .arw{color:var(--ink-faint);font-size:12px;transition:transform .15s}
+.accSec[open]>summary .arw{transform:rotate(90deg)}
+.accSec>summary .sel{margin-left:auto;font-size:10.5px;font-weight:600;color:var(--care);text-align:right}
+.accSec>summary .sel.none{color:var(--ink-faint);font-weight:500}
+.accSec[open]>summary{border-bottom:1px solid var(--line)}
+.accSec .abody{padding:10px 13px}
+.accSec .hint{font-size:11px;color:var(--ink-faint);margin-bottom:8px;line-height:1.5}
+input[type=number]{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:14px;color:var(--ink);font-family:inherit}
+</style>
+</head><body>
+
+<div class="topbar"><h1><span>🍽️</span>ICU 영양·NPO·TPN<span class="sub">중환자 영양 계산 · v1</span></h1></div>
+
+<div class="tabbar">
+  <button id="tab-lib" class="on"><span class="ti">📚</span>도서관</button>
+  <button id="tab-flow"><span class="ti">🧮</span>플로우(계산기)</button>
+</div>
+
+<div id="pane-lib" class="pane on"><div class="wrap">
+  <input id="libSearch" placeholder="원칙·질환별 목표·TPN·전해질·재급식·모니터 검색…">
+  <div id="libGrid"></div>
+</div></div>
+
+<div id="pane-flow" class="pane"><div class="wrap">
+  <div id="flowInputs"></div>
+  <div id="stream" class="stream" style="padding-left:0;padding-right:0"></div>
+  <div id="empty" class="empty"><div class="big">🧮</div>체중·신장·질환·상태를 입력하면<br>목표 칼로리·단백·수액 + TPN 조성 + 전해질 보충을 계산합니다</div>
+</div></div>
+
+<div class="foot"><div class="wrap">
+  <div class="srcbanner" id="srcbanner"></div>
+  <div class="footnote">본 도구는 의사결정 지원용이며 최종 판단은 임상의에게 있습니다. 급여·용량·조성은 코딩 직전 원문 재검증 대상(다수 verified:false).</div>
+</div></div>
+
+<div id="sheetBack" class="sheet-back"></div>
+<div id="sheet" class="sheet"><div class="sheet-h"><span id="sheetTitle"></span><button class="x" id="sheetX" aria-label="닫기">✕</button></div><div class="sheet-b" id="sheetBody"></div></div>
+
+<noscript><div class="seo-content"><h2>중환자 영양·NPO·TPN — 칼로리·단백·수액 계산, 전해질 보충, 재급식 (임상의용)</h2><p>중환자·NPO·TPN 영양지원의 질환별 칼로리(kcal/kg)·단백(g/kg) 목표, 수액(25–40 mL/kg)·TPN 조성(포도당 3.4 kcal/g·GIR≤5, 지질 1–1.5 g/kg, 아미노산, 1일 전해질·미량원소·비타민), 전해질 보충 프로토콜(칼륨·마그네슘·인·칼슘 수치별), 재급식증후군(시작 10 또는 5 kcal/kg·티아민), 경장(EN) vs 정맥(PN) 영양 결정, 모니터링을 제공한다. ASPEN/SCCM·ESPEN·NICE·KSPEN 근거.</p><section id="target-general"><h3>일반 중환자</h3><p>에너지 25–30 kcal/kg · 단백 1.2–2 g/kg — 조기 경장영양(24–48h). 급성기 저열량(≤70%)→3일 후 점증. 혈당 &lt;180 mg/dL 관리(스트레스 고혈당). 간접열량계 가능하면 우선(예측식은 오차).</p></section><section id="target-sepsis"><h3>패혈증·급성기</h3><p>에너지 20–25 kcal/kg · 단백 1.2–2 g/kg — 초기 저열량(permissive underfeeding)·trophic feeding(10–20 kcal/h). 안정화 후 점증. 단백은 조기 확보. 혈역학 불안정·고용량 승압제 중엔 EN 신중(장허혈 위험).</p></section><section id="target-aki"><h3>급성신손상(비투석)</h3><p>에너지 25–30 kcal/kg · 단백 0.8–1 g/kg — 비이화 비투석은 단백 0.8–1.0(질소 노폐물·요독 회피). 고이화는 최대 1.7까지. 투석 시작 시 1.3–1.5로 상향. 칼륨·인·수분 제한 감시(배설 저하).</p></section><section id="target-crrt"><h3>CRRT·잦은 혈액투석</h3><p>에너지 25–30 kcal/kg · 단백 1.5–2.5 g/kg — 필터 아미노산 소실 보상 → 단백 최대 2.5 g/kg. ★CRRT는 인·수용성비타민·미량원소 소실 → 보충·저인혈증 감시. 구연산 항응고 시 이온화 칼슘 모니터(구연산이 칼슘 결합).</p></section><section id="target-hepatic"><h3>간부전·간경화</h3><p>에너지 25–35 kcal/kg · 단백 1.2–1.5 g/kg — ★단백 제한 금지 — 근감소가 뇌증을 악화. 1.2–1.5 g/kg. 뇌증엔 BCAA(분지사슬아미노산) 고려. 계산은 건체중/평소체중(복수·부종 보정).</p></section><section id="target-pancreatitis"><h3>중증 췌장염</h3><p>에너지 25–30 kcal/kg · 단백 1.2–2 g/kg — ★조기 경장영양(비위/비공장, 24–48h) — 감염·중증도↓. 표준 중합체. PN은 EN 불가·불충분 시. 금식 최소화(장벽 유지).</p></section><section id="target-burn"><h3>화상·다발성외상</h3><p>에너지 25–35 kcal/kg · 단백 1.5–2 g/kg — 초고이화·고단백 요구. 조기 EN. 미량원소(아연·셀레늄·구리) 창상 소실 보충. 간접열량계 권장(예측식 부정확).</p></section><section id="target-obese"><h3>비만 중환자(저열량·고단백)</h3><p>에너지 11–25 kcal/kg · 단백 2.0–2.5 g/kg — ★저열량 고단백. BMI 30–50 → 11–14 kcal/kg 실체중, &gt;50 → 22–25 kcal/kg 이상체중. 단백 BMI 30–40 → 2.0, ≥40 → 2.5 g/kg 이상체중. 목표 열량 상한 65–70%(지방 동원 유도).</p></section><section id="lyte-k"><h3>칼륨(K) 보충</h3><p>목표 4.0–5.0 mEq/L — 3.8–4: 20 mEq; 3.5–3.8: 40 mEq; 3.2–3.5: 60 mEq; &lt;3.2: 80 mEq + 의사 보고</p></section><section id="lyte-mg"><h3>마그네슘(Mg) 보충</h3><p>목표 2.0–2.4 mg/dL — 1.6–2: MgSO₄ 2 g; 1–1.6: MgSO₄ 4 g; &lt;1: MgSO₄ 6 g + 의사 보고</p></section><section id="lyte-p"><h3>인(P) 보충</h3><p>목표 2.7–4.6 mg/dL — 2–2.7: 15 mmol(2시간); 1.5–2: 30 mmol(4시간); &lt;1.5: 45 mmol(6시간)</p></section><section id="lyte-ca"><h3>칼슘(이온화 Ca) 보충</h3><p>목표 1.12–1.3 mmol/L(이온화) — 1.05–1.12: 글루콘산칼슘 1 g(30–60분); 0.99–1.05: 글루콘산칼슘 2 g(30–60분); 0.93–0.99: 글루콘산칼슘 3 g(60분); &lt;0.93: 글루콘산칼슘 4 g(60분) + 의사 보고</p></section><section id="route-en"><h3>경장영양(EN)</h3><p>위장관 사용 가능·혈역학 안정 · 입실 24–48시간 내 조기 시작</p></section><section id="route-pn"><h3>정맥영양(PN/TPN)</h3><p>EN 금기·불가 또는 EN으로 목표 &lt;60% · 저영양위험군 첫 7일 유보 · 고영양위험/고도영양불량 조기(ASAP) · 보충 PN은 7–10일(ESPEN 3–7일 고려)</p></section><section id="route-npo"><h3>금식(NPO) 유지관리</h3><p>시술·수술 전후·장휴식 필요 · 가능한 단기. 장기 NPO(&gt;5–7일)·영양불량은 영양지원 개시</p></section><section id="refeeding"><h3>재급식증후군</h3><p>★열량을 천천히 올리는 것이 핵심 — 급격한 탄수화물이 인슐린을 통해 저인·저K·저Mg·티아민결핍을 유발 시작 10 kcal/kg/일로 시작, 4–7일에 걸쳐 목표 도달</p></section><section id="tpn"><h3>TPN 조성</h3><p>나트륨 1–2 mEq/kg · 칼륨 1–2 mEq/kg · 칼슘 10–15 mEq · 마그네슘 8–20 mEq · 인 20–40 mmol. 염소·아세트산 산-염기 조절.</p></section><section id="concept-stress_metabolism"><h3>스트레스 대사 — 왜 급성기엔 적게 주나</h3><p>중증 질환의 급성기에는 코르티솔·카테콜아민·글루카곤·염증사이토카인이 폭증한다. 몸은 이 시기에 근육을 분해해 아미노산을 내보내고 간에서 포도당을 스스로 만들어낸다(내인성 당신생). 즉 '이미 몸이 만들어 쓰는 열량'이 있는데, 여기에 외부 영양을 목표량만큼 꽉 채우면 총 공급이 소비를 넘어 과영양(overfeeding)이 된다. 급성기(ebb/초기 flow): 이화 우세 — 내인성 포도당 생산이 인슐린으로 잘 안 꺼진다(스트레스 고혈당). ★그래서 초기엔 저열량(목표의 ≤70%)으로 시작 — 과영양은 고혈당·감염·지방간·CO₂↑(호흡부담)·자가포식(autophagy) 억제로 오히려 해롭다. 회복기(anabolic)로 넘어가면 열량을 80–100%로 점증하고 단백을 적극 공급해 근육을 재건한다. 단백질은 예외 — 이화가 심하므로 급성기부터 충분히(1.2–2.0 g/kg) 공급해 근손실을 줄인다.</p></section><section id="concept-gut_first"><h3>장을 먼저 쓰는 이유(EN 우선)</h3><p>장은 단순 소화기관이 아니라 최대의 면역기관이다. 음식이 장을 지나가면 장점막 융모가 유지되고, 장관연관림프조직(GALT)이 자극되며, 장벽의 밀착연접이 촘촘하게 유지된다. 반대로 오래 굶기면 융모가 위축되고 장벽 투과성이 커져 장내 세균·독소가 혈류로 새어 들어가는 '세균 전위'가 일어나 전신 염증·감염을 부추긴다. EN은 장점막·면역(GALT)·장벽을 유지 → 감염 합병증·재원기간 감소. 혈역학이 안정되면 24–48시간 내 조기 EN이 원칙(소량 trophic이라도). PN은 장을 못 쓸 때의 대안 — 정맥은 장 자극이 없어 위 이점을 못 준다. ★과거 '장을 쉬게' 오래 NPO+TPN 하던 관행(예: 췌장염)은 지양 — 조기 EN이 더 좋다.</p></section><section id="concept-refeeding_patho"><h3>재급식증후군 — 무슨 일이 벌어지나</h3><p>굶는 동안 몸은 지방·케톤을 태우고 인·칼륨·마그네슘 같은 세포 내 미네랄과 티아민이 서서히 고갈된다(혈중 수치는 정상처럼 보여도 총량은 비어 있다). 여기에 갑자기 탄수화물을 주면 인슐린이 치솟고, 인슐린은 포도당과 함께 인·칼륨·마그네슘을 세포 안으로 급격히 끌어들인다. 그 결과 혈중 인·칼륨·마그네슘이 뚝 떨어지고, 특히 인 고갈은 ATP·2,3-DPG 생산을 막아 심부전·호흡부전·부정맥·의식저하로 이어질 수 있다. 굶음 → 세포 내 인·K·Mg·티아민 총량 고갈(혈중은 정상 위장). ★탄수화물 재개 → 인슐린 급증 → 인·K·Mg 세포내 이동 → 급성 저인·저K·저Mg혈증. 저인혈증 → ATP·2,3-DPG↓ → 심근·호흡근 부전·용혈·부정맥(치명적). 티아민은 포도당 대사(피루브산→아세틸CoA)의 조효소 — 탄수화물 부하로 급속 소모 → Wernicke 위험. ★대응: 열량을 천천히(10, 극단 5 kcal/kg) 올리고, 탄수화물 주기 전 티아민 먼저, 인·K·Mg 예방 보충·감시.</p></section><section id="concept-electrolyte_shift"><h3>전해질 — 역할과 보충의 원리</h3><p>중환자의 저전해질은 대개 '총량 부족'과 '세포 내외 이동'이 겹친 결과다. 보충은 단순히 숫자를 맞추는 게 아니라 어느 전해질을 먼저·어떤 속도로 줄지가 중요하다. 특히 마그네슘은 다른 전해질의 '문지기'라서, 저마그네슘을 두고는 저칼륨·저칼슘이 잘 교정되지 않는다. ★마그네슘 먼저: Mg는 신장 K 배출통로(ROMK)를 억제하고 부갑상샘호르몬(PTH) 분비·작용에 필요 → 저Mg면 K가 소변으로 계속 새고 Ca도 안 오른다. 불응성 저K·저Ca는 Mg부터. 칼륨: 심근 세포막 전위 유지 — 저K·고K 모두 치명적 부정맥. 신부전·핍뇨 시 보충은 신중(고칼륨 위험). 인(P): ATP(에너지)·2,3-DPG(산소전달)·세포막의 재료 — 고갈 시 심·호흡근 약화. CRRT·재급식서 특히 잘 빠진다. 칼슘(이온화): 심근 수축·신경근 흥분·응고에 관여 — 급속 교정은 부정맥 위험, 인과 섞으면 침전. 속도 원칙: 정맥 보충은 정해진 최대속도 이내로(예: K 10 mEq/시, P 7 mmol/시) — 급속주입 자체가 위험.</p></section><section id="concept-body_weight"><h3>어떤 체중으로 계산하나(실체중·이상·보정)</h3><p>영양 목표는 'kg당' 값이라 어느 체중을 곱하느냐가 결과를 좌우한다. 지방조직은 대사가 활발하지 않아 비만 환자에게 실체중을 그대로 곱하면 과영양이 된다. 그래서 비만에서는 이상체중(IBW) 또는 보정체중(ABW·지방의 일부만 반영)을 쓴다. 정상~과체중: 실체중(actual) 사용. 비만(BMI≥30): 지방 과다 → 실체중 곱하기 금물. 열량은 저열량 규칙(실체중 11–14 또는 IBW 22–25), 단백은 이상체중 기준. 이상체중(IBW, Devine): 신장 기반 표준체중 — 지방 제외 대사체중의 근사. 보정체중(ABW=IBW+0.4×(실체중−IBW)): 지방의 대사 기여 일부를 반영해 IBW와 실체중 사이 값. 부종·복수(간부전·과부하)는 겉체중이 부풀어 있으므로 건체중/평소체중으로 보정.</p></section><section id="concept-macro_roles"><h3>탄수화물·지질·단백의 역할과 한계</h3><p>TPN은 세 가지 열량원을 섞는다. 각자 역할과 '넘으면 해로운' 상한이 다르다. 열량(탄수화물·지질)과 단백(구조·회복)을 분리해서 생각하면 조성이 쉬워진다. 포도당(3.4 kcal/g): 주 열량원이지만 산화속도에 한계 → GIR &gt;5 mg/kg/분이면 남는 포도당이 지방으로 전환(지방간)되고 CO₂가 늘어 인공호흡 이탈을 방해한다. 지질(~10 kcal/g): 열량 밀도가 높아 적은 부피로 열량·필수지방산 공급. 그러나 청소능·면역 부담으로 1–1.5 g/kg 상한, 중성지방 감시. 단백/아미노산(4 kcal/g): 열량이 아니라 '재료' — 근육·면역·상처회복. 스트레스에선 최우선 확보(열량이 부족해도 단백은 지킨다). 삼투압: 고농도 포도당·아미노산은 삼투압이 높아 말초정맥을 상하게 함 → 중심정맥(TPN) 필요. 칼슘-인 침전: 같은 수액에서 칼슘과 인이 만나면 인산칼슘으로 굳을 수 있어 조제 순서·농도를 지킨다.</p></section></div></noscript>
+<script>
+/* data/nutr_guidelines.js */
+/* nutr_guidelines.js — 가이드라인 + 권고체계. SPEC §3. */
+(function (root) {
+  const NUTR_GUIDELINES = {
+    "gl:kspen-en-2024": { id: "gl:kspen-en-2024", layer: "L1", title: "한국형 경장영양 실무지침(제1판)", org: "한국정맥경장영양학회(KSPEN)", year: 2024, recsys: "recsys:nutr", url: "https://www.kspen.org/", verified: false },
+    "gl:aspen-2016": { id: "gl:aspen-2016", layer: "L1p", title: "성인 중환자 영양지원 지침(2016·2022 개정)", org: "ASPEN/SCCM", year: 2016, url: "https://aspenjournals.onlinelibrary.wiley.com/doi/10.1002/jpen.2267", verified: false },
+    "gl:espen-icu-2023": { id: "gl:espen-icu-2023", layer: "L1p", title: "중환자 임상영양(실무·부분개정)", org: "ESPEN", year: 2023, url: "https://www.clinicalnutritionjournal.com/article/S0261-5614(23)00230-3/fulltext", verified: false },
+    "gl:nice-cg32": { id: "gl:nice-cg32", layer: "L1p", title: "성인 영양지원(경구·경장·정맥·재급식)", org: "NICE CG32", url: "https://www.nice.org.uk/guidance/cg32/chapter/recommendations", verified: false },
+    "gl:espen-kidney-2021": { id: "gl:espen-kidney-2021", layer: "L1p", title: "급성·만성 신질환 임상영양", org: "ESPEN", year: 2021, verified: false },
+    "gl:merck-pn": { id: "gl:merck-pn", layer: "L2", title: "Parenteral Nutrition(조성·요구량)", org: "Merck Manual", url: "https://www.merckmanuals.com/professional/nutritional-disorders/nutritional-support/parenteral-nutrition-pn", verified: false },
+    "gl:icu-lyte-protocol": { id: "gl:icu-lyte-protocol", layer: "L2", title: "성인 중환자 전해질 보충 프로토콜", org: "기관 프로토콜(U Michigan 등)", verified: false }
+  };
+  const NUTR_RECSYS = {
+    "recsys:nutr": { id: "recsys:nutr", label: "영양지침 등급(GRADE)", strength: ["강함", "약함"], loe: ["높음", "중등도", "낮음"], norm: { "강함": "A", "약함": "C" }, rank: { "강함": 1, "약함": 3 } }
+  };
+  const OUT = { NUTR_GUIDELINES, NUTR_RECSYS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/nutr_thresholds.js */
+/* nutr_thresholds.js — SSOT(범용 상수). 질환별 목표는 nutr_targets(중복 정의 금지). 재검증(헌장 §9). */
+(function (root) {
+  const NUTR_TH = {
+    "nutr:th:kcal_per_g": {
+      id: "nutr:th:kcal_per_g", label: "다량영양소 열량(kcal/g)", source: "L2", ref: "gl:merck-pn", verified: false,
+      dextrose: 3.4, amino_acid: 4, lipid: 10,
+      note: "포도당(일수화물) 3.4 · 아미노산 4 · 지질유제 ~10(20% 유제 글리세롤 포함; 순수지방 9)"
+    },
+    "nutr:th:gir_max": {
+      id: "nutr:th:gir_max", label: "포도당주입속도(GIR) 상한", source: "L1p", ref: "gl:espen-icu-2023", verified: false,
+      value: 5, unit: "mg/kg/분", note: "PN 포도당·EN 탄수화물 ≤5 mg/kg/분. 초과 시 고혈당·지방간·CO₂↑"
+    },
+    "nutr:th:fluid": {
+      id: "nutr:th:fluid", label: "성인 유지수액", source: "L2", ref: "gl:merck-pn", verified: false,
+      lo: 25, hi: 40, typicalLo: 30, typicalHi: 35, unit: "mL/kg/일",
+      note: "25–40(대략 30–35) mL/kg. NPO는 유지 + 소실(위배액·설사·발열·배액) 보충. 생리식염수 단독 장기 회피"
+    },
+    "nutr:th:tpn_lipid": {
+      id: "nutr:th:tpn_lipid", label: "정맥 지질(IVFE)", source: "L1p", ref: "gl:espen-icu-2023", verified: false,
+      gPerKg: 1, cap: 1.5, unit: "g/kg/일", note: "1–1.5 g/kg(혼합유제 1–2), 상한 1.5(비영양 지질원 포함). 중성지방 모니터"
+    },
+    "nutr:th:tpn_electrolytes": {
+      id: "nutr:th:tpn_electrolytes", label: "TPN 1일 전해질 요구량(성인)", source: "L2", ref: "gl:merck-pn", verified: false,
+      items: [
+        { k: "na", ko: "나트륨", lo: 1, hi: 2, unit: "mEq/kg", perKg: true },
+        { k: "k", ko: "칼륨", lo: 1, hi: 2, unit: "mEq/kg", perKg: true },
+        { k: "ca", ko: "칼슘", lo: 10, hi: 15, unit: "mEq", perKg: false },
+        { k: "mg", ko: "마그네슘", lo: 8, hi: 20, unit: "mEq", perKg: false },
+        { k: "p", ko: "인", lo: 20, hi: 40, unit: "mmol", perKg: false }
+      ],
+      note: "염소·아세트산은 산-염기 위해 조절. 신·심기능별 조정"
+    },
+    "nutr:th:refeeding_start": {
+      id: "nutr:th:refeeding_start", label: "재급식 시작 열량", source: "L1p", ref: "gl:nice-cg32", verified: false,
+      high: 10, extreme: 5, unit: "kcal/kg/일", targetDays: "4–7일에 걸쳐 목표 도달",
+      extreme_def: "BMI<14 또는 15일 이상 거의 금식 → 5 kcal/kg + 심전도 감시",
+      note: "고위험은 10 kcal/kg로 시작·서서히 증량"
+    },
+    "nutr:th:refeeding_lyte": {
+      id: "nutr:th:refeeding_lyte", label: "재급식 전해질 예방 보충", source: "L1p", ref: "gl:nice-cg32", verified: false,
+      items: [
+        { k: "k", ko: "칼륨", val: "2–4 mmol/kg/일" },
+        { k: "p", ko: "인", val: "0.3–0.6 mmol/kg/일" },
+        { k: "mg", ko: "마그네슘", val: "0.2(IV)/0.4(경구) mmol/kg/일" }
+      ],
+      thiamine: "티아민 200–300 mg/일(재급식 전·처음 10일) + 비타민 B 복합·종합비타민",
+      note: "재급식 전 수치 높지 않으면 보충"
+    },
+    "nutr:th:obese": {
+      id: "nutr:th:obese", label: "비만 중환자 저열량·고단백 기준", source: "L1p", ref: "gl:aspen-2016", verified: false,
+      energy: [{ bmi: "30–50", val: "11–14 kcal/kg 실체중", lo: 11, hi: 14, basis: "actual" }, { bmi: ">50", val: "22–25 kcal/kg 이상체중", lo: 22, hi: 25, basis: "ibw" }],
+      protein: [{ bmi: "30–40", val: "2.0 g/kg 이상체중", lo: 2.0, hi: 2.0, basis: "ibw" }, { bmi: "≥40", val: "2.5 g/kg 이상체중", lo: 2.5, hi: 2.5, basis: "ibw" }],
+      cap: "목표 열량 상한 65–70%", note: "이상체중(IBW)·보정체중(ABW) 계산 필요"
+    }
+  };
+  const NUTR_FORMULA = {
+    "nutr:formula:bmi": { id: "nutr:formula:bmi", label: "체질량지수", expr: "BMI = 체중(kg) / 신장(m)²", verified: true },
+    "nutr:formula:ibw": { id: "nutr:formula:ibw", label: "이상체중(Devine)", expr: "남 50 + 2.3×(신장inch−60), 여 45.5 + 2.3×(신장inch−60); inch=cm/2.54", verified: false },
+    "nutr:formula:abw": { id: "nutr:formula:abw", label: "보정체중(비만)", expr: "ABW = IBW + 0.4×(실체중−IBW)", verified: false },
+    "nutr:formula:gir": { id: "nutr:formula:gir", label: "포도당주입속도", expr: "GIR(mg/kg/분) = 포도당(g/일)×1000 ÷ (체중kg × 1440)", verified: true }
+  };
+  const OUT = { NUTR_TH, NUTR_FORMULA };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/nutr_targets.js */
+/* nutr_targets.js — 질환/상태별 에너지·단백 목표(SSOT, 질환한정). SPEC §2.
+ * energy/protein: {lo, hi, basis:'actual'|'ibw'|'abw'} kcal/kg, g/kg. special='obese'는 엔진이 BMI별 처리.
+ */
+(function (root) {
+  const NUTR_TARGETS = {
+    "nutr:target:general": {
+      id: "nutr:target:general", ko: "일반 중환자", emoji: "🛏️",
+      energy: { lo: 25, hi: 30, basis: "actual" }, protein: { lo: 1.2, hi: 2.0, basis: "actual" },
+      mechanism: "급성기엔 스트레스 호르몬으로 몸이 스스로 포도당을 만들어 쓰므로(내인성 당신생), 외부 열량을 목표만큼 채우면 과영양이 된다. 그래서 초기 저열량 후 회복기에 점증하고, 이화가 심한 단백만은 처음부터 충분히 준다.",
+      notes: ["조기 경장영양(24–48h). 급성기 저열량(≤70%)→3일 후 점증.", "혈당 <180 mg/dL 관리(스트레스 고혈당).", "간접열량계 가능하면 우선(예측식은 오차)."],
+      cautions: ["급성기 과열량(overfeeding) 회피 — 고혈당·감염·CO₂↑."], ref: "gl:aspen-2016"
+    },
+    "nutr:target:sepsis": {
+      id: "nutr:target:sepsis", ko: "패혈증·급성기", emoji: "🦠",
+      energy: { lo: 20, hi: 25, basis: "actual" }, protein: { lo: 1.2, hi: 2.0, basis: "actual" },
+      mechanism: "패혈증 초기엔 염증·이화가 극심해 세포가 영양을 제대로 활용하지 못하고 자가포식(손상세포 청소)이 회복에 필요하다. 이때 열량을 밀어넣으면 오히려 해로워, 소량(trophic)으로 장만 유지하다가 안정되면 늘린다.",
+      notes: ["초기 저열량(permissive underfeeding)·trophic feeding(10–20 kcal/h).", "안정화 후 점증. 단백은 조기 확보.", "혈역학 불안정·고용량 승압제 중엔 EN 신중(장허혈 위험)."],
+      cautions: ["쇼크·불안정 시 EN 보류(혈역학 안정 후)."], ref: "gl:espen-icu-2023"
+    },
+    "nutr:target:aki": {
+      id: "nutr:target:aki", ko: "급성신손상(비투석)", emoji: "🫘",
+      energy: { lo: 25, hi: 30, basis: "actual" }, protein: { lo: 0.8, hi: 1.0, basis: "actual" },
+      mechanism: "단백 대사의 노폐물(요소·질소)은 신장으로 배설되는데, 투석을 안 하는 AKI에선 이게 쌓여 요독을 악화시킨다. 그래서 비투석·비이화 시엔 단백을 낮춘다. 단 투석을 시작하면 노폐물이 제거되고 투석으로 단백이 소실되므로 오히려 단백을 늘린다.",
+      notes: ["비이화 비투석은 단백 0.8–1.0(질소 노폐물·요독 회피).", "고이화는 최대 1.7까지. 투석 시작 시 1.3–1.5로 상향.", "칼륨·인·수분 제한 감시(배설 저하)."],
+      cautions: ["단백 제한만으로 투석을 미루려 하면 영양불량 위험 — 지표 보며 판단."], ref: "gl:espen-kidney-2021"
+    },
+    "nutr:target:crrt": {
+      id: "nutr:target:crrt", ko: "CRRT·잦은 혈액투석", emoji: "🩸",
+      energy: { lo: 25, hi: 30, basis: "actual" }, protein: { lo: 1.5, hi: 2.5, basis: "actual" },
+      mechanism: "지속형 투석(CRRT)의 필터막은 작은 분자를 계속 걸러내는데, 여기엔 아미노산·수용성 비타민·미량원소·인이 함께 빠져나간다(하루 수 g의 아미노산 소실). 그래서 단백을 최대 2.5 g/kg까지 올려 소실을 보상하고, 인은 오히려 부족해지기 쉬워 감시·보충한다.",
+      notes: ["필터 아미노산 소실 보상 → 단백 최대 2.5 g/kg.", "★CRRT는 인·수용성비타민·미량원소 소실 → 보충·저인혈증 감시.", "구연산 항응고 시 이온화 칼슘 모니터(구연산이 칼슘 결합)."],
+      cautions: ["저인혈증(CRRT 흔함) 주의 — 인 보충 문턱 낮게."], ref: "gl:aspen-2016"
+    },
+    "nutr:target:hepatic": {
+      id: "nutr:target:hepatic", ko: "간부전·간경화", emoji: "🫀",
+      energy: { lo: 25, hi: 35, basis: "actual" }, protein: { lo: 1.2, hi: 1.5, basis: "actual" },
+      mechanism: "과거엔 '단백이 암모니아를 늘려 간성뇌증을 악화시킨다'며 단백을 제한했지만, 이는 근육을 더 분해시켜(근육이 암모니아를 처리하는 곳) 오히려 뇌증·예후를 악화시킨다. 현대 지침은 단백 제한을 금하고, 뇌증엔 방향족보다 분지사슬아미노산(BCAA) 비율을 높인다. 간은 글리코겐 저장이 적어 밤새 굶으면 저혈당이 오므로 야식·잦은 식사가 도움.",
+      notes: ["★단백 제한 금지 — 근감소가 뇌증을 악화. 1.2–1.5 g/kg.", "뇌증엔 BCAA(분지사슬아미노산) 고려.", "계산은 건체중/평소체중(복수·부종 보정)."],
+      cautions: ["복수 시 나트륨·수분 제한. 저혈당(글리코겐 고갈)·저나트륨 주의."], ref: "gl:espen-icu-2023"
+    },
+    "nutr:target:pancreatitis": {
+      id: "nutr:target:pancreatitis", ko: "중증 췌장염", emoji: "🔥",
+      energy: { lo: 25, hi: 30, basis: "actual" }, protein: { lo: 1.2, hi: 2.0, basis: "actual" },
+      mechanism: "'췌장을 쉬게 한다'며 오래 금식시키던 과거와 달리, 조기 경장영양이 장벽을 유지해 세균 전위·감염 괴사를 줄이고 중증도를 낮춘다. 비위관으로도 대개 가능하며, 통증·불내성 시 유문 이후(비공장)로 내린다. PN은 EN이 정말 불가능할 때만.",
+      notes: ["★조기 경장영양(비위/비공장, 24–48h) — 감염·중증도↓. 표준 중합체.", "PN은 EN 불가·불충분 시.", "금식 최소화(장벽 유지)."],
+      cautions: ["과거 'NPO+TPN' 관행 지양 — EN 우선."], ref: "gl:aspen-2016"
+    },
+    "nutr:target:burn": {
+      id: "nutr:target:burn", ko: "화상·다발성외상", emoji: "🔥",
+      energy: { lo: 25, hi: 35, basis: "actual" }, protein: { lo: 1.5, hi: 2.0, basis: "actual" },
+      mechanism: "화상·다발성외상은 대사가 정상의 1.5~2배로 항진되고(초고이화), 상처 삼출과 조직 재생으로 단백 요구가 급증한다. 넓은 창상에서는 아연·셀레늄·구리 같은 미량원소가 삼출로 대량 빠져나가 상처치유·면역이 저하되므로 보충한다.",
+      notes: ["초고이화·고단백 요구. 조기 EN.", "미량원소(아연·셀레늄·구리) 창상 소실 보충.", "간접열량계 권장(예측식 부정확)."],
+      cautions: ["그래도 과열량은 회피, 혈당 관리."], ref: "gl:aspen-2016"
+    },
+    "nutr:target:obese": {
+      id: "nutr:target:obese", ko: "비만 중환자(저열량·고단백)", emoji: "⚖️", special: "obese",
+      energy: { lo: 11, hi: 14, basis: "abw" }, protein: { lo: 2.0, hi: 2.5, basis: "ibw" },
+      mechanism: "지방조직은 대사가 활발하지 않아 비만 환자에게 실체중으로 열량을 계산하면 과영양이 된다. 그래서 '저열량으로 지방을 태우되, 단백은 이상체중 기준으로 넉넉히' 주어 근육(제지방)을 보존한다 — 이것이 비만 특유의 저열량·고단백 전략이다.",
+      notes: ["★저열량 고단백. BMI 30–50 → 11–14 kcal/kg 실체중, >50 → 22–25 kcal/kg 이상체중.", "단백 BMI 30–40 → 2.0, ≥40 → 2.5 g/kg 이상체중.", "목표 열량 상한 65–70%(지방 동원 유도)."],
+      cautions: ["실체중 그대로 kcal/kg 적용 금지(과열량)."], ref: "gl:aspen-2016", th: "nutr:th:obese"
+    }
+  };
+  const OUT = { NUTR_TARGETS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/nutr_route.js */
+/* nutr_route.js — 경로(EN/PN) 결정·시점. SPEC §2. */
+(function (root) {
+  const NUTR_ROUTE = {
+    "nutr:route:en": {
+      id: "nutr:route:en", ko: "경장영양(EN)", priority: 1,
+      when: "위장관 사용 가능·혈역학 안정",
+      timing: "입실 24–48시간 내 조기 시작",
+      note: "장 우선(장점막 유지·감염↓·비용). 비위관/비공장관. GRV<500mL·타 징후 없으면 유지.",
+      why: "음식이 장을 지나가야 장점막 융모와 장벽 밀착연접, 장관면역(GALT)이 유지된다. 오래 굶기면 융모가 위축되고 장벽이 새어 장내 세균·독소가 혈류로 전위(translocation)돼 전신 염증·감염을 부른다. EN은 이 장벽·면역을 지켜 합병증을 줄인다.",
+      contraindication: "장폐색·장허혈·활동성 소화관출혈·난치성 쇼크·고배액 장루·중증 흡수장애",
+      ref: "gl:aspen-2016"
+    },
+    "nutr:route:pn": {
+      id: "nutr:route:pn", ko: "정맥영양(PN/TPN)", priority: 2,
+      when: "EN 금기·불가 또는 EN으로 목표 <60%",
+      timing: "저영양위험군 첫 7일 유보 · 고영양위험/고도영양불량 조기(ASAP) · 보충 PN은 7–10일(ESPEN 3–7일 고려)",
+      note: "중심정맥(고삼투압). 말초 PN은 저농도·단기. TPN 조성은 §TPN.",
+      why: "정맥으로 영양을 넣으면 장을 우회하므로 장의 이점을 못 얻고, 고농도 포도당·아미노산은 삼투압이 높아 말초정맥을 상하게 해 중심정맥이 필요하다. 저영양위험군에서 이른 PN은 이득 없이 감염·합병증만 늘려, EN을 최대한 시도한 뒤 도입한다.",
+      ref: "gl:espen-icu-2023"
+    },
+    "nutr:route:npo": {
+      id: "nutr:route:npo", ko: "금식(NPO) 유지관리", priority: 0,
+      when: "시술·수술 전후·장휴식 필요",
+      timing: "가능한 단기. 장기 NPO(>5–7일)·영양불량은 영양지원 개시",
+      note: "유지수액(30–35 mL/kg) + 지속 소실 보충 + 전해질. 장기 금식은 근감소·refeeding 위험 — 조기 재개.",
+      why: "짧은 금식은 무해하지만, 길어지면 근육이 분해되고 장점막이 위축되며 세포 내 인·칼륨·마그네슘·티아민이 고갈돼 나중에 재급식증후군의 씨앗이 된다. 그래서 NPO는 최대한 짧게, 필요 열량·수액·전해질은 정맥으로 유지한다.",
+      ref: "gl:nice-cg32"
+    }
+  };
+  const OUT = { NUTR_ROUTE };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/nutr_tpn.js */
+/* nutr_tpn.js — TPN 조성 참조(1일 전해질·미량원소·비타민·주의). SPEC §3. */
+(function (root) {
+  const NUTR_TPN = {
+    "nutr:tpn:macro": {
+      id: "nutr:tpn:macro", ko: "대량영양소 구성", ref: "gl:merck-pn",
+      components: [
+        { k: "dextrose", ko: "포도당(dextrose)", detail: "3.4 kcal/g. 초기 100–150 g/일, GIR ≤5 mg/kg/분. 통상 총열량의 50–60%", th: "nutr:th:kcal_per_g" },
+        { k: "amino_acid", ko: "아미노산(단백)", detail: "4 kcal/g. 목표 g/kg(§단백 목표). 신·간 상태별 조정" },
+        { k: "lipid", ko: "지질유제(IVFE)", detail: "~10 kcal/g. 1–1.5 g/kg(상한 1.5). 총열량 ~20–30%. 중성지방 모니터", th: "nutr:th:tpn_lipid" }
+      ],
+      note: "총열량 25–35 kcal/kg(중환자 저열량 규칙). 수액 25–40 mL/kg."
+    },
+    "nutr:tpn:electrolytes": {
+      id: "nutr:tpn:electrolytes", ko: "1일 전해질(성인 기본 첨가)", ref: "nutr:th:tpn_electrolytes",
+      detail: "나트륨 1–2 mEq/kg · 칼륨 1–2 mEq/kg · 칼슘 10–15 mEq · 마그네슘 8–20 mEq · 인 20–40 mmol. 염소·아세트산 산-염기 조절.",
+      note: "★칼슘-인 침전 안정성 주의. 신·심기능별 조정. 결핍 시 §전해질 보충 별도."
+    },
+    "nutr:tpn:micro": {
+      id: "nutr:tpn:micro", ko: "미량원소·비타민(1일)", ref: "gl:merck-pn",
+      trace: "아연 3–5 mg · 구리 0.3–0.5 mg · 크롬 ≤10 mcg · 망간 55 mcg · 셀레늄 60–100 mcg",
+      vitamins: "티아민 6 mg · 리보플라빈 3.6 · 나이아신 40 · 피리독신 6 · B12 5 mcg · 엽산 600 mcg · 판토텐 15 · 비오틴 60 mcg · C 200 mg · A 990 mcg · D 5 mcg · E 10 mg · K 150 mcg",
+      note: "CRRT·화상은 수용성비타민·미량원소 소실 보충. 티아민은 재급식·알코올에 추가."
+    },
+    "nutr:tpn:caution": {
+      id: "nutr:tpn:caution", ko: "TPN 주의·모니터", ref: "gl:merck-pn",
+      items: ["중심정맥 필요(고삼투압) — 말초는 저농도·단기", "칼슘-인 침전(안정성)", "고혈당·GIR 초과 → 지방간·CO₂↑", "담즙정체·간효소 상승(장기)", "중성지방(지질)·전해질 매일 초기", "카테터 감염"],
+      note: ""
+    }
+  };
+  const OUT = { NUTR_TPN };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/nutr_lytes.js */
+/* nutr_lytes.js — ★전해질 보충 프로토콜(성인, 혈청수치별). SPEC §2·8. L2 실무, 재검증(헌장 §9).
+ * bands: 높은→낮은 순, {lo,hi} 구간(lo≤값<hi). 엔진이 값 매칭 → 용량. goalLo 이상은 보충 불필요.
+ */
+(function (root) {
+  const NUTR_LYTES = {
+    "nutr:lyte:k": {
+      id: "nutr:lyte:k", ko: "칼륨(K)", unit: "mEq/L", goalLo: 4.0, goalHi: 5.0, goalText: "4.0–5.0 mEq/L",
+      product: "drug:kcl", rate: "10 mEq/시(심전도·중심정맥 시 최대 20)", maxConc: "말초 80 mEq/L · 중심 120 mEq/L",
+      bands: [
+        { lo: 3.8, hi: 4.0, dose: "20 mEq", route: "IV/경구", note: "재검 2–4h" },
+        { lo: 3.5, hi: 3.8, dose: "40 mEq", route: "IV/경구", note: "재검 2–4h" },
+        { lo: 3.2, hi: 3.5, dose: "60 mEq", route: "IV/경구", note: "재검 2–4h" },
+        { lo: 0, hi: 3.2, dose: "80 mEq + 의사 보고", route: "IV/경구", note: "즉시 재검·심전도" }
+      ],
+      cautions: ["신부전·핍뇨 시 감량·신중(고칼륨 위험)", "저Mg 동반 시 Mg 먼저 교정", "10 mEq KCl ≈ 혈청 ~0.1 상승(개인차)"],
+      mechanism: "칼륨은 심근·신경근 세포막 전위를 유지하는 핵심 이온이라 낮아도 높아도 치명적 부정맥이 온다. 저칼륨의 흔한 숨은 원인이 저마그네슘 — Mg가 부족하면 신장 배출통로(ROMK)가 열려 칼륨이 계속 소변으로 새므로, Mg를 교정하지 않으면 아무리 KCl을 줘도 잘 오르지 않는다.",
+      ref: "gl:icu-lyte-protocol"
+    },
+    "nutr:lyte:mg": {
+      id: "nutr:lyte:mg", ko: "마그네슘(Mg)", unit: "mg/dL", goalLo: 2.0, goalHi: 2.4, goalText: "2.0–2.4 mg/dL",
+      product: "drug:mgso4", rate: "1 g/시(최대 2 g/시)", maxConc: "",
+      bands: [
+        { lo: 1.6, hi: 2.0, dose: "MgSO₄ 2 g", route: "IV(경구 MgO 800 mg)", note: "증상 시 4–6h 재검" },
+        { lo: 1.0, hi: 1.6, dose: "MgSO₄ 4 g", route: "IV", note: "4–6h 재검" },
+        { lo: 0, hi: 1.0, dose: "MgSO₄ 6 g + 의사 보고", route: "IV", note: "4–6h 재검·심전도" }
+      ],
+      cautions: ["신부전 시 감량(축적)", "저K·저Ca 교정 전 Mg 먼저", "급속주입 시 저혈압·홍조"],
+      mechanism: "마그네슘은 300가지 이상 효소의 조효소이자 다른 전해질의 '문지기'다. 저Mg는 ① 칼륨을 소변으로 새게 하고 ② PTH 분비·작용을 막아 칼슘을 못 올린다. 그래서 불응성 저칼륨·저칼슘을 볼 때 Mg부터 채우는 것이 원칙. 신장으로 배설되므로 신부전에선 반대로 축적(고Mg)에 주의.",
+      ref: "gl:icu-lyte-protocol"
+    },
+    "nutr:lyte:p": {
+      id: "nutr:lyte:p", ko: "인(P)", unit: "mg/dL", goalLo: 2.7, goalHi: 4.6, goalText: "2.7–4.6 mg/dL",
+      product: "drug:na_phosphate", rate: "최대 7 mmol/시", maxConc: "",
+      bands: [
+        { lo: 2.0, hi: 2.7, dose: "15 mmol(2시간)", route: "IV", note: "익일 재검. 경구 500 mg 대안" },
+        { lo: 1.5, hi: 2.0, dose: "30 mmol(4시간)", route: "IV", note: "4–6h 재검" },
+        { lo: 0, hi: 1.5, dose: "45 mmol(6시간)", route: "IV", note: "4–6h 재검" }
+      ],
+      cautions: ["기본 인산나트륨 — 고Na·저K면 인산칼륨 사용", "신부전 시 감량", "칼슘 동시주입 침전 주의", "★CRRT·재급식서 저인혈증 흔함"],
+      mechanism: "인은 ATP(세포 에너지)와 적혈구 2,3-DPG(산소 전달), 세포막 인지질의 재료다. 저인혈증이 심하면 심근·호흡근이 에너지를 못 만들어 심부전·인공호흡 이탈 실패·용혈이 온다. 재급식(인슐린이 인을 세포 안으로)과 CRRT(필터로 소실)에서 특히 잘 빠지므로 이 상황에선 문턱을 낮춰 보충한다. 인산염은 나트륨/칼륨과 짝이어서 부하되는 Na·K도 함께 계산한다.",
+      ref: "gl:icu-lyte-protocol"
+    },
+    "nutr:lyte:ca": {
+      id: "nutr:lyte:ca", ko: "칼슘(이온화 Ca)", unit: "mmol/L", goalLo: 1.12, goalHi: 1.3, goalText: "1.12–1.3 mmol/L(이온화)",
+      product: "drug:ca_gluconate", rate: "최대 1.5 mEq Ca²⁺/분(1 g=4.56 mEq)", maxConc: "",
+      bands: [
+        { lo: 1.05, hi: 1.12, dose: "글루콘산칼슘 1 g(30–60분)", route: "IV(경구 시트르산 2정)", note: "익일 재검" },
+        { lo: 0.99, hi: 1.05, dose: "글루콘산칼슘 2 g(30–60분)", route: "IV", note: "4–6h 재검" },
+        { lo: 0.93, hi: 0.99, dose: "글루콘산칼슘 3 g(60분)", route: "IV", note: "4–6h 재검" },
+        { lo: 0, hi: 0.93, dose: "글루콘산칼슘 4 g(60분) + 의사 보고", route: "IV", note: "4–6h 재검" }
+      ],
+      cautions: ["저Mg 교정 먼저(불응성 저Ca)", "인산과 동시주입 침전", "디곡신 사용자 급속주입 주의"],
+      mechanism: "이온화 칼슘은 심근 수축·신경근 흥분·혈액응고에 직접 관여한다(총칼슘은 알부민에 좌우되므로 중환자에선 이온화 칼슘으로 본다). 급속 주입은 심장을 자극해 부정맥을 유발하고, 인과 같은 라인에서 만나면 인산칼슘으로 침전한다. 저Mg가 있으면 PTH가 안 나와 칼슘이 안 오르므로 Mg를 먼저 본다. CRRT 구연산 항응고 시 구연산이 칼슘을 붙잡아 저Ca가 흔하다.",
+      ref: "gl:icu-lyte-protocol"
+    }
+  };
+  const OUT = { NUTR_LYTES };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/nutr_refeeding.js */
+/* nutr_refeeding.js — ★재급식증후군 기준·프로토콜(NICE). SPEC §7. */
+(function (root) {
+  const NUTR_REFEEDING = {
+    "nutr:refeed:criteria": {
+      id: "nutr:refeed:criteria", ko: "고위험 판정 기준(NICE)", ref: "gl:nice-cg32",
+      major: [
+        { k: "bmi16", label: "BMI < 16 kg/m²" },
+        { k: "wtloss15", label: "3–6개월 의도치 않은 체중감소 > 15%" },
+        { k: "npo10", label: "10일 이상 거의 금식" },
+        { k: "low_lytes", label: "재급식 전 저K·저P·저Mg" }
+      ],
+      minor: [
+        { k: "bmi185", label: "BMI < 18.5 kg/m²" },
+        { k: "wtloss10", label: "체중감소 > 10%(3–6개월)" },
+        { k: "npo5", label: "5일 이상 거의 금식" },
+        { k: "alcohol_drug", label: "알코올 남용·약물(인슐린·항암·제산제·이뇨제)" }
+      ],
+      rule: "major 1개 이상 또는 minor 2개 이상 → 고위험",
+      extreme: "BMI<14 또는 15일 이상 거의 금식 → 극단(초저열량 시작·심전도)"
+    },
+    "nutr:refeed:protocol": {
+      id: "nutr:refeed:protocol", ko: "재급식 프로토콜", ref: "gl:nice-cg32", th: "nutr:th:refeeding_start",
+      start_high: "10 kcal/kg/일로 시작, 4–7일에 걸쳐 목표 도달",
+      start_extreme: "5 kcal/kg/일 + 지속 심전도 감시",
+      thiamine: "티아민 200–300 mg/일(재급식 전·처음 10일) + 비타민 B 복합·종합비타민/미량원소 1일 1회",
+      lyte_prophylaxis: "칼륨 2–4 mmol/kg/일 · 인 0.3–0.6 mmol/kg/일 · 마그네슘 0.2(IV)/0.4(경구) mmol/kg/일(재급식 전 수치 높지 않으면)",
+      monitor: "첫 3–7일 인·K·Mg 집중 감시. 수분균형·심전도.",
+      mechanism: "굶는 동안 몸은 지방·케톤을 태우고 인·K·Mg·티아민의 세포 내 총량이 서서히 비는데, 혈중 수치는 정상처럼 보인다. 여기에 탄수화물을 갑자기 주면 인슐린이 치솟아 포도당과 함께 인·K·Mg를 세포 안으로 몰아넣어 혈중 수치가 급락한다. 특히 저인혈증은 ATP·2,3-DPG를 고갈시켜 심부전·호흡부전·부정맥을 일으키고, 티아민은 포도당 대사에 소모돼 Wernicke를 부른다. 그래서 열량을 천천히 올리고 탄수화물 전에 티아민을 먼저 준다.",
+      note: "★열량을 천천히 올리는 것이 핵심 — 급격한 탄수화물이 인슐린을 통해 저인·저K·저Mg·티아민결핍을 유발"
+    }
+  };
+  const OUT = { NUTR_REFEEDING };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/nutr_monitor.js */
+/* nutr_monitor.js — 모니터링 체크리스트. SPEC §10. */
+(function (root) {
+  const NUTR_MONITOR = {
+    "nutr:monitor:daily": {
+      id: "nutr:monitor:daily", ko: "초기 매일", items: ["전해질(Na·K·Cl·HCO₃)", "★인·마그네슘·칼슘", "혈당", "I/O·체중", "신·간기능"], ref: "gl:aspen-2016"
+    },
+    "nutr:monitor:tpn": {
+      id: "nutr:monitor:tpn", ko: "TPN", items: ["중성지방(지질)", "간효소·빌리루빈(담즙정체)", "혈당·GIR", "카테터 감염 징후", "칼슘-인 안정성"], ref: "gl:merck-pn"
+    },
+    "nutr:monitor:refeed": {
+      id: "nutr:monitor:refeed", ko: "재급식", items: ["첫 3–7일 인·K·Mg 집중", "심전도(극단·저P)", "수분균형·부종", "티아민 투여 확인"], ref: "gl:nice-cg32"
+    },
+    "nutr:monitor:adequacy": {
+      id: "nutr:monitor:adequacy", ko: "영양 적정성", items: ["목표 대비 도달률(kcal·단백)", "질소평형(선택)", "전알부민/CRP 추세(급성기 해석 주의)", "근육량·기능 추세"], ref: "gl:espen-icu-2023"
+    }
+  };
+  const OUT = { NUTR_MONITOR };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/nutr_drugs.js */
+/* nutr_drugs.js — 영양·전해질 제품. SPEC §3. shared=통합레지스트리 재사용. 재검증. */
+(function (root) {
+  const NUTR_CLASSES = {
+    "class:macronutrient": { id: "class:macronutrient", ko: "대량영양소(정맥)" },
+    "class:electrolyte": { id: "class:electrolyte", ko: "전해질 보충제" },
+    "class:vitamin": { id: "class:vitamin", ko: "비타민·미량원소" }
+  };
+  const D = (id, ko, en, cls, extra) => Object.assign({ id, ko, en, class: cls, shared: true, verified: false }, extra || {});
+  const NUTR_DRUGS = {
+    "drug:dextrose": D("drug:dextrose", "포도당(dextrose)", "dextrose", "class:macronutrient", { dose: "3.4 kcal/g · GIR ≤5 mg/kg/분 · 초기 100–150 g/일", note: "PN 주 열량원" }),
+    "drug:amino_acid": D("drug:amino_acid", "아미노산 수액", "amino acid", "class:macronutrient", { dose: "4 kcal/g · 목표 g/kg(단백)", note: "신·간 상태별 조성" }),
+    "drug:ivfe": D("drug:ivfe", "지질유제(IVFE)", "IV fat emulsion", "class:macronutrient", { dose: "~10 kcal/g · 1–1.5 g/kg(상한 1.5)", note: "중성지방 모니터. 대두/올리브/어유 혼합" }),
+    "drug:kcl": D("drug:kcl", "염화칼륨(KCl)", "potassium chloride", "class:electrolyte", { dose: "수치별(§K): 20–80 mEq · 10 mEq/시(최대 20, 중심)", note: "말초 80·중심 120 mEq/L 상한. 신부전 신중" }),
+    "drug:mgso4": D("drug:mgso4", "황산마그네슘(MgSO₄)", "magnesium sulfate", "class:electrolyte", { dose: "수치별(§Mg): 2–6 g · 1 g/시(최대 2)", note: "신부전 감량" }),
+    "drug:na_phosphate": D("drug:na_phosphate", "인산나트륨", "sodium phosphate", "class:electrolyte", { dose: "수치별(§P): 15–45 mmol · 최대 7 mmol/시", note: "고Na·저K면 인산칼륨" }),
+    "drug:k_phosphate": D("drug:k_phosphate", "인산칼륨", "potassium phosphate", "class:electrolyte", { dose: "인 보충(고Na·저K 시) · 최대 7 mmol/시", note: "칼륨 동반 부하 계산" }),
+    "drug:ca_gluconate": D("drug:ca_gluconate", "글루콘산칼슘", "calcium gluconate", "class:electrolyte", { dose: "수치별(§Ca): 1–4 g · 최대 1.5 mEq Ca²⁺/분(1 g=4.56 mEq)", note: "저Mg 먼저 교정. 인과 침전" }),
+    "drug:thiamine": D("drug:thiamine", "티아민(비타민 B1)", "thiamine", "class:vitamin", { dose: "재급식·알코올 200–300 mg/일(정맥/경구)", note: "★탄수화물 투여 전 우선 — Wernicke·재급식 예방" }),
+    "drug:multivitamin": D("drug:multivitamin", "종합비타민·미량원소", "multivitamin/trace", "class:vitamin", { dose: "1일 1회(§미량·비타민)", note: "CRRT·화상 소실 보충" })
+  };
+  const OUT = { NUTR_CLASSES, NUTR_DRUGS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/nutr_concepts.js */
+/* nutr_concepts.js — 기전·개념 해설(도서관 충실도 보강). 숫자보다 "왜"를 설명.
+ * 각 노드: title·body(문단)·points(핵심 기전 목록). ref.
+ */
+(function (root) {
+  const NUTR_CONCEPTS = {
+    "nutr:concept:stress_metabolism": {
+      id: "nutr:concept:stress_metabolism", emoji: "🔥", title: "스트레스 대사 — 왜 급성기엔 적게 주나",
+      body: "중증 질환의 급성기에는 코르티솔·카테콜아민·글루카곤·염증사이토카인이 폭증한다. 몸은 이 시기에 근육을 분해해 아미노산을 내보내고 간에서 포도당을 스스로 만들어낸다(내인성 당신생). 즉 '이미 몸이 만들어 쓰는 열량'이 있는데, 여기에 외부 영양을 목표량만큼 꽉 채우면 총 공급이 소비를 넘어 과영양(overfeeding)이 된다.",
+      points: [
+        "급성기(ebb/초기 flow): 이화 우세 — 내인성 포도당 생산이 인슐린으로 잘 안 꺼진다(스트레스 고혈당).",
+        "★그래서 초기엔 저열량(목표의 ≤70%)으로 시작 — 과영양은 고혈당·감염·지방간·CO₂↑(호흡부담)·자가포식(autophagy) 억제로 오히려 해롭다.",
+        "회복기(anabolic)로 넘어가면 열량을 80–100%로 점증하고 단백을 적극 공급해 근육을 재건한다.",
+        "단백질은 예외 — 이화가 심하므로 급성기부터 충분히(1.2–2.0 g/kg) 공급해 근손실을 줄인다."
+      ],
+      ref: "gl:espen-icu-2023"
+    },
+    "nutr:concept:gut_first": {
+      id: "nutr:concept:gut_first", emoji: "🧬", title: "장을 먼저 쓰는 이유(EN 우선)",
+      body: "장은 단순 소화기관이 아니라 최대의 면역기관이다. 음식이 장을 지나가면 장점막 융모가 유지되고, 장관연관림프조직(GALT)이 자극되며, 장벽의 밀착연접이 촘촘하게 유지된다. 반대로 오래 굶기면 융모가 위축되고 장벽 투과성이 커져 장내 세균·독소가 혈류로 새어 들어가는 '세균 전위'가 일어나 전신 염증·감염을 부추긴다.",
+      points: [
+        "EN은 장점막·면역(GALT)·장벽을 유지 → 감염 합병증·재원기간 감소.",
+        "혈역학이 안정되면 24–48시간 내 조기 EN이 원칙(소량 trophic이라도).",
+        "PN은 장을 못 쓸 때의 대안 — 정맥은 장 자극이 없어 위 이점을 못 준다.",
+        "★과거 '장을 쉬게' 오래 NPO+TPN 하던 관행(예: 췌장염)은 지양 — 조기 EN이 더 좋다."
+      ],
+      ref: "gl:aspen-2016"
+    },
+    "nutr:concept:refeeding_patho": {
+      id: "nutr:concept:refeeding_patho", emoji: "⚡", title: "재급식증후군 — 무슨 일이 벌어지나",
+      body: "굶는 동안 몸은 지방·케톤을 태우고 인·칼륨·마그네슘 같은 세포 내 미네랄과 티아민이 서서히 고갈된다(혈중 수치는 정상처럼 보여도 총량은 비어 있다). 여기에 갑자기 탄수화물을 주면 인슐린이 치솟고, 인슐린은 포도당과 함께 인·칼륨·마그네슘을 세포 안으로 급격히 끌어들인다. 그 결과 혈중 인·칼륨·마그네슘이 뚝 떨어지고, 특히 인 고갈은 ATP·2,3-DPG 생산을 막아 심부전·호흡부전·부정맥·의식저하로 이어질 수 있다.",
+      points: [
+        "굶음 → 세포 내 인·K·Mg·티아민 총량 고갈(혈중은 정상 위장).",
+        "★탄수화물 재개 → 인슐린 급증 → 인·K·Mg 세포내 이동 → 급성 저인·저K·저Mg혈증.",
+        "저인혈증 → ATP·2,3-DPG↓ → 심근·호흡근 부전·용혈·부정맥(치명적).",
+        "티아민은 포도당 대사(피루브산→아세틸CoA)의 조효소 — 탄수화물 부하로 급속 소모 → Wernicke 위험.",
+        "★대응: 열량을 천천히(10, 극단 5 kcal/kg) 올리고, 탄수화물 주기 전 티아민 먼저, 인·K·Mg 예방 보충·감시."
+      ],
+      ref: "gl:nice-cg32"
+    },
+    "nutr:concept:electrolyte_shift": {
+      id: "nutr:concept:electrolyte_shift", emoji: "🧂", title: "전해질 — 역할과 보충의 원리",
+      body: "중환자의 저전해질은 대개 '총량 부족'과 '세포 내외 이동'이 겹친 결과다. 보충은 단순히 숫자를 맞추는 게 아니라 어느 전해질을 먼저·어떤 속도로 줄지가 중요하다. 특히 마그네슘은 다른 전해질의 '문지기'라서, 저마그네슘을 두고는 저칼륨·저칼슘이 잘 교정되지 않는다.",
+      points: [
+        "★마그네슘 먼저: Mg는 신장 K 배출통로(ROMK)를 억제하고 부갑상샘호르몬(PTH) 분비·작용에 필요 → 저Mg면 K가 소변으로 계속 새고 Ca도 안 오른다. 불응성 저K·저Ca는 Mg부터.",
+        "칼륨: 심근 세포막 전위 유지 — 저K·고K 모두 치명적 부정맥. 신부전·핍뇨 시 보충은 신중(고칼륨 위험).",
+        "인(P): ATP(에너지)·2,3-DPG(산소전달)·세포막의 재료 — 고갈 시 심·호흡근 약화. CRRT·재급식서 특히 잘 빠진다.",
+        "칼슘(이온화): 심근 수축·신경근 흥분·응고에 관여 — 급속 교정은 부정맥 위험, 인과 섞으면 침전.",
+        "속도 원칙: 정맥 보충은 정해진 최대속도 이내로(예: K 10 mEq/시, P 7 mmol/시) — 급속주입 자체가 위험."
+      ],
+      ref: "gl:icu-lyte-protocol"
+    },
+    "nutr:concept:body_weight": {
+      id: "nutr:concept:body_weight", emoji: "⚖️", title: "어떤 체중으로 계산하나(실체중·이상·보정)",
+      body: "영양 목표는 'kg당' 값이라 어느 체중을 곱하느냐가 결과를 좌우한다. 지방조직은 대사가 활발하지 않아 비만 환자에게 실체중을 그대로 곱하면 과영양이 된다. 그래서 비만에서는 이상체중(IBW) 또는 보정체중(ABW·지방의 일부만 반영)을 쓴다.",
+      points: [
+        "정상~과체중: 실체중(actual) 사용.",
+        "비만(BMI≥30): 지방 과다 → 실체중 곱하기 금물. 열량은 저열량 규칙(실체중 11–14 또는 IBW 22–25), 단백은 이상체중 기준.",
+        "이상체중(IBW, Devine): 신장 기반 표준체중 — 지방 제외 대사체중의 근사.",
+        "보정체중(ABW=IBW+0.4×(실체중−IBW)): 지방의 대사 기여 일부를 반영해 IBW와 실체중 사이 값.",
+        "부종·복수(간부전·과부하)는 겉체중이 부풀어 있으므로 건체중/평소체중으로 보정."
+      ],
+      ref: "gl:aspen-2016"
+    },
+    "nutr:concept:macro_roles": {
+      id: "nutr:concept:macro_roles", emoji: "💉", title: "탄수화물·지질·단백의 역할과 한계",
+      body: "TPN은 세 가지 열량원을 섞는다. 각자 역할과 '넘으면 해로운' 상한이 다르다. 열량(탄수화물·지질)과 단백(구조·회복)을 분리해서 생각하면 조성이 쉬워진다.",
+      points: [
+        "포도당(3.4 kcal/g): 주 열량원이지만 산화속도에 한계 → GIR >5 mg/kg/분이면 남는 포도당이 지방으로 전환(지방간)되고 CO₂가 늘어 인공호흡 이탈을 방해한다.",
+        "지질(~10 kcal/g): 열량 밀도가 높아 적은 부피로 열량·필수지방산 공급. 그러나 청소능·면역 부담으로 1–1.5 g/kg 상한, 중성지방 감시.",
+        "단백/아미노산(4 kcal/g): 열량이 아니라 '재료' — 근육·면역·상처회복. 스트레스에선 최우선 확보(열량이 부족해도 단백은 지킨다).",
+        "삼투압: 고농도 포도당·아미노산은 삼투압이 높아 말초정맥을 상하게 함 → 중심정맥(TPN) 필요.",
+        "칼슘-인 침전: 같은 수액에서 칼슘과 인이 만나면 인산칼슘으로 굳을 수 있어 조제 순서·농도를 지킨다."
+      ],
+      ref: "gl:merck-pn"
+    }
+  };
+  const OUT = { NUTR_CONCEPTS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* data/nutr_relations.js */
+/* nutr_relations.js — 관계 트리플. SPEC §1(P3). */
+(function (root) {
+  const NUTR_RELATIONS = [
+    { s: "nutr:route:en", p: "preferred_over", o: "nutr:route:pn" },
+    { s: "nutr:target:crrt", p: "requires", o: "nutr:lyte:p" },
+    { s: "nutr:target:obese", p: "uses", o: "nutr:th:obese" },
+    { s: "nutr:refeed:protocol", p: "uses", o: "drug:thiamine" },
+    { s: "nutr:lyte:k", p: "product", o: "drug:kcl" },
+    { s: "nutr:lyte:mg", p: "product", o: "drug:mgso4" },
+    { s: "nutr:lyte:p", p: "product", o: "drug:na_phosphate" },
+    { s: "nutr:lyte:ca", p: "product", o: "drug:ca_gluconate" },
+    { s: "nutr:tpn:macro", p: "constant", o: "nutr:th:kcal_per_g" },
+    { s: "nutr:tpn:macro", p: "limited_by", o: "nutr:th:gir_max" },
+    { s: "nutr:lyte:ca", p: "depends_on", o: "nutr:lyte:mg" },
+    { s: "nutr:lyte:k", p: "depends_on", o: "nutr:lyte:mg" }
+  ];
+  const OUT = { NUTR_RELATIONS };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* engine/recommend.js */
+/* recommend.js — ICU영양 계산 정문. SPEC §2. 순수 산술(계수는 DATA SSOT). */
+(function (root) {
+  const req = (typeof require !== "undefined");
+  const TG = req ? require("../data/nutr_targets.js") : root, TH = req ? require("../data/nutr_thresholds.js") : root,
+    RO = req ? require("../data/nutr_route.js") : root, TP = req ? require("../data/nutr_tpn.js") : root,
+    LY = req ? require("../data/nutr_lytes.js") : root, RF = req ? require("../data/nutr_refeeding.js") : root,
+    MO = req ? require("../data/nutr_monitor.js") : root;
+  const TARGETS = TG.NUTR_TARGETS, THS = TH.NUTR_TH, ROUTE = RO.NUTR_ROUTE, TPN = TP.NUTR_TPN,
+    LYTES = LY.NUTR_LYTES, REFEED = RF.NUTR_REFEEDING, MONITOR = MO.NUTR_MONITOR;
+  const KCALG = THS["nutr:th:kcal_per_g"], GIRMAX = THS["nutr:th:gir_max"], FLUID = THS["nutr:th:fluid"],
+    LIPID = THS["nutr:th:tpn_lipid"], TPNLYTE = THS["nutr:th:tpn_electrolytes"], RFSTART = THS["nutr:th:refeeding_start"], OBESE = THS["nutr:th:obese"];
+
+  const r1 = x => Math.round(x * 10) / 10, r0 = x => Math.round(x), r5 = x => Math.round(x / 5) * 5;
+
+  function anthro(inp) {
+    const wt = +inp.weight, ht = +inp.height, sex = inp.sex || "male";
+    if (!wt || !ht) return null;
+    const bmi = wt / Math.pow(ht / 100, 2);
+    const inch = ht / 2.54, base = sex === "female" ? 45.5 : 50;
+    const ibw = Math.max(base + 2.3 * (inch - 60), base * 0.6);
+    const abw = ibw + 0.4 * (wt - ibw);
+    return { weight: wt, height: ht, sex, bmi: r1(bmi), ibw: r1(ibw), abw: r1(abw) };
+  }
+  function weightFor(basis, a) { return basis === "ibw" ? a.ibw : basis === "abw" ? a.abw : a.weight; }
+
+  function energyTarget(node, a) {
+    if (node.special === "obese") {
+      const over50 = a.bmi > 50;
+      const band = over50 ? { lo: 22, hi: 25, basis: "ibw" } : { lo: 11, hi: 14, basis: "actual" };
+      const w = weightFor(band.basis, a);
+      return { kcalPerKg: [band.lo, band.hi], basis: band.basis, weight: w, lo: r5(band.lo * w), hi: r5(band.hi * w), point: r5((band.lo + band.hi) / 2 * w), obeseBand: over50 ? ">50(이상체중)" : "30–50(실체중)" };
+    }
+    const e = node.energy, w = weightFor(e.basis, a);
+    return { kcalPerKg: [e.lo, e.hi], basis: e.basis, weight: w, lo: r5(e.lo * w), hi: r5(e.hi * w), point: r5((e.lo + e.hi) / 2 * w) };
+  }
+  function proteinTarget(node, a) {
+    if (node.special === "obese") {
+      const ge40 = a.bmi >= 40, val = ge40 ? 2.5 : 2.0, w = a.ibw;
+      return { gPerKg: [val, val], basis: "ibw", weight: w, lo: r0(val * w), hi: r0(val * w), point: r0(val * w) };
+    }
+    const p = node.protein, w = weightFor(p.basis, a);
+    return { gPerKg: [p.lo, p.hi], basis: p.basis, weight: w, lo: r0(p.lo * w), hi: r0(p.hi * w), point: r0((p.lo + p.hi) / 2 * w) };
+  }
+  function fluidTarget(a) {
+    return { mlPerKg: [FLUID.lo, FLUID.hi], typical: [FLUID.typicalLo, FLUID.typicalHi], lo: r5(FLUID.typicalLo * a.weight), hi: r5(FLUID.typicalHi * a.weight), note: FLUID.note };
+  }
+  function tpnEstimate(a, energyPoint, proteinPoint) {
+    const aaG = proteinPoint, aaKcal = aaG * KCALG.amino_acid;
+    const lipidG = r0(Math.min(LIPID.gPerKg, LIPID.cap) * a.weight), lipidKcal = lipidG * KCALG.lipid;
+    let dextroseKcal = energyPoint - aaKcal - lipidKcal; if (dextroseKcal < 0) dextroseKcal = 0;
+    const dextroseG = dextroseKcal / KCALG.dextrose;
+    const gir = dextroseG * 1000 / (a.weight * 1440);
+    const el = TPNLYTE.items.map(it => ({ name: it.ko, amount: it.perKg ? (r1(it.lo * a.weight) + "–" + r1(it.hi * a.weight) + " " + it.unit.replace("/kg", "")) : (it.lo + "–" + it.hi + " " + it.unit) }));
+    return {
+      totalKcal: energyPoint, aaG: r0(aaG), aaKcal: r0(aaKcal), lipidG: lipidG, lipidKcal: r0(lipidKcal),
+      dextroseG: r0(dextroseG), dextroseKcal: r0(dextroseKcal), gir: r1(gir), girWarn: gir > GIRMAX.value,
+      girMax: GIRMAX.value, electrolytes: el, micronutrients: TPN["nutr:tpn:micro"], note: "목표 열량·단백에서 역산한 근사 조성 — 제품·안정성·상태별 조정."
+    };
+  }
+  function lyteReplace(labs) {
+    const out = [];
+    Object.values(LYTES).forEach(L => {
+      const v = labs ? labs[L.id.split(":").pop()] : null;
+      if (v == null || v === "" || isNaN(+v)) return;
+      const val = +v;
+      if (val >= L.goalLo) { out.push({ id: L.id, name: L.ko, level: val, unit: L.unit, atGoal: true, goalText: L.goalText }); return; }
+      const band = (L.bands || []).find(b => val >= b.lo && val < b.hi);
+      out.push({ id: L.id, name: L.ko, level: val, unit: L.unit, atGoal: false, goalText: L.goalText, dose: band ? band.dose : null, route: band ? band.route : null, rate: L.rate, note: band ? band.note : null, cautions: L.cautions, product: L.product });
+    });
+    return out;
+  }
+  function refeedingEval(rf) {
+    const crit = REFEED["nutr:refeed:criteria"], proto = REFEED["nutr:refeed:protocol"];
+    const flags = (rf && rf.flags) || {};
+    const majorHit = crit.major.filter(m => flags[m.k]).map(m => m.label);
+    const minorHit = crit.minor.filter(m => flags[m.k]).map(m => m.label);
+    const extreme = !!flags.bmi14 || !!flags.npo15;
+    const high = majorHit.length >= 1 || minorHit.length >= 2 || extreme;
+    return {
+      risk: extreme ? "극단(초고위험)" : high ? "고위험" : "저위험", high, extreme,
+      criteria: majorHit.concat(minorHit).concat(extreme ? ["★BMI<14 또는 15일↑ 금식"] : []),
+      startKcal: extreme ? RFSTART.extreme : RFSTART.high, startUnit: RFSTART.unit,
+      thiamine: proto.thiamine, lyteProphylaxis: proto.lyte_prophylaxis, monitor: proto.monitor, note: proto.note
+    };
+  }
+
+  function compute(input) {
+    const inp = input || {}, a = anthro(inp);
+    if (!a) return { error: "체중·신장을 입력하세요." };
+    const disease = inp.disease || "general", node = TARGETS["nutr:target:" + disease] || TARGETS["nutr:target:general"];
+    const energy = energyTarget(node, a), protein = proteinTarget(node, a), fluid = fluidTarget(a);
+    // 급성기 저열량
+    energy.phase = inp.phase === "acute" ? "acute" : "full";
+    if (energy.phase === "acute") { energy.hypocaloric = r5(energy.point * 0.7); energy.phaseNote = "급성기 저열량(≤70%): 약 " + energy.hypocaloric + " kcal로 시작 → 3일 후 점증"; }
+    const refeeding = refeedingEval(inp.refeeding);
+    // refeeding이 고위험이면 시작열량 override 안내
+    if (refeeding.high) { energy.refeedStart = r5(refeeding.startKcal * a.weight); energy.refeedNote = "재급식 " + refeeding.risk + ": " + refeeding.startKcal + " kcal/kg(약 " + energy.refeedStart + " kcal)로 시작"; }
+    const tpn = tpnEstimate(a, energy.point, protein.point);
+    const electrolytes = lyteReplace(inp.labs);
+    // route
+    const route = { en: ROUTE["nutr:route:en"], pn: ROUTE["nutr:route:pn"], npo: ROUTE["nutr:route:npo"], recommended: inp.npo ? "npo" : (inp.en_contraindicated ? "pn" : "en") };
+    // monitor
+    const monitor = [MONITOR["nutr:monitor:daily"]];
+    if (route.recommended === "pn" || inp.tpn) monitor.push(MONITOR["nutr:monitor:tpn"]);
+    if (refeeding.high) monitor.push(MONITOR["nutr:monitor:refeed"]);
+    monitor.push(MONITOR["nutr:monitor:adequacy"]);
+    // warnings
+    const warnings = [];
+    if (a.bmi >= 30 && disease !== "obese") warnings.push("BMI " + a.bmi + " (비만) — '비만 중환자' 저열량·고단백 목표(이상/보정체중) 적용을 고려하세요.");
+    if (disease === "obese" && a.bmi < 30) warnings.push("BMI " + a.bmi + " — 비만 기준(≥30) 미만. 일반 목표가 적절할 수 있습니다.");
+    if (tpn.girWarn) warnings.push("포도당주입속도(GIR) " + tpn.gir + " > " + tpn.girMax + " mg/kg/분 — 포도당↓·지질/단백 재배분 또는 열량 재검토.");
+    if (refeeding.high) warnings.push("★재급식 고위험 — 위 시작열량·티아민·전해질 예방을 우선.");
+    if ((disease === "aki" || disease === "crrt") && electrolytes.length === 0) warnings.push("신질환/CRRT — 칼륨·인·마그네슘 수치 확인 권장(저인혈증·고칼륨).");
+
+    return { anthro: a, disease: node.ko, diseaseId: disease, targetNode: { notes: node.notes, cautions: node.cautions, mechanism: node.mechanism || null }, route, energy, protein, fluid, tpn, electrolytes, refeeding, monitor, warnings };
+  }
+
+  const OUT = { compute, recommend: compute, anthro };
+  if (typeof module !== "undefined" && module.exports) module.exports = OUT; else Object.assign(root, OUT);
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+</script>
+<script>
+/* app.js — ICU 영양 계산기 뷰. 2탭(도서관·플로우). compute() 불변 소비. */
+(function () {
+  var W = window;
+  var TARGETS = W.NUTR_TARGETS, TH = W.NUTR_TH, FORMULA = W.NUTR_FORMULA, ROUTE = W.NUTR_ROUTE, TPN = W.NUTR_TPN,
+    LYTES = W.NUTR_LYTES, REFEED = W.NUTR_REFEEDING, MONITOR = W.NUTR_MONITOR, DRUGS = W.NUTR_DRUGS, CLASSES = W.NUTR_CLASSES, GL = W.NUTR_GUIDELINES, CONCEPTS = W.NUTR_CONCEPTS;
+  var el = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); };
+
+  function openSheet(t, h) { el("sheetTitle").innerHTML = t; el("sheetBody").innerHTML = h; el("sheet").classList.add("on"); el("sheetBack").classList.add("on"); }
+  function closeSheet() { el("sheet").classList.remove("on"); el("sheetBack").classList.remove("on"); }
+  W.closeSheet = closeSheet;
+  el("sheetX").addEventListener("click", closeSheet); el("sheetBack").addEventListener("click", closeSheet);
+  function card(cls, ic, title, tag, body) { return '<div class="card ' + cls + '"><div class="ch"><span class="ic">' + ic + "</span>" + esc(title) + (tag ? '<span class="tag">' + esc(tag) + "</span>" : "") + '</div><div class="cb">' + body + "</div></div>"; }
+  function kp(a) { return a && a.length ? '<ul class="keypoints">' + a.map(function (k) { return "<li>" + esc(k) + "</li>"; }).join("") + "</ul>" : ""; }
+  function why(t) { return t ? '<div class="whybox"><b>왜?</b> ' + esc(t) + "</div>" : ""; }
+
+  ["lib", "flow"].forEach(function (t) { el("tab-" + t).addEventListener("click", function () { ["lib", "flow"].forEach(function (o) { el("tab-" + o).classList.toggle("on", o === t); el("pane-" + o).classList.toggle("on", o === t); }); }); });
+
+  var P;
+  function reset() { P = { weight: null, height: null, age: null, sex: "male", disease: "general", phase: "full", dialysis: false, npo: false, en_contraindicated: false, tpn: false, refeeding: { flags: {} }, labs: {} }; }
+  reset();
+
+  var DIS_CHIPS = [];
+  Object.values(TARGETS).forEach(function (t) { DIS_CHIPS.push([t.id.split(":").pop(), t.emoji + " " + t.ko.replace(/\(.*/, "")]); });
+  var REFEED_MAJOR = REFEED["nutr:refeed:criteria"].major, REFEED_MINOR = REFEED["nutr:refeed:criteria"].minor;
+  var LYTE_INPUTS = Object.values(LYTES).map(function (L) { return { k: L.id.split(":").pop(), ko: L.ko, unit: L.unit, goal: L.goalText }; });
+
+  function numInput(id, label, ph, cb) {
+    return '<div class="numfield"><label>' + esc(label) + '</label><input id="' + id + '" type="number" inputmode="decimal" placeholder="' + esc(ph) + '"></div>';
+  }
+  function chip(host, list, mode, danger, cb) {
+    var h = el(host); if (!h) return; h.innerHTML = "";
+    list.forEach(function (it) {
+      var b = document.createElement("div"); b.className = "chip"; b.textContent = it[1];
+      if (mode === "single" && it[0] === cb.def) b.classList.add("on");
+      b.addEventListener("click", function () {
+        if (mode === "single") { Array.prototype.forEach.call(h.children, function (c) { c.classList.remove("on", "danger"); }); b.classList.add("on"); if (danger) b.classList.add("danger"); cb(it[0], true); }
+        else { var on = !b.classList.contains("on"); b.classList.toggle("on", on); if (danger) b.classList.toggle("danger", on); cb(it[0], on); }
+        render();
+      });
+      h.appendChild(b);
+    });
+  }
+  function accSec(id, num, title, hint, open) { return '<details class="accSec"' + (open ? " open" : "") + '><summary><span class="arw">▸</span>' + num + ". " + title + '</summary><div class="abody">' + (hint ? '<div class="hint">' + hint + "</div>" : "") + '<div id="cg' + id + '"></div></div></details>'; }
+
+  function buildFlow() {
+    var s = accSec("Anthro", 1, "체격 · 성별", "체중·신장으로 BMI·이상체중 자동 계산.", true);
+    s += accSec("Dis", 2, "질환 · 상태", "질환별 목표 칼로리·단백. 급성기·투석 반영.", true);
+    s += accSec("Refeed", 3, "재급식 위험(NICE)", "해당 항목 선택 → 저열량 시작·티아민·전해질 예방.", false);
+    s += accSec("Labs", 4, "현재 전해질(보충 계산)", "수치 입력 시 보충 용량·속도 제시.", false);
+    el("flowInputs").innerHTML = s;
+    // anthro
+    el("cgAnthro").innerHTML = '<div class="numgrid">' + numInput("inW", "체중 (kg)", "예: 70") + numInput("inH", "신장 (cm)", "예: 170") + '</div><div class="numgrid" style="margin-top:8px"><div class="numfield"><label>나이</label><input id="inAge" type="number" placeholder="세"></div><div class="numfield"><label>성별</label><div id="cgSex" class="chips"></div></div></div>';
+    el("inW").addEventListener("input", function (e) { P.weight = e.target.value === "" ? null : +e.target.value; render(); });
+    el("inH").addEventListener("input", function (e) { P.height = e.target.value === "" ? null : +e.target.value; render(); });
+    el("inAge").addEventListener("input", function (e) { P.age = e.target.value === "" ? null : +e.target.value; render(); });
+    var sexcb = function (v) { P.sex = v; }; sexcb.def = "male"; chip("cgSex", [["male", "남"], ["female", "여"]], "single", false, sexcb);
+    // disease + toggles
+    el("cgDis").innerHTML = '<div id="cgDisChips" class="chips"></div><div id="cgTog" class="chips" style="margin-top:8px"></div>';
+    var discb = function (v) { P.disease = v; }; discb.def = "general"; chip("cgDisChips", DIS_CHIPS, "single", false, discb);
+    chip("cgTog", [["acute", "급성기(저열량 시작)"], ["dialysis", "투석/CRRT"], ["npo", "NPO(금식)"], ["en_ci", "경장 금기(PN)"], ["tpn", "TPN 조성 보기"]], "multi", false, function (v, on) { if (v === "acute") P.phase = on ? "acute" : "full"; else if (v === "dialysis") P.dialysis = on; else if (v === "npo") P.npo = on; else if (v === "en_ci") P.en_contraindicated = on; else if (v === "tpn") P.tpn = on; });
+    // refeeding
+    var rfHost = el("cgRefeed"); rfHost.innerHTML = '<div class="gl" style="font-size:10px;color:var(--ink-faint);margin:0 0 4px 2px">주기준(1개↑ 고위험)</div><div id="cgRfMaj" class="chips"></div><div class="gl" style="font-size:10px;color:var(--ink-faint);margin:8px 0 4px 2px">부기준(2개↑ 고위험)</div><div id="cgRfMin" class="chips"></div><div id="cgRfExt" class="chips" style="margin-top:8px"></div>';
+    chip("cgRfMaj", REFEED_MAJOR.map(function (m) { return [m.k, m.label]; }), "multi", true, function (v, on) { P.refeeding.flags[v] = on; });
+    chip("cgRfMin", REFEED_MINOR.map(function (m) { return [m.k, m.label]; }), "multi", true, function (v, on) { P.refeeding.flags[v] = on; });
+    chip("cgRfExt", [["bmi14", "BMI<14"], ["npo15", "15일↑ 금식"]], "multi", true, function (v, on) { P.refeeding.flags[v] = on; });
+    // labs
+    el("cgLabs").innerHTML = '<div class="lytegrid">' + LYTE_INPUTS.map(function (L) { return '<div class="numfield"><label>' + esc(L.ko) + " (" + esc(L.unit) + ")</label><input id=\"lab_" + L.k + "\" type=\"number\" inputmode=\"decimal\" placeholder=\"목표 " + esc(L.goal.split("(")[0]) + "\"></div>"; }).join("") + "</div>";
+    LYTE_INPUTS.forEach(function (L) { el("lab_" + L.k).addEventListener("input", function (e) { P.labs[L.k] = e.target.value === "" ? null : e.target.value; render(); }); });
+  }
+
+  function render() {
+    var host = el("stream");
+    if (!P.weight || !P.height) { host.innerHTML = ""; el("empty").style.display = "block"; return; }
+    el("empty").style.display = "none";
+    var r = W.compute(P); if (r.error) { host.innerHTML = '<div class="note">' + esc(r.error) + "</div>"; return; }
+    var a = r.anthro, html = "";
+    // warnings
+    if (r.warnings.length) { var wb = ""; r.warnings.forEach(function (w) { wb += '<div class="warnbox">⚠️ ' + esc(w) + "</div>"; }); html += wb; }
+    // anthro + route
+    var ab = '<div class="drugclass-box"><div class="dc-row"><span class="dc-k">체격</span><span class="dc-v">BMI <b>' + a.bmi + '</b> · 이상체중 ' + a.ibw + ' kg · 보정체중 ' + a.abw + ' kg</span></div>';
+    var rt = r.route[r.route.recommended];
+    ab += '<div class="dc-row dc-feat"><span class="dc-k">경로</span><span class="dc-v"><b>' + esc(rt.ko) + '</b> — ' + esc(rt.timing) + "</span></div>";
+    ab += '<div class="dc-row"><span class="dc-k">질환</span><span class="dc-v">' + esc(r.disease) + "</span></div></div>";
+    html += card("care", "🧍", "체격 · 경로", "자동계산", ab);
+    // KPI
+    var e = r.energy, p = r.protein, f = r.fluid;
+    var kb = '<div class="kpirow"><div class="kpi"><div class="kl">에너지</div><div class="kv">' + e.point + '</div><div class="ku">kcal/일 (' + e.lo + "–" + e.hi + ')</div></div>' +
+      '<div class="kpi"><div class="kl">단백</div><div class="kv">' + p.point + '</div><div class="ku">g/일 (' + p.lo + "–" + p.hi + ')</div></div>' +
+      '<div class="kpi care"><div class="kl">수액</div><div class="kv">' + f.lo + '</div><div class="ku">mL/일 (' + f.lo + "–" + f.hi + ')</div></div></div>';
+    kb += '<div class="note" style="padding:2px 0">에너지 ' + e.kcalPerKg[0] + "–" + e.kcalPerKg[1] + " kcal/kg · 단백 " + p.gPerKg[0] + "–" + p.gPerKg[1] + " g/kg (" + ({ actual: "실체중", ibw: "이상체중", abw: "보정체중" }[e.basis] || e.basis) + " 기준)</div>";
+    if (e.phaseNote) kb += '<div class="warnbox" style="color:var(--clin);border-color:var(--clin)">🕐 ' + esc(e.phaseNote) + "</div>";
+    if (e.refeedNote) kb += '<div class="warnbox"><b>⚠️ ' + esc(e.refeedNote) + "</b></div>";
+    if (r.targetNode.mechanism) kb += why(r.targetNode.mechanism);
+    if (r.targetNode.notes) kb += kp(r.targetNode.notes);
+    html += card("clin", "🎯", "목표 — 칼로리 · 단백 · 수액", "계산", kb);
+    // TPN
+    var t = r.tpn, tot = t.dextroseKcal + t.lipidKcal + t.aaKcal || 1;
+    var tb = '<div class="note" style="padding:0 0 4px">목표 열량·단백에서 역산한 근사 TPN 조성:</div>';
+    tb += '<div class="tpnbar"><span class="dx" style="width:' + (t.dextroseKcal / tot * 100) + '%">포도당</span><span class="lp" style="width:' + (t.lipidKcal / tot * 100) + '%">지질</span><span class="aa" style="width:' + (t.aaKcal / tot * 100) + '%">단백</span></div>';
+    tb += '<div class="drugclass-box"><div class="dc-row"><span class="dc-k">포도당</span><span class="dc-v"><b>' + t.dextroseG + ' g</b> (' + t.dextroseKcal + ' kcal) · GIR <b style="color:' + (t.girWarn ? "var(--block)" : "var(--care)") + '">' + t.gir + '</b> mg/kg/분' + (t.girWarn ? " ⚠️>·" + t.girMax : "") + "</span></div>";
+    tb += '<div class="dc-row"><span class="dc-k">지질</span><span class="dc-v"><b>' + t.lipidG + ' g</b> (' + t.lipidKcal + ' kcal) · 1 g/kg</span></div>';
+    tb += '<div class="dc-row"><span class="dc-k">아미노산</span><span class="dc-v"><b>' + t.aaG + ' g</b> (' + t.aaKcal + ' kcal)</span></div>';
+    tb += '<div class="dc-row dc-feat"><span class="dc-k">1일 전해질</span><span class="dc-v">' + t.electrolytes.map(function (x) { return esc(x.name) + " " + esc(x.amount); }).join(" · ") + "</span></div>";
+    tb += '<div class="dc-row"><span class="dc-k">미량·비타민</span><span class="dc-v">' + esc(t.micronutrients.trace) + " / 티아민 등 " + "</span></div></div>";
+    tb += '<div class="note" style="padding:4px 0 0">' + esc(t.note) + "</div>";
+    html += card("clin", "💉", "TPN 조성(근사)", "역산", tb);
+    // 전해질 보충
+    if (r.electrolytes.length) {
+      var lb = "";
+      r.electrolytes.forEach(function (L) {
+        if (L.atGoal) { lb += '<div class="blk"><div class="bl">' + esc(L.name) + " " + L.level + " " + esc(L.unit) + ' <span style="color:var(--care)">✓ 목표(' + esc(L.goalText) + ")</span></div></div>"; return; }
+        lb += '<div class="blk"><div class="bl" style="color:var(--block)">' + esc(L.name) + " " + L.level + " " + esc(L.unit) + ' ↓ (목표 ' + esc(L.goalText) + ')</div><div class="dose"><b>보충</b> ' + esc(L.dose) + " · " + esc(L.route || "") + " · <b>속도</b> " + esc(L.rate || "") + "</div>" + (L.note ? '<div class="od" style="color:var(--ink-faint)">' + esc(L.note) + "</div>" : "") + (L.cautions ? '<div class="od" style="color:var(--warn)">주의: ' + esc(L.cautions.join(" / ")) + "</div>" : "") + "</div>";
+      });
+      html += card("clin", "🧂", "전해질 보충", "수치별", lb);
+    }
+    // refeeding
+    if (r.refeeding.high) {
+      var rf = r.refeeding;
+      var fb = '<div class="warnbox"><b>재급식 ' + esc(rf.risk) + '</b> — 해당: ' + esc(rf.criteria.join(", ")) + "</div>";
+      fb += '<div class="drugclass-box"><div class="dc-row dc-feat"><span class="dc-k">시작열량</span><span class="dc-v"><b>' + rf.startKcal + ' kcal/kg/일</b>' + (r.energy.refeedStart ? " (약 " + r.energy.refeedStart + " kcal)" : "") + " — 4–7일 점증</span></div>";
+      fb += '<div class="dc-row"><span class="dc-k">티아민</span><span class="dc-v">' + esc(rf.thiamine) + "</span></div>";
+      fb += '<div class="dc-row"><span class="dc-k">전해질</span><span class="dc-v">' + esc(rf.lyteProphylaxis) + "</span></div>";
+      fb += '<div class="dc-row"><span class="dc-k">감시</span><span class="dc-v">' + esc(rf.monitor) + "</span></div></div>";
+      html += card("clin", "⚠️", "재급식증후군 예방", rf.risk, fb);
+    }
+    // monitor
+    var mb = "";
+    r.monitor.forEach(function (m) { mb += '<div class="subttl">' + esc(m.ko) + "</div>" + kp(m.items); });
+    html += card("care", "📋", "모니터링 체크리스트", null, mb);
+    host.innerHTML = html;
+  }
+
+  /* 도서관 */
+  var CAT_ORDER = ["기전", "원칙", "목표", "TPN", "전해질", "재급식", "모니터", "공식"];
+  var CAT_META = { "기전": ["💡", "기전·개념(왜 그런가)"], "원칙": ["🧭", "기본 원칙·경로(EN/PN/NPO)"], "목표": ["🎯", "질환별 칼로리·단백 목표"], "TPN": ["💉", "TPN 조성·전해질·미량"], "전해질": ["🧂", "전해질 보충 프로토콜"], "재급식": ["⚠️", "재급식증후군"], "모니터": ["📋", "모니터링"], "공식": ["🧮", "체중·GIR 공식·단위"] };
+  function conceptLib() {
+    var h = '<div class="note" style="padding:0 0 8px">수치 뒤의 <b>이유</b>를 이해하면 응용이 쉬워집니다.</div>';
+    Object.values(CONCEPTS).forEach(function (c) {
+      h += '<div class="conceptblk"><div class="ct">' + esc(c.emoji + " " + c.title) + '</div><div class="cbody">' + esc(c.body) + "</div>" + kp(c.points) + "</div>";
+    });
+    return h;
+  }
+  function routeLib() {
+    var h = "";
+    Object.values(ROUTE).sort(function (a, b) { return b.priority - a.priority; }).forEach(function (x) {
+      h += '<div class="blk"><div class="bl">' + esc(x.ko) + "</div>" + why(x.why) + "<div class=\"dose\"><b>적응</b> " + esc(x.when) + "</div><div class=\"dose\"><b>시점</b> " + esc(x.timing) + "</div>" + (x.contraindication ? '<div class="od" style="color:var(--block)">금기: ' + esc(x.contraindication) + "</div>" : "") + '<div class="od" style="color:var(--ink-faint)">' + esc(x.note) + "</div></div>";
+    });
+    return h;
+  }
+  function targetLib() {
+    var h = '<div class="note" style="padding:0 0 6px">질환별 목표(kcal/kg·g/kg). 계산은 플로우.</div><table class="drugtbl"><thead><tr><th>상태</th><th>에너지</th><th>단백</th></tr></thead><tbody>';
+    Object.values(TARGETS).forEach(function (t) {
+      var e = t.special === "obese" ? "11–25 kcal/kg(BMI별, IBW/ABW)" : t.energy.lo + "–" + t.energy.hi + " kcal/kg";
+      var p = t.special === "obese" ? "2.0–2.5 g/kg(IBW)" : t.protein.lo + "–" + t.protein.hi + " g/kg";
+      h += "<tr><td><b>" + esc(t.emoji + " " + t.ko) + "</b></td><td>" + esc(e) + "</td><td>" + esc(p) + "</td></tr>";
+    });
+    h += "</tbody></table>";
+    Object.values(TARGETS).forEach(function (t) { h += '<div class="subttl">' + esc(t.emoji + " " + t.ko) + "</div>" + why(t.mechanism) + kp(t.notes) + (t.cautions ? '<div class="od" style="color:var(--warn);padding:0 2px">주의: ' + esc(t.cautions.join(" / ")) + "</div>" : ""); });
+    return h;
+  }
+  function tpnLib() {
+    var m = TPN["nutr:tpn:macro"], el2 = TPN["nutr:tpn:electrolytes"], mi = TPN["nutr:tpn:micro"], ca = TPN["nutr:tpn:caution"];
+    var mr = CONCEPTS["nutr:concept:macro_roles"];
+    var h = why(mr ? mr.body : "") + '<div class="subttl">대량영양소</div>';
+    m.components.forEach(function (c) { h += '<div class="blk"><div class="bl">' + esc(c.ko) + "</div><div class=\"od\">" + esc(c.detail) + "</div></div>"; });
+    h += '<div class="note" style="padding:2px 0">' + esc(m.note) + "</div>";
+    h += '<div class="subttl">1일 전해질</div><div class="note" style="padding:0">' + esc(el2.detail) + "<br>" + esc(el2.note) + "</div>";
+    h += '<div class="subttl">미량원소·비타민</div><div class="note" style="padding:0"><b>미량:</b> ' + esc(mi.trace) + "<br><b>비타민:</b> " + esc(mi.vitamins) + "<br>" + esc(mi.note) + "</div>";
+    h += '<div class="subttl">주의·모니터</div>' + kp(ca.items);
+    return h;
+  }
+  function lyteLib() {
+    var h = '<div class="note" style="padding:0 0 8px">혈청수치별 성인 보충(기관 프로토콜·재검증). 신부전 감량.</div>';
+    Object.values(LYTES).forEach(function (L) {
+      h += '<div class="subttl">' + esc(L.ko) + " · 목표 " + esc(L.goalText) + "</div>";
+      h += why(L.mechanism);
+      h += '<table class="drugtbl"><thead><tr><th>혈청</th><th>보충</th><th>비고</th></tr></thead><tbody>';
+      L.bands.forEach(function (b) { h += "<tr><td>" + (b.lo === 0 ? "<" + b.hi : b.lo + "–" + b.hi) + "</td><td><b>" + esc(b.dose) + "</b><br>" + esc(b.route || "") + "</td><td>" + esc(b.note || "") + "</td></tr>"; });
+      h += "</tbody></table><div class=\"od\" style=\"color:var(--warn)\">속도: " + esc(L.rate) + (L.maxConc ? " · " + esc(L.maxConc) : "") + "</div><div class=\"od\" style=\"color:var(--ink-faint)\">주의: " + esc(L.cautions.join(" / ")) + "</div>";
+    });
+    return h;
+  }
+  function refeedLib() {
+    var c = REFEED["nutr:refeed:criteria"], p = REFEED["nutr:refeed:protocol"];
+    var h = why(p.mechanism);
+    h += '<div class="subttl">고위험 기준(' + esc(c.rule) + ")</div>";
+    h += '<div class="note" style="padding:0"><b>주기준:</b> ' + c.major.map(function (m) { return esc(m.label); }).join(" · ") + "</div>";
+    h += '<div class="note" style="padding:2px 0"><b>부기준:</b> ' + c.minor.map(function (m) { return esc(m.label); }).join(" · ") + "</div>";
+    h += '<div class="warnbox">★' + esc(c.extreme) + "</div>";
+    h += '<div class="subttl">프로토콜</div><div class="drugclass-box"><div class="dc-row"><span class="dc-k">시작</span><span class="dc-v">고위험 ' + esc(p.start_high) + " · 극단 " + esc(p.start_extreme) + "</span></div><div class=\"dc-row\"><span class=\"dc-k\">티아민</span><span class=\"dc-v\">" + esc(p.thiamine) + "</span></div><div class=\"dc-row\"><span class=\"dc-k\">전해질</span><span class=\"dc-v\">" + esc(p.lyte_prophylaxis) + "</span></div><div class=\"dc-row\"><span class=\"dc-k\">감시</span><span class=\"dc-v\">" + esc(p.monitor) + "</span></div></div><div class=\"note\">" + esc(p.note) + "</div>";
+    return h;
+  }
+  function monitorLib() { var h = ""; Object.values(MONITOR).forEach(function (m) { h += '<div class="subttl">' + esc(m.ko) + "</div>" + kp(m.items); }); return h; }
+  function formulaLib() {
+    var h = ""; Object.values(FORMULA).forEach(function (f) { h += '<div class="blk"><div class="bl">' + esc(f.label) + "</div><div class=\"od\">" + esc(f.expr) + "</div></div>"; });
+    h += '<div class="subttl">상수</div><div class="note" style="padding:0">포도당 3.4 · 아미노산 4 · 지질 ~10 kcal/g · GIR 상한 5 mg/kg/분 · 수액 25–40 mL/kg</div>';
+    h += '<div class="warnbox">단위 주의: Mg·P는 mg/dL(국내 검사), 이온화 Ca는 mmol/L. 프로토콜 출처별 단위 확인.</div>';
+    return h;
+  }
+  function buildLib() {
+    var items = [
+      { cat: "기전", title: "💡 기전·개념(왜 그런가)", kw: "기전 개념 스트레스 대사 장 재급식 전해질 체중 왜 pathophysiology", html: conceptLib() },
+      { cat: "원칙", title: "🧭 기본 원칙·경로(EN/PN/NPO)", kw: "경장 정맥 NPO 조기영양 EN PN", html: routeLib() },
+      { cat: "목표", title: "🎯 질환별 칼로리·단백 목표", kw: "칼로리 단백 kcal 질환 CRRT 간 비만 AKI", html: targetLib() },
+      { cat: "TPN", title: "💉 TPN 조성·전해질·미량", kw: "TPN 포도당 지질 아미노산 GIR 전해질 미량 비타민", html: tpnLib() },
+      { cat: "전해질", title: "🧂 전해질 보충 프로토콜(K·Mg·P·Ca)", kw: "전해질 칼륨 마그네슘 인 칼슘 보충 저칼륨 저인", html: lyteLib() },
+      { cat: "재급식", title: "⚠️ 재급식증후군", kw: "재급식 refeeding 티아민 저인 시작열량", html: refeedLib() },
+      { cat: "모니터", title: "📋 모니터링", kw: "모니터 전해질 혈당 중성지방 간효소", html: monitorLib() },
+      { cat: "공식", title: "🧮 체중·GIR 공식·단위", kw: "공식 BMI 이상체중 보정체중 GIR 단위", html: formulaLib() }
+    ];
+    W._LIB = items; renderLib("");
+  }
+  function renderLib(q) {
+    q = (q || "").toLowerCase(); var host = el("libGrid"); host.innerHTML = "";
+    if (q) { var m = (W._LIB || []).filter(function (it) { return (it.title + it.kw).toLowerCase().indexOf(q) >= 0; }); if (!m.length) { host.innerHTML = '<div class="note">검색 결과 없음</div>'; return; } m.forEach(function (it) { var dd = document.createElement("details"); dd.className = "libItem"; dd.open = true; dd.innerHTML = '<summary>' + esc(it.title) + '</summary><div class="body">' + it.html + "</div>"; host.appendChild(dd); }); return; }
+    CAT_ORDER.forEach(function (cat) {
+      var it = (W._LIB || []).filter(function (x) { return x.cat === cat; })[0]; if (!it) return;
+      var meta = CAT_META[cat];
+      var b = document.createElement("button"); b.className = "librow"; b.innerHTML = meta[0] + " " + esc(meta[1]);
+      b.addEventListener("click", function () { openSheet(esc(it.title), it.html); });
+      host.appendChild(b);
+    });
+  }
+  el("libSearch").addEventListener("input", function (e) { renderLib(e.target.value); });
+
+  function buildSrc() { el("srcbanner").innerHTML = Object.values(GL).map(function (g) { return g.url ? '<a href="' + esc(g.url) + '" target="_blank" rel="noopener">📘 ' + esc(g.title) + (g.year ? " (" + g.year + ")" : "") + "</a>" : ""; }).filter(Boolean).join("<br>"); }
+
+  buildFlow(); buildLib(); buildSrc();
+})();
+
+</script>
+</body></html>
