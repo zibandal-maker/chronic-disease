@@ -49,7 +49,7 @@
 .chip-group{margin-bottom:6px}
 .chip-group .gl{font-size:10px;color:var(--ink-faint);margin:0 0 4px 2px;
   text-transform:uppercase;letter-spacing:0.05em}
-.stream{padding:14px 14px 0;max-width:560px;margin:0 auto}
+.stream{padding:14px 14px 0;max-width:680px;margin:0 auto}
 @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
   margin-bottom:12px;overflow:hidden;animation:rise .25s ease}
@@ -93,7 +93,7 @@ body{margin:0;background:var(--bg);color:var(--ink);
 .topbar{padding:14px 16px 10px;background:var(--panel);border-bottom:1px solid var(--line)}
 .topbar h1{margin:0;font-size:17px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
 .topbar h1 .sub{font-size:11px;font-weight:600;color:var(--ink-faint);margin-left:auto}
-.wrap{max-width:560px;margin:0 auto;padding:14px}
+.wrap{max-width:680px;margin:0 auto;padding:14px}
 .cb{padding:11px 14px}
 .subttl{font-size:11px;font-weight:700;color:var(--ink-faint);margin:12px 2px 5px;text-transform:uppercase;letter-spacing:.04em}
 .opt{padding:7px 0;border-bottom:1px solid rgba(42,55,68,.10)}
@@ -124,9 +124,9 @@ body{margin:0;background:var(--bg);color:var(--ink);
 /* 슬라이드-업 시트(팝업) — 뒤로가기 트랩이 fixed 오버레이 감지 */
 .sheet-back{position:fixed;inset:0;z-index:110;background:rgba(20,28,36,.42);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
 .sheet-back.on{opacity:1;visibility:visible}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;background:var(--panel);border-radius:16px 16px 0 0;max-height:84vh;
-  transform:translateY(101%);transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:0 -8px 30px rgba(20,28,36,.18);display:flex;flex-direction:column}
-.sheet.on{transform:translateY(0)}
+.sheet{position:fixed;left:50%;bottom:0;z-index:120;width:100%;max-width:680px;background:var(--panel);border-radius:16px 16px 0 0;max-height:84vh;
+  transform:translate(-50%,101%);transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:0 -8px 30px rgba(20,28,36,.18);display:flex;flex-direction:column}
+.sheet.on{transform:translate(-50%,0)}
 .sheet-h{display:flex;align-items:center;gap:8px;padding:13px 15px;border-bottom:1px solid var(--line);font-size:14px;font-weight:800;color:var(--ink);flex-shrink:0}
 .sheet-h .x{margin-left:auto;font-size:22px;line-height:1;color:var(--ink-faint);cursor:pointer;background:none;border:none;font-family:inherit}
 .sheet-b{overflow:auto;padding:12px 15px 24px;-webkit-overflow-scrolling:touch}
@@ -178,6 +178,13 @@ body{margin:0;background:var(--bg);color:var(--ink);
 .accSec .abody{padding:10px 13px}
 .accSec .hint{font-size:11px;color:var(--ink-faint);margin-bottom:8px;line-height:1.5}
 input[type=number]{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:14px;color:var(--ink);font-family:inherit}
+
+/* ===== 데스크톱 가독성(PC) ===== */
+@media(min-width:760px){
+  .topbar h1{max-width:680px;margin:0 auto}
+  .tabbar{justify-content:center}
+  .tabbar button{flex:0 1 200px}
+}
 </style>
 </head><body>
 <!--PORTAL_HEADER_V1-->
