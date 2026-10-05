@@ -238,8 +238,8 @@ function headerSnippet(g) {
   @media (max-width:380px){#portal-hdr .ph-tag{display:none;}}
 </style>
 <div id="portal-hdr" role="navigation" aria-label="포털 내비게이션">
-  <a class="ph-back" href="../index.html" title="목록으로">‹ 목록</a>
-  <a class="ph-home" href="../index.html" title="홈">🏠</a>
+  <a class="ph-back" href="/" title="목록으로">‹ 목록</a>
+  <a class="ph-home" href="/" title="홈">🏠</a>
   <span class="ph-accent"></span>
   <span class="ph-emoji">${g.emoji}</span>
   <span class="ph-title">${g.title}</span>
@@ -273,6 +273,87 @@ function injectHeader(html, g) {
   return html.slice(0, idx) + '\n' + snippet + html.slice(idx);
 }
 
+// ── SEO 정합 후처리 V1 (2026-10-05) — guides_src 무손상, 출력본(public/guides)에만 적용 ──
+// (1) canonical·og:url·JSON-LD url을 registry slug로 정합 (404 canonical 방지)
+// (2) JSON-LD "Drug" → "DefinedTerm" (schema.org Drug⊂Product → GSC '제품 스니펫' 오류 방지)
+// (3) 관련 가이드 내부링크 블록 (크롤러가 따라갈 <a href> 링크망; GSC '참조 페이지 없음' 해소)
+const SEO_SITE = ((REG.meta || {}).siteUrl || '').replace(/\/+$/, '');
+const slugOf = g => g.out.replace(/\.html$/, '');
+const pageUrl = g => SEO_SITE + '/guides/' + slugOf(g);
+const REL_MARK = '<!--SEO_RELATED_V1-->', REL_END = '<!--/SEO_RELATED_V1-->';
+
+function fixCanonical(html, g) {
+  const want = pageUrl(g);
+  const headEnd = html.search(/<\/head>/i);
+  if (headEnd < 0) return html;
+  let head = html.slice(0, headEnd), rest = html.slice(headEnd);
+  const m = head.match(/<link[^>]*rel=["']canonical["'][^>]*>/i);
+  if (!m) return head + `<link rel="canonical" href="${want}">\n` + rest;
+  const hm = m[0].match(/href=["']([^"']+)["']/i);
+  const cur = hm ? hm[1] : '';
+  if (cur === want) return html;
+  if (/^https?:\/\//.test(cur)) {
+    // head 영역 안에서 정확히 같은 URL 문자열(따옴표 경계)만 교체 → canonical·og:url·JSON-LD url 동시 정합
+    head = head.split('"' + cur + '"').join('"' + want + '"');
+  } else {
+    head = head.replace(m[0], `<link rel="canonical" href="${want}">`);
+  }
+  return head + rest;
+}
+
+function fixJsonLdTypes(html) {
+  return html.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g, (all, body) => {
+    let d; try { d = JSON.parse(body); } catch (e) { return all; }
+    let n = 0;
+    (function walk(o) {
+      if (Array.isArray(o)) o.forEach(walk);
+      else if (o && typeof o === 'object') {
+        if (o['@type'] === 'Drug') { o['@type'] = 'DefinedTerm'; n++; }
+        Object.values(o).forEach(walk);
+      }
+    })(d);
+    if (!n) return all;
+    return '<script type="application/ld+json">' + JSON.stringify(d).replace(/</g, '\\u003c') + '</script>';
+  });
+}
+
+function relatedNav(g) {
+  const internal = REG.guides.filter(x => !x.external && x.id !== g.id);
+  const same = internal.filter(x => x.tag === g.tag);
+  const others = internal.filter(x => x.tag !== g.tag);
+  const li = x => `<li><a href="/guides/${slugOf(x)}">${esc(x.emoji)} ${esc(x.title)}</a></li>`;
+  return `${REL_MARK}
+<style>
+#seo-related{max-width:960px;margin:28px auto 16px;padding:14px 16px;box-sizing:border-box;border-top:1px solid rgba(20,40,60,.12);
+  font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#33414d;font-size:13px;line-height:1.5;}
+#seo-related h2{font-size:13px;font-weight:700;margin:10px 0 6px;color:#1a2530;}
+#seo-related ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px;}
+#seo-related a{color:#2b5d7d;text-decoration:none;}
+#seo-related a:hover{text-decoration:underline;}
+</style>
+<nav id="seo-related" aria-label="관련 진료 가이드">
+${same.length ? `<h2>관련 가이드 · ${esc(g.tag)}</h2>\n<ul>${same.map(li).join('')}</ul>\n` : ''}<h2>다른 진료 가이드</h2>
+<ul>${others.map(li).join('')}</ul>
+<p style="margin:10px 0 0"><a href="/">진료지원 시스템 — 전체 가이드</a></p>
+</nav>
+${REL_END}`;
+}
+
+function injectRelated(html, g) {
+  const a = html.indexOf(REL_MARK), b = html.indexOf(REL_END);
+  if (a > -1 && b > a) html = html.slice(0, a) + html.slice(b + REL_END.length); // 멱등: 기존 블록 제거 후 재주입
+  const idx = html.toLowerCase().lastIndexOf('</body>');
+  if (idx < 0) return html;
+  return html.slice(0, idx) + relatedNav(g) + '\n' + html.slice(idx);
+}
+
+function seoPostProcess(html, g) {
+  html = fixCanonical(html, g);
+  html = fixJsonLdTypes(html);
+  html = injectRelated(html, g);
+  return html;
+}
+
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
 let ok = 0, miss = 0;
@@ -295,6 +376,7 @@ for (const g of REG.guides) {
   searchIndex[g.id] = extractSearchIndex(html);
   html = injectHeader(html, g);
   html = injectBackTrap(html);  // 공용 뒤로가기 트랩 자동 주입(전 가이드 공통)
+  html = seoPostProcess(html, g); // SEO 정합 후처리 V1 (canonical·JSON-LD·관련링크)
   fs.writeFileSync(path.join(OUT_DIR, g.out), html);
   const idxKb = (searchIndex[g.id].length/1024).toFixed(0);
   console.log(`✓ ${g.id.padEnd(14)} → guides/${g.out}  (${(html.length/1024).toFixed(0)} KB, 색인 ${idxKb}KB)`);
