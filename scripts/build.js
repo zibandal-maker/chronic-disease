@@ -347,9 +347,46 @@ function injectRelated(html, g) {
   return html.slice(0, idx) + relatedNav(g) + '\n' + html.slice(idx);
 }
 
+// ── SEO 요약 승격 V2 (2026-10-13) — <noscript> 정적 앵커 → 렌더 DOM의 접이식 <details> ──
+// Googlebot은 JS를 실행해 렌더 DOM으로 판단 → <noscript> 내부는 본문으로 잡히지 않음.
+// 소스의 noscript 블록을 출력본에서만 <details>로 옮겨 본문 끝(관련 가이드 위)에 둔다. 소스 무손상.
+// 블록 내부 id는 'seo-' 접두사(앱 요소 id 충돌 방지: anemia drug/type/class, gerd reimb, nutrition tpn).
+const SUM_MARK = '<!--SEO_SUMMARY_V2-->', SUM_END = '<!--/SEO_SUMMARY_V2-->';
+function promoteNoscript(html, g) {
+  if (html.includes(SUM_MARK)) return html;
+  const re = /<noscript>\s*(<div class="seo-content"[\s\S]*?)<\/noscript>/;
+  const m = html.match(re);
+  if (!m) return html;
+  const seen = {};
+  const inner = m[1].replace(/(\s)id="([^"]+)"/g, (a, sp, id) => {
+    seen[id] = (seen[id] || 0) + 1;                       // 소스 블록 내 중복 id(dialysis concept-*) 방지
+    return `${sp}id="seo-${id}${seen[id] > 1 ? '-' + seen[id] : ''}"`;
+  });
+  html = html.slice(0, m.index) + html.slice(m.index + m[0].length);
+  const block = `${SUM_MARK}
+<style>
+#seo-summary{max-width:960px;margin:24px auto 0;padding:0 16px;box-sizing:border-box;
+  font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#33414d;font-size:13px;line-height:1.55;}
+#seo-summary>summary{cursor:pointer;font-weight:700;font-size:13.5px;color:#1a2530;padding:12px 0 10px;border-top:1px solid rgba(20,40,60,.12);}
+#seo-summary .seo-content{padding:4px 0 12px;}
+#seo-summary h2{font-size:15px;margin:12px 0 6px;color:#1a2530;}
+#seo-summary h3{font-size:13.5px;margin:10px 0 4px;color:#1a2530;}
+#seo-summary p,#seo-summary li{margin:3px 0;}
+#seo-summary a{color:#2b5d7d;}
+</style>
+<details id="seo-summary"><summary>${esc(g.emoji)} ${esc(g.title)} 가이드 수록 내용 — 약물·급여·근거 요약</summary>
+${inner}
+</details>
+${SUM_END}`;
+  const idx = html.toLowerCase().lastIndexOf('</body>');
+  if (idx < 0) return html;
+  return html.slice(0, idx) + block + '\n' + html.slice(idx);
+}
+
 function seoPostProcess(html, g) {
   html = fixCanonical(html, g);
   html = fixJsonLdTypes(html);
+  html = promoteNoscript(html, g); // V2: noscript → <details> (관련 가이드 위)
   html = injectRelated(html, g);
   return html;
 }
