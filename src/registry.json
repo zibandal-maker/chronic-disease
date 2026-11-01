@@ -12,6 +12,96 @@
     "seo_enhanced": "2026-07-03",
     "seo_note": "전 가이드 head메타+noscript앵커 주입 완료(additive). 원본 엔진 무손상."
   },
+  "changelog": [
+    {
+      "id": "upd:2026-11-01:hf-v2",
+      "date": "2026-11-01",
+      "guides": [
+        "hf"
+      ],
+      "kind": "guideline",
+      "title": "심부전 — 2026 ESC 심부전 지침 반영·급여 원문 재검증",
+      "summary": "2026 ESC 심부전 지침을 해외 레이어로 반영하고, 심평원 고시·의약품안전나라 허가를 원문으로 재검증했습니다. 한국 레이어는 KSHF 2022(2026 개정 발표 대기).",
+      "items": [
+        "ESC 2026 분류(HFrEF <50%·HFpEF ≥50%)와 KSHF 2022 3분류 병기, LVEF 41–49% 외삽 표시",
+        "치료 분류 FMT·AMT로 판정 — SGLT2i·MRA 전 LVEF I/A, 원내 SGLT2i 개시 I/B1, 비만 HFpEF GLP-1 IIa/B1",
+        "지침–급여 상충 6건 표시: ARNI 41–49%, 베리시구앗 악화 요건, 피네레논 HF 비급여, 비빈혈 철결핍, GLP-1, 이바브라딘 HR",
+        "정정: 베리시구앗 급여(고시 2023-165) 추가 · 이바브라딘 급여 HR ≥75·선별급여 50%",
+        "정정: 정맥철분 급여는 Hb ≤10 필요 · 피네레논 심부전 목표용량 40 mg(eGFR ≥60)",
+        "약제 상태: 포시가 취하(HF 적응증 제네릭만 급여) · 패티로머·디기톡신 국내 미허가",
+        "임신 금기 6계열·NSAID III, 안전 임계값(K⁺·eGFR·SBP) 플래그"
+      ]
+    },
+    {
+      "id": "upd:2026-11-01:dyslipidemia-v2",
+      "date": "2026-11-01",
+      "guides": [
+        "dyslipidemia"
+      ],
+      "kind": "guideline",
+      "title": "이상지질혈증 — 진료지침 2026·ACC/AHA 2026 반영",
+      "summary": "한국지질·동맥경화학회 이상지질혈증 진료지침 2026과 ACC/AHA 2026을 반영하고, 급여 기준을 고시 원문으로 재검증했습니다.",
+      "items": [
+        "2026 치료 구간(표 2-6)과 위험강화인자 11종으로 판정",
+        "권고 107건을 등급(KSoLA I–III · ACC/AHA COR)과 함께 표시, 이전 지침(5판)은 접어서 보존",
+        "지침–급여 상충 8건 표시: 벰페도익산(넥스레톨) 비급여, 인클리시란 미등재, PCSK9 뇌졸중·조기 병용 등",
+        "정정: PCSK9 급여 고위험요인에 누락됐던 '고혈압' 추가(고시 제2024-37호 9종)",
+        "정정: 치료 시작 구간 1칸 오입력(5판 표 2-5 대비)",
+        "약제 상태 갱신: 넥스레톨 허가(2026-10-14)·바세파 998 mg 허가·렉비오 약가협상 결렬"
+      ]
+    },
+    {
+      "id": "upd:2026-10-13:seo-summary",
+      "date": "2026-10-13",
+      "guides": [],
+      "kind": "portal",
+      "title": "각 가이드 하단에 '수록 내용 요약' 추가",
+      "summary": "가이드마다 약물·급여·근거 요약을 접힘 상자로 본문 하단에 표시해 검색에서 내용이 잡히도록 했습니다.",
+      "items": []
+    },
+    {
+      "id": "upd:2026-10-05:seo-links",
+      "date": "2026-10-05",
+      "guides": [],
+      "kind": "portal",
+      "title": "관련 가이드 링크·대표 주소 정리",
+      "summary": "가이드 하단에 같은 분야 관련 가이드 링크를 추가하고, 일부 가이드의 대표 주소(canonical) 오류를 바로잡았습니다.",
+      "items": []
+    },
+    {
+      "id": "upd:2026-08-24:nutrition",
+      "date": "2026-08-24",
+      "guides": [
+        "nutrition"
+      ],
+      "kind": "new",
+      "title": "ICU·영양·NPO 계산기 신규",
+      "summary": "질환별 칼로리·단백 목표, 수액·TPN 조성 역산, 전해질 보충, 재급식 위험을 계산하는 2탭(도서관·플로우) 도구를 추가했습니다.",
+      "items": []
+    },
+    {
+      "id": "upd:2026-08-23:gerd",
+      "date": "2026-08-23",
+      "guides": [
+        "gerd"
+      ],
+      "kind": "new",
+      "title": "GERD 가이드 신규",
+      "summary": "PPI 불응 시 STEP 0–4 감별(최적화→내시경→pH-임피던스→HRM)과 PPI·H2RA·P-CAB 병용 급여 조건을 정리했습니다.",
+      "items": []
+    },
+    {
+      "id": "upd:2026-08-21:gastroenteritis",
+      "date": "2026-08-21",
+      "guides": [
+        "gastroenteritis"
+      ],
+      "kind": "new",
+      "title": "급성 장염 가이드 신규",
+      "summary": "위험 징후 의뢰(외과적 복증·중증 탈수·HUS 등)를 최상단에 두고, 탈수 교정·항생제 적응·피해야 할 처방 13건을 정리했습니다.",
+      "items": []
+    }
+  ],
   "guides": [
     {
       "id": "htn",
@@ -41,13 +131,13 @@
       "id": "hf",
       "title": "심부전",
       "emoji": "❤️",
-      "src": "hf_guide.html",
+      "src": "hf_guide.v2.html",
       "out": "hf.html",
-      "guideline": "심부전 진료지침 · HFrEF·HFmrEF·HFpEF · GDMT 4제 · 심평원 급여",
+      "guideline": "심부전 진료지침 · ESC 2026 · KSHF 2022 · HFrEF·HFpEF · FMT · 심평원 급여",
       "group": "A",
       "accent": "#c0392b",
       "tag": "순환기",
-      "keywords": "심부전 heart failure HF HFrEF HFpEF HFmrEF GDMT 4제 ARNI 사쿠비트릴 발사르탄 엔트레스토 SGLT2 베타차단 MRA 스피로노락톤 다파글리플로진 엠파글리플로진 EF 박출률 BNP NT-proBNP 이뇨제"
+      "keywords": "심부전 heart failure HF HFrEF HFpEF HFmrEF GDMT 4제 ARNI 사쿠비트릴 발사르탄 엔트레스토 SGLT2 베타차단 MRA 스피로노락톤 다파글리플로진 엠파글리플로진 EF 박출률 BNP NT-proBNP 이뇨제 ESC 2026 FMT HFimpEF 베리시구앗 베르쿠보 이바브라딘 피네레논 케렌디아 정맥철분 페린젝트 세마글루타이드 비대상성"
     },
     {
       "id": "antithrombotic",

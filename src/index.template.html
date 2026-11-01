@@ -158,6 +158,24 @@ __JSONLD__
   .fb-status{font-size:12.5px;font-weight:600;margin-top:10px;text-align:center;min-height:18px;}
   .fb-status.ok{color:var(--care);}
   .fb-status.err{color:#c43838;}
+
+  /* ── 업데이트 기록 팝업 (REGISTRY.changelog) ── */
+  .upd-btn{position:relative;}
+  .upd-btn .upd-dot{position:absolute;top:3px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--pay);display:none;}
+  .upd-btn.new .upd-dot{display:block;}
+  .upd-modal{max-width:520px;}
+  .upd-list{max-height:62vh;overflow:auto;margin:6px -4px 0;padding:0 4px;}
+  .upd-item{border-top:1px solid var(--line);padding:12px 0;}
+  .upd-item:first-child{border-top:0;}
+  .upd-date{font-size:11.5px;font-weight:800;color:var(--ink-faint);letter-spacing:.02em;}
+  .upd-kind{display:inline-block;font-size:10.5px;font-weight:800;border-radius:6px;padding:1px 7px;margin-left:6px;background:var(--accent-bg);color:var(--accent);}
+  .upd-kind.k-new{background:#e7f5f1;color:var(--care);}
+  .upd-kind.k-portal{background:var(--panel2);color:var(--ink-dim);}
+  .upd-title{font-size:14.5px;font-weight:800;color:var(--ink);margin:4px 0 3px;}
+  .upd-guides a{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);text-decoration:none;margin-right:8px;}
+  .upd-sum{font-size:13px;color:var(--ink-dim);line-height:1.55;margin:4px 0 0;}
+  .upd-items{margin:6px 0 0;padding-left:18px;font-size:12.5px;color:var(--ink-dim);line-height:1.55;}
+  .upd-item details>summary{cursor:pointer;font-size:12px;font-weight:700;color:var(--accent);margin-top:4px;}
   @media (max-width:360px){.author{display:none;}}
 
   /* ── 검색창 ── */
@@ -223,6 +241,7 @@ __JSONLD__
 
 <div class="topright">
   <span class="author">작성 <b>박형도</b></span>
+  <button class="fb-btn upd-btn" id="updOpen" aria-label="업데이트 기록 보기">🆕 업데이트<span class="upd-dot"></span></button>
   <button class="fb-btn" id="fbOpen" aria-label="피드백 보내기">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     피드백
@@ -250,6 +269,15 @@ __JSONLD__
       <button class="fb-cancel" id="fbCancel">취소</button>
       <button class="fb-send" id="fbSend">보내기</button>
     </div>
+  </div>
+</div>
+
+<div class="fb-overlay" id="updOverlay" aria-hidden="true">
+  <div class="fb-modal upd-modal" role="dialog" aria-modal="true" aria-labelledby="updTitle">
+    <h3 id="updTitle">업데이트 기록</h3>
+    <p class="fb-sub">지침 개정·급여 기준 변경·신규 도구를 날짜순으로 기록합니다. 세부 근거는 각 가이드 하단 출처를 확인하세요.</p>
+    <div class="upd-list" id="updList"></div>
+    <div class="fb-actions"><button class="fb-send" id="updClose">닫기</button></div>
   </div>
 </div>
 
@@ -452,6 +480,44 @@ __JSONLD__
     gateOverlay.classList.add('hidden');
     gateOverlay.setAttribute('aria-hidden','true');
   });
+
+  // ── 업데이트 기록 (REGISTRY.changelog — 데이터는 registry.json에만) ──
+  (function(){
+    const LOG = (REGISTRY.changelog || []).slice().sort((a,b)=> a.date < b.date ? 1 : (a.date > b.date ? -1 : 0));
+    const btn = document.getElementById('updOpen'), ov = document.getElementById('updOverlay'), list = document.getElementById('updList');
+    if (!LOG.length){ btn.style.display='none'; return; }
+    const SEEN_KEY = 'cdss_update_seen_v1', latest = LOG[0].id;
+    const KIND = { guideline:['지침 개정',''], new:['신규 도구','k-new'], portal:['포털','k-portal'], reimb:['급여 변경',''] };
+    const byId = Object.fromEntries(guides.map(g => [g.id, g]));
+    const h = s => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const link = g => g.external ? g.href : 'guides/' + g.out.replace(/\.html$/, '');
+    list.innerHTML = LOG.map((u, i) => {
+      const k = KIND[u.kind] || [u.kind || '', ''];
+      const gs = (u.guides || []).map(id => byId[id]).filter(Boolean).map(g => `<a href="${h(link(g))}">${h(g.emoji)} ${h(g.title)}</a>`).join('');
+      const items = (u.items || []).length ? `<ul class="upd-items">${u.items.map(x => `<li>${h(x)}</li>`).join('')}</ul>` : '';
+      return `<div class="upd-item"><span class="upd-date">${h(u.date)}</span><span class="upd-kind ${k[1]}">${h(k[0])}</span>
+        <div class="upd-title">${h(u.title)}</div>${gs ? `<div class="upd-guides">${gs}</div>` : ''}<p class="upd-sum">${h(u.summary)}</p>
+        ${items ? (i === 0 ? items : `<details><summary>세부 변경 ${u.items.length}건</summary>${items}</details>`) : ''}</div>`;
+    }).join('');
+    let seen = null; try { seen = localStorage.getItem(SEEN_KEY); } catch(e){}
+    if (seen !== latest) btn.classList.add('new');
+    let pushed = false;
+    function open(){ ov.classList.add('on'); ov.setAttribute('aria-hidden','false'); list.scrollTop = 0;
+      try { history.pushState({ updModal:1 }, ''); pushed = true; } catch(e){} }
+    function close(fromPop){ if (!ov.classList.contains('on')) return;
+      ov.classList.remove('on'); ov.setAttribute('aria-hidden','true');
+      try { localStorage.setItem(SEEN_KEY, latest); } catch(e){}
+      btn.classList.remove('new');
+      if (pushed && !fromPop){ pushed = false; try { history.back(); } catch(e){} } else pushed = false; }
+    btn.addEventListener('click', open);
+    document.getElementById('updClose').addEventListener('click', () => close(false));
+    ov.addEventListener('click', e => { if (e.target === ov) close(false); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(false); });
+    window.addEventListener('popstate', () => close(true));
+    // 새 기록이 있으면 1회 자동 표시 (면책 게이트 확인 후)
+    function autoOpen(){ if (seen !== latest) setTimeout(open, 350); }
+    if (acked) autoOpen(); else document.getElementById('gateAccept').addEventListener('click', autoOpen);
+  })();
 
   // ── 피드백 ──
   const FB_ENDPOINT = (REGISTRY.meta && REGISTRY.meta.feedbackEndpoint) || "";
