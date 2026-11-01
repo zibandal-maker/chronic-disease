@@ -1,0 +1,21 @@
+[
+ {"id":"G1","p":{"ldl":50,"comorbid":{"cad":true}},"expect":{"stratum":"lipid:risk:veryhigh","zone":"soft","targets":["lipid:tgt:ldl55","lipid:tgt:codrop50"],"recs":["lipid:rec:ksla2026:cad_ldl55_50pct"],"no_conflicts":["lipid:conflict:bempedoic_unlisted"]}},
+ {"id":"G2","p":{"ldl":60,"comorbid":{"ischemic_stroke":true}},"expect":{"stratum":"lipid:risk:high","zone":"soft","v1_action":"lifestyle","targets":["lipid:tgt:ldl70","lipid:tgt:codrop50"],"recs":["lipid:rec:ksla2026:ncv_ldl70_50pct"],"conflicts":["lipid:conflict:stroke_start"]}},
+ {"id":"G3","p":{"ldl":65,"comorbid":{"ischemic_stroke":true,"recurrent_stroke_highrisk":true}},"expect":{"stratum":"lipid:risk:high","zone":"soft","targets":["lipid:tgt:ldl70","lipid:tgt:codrop50"],"optional":"lipid:tgt:ldl55","recs":["lipid:rec:ksla2026:stroke_recur_ldl55_opt"],"conflicts":["lipid:conflict:stroke_start"]}},
+ {"id":"G4","p":{"ldl":80,"dm":true,"dmYears":12,"comorbid":{"dm":true}},"expect":{"stratum":"lipid:risk:high","zone":"rx","targets":["lipid:tgt:ldl70","lipid:tgt:codrop50"],"recs":["lipid:rec:ksla2026:dm_high_ldl70_50pct"]}},
+ {"id":"G5","p":{"ldl":80,"dm":true,"dmYears":5,"comorbid":{"dm":true},"rf":{"age":true,"htn":true,"smoking":true}},"expect":{"stratum":"lipid:risk:high","zone":"rx","optional":"lipid:tgt:ldl55","recs":["lipid:rec:ksla2026:dm_veryhigh_ldl55_opt"]}},
+ {"id":"G6","p":{"ldl":85,"dm":true,"dmYears":5,"comorbid":{"dm":true}},"expect":{"stratum":"lipid:risk:mod_dm","zone":"soft","v1_action":"lifestyle","targets":["lipid:tgt:ldl100"],"recs":["lipid:rec:ksla2026:dm_low_ldl100"]}},
+ {"id":"G7","p":{"ldl":115,"rf":{"age":true,"htn":true}},"expect":{"stratum":"lipid:risk:moderate","zone":"soft","v1_action":"lifestyle","targets":["lipid:tgt:ldl130"],"recs":["lipid:rec:ksla2026:lowmod_drug"],"no_recs":["lipid:rec:ksla2026:mod_enhancer"]}},
+ {"id":"G8","p":{"ldl":115,"rf":{"age":true,"htn":true},"lpa":60,"lpaUnit":"mg/dL"},"expect":{"stratum":"lipid:risk:moderate","zone":"soft","enh":["lipid:enh:2026:lpa"],"recs":["lipid:rec:ksla2026:mod_enhancer"]}},
+ {"id":"G9","p":{"ldl":140,"rf":{"age":true}},"expect":{"stratum":"lipid:risk:low","zone":"soft","v1_action":"lifestyle","targets":["lipid:tgt:ldl160"]}},
+ {"id":"G10","p":{"ldl":140,"rf":{"age":true},"hscrp":3},"expect":{"stratum":"lipid:risk:low","enh":["lipid:enh:2026:hscrp"],"recs":["lipid:rec:ksla2026:low_enhancer"]}},
+ {"id":"G11","p":{"ldl":120,"rf":{"age":true,"htn":true},"high_hdl":true,"hdlValue":65},"expect":{"stratum":"lipid:risk:low","no_conflicts":["lipid:conflict:hdl_protective_range"]}},
+ {"id":"G12","p":{"ldl":120,"rf":{"age":true,"htn":true},"high_hdl":false,"hdlValue":105},"expect":{"stratum":"lipid:risk:moderate","conflicts":["lipid:conflict:hdl_protective_range"]}},
+ {"id":"G13","p":{"ldl":195},"expect":{"stratum":"lipid:risk:low","zone":"rx","recs":["lipid:rec:ksla2026:ldl190_secondary","lipid:rec:ksla2026:ldl190_statin"]}},
+ {"id":"G14","p":{"tg":450,"fasting":false,"ldl":100},"expect":{"flags":["tg_retest"]}},
+ {"id":"G15","p":{"tg":550,"ldl":100},"expect":{"recs":["lipid:rec:ksla2026:tg500_urgent"]}},
+ {"id":"G16","p":{"ldl":90,"comorbid":{"cad":true},"statinIntolerant":true},"expect":{"stratum":"lipid:risk:veryhigh","recs":["lipid:rec:ksla2026:cad_intol_bempedoic"],"conflicts":["lipid:conflict:bempedoic_unlisted"],"drugs":["drug:bempedoic_acid"]}},
+ {"id":"G17","p":{"ldl":130,"comorbid":{"cad":true,"acs":true}},"expect":{"stratum":"lipid:risk:veryhigh","recs":["lipid:rec:ksla2026:acs_hi_statin","lipid:rec:ksla2026:acs_initial_combo"],"conflicts":["lipid:conflict:start_threshold"],"flags":["reimb_note"]}},
+ {"id":"G18","p":{"ldl":70,"baselineLdl":120,"comorbid":{"cad":true,"mi":true,"ischemic_stroke":true},"evalGate":true,"pretreat":{"statinEze":true,"weeks":4}},"expect":{"stratum":"lipid:risk:veryhigh"}},
+ {"id":"G19","p":{"ldl":90,"comorbid":{"ischemic_stroke":true},"evalGate":true,"pretreat":{"statinEze":true,"weeks":4},"gate3":{"lipid:major:ischemic_stroke":true,"lipid:hrf:dm":true,"lipid:hrf:htn":true}},"expect":{"recommendLipid_diff":{"path":"gate.g3","v1":false,"v2":true},"stratum":"lipid:risk:high"}}
+]

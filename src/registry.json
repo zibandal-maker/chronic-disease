@@ -77,13 +77,13 @@
       "id": "dyslipidemia",
       "title": "이상지질혈증",
       "emoji": "🫀",
-      "src": "dyslipidemia_guide.html",
+      "src": "dyslipidemia_guide.v2.html",
       "out": "dyslipidemia.html",
-      "guideline": "한국지질·동맥경화학회 진료지침 (5판) · 심평원 급여",
+      "guideline": "한국지질·동맥경화학회 이상지질혈증 진료지침 2026 · ACC/AHA 2026 · 심평원 급여",
       "group": "A",
       "accent": "#c0392b",
       "tag": "내분비",
-      "keywords": "이상지질혈증 고지혈증 dyslipidemia 스타틴 statin LDL 콜레스테롤 PCSK9 에제티미브 로수바스타틴 아토르바스타틴 중성지방 TG"
+      "keywords": "이상지질혈증 고지혈증 dyslipidemia 스타틴 statin LDL 콜레스테롤 PCSK9 에제티미브 로수바스타틴 아토르바스타틴 중성지방 TG 진료지침2026 위험강화인자 Lp(a) 벰페도익산 넥스레톨 렉비오 인클리시란 이코사펜트에틸"
     },
     {
       "id": "asthma",
