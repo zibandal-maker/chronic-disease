@@ -14,6 +14,24 @@
   },
   "changelog": [
     {
+      "id": "upd:2026-11-01:liver-hbv-v2",
+      "date": "2026-11-01",
+      "guides": [
+        "liver"
+      ],
+      "kind": "guideline",
+      "title": "만성 간질환(B형간염) — KASL 2026 진료지침 반영·급여 원문 재검증",
+      "summary": "대한간학회 만성 B형간염 진료지침 2026을 반영하고, 경구용 B형간염치료제 급여(고시 제2025-177호)를 원문으로 재검증했습니다. MASH·간경변 파트는 변동 없음.",
+      "items": [
+        "바이러스 역가 기반 4분류(고·HBeAg± 중등도·저바이러스혈증 + 비바이러스혈증)로 판정, 이전 지침(2022) 결과는 접어서 보존",
+        "권고 89건을 KASL 등급(A1–C2)과 함께 표시 — 중등도 바이러스혈증 ALT 무관 치료(B1)",
+        "지침–급여 상충 4건 표시: 중등도 ALT 무관 치료, HBeAg 양성 DNA 하한, 고바이러스혈증 위험인자, 소아 아데포비르",
+        "정정: 대상성 간경변 급여는 HBV-DNA 양성(2,000 기준 아님) · 베시포비르 신장애는 금기 아닌 투여간격 조절",
+        "정정: ALT 2×ULN은 성별 기준(남 34·여 30) · 예방요법 근거 고시 표기·항목 누락 보완",
+        "2025-11-01 급여 확대 반영: TAF 비대상성·HCC 초치료·간이식·예방요법·수직감염, 재활성화 위험도 표"
+      ]
+    },
+    {
       "id": "upd:2026-11-01:hf-v2",
       "date": "2026-11-01",
       "guides": [
@@ -239,13 +257,13 @@
       "id": "liver",
       "title": "만성 간질환",
       "emoji": "🟤",
-      "src": "chronic_liver_guide.html",
+      "src": "chronic_liver_guide.v2.html",
       "out": "liver.html",
-      "guideline": "만성 간질환 통합 가이드 · B형간염·지방간(MASLD/MASH)·간경변 · 심평원 급여",
+      "guideline": "만성 간질환 통합 가이드 · B형간염(KASL 2026)·지방간(MASLD/MASH)·간경변 · 심평원 급여",
       "group": "A",
       "accent": "#9a7b3a",
       "tag": "소화기",
-      "keywords": "만성간질환 간질환 liver B형간염 HBV C형간염 지방간 MASLD MASH NAFLD 간경변 간섬유화 FIB-4 테노포비르 엔테카비르 비리어드 바라크루드 fibroscan 간기능 AST ALT 간경화 정맥류"
+      "keywords": "만성간질환 간질환 liver B형간염 HBV C형간염 지방간 MASLD MASH NAFLD 간경변 간섬유화 FIB-4 테노포비르 엔테카비르 비리어드 바라크루드 fibroscan 간기능 AST ALT 간경화 정맥류 KASL 2026 바이러스역가 중등도 바이러스혈증 DNA 베시포비르 베믈리디 TAF 예방요법 재활성화 고시 2025-177"
     },
     {
       "id": "fgid",
