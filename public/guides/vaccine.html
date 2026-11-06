@@ -671,7 +671,7 @@ renderCards(); paint();
 <script>
 /* 공용 뒤로가기 트랩 v6 (build.js 자동 주입) — 뒤로가기 시 열린 팝업을 닫거나, 없으면 "‹ 도서관/돌아가기/목록으로" 뷰-백 실행.
    둘 다 없으면 정상 이탈. 앱 내부 함수명을 몰라도 DOM 레벨로 동작.
-   v6: 팝업을 닫을 때 닫기 함수를 순위 그룹(팝업 계열 → 기타 → 뷰 계열 closeTopic 등)으로 호출, 앞 그룹이 오버레이를 건드리면 중단.
+   v6: (1) 화면 덮는 패널이 열리면 포털 헤더를 잠시 숨겨 패널 상단 닫기 버튼 노출 (3) 반투명 배경 탭 = 닫기 (2) 팝업을 닫을 때 닫기 함수를 순위 그룹(팝업 계열 → 기타 → 뷰 계열 closeTopic 등)으로 호출, 앞 그룹이 오버레이를 건드리면 중단.
    v5: (1) 네이티브 <dialog open>이 있으면 대기(소유 모듈이 자체 history로 처리) (2) 런타임 뷰-백 감지는 뷰포트 무관(스크롤로 버튼이 가려져도 무장 유지). 로드 시 판정은 v4와 동일. */
 (function(){
   "use strict";
@@ -757,7 +757,15 @@ renderCards(); paint();
     try{ if(!overlays().length) document.body.style.overflow=''; }catch(e){}
   }
   function held(){ try{ return !!document.querySelector('dialog[open]'); }catch(e){ return false; } }
+  /* v6: 화면 덮는 패널/팝업이 포털 헤더 영역까지 올라오면 헤더를 잠시 숨김 — 패널 상단의 닫기·뒤로 버튼이 헤더에 가려지는 문제 방지 */
+  function syncHdr(){
+    var h=document.getElementById('portal-hdr'); if(!h) return;
+    var hb=h.offsetHeight||46, cover=false;
+    try{ cover=overlays().some(function(el){ return el.getBoundingClientRect().top < hb; }); }catch(e){}
+    var v=cover?'hidden':''; if(h.style.visibility!==v) h.style.visibility=v;
+  }
   function refreshOnce(){
+    syncHdr();
     if(held()) return;
     var has=!!closeTarget();
     if(has && !armed){ armed=true; try{history.pushState({backTrap:1},'');}catch(e){} }
@@ -783,6 +791,15 @@ renderCards(); paint();
     baseline=new WeakSet();
     candidates().forEach(function(el){ baseline.add(el); });
     backTrapOK = (backControl(true)===null);
+    /* v6: 반투명 배경(backdrop) 자체를 탭하면 닫기 — 가이드가 자체 처리하면(먼저 닫히면) 아무것도 안 함. 불투명 전체화면 패널은 제외 */
+    document.addEventListener('click',function(e){
+      var t=e.target; if(!t||held()) return;
+      var ov=overlays(); if(ov.indexOf(t)<0) return;
+      var bg=getComputedStyle(t).backgroundColor||'', a=1;
+      if(bg==='transparent'){ a=0; } else if(bg.indexOf('(')>=0){ var parts=bg.slice(bg.indexOf('(')+1, bg.indexOf(')')).split(','); a=parts.length>3?parseFloat(parts[3]):1; }
+      if(a>=0.95) return;
+      setTimeout(function(){ if(overlays().indexOf(t)>=0){ closeOverlays(); schedule(); } },0);
+    },false);
     var mo=new MutationObserver(schedule);
     mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style','hidden'],childList:true});
     document.addEventListener('click',function(){ schedule(); },true);
