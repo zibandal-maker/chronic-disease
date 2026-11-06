@@ -1,0 +1,1289 @@
+[
+ {
+  "id": "G1",
+  "t": "무치료 · CAAT 14 · 중등도 악화 1회 · 호산구 150 · FEV1 65%",
+  "p": {
+   "products": [],
+   "cat": 14,
+   "mmrc": 2,
+   "modExac": 1,
+   "hospExac": 0,
+   "eos": 150,
+   "fev1": 65,
+   "age": 66,
+   "exSmoker": true
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:E",
+   "changed": true,
+   "path": "init",
+   "algo": "copd:algo26:init_e",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LABA+LAMA",
+   "gold_keep": false,
+   "reimb": {
+    "copd:prod:anoro": "ok",
+    "copd:prod:ultibro": "ok",
+    "copd:prod:spiolto": "ok",
+    "copd:prod:duaklir": "ok",
+    "copd:prod:azithro": "no"
+   },
+   "opinion": [],
+   "addons": {
+    "copd:addon26:kr_macrolide": true
+   },
+   "unavailable": [],
+   "conflicts": [
+    "X5",
+    "X7",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [
+    "copd:rec26:g_pr"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE6",
+    "copd:err:CE7",
+    "copd:err:CE8",
+    "copd:err:CE9"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_low"
+  }
+ },
+ {
+  "id": "G2",
+  "t": "LABA+LAMA 중 · 중등도 악화 1회 · 호산구 220 · FEV1 62%",
+  "p": {
+   "products": [
+    "아노로 엘립타"
+   ],
+   "cat": 16,
+   "mmrc": 2,
+   "modExac": 1,
+   "hospExac": 0,
+   "eos": 220,
+   "fev1": 62,
+   "age": 70,
+   "exSmoker": true
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:E",
+   "changed": true,
+   "path": "exac",
+   "algo": "copd:algo26:exac_dual_ics",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_keep": false,
+   "reimb": {
+    "copd:prod:trelegy": "unmet",
+    "copd:prod:breztri": "unmet",
+    "copd:prod:trimbow": "unmet",
+    "copd:prod:anoro": "ok",
+    "copd:prod:ultibro": "ok",
+    "copd:prod:spiolto": "ok",
+    "copd:prod:duaklir": "ok",
+    "copd:prod:azithro": "no"
+   },
+   "opinion": [],
+   "addons": {
+    "copd:addon26:kr_macrolide": true
+   },
+   "unavailable": [],
+   "conflicts": [
+    "X1",
+    "X5",
+    "X7",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [
+    "copd:rec26:g_pr",
+    "copd:rec26:g_ics_pneumonia"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE2",
+    "copd:err:CE6",
+    "copd:err:CE7",
+    "copd:err:CE8",
+    "copd:err:CE9"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_low"
+  }
+ },
+ {
+  "id": "G3",
+  "t": "LABA+LAMA 중 · 중등도 악화 2회 · 호산구 350 · FEV1 55% · 증상 미조절",
+  "p": {
+   "products": [
+    "조터나 브리즈헬러"
+   ],
+   "cat": 20,
+   "mmrc": 2,
+   "modExac": 2,
+   "hospExac": 0,
+   "eos": 350,
+   "fev1": 55,
+   "age": 68,
+   "exSmoker": true,
+   "sx_uncontrolled": true
+  },
+  "expect": {
+   "kr": "copd:group:high",
+   "gold26": "copd:gold26:E",
+   "changed": false,
+   "path": "exac",
+   "algo": "copd:algo26:exac_dual_ics",
+   "kr_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_keep": false,
+   "reimb": {
+    "copd:prod:trelegy": "ok",
+    "copd:prod:breztri": "ok",
+    "copd:prod:trimbow": "ok",
+    "copd:prod:azithro": "no",
+    "copd:prod:dupixent": "no"
+   },
+   "opinion": [
+    "copd:prod:trimbow"
+   ],
+   "addons": {
+    "copd:addon26:kr_macrolide": true,
+    "copd:addon26:kr_bio": true
+   },
+   "unavailable": [],
+   "conflicts": [
+    "X3",
+    "X5",
+    "X8",
+    "X9"
+   ],
+   "flags": [
+    "copd:flag:opinion_form"
+   ],
+   "advice": [
+    "copd:rec26:g_pr",
+    "copd:rec26:g_ics_pneumonia"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE2",
+    "copd:err:CE5",
+    "copd:err:CE6",
+    "copd:err:CE8",
+    "copd:err:CE10"
+   ],
+   "top_kr_rec": "copd:rec26:kq3"
+  }
+ },
+ {
+  "id": "G4",
+  "t": "삼제 중 · 중등도 2회 + 입원 1회 · 호산구 400 · 만성기관지염 · FEV1 45%",
+  "p": {
+   "products": [
+    "트렐리지 엘립타"
+   ],
+   "cat": 22,
+   "mmrc": 3,
+   "modExac": 2,
+   "hospExac": 1,
+   "eos": 400,
+   "fev1": 45,
+   "age": 72,
+   "exSmoker": true,
+   "chronic_bronchitis": true,
+   "sx_uncontrolled": true
+  },
+  "expect": {
+   "kr": "copd:group:high",
+   "gold26": "copd:gold26:E",
+   "changed": false,
+   "path": "exac",
+   "algo": "copd:algo26:exac_triple_bio",
+   "kr_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_keep": true,
+   "reimb": {
+    "copd:prod:trelegy": "ok",
+    "copd:prod:breztri": "ok",
+    "copd:prod:trimbow": "ok",
+    "copd:prod:dupixent": "no",
+    "copd:prod:azithro": "no",
+    "copd:prod:daxas": "ok",
+    "copd:prod:nucala_ai": "no"
+   },
+   "opinion": [],
+   "addons": {
+    "copd:addon26:dupi": true,
+    "copd:addon26:mepo": true,
+    "copd:addon26:azithro": true,
+    "copd:addon26:roflu": true,
+    "copd:addon26:kr_pde4": true,
+    "copd:addon26:kr_macrolide": true,
+    "copd:addon26:kr_bio": true
+   },
+   "unavailable": [],
+   "conflicts": [
+    "X3",
+    "X5",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [
+    "copd:rec26:g_pr",
+    "copd:rec26:g_ics_pneumonia"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE2",
+    "copd:err:CE4",
+    "copd:err:CE5",
+    "copd:err:CE6",
+    "copd:err:CE8",
+    "copd:err:CE10"
+   ],
+   "top_kr_rec": "copd:rec26:kq3"
+  }
+ },
+ {
+  "id": "G5",
+  "t": "LABA+LAMA 중 · 현재 흡연 · 중등도 2회 · 호산구 60 · 만성기관지염 · FEV1 40%",
+  "p": {
+   "products": [
+    "바헬바 레스피맷"
+   ],
+   "cat": 18,
+   "mmrc": 2,
+   "modExac": 2,
+   "hospExac": 0,
+   "eos": 60,
+   "fev1": 40,
+   "age": 63,
+   "smoker": true,
+   "chronic_bronchitis": true
+  },
+  "expect": {
+   "kr": "copd:group:high",
+   "gold26": "copd:gold26:E",
+   "changed": false,
+   "path": "exac",
+   "algo": "copd:algo26:exac_dual_low",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LABA+LAMA",
+   "gold_keep": true,
+   "reimb": {
+    "copd:prod:anoro": "ok",
+    "copd:prod:ultibro": "ok",
+    "copd:prod:spiolto": "ok",
+    "copd:prod:duaklir": "ok",
+    "copd:prod:daxas": "ok",
+    "copd:prod:azithro": "no"
+   },
+   "opinion": [],
+   "addons": {
+    "copd:addon26:azithro": false,
+    "copd:addon26:roflu": false,
+    "copd:addon26:kr_pde4": true,
+    "copd:addon26:kr_macrolide": false
+   },
+   "unavailable": [],
+   "conflicts": [
+    "X4",
+    "X5",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [
+    "copd:rec26:kr_smoking",
+    "copd:rec26:g_pr"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE4",
+    "copd:err:CE6",
+    "copd:err:CE7",
+    "copd:err:CE8"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_high"
+  }
+ },
+ {
+  "id": "G6",
+  "t": "입원 급성악화 · 72세 · 급성 저산소 호흡부전 · 화농성 객담 · 호산구 350 · 백신 없음",
+  "p": {
+   "products": [
+    "아노로 엘립타"
+   ],
+   "cat": 24,
+   "mmrc": 3,
+   "modExac": 1,
+   "hospExac": 1,
+   "eos": 350,
+   "fev1": 42,
+   "age": 72,
+   "exSmoker": true,
+   "ae_on": true,
+   "ae_severity": "severe",
+   "ae_rf": "hypoxemic",
+   "ae_purulent": true,
+   "vaccines": []
+  },
+  "expect": {
+   "kr": "copd:group:high",
+   "gold26": "copd:gold26:E",
+   "changed": false,
+   "path": "exac",
+   "algo": "copd:algo26:exac_dual_ics",
+   "kr_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_keep": false,
+   "reimb": {
+    "copd:prod:trelegy": "ok",
+    "copd:prod:breztri": "ok",
+    "copd:prod:trimbow": "unmet",
+    "copd:prod:azithro": "no",
+    "copd:prod:dupixent": "no"
+   },
+   "opinion": [],
+   "addons": {
+    "copd:addon26:kr_macrolide": true,
+    "copd:addon26:kr_bio": true
+   },
+   "unavailable": [],
+   "conflicts": [
+    "X3",
+    "X5",
+    "X8",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [
+    "copd:rec26:g_pr",
+    "copd:rec26:g_ics_pneumonia"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [
+    "copd:rec26:g_ae_saba",
+    "copd:rec26:g_ae_cs",
+    "copd:rec26:g_ae_abx",
+    "copd:rec26:g_ae_hfnt",
+    "copd:rec26:g_ae_vte",
+    "copd:rec26:g_ae_discharge"
+   ],
+   "errata": [
+    "copd:err:CE2",
+    "copd:err:CE5",
+    "copd:err:CE6",
+    "copd:err:CE8",
+    "copd:err:CE10",
+    "copd:err:CE12"
+   ],
+   "top_kr_rec": "copd:rec26:kq3"
+  }
+ },
+ {
+  "id": "G7",
+  "t": "A군 무치료 FEV1 85 증상 경미",
+  "p": {
+   "products": [],
+   "cat": 5,
+   "mmrc": 1,
+   "modExac": 0,
+   "hospExac": 0,
+   "eos": 100,
+   "fev1": 85,
+   "age": 58
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:A",
+   "changed": false,
+   "path": "init",
+   "algo": "copd:algo26:init_a",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LAMA 단일",
+   "gold_keep": false,
+   "reimb": {
+    "copd:prod:spiriva_hh": "general",
+    "copd:prod:spiriva_rm": "general",
+    "copd:prod:incruse": "unmet",
+    "copd:prod:onbrez": "unmet",
+    "copd:prod:anoro": "unmet",
+    "copd:prod:ultibro": "unmet",
+    "copd:prod:spiolto": "unmet",
+    "copd:prod:duaklir": "unmet"
+   },
+   "opinion": [],
+   "addons": {},
+   "unavailable": [],
+   "conflicts": [
+    "X7",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE7",
+    "copd:err:CE8"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_low"
+  }
+ },
+ {
+  "id": "G8",
+  "t": "A군 FEV1 85 + 증상 조절 안 됨",
+  "p": {
+   "products": [],
+   "cat": 5,
+   "mmrc": 1,
+   "modExac": 0,
+   "hospExac": 0,
+   "eos": 100,
+   "fev1": 85,
+   "age": 58,
+   "sx_uncontrolled": true
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:A",
+   "changed": false,
+   "path": "init",
+   "algo": "copd:algo26:init_a",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LAMA 단일",
+   "gold_keep": false,
+   "reimb": {
+    "copd:prod:spiriva_hh": "general",
+    "copd:prod:spiriva_rm": "general",
+    "copd:prod:incruse": "ok",
+    "copd:prod:onbrez": "ok",
+    "copd:prod:anoro": "ok",
+    "copd:prod:ultibro": "ok",
+    "copd:prod:spiolto": "ok",
+    "copd:prod:duaklir": "ok"
+   },
+   "opinion": [],
+   "addons": {},
+   "unavailable": [],
+   "conflicts": [
+    "X7",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE7",
+    "copd:err:CE8"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_low"
+  }
+ },
+ {
+  "id": "G9",
+  "t": "B군 FEV1 미입력",
+  "p": {
+   "products": [],
+   "cat": 15,
+   "mmrc": 2,
+   "modExac": 0,
+   "hospExac": 0,
+   "eos": 150,
+   "age": 60
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:B",
+   "changed": false,
+   "path": "init",
+   "algo": "copd:algo26:init_b",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LABA+LAMA",
+   "gold_keep": false,
+   "reimb": {
+    "copd:prod:anoro": "unknown",
+    "copd:prod:ultibro": "unknown",
+    "copd:prod:spiolto": "unknown",
+    "copd:prod:duaklir": "unknown"
+   },
+   "opinion": [],
+   "addons": {},
+   "unavailable": [],
+   "conflicts": [
+    "X7",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [
+    "copd:rec26:g_pr"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE7",
+    "copd:err:CE8"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_low"
+  }
+ },
+ {
+  "id": "G10",
+  "t": "LABA+ICS 중 악화1 호산구80",
+  "p": {
+   "products": [
+    "렐바 엘립타"
+   ],
+   "cat": 12,
+   "modExac": 1,
+   "hospExac": 0,
+   "eos": 80,
+   "fev1": 58,
+   "age": 67
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:E",
+   "changed": true,
+   "path": "laba_ics",
+   "algo": "copd:algo26:lics_exac_lo",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LABA+LAMA",
+   "gold_keep": false,
+   "reimb": {
+    "copd:prod:anoro": "ok",
+    "copd:prod:ultibro": "ok",
+    "copd:prod:spiolto": "ok",
+    "copd:prod:duaklir": "ok",
+    "copd:prod:azithro": "no"
+   },
+   "opinion": [],
+   "addons": {
+    "copd:addon26:kr_macrolide": true
+   },
+   "unavailable": [],
+   "conflicts": [
+    "X5",
+    "X6",
+    "X7",
+    "X9"
+   ],
+   "flags": [
+    "copd:flag:ics_low_eos"
+   ],
+   "advice": [
+    "copd:rec26:g_pr"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE6",
+    "copd:err:CE7",
+    "copd:err:CE8",
+    "copd:err:CE9"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_low"
+  }
+ },
+ {
+  "id": "G11",
+  "t": "LABA+ICS 중 악화2 호산구200 FEV1 65",
+  "p": {
+   "products": [
+    "렐바 엘립타"
+   ],
+   "cat": 12,
+   "modExac": 2,
+   "hospExac": 0,
+   "eos": 200,
+   "fev1": 65,
+   "age": 67
+  },
+  "expect": {
+   "kr": "copd:group:high",
+   "gold26": "copd:gold26:E",
+   "changed": false,
+   "path": "laba_ics",
+   "algo": "copd:algo26:lics_exac_hi",
+   "kr_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_keep": false,
+   "reimb": {
+    "copd:prod:trelegy": "unmet",
+    "copd:prod:breztri": "unmet",
+    "copd:prod:trimbow": "unmet",
+    "copd:prod:azithro": "no"
+   },
+   "opinion": [],
+   "addons": {
+    "copd:addon26:kr_macrolide": true
+   },
+   "unavailable": [],
+   "conflicts": [
+    "X1",
+    "X5",
+    "X6",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [
+    "copd:rec26:g_pr",
+    "copd:rec26:g_ics_pneumonia"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE2",
+    "copd:err:CE6",
+    "copd:err:CE8"
+   ],
+   "top_kr_rec": "copd:rec26:kq3"
+  }
+ },
+ {
+  "id": "G12",
+  "t": "삼제 중 악화0 CAAT8",
+  "p": {
+   "products": [
+    "트렐리지 엘립타"
+   ],
+   "cat": 8,
+   "mmrc": 1,
+   "modExac": 0,
+   "hospExac": 0,
+   "eos": 250,
+   "fev1": 48,
+   "age": 71
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:A",
+   "changed": false,
+   "path": "maintain",
+   "algo": "copd:algo26:maintain",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_keep": true,
+   "reimb": {
+    "copd:prod:anoro": "ok",
+    "copd:prod:ultibro": "ok",
+    "copd:prod:spiolto": "ok",
+    "copd:prod:duaklir": "ok",
+    "copd:prod:trelegy": "ok",
+    "copd:prod:breztri": "ok",
+    "copd:prod:trimbow": "unmet"
+   },
+   "opinion": [],
+   "addons": {},
+   "unavailable": [],
+   "conflicts": [
+    "X7",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [
+    "copd:rec26:g_ics_pneumonia"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE2",
+    "copd:err:CE7",
+    "copd:err:CE8"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_low"
+  }
+ },
+ {
+  "id": "G13",
+  "t": "LABA+LAMA 중 악화0 CAAT20 호흡곤란",
+  "p": {
+   "products": [
+    "아노로 엘립타"
+   ],
+   "cat": 20,
+   "mmrc": 3,
+   "modExac": 0,
+   "hospExac": 0,
+   "eos": 150,
+   "fev1": 52,
+   "age": 69
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:B",
+   "changed": false,
+   "path": "dyspnea",
+   "algo": "copd:algo26:dysp_dual",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LABA+LAMA",
+   "gold_keep": true,
+   "reimb": {
+    "copd:prod:anoro": "ok",
+    "copd:prod:ultibro": "ok",
+    "copd:prod:spiolto": "ok",
+    "copd:prod:duaklir": "ok"
+   },
+   "opinion": [],
+   "addons": {},
+   "unavailable": [
+    "copd:prod:ensifentrine"
+   ],
+   "conflicts": [
+    "X7",
+    "X9"
+   ],
+   "flags": [
+    "copd:flag:kr_unavailable"
+   ],
+   "advice": [],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE7",
+    "copd:err:CE8"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_low"
+  }
+ },
+ {
+  "id": "G14",
+  "t": "LAMA 단일 중 악화1 호산구350",
+  "p": {
+   "products": [
+    "스피리바 레스피맷"
+   ],
+   "cat": 12,
+   "modExac": 1,
+   "hospExac": 0,
+   "eos": 350,
+   "fev1": 58,
+   "age": 64
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:E",
+   "changed": true,
+   "path": "exac",
+   "algo": "copd:algo26:exac_mono_eos",
+   "kr_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_keep": false,
+   "reimb": {
+    "copd:prod:trelegy": "unmet",
+    "copd:prod:breztri": "unmet",
+    "copd:prod:trimbow": "unmet"
+   },
+   "opinion": [],
+   "addons": {},
+   "unavailable": [],
+   "conflicts": [
+    "X1",
+    "X7",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [
+    "copd:rec26:g_pr",
+    "copd:rec26:g_ics_pneumonia"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE2",
+    "copd:err:CE8",
+    "copd:err:CE9"
+   ],
+   "top_kr_rec": null
+  }
+ },
+ {
+  "id": "G15",
+  "t": "LABA+LAMA 중 악화1 호산구 미입력",
+  "p": {
+   "products": [
+    "아노로 엘립타"
+   ],
+   "cat": 12,
+   "modExac": 1,
+   "hospExac": 0,
+   "fev1": 58,
+   "age": 64
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:E",
+   "changed": true,
+   "path": "exac",
+   "algo": "copd:algo26:exac_noeos",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LABA+LAMA",
+   "gold_keep": true,
+   "reimb": {
+    "copd:prod:anoro": "ok",
+    "copd:prod:ultibro": "ok",
+    "copd:prod:spiolto": "ok",
+    "copd:prod:duaklir": "ok"
+   },
+   "opinion": [],
+   "addons": {},
+   "unavailable": [],
+   "conflicts": [
+    "X7",
+    "X9"
+   ],
+   "flags": [
+    "copd:flag:need_eos"
+   ],
+   "advice": [
+    "copd:rec26:g_pr"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE7",
+    "copd:err:CE8",
+    "copd:err:CE9"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_low"
+  }
+ },
+ {
+  "id": "G16",
+  "t": "삼제 중 입원1 호산구320 만성기관지염 없음",
+  "p": {
+   "products": [
+    "트림보우"
+   ],
+   "cat": 18,
+   "modExac": 0,
+   "hospExac": 1,
+   "eos": 320,
+   "fev1": 44,
+   "age": 73,
+   "exSmoker": true
+  },
+  "expect": {
+   "kr": "copd:group:high",
+   "gold26": "copd:gold26:E",
+   "changed": false,
+   "path": "exac",
+   "algo": "copd:algo26:exac_triple_bio",
+   "kr_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_keep": true,
+   "reimb": {
+    "copd:prod:trelegy": "ok",
+    "copd:prod:breztri": "ok",
+    "copd:prod:trimbow": "unmet",
+    "copd:prod:dupixent": "no",
+    "copd:prod:azithro": "no",
+    "copd:prod:nucala_ai": "no",
+    "copd:prod:daxas": "unmet"
+   },
+   "opinion": [],
+   "addons": {
+    "copd:addon26:dupi": false,
+    "copd:addon26:mepo": true,
+    "copd:addon26:azithro": true,
+    "copd:addon26:roflu": false,
+    "copd:addon26:kr_macrolide": true,
+    "copd:addon26:kr_bio": true
+   },
+   "unavailable": [],
+   "conflicts": [
+    "X3",
+    "X5",
+    "X8",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [
+    "copd:rec26:g_pr",
+    "copd:rec26:g_ics_pneumonia"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE2",
+    "copd:err:CE4",
+    "copd:err:CE5",
+    "copd:err:CE6",
+    "copd:err:CE8",
+    "copd:err:CE10"
+   ],
+   "top_kr_rec": "copd:rec26:kq3"
+  }
+ },
+ {
+  "id": "G17",
+  "t": "LABA+LAMA 중 FEV1 49 증상미조절 악화0",
+  "p": {
+   "products": [
+    "조터나 브리즈헬러"
+   ],
+   "cat": 15,
+   "mmrc": 2,
+   "modExac": 0,
+   "hospExac": 0,
+   "eos": 150,
+   "fev1": 49,
+   "age": 70,
+   "sx_uncontrolled": true
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:B",
+   "changed": false,
+   "path": "dyspnea",
+   "algo": "copd:algo26:dysp_dual",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LABA+LAMA",
+   "gold_keep": true,
+   "reimb": {
+    "copd:prod:anoro": "ok",
+    "copd:prod:ultibro": "ok",
+    "copd:prod:spiolto": "ok",
+    "copd:prod:duaklir": "ok"
+   },
+   "opinion": [],
+   "addons": {},
+   "unavailable": [
+    "copd:prod:ensifentrine"
+   ],
+   "conflicts": [
+    "X7",
+    "X9"
+   ],
+   "flags": [
+    "copd:flag:kr_unavailable"
+   ],
+   "advice": [],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE7",
+    "copd:err:CE8"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_low"
+  }
+ },
+ {
+  "id": "G18",
+  "t": "경계 FEV1 60 LABA+LAMA 중 악화1 호산구 99",
+  "p": {
+   "products": [
+    "아노로 엘립타"
+   ],
+   "cat": 12,
+   "modExac": 1,
+   "hospExac": 0,
+   "eos": 99,
+   "fev1": 60,
+   "age": 66
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:E",
+   "changed": true,
+   "path": "exac",
+   "algo": "copd:algo26:exac_dual_low",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LABA+LAMA",
+   "gold_keep": true,
+   "reimb": {
+    "copd:prod:anoro": "ok",
+    "copd:prod:ultibro": "ok",
+    "copd:prod:spiolto": "ok",
+    "copd:prod:duaklir": "ok",
+    "copd:prod:azithro": "no",
+    "copd:prod:daxas": "unmet"
+   },
+   "opinion": [],
+   "addons": {
+    "copd:addon26:azithro": true,
+    "copd:addon26:roflu": false,
+    "copd:addon26:kr_macrolide": true
+   },
+   "unavailable": [],
+   "conflicts": [
+    "X5",
+    "X7",
+    "X9"
+   ],
+   "flags": [],
+   "advice": [
+    "copd:rec26:g_pr"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE4",
+    "copd:err:CE6",
+    "copd:err:CE7",
+    "copd:err:CE8",
+    "copd:err:CE9"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_low"
+  }
+ },
+ {
+  "id": "G19",
+  "t": "백신 66세 PCV13만",
+  "p": {
+   "products": [
+    "아노로 엘립타"
+   ],
+   "cat": 10,
+   "modExac": 0,
+   "hospExac": 0,
+   "eos": 150,
+   "fev1": 55,
+   "age": 66,
+   "vaccines": [
+    "vacc:pcv13",
+    "vacc:influenza"
+   ]
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:B",
+   "changed": false,
+   "path": "dyspnea",
+   "algo": "copd:algo26:dysp_dual",
+   "kr_regimen": "LABA+LAMA",
+   "gold_regimen": "LABA+LAMA",
+   "gold_keep": true,
+   "reimb": {
+    "copd:prod:anoro": "ok",
+    "copd:prod:ultibro": "ok",
+    "copd:prod:spiolto": "ok",
+    "copd:prod:duaklir": "ok"
+   },
+   "opinion": [],
+   "addons": {},
+   "unavailable": [
+    "copd:prod:ensifentrine"
+   ],
+   "conflicts": [
+    "X7",
+    "X9"
+   ],
+   "flags": [
+    "copd:flag:kr_unavailable"
+   ],
+   "advice": [],
+   "vacc_due": [
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:rsv",
+    "vacc:tdap",
+    "vacc:zoster"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE7",
+    "copd:err:CE8"
+   ],
+   "top_kr_rec": "copd:rec26:kr_init_low"
+  }
+ },
+ {
+  "id": "G20",
+  "t": "천식 병력·공존 + 결핵 병력, 무치료 E군 호산구 320",
+  "p": {
+   "products": [],
+   "cat": 14,
+   "modExac": 1,
+   "hospExac": 0,
+   "eos": 320,
+   "fev1": 55,
+   "age": 45,
+   "asthmaHx": true,
+   "asthma_concurrent": true,
+   "mycobacterial_hx": true
+  },
+  "expect": {
+   "kr": "copd:group:low",
+   "gold26": "copd:gold26:E",
+   "changed": true,
+   "path": "init",
+   "algo": "copd:algo26:init_e_eos",
+   "kr_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_regimen": "LABA+LAMA+ICS(삼제)",
+   "gold_keep": false,
+   "reimb": {
+    "copd:prod:trelegy": "unmet",
+    "copd:prod:breztri": "unmet",
+    "copd:prod:trimbow": "unmet"
+   },
+   "opinion": [],
+   "addons": {},
+   "unavailable": [],
+   "conflicts": [
+    "X2",
+    "X7",
+    "X9"
+   ],
+   "flags": [
+    "copd:flag:ics_myco"
+   ],
+   "advice": [
+    "copd:rec26:g_pr",
+    "copd:rec26:g_asthma_ics",
+    "copd:rec26:g_ics_pneumonia",
+    "copd:rec26:kr_no_ics_asthma_hx"
+   ],
+   "vacc_due": [
+    "vacc:influenza",
+    "vacc:covid19",
+    "vacc:pneumo",
+    "vacc:tdap"
+   ],
+   "aecopd": [],
+   "errata": [
+    "copd:err:CE2",
+    "copd:err:CE8",
+    "copd:err:CE9"
+   ],
+   "top_kr_rec": null
+  }
+ }
+]
