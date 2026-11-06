@@ -1,0 +1,1341 @@
+[
+ {
+  "id": "G1",
+  "from": "asthma:sim26:c1",
+  "p": {
+   "age": 34,
+   "sx_freq": "lt2m",
+   "products": []
+  },
+  "expect": {
+   "mode": "initial",
+   "action": "start",
+   "step": [
+    null,
+    1
+   ],
+   "control": "well",
+   "ics": "none",
+   "regimens": [
+    "t1:필요시 저용량 ICS-formoterol (AIR)",
+    "t2:필요시 SABA + 사용할 때마다 저용량 ICS"
+   ],
+   "reimb": {
+    "asthma:prod:symbicort_th": "unmet",
+    "asthma:prod:symbicort_rh": "unmet",
+    "asthma:prod:arnuity": "general",
+    "asthma:prod:flixotide": "general",
+    "asthma:prod:saba": "general"
+   },
+   "pheno": null,
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:air_mild",
+    "asthma:conf26:ics_saba"
+   ],
+   "flags": [],
+   "errata": [
+    "asthma:err:AE18"
+   ],
+   "advice": []
+  }
+ },
+ {
+  "id": "G2",
+  "from": "asthma:sim26:c2",
+  "p": {
+   "age": 52,
+   "products": [
+    "asthma:prod:relvar100",
+    "asthma:prod:saba"
+   ],
+   "ics_level": "medium",
+   "g4_day": true,
+   "g4_reliever": true,
+   "exac": 1,
+   "adherence_ok": true,
+   "technique_ok": true,
+   "fev1": 74
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "step_up",
+   "step": [
+    4,
+    5
+   ],
+   "control": "partly",
+   "ics": "medium",
+   "regimens": [
+    "switch:중간용량 ICS-formoterol MART",
+    "t1:전문가 의뢰 → 표현형 평가 → 생물학제제 / LAMA 추가",
+    "t2:고용량 ICS-LABA 단기 시도 또는 LAMA 추가 · 의뢰"
+   ],
+   "reimb": {
+    "asthma:prod:relvar100": "ok",
+    "asthma:prod:saba": "general",
+    "asthma:prod:symbicort_th": "ok",
+    "asthma:prod:symbicort_rh": "ok",
+    "asthma:prod:foster": "ok",
+    "asthma:prod:enerzair": "ok",
+    "asthma:prod:trelegy": "ok",
+    "asthma:prod:trimbow": "ok",
+    "asthma:prod:spiriva_rm": "unmet",
+    "asthma:prod:xolair": "unmet",
+    "asthma:prod:omlyclo": "unmet",
+    "asthma:prod:nucala_vial": "unmet",
+    "asthma:prod:nucala_ai": "unmet",
+    "asthma:prod:cinqaero": "unmet",
+    "asthma:prod:fasenra": "unmet",
+    "asthma:prod:dupixent": "unmet",
+    "asthma:prod:tezspire": "no",
+    "asthma:prod:depemokimab": "na"
+   },
+   "pheno": [],
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:bio_high_ics",
+    "asthma:conf26:bio_lama_first",
+    "asthma:conf26:tezepelumab",
+    "asthma:conf26:mart_max",
+    "asthma:conf26:feno"
+   ],
+   "flags": [
+    "asthma:flag:bio_lama",
+    "asthma:flag:need_eos",
+    "asthma:flag:feno_pay",
+    "asthma:flag:kr_unavailable"
+   ],
+   "errata": [
+    "asthma:err:AE1",
+    "asthma:err:AE2",
+    "asthma:err:AE3",
+    "asthma:err:AE4",
+    "asthma:err:AE5",
+    "asthma:err:AE6",
+    "asthma:err:AE8",
+    "asthma:err:AE9",
+    "asthma:err:AE10",
+    "asthma:err:AE14"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G3",
+  "from": "asthma:sim26:c3",
+  "p": {
+   "age": 58,
+   "products": [
+    "asthma:prod:relvar200",
+    "asthma:prod:spiriva_rm"
+   ],
+   "ics_level": "high",
+   "g4_day": true,
+   "g4_night": true,
+   "g4_reliever": true,
+   "exac": 3,
+   "eos": 450,
+   "feno": 38,
+   "ige": 60,
+   "fev1": 62,
+   "nasal_polyps": true,
+   "adherence_ok": true,
+   "technique_ok": true,
+   "bio_eval": true
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "severe",
+   "step": [
+    5,
+    5
+   ],
+   "control": "uncontrolled",
+   "ics": "high",
+   "regimens": [
+    "t1:전문가 의뢰 → 표현형 평가 → 생물학제제 / LAMA 추가",
+    "t2:고용량 ICS-LABA 단기 시도 또는 LAMA 추가 · 의뢰"
+   ],
+   "reimb": {
+    "asthma:prod:relvar200": "ok",
+    "asthma:prod:spiriva_rm": "ok",
+    "asthma:prod:enerzair": "ok",
+    "asthma:prod:trelegy": "ok",
+    "asthma:prod:trimbow": "ok",
+    "asthma:prod:nucala_vial": "ok",
+    "asthma:prod:nucala_ai": "ok",
+    "asthma:prod:cinqaero": "ok",
+    "asthma:prod:fasenra": "ok",
+    "asthma:prod:dupixent": "unmet",
+    "asthma:prod:xolair": "unmet",
+    "asthma:prod:omlyclo": "unmet",
+    "asthma:prod:tezspire": "no",
+    "asthma:prod:depemokimab": "na"
+   },
+   "pheno": [
+    "eosinophilic",
+    "t2"
+   ],
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:bio_exac_n",
+    "asthma:conf26:tezepelumab",
+    "asthma:conf26:depemokimab",
+    "asthma:conf26:feno"
+   ],
+   "flags": [
+    "asthma:flag:refer",
+    "asthma:flag:feno_pay",
+    "asthma:flag:kr_unavailable"
+   ],
+   "errata": [
+    "asthma:err:AE2",
+    "asthma:err:AE3",
+    "asthma:err:AE4",
+    "asthma:err:AE5",
+    "asthma:err:AE6",
+    "asthma:err:AE8",
+    "asthma:err:AE9",
+    "asthma:err:AE10",
+    "asthma:err:AE14"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G4",
+  "from": "asthma:sim26:c4",
+  "p": {
+   "age": 47,
+   "products": [
+    "asthma:prod:relvar200"
+   ],
+   "ics_level": "high",
+   "g4_day": true,
+   "g4_night": true,
+   "g4_reliever": true,
+   "g4_limit": true,
+   "exac": 4,
+   "eos": 350,
+   "fev1": 58,
+   "adherence_ok": true,
+   "technique_ok": true,
+   "bio_eval": true
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "step_up",
+   "step": [
+    4,
+    5
+   ],
+   "control": "uncontrolled",
+   "ics": "high",
+   "regimens": [
+    "switch:중간용량 ICS-formoterol MART",
+    "t1:전문가 의뢰 → 표현형 평가 → 생물학제제 / LAMA 추가",
+    "t2:고용량 ICS-LABA 단기 시도 또는 LAMA 추가 · 의뢰"
+   ],
+   "reimb": {
+    "asthma:prod:relvar200": "ok",
+    "asthma:prod:symbicort_th": "ok",
+    "asthma:prod:symbicort_rh": "ok",
+    "asthma:prod:foster": "ok",
+    "asthma:prod:enerzair": "ok",
+    "asthma:prod:trelegy": "ok",
+    "asthma:prod:trimbow": "ok",
+    "asthma:prod:spiriva_rm": "ok",
+    "asthma:prod:nucala_vial": "unmet",
+    "asthma:prod:nucala_ai": "unmet",
+    "asthma:prod:cinqaero": "unmet",
+    "asthma:prod:fasenra": "unmet",
+    "asthma:prod:dupixent": "unmet",
+    "asthma:prod:xolair": "unmet",
+    "asthma:prod:omlyclo": "unmet",
+    "asthma:prod:tezspire": "no",
+    "asthma:prod:depemokimab": "na"
+   },
+   "pheno": [
+    "eosinophilic",
+    "t2"
+   ],
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:bio_lama_first",
+    "asthma:conf26:tezepelumab",
+    "asthma:conf26:depemokimab",
+    "asthma:conf26:mart_max",
+    "asthma:conf26:feno"
+   ],
+   "flags": [
+    "asthma:flag:refer",
+    "asthma:flag:bio_lama",
+    "asthma:flag:feno_pay",
+    "asthma:flag:kr_unavailable"
+   ],
+   "errata": [
+    "asthma:err:AE1",
+    "asthma:err:AE2",
+    "asthma:err:AE3",
+    "asthma:err:AE4",
+    "asthma:err:AE5",
+    "asthma:err:AE6",
+    "asthma:err:AE8",
+    "asthma:err:AE9",
+    "asthma:err:AE10",
+    "asthma:err:AE14"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G5",
+  "from": "asthma:sim26:c5",
+  "p": {
+   "age": 9,
+   "products": [
+    "asthma:prod:flutiform"
+   ],
+   "ics_level": "high",
+   "g4_day": true,
+   "g4_reliever": true,
+   "exac": 2,
+   "ige": 150,
+   "perennial_sens": true,
+   "allergic_rhinitis": true,
+   "eos": 320,
+   "bio_eval": true
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "step_up",
+   "step": [
+    4,
+    5
+   ],
+   "control": "partly",
+   "ics": "high",
+   "regimens": [
+    "switch:중간용량 ICS-formoterol MART",
+    "t1:전문가 의뢰 → 표현형 평가 → 생물학제제 / LAMA 추가",
+    "t2:고용량 ICS-LABA 단기 시도 또는 LAMA 추가 · 의뢰"
+   ],
+   "reimb": {
+    "asthma:prod:flutiform": "unmet",
+    "asthma:prod:symbicort_th": "unmet",
+    "asthma:prod:symbicort_rh": "unmet",
+    "asthma:prod:foster": "unmet",
+    "asthma:prod:enerzair": "unmet",
+    "asthma:prod:trelegy": "unmet",
+    "asthma:prod:trimbow": "unmet",
+    "asthma:prod:spiriva_rm": "ok",
+    "asthma:prod:xolair": "ok",
+    "asthma:prod:omlyclo": "ok",
+    "asthma:prod:nucala_vial": "unmet",
+    "asthma:prod:nucala_ai": "unmet",
+    "asthma:prod:cinqaero": "unmet",
+    "asthma:prod:fasenra": "unmet",
+    "asthma:prod:dupixent": "unmet",
+    "asthma:prod:tezspire": "no",
+    "asthma:prod:depemokimab": "na"
+   },
+   "pheno": [
+    "allergic",
+    "eosinophilic",
+    "t2"
+   ],
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:bio_exac_n",
+    "asthma:conf26:tezepelumab",
+    "asthma:conf26:depemokimab",
+    "asthma:conf26:mart_max",
+    "asthma:conf26:feno"
+   ],
+   "flags": [
+    "asthma:flag:age_flow",
+    "asthma:flag:check_first",
+    "asthma:flag:refer",
+    "asthma:flag:feno_pay",
+    "asthma:flag:kr_unavailable"
+   ],
+   "errata": [
+    "asthma:err:AE1",
+    "asthma:err:AE2",
+    "asthma:err:AE3",
+    "asthma:err:AE4",
+    "asthma:err:AE5",
+    "asthma:err:AE6",
+    "asthma:err:AE8",
+    "asthma:err:AE9",
+    "asthma:err:AE10",
+    "asthma:err:AE14"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G6",
+  "from": "asthma:sim26:c6",
+  "p": {
+   "age": 41,
+   "products": [
+    "asthma:prod:symbicort_th"
+   ],
+   "ics_level": "low",
+   "use_mode": "mart",
+   "ae_on": true,
+   "ae_talk": "words",
+   "rr": 32,
+   "hr": 125,
+   "spo2": 89,
+   "pef": 45,
+   "exac": 1
+  },
+  "expect": {
+   "mode": "exacerbation",
+   "action": "step_up",
+   "step": [
+    3,
+    4
+   ],
+   "control": "well",
+   "ics": "low",
+   "regimens": [
+    "t1:중간용량 ICS-formoterol MART",
+    "t2:중간용량 ICS-LABA + 필요시 SABA"
+   ],
+   "reimb": {
+    "asthma:prod:symbicort_th": "cond",
+    "asthma:prod:symbicort_rh": "cond",
+    "asthma:prod:foster": "cond",
+    "asthma:prod:relvar100": "cond",
+    "asthma:prod:relvar200": "cond",
+    "asthma:prod:flutiform": "cond",
+    "asthma:prod:atectura": "cond"
+   },
+   "pheno": null,
+   "ae": "severe",
+   "conflicts": [
+    "asthma:conf26:mart_max",
+    "asthma:conf26:o2_target"
+   ],
+   "flags": [
+    "asthma:flag:check_first"
+   ],
+   "errata": [
+    "asthma:err:AE12",
+    "asthma:err:AE17"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G7",
+  "from": null,
+  "p": {
+   "age": 28,
+   "sx_freq": "ge2m",
+   "smoker": true,
+   "products": []
+  },
+  "expect": {
+   "mode": "initial",
+   "action": "start",
+   "step": [
+    null,
+    2
+   ],
+   "control": "well",
+   "ics": "none",
+   "regimens": [
+    "t1:필요시 저용량 ICS-formoterol (AIR)",
+    "t2:매일 저용량 ICS + 필요시 SABA"
+   ],
+   "reimb": {
+    "asthma:prod:symbicort_th": "unmet",
+    "asthma:prod:symbicort_rh": "unmet",
+    "asthma:prod:arnuity": "general",
+    "asthma:prod:flixotide": "general"
+   },
+   "pheno": null,
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:air_mild",
+    "asthma:conf26:ics_saba"
+   ],
+   "flags": [],
+   "errata": [
+    "asthma:err:AE18"
+   ],
+   "advice": [
+    "asthma:rec26:g_smoke"
+   ]
+  }
+ },
+ {
+  "id": "G8",
+  "from": null,
+  "p": {
+   "age": 40,
+   "sx_freq": "lt2m",
+   "exac": 1,
+   "products": [
+    "asthma:prod:saba"
+   ]
+  },
+  "expect": {
+   "mode": "initial",
+   "action": "start",
+   "step": [
+    null,
+    2
+   ],
+   "control": "well",
+   "ics": "none",
+   "regimens": [
+    "t1:필요시 저용량 ICS-formoterol (AIR)",
+    "t2:매일 저용량 ICS + 필요시 SABA"
+   ],
+   "reimb": {
+    "asthma:prod:saba": "general",
+    "asthma:prod:symbicort_th": "unmet",
+    "asthma:prod:symbicort_rh": "unmet",
+    "asthma:prod:arnuity": "general",
+    "asthma:prod:flixotide": "general"
+   },
+   "pheno": null,
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:air_mild",
+    "asthma:conf26:ics_saba"
+   ],
+   "flags": [
+    "asthma:flag:saba_only"
+   ],
+   "errata": [
+    "asthma:err:AE18"
+   ],
+   "advice": [
+    "asthma:rec26:kr_saba_only",
+    "asthma:rec26:g_saba_only"
+   ]
+  }
+ },
+ {
+  "id": "G9",
+  "from": null,
+  "p": {
+   "age": 35,
+   "sx_freq": "most",
+   "products": []
+  },
+  "expect": {
+   "mode": "initial",
+   "action": "start",
+   "step": [
+    null,
+    3
+   ],
+   "control": "well",
+   "ics": "none",
+   "regimens": [
+    "t1:저용량 ICS-formoterol MART",
+    "t2:저용량 ICS-LABA + 필요시 SABA"
+   ],
+   "reimb": {
+    "asthma:prod:symbicort_th": "ok",
+    "asthma:prod:symbicort_rh": "ok",
+    "asthma:prod:foster": "ok",
+    "asthma:prod:relvar100": "ok",
+    "asthma:prod:relvar200": "ok",
+    "asthma:prod:flutiform": "ok",
+    "asthma:prod:atectura": "ok"
+   },
+   "pheno": null,
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:mart_max"
+   ],
+   "flags": [],
+   "errata": [
+    "asthma:err:AE17",
+    "asthma:err:AE18"
+   ],
+   "advice": []
+  }
+ },
+ {
+  "id": "G10",
+  "from": null,
+  "p": {
+   "age": 61,
+   "sx_freq": "daily",
+   "night_waking": true,
+   "fev1": 55,
+   "products": []
+  },
+  "expect": {
+   "mode": "initial",
+   "action": "start",
+   "step": [
+    null,
+    4
+   ],
+   "control": "well",
+   "ics": "none",
+   "regimens": [
+    "t1:중간용량 ICS-formoterol MART",
+    "t2:중간용량 ICS-LABA + 필요시 SABA"
+   ],
+   "reimb": {
+    "asthma:prod:symbicort_th": "ok",
+    "asthma:prod:symbicort_rh": "ok",
+    "asthma:prod:foster": "ok",
+    "asthma:prod:relvar100": "ok",
+    "asthma:prod:relvar200": "ok",
+    "asthma:prod:flutiform": "ok",
+    "asthma:prod:atectura": "ok"
+   },
+   "pheno": null,
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:mart_max"
+   ],
+   "flags": [],
+   "errata": [
+    "asthma:err:AE17",
+    "asthma:err:AE18"
+   ],
+   "advice": [
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G11",
+  "from": null,
+  "p": {
+   "age": 45,
+   "initial_severe": true,
+   "sx_freq": "daily",
+   "products": []
+  },
+  "expect": {
+   "mode": "initial",
+   "action": "start",
+   "step": [
+    null,
+    5
+   ],
+   "control": "well",
+   "ics": "none",
+   "regimens": [
+    "t1:중간용량 ICS-formoterol MART + 단기 OCS(급성 악화에 준함)",
+    "t2:고용량 ICS 또는 중간용량 ICS-LABA + 필요시 SABA, 단기 OCS"
+   ],
+   "reimb": {
+    "asthma:prod:symbicort_th": "ok",
+    "asthma:prod:symbicort_rh": "ok",
+    "asthma:prod:foster": "ok",
+    "asthma:prod:relvar100": "ok",
+    "asthma:prod:relvar200": "ok",
+    "asthma:prod:flutiform": "ok",
+    "asthma:prod:atectura": "ok"
+   },
+   "pheno": null,
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:mart_max"
+   ],
+   "flags": [],
+   "errata": [
+    "asthma:err:AE17",
+    "asthma:err:AE18"
+   ],
+   "advice": [
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G12",
+  "from": null,
+  "p": {
+   "age": 50,
+   "products": [
+    "asthma:prod:foster"
+   ],
+   "use_mode": "mart",
+   "ics_puffs_day": 4,
+   "stable_3m": true,
+   "adherence_ok": true,
+   "technique_ok": true
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "step_down",
+   "step": [
+    4,
+    3
+   ],
+   "control": "well",
+   "ics": "medium",
+   "regimens": [
+    "t1:저용량 ICS-formoterol MART",
+    "t2:저용량 ICS-LABA + 필요시 SABA"
+   ],
+   "reimb": {
+    "asthma:prod:foster": "cond",
+    "asthma:prod:symbicort_th": "cond",
+    "asthma:prod:symbicort_rh": "cond",
+    "asthma:prod:relvar100": "cond",
+    "asthma:prod:relvar200": "cond",
+    "asthma:prod:flutiform": "cond",
+    "asthma:prod:atectura": "cond"
+   },
+   "pheno": null,
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:mart_max"
+   ],
+   "flags": [],
+   "errata": [
+    "asthma:err:AE17"
+   ],
+   "advice": [
+    "asthma:rec26:kr_stepdown",
+    "asthma:rec26:g_stepdown",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G13",
+  "from": null,
+  "p": {
+   "age": 33,
+   "products": [
+    "asthma:prod:symbicort_th"
+   ],
+   "use_mode": "air",
+   "ics_puffs_day": 2,
+   "g4_day": true,
+   "g4_reliever": true
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "step_up",
+   "step": [
+    2,
+    3
+   ],
+   "control": "partly",
+   "ics": "low",
+   "regimens": [
+    "t1:저용량 ICS-formoterol MART",
+    "t2:저용량 ICS-LABA + 필요시 SABA"
+   ],
+   "reimb": {
+    "asthma:prod:symbicort_th": "ok",
+    "asthma:prod:symbicort_rh": "ok",
+    "asthma:prod:foster": "ok",
+    "asthma:prod:relvar100": "ok",
+    "asthma:prod:relvar200": "ok",
+    "asthma:prod:flutiform": "ok",
+    "asthma:prod:atectura": "ok"
+   },
+   "pheno": null,
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:mart_max"
+   ],
+   "flags": [
+    "asthma:flag:check_first"
+   ],
+   "errata": [
+    "asthma:err:AE17"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check"
+   ]
+  }
+ },
+ {
+  "id": "G14",
+  "from": null,
+  "p": {
+   "age": 66,
+   "products": [
+    "asthma:prod:trelegy"
+   ],
+   "ics_level": "medium",
+   "g4_day": true,
+   "exac": 1,
+   "adherence_ok": true,
+   "technique_ok": true,
+   "eos": 180
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "severe",
+   "step": [
+    5,
+    5
+   ],
+   "control": "partly",
+   "ics": "medium",
+   "regimens": [
+    "t1:전문가 의뢰 → 표현형 평가 → 생물학제제 / LAMA 추가",
+    "t2:고용량 ICS-LABA 단기 시도 또는 LAMA 추가 · 의뢰"
+   ],
+   "reimb": {
+    "asthma:prod:trelegy": "ok",
+    "asthma:prod:enerzair": "ok",
+    "asthma:prod:trimbow": "ok",
+    "asthma:prod:spiriva_rm": "unmet",
+    "asthma:prod:dupixent": "unmet",
+    "asthma:prod:xolair": "unmet",
+    "asthma:prod:omlyclo": "unmet",
+    "asthma:prod:nucala_vial": "unmet",
+    "asthma:prod:nucala_ai": "unmet",
+    "asthma:prod:cinqaero": "unmet",
+    "asthma:prod:fasenra": "unmet",
+    "asthma:prod:tezspire": "no",
+    "asthma:prod:depemokimab": "na"
+   },
+   "pheno": [
+    "t2"
+   ],
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:bio_high_ics",
+    "asthma:conf26:tezepelumab",
+    "asthma:conf26:feno"
+   ],
+   "flags": [
+    "asthma:flag:feno_pay",
+    "asthma:flag:kr_unavailable"
+   ],
+   "errata": [
+    "asthma:err:AE2",
+    "asthma:err:AE3",
+    "asthma:err:AE4",
+    "asthma:err:AE5",
+    "asthma:err:AE6",
+    "asthma:err:AE8",
+    "asthma:err:AE9",
+    "asthma:err:AE10",
+    "asthma:err:AE14"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G15",
+  "from": null,
+  "p": {
+   "age": 38,
+   "products": [
+    "asthma:prod:montelukast"
+   ],
+   "aerd": true,
+   "sx_freq": "ge2m"
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "maintain",
+   "step": [
+    2,
+    2
+   ],
+   "control": "well",
+   "ics": "none",
+   "regimens": [
+    "t1:필요시 저용량 ICS-formoterol (AIR)",
+    "t2:매일 저용량 ICS + 필요시 SABA"
+   ],
+   "reimb": {
+    "asthma:prod:montelukast": "ok",
+    "asthma:prod:symbicort_th": "unmet",
+    "asthma:prod:symbicort_rh": "unmet",
+    "asthma:prod:arnuity": "general",
+    "asthma:prod:flixotide": "general"
+   },
+   "pheno": null,
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:air_mild",
+    "asthma:conf26:ics_saba"
+   ],
+   "flags": [
+    "asthma:flag:aerd"
+   ],
+   "errata": [
+    "asthma:err:AE15"
+   ],
+   "advice": []
+  }
+ },
+ {
+  "id": "G16",
+  "from": null,
+  "p": {
+   "age": 55,
+   "products": [
+    "asthma:prod:relvar200",
+    "asthma:prod:spiriva_rm"
+   ],
+   "ics_level": "high",
+   "g4_day": true,
+   "g4_night": true,
+   "exac": 1,
+   "ocs_mg": 10,
+   "ocs_months": 8,
+   "eos": 100,
+   "adherence_ok": true,
+   "technique_ok": true
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "severe",
+   "step": [
+    5,
+    5
+   ],
+   "control": "partly",
+   "ics": "high",
+   "regimens": [
+    "t1:전문가 의뢰 → 표현형 평가 → 생물학제제 / LAMA 추가",
+    "t2:고용량 ICS-LABA 단기 시도 또는 LAMA 추가 · 의뢰"
+   ],
+   "reimb": {
+    "asthma:prod:relvar200": "ok",
+    "asthma:prod:spiriva_rm": "ok",
+    "asthma:prod:enerzair": "ok",
+    "asthma:prod:trelegy": "ok",
+    "asthma:prod:trimbow": "ok",
+    "asthma:prod:dupixent": "ok",
+    "asthma:prod:xolair": "unmet",
+    "asthma:prod:omlyclo": "unmet",
+    "asthma:prod:nucala_vial": "unmet",
+    "asthma:prod:nucala_ai": "unmet",
+    "asthma:prod:cinqaero": "unmet",
+    "asthma:prod:fasenra": "unmet",
+    "asthma:prod:tezspire": "no",
+    "asthma:prod:depemokimab": "na"
+   },
+   "pheno": [
+    "t2_low"
+   ],
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:tezepelumab",
+    "asthma:conf26:feno"
+   ],
+   "flags": [
+    "asthma:flag:ocs_long",
+    "asthma:flag:ocs_eos",
+    "asthma:flag:feno_pay",
+    "asthma:flag:kr_unavailable"
+   ],
+   "errata": [
+    "asthma:err:AE2",
+    "asthma:err:AE3",
+    "asthma:err:AE4",
+    "asthma:err:AE5",
+    "asthma:err:AE6",
+    "asthma:err:AE8",
+    "asthma:err:AE9",
+    "asthma:err:AE10",
+    "asthma:err:AE14"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G17",
+  "from": null,
+  "p": {
+   "age": 15,
+   "products": [
+    "asthma:prod:relvar200",
+    "asthma:prod:spiriva_rm"
+   ],
+   "ics_level": "high",
+   "g4_day": true,
+   "exac": 4,
+   "eos": 300,
+   "adherence_ok": true,
+   "technique_ok": true
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "severe",
+   "step": [
+    5,
+    5
+   ],
+   "control": "partly",
+   "ics": "high",
+   "regimens": [
+    "t1:전문가 의뢰 → 표현형 평가 → 생물학제제 / LAMA 추가",
+    "t2:고용량 ICS-LABA 단기 시도 또는 LAMA 추가 · 의뢰"
+   ],
+   "reimb": {
+    "asthma:prod:relvar200": "ok",
+    "asthma:prod:spiriva_rm": "ok",
+    "asthma:prod:enerzair": "unmet",
+    "asthma:prod:trelegy": "unmet",
+    "asthma:prod:trimbow": "unmet",
+    "asthma:prod:nucala_ai": "ok",
+    "asthma:prod:dupixent": "ok",
+    "asthma:prod:nucala_vial": "unmet",
+    "asthma:prod:cinqaero": "unmet",
+    "asthma:prod:fasenra": "unmet",
+    "asthma:prod:xolair": "unmet",
+    "asthma:prod:omlyclo": "unmet",
+    "asthma:prod:tezspire": "no",
+    "asthma:prod:depemokimab": "na"
+   },
+   "pheno": [
+    "eosinophilic",
+    "t2"
+   ],
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:tezepelumab",
+    "asthma:conf26:depemokimab",
+    "asthma:conf26:feno"
+   ],
+   "flags": [
+    "asthma:flag:refer",
+    "asthma:flag:feno_pay",
+    "asthma:flag:kr_unavailable"
+   ],
+   "errata": [
+    "asthma:err:AE2",
+    "asthma:err:AE3",
+    "asthma:err:AE4",
+    "asthma:err:AE5",
+    "asthma:err:AE6",
+    "asthma:err:AE8",
+    "asthma:err:AE9",
+    "asthma:err:AE10",
+    "asthma:err:AE14"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G18",
+  "from": null,
+  "p": {
+   "age": 40,
+   "products": [
+    "asthma:prod:relvar200",
+    "asthma:prod:spiriva_rm"
+   ],
+   "ics_level": "high",
+   "g4_day": true,
+   "exac": 4,
+   "eos": 299,
+   "adherence_ok": true,
+   "technique_ok": true
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "severe",
+   "step": [
+    5,
+    5
+   ],
+   "control": "partly",
+   "ics": "high",
+   "regimens": [
+    "t1:전문가 의뢰 → 표현형 평가 → 생물학제제 / LAMA 추가",
+    "t2:고용량 ICS-LABA 단기 시도 또는 LAMA 추가 · 의뢰"
+   ],
+   "reimb": {
+    "asthma:prod:relvar200": "ok",
+    "asthma:prod:spiriva_rm": "ok",
+    "asthma:prod:enerzair": "ok",
+    "asthma:prod:trelegy": "ok",
+    "asthma:prod:trimbow": "ok",
+    "asthma:prod:dupixent": "ok",
+    "asthma:prod:xolair": "unmet",
+    "asthma:prod:omlyclo": "unmet",
+    "asthma:prod:nucala_vial": "unmet",
+    "asthma:prod:nucala_ai": "unmet",
+    "asthma:prod:cinqaero": "unmet",
+    "asthma:prod:fasenra": "unmet",
+    "asthma:prod:tezspire": "no",
+    "asthma:prod:depemokimab": "na"
+   },
+   "pheno": [
+    "t2"
+   ],
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:tezepelumab",
+    "asthma:conf26:feno"
+   ],
+   "flags": [
+    "asthma:flag:refer",
+    "asthma:flag:feno_pay",
+    "asthma:flag:kr_unavailable"
+   ],
+   "errata": [
+    "asthma:err:AE2",
+    "asthma:err:AE3",
+    "asthma:err:AE4",
+    "asthma:err:AE5",
+    "asthma:err:AE6",
+    "asthma:err:AE8",
+    "asthma:err:AE9",
+    "asthma:err:AE10",
+    "asthma:err:AE14"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G19",
+  "from": null,
+  "p": {
+   "age": 30,
+   "products": [
+    "asthma:prod:relvar200",
+    "asthma:prod:spiriva_rm"
+   ],
+   "ics_level": "high",
+   "g4_day": true,
+   "exac": 2,
+   "ige": 76,
+   "perennial_sens": true,
+   "fev1": 79,
+   "adherence_ok": true,
+   "technique_ok": true
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "severe",
+   "step": [
+    5,
+    5
+   ],
+   "control": "partly",
+   "ics": "high",
+   "regimens": [
+    "t1:전문가 의뢰 → 표현형 평가 → 생물학제제 / LAMA 추가",
+    "t2:고용량 ICS-LABA 단기 시도 또는 LAMA 추가 · 의뢰"
+   ],
+   "reimb": {
+    "asthma:prod:relvar200": "ok",
+    "asthma:prod:spiriva_rm": "ok",
+    "asthma:prod:enerzair": "ok",
+    "asthma:prod:trelegy": "ok",
+    "asthma:prod:trimbow": "ok",
+    "asthma:prod:xolair": "ok",
+    "asthma:prod:omlyclo": "ok",
+    "asthma:prod:dupixent": "unmet",
+    "asthma:prod:nucala_vial": "unmet",
+    "asthma:prod:nucala_ai": "unmet",
+    "asthma:prod:cinqaero": "unmet",
+    "asthma:prod:fasenra": "unmet",
+    "asthma:prod:tezspire": "no",
+    "asthma:prod:depemokimab": "na"
+   },
+   "pheno": [
+    "allergic",
+    "t2"
+   ],
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:bio_exac_n",
+    "asthma:conf26:tezepelumab",
+    "asthma:conf26:feno"
+   ],
+   "flags": [
+    "asthma:flag:refer",
+    "asthma:flag:need_eos",
+    "asthma:flag:feno_pay",
+    "asthma:flag:kr_unavailable"
+   ],
+   "errata": [
+    "asthma:err:AE2",
+    "asthma:err:AE3",
+    "asthma:err:AE4",
+    "asthma:err:AE5",
+    "asthma:err:AE6",
+    "asthma:err:AE8",
+    "asthma:err:AE9",
+    "asthma:err:AE10",
+    "asthma:err:AE14"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G20",
+  "from": null,
+  "p": {
+   "age": 30,
+   "products": [
+    "asthma:prod:relvar200",
+    "asthma:prod:spiriva_rm"
+   ],
+   "ics_level": "high",
+   "g4_day": true,
+   "exac": 2,
+   "ige": 76,
+   "perennial_sens": true,
+   "fev1": 80,
+   "adherence_ok": true,
+   "technique_ok": true
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "severe",
+   "step": [
+    5,
+    5
+   ],
+   "control": "partly",
+   "ics": "high",
+   "regimens": [
+    "t1:전문가 의뢰 → 표현형 평가 → 생물학제제 / LAMA 추가",
+    "t2:고용량 ICS-LABA 단기 시도 또는 LAMA 추가 · 의뢰"
+   ],
+   "reimb": {
+    "asthma:prod:relvar200": "ok",
+    "asthma:prod:spiriva_rm": "ok",
+    "asthma:prod:enerzair": "ok",
+    "asthma:prod:trelegy": "ok",
+    "asthma:prod:trimbow": "ok",
+    "asthma:prod:xolair": "unmet",
+    "asthma:prod:omlyclo": "unmet",
+    "asthma:prod:dupixent": "unmet",
+    "asthma:prod:nucala_vial": "unmet",
+    "asthma:prod:nucala_ai": "unmet",
+    "asthma:prod:cinqaero": "unmet",
+    "asthma:prod:fasenra": "unmet",
+    "asthma:prod:tezspire": "no",
+    "asthma:prod:depemokimab": "na"
+   },
+   "pheno": [
+    "allergic",
+    "t2"
+   ],
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:bio_exac_n",
+    "asthma:conf26:tezepelumab",
+    "asthma:conf26:feno"
+   ],
+   "flags": [
+    "asthma:flag:refer",
+    "asthma:flag:need_eos",
+    "asthma:flag:feno_pay",
+    "asthma:flag:kr_unavailable"
+   ],
+   "errata": [
+    "asthma:err:AE2",
+    "asthma:err:AE3",
+    "asthma:err:AE4",
+    "asthma:err:AE5",
+    "asthma:err:AE6",
+    "asthma:err:AE8",
+    "asthma:err:AE9",
+    "asthma:err:AE10",
+    "asthma:err:AE14"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ },
+ {
+  "id": "G21",
+  "from": null,
+  "p": {
+   "age": 44,
+   "products": [
+    "asthma:prod:relvar100"
+   ],
+   "g4_day": true
+  },
+  "expect": {
+   "mode": "followup",
+   "action": "step_up",
+   "step": [
+    3,
+    4
+   ],
+   "control": "partly",
+   "ics": "unknown",
+   "regimens": [
+    "switch:저용량 ICS-formoterol MART",
+    "t1:중간용량 ICS-formoterol MART",
+    "t2:중간용량 ICS-LABA + 필요시 SABA"
+   ],
+   "reimb": {
+    "asthma:prod:relvar100": "ok",
+    "asthma:prod:symbicort_th": "ok",
+    "asthma:prod:symbicort_rh": "ok",
+    "asthma:prod:foster": "ok",
+    "asthma:prod:relvar200": "ok",
+    "asthma:prod:flutiform": "ok",
+    "asthma:prod:atectura": "ok"
+   },
+   "pheno": null,
+   "ae": null,
+   "conflicts": [
+    "asthma:conf26:mart_max"
+   ],
+   "flags": [
+    "asthma:flag:ics_level",
+    "asthma:flag:check_first"
+   ],
+   "errata": [
+    "asthma:err:AE17"
+   ],
+   "advice": [
+    "asthma:rec26:kr_check",
+    "asthma:rec26:g_flu"
+   ]
+  }
+ }
+]

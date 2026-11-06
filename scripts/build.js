@@ -28,12 +28,15 @@ const HDR_H = 46; // px, 주입 헤더 높이
 // ── 공용 뒤로가기 트랩(Back-Trap): 모든 가이드에 자동 주입 ──
 // 모바일/브라우저 뒤로가기가 페이지를 이탈시키지 않고 (1)열린 팝업을 닫거나 (2)앱 내부 "도서관 돌아가기" 뷰-백을 실행.
 // build.js가 이 모듈의 단일 소스. 신규 가이드는 registry 추가 후 빌드만 하면 자동 적용. (원본 소스 무손상)
-const BT_MARK = '<!--BACK_TRAP_V4-->';
-const BT_OLD_MARKS = ['<!--BACK_TRAP_V1-->','<!--BACK_TRAP_V2-->','<!--BACK_TRAP_V3-->','<!--BACK_TRAP_V4-->'];
+const BT_MARK = '<!--BACK_TRAP_V6-->';
+const BT_OLD_MARKS = ['<!--BACK_TRAP_V1-->','<!--BACK_TRAP_V2-->','<!--BACK_TRAP_V3-->','<!--BACK_TRAP_V4-->','<!--BACK_TRAP_V5-->','<!--BACK_TRAP_V6-->',
+  '<!--PORTAL_VIEWER_V1-->'];
 const BACKTRAP = BT_MARK + `
 <script>
-/* 공용 뒤로가기 트랩 v4 (build.js 자동 주입) — 뒤로가기 시 열린 팝업을 닫거나, 없으면 "‹ 도서관/돌아가기/목록으로" 뷰-백 실행.
-   둘 다 없으면 정상 이탈. 앱 내부 함수명을 몰라도 DOM 레벨로 동작. */
+/* 공용 뒤로가기 트랩 v6 (build.js 자동 주입) — 뒤로가기 시 열린 팝업을 닫거나, 없으면 "‹ 도서관/돌아가기/목록으로" 뷰-백 실행.
+   둘 다 없으면 정상 이탈. 앱 내부 함수명을 몰라도 DOM 레벨로 동작.
+   v6: 팝업을 닫을 때 닫기 함수를 순위 그룹(팝업 계열 → 기타 → 뷰 계열 closeTopic 등)으로 호출, 앞 그룹이 오버레이를 건드리면 중단.
+   v5: (1) 네이티브 <dialog open>이 있으면 대기(소유 모듈이 자체 history로 처리) (2) 런타임 뷰-백 감지는 뷰포트 무관(스크롤로 버튼이 가려져도 무장 유지). 로드 시 판정은 v4와 동일. */
 (function(){
   "use strict";
   if(window.__backTrapInstalled) return; window.__backTrapInstalled=true;
@@ -63,9 +66,10 @@ const BACKTRAP = BT_MARK + `
     return out;
   }
   function overlays(){ if(!baseline) return []; return candidates().filter(function(el){ return !baseline.has(el); }); }
-  function isVisible(el){
+  function isVisible(el, inViewport){
     var s=getComputedStyle(el); if(s.display==='none'||s.visibility==='hidden'||parseFloat(s.opacity||'1')<0.05) return false;
-    var r=el.getBoundingClientRect(); return r.width>4 && r.height>4 && r.bottom>0 && r.top<innerHeight;
+    var r=el.getBoundingClientRect(); if(!(r.width>4 && r.height>4)) return false;
+    return inViewport ? (r.bottom>0 && r.top<innerHeight) : true;
   }
   var BACK_ARROW=/[\\u2039\\u2190\\u25C0\\u27E8\\u276E<]/;
   function looksBack(t){
@@ -76,36 +80,49 @@ const BACKTRAP = BT_MARK + `
     if(BACK_ARROW.test(t) && /\\uBAA9\\uB85D|\\uB9AC\\uC2A4\\uD2B8|\\uCC98\\uC74C|home/i.test(t)) return true;
     return false;
   }
-  function backControl(){
+  function backControl(inViewport){
     var nodes=document.body.querySelectorAll('[onclick],a,button,[role=button]');
     for(var i=0;i<nodes.length;i++){
       var el=nodes[i];
       if(el.id==='portal-hdr'||el.closest('#portal-hdr')) continue;
-      if(!isVisible(el)) continue;
+      if(!isVisible(el, inViewport)) continue;
       if(looksBack(el.textContent||'')) return el.closest('[onclick],a,button,[role=button]')||el;
     }
     return null;
   }
   function closeTarget(){
     if(overlays().length>0) return {type:'overlay'};
-    if(backTrapOK){ var b=backControl(); if(b) return {type:'back', el:b}; }
+    if(backTrapOK){ var b=backControl(false); if(b) return {type:'back', el:b}; }
     return null;
   }
+  var POPUP_NAME=/modal|img|image|sheet|popup|pop|drawer|dialog|overlay|ref|calc|score|fb|lightbox|menu|tip|layer|^closed$/i;
+  var VIEW_NAME=/topic|page|view|detail|section|hub|cat|tab|panel|chapter|floor|lesson/i;
+  function closerRank(k){ return POPUP_NAME.test(k.replace(/^(close|hide|dismiss)/i,''))?0:(VIEW_NAME.test(k)?2:1); }
   function appClosers(){
     var bad={close:1,closed:1,stop:1,print:1,open:1,opener:1,focus:1,blur:1,alert:1,confirm:1,prompt:1};
-    var fns=[];
+    var list=[];
     for(var k in window){
-      try{ if(/^(close|hide|dismiss)/i.test(k) && !bad[k] && typeof window[k]==='function' && window[k].length===0 && (''+window[k]).indexOf('[native code]')<0) fns.push(window[k]); }catch(e){}
+      try{ if(/^(close|hide|dismiss)/i.test(k) && !bad[k] && typeof window[k]==='function' && window[k].length===0 && (''+window[k]).indexOf('[native code]')<0) list.push({k:k,fn:window[k],r:closerRank(k)}); }catch(e){}
     }
-    try{ if(typeof window.close==='function' && (''+window.close).indexOf('[native code]')<0) fns.push(window.close); }catch(e){}
-    return fns;
+    try{ if(typeof window.close==='function' && (''+window.close).indexOf('[native code]')<0) list.push({k:'close',fn:window.close,r:0}); }catch(e){}
+    /* v6: 순위 그룹 [팝업 계열(0), 기타(1), 뷰 계열(2: closeTopic 등)] — 앞 그룹이 오버레이를 건드리면 뒤 그룹은 호출 안 함 */
+    return [0,1,2].map(function(r){ return list.filter(function(x){ return x.r===r; }).map(function(x){ return x.fn; }); }).filter(function(g){ return g.length; });
   }
+  function ovSig(el){ var s=el.className+'|'+(el.getAttribute('style')||'')+'|'+el.hidden; for(var c=el.firstElementChild,n=0;c&&n<6;c=c.nextElementSibling,n++) s+='|'+c.className+(c.getAttribute('style')||''); return s; }
   function closeOverlays(){
-    appClosers().forEach(function(fn){ try{fn.call(window);}catch(e){} });
+    var ov0=overlays(), snap=ov0.map(ovSig), groups=appClosers();
+    for(var gi=0;gi<groups.length;gi++){
+      groups[gi].forEach(function(fn){ try{fn.call(window);}catch(e){} });
+      var now=overlays(); if(!now.length) break;
+      var touched=ov0.some(function(el,i){ return now.indexOf(el)<0 || ovSig(el)!==snap[i]; });
+      if(touched) break;
+    }
     overlays().forEach(function(el){ SHOW_CLASSES.forEach(function(c){ el.classList.remove(c); }); });
     try{ if(!overlays().length) document.body.style.overflow=''; }catch(e){}
   }
+  function held(){ try{ return !!document.querySelector('dialog[open]'); }catch(e){ return false; } }
   function refreshOnce(){
+    if(held()) return;
     var has=!!closeTarget();
     if(has && !armed){ armed=true; try{history.pushState({backTrap:1},'');}catch(e){} }
     else if(!has && armed && !consuming){ consuming=true; try{history.back();}catch(e){} }
@@ -117,6 +134,7 @@ const BACKTRAP = BT_MARK + `
   }
   window.addEventListener('popstate', function(){
     if(consuming){ consuming=false; armed=false; return; }
+    if(held()) return;
     var tgt=closeTarget();
     if(tgt){
       armed=false;
@@ -128,7 +146,7 @@ const BACKTRAP = BT_MARK + `
   function init(){
     baseline=new WeakSet();
     candidates().forEach(function(el){ baseline.add(el); });
-    backTrapOK = (backControl()===null);
+    backTrapOK = (backControl(true)===null);
     var mo=new MutationObserver(schedule);
     mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style','hidden'],childList:true});
     document.addEventListener('click',function(){ schedule(); },true);
@@ -154,12 +172,15 @@ function stripBackTrap(html){
   }
   return html;
 }
+// 공용 팝업·그림 뷰어(PortalDialog·PortalLightbox): 단일 소스 scripts/portal_viewer.js — 트랩과 함께 주입
+const PV_MARK = '<!--PORTAL_VIEWER_V1-->';
+const PORTAL_VIEWER = PV_MARK + '\n<script>\n' + fs.readFileSync(path.join(__dirname, 'portal_viewer.js'), 'utf8').replace(/<\/script/gi, '<\\/script') + '</script>\n';
 // </body> 직전에 최신 트랩 주입
 function injectBackTrap(html){
   const m=html.match(/<\/body>/i);
   if(!m){ return html; }
   const idx=html.lastIndexOf(m[0]);
-  return html.slice(0,idx)+BACKTRAP+'\n'+html.slice(idx);
+  return html.slice(0,idx)+PORTAL_VIEWER+BACKTRAP+'\n'+html.slice(idx);
 }
 
 function findSrc(filename) {

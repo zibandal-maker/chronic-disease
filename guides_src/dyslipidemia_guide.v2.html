@@ -3706,6 +3706,29 @@ var APP = { recommend:recommend, REGISTRY_VERSION:LIPID_V2_META.registry,
   }catch(e){ if(window.console) console.warn("lipid v2 sim", e); }
 })();
 
+/* ===================================================================
+   6. 근거(ⓘ) 팝업 → 공용 PortalDialog(<dialog>) 전환  [2026-11-07]
+   문제: v1 #refModal은 뒤로가기로 닫히지 않고(hidden 속성), 공용 트랩이 closeTopic까지 호출해 토픽 이탈.
+   해결: v1 #refModalBody를 dialog로 옮기고 openRef/closeRefModal 재할당(v1 본문 무수정·렌더는 v1 그대로).
+         닫기 = 바깥 탭 · 닫기× · Esc · 뒤로가기(팝업만). 원문 그림(openImgModal)은 build.js 공용 그림 뷰어가 처리.
+         PortalDialog는 build.js 주입(본문 뒤) → DOMContentLoaded 시점에 연결. 없으면(단독 실행) v1 동작 유지.
+   =================================================================== */
+(function(){
+  function init(){
+    var PD=window.PortalDialog, rb=document.getElementById("refModalBody"), oldRef=document.getElementById("refModal");
+    if(!PD || !rb || typeof window.openRef!=="function" || document.getElementById("lipid26RefDialog")) return;
+    var rd=document.createElement("dialog"); rd.id="lipid26RefDialog"; rd.className="pv-d lipid26-ref"; rd.setAttribute("aria-label","근거 상세");
+    var st=document.createElement("style"); st.textContent="dialog.lipid26-ref{align-items:center;justify-content:center;padding:16px}dialog.lipid26-ref .pv-hint{padding-top:8px}";
+    document.head.appendChild(st); document.body.appendChild(rd); rd.appendChild(rb);
+    rd.insertAdjacentHTML("beforeend",'<div class="pv-hint" data-pv-dismiss>바깥 탭 · 뒤로가기 · Esc: 닫기</div>');
+    PD.wire(rd);
+    var _openRef=window.openRef;
+    window.openRef=function(){ var r=_openRef.apply(this, arguments); if(oldRef) oldRef.hidden=true; if(rb.innerHTML) PD.show(rd); return r; };
+    window.closeRefModal=function(){ if(rd.open) rd.close(); };
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init); else setTimeout(init,0);
+})();
+
 </script>
 </body>
 </html>

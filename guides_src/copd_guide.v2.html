@@ -2417,7 +2417,7 @@ render(true);
 </section>
 <section id="copd-rule-laba_lama" class="seo-drug">
   <h3>LABA+LAMA 복합제·LAMA/LABA 단일제 — 조건부급여</h3>
-  <p><b>급여기준</b>: [FEV1 &lt;80%(중등도 이상) 유지요법 또는 FEV1 ≥80%이나 호흡곤란 등 증상 조절 안 됨] — 고시 제2022-56호(2022-03-01) · 티오트로피움 단일제는 고시 대상 품목 목록에 없음(허가 범위 원칙)</p>
+  <p><b>급여기준</b>: [FEV1 &lt;80%(중등도 이상) 유지요법 또는 FEV1 ≥80%이나 호흡곤란 등 증상 조절 안 됨] — 고시 제2022-56호(2022-03-01) · 티오트로피움 단일제도 같은 고시 별도 항목(동일 조건)</p>
   <p><b>제품</b>: 아노로·조터나·바헬바·듀어클리어 등</p></section>
 <section id="copd-rule-ics_laba" class="seo-drug">
   <h3>ICS/LABA 복합제 — 조건부급여</h3>
@@ -2884,8 +2884,8 @@ var ADDONS26 = {
 /* ---------- 8. 제품 (급여 단위) ---------- */
 /* 흡입제는 v1_brand로 CD.INHALER_PRODUCTS에 조인(성분·기기 복제 없음). 비흡입제만 ingredients 보유. */
 var PRODUCTS = [
-  { id:"copd:prod:spiriva_hh", v1_brand:"스피리바 핸디헬러", reimb:"copd:reimb26:lama_laba_general" },
-  { id:"copd:prod:spiriva_rm", v1_brand:"스피리바 레스피맷", reimb:"copd:reimb26:lama_laba_general" },
+  { id:"copd:prod:spiriva_hh", v1_brand:"스피리바 핸디헬러", reimb:"copd:reimb26:lama_laba" },
+  { id:"copd:prod:spiriva_rm", v1_brand:"스피리바 레스피맷", reimb:"copd:reimb26:lama_laba" },
   { id:"copd:prod:incruse", v1_brand:"인크루즈 엘립타", reimb:"copd:reimb26:lama_laba" },
   { id:"copd:prod:onbrez", v1_brand:"온브리즈 브리즈헬러", reimb:"copd:reimb26:lama_laba" },
   { id:"copd:prod:anoro", v1_brand:"아노로 엘립타", reimb:"copd:reimb26:lama_laba" },
@@ -2919,7 +2919,7 @@ var DRUG_STATUS = {
 
 /* ---------- 9. 고시 ---------- */
 var NOTICES = {
-  "notice:고시2022-56":  { id:"notice:고시2022-56", label:"고시 제2022-56호", date:"2022-03-01", items:["copd:reimb26:lama_laba"], title:"만성폐쇄성폐질환 흡입용 치료제", shared:"hf(이력) — 같은 번호 전역 ID" },
+  "notice:고시2022-56":  { id:"notice:고시2022-56", label:"고시 제2022-56호", date:"2022-03-01", items:["copd:reimb26:lama_laba"], title:"만성폐쇄성폐질환 흡입용 치료제 · Tiotropium 흡입제(COPD 가·나항 + 천식 다항)", shared:"hf(이력)·asthma — 같은 번호 전역 ID" },
   "notice:고시2016-66":  { id:"notice:고시2016-66", label:"고시 제2016-66호", date:"2016-05-01", items:["copd:prod:relvar"], title:"렐바엘립타" },
   "notice:고시2015-184": { id:"notice:고시2015-184", label:"고시 제2015-184호", date:"2015-11-01", items:["copd:prod:symbicort"], title:"심비코트터부헬러 등" },
   "notice:고시2024-37":  { id:"notice:고시2024-37", label:"고시 제2024-37호", date:"2024-03-01", items:["copd:prod:trelegy"], title:"트렐리지엘립타 등", prev:"고시 제2021-152호(2021.6.1)" },
@@ -2934,12 +2934,10 @@ var EXAC_DEF_REIMB = "급성악화 = 호흡곤란 악화·기침 증가·가래�
 
 /* ---------- 10. 급여 판정 (WhenDSL gate) ---------- */
 var REIMB_2026 = {
-  "copd:reimb26:lama_laba": { id:"copd:reimb26:lama_laba", notice:["notice:고시2022-56"], title:"COPD 흡입용 치료제(LAMA·LABA 단일, LABA+LAMA 복합)",
+  "copd:reimb26:lama_laba": { id:"copd:reimb26:lama_laba", notice:["notice:고시2022-56"], title:"COPD 흡입용 치료제(LAMA·LABA 단일, LABA+LAMA 복합, 티오트로피움)",
     gate:{ op:"OR", conds:[ { when:"fev1 < TH.r_fev1_maint_lt", txt:"FEV1 <{TH.r_fev1_maint_lt}%(중등도 이상) 유지요법" },
                             { when:"fev1 >= TH.r_fev1_maint_lt && sx_uncontrolled", txt:"FEV1 ≥{TH.r_fev1_maint_lt}%이나 호흡곤란 등 증상 조절 안 됨" } ] },
     fallback:{ when:"!has_fev1", status:"unknown", note:"FEV1 입력 필요" }, err:"copd:err:CE7" },
-  "copd:reimb26:lama_laba_general": { id:"copd:reimb26:lama_laba_general", notice:[], title:"티오트로피움 단일제 — 2022-56 대상 품목 목록에 없음", fixed:"general",
-    notes:["개별 세부기준 없음 — 허가사항 범위 내 급여 원칙. 청구 전 약제급여목록 확인"] },
   "copd:reimb26:ics_laba": { id:"copd:reimb26:ics_laba", notice:["notice:고시2016-66","notice:고시2015-184"], title:"ICS/LABA 복합제(렐바·심비코트) COPD",
     gate:{ op:"OR", conds:[ { when:"fev1 < TH.r_fev1_icslaba_lt", txt:"FEV1 <{TH.r_fev1_icslaba_lt}%" },
                             { when:"on_bd && exac_yr >= TH.r_exac_n", txt:"β2작용제·항콜린제 지속 투여에도 연 {TH.r_exac_n}회 이상 급성악화(투여소견서)" } ] },
@@ -3050,7 +3048,7 @@ var ERRATA = [
   { id:"copd:err:CE4", kind:"erratum", v1_path:"CD.REIMB['copd:rule:roflumilast']", v1:"만성기관지염 + FEV1<50% + 악화", current:"악화 병력 + 만성기관지염 + (FEV1 <50% 또는 기관지확장제 중 연 2회↑) + LABA·LAMA 1종 병용", src:"notice:고시2021-270", effect:"OR 경로·병용 요건 누락" },
   { id:"copd:err:CE5", kind:"erratum", v1_path:"CD.BIOLOGICS[MEPO].approval/criteria", v1:"'2025말 국내 허가', 호산구 ≥150", current:"누칼라오토인젝터주만 COPD 효능(2026-10 승인 발표), 허가 문구는 '호산구 증가'(수치 없음), 급여 없음", src:"nedrug 202500679 · notice:고시2026-133", effect:"허가 시점·제형 오류" },
   { id:"copd:err:CE6", kind:"erratum", v1_path:"CD.REIMB['copd:rule:macrolide']", v1:"'주의 — 급여 삭감 빈번'", current:"허가 외 + 고시 허가초과 인정 항목에 COPD 없음 → 급여 근거 없음", src:"notice:고시2025-15 · nedrug 200511067", effect:"표현 정정" },
-  { id:"copd:err:CE7", kind:"erratum", v1_path:"CD.REIMB['copd:rule:laba_lama']", v1:"무조건 급여", current:"FEV1 <80% 유지요법, 또는 ≥80%라도 증상 조절 안 되는 경우. 대상 품목 열거(티오트로피움 단일 미포함)", src:"notice:고시2022-56", effect:"FEV1 ≥80% 증상 경미 과대 판정" },
+  { id:"copd:err:CE7", kind:"erratum", v1_path:"CD.REIMB['copd:rule:laba_lama']", v1:"무조건 급여", current:"FEV1 <80% 유지요법, 또는 ≥80%라도 증상 조절 안 되는 경우. 대상 품목 열거 + 티오트로피움은 같은 고시 별도 항목(동일 조건)", src:"notice:고시2022-56", effect:"FEV1 ≥80% 증상 경미 과대 판정" },
   { id:"copd:err:CE8", kind:"guideline_update", v1_path:"CD.VACCINE pcv13·rsv", v1:"PCV13 우선(65세↑) · RSV '국내 권고 미정'", current:"대한감염학회 2026: PCV21·PCV20 1회 또는 PCV15→PPSV23 / RSV 3품목 허가, 학회 개정안 50–74세 고위험 + 75세↑", src:"gl:vacc:ksid-pcv-2026 · gl:vacc:ksid-rsv-2026 · nedrug", effect:"v1은 KATRD 2024 원문 그대로 — 오류 아닌 지침 갱신" },
   { id:"copd:err:CE9", kind:"guideline_update", v1_path:"CD.GOLD_GROUP.classify", v1:"E = 중등도 ≥2 또는 입원 ≥1 (GOLD 2025)", current:"E = 중등도·중증 ≥1 (GOLD 2026)", src:"GOLD 2026 Fig 3.8", effect:"중등도 1회 환자 A/B → E" },
   { id:"copd:err:CE10", kind:"erratum", v1_path:"CD.BIOLOGICS[DUPI].criteria d0", v1:"고용량 ICS+LABA+LAMA 최적치료에도", current:"허가: ICS+LABA+LAMA, 또는 ICS 부적절 시 LABA+LAMA로 조절 안 되는 호산구 증가 COPD", src:"nedrug 201801406", effect:"전제가 허가보다 좁음" },
@@ -3058,7 +3056,7 @@ var ERRATA = [
   { id:"copd:err:CE12", kind:"guideline_update", v1_path:"CD.EXAC.tx", v1:"스테로이드 '통상 5일', 항생제 기간 없음, NIV만", current:"스테로이드 5일(A) · 항생제 적응(A)·5일(B) · 급성 저산소 호흡부전은 HFNT 우선(A)", src:"GOLD 2026 Fig 4.5·4.6", effect:"악화 관리 갱신" }
 ];
 var SUPERSEDED_V1 = {
-  "copd:rule:laba_lama":["copd:reimb26:lama_laba","copd:reimb26:lama_laba_general"], "copd:rule:ics_laba":["copd:reimb26:ics_laba"],
+  "copd:rule:laba_lama":["copd:reimb26:lama_laba"], "copd:rule:ics_laba":["copd:reimb26:ics_laba"],
   "copd:rule:triple":["copd:reimb26:triple_tb","copd:reimb26:triple_tm"], "copd:rule:roflumilast":["copd:reimb26:roflumilast"], "copd:rule:macrolide":["copd:reimb26:azithro"],
   "copd:gold:A":["copd:gold26:A"], "copd:gold:B":["copd:gold26:B"], "copd:gold:E":["copd:gold26:E"],
   "vacc:pcv13":["vacc:pcv21","vacc:pcv20","vacc:pcv15"]

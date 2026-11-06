@@ -18,7 +18,7 @@ let ns=html.slice(a,b);
 if(ns.includes('id="concept-gold2026"')){ console.log('SEO 이미 적용(멱등)'); process.exit(0); }
 const rep=[
   { old:'<h3>LABA+LAMA 복합제 — 급여</h3>\n  <p><b>급여기준</b>: 국내 2024 지침 저위험·고위험 공통 1차 요법. 급여 인정.</p>',
-    neu:'<h3>LABA+LAMA 복합제·LAMA/LABA 단일제 — 조건부급여</h3>\n  <p><b>급여기준</b>: '+ruleTxt('copd:reimb26:lama_laba')+' · 티오트로피움 단일제는 고시 대상 품목 목록에 없음(허가 범위 원칙)</p>' },
+    neu:'<h3>LABA+LAMA 복합제·LAMA/LABA 단일제 — 조건부급여</h3>\n  <p><b>급여기준</b>: '+ruleTxt('copd:reimb26:lama_laba')+' · 티오트로피움 단일제도 같은 고시 별도 항목(동일 조건)</p>' },
   { old:'<p><b>급여기준</b>: FEV1&lt;60% 예측치 + COPD 악화 잦은 경우 인정.</p>',
     neu:'<p><b>급여기준</b>: '+ruleTxt('copd:reimb26:ics_laba')+' · 지침은 LABA+ICS 비권장(삼제 우월)</p>' },
   { old:'<h3>ICS+LABA+LAMA 3제 (트렐리지 기준) — 조건부급여</h3>\n  <p><b>급여기준</b>: 다음 3택1: ① LABA+LAMA에도 FEV1&lt;60% 또는 연 2회↑ 급성악화  ② LABA+ICS에도 호흡곤란 조절 안됨  ③ 동일성분 복합제·단일제 동시투여 중 전환</p>',

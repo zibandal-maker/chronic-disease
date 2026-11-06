@@ -455,8 +455,8 @@
    "gold_regimen": "LAMA 단일",
    "gold_keep": false,
    "reimb": {
-    "copd:prod:spiriva_hh": "general",
-    "copd:prod:spiriva_rm": "general",
+    "copd:prod:spiriva_hh": "unmet",
+    "copd:prod:spiriva_rm": "unmet",
     "copd:prod:incruse": "unmet",
     "copd:prod:onbrez": "unmet",
     "copd:prod:anoro": "unmet",
@@ -513,8 +513,8 @@
    "gold_regimen": "LAMA 단일",
    "gold_keep": false,
    "reimb": {
-    "copd:prod:spiriva_hh": "general",
-    "copd:prod:spiriva_rm": "general",
+    "copd:prod:spiriva_hh": "ok",
+    "copd:prod:spiriva_rm": "ok",
     "copd:prod:incruse": "ok",
     "copd:prod:onbrez": "ok",
     "copd:prod:anoro": "ok",

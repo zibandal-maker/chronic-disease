@@ -1,0 +1,19 @@
+[
+ {"id":"G1","from":"asthma:sim26:c1"},{"id":"G2","from":"asthma:sim26:c2"},{"id":"G3","from":"asthma:sim26:c3"},
+ {"id":"G4","from":"asthma:sim26:c4"},{"id":"G5","from":"asthma:sim26:c5"},{"id":"G6","from":"asthma:sim26:c6"},
+ {"id":"G7","p":{"age":28,"sx_freq":"ge2m","smoker":true,"products":[]}},
+ {"id":"G8","p":{"age":40,"sx_freq":"lt2m","exac":1,"products":["asthma:prod:saba"]}},
+ {"id":"G9","p":{"age":35,"sx_freq":"most","products":[]}},
+ {"id":"G10","p":{"age":61,"sx_freq":"daily","night_waking":true,"fev1":55,"products":[]}},
+ {"id":"G11","p":{"age":45,"initial_severe":true,"sx_freq":"daily","products":[]}},
+ {"id":"G12","p":{"age":50,"products":["asthma:prod:foster"],"use_mode":"mart","ics_puffs_day":4,"stable_3m":true,"adherence_ok":true,"technique_ok":true}},
+ {"id":"G13","p":{"age":33,"products":["asthma:prod:symbicort_th"],"use_mode":"air","ics_puffs_day":2,"g4_day":true,"g4_reliever":true}},
+ {"id":"G14","p":{"age":66,"products":["asthma:prod:trelegy"],"ics_level":"medium","g4_day":true,"exac":1,"adherence_ok":true,"technique_ok":true,"eos":180}},
+ {"id":"G15","p":{"age":38,"products":["asthma:prod:montelukast"],"aerd":true,"sx_freq":"ge2m"}},
+ {"id":"G16","p":{"age":55,"products":["asthma:prod:relvar200","asthma:prod:spiriva_rm"],"ics_level":"high","g4_day":true,"g4_night":true,"exac":1,"ocs_mg":10,"ocs_months":8,"eos":100,"adherence_ok":true,"technique_ok":true}},
+ {"id":"G17","p":{"age":15,"products":["asthma:prod:relvar200","asthma:prod:spiriva_rm"],"ics_level":"high","g4_day":true,"exac":4,"eos":300,"adherence_ok":true,"technique_ok":true}},
+ {"id":"G18","p":{"age":40,"products":["asthma:prod:relvar200","asthma:prod:spiriva_rm"],"ics_level":"high","g4_day":true,"exac":4,"eos":299,"adherence_ok":true,"technique_ok":true}},
+ {"id":"G19","p":{"age":30,"products":["asthma:prod:relvar200","asthma:prod:spiriva_rm"],"ics_level":"high","g4_day":true,"exac":2,"ige":76,"perennial_sens":true,"fev1":79,"adherence_ok":true,"technique_ok":true}},
+ {"id":"G20","p":{"age":30,"products":["asthma:prod:relvar200","asthma:prod:spiriva_rm"],"ics_level":"high","g4_day":true,"exac":2,"ige":76,"perennial_sens":true,"fev1":80,"adherence_ok":true,"technique_ok":true}},
+ {"id":"G21","p":{"age":44,"products":["asthma:prod:relvar100"],"g4_day":true}}
+]

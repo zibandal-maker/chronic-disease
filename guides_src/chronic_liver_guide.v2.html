@@ -3891,7 +3891,17 @@ HBV26.LOCAL_MAP = { "drug:tenofovir_df":"drug:tenofovir", "drug:tenofovir_af":"d
     ".hbv26-chip{display:inline-block;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;background:var(--hbv-100);color:var(--hbv-800);margin-left:6px}"+
     ".hbv26-old{display:inline-block;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;background:var(--warn-bg);color:var(--warn);margin-left:6px}"+
     ".hbv26-rec{margin:6px 0;font-size:12.5px;line-height:1.45}.hbv26-rec .ko{display:block;font-weight:700;color:var(--ink)}.hbv26-rec .en{display:block;color:var(--ink2)}"+
-    ".hbv26-sim{margin-top:8px}";
+    ".hbv26-sim{margin-top:8px}"+
+    ".hbv26-hub{border:1.5px solid var(--hbv-400)}.hbv26-hub>.body{padding-top:0}"+
+    ".hbv26-hub .hub-note{font-size:12px;color:var(--ink2);line-height:1.5;margin:0 0 8px}"+
+    "details.hbv26-d{border:1px solid var(--line);border-radius:10px;margin:6px 0;background:var(--paper)}"+
+    "details.hbv26-d>summary{cursor:pointer;padding:10px 12px;font-weight:700;font-size:14px;list-style:none;display:flex;gap:8px;align-items:flex-start;line-height:1.4}"+
+    "details.hbv26-d>summary::-webkit-details-marker{display:none}"+
+    "details.hbv26-d>summary::before{content:'\\25B8';color:var(--ink2);flex:0 0 auto}"+
+    "details.hbv26-d[open]>summary::before{content:'\\25BE'}"+
+    "details.hbv26-d[open]>summary{border-bottom:1px solid var(--line)}"+
+    "details.hbv26-d>.hbv26-body{padding:8px 12px 12px;overflow-x:auto}"+
+    ".hbv26-body .hbv26-tbl.wide{min-width:620px}";
   document.head.appendChild(css);
 
   /* ---- 헤더 relabel ---- */
@@ -3991,25 +4001,29 @@ HBV26.LOCAL_MAP = { "drug:tenofovir_df":"drug:tenofovir", "drug:tenofovir_af":"d
     b0+='<table class="hbv26-tbl"><tr><th>단계</th><th>정의</th><th>행동</th></tr>'+D.PHASES.map(function(x){ var r=x.rec?rec(x.rec):null; return '<tr><td><b>'+E(x.ko)+'</b></td><td>'+E(x.def)+'</td><td>'+E(x.action)+' '+(r?chip(r.grade_original):"")+'</td></tr>'; }).join("")+'</table>';
     b0+='<div class="note"><b>알고리즘(Fig.2)</b></div><ol class="tight">'+D.ALGORITHM.map(function(s){ return '<li>'+E(s)+'</li>'; }).join("")+'</ol>';
     b0+='<div class="note">ALT 정상상한: 남 '+D.TH.alt_uln.male+' · 여 '+D.TH.alt_uln.female+' IU/L · 출처: '+E(gl.cite)+'</div>';
-    h+=card("🆕","KASL 2026 개정 반영 — 바이러스역가 기반 분류",b0,true);
+    var secs=[]; secs.push(["🧬","핵심 — 바이러스역가 기반 4단계 · 알고리즘",b0]);
     var b1=Object.keys(D.REC_BY_BLOCK).map(function(bk){
       return '<div class="note" style="margin-top:10px"><b>'+E(bk)+' · '+E(HBV26_BLOCKS[bk])+'</b></div>'+D.REC_BY_BLOCK[bk].map(function(r){
         return '<div class="hbv26-rec">'+chip(r.grade_original)+(r.change==="new"?'<span class="hbv26-chip">신설</span>':'')+(r.ko?'<span class="ko">'+E(r.ko)+'</span>':'')+'<span class="en">'+E(r.text_original)+'</span></div>'; }).join(""); }).join("");
-    h+=card("📜","KASL 2026 권고 전수 ("+Object.keys(D.REC).length+"건, 원문·등급)",b1+'<div class="note">'+E(gl.license)+' · © KASL</div>');
+    secs.push(["📜","KASL 2026 권고 전수 ("+Object.keys(D.REC).length+"건, 원문·등급)",b1+'<div class="note">'+E(gl.license)+' · © KASL</div>']);
     var N=D.NOTICE, b2='<div class="note">'+E(N.noticeNo)+' · 시행 '+E(N.effectiveDate)+' · 이전 '+E(N.prev)+'</div><table class="hbv26-tbl">'+
       Object.keys(D.REIMB).map(function(id){ var r=D.REIMB[id]; return '<tr><td><b>'+E(r.art)+'</b></td><td>'+E(r.text)+'</td></tr>'; }).join("")+'</table><div class="note"><a href="'+E(N.sourceUrl)+'" target="_blank" rel="noopener">심평원 보험인정기준 원문</a></div>';
-    h+=card("⚖️","급여 원문 — "+E(N.noticeNo)+" (원문 대조 "+E(N.verified)+")",b2);
+    secs.push(["⚖️","급여 원문 — "+E(N.noticeNo)+" (원문 대조 "+E(N.verified)+")",b2]);
     var b3=D.CONFLICTS.map(function(c){ return '<div class="clash"><b>'+E(c.id.split(":").pop())+'</b><br>지침: '+E(c.text_guideline)+'<br>급여: '+E(c.text_reimb)+'</div>'; }).join("")+D.NOTES.map(function(n){ return '<div class="note">• '+E(n.text)+'</div>'; }).join("");
-    h+=card("⚠️","지침 ⟷ 급여 상충 (2026 · "+D.CONFLICTS.length+"건)",b3);
+    secs.push(["⚠️","지침 ⟷ 급여 상충 ("+D.CONFLICTS.length+"건)",b3]);
     var RR=D.REACT_RISK, b4='<div class="note">급여 고시 3항은 위험도를 "최신 가이드라인"으로 판단 → 이 표가 급여 위험도 판정 근거</div>'+
       '<div class="note"><b>HBsAg(+) 또는 DNA(+)</b></div><div class="note">고위험(&gt;10%): '+E(RR.hbsag_pos.high.join(" · "))+'</div><div class="note">중등도(1–10%): '+E(RR.hbsag_pos.mod.join(" · "))+'</div>'+
       '<div class="note"><b>HBsAg(−)/anti-HBc(+)/DNA(−)</b></div><div class="note">고위험: '+E(RR.hbsag_neg_antihbc_pos.high.join(" · "))+'</div><div class="note">중등도: '+E(RR.hbsag_neg_antihbc_pos.mod.join(" · "))+'</div><div class="kbd">'+E(RR.note)+'</div>';
-    h+=card("🛡️","재활성화 위험도 — "+E(RR.source),b4);
-    var O=D.OVERSEAS, b5='<table class="hbv26-tbl"><tr><th>지침</th><th>분류</th><th>치료 시작</th><th>ULN</th><th>적격</th></tr>'+O.rows.map(function(r){ return '<tr><td><b>'+E(r.org)+'</b></td><td>'+E(r.cls)+'</td><td>'+E(r.tx)+'</td><td>'+E(r.uln)+'</td><td>'+E(r.elig)+'</td></tr>'; }).join("")+'</table><div class="kbd">'+E(O.eligNote)+' · '+E(O.source)+' · 표시 전용(권고 레코드 아님)</div>';
-    h+=card("🌐","해외 지침 비교 (AASLD·EASL·WHO)",b5);
+    secs.push(["🛡️","재활성화 위험도 — "+E(RR.source),b4]);
+    var O=D.OVERSEAS, b5='<div class="kbd">← 표는 좌우로 밀어 보기</div><table class="hbv26-tbl wide"><tr><th>지침</th><th>분류</th><th>치료 시작</th><th>ULN</th><th>적격</th></tr>'+O.rows.map(function(r){ return '<tr><td><b>'+E(r.org)+'</b></td><td>'+E(r.cls)+'</td><td>'+E(r.tx)+'</td><td>'+E(r.uln)+'</td><td>'+E(r.elig)+'</td></tr>'; }).join("")+'</table><div class="kbd">'+E(O.eligNote)+' · '+E(O.source)+' · 표시 전용(권고 레코드 아님)</div>';
+    secs.push(["🌐","해외 지침 비교 (AASLD·EASL·WHO)",b5]);
     var b6='<div class="note"><b>superseded (KASL 2022 → 2026)</b></div><table class="hbv26-tbl">'+D.SUPERSEDED_V1.map(function(x){ return '<tr><td>'+E(x.v1)+'</td><td>→ '+E(x.by)+'</td></tr>'; }).join("")+'</table>'+
       '<div class="note"><b>v1 정정(erratum)</b></div>'+D.ERRATA.map(function(e){ return '<div class="flagbox"><b>'+E(e.id.split(":").pop())+'</b> '+E(e.where)+' — '+E(e.text)+'</div>'; }).join("");
-    h+=card("🗂️","이전 지침 보기 (KASL 2022) · v1 정정사항",b6);
+    secs.push(["🗂️","이전 지침(KASL 2022) 대비 변경 · v1 정정사항",b6]);
+    /* 2026 개정분은 주메뉴 카드 1장(허브)으로 독립 — 섹션은 접힘(COPD v2 도서관 블록과 동일 패턴). lead 카드라 v1 시트 열기 대상 아님 */
+    h='<div class="card lead hbv26-hub" id="hbv26-hub"><div class="head"><span class="emoji">🆕</span><span class="t">2026 개정 반영 <span class="hbv26-chip">KASL 2026 · '+E(N.noticeNo.replace(/^보건복지부\s*/,""))+'</span></span></div><div class="body">'+
+      '<div class="hub-note">개정 지침 권고등급 · 급여 원문 대조('+E(N.verified)+'). 아래 기존 카드는 이전 기준을 포함합니다(<span class="hbv26-old">KASL 2022</span> 칩).</div>'+
+      secs.map(function(x){ return '<details class="hbv26-d"><summary><span>'+x[0]+'</span><span>'+x[1]+'</span></summary><div class="hbv26-body">'+x[2]+'</div></details>'; }).join("")+'</div></div>';
     var wrap=document.createElement("div"); wrap.id="hbv26-lib"; wrap.innerHTML=h;
     lib.insertBefore(wrap, lib.firstChild);
     // v1 카드 relabel (텍스트 노드만)
