@@ -2,6 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/guides/af", "destination": "/guides/arrhythmia", "permanent": true },
+    { "source": "/guides/derm", "destination": "/guides/skin", "permanent": true },
+    { "source": "/guides/infection", "destination": "/guides/antimicrobial", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/guides/(.*)",
